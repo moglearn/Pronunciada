@@ -319,8 +319,15 @@ def run(lang, n):
         return lang, out
     d = ship_dir() / "prosody"
     d.mkdir(exist_ok=True)
-    (d / f"{lang}.json").write_text(json.dumps(out, indent=1, default=float))
-    save_json(f"prosody_{lang}.json", out)
+    fn = f"{lang}.json"
+    if lang == "zh":       # a non-default tone model (PRONUNCIADA_TONE_MODEL) gets its own file
+        from pronunciada.prosody import TONE_MODEL, selected_tone_model
+
+        if selected_tone_model() != TONE_MODEL:
+            fn = f"zh.{selected_tone_model()}.json"
+            out["tone_model"] = selected_tone_model()
+    (d / fn).write_text(json.dumps(out, indent=1, default=float))
+    save_json(f"prosody_{fn}", out)
     return lang, out
 
 

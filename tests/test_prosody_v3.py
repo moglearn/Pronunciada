@@ -77,3 +77,44 @@ def test_v3_selectable_and_runs(monkeypatch):
     out = sc.score(wav, ref, spans)
     assert len(out) == len(ref.syllables) and all(0 <= d["tone_prob"] <= 1 for d in out if d)
     assert T > 0
+
+
+SELECTABLE = ["tone_zh_v2", "tone_zh_v3", "tone_zh_v3z"]
+
+
+@pytest.mark.parametrize("stem", SELECTABLE)
+def test_selectable_tone_model_through_scorer(tmp_path, monkeypatch, stem):
+    """Each selectable Mandarin tone model loads through the public Scorer with its own word
+    calibrator (zh.<stem>.json, zh.json for the default) and scores a `say` clip."""
+    import shutil
+    import subprocess
+
+    import os
+    from pathlib import Path
+
+    ZIPA = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "models" / \
+        "zipa-small-crctc-500k" / "model.onnx"
+
+    if not (DATA / f"{stem}.onnx").exists():
+        pytest.skip(f"{stem} not exported")
+    if not ZIPA.exists() or shutil.which("say") is None:
+        pytest.skip("needs the cached ZIPA model and macOS `say`")
+    out = tmp_path / "say.wav"
+    text = "今天天气很好，我们一起去公园散步吧。"
+    r = subprocess.run(["say", "-v", "Tingting", "-o", str(out), "--data-format=LEI16@16000", text],
+                       capture_output=True)
+    if r.returncode != 0:
+        pytest.skip("voice unavailable")
+    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", stem)
+    from pronunciada.prosody import TONE_MODEL
+    from pronunciada.scorer import Scorer
+
+    sc = Scorer("zh", threads=2)
+    assert sc.prosody is not None and sc.prosody.meta["model"]
+    if stem != TONE_MODEL:
+        assert sc.pros_cal.get("tone_model") == stem, "non-default model without its own calibrator"
+    res = sc.score(str(out), text)
+    assert not any("prosody failed" in w for w in res.warnings)
+    tp = [s.tone_prob for w in res.words for s in w.syllables if s.tone_prob is not None]
+    assert len(tp) >= 10 and all(0 <= p <= 1 for p in tp)
+    assert all(0 <= w.prob <= 1 for w in res.words)

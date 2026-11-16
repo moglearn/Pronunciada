@@ -163,3 +163,72 @@ changes to `export.py` (`tone_v3`), `leak_test.py` (seq models), `latency.py` (t
 `bench/calib/fit_prosody.py` (cache key covers the model/leniency env; `--dry-run`, `--leniency`;
 agreement printout). Runtime: `pronunciada/prosody/{__init__,features,tone_leniency}.py`.
 Test: `tests/test_prosody_v3.py`.
+
+## 7. Second pass (dev only, no held-out run): selectable candidates for the OMPAL comparison
+
+The default is unchanged (`tone_zh_v2` + `neutral4`). Each candidate below can be selected with
+`PRONUNCIADA_TONE_MODEL=<name>` through the public `Scorer`. Each has its own word-channel
+calibrator, `pronunciada/data/calib/prosody/zh.<name>.json`, fitted by
+`PRONUNCIADA_TONE_MODEL=<name> python -m bench.calib.fit_prosody --lang zh`. The default uses
+`zh.json`, and `Scorer` falls back to `zh.json` when no per-model file exists. All candidates
+apply the `neutral4` rule.
+
+| name | what | size | FLEURS-val agreement | channel AUC | product AUC | hit@5 % | sound-AUC cost | leak: still label / mono AUC / FLEURS-val transplant AUC |
+|---|---|---|---|---|---|---|---|---|
+| `tone_zh_v2` (default) | v2 + neutral4 | 626 KB | 68.0 % | 0.876 | 0.852 | 0.383 | 0.025 | 29.6 % / 0.905 / .775 |
+| `tone_zh_v3` | pitch + register + low mel (tp8) | 654 KB | 70.4 % | 0.882 | 0.861 | 0.388 | 0.024 | 32.7 % / 0.901 / .741 |
+| `tone_zh_v3z` | v3 + pooled ZIPA enc1+enc3 (PCA 32) | 712 KB + 100 KB PCA | **76.1 %** (1/2/3/4/5: .70/.77/.70/.79/.86) | **0.914** | **0.889** | **0.472** | **0.018** | 32.4 % / **0.908** / .742 |
+
+The fit for each candidate keeps native word acceptance within 1 point
+(.985 → .977 / .979 / .979). `tone_zh_v3z` comes close to the channel and hit targets (0.92 /
+0.50). Its leak results are mixed, as in section 3: mono AUC better than v2, but more of the
+dictionary tone left on flat audio and less transplant recovery. It is the candidate where real
+learner data (OMPAL) can actually decide.
+
+Tone step on the densest 10 s FLEURS clip, ZIPA activations precomputed, load ≈ 11
+(min / median ms): v2 16.0 / 16.3, v3 18.1 / 18.6 (+2.3), v3z 19.2 / 19.5 (+3.2) at 2 threads;
+at 4 threads 15.7 / 17.7 / 18.7 min.
+
+Wiring (the smallest change):
+* `pronunciada/scorer.py`:
+  * requests the acoustic model's activations when the selected tone model needs them
+    (`prosody.tone_needs_embeddings()`). The default delivery path already computes them, so
+    nothing changes for v2.
+  * passes `embeddings=emb` to `ProsodyScorer.score`.
+  * loads `zh.<model>.json` for a non-default model.
+* `ProsodyScorer` pools enc1+enc3 per syllable with `features.pool_syllables`, applies the
+  shipped PCA (`<stem>.zemb.npz`) and raises if no activations are passed. `Scorer` reports
+  this as a "prosody failed" warning.
+* Tests: `tests/test_prosody_v3.py::test_selectable_tone_model_through_scorer[...]`, one per
+  model.
+
+## 8. SwiftF0 tracker probe (A, dev only): no clear advantage, stopped after step 1
+
+The coordinator installed `swift-f0` 0.3.0 into the venv. I read the package code before
+running it: it is numpy + onnxruntime and makes no network or file access beyond its own
+`model.onnx`. `pronunciada/prosody/f0_swift.py` runs only that ONNX file and returns an
+`F0Track` on our 10 ms grid:
+* the clip is peak-normalised to 0.9 (for quiet audio);
+* the search range is 50–600 Hz;
+* log-F0 and confidence are interpolated from the 16 ms frames (centre k·16 ms, the best offset
+  of −8 / 0 / +8 / +16 ms on VDE);
+* energy is computed as in `f0.py`.
+
+`f0.py` is unchanged and nothing selects the new module.
+
+`python -m bench.prosody.f0_compare 60`: 60 FLEURS-zh validation clips (697 s), compared with
+Praat autocorrelation (the `f0_eval.py` reference, voiced share 0.336):
+
+| tracker | GPE | octave errors | FPE (cents) | VDE | voiced share | GPE / VDE, noisier half | 10 s clip |
+|---|---|---|---|---|---|---|---|
+| ours (YIN + Viterbi) | **1.8 %** | **1.3 %** | **28.2** | 7.3 % | 0.278 | **2.0 % / 9.3 %** | **9.7 ms** |
+| SwiftF0 | 4.9 % | 3.7 % | 35.9 | 7.3 % | 0.306 | 5.9 % / 10.0 % | 73 ms (1 thread), 41 ms (2) |
+
+SwiftF0 disagrees with our tracker on 3.3 % of the frames where both are voiced (2.0 % octave).
+Caveat: our voicing gate was tuned against Praat on FLEURS validation, which favours us on VDE.
+It does not explain SwiftF0's 2.7× gross and octave error rate. SwiftF0 is not cleaner here, and
+it is 4–7× slower than the whole current pitch step. It would not fit the +15 ms budget as an
+extra tracker. Per the instruction ("no clear advantage → stop after step 1"), no SwiftF0 tone
+models were trained, so `tone_zh_v2s` / `tone_zh_v3zs` do not exist and nothing was vendored.
+If it is ever used, it would be a drop-in pitch source for the tone, stress and pitch-accent
+models (same `F0Track`), each needing a retrain.

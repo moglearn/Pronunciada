@@ -1,0 +1,22 @@
+{
+ "model": "t3_B_zemb",
+ "temperature": 0.9113814244102849,
+ "platt": [
+  0.9679653385685854,
+  0.046979555217060834
+ ],
+ "ctx_len": 160,
+ "sequence": true,
+ "inputs": {
+  "reg": true,
+  "lowmel": true,
+  "zemb": true
+ },
+ "leniency": [
+  "neutral4"
+ ],
+ "zemb_layers": [
+  "enc1",
+  "enc3"
+ ]
+}

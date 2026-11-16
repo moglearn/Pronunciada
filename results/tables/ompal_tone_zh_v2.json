@@ -1,0 +1,884 @@
+{
+ "dataset": "ompal",
+ "tone_model": "tone_zh_v2",
+ "tone_model_sha1": "98c068d8",
+ "pronunciada_fingerprint": "558844d70183f7e6",
+ "ours_cache": "tone_zh_v2-98c068d8__558844d70183f7e6",
+ "azure_locales": [],
+ "azure_primary": null,
+ "labels": {
+  "test/learners": {
+   "utterances": 663,
+   "speakers": 18,
+   "units": 7257,
+   "share_any_wrong": 0.1681135455422351,
+   "share_tone_only": 0.138900372054568,
+   "share_seg_wrong": 0.02921317348766708,
+   "share_tone_wrong": 0.15336916081025218,
+   "share_consonant_wrong": 0.01970511230536034,
+   "share_vowel_wrong": 0.019567314317210968
+  },
+  "test/natives": {
+   "utterances": 82,
+   "speakers": 3,
+   "units": 899,
+   "share_any_wrong": 0.0,
+   "share_tone_only": 0.0,
+   "share_seg_wrong": 0.0,
+   "share_tone_wrong": 0.0,
+   "share_consonant_wrong": 0.0,
+   "share_vowel_wrong": 0.0
+  },
+  "dev/learners": {
+   "utterances": 1105,
+   "speakers": 28,
+   "units": 12518,
+   "share_any_wrong": 0.13189007828726634,
+   "share_tone_only": 0.10528838472599457,
+   "share_seg_wrong": 0.026601693561271768,
+   "share_tone_wrong": 0.11615274005432177,
+   "share_consonant_wrong": 0.018133887202428502,
+   "share_vowel_wrong": 0.01637641795814028
+  }
+ },
+ "n_boot": 2000,
+ "ours_missing": 0,
+ "ours_errors": [],
+ "test": {
+  "counts": {
+   "ours_failed_utts": 0,
+   "units_not_in_prompt": 4,
+   "utts_word_level_dropped": 1
+  },
+  "word": {
+   "n_units": 8156,
+   "n_correct": 6936,
+   "primary: any error": {
+    "n_pos": 1220,
+    "ours": {
+     "value": 0.7967866039858567,
+     "ci_speaker": [
+      0.7566443243548248,
+      0.8384590632518866
+     ],
+     "ci_utterance": [
+      0.7828434578763755,
+      0.8107338019227928
+     ]
+    }
+   },
+   "(a) tone-only error": {
+    "n_pos": 1008,
+    "ours": {
+     "value": 0.7918277911654859,
+     "ci_speaker": [
+      0.7489976780881438,
+      0.8373904562560202
+     ],
+     "ci_utterance": [
+      0.7771166537438782,
+      0.8066478033046723
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8537770500357006,
+     "ci_speaker": [
+      0.8229783949209718,
+      0.8839270994919924
+     ],
+     "ci_utterance": [
+      0.8420134262478058,
+      0.8652401933441156
+     ]
+    },
+    "diag_channel": "ours_tone"
+   },
+   "(b) consonant or vowel error": {
+    "n_pos": 212,
+    "ours": {
+     "value": 0.8203643555091293,
+     "ci_speaker": [
+      0.7647732614078563,
+      0.867565658128407
+     ],
+     "ci_utterance": [
+      0.786835951900088,
+      0.850423257759881
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8768072920067028,
+     "ci_speaker": [
+      0.8361982161868314,
+      0.9092494966056416
+     ],
+     "ci_utterance": [
+      0.8497999445738335,
+      0.8996217934002727
+     ]
+    },
+    "diag_channel": "ours_sounds"
+   }
+  },
+  "word_learners_only": {
+   "n_units": 7257,
+   "n_correct": 6037,
+   "primary: any error": {
+    "n_pos": 1220,
+    "ours": {
+     "value": 0.7771622128024722,
+     "ci_speaker": [
+      0.7382355060713481,
+      0.818061982878186
+     ],
+     "ci_utterance": [
+      0.7619931101586916,
+      0.7926745182693538
+     ]
+    }
+   },
+   "(a) tone-only error": {
+    "n_pos": 1008,
+    "ours": {
+     "value": 0.7711814675900729,
+     "ci_speaker": [
+      0.730377731387533,
+      0.816632315900463
+     ],
+     "ci_utterance": [
+      0.7558375824934869,
+      0.7872434021355269
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8441436538173328,
+     "ci_speaker": [
+      0.8128513846367088,
+      0.8767276907511976
+     ],
+     "ci_utterance": [
+      0.8317401856527594,
+      0.8564004842891663
+     ]
+    },
+    "diag_channel": "ours_tone"
+   },
+   "(b) consonant or vowel error": {
+    "n_pos": 212,
+    "ours": {
+     "value": 0.8055989636236917,
+     "ci_speaker": [
+      0.7419748949859134,
+      0.8554187883429907
+     ],
+     "ci_utterance": [
+      0.7728143792857928,
+      0.838555037158376
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8684546710380328,
+     "ci_speaker": [
+      0.8249127001130669,
+      0.9011047341905376
+     ],
+     "ci_utterance": [
+      0.8419781485408304,
+      0.8921345566076776
+     ]
+    },
+    "diag_channel": "ours_sounds"
+   }
+  },
+  "hits": {
+   "primary: any error | FA on native correct units | 5 %": {
+    "n_pos": 1220,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.5672131147540984,
+     "ci_speaker": [
+      0.5085861594618892,
+      0.7438181253519099
+     ]
+    }
+   },
+   "primary: any error | FA on native correct units | 10 %": {
+    "n_pos": 1220,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.7942622950819672,
+     "ci_speaker": [
+      0.7320894476587055,
+      0.8496571736745296
+     ]
+    }
+   },
+   "(a) tone-only error | FA on native correct units | 5 %": {
+    "n_pos": 1008,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.5565476190476191,
+     "ci_speaker": [
+      0.4929303005113479,
+      0.7449264554896303
+     ]
+    },
+    "ours_diag": 0.6359126984126984
+   },
+   "(a) tone-only error | FA on native correct units | 10 %": {
+    "n_pos": 1008,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.7986111111111112,
+     "ci_speaker": [
+      0.7336785505259632,
+      0.8599111547831071
+     ]
+    },
+    "ours_diag": 0.8194444444444444
+   },
+   "(b) consonant or vowel error | FA on native correct units | 5 %": {
+    "n_pos": 212,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.6179245283018868,
+     "ci_speaker": [
+      0.4855821635012386,
+      0.7857142857142857
+     ]
+    },
+    "ours_diag": 0.7594339622641509
+   },
+   "(b) consonant or vowel error | FA on native correct units | 10 %": {
+    "n_pos": 212,
+    "n_neg": 899,
+    "ours": {
+     "value": 0.7735849056603774,
+     "ci_speaker": [
+      0.6538461538461539,
+      0.8529620661824051
+     ]
+    },
+    "ours_diag": 0.8490566037735849
+   },
+   "primary: any error | FA on learner correct units | 5 %": {
+    "n_pos": 1220,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.14754098360655737,
+     "ci_speaker": [
+      0.11470811863268954,
+      0.23097175759135358
+     ]
+    }
+   },
+   "primary: any error | FA on learner correct units | 10 %": {
+    "n_pos": 1220,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.28114754098360656,
+     "ci_speaker": [
+      0.21898613855032728,
+      0.37904314776121295
+     ]
+    }
+   },
+   "(a) tone-only error | FA on learner correct units | 5 %": {
+    "n_pos": 1008,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.09226190476190477,
+     "ci_speaker": [
+      0.055345767575322814,
+      0.16560291945168662
+     ]
+    },
+    "ours_diag": 0.28174603174603174
+   },
+   "(a) tone-only error | FA on learner correct units | 10 %": {
+    "n_pos": 1008,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.22916666666666666,
+     "ci_speaker": [
+      0.1598839725852526,
+      0.33420210011925877
+     ]
+    },
+    "ours_diag": 0.4771825396825397
+   },
+   "(b) consonant or vowel error | FA on learner correct units | 5 %": {
+    "n_pos": 212,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.41037735849056606,
+     "ci_speaker": [
+      0.29933662714097503,
+      0.5283779652726828
+     ]
+    },
+    "ours_diag": 0.411835334476844
+   },
+   "(b) consonant or vowel error | FA on learner correct units | 10 %": {
+    "n_pos": 212,
+    "n_neg": 6037,
+    "ours": {
+     "value": 0.5283018867924528,
+     "ci_speaker": [
+      0.40268382134584546,
+      0.6518984132841327
+     ]
+    },
+    "ours_diag": 0.595956873315364
+   }
+  },
+  "sentence": {
+   "n_utts": 663,
+   "n_speakers": 18,
+   "accuracy": {
+    "note": "",
+    "pearson": {
+     "value": 0.38827860827846017,
+     "ci_speaker": [
+      0.19428860630073996,
+      0.4856556561488283
+     ],
+     "ci_utterance": [
+      0.3143631852268734,
+      0.46323899898787624
+     ]
+    },
+    "spearman": {
+     "value": 0.3688611533155939,
+     "ci_speaker": [
+      0.19754325400737258,
+      0.48956050781222127
+     ],
+     "ci_utterance": [
+      0.3031708914377305,
+      0.4371958987813053
+     ]
+    }
+   },
+   "fluency": {
+    "note": "",
+    "pearson": {
+     "value": 0.5944283479450899,
+     "ci_speaker": [
+      0.4918513406200052,
+      0.6802666098832919
+     ],
+     "ci_utterance": [
+      0.5456413770648707,
+      0.6434861882567392
+     ]
+    },
+    "spearman": {
+     "value": 0.6097579530110829,
+     "ci_speaker": [
+      0.5124071547286718,
+      0.7046730004812156
+     ],
+     "ci_utterance": [
+      0.5593909311809465,
+      0.6581486312491968
+     ]
+    }
+   },
+   "prosody": {
+    "note": "Azure: PronScore, nearest available (no Mandarin prosody score)",
+    "pearson": {
+     "value": 0.41918407103487976,
+     "ci_speaker": [
+      0.2429349971739714,
+      0.5706268127292894
+     ],
+     "ci_utterance": [
+      0.3522642168364614,
+      0.48631289699987157
+     ]
+    },
+    "spearman": {
+     "value": 0.38996105609849985,
+     "ci_speaker": [
+      0.24089687235248172,
+      0.5433048240731833
+     ],
+     "ci_utterance": [
+      0.3212246096693184,
+      0.45811706104880223
+     ]
+    }
+   },
+   "accuracy (secondary: ours sentence prob, Azure PronScore)": {
+    "note": "secondary",
+    "pearson": {
+     "value": 0.3583268033565456,
+     "ci_speaker": [
+      0.1608820044008331,
+      0.43964046847803145
+     ],
+     "ci_utterance": [
+      0.27312986131900335,
+      0.44183010260806943
+     ]
+    },
+    "spearman": {
+     "value": 0.37431251844545477,
+     "ci_speaker": [
+      0.19968103824400313,
+      0.48624965670467674
+     ],
+     "ci_utterance": [
+      0.3081204291988531,
+      0.4431046067632647
+     ]
+    }
+   }
+  },
+  "sentence_incl_natives": {
+   "n_utts": 745,
+   "n_speakers": 21,
+   "accuracy": {
+    "note": "",
+    "pearson": {
+     "value": 0.45874196351024693,
+     "ci_speaker": [
+      0.2712946401543053,
+      0.5676051243260389
+     ],
+     "ci_utterance": [
+      0.39049921727637094,
+      0.5242640898174267
+     ]
+    },
+    "spearman": {
+     "value": 0.48886983050484,
+     "ci_speaker": [
+      0.3053380825547025,
+      0.6360954033692023
+     ],
+     "ci_utterance": [
+      0.42999487800693664,
+      0.5461684756084688
+     ]
+    }
+   },
+   "fluency": {
+    "note": "",
+    "pearson": {
+     "value": 0.6675048398037676,
+     "ci_speaker": [
+      0.5563963318977541,
+      0.7565190413447229
+     ],
+     "ci_utterance": [
+      0.6250101659722799,
+      0.7078164249439742
+     ]
+    },
+    "spearman": {
+     "value": 0.7051078406473266,
+     "ci_speaker": [
+      0.5784775880515081,
+      0.8081291105184069
+     ],
+     "ci_utterance": [
+      0.6640608123012878,
+      0.7423335829465082
+     ]
+    }
+   },
+   "prosody": {
+    "note": "Azure: PronScore, nearest available (no Mandarin prosody score)",
+    "pearson": {
+     "value": 0.5312009039677358,
+     "ci_speaker": [
+      0.3467123087744494,
+      0.6830139901874388
+     ],
+     "ci_utterance": [
+      0.4731879749144309,
+      0.5835557208721133
+     ]
+    },
+    "spearman": {
+     "value": 0.5380119335514119,
+     "ci_speaker": [
+      0.34070455766970525,
+      0.7115057016122087
+     ],
+     "ci_utterance": [
+      0.47908908237890835,
+      0.5889725119604691
+     ]
+    }
+   },
+   "accuracy (secondary: ours sentence prob, Azure PronScore)": {
+    "note": "secondary",
+    "pearson": {
+     "value": 0.3959834538859208,
+     "ci_speaker": [
+      0.20314544819761668,
+      0.48512484552689655
+     ],
+     "ci_utterance": [
+      0.31852242058116637,
+      0.47249316733814706
+     ]
+    },
+    "spearman": {
+     "value": 0.47626811482748194,
+     "ci_speaker": [
+      0.29799383244121425,
+      0.6095167786511909
+     ],
+     "ci_utterance": [
+      0.4178282076330665,
+      0.5340696078995947
+     ]
+    }
+   }
+  },
+  "azure_single_char_word_share": {}
+ },
+ "dev": {
+  "counts": {
+   "ours_failed_utts": 0
+  },
+  "word": {
+   "n_units": 12518,
+   "n_correct": 10867,
+   "primary: any error": {
+    "n_pos": 1651,
+    "ours": {
+     "value": 0.8090525681444225,
+     "ci_speaker": [
+      0.7832618749055028,
+      0.8336867524401178
+     ],
+     "ci_utterance": [
+      0.7981416572877214,
+      0.8194664914076429
+     ]
+    }
+   },
+   "(a) tone-only error": {
+    "n_pos": 1318,
+    "ours": {
+     "value": 0.8131895955973683,
+     "ci_speaker": [
+      0.7868790741306367,
+      0.8402940020551481
+     ],
+     "ci_utterance": [
+      0.801601262790106,
+      0.8241457293270145
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8707810521279987,
+     "ci_speaker": [
+      0.8474514867761018,
+      0.8943121999541229
+     ],
+     "ci_utterance": [
+      0.85980840846002,
+      0.8818538330032284
+     ]
+    },
+    "diag_channel": "ours_tone"
+   },
+   "(b) consonant or vowel error": {
+    "n_pos": 333,
+    "ours": {
+     "value": 0.7926783874147452,
+     "ci_speaker": [
+      0.7454759684638501,
+      0.8373309867475539
+     ],
+     "ci_utterance": [
+      0.7654213045541353,
+      0.8169517557190523
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8414865127389283,
+     "ci_speaker": [
+      0.8031179675205529,
+      0.8797315853789873
+     ],
+     "ci_utterance": [
+      0.8184944213249987,
+      0.8636025964595114
+     ]
+    },
+    "diag_channel": "ours_sounds"
+   }
+  },
+  "word_learners_only": {
+   "n_units": 12518,
+   "n_correct": 10867,
+   "primary: any error": {
+    "n_pos": 1651,
+    "ours": {
+     "value": 0.8090525681444225,
+     "ci_speaker": [
+      0.7832618749055028,
+      0.8336867524401178
+     ],
+     "ci_utterance": [
+      0.7981416572877214,
+      0.8194664914076429
+     ]
+    }
+   },
+   "(a) tone-only error": {
+    "n_pos": 1318,
+    "ours": {
+     "value": 0.8131895955973683,
+     "ci_speaker": [
+      0.7868790741306367,
+      0.8402940020551481
+     ],
+     "ci_utterance": [
+      0.801601262790106,
+      0.8241457293270145
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8707810521279987,
+     "ci_speaker": [
+      0.8474514867761018,
+      0.8943121999541229
+     ],
+     "ci_utterance": [
+      0.85980840846002,
+      0.8818538330032284
+     ]
+    },
+    "diag_channel": "ours_tone"
+   },
+   "(b) consonant or vowel error": {
+    "n_pos": 333,
+    "ours": {
+     "value": 0.7926783874147452,
+     "ci_speaker": [
+      0.7454759684638501,
+      0.8373309867475539
+     ],
+     "ci_utterance": [
+      0.7654213045541353,
+      0.8169517557190523
+     ]
+    },
+    "ours_diag": {
+     "value": 0.8414865127389283,
+     "ci_speaker": [
+      0.8031179675205529,
+      0.8797315853789873
+     ],
+     "ci_utterance": [
+      0.8184944213249987,
+      0.8636025964595114
+     ]
+    },
+    "diag_channel": "ours_sounds"
+   }
+  },
+  "hits": {
+   "primary: any error | FA on learner correct units | 5 %": {
+    "n_pos": 1651,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.21402180496668688,
+     "ci_speaker": [
+      0.17383057413024763,
+      0.2531562367451815
+     ]
+    }
+   },
+   "primary: any error | FA on learner correct units | 10 %": {
+    "n_pos": 1651,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.3874621441550576,
+     "ci_speaker": [
+      0.3338906820259931,
+      0.45729748428695827
+     ]
+    }
+   },
+   "(a) tone-only error | FA on learner correct units | 5 %": {
+    "n_pos": 1318,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.1740136570561457,
+     "ci_speaker": [
+      0.13088327663533456,
+      0.22173967210746787
+     ]
+    },
+    "ours_diag": 0.4339908952959029
+   },
+   "(a) tone-only error | FA on learner correct units | 10 %": {
+    "n_pos": 1318,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.36396054628224583,
+     "ci_speaker": [
+      0.3068658431052253,
+      0.4470445921817851
+     ]
+    },
+    "ours_diag": 0.6236722306525038
+   },
+   "(b) consonant or vowel error | FA on learner correct units | 5 %": {
+    "n_pos": 333,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.37237237237237236,
+     "ci_speaker": [
+      0.26004185299850935,
+      0.47102010388611
+     ]
+    },
+    "ours_diag": 0.42042042042042044
+   },
+   "(b) consonant or vowel error | FA on learner correct units | 10 %": {
+    "n_pos": 333,
+    "n_neg": 10867,
+    "ours": {
+     "value": 0.4804804804804805,
+     "ci_speaker": [
+      0.3593671350671141,
+      0.5984607636781549
+     ]
+    },
+    "ours_diag": 0.601051051051051
+   }
+  },
+  "sentence": {
+   "n_utts": 1105,
+   "n_speakers": 28,
+   "accuracy": {
+    "note": "",
+    "pearson": {
+     "value": 0.3485093081909962,
+     "ci_speaker": [
+      0.1728429075456925,
+      0.5028906303570309
+     ],
+     "ci_utterance": [
+      0.2804724468155646,
+      0.4122306263653013
+     ]
+    },
+    "spearman": {
+     "value": 0.3277119410732422,
+     "ci_speaker": [
+      0.18379098346526968,
+      0.47110373025451
+     ],
+     "ci_utterance": [
+      0.27216501484643685,
+      0.381012127225173
+     ]
+    }
+   },
+   "fluency": {
+    "note": "",
+    "pearson": {
+     "value": 0.669784502495018,
+     "ci_speaker": [
+      0.586564119569718,
+      0.7355822316122472
+     ],
+     "ci_utterance": [
+      0.6352780644711541,
+      0.7038345537740093
+     ]
+    },
+    "spearman": {
+     "value": 0.6777918231819926,
+     "ci_speaker": [
+      0.5865742589033527,
+      0.7553977615365812
+     ],
+     "ci_utterance": [
+      0.6419022120683783,
+      0.7099125872891895
+     ]
+    }
+   },
+   "prosody": {
+    "note": "Azure: PronScore, nearest available (no Mandarin prosody score)",
+    "pearson": {
+     "value": 0.44143977452765654,
+     "ci_speaker": [
+      0.3135503808486526,
+      0.5541006099944848
+     ],
+     "ci_utterance": [
+      0.38683545280540876,
+      0.49247886019247616
+     ]
+    },
+    "spearman": {
+     "value": 0.42226747213491334,
+     "ci_speaker": [
+      0.3001713619526388,
+      0.5448659909557074
+     ],
+     "ci_utterance": [
+      0.3693486750775334,
+      0.4718790069039869
+     ]
+    }
+   },
+   "accuracy (secondary: ours sentence prob, Azure PronScore)": {
+    "note": "secondary",
+    "pearson": {
+     "value": 0.31942489464665647,
+     "ci_speaker": [
+      0.14882190222044392,
+      0.472675551273782
+     ],
+     "ci_utterance": [
+      0.24853043643494444,
+      0.3880035158652904
+     ]
+    },
+    "spearman": {
+     "value": 0.3407832849394588,
+     "ci_speaker": [
+      0.21728321098563574,
+      0.4668235137707406
+     ],
+     "ci_utterance": [
+      0.284501250454782,
+      0.39308966719417493
+     ]
+    }
+   }
+  }
+ },
+ "azure_usage": {
+  "zh-TW": {
+   "requests_cached": 745,
+   "audio_hours": 1.152,
+   "statuses": {
+    "Success": 745
+   },
+   "median_latency_s": 1.071674583996355
+  },
+  "zh-CN": {
+   "requests_cached": 147,
+   "audio_hours": 0.142,
+   "statuses": {
+    "Success": 147
+   },
+   "median_latency_s": 0.720230040999013
+  }
+ }
+}

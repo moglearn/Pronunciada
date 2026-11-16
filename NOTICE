@@ -28,4 +28,7 @@ Models trained for this project (pronunciada/data/adapters, calib, prosody)
 
 Benchmark-only data (never shipped, never trained on for shipped models)
   L2-ARCTIC (CC BY-NC 4.0), EpaDB, Microsoft Azure Pronunciation Assessment responses.
+  OMPAL corpus (CC BY 4.0), github.com/phantomhsieh/OMPAL-corpus: Hsieh et al., "OMPAL: Bridging
+  Speech and Learning with an Open-Source Mandarin Pronunciation Assessment Corpus for Global
+  Learners", Interspeech 2025, doi:10.21437/Interspeech.2025-983.
   praat-parselmouth (GPL-3.0) is used offline to cross-check the pitch tracker only.

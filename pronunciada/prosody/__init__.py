@@ -35,6 +35,22 @@ TONE_MODEL = "tone_zh_v2"
 STRESS_LANGS = ("en", "de", "es", "it", "pt", "ru")
 
 
+def selected_tone_model() -> str:
+    """Stem of the Mandarin tone model in use (PRONUNCIADA_TONE_MODEL or TONE_MODEL)."""
+    return Path(os.environ.get("PRONUNCIADA_TONE_MODEL", TONE_MODEL)).name
+
+
+def tone_needs_embeddings() -> bool:
+    """True when the selected tone model reads ZIPA encoder activations (meta inputs.zemb), so the
+    caller must run the acoustic model with embeddings=True and pass them to score()."""
+    stem = os.environ.get("PRONUNCIADA_TONE_MODEL", TONE_MODEL)
+    p = Path(stem + ".json") if os.sep in stem else DATA / f"{stem}.json"
+    try:
+        return bool(json.loads(p.read_text()).get("inputs", {}).get("zemb"))
+    except OSError:
+        return False
+
+
 def _platt(p, ab):
     p = np.clip(np.asarray(p, dtype=np.float64), 1e-6, 1 - 1e-6)
     x = np.log(p / (1 - p))
@@ -79,6 +95,9 @@ class ProsodyScorer:
         self.meta = json.load(open(d / f"{stem}.json"))
         self.sess = _session(d / f"{stem}.onnx", threads)
         self.inputs = self.meta.get("inputs", {})     # tone v3: extra frame inputs
+        if self.inputs.get("zemb"):                   # ZIPA-activation variant: fixed PCA
+            z = np.load(d / f"{stem}.zemb.npz")
+            self.zemb = (z["mu"].astype(np.float32), z["W"].astype(np.float32), list(self.meta["zemb_layers"]))
         if self.kind == "tone":
             from .tone_leniency import enabled
 
@@ -89,8 +108,9 @@ class ProsodyScorer:
             self.platt = self.meta["platt"].get(self.lang, self.meta["platt"].get("all"))
 
     # ------------------------------------------------------------------ public
-    def score(self, wav, ref, evidence, track=None) -> list[dict]:
-        """track: the F0Track of wav if the caller already computed it."""
+    def score(self, wav, ref, evidence, track=None, embeddings=None) -> list[dict]:
+        """track: the F0Track of wav if the caller already computed it. embeddings: the acoustic
+        model's {layer: [T', C]} activations (needed only by a tone model with inputs.zemb)."""
         out = [dict() for _ in ref.syllables]
         if self.sess is None or not ref.syllables:
             return out
@@ -99,7 +119,26 @@ class ProsodyScorer:
         wins = syllable_windows(ref, _phone_spans(evidence), len(feats))
         if self.inputs:
             feats = self.extend_features(feats, wav)
+        if self.inputs.get("zemb"):
+            feats = np.concatenate([feats, self.zemb_frames(ref, _phone_spans(evidence), wins, embeddings,
+                                                            len(feats))], 1)
         return self.score_features(feats, wins, ref, out)
+
+    def zemb_frames(self, ref, spans, wins, embeddings, T):
+        """[T, 33]: per syllable, the mean ZIPA activation (layers of meta zemb_layers) over its
+        aligned phone frames, PCA-projected, broadcast over the syllable's window, + a flag."""
+        from .features import pool_syllables
+
+        if embeddings is None or any(k not in embeddings for k in self.zemb[2]):
+            raise ValueError("this tone model needs the acoustic model's embeddings (enc1, enc3)")
+        mu, W, layers = self.zemb
+        emb = np.concatenate([np.asarray(embeddings[k], np.float32) for k in layers], 1)
+        Z = np.clip((pool_syllables(ref, spans, emb) - mu) @ W, -5, 5)
+        out = np.zeros((T, W.shape[1] + 1), np.float32)
+        for si, w in enumerate(wins):
+            out[w.start:w.end, :-1] = Z[si]
+            out[w.start:w.end, -1] = 1.0
+        return out
 
     def extend_features(self, feats, wav):
         """Append the extra frame inputs a v3 tone model expects (meta "inputs"): local-register

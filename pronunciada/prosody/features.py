@@ -288,3 +288,18 @@ def lowmel_features(wav: np.ndarray, T: int) -> np.ndarray:
     sp = e > np.quantile(e, 0.3)
     mu = lm[sp].mean(0) if sp.sum() >= 5 else lm.mean(0)
     return np.clip((lm - mu) / 4.0, -5, 5).astype(np.float32)
+
+
+def pool_syllables(ref, spans, emb: np.ndarray) -> np.ndarray:
+    """[S, C]: mean of emb [T', C] (ZIPA 20 ms frames) over the frames of each syllable's aligned
+    phones (spans per RefPhone, end exclusive); a syllable without aligned frames gets the frame
+    at its first phone's start (clipped)."""
+    T = len(emb)
+    out = np.zeros((len(ref.syllables), emb.shape[1]), np.float32)
+    for si, s in enumerate(ref.syllables):
+        fr = [j for pi in range(*s.phones) for j in range(*spans[pi]) if 0 <= j < T]
+        if not fr:
+            a = [spans[pi][0] for pi in range(*s.phones)]
+            fr = [int(np.clip(a[0] if a else 0, 0, max(T - 1, 0)))]
+        out[si] = emb[fr].mean(0)
+    return out

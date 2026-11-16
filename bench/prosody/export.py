@@ -87,8 +87,16 @@ def export_tone_v3(name: str, out: str = "tone_zh_v3", out_dir: str | None = Non
             {"x": {0: "n"}, "logits": {0: "n"}})
     res = json.load(open(OUT / "results" / f"{name}.json"))
     meta = {"model": name, "temperature": res["temperature"], "platt": res["platt"], "ctx_len": CTX_LEN,
-            "sequence": True, "inputs": {"reg": bool(ck["cfg"]["reg"]), "lowmel": bool(ck["cfg"]["lowmel"])},
+            "sequence": True, "inputs": {"reg": bool(ck["cfg"]["reg"]), "lowmel": bool(ck["cfg"]["lowmel"]),
+                                         **({"zemb": True} if ck["cfg"].get("zemb") else {})},
             "leniency": [x for x in leniency.split(",") if x]}
+    if ck["cfg"].get("zemb"):
+        from bench.prosody.tone3 import zemb_pca
+        from bench.prosody.zipa_emb_cache import LAYERS
+
+        mu, W = zemb_pca()
+        np.savez(d / f"{out}.zemb.npz", mu=mu.astype(np.float32), W=W.astype(np.float32))
+        meta["zemb_layers"] = list(LAYERS)
     json.dump(meta, open(d / f"{out}.json", "w"), indent=1)
     x = np.random.default_rng(0).normal(size=(7, CTX_LEN, n_in(ck["cfg"]))).astype(np.float32)
     print("onnx vs torch max |dlogit|", parity(d / f"{out}.onnx", Utt(net), {"x": x}))
