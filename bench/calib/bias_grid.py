@@ -108,6 +108,8 @@ def _init(lang, cfg):
         _SC.g2p.measured_targets = bool(cfg.get("measured"))
         if cfg.get("vowel_min") is not None:
             _SC.g2p.vowel_min = float(cfg["vowel_min"])
+        if cfg.get("extra_stress") is not None:
+            _SC.g2p.set_extra_stress(bool(cfg["extra_stress"]))
 
 
 def _field(sc):
@@ -403,6 +405,7 @@ def main():
     ap.add_argument("--base", default="shipped")
     ap.add_argument("--adapter", default=None)
     ap.add_argument("--measured", action="store_true")
+    ap.add_argument("--extra-stress", type=int, default=None, help="ru: 1/0 round-10 stress lexicon")
     ap.add_argument("--vowel-min", type=float, default=None)
     ap.add_argument("--b0", type=float, default=None, help="grid end (default: the shipped bias)")
     ap.add_argument("--extra", default="", help="extra bias values, comma list")
@@ -411,7 +414,7 @@ def main():
     if a.step == "build-dev":
         build_dev(a.lang)
     elif a.step == "run":
-        run(a.lang, a.tag, {"adapter": a.adapter, "measured": a.measured, "vowel_min": a.vowel_min, "b0": a.b0,
+        run(a.lang, a.tag, {"adapter": a.adapter, "measured": a.measured, "vowel_min": a.vowel_min, "b0": a.b0, "extra_stress": a.extra_stress,
                                  "extra": [float(x) for x in a.extra.split(",") if x]},
             a.workers)
     else:

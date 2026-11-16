@@ -137,3 +137,36 @@ candidate. The full suite gives 464 passed, 1 skipped (not mine).
   agreement and +0.02 product AUC.
 * Stress gains are real on native dev data, but the audio-level monotone check shows reduced pitch
   sensitivity. Whether that matters for learners is untested here.
+
+## 5. Decision step: real learner stress marks (speechocean762 TRAIN, used as dev; test untouched)
+
+`python -m bench.prosody.so762_stress` runs the public `Scorer("en")` with the shipped `stress`
+and with `stress_v3` (its own calibrator).
+
+Data:
+* words with ≥ 2 syllables in our reference, matched to corpus words: 2 518 words, 125 speakers;
+* label: the corpus ships one aggregated word stress score per word (10 or 5); stress wrong = 5,
+  which gives 104 positives (4.1 %);
+* negatives in (b): stress-correct words with accuracy ≥ 8 (2 072).
+
+Metric: AUC of 1 − `WordResult.stress_prob`, with speaker-bootstrap 95 % CIs and the paired p.
+
+| | old `stress` | `stress_v3` | v3 − old [CI], p |
+|---|---|---|---|
+| (a) vs all other words | 0.770 [0.724, 0.820] | 0.797 [0.753, 0.844] | +0.027 [−0.005, +0.058], p 0.09 |
+| (b) vs stress-correct words with accuracy ≥ 8 | 0.777 [0.730, 0.825] | 0.808 [0.763, 0.853] | +0.032 [−0.002, +0.064], p 0.06 |
+| stress-correct words pushed below 0.5 | 0.6 % | 0.5 % | |
+
+The rule (v3 not lower on (b) by more than 0.01) says **adopt**. The duration / vowel-quality
+reliance seen on the monotone check does not hurt on these real learner marks; the point estimate
+improves, though not significantly with 104 positives.
+
+The switch is prepared but **not applied**, because a Russian job depends on the current default.
+`python -m bench.prosody.switch_stress_v3 [--dry-run]` touches exactly:
+* `pronunciada/prosody/__init__.py`: `STRESS_MODEL = "stress"` → `"stress_v3"`;
+* for en de es it pt ru, `pronunciada/data/calib/prosody/<lang>.json` is copied to
+  `<lang>.stress.json`, so the old model stays selectable with its own calibrator;
+* for the same languages, `<lang>.stress_v3.json` becomes `<lang>.json`.
+
+If `ru.json` was re-fitted for the new Russian front-end after `ru.stress_v3.json` was made,
+re-fit the latter first.

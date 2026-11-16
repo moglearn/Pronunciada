@@ -194,6 +194,8 @@ def _init(adapter_path):
         api_run._SC.g2p.vowel_min = float(os.environ["RU8_VOWEL_MIN"])
     if os.environ.get("RU8_BIAS"):               # dev: per-language sound bias override
         api_run._SC.universal_bias = api_run._SC.sound_bias = float(os.environ["RU8_BIAS"])
+    if os.environ.get("RU8_EXTRA") is not None:   # round-10 offline stress lexicon on / off
+        api_run._SC.g2p.set_extra_stress(os.environ["RU8_EXTRA"] == "1")
     # measured targets on unless RU8_NO_TABLE (round-7 references)
     api_run._SC.g2p.measured_targets = not os.environ.get("RU8_NO_TABLE")
     if adapter_path:

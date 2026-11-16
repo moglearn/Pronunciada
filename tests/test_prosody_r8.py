@@ -15,6 +15,8 @@ ZIPA = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pro
 CASES = [  # env var, model stem, language, `say` voice, text
     ("PRONUNCIADA_STRESS_MODEL", "stress_v3", "en", "Samantha",
      "The government announced a remarkable economic recovery yesterday."),
+    ("PRONUNCIADA_STRESS_MODEL", "stress", "en", "Samantha",
+     "The government announced a remarkable economic recovery yesterday."),
     ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3", "ja", "Kyoko", "今日はとても良い天気ですね。"),
     ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3r", "ja", "Kyoko", "今日はとても良い天気ですね。"),
 ]
@@ -23,8 +25,8 @@ CASES = [  # env var, model stem, language, `say` voice, text
 def test_defaults_unchanged():
     from pronunciada import prosody
 
-    assert prosody.STRESS_MODEL == "stress" and prosody.PITCH_MODEL == "pitch_ja"
-    assert prosody.selected_model("en") == "stress" or os.environ.get("PRONUNCIADA_STRESS_MODEL")
+    assert prosody.STRESS_MODEL in ("stress", "stress_v3") and prosody.PITCH_MODEL == "pitch_ja"
+    assert (DATA / f"{prosody.STRESS_MODEL}.onnx").exists() and (DATA / "stress.onnx").exists()
 
 
 @pytest.mark.parametrize("env,stem,lang,voice,text", CASES)
@@ -44,7 +46,12 @@ def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang,
     assert sc.prosody is not None and sc.prosody.meta["model"]
     if sc.prosody.inputs.get("zemb"):
         assert sc.am.embeddings
-    assert sc.pros_cal and sc.pros_cal.get("prosody_model") == stem, "candidate without its own calibrator"
+    from pronunciada import prosody
+
+    if stem != prosody.default_model(lang):
+        assert sc.pros_cal and sc.pros_cal.get("prosody_model") == stem, "candidate without its own calibrator"
+    else:
+        assert sc.pros_cal and "prosody_model" not in sc.pros_cal
     res = sc.score(str(out), text)
     assert not any("prosody failed" in w for w in res.warnings)
     field = "stress_prob" if lang != "ja" else "pitch_prob"

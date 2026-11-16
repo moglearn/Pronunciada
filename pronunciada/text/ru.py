@@ -187,7 +187,11 @@ VOWEL_ALTS = {"a": ["ɐ", "ə", "ɑ", "ʌ"], "i": ["ɪ", "ɛ", "ɨ"], "ɛ": ["ɪ
 MEASURED_TARGETS = True
 VOWEL_MIN = 0.15
 CLASS_MIN_N = 30
-KNOWN_STRESS = frozenset({"lex", "accent", "yo", "mono", "clitic"})
+KNOWN_STRESS = frozenset({"lex", "accent", "yo", "mono", "clitic", "extra"})
+# Round 10: stress (and restored ё) for word forms missing from ru.tsv.gz, derived OFFLINE with
+# silero-stress (MIT) by bench/calib/ru_stress_lex.py (pronunciada/data/lex/ru_stress_extra.tsv.gz;
+# torch is not needed at runtime). Two variants = homograph: both readings, broad alternatives.
+EXTRA_STRESS = True
 
 
 def vowel_keys(word: str, stressed: int | None) -> list[tuple[str, str, str]]:
@@ -270,6 +274,17 @@ class Russian(EuG2P):
         self._src: dict[str, str] = {}               # word -> where its stress came from
         self.vowel_table = load_vowel_table()
         self.vowel_min = VOWEL_MIN
+        self.extra_stress: dict[str, list[tuple[int, str | None]]] = {}
+        p = C.lex_path("ru_stress_extra.tsv.gz")
+        if p.exists():
+            with p.open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
+                for line in f:
+                    if line[:1] == "#" or "\t" not in line:
+                        continue
+                    k, _, v = line.rstrip("\n").partition("\t")
+                    self.extra_stress[k] = [(int(a), b or None) for a, _, b in (x.partition(":") for x in v.split("|"))]
+        self.use_extra_stress = EXTRA_STRESS
+        self._resp: dict[str, str] = {}               # word -> spelling with ё restored (extra lexicon)
         self.measured_targets = MEASURED_TARGETS
 
     def normalise_word(self, w):
@@ -316,10 +331,23 @@ class Russian(EuG2P):
         if len(vow) <= 1:
             self._src[w] = "mono"
             return [rules(w2, 0, True)]
+        ex = self.extra_stress.get(w2) if self.use_extra_stress else None
+        if ex:
+            self._src[w] = "extra" if len(ex) == 1 else "homograph"
+            if ex[0][1]:
+                self._resp[w] = ex[0][1]
+            return [rules(resp or w2, idx, True) for idx, resp in ex]
         k = self._stem_stress(w2, len(vow))
         if k is not None:
             return [rules(w2, k, True)]
         return None
+
+    def set_extra_stress(self, on: bool) -> None:
+        """Switch the round-10 offline stress lexicon (clears the pronunciation cache)."""
+        self.use_extra_stress = bool(on)
+        self._src.clear()
+        self._resp.clear()
+        self._cache.cache_clear()
 
     def _stem_stress(self, w: str, nv: int) -> int | None:
         """Inflected form missing from the lexicon: reuse the stress of forms sharing the stem
@@ -411,7 +439,7 @@ class Russian(EuG2P):
             elif p.ipa == "j" and 0 < k < len(w.phones) - 1 and w.phones[k - 1].nucleus and w.phones[k + 1].nucleus:
                 p.add_alt("", C.P_MED)
         if self.measured_targets and self.vowel_table and len(items) == 1 and self._src.get(items[0]) in KNOWN_STRESS:
-            self._measured_targets(w, items[0], origin)
+            self._measured_targets(w, self._resp.get(items[0], items[0]), origin)
         return w
 
     def _set_target(self, p, key) -> bool:
