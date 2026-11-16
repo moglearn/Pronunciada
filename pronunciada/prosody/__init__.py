@@ -246,6 +246,15 @@ class ProsodyScorer:
         for k, i in enumerate(idx):
             p = ph[k] if ref.syllables[i].pitch_high else 1 - ph[k]
             out[i].update(pitch_high_prob=float(ph[k]), pitch_prob=float(_platt(p, self.meta["platt"])))
+        if self.meta.get("judge"):        # round 13: word-level judgement on dependable words
+            from .pitch_judge import judge
+
+            full = [None] * len(ref.syllables)
+            for k, i in enumerate(idx):
+                full[i] = float(ph[k])
+            for wi, j in judge(full, ref, self.meta["judge"]).items():
+                for i in range(*ref.words[wi].syllables):
+                    out[i]["pitch_word"] = j
         return out
 
     def _stress(self, feats, wins, ref, out):

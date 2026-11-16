@@ -16,7 +16,8 @@ import numpy as np
 
 from bench.calib import sound2 as S2
 
-Q_GRID = (0.001, 0.002, 0.005, 0.01, 0.02)
+Q_GRID = (0.002, 0.005, 0.01)
+C_GRID = (-1.0, -2.0)
 GUARD = 0.005          # native word / sound acceptance drop per language (0.5 points)
 PROTO = ("proto_cos", "proto_other", "proto_margin")
 
@@ -173,29 +174,40 @@ def _v(m, k):
     return x[0] if isinstance(x, list) else x
 
 
+def _cand_lang(args):
+    import os
+
+    os.environ["OMP_NUM_THREADS"] = "2"
+    lang, models = args
+    data = S2.load(lang)
+    r = {"base": S2.metrics(lang, data)}
+    for name, wp in (("a", False), ("d2", True)):
+        m = models[name]["lolo"][lang]
+        r[name] = {str(q): S2.metrics(lang, data, transform_a(m, q, wp)) for q in Q_GRID}
+    m = models["a"]["lolo"][lang]
+    r["b"] = {str(q): metrics_word_level(lang, data, m, q, False) for q in Q_GRID}
+    r["c"] = {str(dl): S2.metrics(lang, data, transform_c(dl)) for dl in C_GRID}
+    return lang, r
+
+
 def candidates():
+    from concurrent.futures import ProcessPoolExecutor
+
     res = {"base": {}, "a": {}, "b": {}, "c": {}, "d2": {}}
     models = {}
     for name, wp in (("a", False), ("d2", True)):
         lolo, full = lolo_models(wp)
         models[name] = {"lolo": lolo, "full": full}
-    for lang in S2.LANGS:
-        data = S2.load(lang)
-        base = S2.metrics(lang, data)
-        res["base"][lang] = base
-        for name, wp in (("a", False), ("d2", True)):
-            m = models[name]["lolo"][lang]
-            res[name][lang] = {str(q): S2.metrics(lang, data, transform_a(m, q, wp)) for q in Q_GRID}
-        m = models["a"]["lolo"][lang]
-        res["b"][lang] = {str(q): metrics_word_level(lang, data, m, q, False) for q in Q_GRID}
-        res["c"][lang] = {str(dl): S2.metrics(lang, data, transform_c(dl)) for dl in (-0.5, -1.0, -1.5, -2.0)}
-        del data
-        print(lang, "base", {k: round(_v(base, k), 4) for k in KEYS if _v(base, k) is not None}, flush=True)
-        for name in ("a", "b", "d2"):
-            for q, mm in res[name][lang].items():
-                print(f"  {name} q={q}", {k: round(_v(mm, k), 4) for k in KEYS if _v(mm, k) is not None}, flush=True)
-        for dl, mm in res["c"][lang].items():
-            print(f"  c d={dl}", {k: round(_v(mm, k), 4) for k in KEYS if _v(mm, k) is not None}, flush=True)
+        print(name, "fitted", flush=True)
+    out_path("models").write_text(json.dumps(models, indent=1))
+    with ProcessPoolExecutor(2) as ex:
+        for lang, r in ex.map(_cand_lang, [(l, models) for l in S2.LANGS]):
+            for k, v in r.items():
+                res[k][lang] = v
+            print(lang, "base", {k: round(_v(r["base"], k), 4) for k in KEYS if _v(r["base"], k) is not None}, flush=True)
+            for name in ("a", "b", "d2", "c"):
+                for q, mm in r[name].items():
+                    print(f"  {name} {q}", {k: round(_v(mm, k), 4) for k in KEYS if _v(mm, k) is not None}, flush=True)
     res["models"] = {k: v["full"] for k, v in models.items()}
     out_path("candidates").write_text(json.dumps(res, indent=1, default=float))
     return res

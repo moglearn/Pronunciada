@@ -8,11 +8,14 @@ Every item is a plain JSON-serialisable dict with the same keys (SCHEMA_VERSION 
 
   schema_version  2
   kind            "substitution" | "missing" | "extra" | "tone" | "stress" | "missing_word"
+                  | "pitch_accent" (Japanese, 2.2) | word-level miscue and delivery kinds (2.1)
   word, word_index        the prompt word and its index in result.words
   syllable_index          index into that word's syllables (None for missing_word)
   phone_index             index into that word's phones (sounds only, else None)
   position                "initial" | "medial" | "final" | "only" (sound in its word)
   expected, heard         sounds: IPA strings; tones: 1-5; stress: syllable index in the word;
+                          pitch_accent: mora index in the word after which the pitch falls
+                          (the fall onto the next word's first mora counts), or "none" = no fall;
                           heard None = "this sound was off", without naming a replacement
   expected_ipa, heard_ipa sounds only (same as expected / heard), else None
   diff_keys               articulatory features that differ (pronunciada.articulatory.diff);
@@ -44,9 +47,10 @@ from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
 SCHEMA_VERSION = 2
-SCHEMA_MINOR = 1      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
+SCHEMA_MINOR = 2      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
+#                       2.2 (round 13): "pitch_accent" (Japanese, dependable words only)
 SENSITIVITIES = ("careful", "balanced", "eager")
-KINDS = ("substitution", "missing", "extra", "tone", "stress", "missing_word", "mispronounced_word",
+KINDS = ("substitution", "missing", "extra", "tone", "stress", "pitch_accent", "missing_word", "mispronounced_word",
          "extra_speech", "long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
 WORD_KINDS = ("mispronounced_word", "extra_speech")
 DELIVERY_KINDS = ("long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
@@ -390,6 +394,7 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
                                    g["stress_confidence"] if ok else None, w.start, w.end,
                                    {"heard_post": round(float(P[hs]), 4), "n_syllables": len(P)},
                                    ipa=False))
+    items += pitch_accent_items(result, ref, pr, omitted, sensitivity, gate.get("pitch_threshold"))
     if miscues or delivery:
         from . import delivery_coach as DC
 
@@ -400,6 +405,36 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
             items += DC.delivery_items(result, mdl, kinds)
     items.sort(key=_rank, reverse=True)
     return items[:max_items] if max_items else items
+
+
+def pitch_accent_items(result, ref, pr, omitted, sensitivity: str, threshold: float | None = None) -> list[dict]:
+    """Japanese pitch accent (round 13): one item per judged word (dependable accent class,
+    pronunciada.prosody.pitch_judge) whose word score passes the pitch model's threshold for
+    `sensitivity` (or `threshold`). expected / heard = mora index after which the pitch falls, or
+    "none"; heard is None when the heard pattern has its fall in the same place (the word was
+    flagged on degree, not on position). error_prob is None: no learner-calibrated model yet."""
+    items = []
+    for wi, w in enumerate(result.words):
+        if wi in omitted:
+            continue
+        s0, s1 = ref.words[wi].syllables
+        d = pr[s0] if s0 < len(pr) else {}
+        J = d.get("pitch_word")
+        if not J:
+            continue
+        flag = J["score"] > threshold if threshold is not None else J["flag"].get(sensitivity, False)
+        if not flag:
+            continue
+        e, h = J["expected_drop"], J["heard_drop"]
+        enc = (lambda x: "none" if x is None else int(x))  # noqa: E731
+        heard = None if h == e else enc(h)
+        mora = (lambda x: ref.syllables[s0 + x].text if x is not None and s0 + x < s1 else None)  # noqa: E731
+        k = e if e is not None else (h if h is not None else 0)
+        items.append(_item("pitch_accent", w, wi, int(k), None, None, enc(e), heard,
+                           ["pitch_accent"] if heard is not None else [], None, math.exp(-J["score"]), None,
+                           w.start, w.end, {"score": round(J["score"], 4), "expected_mora": mora(e),
+                                            "heard_mora": mora(h)}, ipa=False))
+    return items
 
 
 def tone_error_prob(T: dict, tone_prob: float) -> float:

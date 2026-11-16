@@ -107,6 +107,8 @@ class JaG2P(G2P):
                 cur_c = ""
             else:
                 cur_c = ph
+        # --- accent class per analyser word (round 13; see RefSyllable.pitch_class)
+        cls = self._accent_classes(njd)
         # --- words
         wl, pause_before, brk = [], [], True
         for x in njd:
@@ -130,9 +132,39 @@ class JaG2P(G2P):
             for j, kana in enumerate(km):
                 lm = lab_moras[k] if lab_moras else None
                 k += 1
-                recs.append({"w": wi, "kana": kana, "lab": lm, "read": read, "pos": x["pos"],
+                recs.append({"w": wi, "kana": kana, "lab": lm, "read": read, "pos": x["pos"], "cls": cls.get(id(x)),
                              "first": j == 0, "string": x["string"], "pause": j == 0 and pause_before[wi]})
         return self._build(recs, wl, spans, text)
+
+    @staticmethod
+    def _accent_classes(njd) -> dict:
+        """id(NJD entry) -> "<pos>/<pos_group1>/<head|chain>/c<n content words in the accent
+        phrase>/<h|a|o|n>" (accent type of its phrase: heiban, atamadaka, odaka, nakadaka)."""
+        content = ("名詞", "動詞", "形容詞", "副詞")
+        out, phrase = {}, []
+
+        def flush():
+            if not phrase:
+                return
+            n = sum(x["mora_size"] for x in phrase)
+            acc = phrase[0]["acc"]
+            t = "h" if acc == 0 else "a" if acc == 1 else "o" if acc >= n else "n"
+            nc = sum(x["pos"] in content for x in phrase)
+            for k, x in enumerate(phrase):
+                out[id(x)] = f"{x['pos']}/{x.get('pos_group1', '*')}/{'head' if k == 0 else 'chain'}/c{nc}/{t}"
+
+        for x in njd:
+            if x["mora_size"] <= 0:
+                flush()
+                phrase = []
+                continue
+            if phrase and x["chain_flag"] == 1:
+                phrase.append(x)
+            else:
+                flush()
+                phrase = [x]
+        flush()
+        return out
 
     @staticmethod
     def _spans(strings: list[str], seg: str, off: int) -> list[tuple[int, int]]:
@@ -244,7 +276,7 @@ class JaG2P(G2P):
                 if pending_gem["high"]:
                     high = True
                 pending_gem = None
-            syl = Syl(text=text_m, phones=phones, attrs={"pitch_high": high})
+            syl = Syl(text=text_m, phones=phones, attrs={"pitch_high": high, "pitch_class": r["cls"]})
             wd.syls.append(syl)
             last_syl, last_rec = syl, r
             i += 1

@@ -42,6 +42,10 @@ class RefSyllable:
     stress: int | None = None
     # Japanese pitch accent: True = high mora, False = low. None elsewhere.
     pitch_high: bool | None = None
+    # Japanese only (round 13): the word's accent class "<pos>/<pos detail>/<head|chain>/c<content
+    # words in its accent phrase>/<h|a|o|n>" (heiban / atamadaka / odaka / nakadaka); decides
+    # whether the dictionary accent is dependable enough to judge (pronunciada.prosody.pitch_judge).
+    pitch_class: str | None = None
 
 
 @dataclass

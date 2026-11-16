@@ -272,7 +272,15 @@ def make_net(task, cfg):
     return SeqToneNet(n_in=n_in(cfg), n_out=1)
 
 
-def load_train(task):
+def load_train(task, data="natural"):
+    """pitch, round 13: data = natural (FLEURS-ja train) | synth (HTS pairs on FLEURS-ja train
+    texts, bench.prosody.synth_ja) | both."""
+    if task == "pitch" and data != "natural":
+        nat = [(u, 0) for u in load_prepped("fleurs", "ja", "train")]
+        if data == "psola":           # round 13b: natural train speakers re-pitched (no HTS)
+            return nat + [(u, 0) for u in load_prepped("synja_psola", "ja", "train")]
+        syn = [(u, 0) for u in load_prepped("synja_hts", "ja", "train")]
+        return syn if data == "synth" else syn + nat
     if task == "stress":
         out = []
         for k, lg in enumerate(STRESS_LANGS):
@@ -291,8 +299,8 @@ def load_dev(task, lang=None):
 _W = {}
 
 
-def _init(task, cfg, tp):
-    _W.update(task=task, cfg=cfg, tp=tp, data=load_train(task))
+def _init(task, cfg, tp, data="natural"):
+    _W.update(task=task, cfg=cfg, tp=tp, data=load_train(task, data))
 
 
 def _gen(args):
@@ -379,13 +387,18 @@ def train(a):
     if a.inputs is not None:
         cfg = {k: k in a.inputs.split(",") for k in BASE}
     dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    net = make_net(a.task, cfg).to(dev)
+    net = make_net(a.task, cfg)
+    if a.init:
+        import torch as _t
+
+        net.load_state_dict(_t.load(MODELS_DIR / f"{a.init}.pt", weights_only=False)["state"])
+    net = net.to(dev)
     dev_data = load_dev(a.task)
-    n = len(load_train(a.task))
+    n = len(load_train(a.task, a.data))
     print(f"{a.name}: {sum(p.numel() for p in net.parameters())} params, {n} train utts, cfg {cfg}", flush=True)
     opt = torch.optim.AdamW(net.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.steps + 10, pct_start=0.08)
-    pool = get_context("spawn").Pool(a.workers, initializer=_init, initargs=(a.task, cfg, a.transplant))
+    pool = get_context("spawn").Pool(a.workers, initializer=_init, initargs=(a.task, cfg, a.transplant, a.data))
     rng = np.random.default_rng(0)
 
     def chunks():
@@ -431,7 +444,7 @@ def train(a):
                 curve.append({"step": step, "train_loss": tl / max(nb, 1), "dev_acc": acc, "sec": time.time() - t0})
                 print(json.dumps(curve[-1]), flush=True)
                 tl, nb = 0.0, 0
-                if acc["all"] > best:
+                if acc["all"] > best or (a.last and step >= a.steps):   # --last: no dev selection
                     best = acc["all"]
                     best_state = {k: v.detach().cpu().clone() for k, v in net.state_dict().items()}
                 net.train()
@@ -439,6 +452,7 @@ def train(a):
                 break
     pool.terminate()
     torch.save({"state": best_state, "task": a.task, "cfg": cfg, "transplant": a.transplant, "steps": a.steps,
+                "data": a.data, "init": a.init,
                 "curve": curve, "best_dev_acc": best, "langs": list(STRESS_LANGS) if a.task == "stress" else ["ja"]},
                MODELS_DIR / f"{a.name}.pt")
     print("saved", a.name, best)
@@ -548,6 +562,9 @@ if __name__ == "__main__":
         ap.add_argument("--base", dest="v3", action="store_false", help="old inputs (ablation)")
         ap.add_argument("--transplant", type=float, default=0.4)
         ap.add_argument("--inputs", default=None, help="comma list of reg,lowmel,zemb (default: all three)")
+        ap.add_argument("--data", default="natural", choices=["natural", "synth", "both", "psola"])
+        ap.add_argument("--last", action="store_true", help="keep the final weights (no selection on dev)")
+        ap.add_argument("--init", default=None, help="checkpoint to fine-tune from (same inputs)")
         ap.add_argument("--steps", type=int, default=6000)
         ap.add_argument("--bs", type=int, default=64)
         ap.add_argument("--lr", type=float, default=2e-3)

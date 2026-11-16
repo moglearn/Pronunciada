@@ -1,0 +1,865 @@
+{
+ "en": {
+  "native": {
+   "native_llr_le_-2": 0.06843964502139636,
+   "native_llr_le_-0.5": 0.3716074556994744,
+   "n_native": 34819
+  },
+  "swap": {
+   "n": 388,
+   "miss": 28,
+   "miss_share": 0.07216494845360824,
+   "cats": {
+    "evidence, discounted by sound calibrator": 23,
+    "weak evidence": 5
+   },
+   "miss_pos": {
+    "final": 10,
+    "medial": 9,
+    "initial": 9
+   },
+   "all_pos": {
+    "initial": 188,
+    "medial": 89,
+    "final": 111
+   },
+   "miss_vowel": 0.4642857142857143,
+   "all_vowel": 0.3015463917525773,
+   "miss_short": 0.5714285714285714,
+   "all_short": 0.6005154639175257,
+   "miss_median_llr": -5.204321622848511,
+   "miss_median_ps": 0.9108050586948064
+  },
+  "phone_sub_near": {
+   "n": 786,
+   "miss": 91,
+   "miss_share": 0.11577608142493638,
+   "cats": {
+    "evidence, sound flagged, lost in word model": 6,
+    "evidence, discounted by sound calibrator": 78,
+    "weak evidence": 4,
+    "no evidence": 3
+   },
+   "miss_pos": {
+    "medial": 32,
+    "initial": 40,
+    "final": 17,
+    "only": 2
+   },
+   "all_pos": {
+    "initial": 182,
+    "medial": 418,
+    "final": 182,
+    "only": 4
+   },
+   "miss_vowel": 0.4945054945054945,
+   "all_vowel": 0.3905852417302799,
+   "miss_short": 0.4835164835164835,
+   "all_short": 0.3015267175572519,
+   "miss_median_llr": -5.6405930519104,
+   "miss_median_ps": 0.8860095248418836
+  },
+  "phone_sub_far": {
+   "n": 786,
+   "miss": 17,
+   "miss_share": 0.021628498727735368,
+   "cats": {
+    "evidence, discounted by sound calibrator": 17
+   },
+   "miss_pos": {
+    "initial": 6,
+    "medial": 3,
+    "final": 8
+   },
+   "all_pos": {
+    "initial": 192,
+    "medial": 396,
+    "final": 194,
+    "only": 4
+   },
+   "miss_vowel": 0.7647058823529411,
+   "all_vowel": 0.41475826972010177,
+   "miss_short": 0.7647058823529411,
+   "all_short": 0.30279898218829515,
+   "miss_median_llr": -5.050291061401367,
+   "miss_median_ps": 0.8860059550107117
+  }
+ },
+ "zh": {
+  "native": {
+   "native_llr_le_-2": 0.052462558024114675,
+   "native_llr_le_-0.5": 0.35626076548039587,
+   "n_native": 34253
+  },
+  "swap": {
+   "n": 290,
+   "miss": 38,
+   "miss_share": 0.1310344827586207,
+   "cats": {
+    "evidence, discounted by sound calibrator": 30,
+    "weak evidence": 7,
+    "no evidence": 1
+   },
+   "miss_pos": {
+    "medial": 19,
+    "initial": 14,
+    "final": 5
+   },
+   "all_pos": {
+    "initial": 114,
+    "medial": 133,
+    "final": 43
+   },
+   "miss_vowel": 0.21052631578947367,
+   "all_vowel": 0.30344827586206896,
+   "miss_short": 0.2631578947368421,
+   "all_short": 0.19655172413793104,
+   "miss_median_llr": -4.267214775085449,
+   "miss_median_ps": 0.9634111317777799
+  },
+  "phone_sub_near": {
+   "n": 818,
+   "miss": 124,
+   "miss_share": 0.15158924205378974,
+   "cats": {
+    "evidence, discounted by sound calibrator": 114,
+    "no evidence": 3,
+    "weak evidence": 7
+   },
+   "miss_pos": {
+    "medial": 57,
+    "final": 27,
+    "initial": 40
+   },
+   "all_pos": {
+    "medial": 457,
+    "initial": 173,
+    "final": 186,
+    "only": 2
+   },
+   "miss_vowel": 0.3548387096774194,
+   "all_vowel": 0.43276283618581907,
+   "miss_short": 0.25806451612903225,
+   "all_short": 0.20537897310513448,
+   "miss_median_llr": -5.866335868835449,
+   "miss_median_ps": 0.8991708752865881
+  },
+  "phone_sub_far": {
+   "n": 818,
+   "miss": 12,
+   "miss_share": 0.014669926650366748,
+   "cats": {
+    "evidence, discounted by sound calibrator": 11,
+    "no evidence": 1
+   },
+   "miss_pos": {
+    "medial": 5,
+    "initial": 4,
+    "final": 3
+   },
+   "all_pos": {
+    "medial": 436,
+    "initial": 197,
+    "final": 184,
+    "only": 1
+   },
+   "miss_vowel": 0.4166666666666667,
+   "all_vowel": 0.39975550122249387,
+   "miss_short": 0.25,
+   "all_short": 0.16381418092909536,
+   "miss_median_llr": -6.22465443611145,
+   "miss_median_ps": 0.9281833724037722
+  }
+ },
+ "es": {
+  "native": {
+   "native_llr_le_-2": 0.027204968944099378,
+   "native_llr_le_-0.5": 0.22260869565217392,
+   "n_native": 48300
+  },
+  "swap": {
+   "n": 393,
+   "miss": 29,
+   "miss_share": 0.0737913486005089,
+   "cats": {
+    "evidence, discounted by sound calibrator": 28,
+    "weak evidence": 1
+   },
+   "miss_pos": {
+    "initial": 2,
+    "final": 20,
+    "medial": 7
+   },
+   "all_pos": {
+    "initial": 93,
+    "final": 126,
+    "medial": 174
+   },
+   "miss_vowel": 0.7241379310344828,
+   "all_vowel": 0.4860050890585242,
+   "miss_short": 0.3448275862068966,
+   "all_short": 0.3791348600508906,
+   "miss_median_llr": -5.411080360412598,
+   "miss_median_ps": 0.8507717349390456
+  },
+  "phone_sub_near": {
+   "n": 814,
+   "miss": 86,
+   "miss_share": 0.10565110565110565,
+   "cats": {
+    "evidence, discounted by sound calibrator": 82,
+    "weak evidence": 3,
+    "evidence, sound flagged, lost in word model": 1
+   },
+   "miss_pos": {
+    "final": 19,
+    "medial": 48,
+    "only": 5,
+    "initial": 14
+   },
+   "all_pos": {
+    "final": 161,
+    "medial": 496,
+    "initial": 151,
+    "only": 6
+   },
+   "miss_vowel": 0.6976744186046512,
+   "all_vowel": 0.4226044226044226,
+   "miss_short": 0.2441860465116279,
+   "all_short": 0.1977886977886978,
+   "miss_median_llr": -5.932941198348999,
+   "miss_median_ps": 0.8410137070998368
+  },
+  "phone_sub_far": {
+   "n": 814,
+   "miss": 10,
+   "miss_share": 0.012285012285012284,
+   "cats": {
+    "evidence, discounted by sound calibrator": 9,
+    "evidence, sound flagged, lost in word model": 1
+   },
+   "miss_pos": {
+    "medial": 4,
+    "initial": 3,
+    "final": 3
+   },
+   "all_pos": {
+    "medial": 480,
+    "final": 158,
+    "initial": 170,
+    "only": 6
+   },
+   "miss_vowel": 0.5,
+   "all_vowel": 0.4742014742014742,
+   "miss_short": 0.3,
+   "all_short": 0.24815724815724816,
+   "miss_median_llr": -6.6172473430633545,
+   "miss_median_ps": 0.7628546996104901
+  }
+ },
+ "it": {
+  "native": {
+   "native_llr_le_-2": 0.040051421858722874,
+   "native_llr_le_-0.5": 0.19491544207283285,
+   "n_native": 45117
+  },
+  "swap": {
+   "n": 337,
+   "miss": 72,
+   "miss_share": 0.21364985163204747,
+   "cats": {
+    "evidence, discounted by sound calibrator": 65,
+    "weak evidence": 6,
+    "no evidence": 1
+   },
+   "miss_pos": {
+    "final": 65,
+    "medial": 6,
+    "initial": 1
+   },
+   "all_pos": {
+    "initial": 66,
+    "final": 208,
+    "medial": 63
+   },
+   "miss_vowel": 0.9166666666666666,
+   "all_vowel": 0.6795252225519288,
+   "miss_short": 0.09722222222222222,
+   "all_short": 0.16913946587537093,
+   "miss_median_llr": -4.9428160190582275,
+   "miss_median_ps": 0.9032146608142058
+  },
+  "phone_sub_near": {
+   "n": 770,
+   "miss": 147,
+   "miss_share": 0.19090909090909092,
+   "cats": {
+    "evidence, discounted by sound calibrator": 140,
+    "no evidence": 3,
+    "weak evidence": 4
+   },
+   "miss_pos": {
+    "final": 30,
+    "medial": 74,
+    "initial": 35,
+    "only": 8
+   },
+   "all_pos": {
+    "final": 116,
+    "medial": 494,
+    "initial": 142,
+    "only": 18
+   },
+   "miss_vowel": 0.6054421768707483,
+   "all_vowel": 0.44545454545454544,
+   "miss_short": 0.29931972789115646,
+   "all_short": 0.15194805194805194,
+   "miss_median_llr": -5.804861068725586,
+   "miss_median_ps": 0.892956363387628
+  },
+  "phone_sub_far": {
+   "n": 770,
+   "miss": 23,
+   "miss_share": 0.02987012987012987,
+   "cats": {
+    "evidence, discounted by sound calibrator": 23
+   },
+   "miss_pos": {
+    "only": 6,
+    "final": 7,
+    "medial": 7,
+    "initial": 3
+   },
+   "all_pos": {
+    "final": 144,
+    "medial": 470,
+    "initial": 142,
+    "only": 14
+   },
+   "miss_vowel": 0.8695652173913043,
+   "all_vowel": 0.4857142857142857,
+   "miss_short": 0.5217391304347826,
+   "all_short": 0.14415584415584415,
+   "miss_median_llr": -5.721384048461914,
+   "miss_median_ps": 0.9085628782118607
+  }
+ },
+ "ja": {
+  "native": {
+   "native_llr_le_-2": 0.10648980815347722,
+   "native_llr_le_-0.5": 0.3210056954436451,
+   "n_native": 26688
+  },
+  "swap": {
+   "n": 173,
+   "miss": 32,
+   "miss_share": 0.18497109826589594,
+   "cats": {
+    "evidence, discounted by sound calibrator": 26,
+    "no evidence": 4,
+    "weak evidence": 2
+   },
+   "miss_pos": {
+    "final": 10,
+    "initial": 9,
+    "medial": 13
+   },
+   "all_pos": {
+    "initial": 58,
+    "medial": 86,
+    "final": 29
+   },
+   "miss_vowel": 0.65625,
+   "all_vowel": 0.3583815028901734,
+   "miss_short": 0.21875,
+   "all_short": 0.12716763005780346,
+   "miss_median_llr": -4.286811828613281,
+   "miss_median_ps": 0.9357800423044
+  },
+  "phone_sub_near": {
+   "n": 532,
+   "miss": 187,
+   "miss_share": 0.35150375939849626,
+   "cats": {
+    "evidence, discounted by sound calibrator": 172,
+    "weak evidence": 13,
+    "no evidence": 2
+   },
+   "miss_pos": {
+    "medial": 84,
+    "final": 65,
+    "initial": 34,
+    "only": 4
+   },
+   "all_pos": {
+    "medial": 246,
+    "final": 144,
+    "initial": 131,
+    "only": 11
+   },
+   "miss_vowel": 0.6684491978609626,
+   "all_vowel": 0.5469924812030075,
+   "miss_short": 0.3155080213903743,
+   "all_short": 0.2744360902255639,
+   "miss_median_llr": -5.270920276641846,
+   "miss_median_ps": 0.9153218244849012
+  },
+  "phone_sub_far": {
+   "n": 532,
+   "miss": 34,
+   "miss_share": 0.06390977443609022,
+   "cats": {
+    "evidence, discounted by sound calibrator": 32,
+    "weak evidence": 2
+   },
+   "miss_pos": {
+    "medial": 12,
+    "final": 17,
+    "initial": 5
+   },
+   "all_pos": {
+    "initial": 151,
+    "medial": 234,
+    "final": 143,
+    "only": 4
+   },
+   "miss_vowel": 0.7647058823529411,
+   "all_vowel": 0.5394736842105263,
+   "miss_short": 0.35294117647058826,
+   "all_short": 0.31390977443609025,
+   "miss_median_llr": -5.251887083053589,
+   "miss_median_ps": 0.8961490221336441
+  }
+ },
+ "ko": {
+  "native": {
+   "native_llr_le_-2": 0.08248288606106421,
+   "native_llr_le_-0.5": 0.35861576582251903,
+   "n_native": 23811
+  },
+  "swap": {
+   "n": 155,
+   "miss": 41,
+   "miss_share": 0.2645161290322581,
+   "cats": {
+    "no evidence": 4,
+    "evidence, discounted by sound calibrator": 24,
+    "weak evidence": 13
+   },
+   "miss_pos": {
+    "medial": 20,
+    "final": 14,
+    "initial": 7
+   },
+   "all_pos": {
+    "medial": 70,
+    "final": 48,
+    "initial": 37
+   },
+   "miss_vowel": 0.6341463414634146,
+   "all_vowel": 0.45806451612903226,
+   "miss_short": 0.0,
+   "all_short": 0.06451612903225806,
+   "miss_median_llr": -3.1570682525634766,
+   "miss_median_ps": 0.9789403102900524
+  },
+  "phone_sub_near": {
+   "n": 452,
+   "miss": 150,
+   "miss_share": 0.33185840707964603,
+   "cats": {
+    "evidence, discounted by sound calibrator": 136,
+    "weak evidence": 12,
+    "no evidence": 2
+   },
+   "miss_pos": {
+    "initial": 25,
+    "medial": 99,
+    "final": 26
+   },
+   "all_pos": {
+    "initial": 65,
+    "medial": 306,
+    "final": 81
+   },
+   "miss_vowel": 0.38666666666666666,
+   "all_vowel": 0.4358407079646018,
+   "miss_short": 0.04,
+   "all_short": 0.024336283185840708,
+   "miss_median_llr": -4.775176286697388,
+   "miss_median_ps": 0.9274548709197514
+  },
+  "phone_sub_far": {
+   "n": 452,
+   "miss": 42,
+   "miss_share": 0.09292035398230089,
+   "cats": {
+    "evidence, discounted by sound calibrator": 40,
+    "weak evidence": 2
+   },
+   "miss_pos": {
+    "medial": 21,
+    "final": 11,
+    "initial": 10
+   },
+   "all_pos": {
+    "final": 69,
+    "medial": 314,
+    "initial": 67,
+    "only": 2
+   },
+   "miss_vowel": 0.5714285714285714,
+   "all_vowel": 0.4469026548672566,
+   "miss_short": 0.11904761904761904,
+   "all_short": 0.05088495575221239,
+   "miss_median_llr": -5.2558252811431885,
+   "miss_median_ps": 0.9272218440072216
+  }
+ },
+ "fr": {
+  "native": {
+   "native_llr_le_-2": 0.05431646260625439,
+   "native_llr_le_-0.5": 0.28292911175232005,
+   "n_native": 25646
+  },
+  "swap": {
+   "n": 287,
+   "miss": 32,
+   "miss_share": 0.11149825783972125,
+   "cats": {
+    "evidence, discounted by sound calibrator": 19,
+    "weak evidence": 9,
+    "no evidence": 4
+   },
+   "miss_pos": {
+    "final": 24,
+    "initial": 3,
+    "medial": 5
+   },
+   "all_pos": {
+    "medial": 79,
+    "final": 111,
+    "initial": 97
+   },
+   "miss_vowel": 0.78125,
+   "all_vowel": 0.4181184668989547,
+   "miss_short": 0.3125,
+   "all_short": 0.5052264808362369,
+   "miss_median_llr": -2.8375333547592163,
+   "miss_median_ps": 0.9098248578620909
+  },
+  "phone_sub_near": {
+   "n": 578,
+   "miss": 56,
+   "miss_share": 0.09688581314878893,
+   "cats": {
+    "evidence, discounted by sound calibrator": 49,
+    "no evidence": 1,
+    "weak evidence": 4,
+    "evidence, sound flagged, lost in word model": 2
+   },
+   "miss_pos": {
+    "medial": 25,
+    "final": 18,
+    "initial": 11,
+    "only": 2
+   },
+   "all_pos": {
+    "initial": 127,
+    "medial": 276,
+    "final": 161,
+    "only": 14
+   },
+   "miss_vowel": 0.6071428571428571,
+   "all_vowel": 0.43252595155709345,
+   "miss_short": 0.4642857142857143,
+   "all_short": 0.33217993079584773,
+   "miss_median_llr": -5.150785684585571,
+   "miss_median_ps": 0.7779323921008756
+  },
+  "phone_sub_far": {
+   "n": 578,
+   "miss": 6,
+   "miss_share": 0.010380622837370242,
+   "cats": {
+    "evidence, discounted by sound calibrator": 6
+   },
+   "miss_pos": {
+    "medial": 3,
+    "initial": 3
+   },
+   "all_pos": {
+    "medial": 262,
+    "final": 155,
+    "initial": 140,
+    "only": 21
+   },
+   "miss_vowel": 0.16666666666666666,
+   "all_vowel": 0.43771626297577854,
+   "miss_short": 0.5,
+   "all_short": 0.35986159169550175,
+   "miss_median_llr": -6.1576995849609375,
+   "miss_median_ps": 0.9025096825220333
+  }
+ },
+ "de": {
+  "native": {
+   "native_llr_le_-2": 0.13358374775156068,
+   "native_llr_le_-0.5": 0.5108983176383451,
+   "n_native": 37804
+  },
+  "swap": {
+   "n": 320,
+   "miss": 59,
+   "miss_share": 0.184375,
+   "cats": {
+    "evidence, discounted by sound calibrator": 49,
+    "no evidence": 2,
+    "weak evidence": 8
+   },
+   "miss_pos": {
+    "final": 22,
+    "initial": 12,
+    "medial": 25
+   },
+   "all_pos": {
+    "medial": 120,
+    "final": 85,
+    "initial": 115
+   },
+   "miss_vowel": 0.4406779661016949,
+   "all_vowel": 0.38125,
+   "miss_short": 0.4406779661016949,
+   "all_short": 0.459375,
+   "miss_median_llr": -5.649231910705566,
+   "miss_median_ps": 0.9556223436241015
+  },
+  "phone_sub_near": {
+   "n": 718,
+   "miss": 175,
+   "miss_share": 0.24373259052924792,
+   "cats": {
+    "evidence, discounted by sound calibrator": 166,
+    "no evidence": 5,
+    "weak evidence": 4
+   },
+   "miss_pos": {
+    "final": 40,
+    "initial": 38,
+    "medial": 97
+   },
+   "all_pos": {
+    "medial": 438,
+    "initial": 143,
+    "final": 137
+   },
+   "miss_vowel": 0.4514285714285714,
+   "all_vowel": 0.38440111420612816,
+   "miss_short": 0.25142857142857145,
+   "all_short": 0.1991643454038997,
+   "miss_median_llr": -6.0055999755859375,
+   "miss_median_ps": 0.9459751617971606
+  },
+  "phone_sub_far": {
+   "n": 718,
+   "miss": 20,
+   "miss_share": 0.027855153203342618,
+   "cats": {
+    "evidence, discounted by sound calibrator": 20
+   },
+   "miss_pos": {
+    "initial": 8,
+    "medial": 8,
+    "final": 4
+   },
+   "all_pos": {
+    "final": 142,
+    "medial": 425,
+    "initial": 151
+   },
+   "miss_vowel": 0.5,
+   "all_vowel": 0.3788300835654596,
+   "miss_short": 0.25,
+   "all_short": 0.18384401114206128,
+   "miss_median_llr": -6.580819606781006,
+   "miss_median_ps": 0.9191591238712427
+  }
+ },
+ "pt": {
+  "native": {
+   "native_llr_le_-2": 0.07542491212865328,
+   "native_llr_le_-0.5": 0.27666233328518464,
+   "n_native": 41538
+  },
+  "swap": {
+   "n": 366,
+   "miss": 66,
+   "miss_share": 0.18032786885245902,
+   "cats": {
+    "evidence, discounted by sound calibrator": 59,
+    "weak evidence": 6,
+    "no evidence": 1
+   },
+   "miss_pos": {
+    "medial": 24,
+    "final": 39,
+    "initial": 3
+   },
+   "all_pos": {
+    "initial": 113,
+    "medial": 170,
+    "final": 83
+   },
+   "miss_vowel": 0.7424242424242424,
+   "all_vowel": 0.4262295081967213,
+   "miss_short": 0.30303030303030304,
+   "all_short": 0.30327868852459017,
+   "miss_median_llr": -5.010393857955933,
+   "miss_median_ps": 0.9051322626681793
+  },
+  "phone_sub_near": {
+   "n": 770,
+   "miss": 159,
+   "miss_share": 0.2064935064935065,
+   "cats": {
+    "evidence, discounted by sound calibrator": 141,
+    "weak evidence": 16,
+    "no evidence": 2
+   },
+   "miss_pos": {
+    "medial": 97,
+    "initial": 32,
+    "final": 24,
+    "only": 6
+   },
+   "all_pos": {
+    "medial": 478,
+    "initial": 134,
+    "final": 148,
+    "only": 10
+   },
+   "miss_vowel": 0.5786163522012578,
+   "all_vowel": 0.4623376623376623,
+   "miss_short": 0.24528301886792453,
+   "all_short": 0.18961038961038962,
+   "miss_median_llr": -4.622766017913818,
+   "miss_median_ps": 0.9255146004326279
+  },
+  "phone_sub_far": {
+   "n": 770,
+   "miss": 22,
+   "miss_share": 0.02857142857142857,
+   "cats": {
+    "evidence, discounted by sound calibrator": 20,
+    "weak evidence": 2
+   },
+   "miss_pos": {
+    "initial": 3,
+    "medial": 14,
+    "final": 5
+   },
+   "all_pos": {
+    "initial": 140,
+    "final": 142,
+    "medial": 466,
+    "only": 22
+   },
+   "miss_vowel": 0.4090909090909091,
+   "all_vowel": 0.4714285714285714,
+   "miss_short": 0.0,
+   "all_short": 0.15584415584415584,
+   "miss_median_llr": -5.790978908538818,
+   "miss_median_ps": 0.9420582261345647
+  }
+ },
+ "ru": {
+  "native": {
+   "native_llr_le_-2": 0.10345086835576273,
+   "native_llr_le_-0.5": 0.44051825677267376,
+   "n_native": 39903
+  },
+  "swap": {
+   "n": 344,
+   "miss": 84,
+   "miss_share": 0.2441860465116279,
+   "cats": {
+    "evidence, discounted by sound calibrator": 52,
+    "weak evidence": 29,
+    "no evidence": 2,
+    "evidence, sound flagged, lost in word model": 1
+   },
+   "miss_pos": {
+    "medial": 29,
+    "final": 48,
+    "initial": 7
+   },
+   "all_pos": {
+    "medial": 87,
+    "final": 179,
+    "initial": 78
+   },
+   "miss_vowel": 0.7857142857142857,
+   "all_vowel": 0.4563953488372093,
+   "miss_short": 0.10714285714285714,
+   "all_short": 0.24127906976744187,
+   "miss_median_llr": -2.7687737941741943,
+   "miss_median_ps": 0.9267545367894853
+  },
+  "phone_sub_near": {
+   "n": 710,
+   "miss": 179,
+   "miss_share": 0.252112676056338,
+   "cats": {
+    "weak evidence": 17,
+    "evidence, discounted by sound calibrator": 162
+   },
+   "miss_pos": {
+    "medial": 128,
+    "only": 5,
+    "initial": 24,
+    "final": 22
+   },
+   "all_pos": {
+    "medial": 497,
+    "initial": 108,
+    "final": 94,
+    "only": 11
+   },
+   "miss_vowel": 0.553072625698324,
+   "all_vowel": 0.43661971830985913,
+   "miss_short": 0.10614525139664804,
+   "all_short": 0.08028169014084507,
+   "miss_median_llr": -4.9372758865356445,
+   "miss_median_ps": 0.8476583184427733
+  },
+  "phone_sub_far": {
+   "n": 710,
+   "miss": 41,
+   "miss_share": 0.057746478873239436,
+   "cats": {
+    "evidence, discounted by sound calibrator": 33,
+    "weak evidence": 4,
+    "no evidence": 1,
+    "evidence, sound flagged, lost in word model": 3
+   },
+   "miss_pos": {
+    "final": 9,
+    "medial": 25,
+    "initial": 6,
+    "only": 1
+   },
+   "all_pos": {
+    "medial": 491,
+    "final": 97,
+    "initial": 112,
+    "only": 10
+   },
+   "miss_vowel": 0.7560975609756098,
+   "all_vowel": 0.4197183098591549,
+   "miss_short": 0.12195121951219512,
+   "all_short": 0.11549295774647887,
+   "miss_median_llr": -4.810351848602295,
+   "miss_median_ps": 0.8051318739903087
+  }
+ }
+}

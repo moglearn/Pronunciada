@@ -1,0 +1,4806 @@
+{
+ "base": {
+  "en": {
+   "native_words": 0.9700480709971651,
+   "native_sounds": 0.9932795312903875,
+   "sound_auc": 0.9822563233282932,
+   "word_auc": 0.9454393436941203,
+   "pros_auc": 0.9284145894370226,
+   "swap_near:auc": [
+    0.9789861677471549,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.9123711340206185,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7963917525773195,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9969378956171902,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.9974226804123711,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9536082474226805,
+    null,
+    null
+   ],
+   "near_gt09": 0.030927835051546393,
+   "near_gt08": 0.07216494845360824
+  },
+  "zh": {
+   "native_words": 0.9769280622164614,
+   "native_sounds": 0.997868799813155,
+   "sound_auc": 0.9891934833644044,
+   "word_auc": 0.9384743659143818,
+   "pros_auc": 0.8803831325950304,
+   "swap_near:auc": [
+    0.962850386475135,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.8379310344827586,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7379310344827587,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9909434228637984,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.9793103448275862,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.8793103448275862,
+    null,
+    null
+   ],
+   "near_gt09": 0.07586206896551724,
+   "near_gt08": 0.1310344827586207
+  },
+  "es": {
+   "native_words": 0.9856602270464051,
+   "native_sounds": 0.9976604554865425,
+   "sound_auc": 0.9929141070326594,
+   "word_auc": 0.9706063641369232,
+   "pros_auc": 0.9640044980614588,
+   "swap_near:auc": [
+    0.9886239381658888,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.9592875318066157,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.8396946564885496,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9989478474011404,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    1.0,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9821882951653944,
+    null,
+    null
+   ],
+   "near_gt09": 0.035623409669211195,
+   "near_gt08": 0.0737913486005089
+  },
+  "it": {
+   "native_words": 0.9852698562337968,
+   "native_sounds": 0.9996010373030122,
+   "sound_auc": 0.9920432548064009,
+   "word_auc": 0.9581798960500361,
+   "pros_auc": 0.9537531641114012,
+   "swap_near:auc": [
+    0.9643993345922129,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.827893175074184,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.712166172106825,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.998591853250607,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    1.0,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9554896142433235,
+    null,
+    null
+   ],
+   "near_gt09": 0.12166172106824925,
+   "near_gt08": 0.21364985163204747
+  },
+  "ja": {
+   "native_words": 0.9828231056933093,
+   "native_sounds": 0.9979391486810552,
+   "sound_auc": 0.9786594250438646,
+   "word_auc": 0.9389737972117372,
+   "pros_auc": 0.4911152378799888,
+   "swap_near:auc": [
+    0.9654854653598056,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.838150289017341,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7283236994219653,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9973141041751246,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    1.0,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9421965317919075,
+    null,
+    null
+   ],
+   "near_gt09": 0.13872832369942195,
+   "near_gt08": 0.18497109826589594
+  },
+  "ko": {
+   "native_words": 0.9842449464922711,
+   "native_sounds": 0.9995800260383856,
+   "sound_auc": 0.9839747968802948,
+   "word_auc": 0.9350073695662744,
+   "swap_near:auc": [
+    0.9278171343736384,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.8,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7612903225806451,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9974632477529087,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    1.0,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9548387096774194,
+    null,
+    null
+   ],
+   "near_gt09": 0.1870967741935484,
+   "near_gt08": 0.2645161290322581
+  },
+  "fr": {
+   "native_words": 0.9804248861911988,
+   "native_sounds": 0.9908757701006005,
+   "sound_auc": 0.9874215668616844,
+   "word_auc": 0.9608150193269747,
+   "swap_near:auc": [
+    0.9754535779430296,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.9024390243902439,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7804878048780488,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9975371689937681,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.9930313588850174,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9477351916376306,
+    null,
+    null
+   ],
+   "near_gt09": 0.09407665505226481,
+   "near_gt08": 0.11149825783972125
+  },
+  "de": {
+   "native_words": 0.9718741297688666,
+   "native_sounds": 0.9976722039995768,
+   "sound_auc": 0.9798072583082805,
+   "word_auc": 0.9486654994277283,
+   "pros_auc": 0.9436544006255192,
+   "swap_near:auc": [
+    0.952149241255144,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.790625,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.68125,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9964323988340192,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.99375,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.928125,
+    null,
+    null
+   ],
+   "near_gt09": 0.109375,
+   "near_gt08": 0.184375
+  },
+  "pt": {
+   "native_words": 0.9794184515974632,
+   "native_sounds": 0.9972073763782561,
+   "sound_auc": 0.9806767122959992,
+   "word_auc": 0.9417556483321607,
+   "pros_auc": 0.9520555129924521,
+   "swap_near:auc": [
+    0.9664070143412795,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.825136612021858,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.7377049180327869,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9976455935635123,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.9972826086956522,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.9646739130434783,
+    null,
+    null
+   ],
+   "near_gt09": 0.09562841530054644,
+   "near_gt08": 0.18032786885245902
+  },
+  "ru": {
+   "native_words": 0.975555906008516,
+   "native_sounds": 0.9965917349572714,
+   "sound_auc": 0.9823151789442992,
+   "word_auc": 0.9304754865545609,
+   "pros_auc": 0.9030728924881889,
+   "swap_near:auc": [
+    0.9164315873609926,
+    null,
+    null
+   ],
+   "swap_near:hit@5%FA": [
+    0.667621776504298,
+    null,
+    null
+   ],
+   "swap_near:right_word": [
+    0.5444126074498568,
+    null,
+    null
+   ],
+   "swap_far:auc": [
+    0.9910080624682267,
+    null,
+    null
+   ],
+   "swap_far:hit@5%FA": [
+    0.994269340974212,
+    null,
+    null
+   ],
+   "swap_far:right_word": [
+    0.8796561604584527,
+    null,
+    null
+   ],
+   "near_gt09": 0.16045845272206305,
+   "near_gt08": 0.25501432664756446
+  }
+ },
+ "a": {
+  "en": {
+   "0.002": {
+    "native_words": 0.9689387402933564,
+    "native_sounds": 0.9912978546196043,
+    "sound_auc": 0.9893370932552678,
+    "word_auc": 0.9448320808637299,
+    "pros_auc": 0.9290008596522833,
+    "swap_near:auc": [
+     0.9811121830962819,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9201030927835051,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8092783505154639,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9969416536388582,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9484536082474226,
+     null,
+     null
+    ],
+    "near_gt09": 0.03350515463917526,
+    "near_gt08": 0.06701030927835051
+   },
+   "0.005": {
+    "native_words": 0.9647479354123012,
+    "native_sounds": 0.9875355409402912,
+    "sound_auc": 0.9900222607901789,
+    "word_auc": 0.9425302629508969,
+    "pros_auc": 0.9258410054139131,
+    "swap_near:auc": [
+     0.9822184080200282,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9407216494845361,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8144329896907216,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9969628352155327,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9974226804123711,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9458762886597938,
+     null,
+     null
+    ],
+    "near_gt09": 0.028350515463917526,
+    "near_gt08": 0.05154639175257732
+   },
+   "0.01": {
+    "native_words": 0.9596943177616172,
+    "native_sounds": 0.9827393089979609,
+    "sound_auc": 0.9893944581816938,
+    "word_auc": 0.9400005000849102,
+    "pros_auc": 0.9227453090481563,
+    "swap_near:auc": [
+     0.9820800444949765,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9536082474226805,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8170103092783505,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.997197199112287,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9974226804123711,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9484536082474226,
+     null,
+     null
+    ],
+    "near_gt09": 0.02577319587628866,
+    "near_gt08": 0.03865979381443299
+   }
+  },
+  "zh": {
+   "0.002": {
+    "native_words": 0.9740764744005185,
+    "native_sounds": 0.9939567337167547,
+    "sound_auc": 0.9904976318306701,
+    "word_auc": 0.9370157749037266,
+    "pros_auc": 0.8798191849935112,
+    "swap_near:auc": [
+     0.9618310803656513,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8413793103448276,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7275862068965517,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9911417781385663,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9827586206896551,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8793103448275862,
+     null,
+     null
+    ],
+    "near_gt09": 0.07586206896551724,
+    "near_gt08": 0.13448275862068965
+   },
+   "0.005": {
+    "native_words": 0.9714841218405703,
+    "native_sounds": 0.9922342568534143,
+    "sound_auc": 0.9905302284018559,
+    "word_auc": 0.9360373260334656,
+    "pros_auc": 0.8794669356206039,
+    "swap_near:auc": [
+     0.9636826315603713,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8482758620689655,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7413793103448276,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9909751879433876,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9862068965517241,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8931034482758621,
+     null,
+     null
+    ],
+    "near_gt09": 0.07241379310344828,
+    "near_gt08": 0.1310344827586207
+   },
+   "0.01": {
+    "native_words": 0.9683732987686325,
+    "native_sounds": 0.9891980264502379,
+    "sound_auc": 0.9899342634742277,
+    "word_auc": 0.934772582813902,
+    "pros_auc": 0.8778784066222248,
+    "swap_near:auc": [
+     0.9630183884516288,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8517241379310345,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7517241379310344,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9914255461828962,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9896551724137931,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.896551724137931,
+     null,
+     null
+    ],
+    "near_gt09": 0.07931034482758621,
+    "near_gt08": 0.12758620689655173
+   }
+  },
+  "es": {
+   "0.002": {
+    "native_words": 0.9847639912368055,
+    "native_sounds": 0.9967494824016563,
+    "sound_auc": 0.9943818613780345,
+    "word_auc": 0.970273790163257,
+    "pros_auc": 0.962935278709029,
+    "swap_near:auc": [
+     0.9894514227267239,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9567430025445293,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8396946564885496,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9987342846273529,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9694656488549618,
+     null,
+     null
+    ],
+    "near_gt09": 0.035623409669211195,
+    "near_gt08": 0.061068702290076333
+   },
+   "0.005": {
+    "native_words": 0.9825731925911173,
+    "native_sounds": 0.9955486542443064,
+    "sound_auc": 0.9947357099494775,
+    "word_auc": 0.9692347640819683,
+    "pros_auc": 0.9619074090294962,
+    "swap_near:auc": [
+     0.9906806900526447,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9618320610687023,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8575063613231552,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9986719242974069,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.027989821882951654,
+    "near_gt08": 0.04834605597964377
+   },
+   "0.01": {
+    "native_words": 0.9795857398924517,
+    "native_sounds": 0.993768115942029,
+    "sound_auc": 0.9946212565912591,
+    "word_auc": 0.9670605538745981,
+    "pros_auc": 0.960672546312857,
+    "swap_near:auc": [
+     0.9914307225141863,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8575063613231552,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9988123062273766,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.022900763358778626,
+    "near_gt08": 0.035623409669211195
+   }
+  },
+  "it": {
+   "0.002": {
+    "native_words": 0.9846806504831487,
+    "native_sounds": 0.9991134162289159,
+    "sound_auc": 0.9939440952262981,
+    "word_auc": 0.958267408589337,
+    "pros_auc": 0.9532810343086091,
+    "swap_near:auc": [
+     0.96735950004496,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8486646884272997,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7359050445103857,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9985536372628361,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9525222551928784,
+     null,
+     null
+    ],
+    "near_gt09": 0.12462908011869436,
+    "near_gt08": 0.19881305637982197
+   },
+   "0.005": {
+    "native_words": 0.982088145180297,
+    "native_sounds": 0.9980716802978922,
+    "sound_auc": 0.994032051788868,
+    "word_auc": 0.9571424228959221,
+    "pros_auc": 0.9528497663072256,
+    "swap_near:auc": [
+     0.9689074723496088,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8545994065281899,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7537091988130564,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9986039924467224,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9554896142433235,
+     null,
+     null
+    ],
+    "near_gt09": 0.10979228486646884,
+    "near_gt08": 0.1572700296735905
+   },
+   "0.01": {
+    "native_words": 0.9798491633278341,
+    "native_sounds": 0.9957000687102423,
+    "sound_auc": 0.993236544531168,
+    "word_auc": 0.9538733715739937,
+    "pros_auc": 0.9506244050552323,
+    "swap_near:auc": [
+     0.9705350238287924,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.887240356083086,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7685459940652819,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9988319395737794,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9584569732937686,
+     null,
+     null
+    ],
+    "near_gt09": 0.09198813056379822,
+    "near_gt08": 0.12759643916913946
+   }
+  },
+  "ja": {
+   "0.002": {
+    "native_words": 0.9799141155284665,
+    "native_sounds": 0.9959157673860911,
+    "sound_auc": 0.9833517682337715,
+    "word_auc": 0.9380190381741703,
+    "pros_auc": 0.4911016980045348,
+    "swap_near:auc": [
+     0.9656813656311017,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8439306358381503,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7341040462427746,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9972045546813076,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9479768786127167,
+     null,
+     null
+    ],
+    "near_gt09": 0.12716763005780346,
+    "near_gt08": 0.1791907514450867
+   },
+   "0.005": {
+    "native_words": 0.974373181881147,
+    "native_sounds": 0.9913444244604317,
+    "sound_auc": 0.9838921448652916,
+    "word_auc": 0.93550215826691,
+    "pros_auc": 0.4877068346166705,
+    "swap_near:auc": [
+     0.9651632609662265,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.838150289017341,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7572254335260116,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9970241202209034,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9479768786127167,
+     null,
+     null
+    ],
+    "near_gt09": 0.10404624277456648,
+    "near_gt08": 0.16184971098265896
+   },
+   "0.01": {
+    "native_words": 0.9643995013159717,
+    "native_sounds": 0.9807029376498801,
+    "sound_auc": 0.9823342659138069,
+    "word_auc": 0.9327289230253741,
+    "pros_auc": 0.4880024986277857,
+    "swap_near:auc": [
+     0.966578382662826,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8497109826589595,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7283236994219653,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9967689343411886,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9479768786127167,
+     null,
+     null
+    ],
+    "near_gt09": 0.07514450867052024,
+    "near_gt08": 0.11560693641618497
+   }
+  },
+  "ko": {
+   "0.002": {
+    "native_words": 0.9818668252080857,
+    "native_sounds": 0.9985300911343497,
+    "sound_auc": 0.985995254430155,
+    "word_auc": 0.9321407906253039,
+    "swap_near:auc": [
+     0.9291645822911456,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7419354838709677,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9967209411157192,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9548387096774194,
+     null,
+     null
+    ],
+    "near_gt09": 0.1870967741935484,
+    "near_gt08": 0.25161290322580643
+   },
+   "0.005": {
+    "native_words": 0.9782996432818074,
+    "native_sounds": 0.9963462265339549,
+    "sound_auc": 0.9853500067904455,
+    "word_auc": 0.9287748286006029,
+    "swap_near:auc": [
+     0.9190514612144782,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.7870967741935484,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7483870967741936,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9965982991495748,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9483870967741935,
+     null,
+     null
+    ],
+    "near_gt09": 0.1870967741935484,
+    "near_gt08": 0.22580645161290322
+   },
+   "0.01": {
+    "native_words": 0.974435196195006,
+    "native_sounds": 0.9916845155600352,
+    "sound_auc": 0.9827550190355494,
+    "word_auc": 0.9252130640377322,
+    "swap_near:auc": [
+     0.9161225774177412,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.7935483870967742,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7548387096774194,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9970888670141522,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9612903225806452,
+     null,
+     null
+    ],
+    "near_gt09": 0.17419354838709677,
+    "near_gt08": 0.2129032258064516
+   }
+  },
+  "fr": {
+   "0.002": {
+    "native_words": 0.9770864946889226,
+    "native_sounds": 0.9884192466661468,
+    "sound_auc": 0.9909351370265037,
+    "word_auc": 0.9599423586506342,
+    "swap_near:auc": [
+     0.9790999860987373,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9094076655052264,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8048780487804879,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9977977473200673,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9512195121951219,
+     null,
+     null
+    ],
+    "near_gt09": 0.08710801393728224,
+    "near_gt08": 0.10452961672473868
+   },
+   "0.005": {
+    "native_words": 0.9719271623672231,
+    "native_sounds": 0.9850658972159401,
+    "sound_auc": 0.9907503021409324,
+    "word_auc": 0.9566886584386015,
+    "swap_near:auc": [
+     0.9785686989712503,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9198606271777003,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8257839721254355,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9976733676006027,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9512195121951219,
+     null,
+     null
+    ],
+    "near_gt09": 0.06968641114982578,
+    "near_gt08": 0.08710801393728224
+   },
+   "0.01": {
+    "native_words": 0.9667678300455235,
+    "native_sounds": 0.9803088200889027,
+    "sound_auc": 0.9900655826205761,
+    "word_auc": 0.9534582737638909,
+    "swap_near:auc": [
+     0.9760045632161332,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.926829268292683,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8292682926829268,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9977831144118949,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9547038327526133,
+     null,
+     null
+    ],
+    "near_gt09": 0.06968641114982578,
+    "near_gt08": 0.07317073170731707
+   }
+  },
+  "de": {
+   "0.002": {
+    "native_words": 0.960735171261487,
+    "native_sounds": 0.9923288540895143,
+    "sound_auc": 0.9832070379572636,
+    "word_auc": 0.9451349880374528,
+    "pros_auc": 0.9375931316995677,
+    "swap_near:auc": [
+     0.9532878943758574,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.671875,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9949508101851852,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.990625,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.921875,
+     null,
+     null
+    ],
+    "near_gt09": 0.09375,
+    "near_gt08": 0.153125
+   },
+   "0.005": {
+    "native_words": 0.9515455304928989,
+    "native_sounds": 0.9862183895884034,
+    "sound_auc": 0.9816659907570658,
+    "word_auc": 0.9440374760404313,
+    "pros_auc": 0.9318894574722166,
+    "swap_near:auc": [
+     0.9541232638888889,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.815625,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.703125,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9952862439986283,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9875,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.934375,
+     null,
+     null
+    ],
+    "near_gt09": 0.078125,
+    "near_gt08": 0.11875
+   },
+   "0.01": {
+    "native_words": 0.9466722361459203,
+    "native_sounds": 0.9782562691778648,
+    "sound_auc": 0.977704129650617,
+    "word_auc": 0.9428879726412752,
+    "pros_auc": 0.925599165043528,
+    "swap_near:auc": [
+     0.9551799339849109,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.840625,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.71875,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9962110982510288,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.990625,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.93125,
+     null,
+     null
+    ],
+    "near_gt09": 0.059375,
+    "near_gt08": 0.103125
+   }
+  },
+  "pt": {
+   "0.002": {
+    "native_words": 0.9769055881297116,
+    "native_sounds": 0.9960036592999182,
+    "sound_auc": 0.9858918600848001,
+    "word_auc": 0.9409660441048341,
+    "pros_auc": 0.9508040541485557,
+    "swap_near:auc": [
+     0.967987895816928,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8278688524590164,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7486338797814208,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9973469913327649,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9972826086956522,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9565217391304348,
+     null,
+     null
+    ],
+    "near_gt09": 0.08469945355191257,
+    "near_gt08": 0.1721311475409836
+   },
+   "0.005": {
+    "native_words": 0.9728371425152567,
+    "native_sounds": 0.993427704752275,
+    "sound_auc": 0.986687338388574,
+    "word_auc": 0.9387907990256744,
+    "pros_auc": 0.9478145702568342,
+    "swap_near:auc": [
+     0.9705284916601045,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.855191256830601,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7759562841530054,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9976407833664866,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9972826086956522,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.967391304347826,
+     null,
+     null
+    ],
+    "near_gt09": 0.06830601092896176,
+    "near_gt08": 0.12021857923497267
+   },
+   "0.01": {
+    "native_words": 0.9679310757448846,
+    "native_sounds": 0.9891183976118253,
+    "sound_auc": 0.9860627276280041,
+    "word_auc": 0.9370717786233801,
+    "pros_auc": 0.9436446466062357,
+    "swap_near:auc": [
+     0.9722119067220274,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8907103825136612,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7868852459016393,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9978990539452496,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.970108695652174,
+     null,
+     null
+    ],
+    "near_gt09": 0.04644808743169399,
+    "near_gt08": 0.07923497267759563
+   }
+  },
+  "ru": {
+   "0.002": {
+    "native_words": 0.9739788676864848,
+    "native_sounds": 0.9953136355662482,
+    "sound_auc": 0.9861183932992736,
+    "word_auc": 0.9306837101457975,
+    "pros_auc": 0.9035673273198567,
+    "swap_near:auc": [
+     0.9185099497593489,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.670487106017192,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5501432664756447,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9906002793831874,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.994269340974212,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8681948424068768,
+     null,
+     null
+    ],
+    "near_gt09": 0.17478510028653296,
+    "near_gt08": 0.2636103151862464
+   },
+   "0.005": {
+    "native_words": 0.9708247910424224,
+    "native_sounds": 0.9932085306869157,
+    "sound_auc": 0.9861931671184215,
+    "word_auc": 0.9291014479703652,
+    "pros_auc": 0.9010191887803719,
+    "swap_near:auc": [
+     0.9159744955595035,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6962750716332379,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5730659025787965,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9904237541782973,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.994269340974212,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8681948424068768,
+     null,
+     null
+    ],
+    "near_gt09": 0.17765042979942694,
+    "near_gt08": 0.23209169054441262
+   },
+   "0.01": {
+    "native_words": 0.961362561110235,
+    "native_sounds": 0.9873693707240058,
+    "sound_auc": 0.9847388966760041,
+    "word_auc": 0.9260066182926006,
+    "pros_auc": 0.8928763402049261,
+    "swap_near:auc": [
+     0.9124075030115298,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6934097421203438,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5931232091690545,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9906273991772347,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.994269340974212,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8767908309455588,
+     null,
+     null
+    ],
+    "near_gt09": 0.17191977077363896,
+    "near_gt08": 0.22063037249283668
+   }
+  }
+ },
+ "b": {
+  "en": {
+   "0.002": {
+    "native_words": 0.9688154813262665,
+    "native_sounds": 0.9932795312903875,
+    "sound_auc": 0.9822563233282932,
+    "word_auc": 0.9451316386705937,
+    "pros_auc": 0.9272208737480524,
+    "swap_near:auc": [
+     0.979172360638891,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9175257731958762,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7912371134020618,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9959122973401406,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9974226804123711,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9329896907216495,
+     null,
+     null
+    ],
+    "near_gt09": 0.030927835051546393,
+    "near_gt08": 0.06701030927835051
+   },
+   "0.005": {
+    "native_words": 0.9617897202021447,
+    "native_sounds": 0.9932795312903875,
+    "sound_auc": 0.9822563233282932,
+    "word_auc": 0.9463557874930848,
+    "pros_auc": 0.9219795232090314,
+    "swap_near:auc": [
+     0.9815839856347913,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9458762886597938,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8144329896907216,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9951593264531928,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9974226804123711,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9201030927835051,
+     null,
+     null
+    ],
+    "near_gt09": 0.01804123711340206,
+    "near_gt08": 0.04381443298969072
+   },
+   "0.01": {
+    "native_words": 0.9481079748551707,
+    "native_sounds": 0.9932795312903875,
+    "sound_auc": 0.9822563233282932,
+    "word_auc": 0.9464901922583383,
+    "pros_auc": 0.910927776566258,
+    "swap_near:auc": [
+     0.9830612297886762,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9587628865979382,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8247422680412371,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9940346530594396,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9974226804123711,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9123711340206185,
+     null,
+     null
+    ],
+    "near_gt09": 0.01288659793814433,
+    "near_gt08": 0.02577319587628866
+   }
+  },
+  "zh": {
+   "0.002": {
+    "native_words": 0.9735580038885289,
+    "native_sounds": 0.997868799813155,
+    "sound_auc": 0.9891934833644044,
+    "word_auc": 0.9374068027876477,
+    "pros_auc": 0.8787792332911311,
+    "swap_near:auc": [
+     0.961700490594007,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8448275862068966,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7344827586206897,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9894794056400663,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9827586206896551,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8827586206896552,
+     null,
+     null
+    ],
+    "near_gt09": 0.07241379310344828,
+    "near_gt08": 0.12413793103448276
+   },
+   "0.005": {
+    "native_words": 0.969151004536617,
+    "native_sounds": 0.997868799813155,
+    "sound_auc": 0.9891934833644044,
+    "word_auc": 0.9382582058816543,
+    "pros_auc": 0.8742819135871917,
+    "swap_near:auc": [
+     0.9637694561112483,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8620689655172413,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7310344827586207,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9889316344898176,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9896551724137931,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8793103448275862,
+     null,
+     null
+    ],
+    "near_gt09": 0.05862068965517241,
+    "near_gt08": 0.10689655172413794
+   },
+   "0.01": {
+    "native_words": 0.9581335061568373,
+    "native_sounds": 0.997868799813155,
+    "sound_auc": 0.9891934833644044,
+    "word_auc": 0.9386667744347229,
+    "pros_auc": 0.8644683696542632,
+    "swap_near:auc": [
+     0.9657819503758868,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8724137931034482,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7413793103448276,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9882906857727738,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.993103448275862,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8793103448275862,
+     null,
+     null
+    ],
+    "near_gt09": 0.04482758620689655,
+    "near_gt08": 0.08275862068965517
+   }
+  },
+  "es": {
+   "0.002": {
+    "native_words": 0.984564827723561,
+    "native_sounds": 0.9976604554865425,
+    "sound_auc": 0.9929141070326594,
+    "word_auc": 0.9702670485830434,
+    "pros_auc": 0.9632133491424469,
+    "swap_near:auc": [
+     0.9888833457484493,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9643765903307888,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8371501272264631,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.998546634136785,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.03307888040712468,
+    "near_gt08": 0.06361323155216285
+   },
+   "0.005": {
+    "native_words": 0.9798844851623183,
+    "native_sounds": 0.9976604554865425,
+    "sound_auc": 0.9929141070326594,
+    "word_auc": 0.9707252869964184,
+    "pros_auc": 0.9602619856553336,
+    "swap_near:auc": [
+     0.9911118021053303,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8524173027989822,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.997794608422688,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9669211195928753,
+     null,
+     null
+    ],
+    "near_gt09": 0.022900763358778626,
+    "near_gt08": 0.035623409669211195
+   },
+   "0.01": {
+    "native_words": 0.9723162716590321,
+    "native_sounds": 0.9976604554865425,
+    "sound_auc": 0.9929141070326594,
+    "word_auc": 0.9696430796560835,
+    "pros_auc": 0.9537475771293736,
+    "swap_near:auc": [
+     0.9923997280064513,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9745547073791349,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8880407124681934,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9965163640339787,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9491094147582697,
+     null,
+     null
+    ],
+    "near_gt09": 0.010178117048346057,
+    "near_gt08": 0.02544529262086514
+   }
+  },
+  "it": {
+   "0.002": {
+    "native_words": 0.9847984916332784,
+    "native_sounds": 0.9996010373030122,
+    "sound_auc": 0.9920432548064009,
+    "word_auc": 0.958365726808184,
+    "pros_auc": 0.9532354282531045,
+    "swap_near:auc": [
+     0.9660300332703894,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8545994065281899,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7299703264094956,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.997879237478644,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9495548961424333,
+     null,
+     null
+    ],
+    "near_gt09": 0.11572700296735905,
+    "near_gt08": 0.17804154302670624
+   },
+   "0.005": {
+    "native_words": 0.9810275748291303,
+    "native_sounds": 0.9996010373030122,
+    "sound_auc": 0.9920432548064009,
+    "word_auc": 0.9590991833464617,
+    "pros_auc": 0.9495679667963429,
+    "swap_near:auc": [
+     0.97222596888769,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8931750741839762,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7863501483679525,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9972007912957468,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9436201780415431,
+     null,
+     null
+    ],
+    "near_gt09": 0.0830860534124629,
+    "near_gt08": 0.11275964391691394
+   },
+   "0.01": {
+    "native_words": 0.9701861890172048,
+    "native_sounds": 0.9996010373030122,
+    "sound_auc": 0.9920432548064009,
+    "word_auc": 0.9573416109551413,
+    "pros_auc": 0.9378631267389221,
+    "swap_near:auc": [
+     0.9800818271738153,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9169139465875371,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8338278931750742,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.996214818811258,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9376854599406528,
+     null,
+     null
+    ],
+    "near_gt09": 0.06528189910979229,
+    "near_gt08": 0.0771513353115727
+   }
+  },
+  "ja": {
+   "0.002": {
+    "native_words": 0.9807452555755645,
+    "native_sounds": 0.9979391486810552,
+    "sound_auc": 0.9786594250438646,
+    "word_auc": 0.9394361464450719,
+    "pros_auc": 0.49094156293906954,
+    "swap_near:auc": [
+     0.9652070807637533,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8439306358381503,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7341040462427746,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9966348973134598,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9421965317919075,
+     null,
+     null
+    ],
+    "near_gt09": 0.1329479768786127,
+    "near_gt08": 0.1791907514450867
+   },
+   "0.005": {
+    "native_words": 0.9667543981160825,
+    "native_sounds": 0.9979391486810552,
+    "sound_auc": 0.9786594250438646,
+    "word_auc": 0.9378657331979567,
+    "pros_auc": 0.4891990851210309,
+    "swap_near:auc": [
+     0.965633679380852,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.838150289017341,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7283236994219653,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9949890772710577,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9075144508670521,
+     null,
+     null
+    ],
+    "near_gt09": 0.09248554913294797,
+    "near_gt08": 0.13872832369942195
+   },
+   "0.01": {
+    "native_words": 0.9332317495497991,
+    "native_sounds": 0.9979391486810552,
+    "sound_auc": 0.9786594250438646,
+    "word_auc": 0.9332951377996359,
+    "pros_auc": 0.4885325066371428,
+    "swap_near:auc": [
+     0.9662574670868211,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8439306358381503,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7225433526011561,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9911960871498444,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9653179190751445,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8497109826589595,
+     null,
+     null
+    ],
+    "near_gt09": 0.03468208092485549,
+    "near_gt08": 0.07514450867052024
+   }
+  },
+  "ko": {
+   "0.002": {
+    "native_words": 0.9833531510107015,
+    "native_sounds": 0.9995800260383856,
+    "sound_auc": 0.9839747968802948,
+    "word_auc": 0.9333325178692988,
+    "swap_near:auc": [
+     0.9279107295583275,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7548387096774194,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9956849392438154,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9548387096774194,
+     null,
+     null
+    ],
+    "near_gt09": 0.1870967741935484,
+    "near_gt08": 0.25161290322580643
+   },
+   "0.005": {
+    "native_words": 0.9750297265160524,
+    "native_sounds": 0.9995800260383856,
+    "sound_auc": 0.9839747968802948,
+    "word_auc": 0.9313483571185451,
+    "swap_near:auc": [
+     0.9258855234068647,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8193548387096774,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7225806451612903,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9931772337781795,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9354838709677419,
+     null,
+     null
+    ],
+    "near_gt09": 0.15483870967741936,
+    "near_gt08": 0.18064516129032257
+   },
+   "0.01": {
+    "native_words": 0.9467895362663495,
+    "native_sounds": 0.9995800260383856,
+    "sound_auc": 0.9839747968802948,
+    "word_auc": 0.9251208001069726,
+    "swap_near:auc": [
+     0.9229066145976214,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8064516129032258,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7354838709677419,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9905436589262373,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9806451612903225,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.896774193548387,
+     null,
+     null
+    ],
+    "near_gt09": 0.14193548387096774,
+    "near_gt08": 0.16129032258064516
+   }
+  },
+  "fr": {
+   "0.002": {
+    "native_words": 0.9761760242792109,
+    "native_sounds": 0.9908757701006005,
+    "sound_auc": 0.9874215668616844,
+    "word_auc": 0.960412070898572,
+    "swap_near:auc": [
+     0.975910574921334,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9128919860627178,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8083623693379791,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9962370913830744,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9477351916376306,
+     null,
+     null
+    ],
+    "near_gt09": 0.08013937282229965,
+    "near_gt08": 0.10104529616724739
+   },
+   "0.005": {
+    "native_words": 0.9643399089529591,
+    "native_sounds": 0.9908757701006005,
+    "sound_auc": 0.9874215668616844,
+    "word_auc": 0.9592582079209516,
+    "swap_near:auc": [
+     0.9766354666800239,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9303135888501742,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8153310104529616,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9950940361331527,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9303135888501742,
+     null,
+     null
+    ],
+    "near_gt09": 0.06620209059233449,
+    "near_gt08": 0.06968641114982578
+   },
+   "0.01": {
+    "native_words": 0.9479514415781487,
+    "native_sounds": 0.9908757701006005,
+    "sound_auc": 0.9874215668616844,
+    "word_auc": 0.9563386260926819,
+    "swap_near:auc": [
+     0.9744394048458563,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9303135888501742,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.818815331010453,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9937376781064117,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9895470383275261,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9128919860627178,
+     null,
+     null
+    ],
+    "near_gt09": 0.059233449477351915,
+    "near_gt08": 0.0627177700348432
+   }
+  },
+  "de": {
+   "0.002": {
+    "native_words": 0.9590643274853801,
+    "native_sounds": 0.9976722039995768,
+    "sound_auc": 0.9798072583082805,
+    "word_auc": 0.9449915193469207,
+    "pros_auc": 0.9337195123370171,
+    "swap_near:auc": [
+     0.949740119170096,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.78125,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.65625,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9923830804183813,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.990625,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.88125,
+     null,
+     null
+    ],
+    "near_gt09": 0.090625,
+    "near_gt08": 0.159375
+   },
+   "0.005": {
+    "native_words": 0.934558618769145,
+    "native_sounds": 0.9976722039995768,
+    "sound_auc": 0.9798072583082805,
+    "word_auc": 0.9409048701701647,
+    "pros_auc": 0.913235774363175,
+    "swap_near:auc": [
+     0.9497310099451303,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.790625,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.659375,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9875594778806585,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.975,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.834375,
+     null,
+     null
+    ],
+    "near_gt09": 0.053125,
+    "near_gt08": 0.078125
+   },
+   "0.01": {
+    "native_words": 0.9019771651350599,
+    "native_sounds": 0.9976722039995768,
+    "sound_auc": 0.9798072583082805,
+    "word_auc": 0.9333908348616895,
+    "pros_auc": 0.8818659539594886,
+    "swap_near:auc": [
+     0.9483699845679012,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.79375,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.6625,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9828671553497942,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.953125,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8,
+     null,
+     null
+    ],
+    "near_gt09": 0.034375,
+    "near_gt08": 0.05625
+   }
+  },
+  "pt": {
+   "0.002": {
+    "native_words": 0.9779825296158908,
+    "native_sounds": 0.9972073763782561,
+    "sound_auc": 0.9806767122959992,
+    "word_auc": 0.9418184693914231,
+    "pros_auc": 0.951017888417673,
+    "swap_near:auc": [
+     0.9674778378313885,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8360655737704918,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7404371584699454,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9972444971346026,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9972826086956522,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9619565217391305,
+     null,
+     null
+    ],
+    "near_gt09": 0.08469945355191257,
+    "near_gt08": 0.1721311475409836
+   },
+   "0.005": {
+    "native_words": 0.9708029197080292,
+    "native_sounds": 0.9972073763782561,
+    "sound_auc": 0.9806767122959992,
+    "word_auc": 0.9419483497917661,
+    "pros_auc": 0.9446131169297377,
+    "swap_near:auc": [
+     0.9720366675018494,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8907103825136612,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.773224043715847,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9961152108790376,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9972826086956522,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9510869565217391,
+     null,
+     null
+    ],
+    "near_gt09": 0.04644808743169399,
+    "near_gt08": 0.08196721311475409
+   },
+   "0.01": {
+    "native_words": 0.952734234773244,
+    "native_sounds": 0.9972073763782561,
+    "sound_auc": 0.9806767122959992,
+    "word_auc": 0.9397066239414994,
+    "pros_auc": 0.926910716422503,
+    "swap_near:auc": [
+     0.9763572464027489,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9153005464480874,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7841530054644809,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9942692052666477,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9320652173913043,
+     null,
+     null
+    ],
+    "near_gt09": 0.03551912568306011,
+    "near_gt08": 0.04371584699453552
+   }
+  },
+  "ru": {
+   "0.002": {
+    "native_words": 0.973032644693266,
+    "native_sounds": 0.9965917349572714,
+    "sound_auc": 0.9823151789442992,
+    "word_auc": 0.9313280557077146,
+    "pros_auc": 0.9011015945856499,
+    "swap_near:auc": [
+     0.9156520165539223,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.667621776504298,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5501432664756447,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9881664011392286,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.997134670487106,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8481375358166189,
+     null,
+     null
+    ],
+    "near_gt09": 0.16045845272206305,
+    "near_gt08": 0.24641833810888253
+   },
+   "0.005": {
+    "native_words": 0.9645166377542974,
+    "native_sounds": 0.9965917349572714,
+    "sound_auc": 0.9823151789442992,
+    "word_auc": 0.9323349216235077,
+    "pros_auc": 0.8921078116705278,
+    "swap_near:auc": [
+     0.9157136524494844,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6848137535816619,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5644699140401146,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9861758082561529,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.994269340974212,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8452722063037249,
+     null,
+     null
+    ],
+    "near_gt09": 0.1518624641833811,
+    "near_gt08": 0.22063037249283668
+   },
+   "0.01": {
+    "native_words": 0.9339220943068917,
+    "native_sounds": 0.9965917349572714,
+    "sound_auc": 0.9823151789442992,
+    "word_auc": 0.9322850518132771,
+    "pros_auc": 0.8632235773892686,
+    "swap_near:auc": [
+     0.9125657839913335,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6848137535816619,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5787965616045845,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9835062343475643,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9885386819484241,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8166189111747851,
+     null,
+     null
+    ],
+    "near_gt09": 0.12607449856733524,
+    "near_gt08": 0.17765042979942694
+   }
+  }
+ },
+ "c": {
+  "en": {
+   "-1.0": {
+    "native_words": 0.9696782940958955,
+    "native_sounds": 0.9905511358740917,
+    "sound_auc": 0.9800641549157406,
+    "word_auc": 0.9411586342264364,
+    "pros_auc": 0.9258061610520627,
+    "swap_near:auc": [
+     0.9777668605350329,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9072164948453608,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7809278350515464,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9966160723070701,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9510309278350515,
+     null,
+     null
+    ],
+    "near_gt09": 0.03350515463917526,
+    "near_gt08": 0.059278350515463915
+   },
+   "-2.0": {
+    "native_words": 0.9684457044249969,
+    "native_sounds": 0.9860995433527672,
+    "sound_auc": 0.9712428372878003,
+    "word_auc": 0.9369614389387643,
+    "pros_auc": 0.9212059151662257,
+    "swap_near:auc": [
+     0.9758314793759771,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9123711340206185,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7603092783505154,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9965791753670562,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9536082474226805,
+     null,
+     null
+    ],
+    "near_gt09": 0.028350515463917526,
+    "near_gt08": 0.06443298969072164
+   }
+  },
+  "zh": {
+   "-1.0": {
+    "native_words": 0.9774465327284511,
+    "native_sounds": 0.9965842407964266,
+    "sound_auc": 0.9873834183843825,
+    "word_auc": 0.9369229596653235,
+    "pros_auc": 0.8794626572881393,
+    "swap_near:auc": [
+     0.9614075459711291,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8206896551724138,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7241379310344828,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9914516641372252,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9862068965517241,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.896551724137931,
+     null,
+     null
+    ],
+    "near_gt09": 0.07931034482758621,
+    "near_gt08": 0.13793103448275862
+   },
+   "-2.0": {
+    "native_words": 0.9773169151004537,
+    "native_sounds": 0.9943362625171518,
+    "sound_auc": 0.9812744863069667,
+    "word_auc": 0.9337263322382823,
+    "pros_auc": 0.8787160090447117,
+    "swap_near:auc": [
+     0.9574467934916882,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8068965517241379,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.6896551724137931,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9916980199767056,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9862068965517241,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8896551724137931,
+     null,
+     null
+    ],
+    "near_gt09": 0.08275862068965517,
+    "near_gt08": 0.15862068965517243
+   }
+  },
+  "es": {
+   "-1.0": {
+    "native_words": 0.9860585540728939,
+    "native_sounds": 0.9962732919254659,
+    "sound_auc": 0.9915854482342915,
+    "word_auc": 0.9688902911659739,
+    "pros_auc": 0.9635179665552102,
+    "swap_near:auc": [
+     0.9884733052227773,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9516539440203562,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8371501272264631,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9990409607705117,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.03307888040712468,
+    "near_gt08": 0.06615776081424936
+   },
+   "-2.0": {
+    "native_words": 0.9855606452897829,
+    "native_sounds": 0.9931469979296066,
+    "sound_auc": 0.9873223056738762,
+    "word_auc": 0.9654680792034498,
+    "pros_auc": 0.9635601725822798,
+    "swap_near:auc": [
+     0.9876748651991771,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9567430025445293,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8396946564885496,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9990722833106672,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9796437659033079,
+     null,
+     null
+    ],
+    "near_gt09": 0.027989821882951654,
+    "near_gt08": 0.06361323155216285
+   }
+  },
+  "it": {
+   "-1.0": {
+    "native_words": 0.9851520150836672,
+    "native_sounds": 0.9993128975774098,
+    "sound_auc": 0.9900934956150818,
+    "word_auc": 0.9573572404785469,
+    "pros_auc": 0.9530767253015662,
+    "swap_near:auc": [
+     0.9670344393489794,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8397626112759644,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7240356083086054,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9986664868267242,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9643916913946587,
+     null,
+     null
+    ],
+    "near_gt09": 0.11572700296735905,
+    "near_gt08": 0.18694362017804153
+   },
+   "-2.0": {
+    "native_words": 0.9851520150836672,
+    "native_sounds": 0.9975175654409646,
+    "sound_auc": 0.9836063363590912,
+    "word_auc": 0.9539977311439208,
+    "pros_auc": 0.9529141963386601,
+    "swap_near:auc": [
+     0.9668680874022121,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8545994065281899,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7151335311572701,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9988458771693193,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9673590504451038,
+     null,
+     null
+    ],
+    "near_gt09": 0.12462908011869436,
+    "near_gt08": 0.17804154302670624
+   }
+  },
+  "ja": {
+   "-1.0": {
+    "native_words": 0.9825460590109434,
+    "native_sounds": 0.9958033573141487,
+    "sound_auc": 0.9747179720693516,
+    "word_auc": 0.9344992247329854,
+    "pros_auc": 0.49313372085151236,
+    "swap_near:auc": [
+     0.9627493056495319,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.838150289017341,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.6936416184971098,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9969339029907012,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.930635838150289,
+     null,
+     null
+    ],
+    "near_gt09": 0.13872832369942195,
+    "near_gt08": 0.1676300578034682
+   },
+   "-2.0": {
+    "native_words": 0.9815763956226624,
+    "native_sounds": 0.9892835731414868,
+    "sound_auc": 0.9598574478907327,
+    "word_auc": 0.9263889928949786,
+    "pros_auc": 0.49275082879660714,
+    "swap_near:auc": [
+     0.9583711923495789,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8323699421965318,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.6705202312138728,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.996664540117669,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9190751445086706,
+     null,
+     null
+    ],
+    "near_gt09": 0.12716763005780346,
+    "near_gt08": 0.1676300578034682
+   }
+  },
+  "ko": {
+   "-1.0": {
+    "native_words": 0.9854340071343638,
+    "native_sounds": 0.9989920624921255,
+    "sound_auc": 0.9812423780063652,
+    "word_auc": 0.9325140401633765,
+    "swap_near:auc": [
+     0.9281689231712631,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8064516129032258,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7483870967741936,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9974697025932321,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9548387096774194,
+     null,
+     null
+    ],
+    "near_gt09": 0.1870967741935484,
+    "near_gt08": 0.2645161290322581
+   },
+   "-2.0": {
+    "native_words": 0.9854340071343638,
+    "native_sounds": 0.9978161353996052,
+    "sound_auc": 0.9722827122755494,
+    "word_auc": 0.9282097120247009,
+    "swap_near:auc": [
+     0.9270457809549937,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7419354838709677,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9974212912908067,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9612903225806452,
+     null,
+     null
+    ],
+    "near_gt09": 0.2,
+    "near_gt08": 0.25806451612903225
+   }
+  },
+  "fr": {
+   "-1.0": {
+    "native_words": 0.9790591805766312,
+    "native_sounds": 0.9870935038602511,
+    "sound_auc": 0.9844345341035917,
+    "word_auc": 0.9561271286722979,
+    "swap_near:auc": [
+     0.9761309127501594,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9094076655052264,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7839721254355401,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9972051145390887,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9372822299651568,
+     null,
+     null
+    ],
+    "near_gt09": 0.07665505226480836,
+    "near_gt08": 0.10452961672473868
+   },
+   "-2.0": {
+    "native_words": 0.9769347496206373,
+    "native_sounds": 0.9780082663963191,
+    "sound_auc": 0.9754595300352575,
+    "word_auc": 0.9505280154799973,
+    "swap_near:auc": [
+     0.9731058403876145,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9059233449477352,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7665505226480837,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9969124563756425,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9965156794425087,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9442508710801394,
+     null,
+     null
+    ],
+    "near_gt09": 0.08013937282229965,
+    "near_gt08": 0.0975609756097561
+   }
+  },
+  "de": {
+   "-1.0": {
+    "native_words": 0.9717348927875243,
+    "native_sounds": 0.9969050894085282,
+    "sound_auc": 0.9782480492770823,
+    "word_auc": 0.9476208923991285,
+    "pros_auc": 0.9438110907103724,
+    "swap_near:auc": [
+     0.9551681455761317,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.675,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9966928155006859,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.99375,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.928125,
+     null,
+     null
+    ],
+    "near_gt09": 0.09375,
+    "near_gt08": 0.16875
+   },
+   "-2.0": {
+    "native_words": 0.9722918407128933,
+    "native_sounds": 0.9951592424082107,
+    "sound_auc": 0.9701439225600228,
+    "word_auc": 0.944304633849527,
+    "pros_auc": 0.9435458035370071,
+    "swap_near:auc": [
+     0.9543317043895747,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.790625,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.64375,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9968530306927298,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.996875,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.928125,
+     null,
+     null
+    ],
+    "near_gt09": 0.090625,
+    "near_gt08": 0.171875
+   }
+  },
+  "pt": {
+   "-1.0": {
+    "native_words": 0.9795381117625942,
+    "native_sounds": 0.9964369974481198,
+    "sound_auc": 0.9778558866090039,
+    "word_auc": 0.9395274692356543,
+    "pros_auc": 0.952099491988208,
+    "swap_near:auc": [
+     0.9669032768988475,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8387978142076503,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.726775956284153,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9976781548972246,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9538043478260869,
+     null,
+     null
+    ],
+    "near_gt09": 0.08743169398907104,
+    "near_gt08": 0.16393442622950818
+   },
+   "-2.0": {
+    "native_words": 0.978580830441546,
+    "native_sounds": 0.9944869757812124,
+    "sound_auc": 0.9673363113144935,
+    "word_auc": 0.9353288862185659,
+    "pros_auc": 0.9509994731844678,
+    "swap_near:auc": [
+     0.9672418241582552,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8633879781420765,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7185792349726776,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9974946273799374,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.967391304347826,
+     null,
+     null
+    ],
+    "near_gt09": 0.07103825136612021,
+    "near_gt08": 0.1366120218579235
+   }
+  },
+  "ru": {
+   "-1.0": {
+    "native_words": 0.9750827945119066,
+    "native_sounds": 0.9950630278425181,
+    "sound_auc": 0.9785972559317695,
+    "word_auc": 0.9258864234956891,
+    "pros_auc": 0.9028201221205169,
+    "swap_near:auc": [
+     0.916346776368699,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.670487106017192,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5730659025787965,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9910677260151308,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.997134670487106,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8853868194842407,
+     null,
+     null
+    ],
+    "near_gt09": 0.16332378223495703,
+    "near_gt08": 0.2492836676217765
+   },
+   "-2.0": {
+    "native_words": 0.9733480523576723,
+    "native_sounds": 0.988873017066386,
+    "sound_auc": 0.9665081018835593,
+    "word_auc": 0.9205849760255728,
+    "pros_auc": 0.8980485816650415,
+    "swap_near:auc": [
+     0.9130174518340131,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6790830945558739,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5673352435530086,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9909311408705651,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.997134670487106,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8882521489971347,
+     null,
+     null
+    ],
+    "near_gt09": 0.16332378223495703,
+    "near_gt08": 0.22922636103151864
+   }
+  }
+ },
+ "d2": {
+  "en": {
+   "0.002": {
+    "native_words": 0.9690619992604462,
+    "native_sounds": 0.9911542548608518,
+    "sound_auc": 0.9901547674833386,
+    "word_auc": 0.9456599540685902,
+    "pros_auc": 0.9289727313238961,
+    "swap_near:auc": [
+     0.9822091837850248,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9252577319587629,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8170103092783505,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9971145226355894,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9510309278350515,
+     null,
+     null
+    ],
+    "near_gt09": 0.03350515463917526,
+    "near_gt08": 0.06443298969072164
+   },
+   "0.005": {
+    "native_words": 0.9649944533464809,
+    "native_sounds": 0.9875929808437922,
+    "sound_auc": 0.990925881483468,
+    "word_auc": 0.9438309143462206,
+    "pros_auc": 0.9255055988015436,
+    "swap_near:auc": [
+     0.982390252101759,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9381443298969072,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8170103092783505,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9973051568256606,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9536082474226805,
+     null,
+     null
+    ],
+    "near_gt09": 0.030927835051546393,
+    "near_gt08": 0.04896907216494845
+   },
+   "0.01": {
+    "native_words": 0.9594477998274374,
+    "native_sounds": 0.9827680289497114,
+    "sound_auc": 0.9906104418853491,
+    "word_auc": 0.9403901912512229,
+    "pros_auc": 0.922582939062663,
+    "swap_near:auc": [
+     0.9819584212482645,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9484536082474226,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8195876288659794,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9972754342906495,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9432989690721649,
+     null,
+     null
+    ],
+    "near_gt09": 0.023195876288659795,
+    "near_gt08": 0.03865979381443299
+   }
+  },
+  "zh": {
+   "0.002": {
+    "native_words": 0.9747245625405055,
+    "native_sounds": 0.994219484424722,
+    "sound_auc": 0.9917656791054505,
+    "word_auc": 0.938047831291944,
+    "pros_auc": 0.8800380137762306,
+    "swap_near:auc": [
+     0.9636247485264533,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8482758620689655,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7448275862068966,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9917311968376099,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9862068965517241,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.896551724137931,
+     null,
+     null
+    ],
+    "near_gt09": 0.07586206896551724,
+    "near_gt08": 0.12413793103448276
+   },
+   "0.005": {
+    "native_words": 0.9722618276085547,
+    "native_sounds": 0.9924386185151666,
+    "sound_auc": 0.9919212886210942,
+    "word_auc": 0.9371482090827911,
+    "pros_auc": 0.8796729294059298,
+    "swap_near:auc": [
+     0.9639480464476052,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8620689655172413,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7448275862068966,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9919683760985424,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9896551724137931,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.903448275862069,
+     null,
+     null
+    ],
+    "near_gt09": 0.08275862068965517,
+    "near_gt08": 0.12758620689655173
+   },
+   "0.01": {
+    "native_words": 0.969151004536617,
+    "native_sounds": 0.9895483607275275,
+    "sound_auc": 0.9916378794723639,
+    "word_auc": 0.9352361697956626,
+    "pros_auc": 0.8790257920064903,
+    "swap_near:auc": [
+     0.9652115907245967,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8758620689655172,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7448275862068966,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9914311933081565,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9896551724137931,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.903448275862069,
+     null,
+     null
+    ],
+    "near_gt09": 0.08275862068965517,
+    "near_gt08": 0.10689655172413794
+   }
+  },
+  "es": {
+   "0.002": {
+    "native_words": 0.9846644094801832,
+    "native_sounds": 0.9967908902691511,
+    "sound_auc": 0.9950087522102264,
+    "word_auc": 0.9709246215715657,
+    "pros_auc": 0.9629554642002361,
+    "swap_near:auc": [
+     0.9901877871707432,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9541984732824428,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8498727735368957,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9988479000230078,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.03307888040712468,
+    "near_gt08": 0.06361323155216285
+   },
+   "0.005": {
+    "native_words": 0.9816769567815177,
+    "native_sounds": 0.9952795031055901,
+    "sound_auc": 0.9952300140694759,
+    "word_auc": 0.9697544115814597,
+    "pros_auc": 0.9616872036708722,
+    "swap_near:auc": [
+     0.9914401192762329,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9669211195928753,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8651399491094147,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9989652171734085,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9720101781170484,
+     null,
+     null
+    ],
+    "near_gt09": 0.030534351145038167,
+    "near_gt08": 0.04580152671755725
+   },
+   "0.01": {
+    "native_words": 0.9793865763792073,
+    "native_sounds": 0.9934575569358178,
+    "sound_auc": 0.9950998328936174,
+    "word_auc": 0.9676584857111515,
+    "pros_auc": 0.9603508018166452,
+    "swap_near:auc": [
+     0.9910240989928949,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9694656488549618,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8651399491094147,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9991058838537431,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9770992366412213,
+     null,
+     null
+    ],
+    "near_gt09": 0.022900763358778626,
+    "near_gt08": 0.035623409669211195
+   }
+  },
+  "it": {
+   "0.002": {
+    "native_words": 0.9843271270327598,
+    "native_sounds": 0.9990247578518076,
+    "sound_auc": 0.9943336867241713,
+    "word_auc": 0.9590774339709021,
+    "pros_auc": 0.9531619688348418,
+    "swap_near:auc": [
+     0.9688760003596799,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8545994065281899,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7477744807121661,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9986795252225519,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9525222551928784,
+     null,
+     null
+    ],
+    "near_gt09": 0.12462908011869436,
+    "near_gt08": 0.18100890207715134
+   },
+   "0.005": {
+    "native_words": 0.9824416686306858,
+    "native_sounds": 0.9976727176009044,
+    "sound_auc": 0.9943842359992408,
+    "word_auc": 0.9580665239374415,
+    "pros_auc": 0.9525331256064228,
+    "swap_near:auc": [
+     0.9708650301231904,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.857566765578635,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7655786350148368,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9988791475586728,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9584569732937686,
+     null,
+     null
+    ],
+    "near_gt09": 0.10682492581602374,
+    "near_gt08": 0.1543026706231454
+   },
+   "0.01": {
+    "native_words": 0.9796134810275748,
+    "native_sounds": 0.9954562581731942,
+    "sound_auc": 0.9939642334569184,
+    "word_auc": 0.9545100179758034,
+    "pros_auc": 0.9508441711482013,
+    "swap_near:auc": [
+     0.970962143692114,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8902077151335311,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7685459940652819,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9991547522704792,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9703264094955489,
+     null,
+     null
+    ],
+    "near_gt09": 0.09495548961424333,
+    "near_gt08": 0.11869436201780416
+   }
+  },
+  "ja": {
+   "0.002": {
+    "native_words": 0.9785288821166367,
+    "native_sounds": 0.9948291366906474,
+    "sound_auc": 0.9841901175910623,
+    "word_auc": 0.9382415606085649,
+    "pros_auc": 0.4895394046829222,
+    "swap_near:auc": [
+     0.9664288798242053,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8497109826589595,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7572254335260116,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9974004549526038,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9479768786127167,
+     null,
+     null
+    ],
+    "near_gt09": 0.12716763005780346,
+    "near_gt08": 0.16184971098265896
+   },
+   "0.005": {
+    "native_words": 0.973403518492866,
+    "native_sounds": 0.9899205635491607,
+    "sound_auc": 0.985005839071989,
+    "word_auc": 0.935335765389247,
+    "pros_auc": 0.4868648887074314,
+    "swap_near:auc": [
+     0.9664984759732184,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8728323699421965,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7456647398843931,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9973192594454218,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.953757225433526,
+     null,
+     null
+    ],
+    "near_gt09": 0.09826589595375723,
+    "near_gt08": 0.12716763005780346
+   },
+   "0.01": {
+    "native_words": 0.9649535946807037,
+    "native_sounds": 0.978492206235012,
+    "sound_auc": 0.9838299679561819,
+    "word_auc": 0.9321481417766039,
+    "pros_auc": 0.4850021143036286,
+    "swap_near:auc": [
+     0.9683066870299843,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8728323699421965,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7456647398843931,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.997430097756813,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.953757225433526,
+     null,
+     null
+    ],
+    "near_gt09": 0.06936416184971098,
+    "near_gt08": 0.10404624277456648
+   }
+  },
+  "ko": {
+   "0.002": {
+    "native_words": 0.9818668252080857,
+    "native_sounds": 0.9984040989458653,
+    "sound_auc": 0.9866677570425756,
+    "word_auc": 0.9324644893270446,
+    "swap_near:auc": [
+     0.9296228759541061,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.7935483870967742,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7612903225806451,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9969178137455824,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9483870967741935,
+     null,
+     null
+    ],
+    "near_gt09": 0.2,
+    "near_gt08": 0.25806451612903225
+   },
+   "0.005": {
+    "native_words": 0.9782996432818074,
+    "native_sounds": 0.9961362395531477,
+    "sound_auc": 0.9863061889186472,
+    "word_auc": 0.9295327846931829,
+    "swap_near:auc": [
+     0.9188174732527554,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8064516129032258,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7548387096774194,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9974697025932321,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9612903225806452,
+     null,
+     null
+    ],
+    "near_gt09": 0.16774193548387098,
+    "near_gt08": 0.23225806451612904
+   },
+   "0.01": {
+    "native_words": 0.9756242568370987,
+    "native_sounds": 0.9910125572214523,
+    "sound_auc": 0.9838480508362868,
+    "word_auc": 0.9251846798113391,
+    "swap_near:auc": [
+     0.9138633833045555,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8064516129032258,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7677419354838709,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9976117090803466,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9612903225806452,
+     null,
+     null
+    ],
+    "near_gt09": 0.17419354838709677,
+    "near_gt08": 0.2
+   }
+  },
+  "fr": {
+   "0.002": {
+    "native_words": 0.976783004552352,
+    "native_sounds": 0.9889261483272245,
+    "sound_auc": 0.9914770528380296,
+    "word_auc": 0.9600266134397871,
+    "swap_near:auc": [
+     0.9798029284951686,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9128919860627178,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8083623693379791,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9979153733896062,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9616724738675958,
+     null,
+     null
+    ],
+    "near_gt09": 0.07317073170731707,
+    "near_gt08": 0.10452961672473868
+   },
+   "0.005": {
+    "native_words": 0.9728376327769348,
+    "native_sounds": 0.9853778366996803,
+    "sound_auc": 0.9917352958866112,
+    "word_auc": 0.9580283665656001,
+    "swap_near:auc": [
+     0.9785630709296456,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9198606271777003,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8257839721254355,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9978393948279424,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9547038327526133,
+     null,
+     null
+    ],
+    "near_gt09": 0.06968641114982578,
+    "near_gt08": 0.08710801393728224
+   },
+   "0.01": {
+    "native_words": 0.9678300455235205,
+    "native_sounds": 0.9812446385401232,
+    "sound_auc": 0.9914329733486957,
+    "word_auc": 0.9547492500581306,
+    "swap_near:auc": [
+     0.975816586626535,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9198606271777003,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.8222996515679443,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9979840354971841,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9930313588850174,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9616724738675958,
+     null,
+     null
+    ],
+    "near_gt09": 0.06968641114982578,
+    "near_gt08": 0.08013937282229965
+   }
+  },
+  "de": {
+   "0.002": {
+    "native_words": 0.9653299916457811,
+    "native_sounds": 0.9942598666807745,
+    "sound_auc": 0.9859751952858102,
+    "word_auc": 0.9477668690876748,
+    "pros_auc": 0.9400061202216311,
+    "swap_near:auc": [
+     0.9558872385116598,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.828125,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7125,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9956382887517147,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.990625,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.921875,
+     null,
+     null
+    ],
+    "near_gt09": 0.09375,
+    "near_gt08": 0.15
+   },
+   "0.005": {
+    "native_words": 0.9590643274853801,
+    "native_sounds": 0.9892868479525976,
+    "sound_auc": 0.9853359501254374,
+    "word_auc": 0.9462729856725227,
+    "pros_auc": 0.9357355397158945,
+    "swap_near:auc": [
+     0.9585465963648834,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.840625,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.71875,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9959844393004115,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.9875,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.93125,
+     null,
+     null
+    ],
+    "near_gt09": 0.065625,
+    "near_gt08": 0.109375
+   },
+   "0.01": {
+    "native_words": 0.9514062935115567,
+    "native_sounds": 0.9827266955877685,
+    "sound_auc": 0.9828023543934294,
+    "word_auc": 0.9442372281709369,
+    "pros_auc": 0.9304763378579535,
+    "swap_near:auc": [
+     0.9590508187585733,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.85,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.74375,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9967212148491084,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.99375,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9375,
+     null,
+     null
+    ],
+    "near_gt09": 0.05625,
+    "near_gt08": 0.084375
+   }
+  },
+  "pt": {
+   "0.002": {
+    "native_words": 0.9778628694507598,
+    "native_sounds": 0.9959555106167847,
+    "sound_auc": 0.9867431763969442,
+    "word_auc": 0.9413976299172029,
+    "pros_auc": 0.950870721954843,
+    "swap_near:auc": [
+     0.9690333655475218,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8360655737704918,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7595628415300546,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9977850892772568,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9619565217391305,
+     null,
+     null
+    ],
+    "near_gt09": 0.07923497267759563,
+    "near_gt08": 0.16666666666666666
+   },
+   "0.005": {
+    "native_words": 0.9729568026803876,
+    "native_sounds": 0.9935721508016756,
+    "sound_auc": 0.9877845967673239,
+    "word_auc": 0.9397983598054772,
+    "pros_auc": 0.9481908004643436,
+    "swap_near:auc": [
+     0.9724505303409932,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.8879781420765027,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7923497267759563,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9981921059486597,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.9728260869565217,
+     null,
+     null
+    ],
+    "near_gt09": 0.06284153005464481,
+    "near_gt08": 0.10109289617486339
+   },
+   "0.01": {
+    "native_words": 0.9687686969008017,
+    "native_sounds": 0.9895276614184602,
+    "sound_auc": 0.987574539746404,
+    "word_auc": 0.9376116973839393,
+    "pros_auc": 0.9440421669989697,
+    "swap_near:auc": [
+     0.9743990413296109,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.9098360655737705,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.7950819672131147,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.998478497679265,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     1.0,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.967391304347826,
+     null,
+     null
+    ],
+    "near_gt09": 0.04371584699453552,
+    "near_gt08": 0.07377049180327869
+   }
+  },
+  "ru": {
+   "0.002": {
+    "native_words": 0.9739788676864848,
+    "native_sounds": 0.9951883317043831,
+    "sound_auc": 0.9866966884398987,
+    "word_auc": 0.9305645408590774,
+    "pros_auc": 0.9042203544560218,
+    "swap_near:auc": [
+     0.9194157508805304,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6762177650429799,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5759312320916905,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9909553021416255,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.997134670487106,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8796561604584527,
+     null,
+     null
+    ],
+    "near_gt09": 0.17765042979942694,
+    "near_gt08": 0.25501432664756446
+   },
+   "0.005": {
+    "native_words": 0.9687746412237818,
+    "native_sounds": 0.9924065859709796,
+    "sound_auc": 0.9869185504665386,
+    "word_auc": 0.9286781823957418,
+    "pros_auc": 0.9008961353676387,
+    "swap_near:auc": [
+     0.9154542886009589,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.6934097421203438,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5873925501432665,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9910790670199143,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.994269340974212,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8825214899713467,
+     null,
+     null
+    ],
+    "near_gt09": 0.18051575931232092,
+    "near_gt08": 0.23782234957020057
+   },
+   "0.01": {
+    "native_words": 0.9588392997949851,
+    "native_sounds": 0.9851890835275543,
+    "sound_auc": 0.9854688270382264,
+    "word_auc": 0.9257730320834615,
+    "pros_auc": 0.8914625586669361,
+    "swap_near:auc": [
+     0.9129247514470875,
+     null,
+     null
+    ],
+    "swap_near:hit@5%FA": [
+     0.7077363896848138,
+     null,
+     null
+    ],
+    "swap_near:right_word": [
+     0.5902578796561605,
+     null,
+     null
+    ],
+    "swap_far:auc": [
+     0.9913995736768376,
+     null,
+     null
+    ],
+    "swap_far:hit@5%FA": [
+     0.997134670487106,
+     null,
+     null
+    ],
+    "swap_far:right_word": [
+     0.8796561604584527,
+     null,
+     null
+    ],
+    "near_gt09": 0.16332378223495703,
+    "near_gt08": 0.21203438395415472
+   }
+  }
+ },
+ "models": {
+  "a": {
+   "coef": [
+    0.2542383856124516,
+    -0.06867760590153034,
+    0.27572492144633226,
+    -0.11146282883924974,
+    1.7289284135009277,
+    -0.43151503739448205,
+    0.16348254068018092,
+    -0.24161306454714462,
+    -0.4553754966179025,
+    0.18860154903392634,
+    0.050239651771574384,
+    0.2732439234070217,
+    0.00726137700779314,
+    0.20775147173181407,
+    0.8115652868296769,
+    0.13009478708764335
+   ],
+   "b": 3.625496093068386,
+   "nat_q": {
+    "0.002": -5.335401269020045,
+    "0.005": -3.524064603790444,
+    "0.01": -2.036270946280291
+   }
+  },
+  "d2": {
+   "coef": [
+    0.14224487639423516,
+    -0.049518933971037765,
+    0.22089490276082743,
+    -0.02827894543294692,
+    0.5142865774399045,
+    -0.7941983961877914,
+    0.14002331635077817,
+    -0.2856382081962295,
+    -0.4723726259392542,
+    0.04834154322437492,
+    0.0582383903024873,
+    0.2617263524556078,
+    0.011012010896208463,
+    0.1540390068516148,
+    0.6611919246435759,
+    0.05617391954477244,
+    1.6780036750593423,
+    -3.9360357242823434,
+    2.109212595333221,
+    4.612638552154027
+   ],
+   "b": 0.628717261585499,
+   "nat_q": {
+    "0.002": -4.981872255304853,
+    "0.005": -3.288947026470365,
+    "0.01": -1.8867329885183068
+   }
+  }
+ }
+}
