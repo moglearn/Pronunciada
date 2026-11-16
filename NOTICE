@@ -13,6 +13,10 @@ Shipped data files with their own licences (pronunciada/data/lex, see SOURCES-eu
   it, pt, ru  derived from WikiPron / Wiktionary: CC BY-SA 3.0/4.0, attribution "Wiktionary
             contributors". These files stay under CC BY-SA when redistributed; the Apache licence
             of the code does not apply to them.
+  ru_stress_extra.tsv.gz  stress marks (and restored ё) for 14 040 Russian word forms missing from
+            ru.tsv.gz, derived offline with silero-stress 1.5 (MIT, github.com/snakers4/silero-stress)
+            from FLEURS-ru train/validation and Common Voice ru (CC0) sentence text
+            (bench/calib/ru_stress_lex.py). silero-stress is not a runtime dependency.
 
 Runtime text packages (installed separately, requirements-text-*.txt)
   pypinyin (MIT), jieba (MIT), opencc-python-reimplemented (Apache-2.0), pyopenjtalk-plus (MIT,

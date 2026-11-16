@@ -175,7 +175,9 @@ include upload and network. Four requests ran in parallel. Each request is one w
 * **ru near swaps (round 8).** The tables above are Azure's and do not change. Pronunciada's
   ru near-swap AUC went 0.872 → 0.887 [0.860, 0.914] against Azure's 0.909 [0.892, 0.925]. Its
   hit@5 % FA went 0.580 → 0.607 (Azure 0.342). Replaced words scoring > 0.9: 36 → 32 of 150
-  (Azure 9). The change: measured vowel targets, a retrained adapter and sound bias +0.60
+  (Azure 9). The change: measured vowel targets, a retrained adapter and sound bias +0.60.
+  Round 10 added an offline stress lexicon and set the bias to 0.0. Near-swap AUC is now 0.901
+  [0.874, 0.926], with 24 of 150 replaced words scoring > 0.9 and right word 0.540
   ([round8_ru.md](round8_ru.md)).
 * **Tone (zh).** Same syllable with a different tone: AUC 0.846, and only 40 % of these swaps
   are caught at 5 % FA. Azure zh-CN is weak on tone-only errors, which is where we can win.

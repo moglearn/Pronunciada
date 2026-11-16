@@ -252,3 +252,111 @@ bias change is proposed for these languages.
   `tests/test_text_ru_round8.py`.
 * Latency: the ru latency in the first table of `results/languages.md` (1061 ms) was measured
   while other jobs shared the CPU. It is not a regression measurement.
+
+## Round 10: closing the stress-coverage hole
+
+**Outcome: adopted. Held-out improved on both benchmarks.**
+* Near swap: 0.887 → 0.901. Azure is 0.909.
+* cv-real ru: 0.772 → 0.788.
+* Cost: about 0.7 points of native word acceptance on test.
+
+### Stress lexicon
+
+19 % of dev words had predicted stress (12.9 % stem-predicted, 6.2 % OOV), so they kept the broad
+round-7 alternatives.
+
+The fix, `bench/calib/ru_stress_lex.py`:
+* silero-stress 1.5 (MIT) runs **offline** in sentence context over FLEURS-ru train + validation
+  and the Common Voice ru sentences of the cv-real metadata (dev / test / invalidated tsv; 27 706
+  sentences). FLEURS-ru test text was not used. No frequency list was in the cache, and nothing
+  was downloaded.
+* For every word form missing from `ru.tsv.gz`, the majority stress (and restored ё) is kept. A
+  second variant with ≥ 25 % of votes (and ≥ 2 occurrences) makes the word a homograph, which
+  keeps both readings and the broad alternatives.
+* Result: `pronunciada/data/lex/ru_stress_extra.tsv.gz`, 14 040 forms (3 homographs), **70 KB**.
+* Runtime reads only that file: `ru.EXTRA_STRESS = True`, switchable with `set_extra_stress`.
+  Torch and silero are not imported (tested). Words still unknown fall back to today's behaviour.
+  Provenance is in NOTICE.
+
+Before trusting it, silero was checked against our lexicon on the words both know (digit stress,
+≥ 2 vowels, not clitics):
+* agreement **96.9 % by type** (21 754 types) and **95.3 % by token** (122 161 tokens);
+* our own fallback (stem / suffix model) agrees with silero on only **74.8 %** of the 14 040
+  words our lexicon lacks.
+
+### Coverage: share of word tokens with predicted stress
+
+| | dev (FLEURS-ru validation) | test (FLEURS-ru test) |
+|---|---|---|
+| before (stem + OOV) | 19.1 % | 18.6 % |
+| after | **0.3 %** | **7.7 %** |
+| covered by the new file | 18.9 % | 10.9 % |
+
+Dev coverage is optimistic by construction: the coordinator listed validation text as a source.
+Test text was not a source.
+
+### Adapter and bias
+
+The references changed for about 19 % of dev words, so I re-checked both.
+* **Adapter.** Retrained with the same recipe on the new references, it was worse on dev than the
+  round-8 adapter (near 0.903 vs 0.910 at each one's rule pick), so it was **not** adopted. The
+  round-8 adapter is kept.
+* **Bias.** Re-picked with the round-8 rule (guards vs round 7, stress channel refitted per value,
+  grid 0 … 1.1). Every value was feasible, and the rule picks **0.0**.
+
+### Dev table (FLEURS-ru validation)
+
+| | round 8 (shipped) | + lexicon, bias 0.6, round-8 stress channel | **round 10: + lexicon, bias 0.0, channel refitted** |
+|---|---|---|---|
+| near-swap AUC | 0.892 | 0.899 | **0.910** [0.892, 0.927] |
+| replaced > 0.9 | 20.3 % | 19.5 % | 14.9 % |
+| hit@5 % FA | 0.630 | 0.650 | 0.659 |
+| right word | 0.527 | 0.550 | 0.544 |
+| native words / sounds | 0.9765 / 0.9990 | 0.9789 / 0.9991 | 0.9763 / 0.9966 |
+| planted sound / word AUC | 0.9820 / 0.9219 | 0.9823 / 0.9263 | 0.9823 / 0.9266 |
+| stress-shift AUC | 0.8614 | 0.8798 | 0.8698 |
+
+**Bar** (versus round 8):
+* near AUC +0.018 (needed ≥ +0.01);
+* native words −0.02 points (limit 0.5);
+* no planted-error AUC drop;
+* stress AUC +0.008 (no drop).
+
+**Adopted.** The frozen package run end to end through `Scorer` reproduces 0.9095.
+
+Shipped:
+* `ru.py` with `EXTRA_STRESS = True`;
+* `ru_stress_extra.tsv.gz`;
+* config bias ru = 0.0;
+* `prosody/ru.json` refitted at 0.0;
+* the round-8 adapter, unchanged.
+
+The stress numbers use the shipped default stress model.
+
+### Held-out, run once (Russian only)
+
+Round-8 caches were moved to `calib/api_round8_ru/`. Azure answers are cached; no requests were
+made. "Paired" = round 10 − round 8 on the same clips, with the `eval_cv` bootstrap.
+
+| FLEURS-ru test | round 8 | round 10 | paired Δ [95 % CI], p | Azure |
+|---|---|---|---|---|
+| near-swap AUC | 0.887 [0.860, 0.914] | **0.901 [0.874, 0.926]** | +0.014 [+0.004, +0.025], p = 0.006 | 0.909 [0.892, 0.925] |
+| near replaced > 0.9 | 32 / 150 | 24 / 150 | | 9 / 150 |
+| near hit@5 % FA | 0.607 | 0.607 [0.533, 0.707] | | 0.342 |
+| near right word | 0.507 | 0.540 [0.460, 0.620] | | 0.373 |
+| far-swap AUC / right word | 0.991 / 0.893 | 0.990 / 0.907 | | 0.982 / 0.761 |
+| native false alarms < 0.6 / < 0.8 | 0.042 / 0.097 | **0.050 / 0.113** | | 0.054 / 0.092 |
+| ten-language native sounds / words (s = .5) | 0.997 / 0.977 | 0.995 / **0.970** | | |
+| ten-language planted sound / word AUC | 0.979 / 0.923 | 0.979 / 0.926 [0.921, 0.932] | | |
+| ten-language stress-shift AUC | 0.863 | 0.865 | | |
+| **cv-real ru Test A AUC** | 0.772 | **0.788** [0.742, 0.830] | +0.016 [−0.002, +0.035], p = 0.092 | 0.809 |
+
+Reading the held-out results:
+* **Near swaps** improve significantly but still trail Azure (CIs overlap).
+* **cv-real ru** recovers most of the round-8 loss. Round 7 was 0.793; the gap to Azure is now
+  −0.022, p = 0.345.
+* **The cost.** Test native word acceptance drops 0.7 points (0.977 → 0.970) and native false
+  alarms rise. On dev the drop was only 0.02 points. A stricter bias on test words without
+  lexicon stress (7.7 % still predicted) is the likely reason. This was not tuned on test.
+* **Other locales.** `results/cv_real.md` and `results/tables/cv_real.json` were regenerated with
+  `bench.eval_cv --steps ours,report`; all other locale rows are unchanged.

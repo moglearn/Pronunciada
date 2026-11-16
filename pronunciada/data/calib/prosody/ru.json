@@ -2,14 +2,14 @@
  "lang": "ru",
  "kind": "stress",
  "coef": [
-  2.7653556286697425,
-  0.43066728633993,
-  0.43066728633993,
-  -0.018744737830286372
+  2.882934419549523,
+  0.5839560448973595,
+  0.5839560448973595,
+  -0.0006806962615324222
  ],
- "c_len": 1.06851082092413,
- "c_str": 0.33182430664974194,
- "n_fit_words": 5318,
+ "c_len": 1.5412441552698728,
+ "c_str": 0.448536826700997,
+ "n_fit_words": 5324,
  "n_fit_errors": 400,
  "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
  "err_prior": 0.1,
@@ -17,7 +17,7 @@
   0.0025,
   0.01
  ],
- "fit_on": "FLEURS validation, 200 clips (round 8: fit_prosody's rows and fit rebuilt at sound bias 0.6 with the round-8 references and adapter, bench/calib/bias_grid.py)",
+ "fit_on": "FLEURS validation, 200 clips (round 10: fit_prosody's rows and fit rebuilt at sound bias 0.0 with the round-10 references and the round-8 adapter, bench/calib/bias_grid.py)",
  "prosody_model_meta": {
   "model": "stress_multi",
   "langs": [
@@ -65,50 +65,50 @@
  "experimental": null,
  "dev_cv": {
   "n_words": 25165,
-  "share_native_words_scored": 0.7396383866481224,
+  "share_native_words_scored": 0.7404728789986091,
   "native_accept": {
    "0.0": {
-    "before": 0.9891515994436718,
-    "after": 0.9835883171070932,
-    "p_pros_only": 0.9974965229485396
+    "before": 0.9916550764951322,
+    "after": 0.9880389429763561,
+    "p_pros_only": 0.9977746870653685
    },
    "0.5": {
-    "before": 0.9860917941585535,
-    "after": 0.9783031988873435,
-    "p_pros_only": 0.9955493741307372
+    "before": 0.9847009735744089,
+    "after": 0.9802503477051461,
+    "p_pros_only": 0.9969401947148818
    },
    "1.0": {
-    "before": 0.9841446453407511,
-    "after": 0.972739916550765,
-    "p_pros_only": 0.9927677329624478
+    "before": 0.9568845618915159,
+    "after": 0.9415855354659249,
+    "p_pros_only": 0.9908205841446454
    }
   },
   "prosodic_error": {
    "sounds": {
-    "auc": 0.5793929068150209,
-    "hit_at_5pct": 0.055,
+    "auc": 0.5931415159944368,
+    "hit_at_5pct": 0.0675,
     "n_err": 400
    },
    "p_pros": {
-    "auc": 0.892989916550765,
-    "hit_at_5pct": 0.53,
+    "auc": 0.9206943671766342,
+    "hit_at_5pct": 0.6575,
     "n_err": 400
    },
    "product": {
-    "auc": 0.8615813630041724,
-    "hit_at_5pct": 0.325,
+    "auc": 0.8751943671766342,
+    "hit_at_5pct": 0.465,
     "n_err": 400
    }
   },
   "sound_error": {
    "before": {
-    "auc": 0.932873157162726,
-    "hit_at_5pct": 0.764,
+    "auc": 0.9246755910987483,
+    "hit_at_5pct": 0.7495,
     "n_err": 2000
    },
    "after": {
-    "auc": 0.9134475660639777,
-    "hit_at_5pct": 0.7205,
+    "auc": 0.9155691933240612,
+    "hit_at_5pct": 0.737,
     "n_err": 2000
    }
   }

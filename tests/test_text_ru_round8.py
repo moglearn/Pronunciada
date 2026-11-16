@@ -101,3 +101,49 @@ def test_default_on_and_switchable():
         assert "a" in {x for x, _ in y.alts}
     finally:
         g.measured_targets = True
+
+
+# ----------------------------------------------------------------------------- round 10
+
+def test_extra_stress_lexicon_on_by_default():
+    g = get_g2p("ru")
+    assert R.EXTRA_STRESS is True and g.use_extra_stress is True
+    assert len(g.extra_stress) > 10000
+    ref = g("Мы видели алешку вчера.")
+    ph = _word(ref, "алешку")
+    assert g._src["алешку"] == "extra"
+    stressed = [p for p in ph if p.is_nucleus][1]       # restored ё carries the stress
+    assert stressed.ipa in ("o", "ʌ", "ɑ") or "o" in {a for a, _ in stressed.alts}
+
+
+def test_extra_stress_switch_and_fallback():
+    g = get_g2p("ru")
+    try:
+        g.set_extra_stress(False)
+        g("Мы видели алешку вчера.")
+        assert g._src["алешку"] in ("stem", "oov")
+    finally:
+        g.set_extra_stress(True)
+    g("Блорфингон пришёл.")
+    assert g._src["блорфингон"] == "oov"                # unknown words: unchanged behaviour
+
+
+def test_extra_stress_homograph_keeps_both_readings():
+    g = get_g2p("ru")
+    homs = [w for w, v in g.extra_stress.items() if len(v) > 1]
+    assert homs
+    w = homs[0]
+    ref = g(f"Это {w} здесь.")
+    assert g._src[w] == "homograph"
+    nuc = [p for p in _word(ref, w) if p.is_nucleus]
+    assert any(p.alts for p in nuc)
+
+
+def test_runtime_does_not_need_silero_or_torch():
+    import subprocess
+    import sys
+
+    code = ("import sys; from pronunciada.text import get_g2p; get_g2p('ru')('Мы видели алешку.'); "
+            "print(int('silero_stress' in sys.modules or 'torch' in sys.modules))")
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True).stdout
+    assert out.strip().endswith("0")
