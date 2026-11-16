@@ -375,7 +375,7 @@ def azure_usage(recs: list[dict]) -> dict:
 SENT_PAIRS = [  # (row, teacher key, ours key, azure key, note)
     ("accuracy", "accuracy", "accuracy", "AccuracyScore", ""),
     ("fluency", "fluency", "fluency", "FluencyScore", ""),
-    ("prosody", "prosody", "prosodic", "PronScore", "Azure: PronScore, nearest available (no Mandarin prosody score)"),
+    ("prosody", "prosody", "prosodic", "PronScore", "nearest available; Azure has no Mandarin prosody score"),
     ("accuracy (secondary: ours sentence prob, Azure PronScore)", "accuracy", "prob", "PronScore", "secondary"),
 ]
 
@@ -703,7 +703,7 @@ def _sent_rows(Sx: dict, has_az: bool, loc2: str | None) -> list[str]:
     for row, tk, ok, ak, note in SENT_PAIRS:
         r = Sx[row]
         p, s = r["pearson"], r["spearman"]
-        sysd = f"ours `{ok}`" + (f" / Azure `{ak}`" if has_az else "") + (f" ({note})" if note and note != "secondary" else "")
+        sysd = f"ours `{ok}`" + (f" / Azure `{ak}`" if has_az else "") + (f" ({note})" if has_az and note and note != "secondary" else "")
         cells = [row, sysd, f"{_ci(p)} {_ci(p, ci='ci_utterance').split(' ', 1)[-1] if np.isfinite(p['value']) else ''}"]
         if has_az:
             cells += [_ci(p, "azure", "azure_ci_speaker"),
@@ -746,9 +746,12 @@ def verdicts(R: dict) -> list[str]:
         d, p = o["delta"], o.get("p_speaker")
         who = "Pronunciada ahead" if d > 0 else "Azure ahead"
         sig = "significant" if p is not None and p < 0.05 else "not significant"
-        return f"- {label}: {o['value']:.3f} vs {o['azure']:.3f} — {who} by {abs(d):.3f}, {sig} (speaker-bootstrap p = {_pv(p)})."
+        return f"- {label}: {o['value']:.3f} vs {o['azure']:.3f} — {who} by {abs(d):.3f}, {sig} (speaker-bootstrap p {_pv(p) if _pv(p).startswith("<") else "= " + _pv(p)})."
     for name, *_ in CLASSES:
         out.append(say(f"Word AUC, {name}", T["word"][name]["ours"]))
+    for key, r in T["hits"].items():
+        name, fa, rate = [x.strip() for x in key.split("|")]
+        out.append(say(f"Hit rate, {name}, {rate} {fa.replace('FA on ', 'false alarms on ')}", r["ours"]))
     for row, *_ in SENT_PAIRS:
         out.append(say(f"Sentence Pearson, {row}", T["sentence"][row]["pearson"]))
     return out
@@ -770,7 +773,7 @@ def markdown(R: dict) -> str:
          + (f"; **{locs[0]} is the pre-declared primary**, {loc2} is a sensitivity check." if has_az else ".") + "\n",
          "## How to read this\n",
          "This is the first expert-marked learner benchmark outside English for this project. It is small and "
-         "narrow: one first language (French), 18 test learners from one university programme (the shipped test "
+         "narrow: one first language (French), 18 test learners (first- and second-year students; the shipped test "
          "files contain 18 distinct learners, not 20), and Taiwan Mandarin read from Traditional-script prompts, "
          "marked by Taiwanese teachers — so Taiwan norms (e.g. less retroflexion, fewer neutral tones, "
          "different readings of some characters) are the reference, while Pronunciada's pronunciations come from a "
