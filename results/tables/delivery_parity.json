@@ -38,46 +38,6 @@
    "n_diff_gt_1e-6": 0,
    "nan_mismatch": 0
   },
-  "pauses_per_word": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "pause_mean_s": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "pause_max_s": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "pauses_in_word": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "lead_sil_s": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "trail_sil_s": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "run_length": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
-  "phonation_ratio": {
-   "max_abs": 0.0,
-   "n_diff_gt_1e-6": 0,
-   "nan_mismatch": 0
-  },
   "emb_accuracy": {
    "max_abs": 0.0,
    "n_diff_gt_1e-6": 0,

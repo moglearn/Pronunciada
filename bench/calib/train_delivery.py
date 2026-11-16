@@ -5,9 +5,11 @@
 
 What it fits on: speechocean762 TRAIN (2,500 utterances, 125 speakers); nothing from test.
 Inputs per utterance:
-  * SENT_NUM: the round-4 sentence inputs, built exactly as bench/calib/train_levels.py builds
-    them (pronunciada.features.sentence_table on OUT-OF-FOLD sound predictions
-    $PRONUNCIADA_CACHE/calib/sound_oof.parquet and OUT-OF-FOLD word predictions word_oof.parquet);
+  * SENT_NUM: the shipped (round-2, unchanged since) sentence inputs, rebuilt exactly as
+    bench/calib/train_word2.py builds them: pronunciada.features.sentence_table on OUT-OF-FOLD
+    universal sound predictions ($PRONUNCIADA_CACHE/calib/sound_oof.parquet), OUT-OF-FOLD
+    round-2 word log-odds (config full/s3, calibrated on speechocean762) and OUT-OF-FOLD word
+    accuracy regressions (round2_sentence_inputs(); cached as calib/round2_sentence_inputs.npz);
   * delivery features (pronunciada.delivery) and pooled encoder activations, extracted through
     the public Scorer by bench/calib/delivery_extract.py ($PRONUNCIADA_CACHE/calib/
     delivery_speechocean762_train.npz).
@@ -23,7 +25,9 @@ by >= 0.003 on average over the seeds and by more than 2 standard errors of the 
 difference, and lowers no head by 0.002 or more on average.
 
 `fit` writes pronunciada/data/calib/sentence.npz: the four reg_* heads retrained on SENT_NUM +
-the adopted columns, the acceptance heads (len, str) copied unchanged from sentence_r4.npz
+the adopted columns, blended with a ridge model on the same inputs (NaN -> train median, each
+input clipped to its train 1-99 % range; output = clip(0.7 * trees + 0.3 * ridge, 0, 10); the
+blend is kept only because it raised the 3-seed CV of every head; arrays lin/*), the acceptance heads (len, str) copied unchanged from sentence_r4.npz
 (their trees index only the first len(SENT_NUM) columns, which keep their positions), and the
 projection (proj/mu, proj/sd, proj/W, proj/b + meta["projection"]).
 """
@@ -34,8 +38,7 @@ import json
 
 import numpy as np
 
-from bench.calib.common import (SMALL_GRID, calib_cache, fit, load_table, raw, save_json, ship_dir,
-                                table_columns)
+from bench.calib.common import SMALL_GRID, calib_cache, fit, raw, save_json, ship_dir, speaker_folds
 from bench.calib.fitlib import log
 from pronunciada import delivery as DV
 from pronunciada import features as F
@@ -52,31 +55,55 @@ LIN_ALPHAS = np.logspace(-2, 3, 11)
 
 # ----------------------------------------------------------------------------- data
 
-def load_data():
-    import pandas as pd
+def round2_sentence_inputs():
+    """SENT_NUM matrix of speechocean762 train as bench/calib/train_word2.py built it for the
+    shipped sentence model (cached)."""
+    p = calib_cache() / "round2_sentence_inputs.npz"
+    if p.exists():
+        z = np.load(p, allow_pickle=False)
+        return {k: z[k] for k in z.files}
+    from bench.calib import train_word2 as W2
+    from bench.calib.common import SMALL_GRID as G
+    from bench.calib.fitlib import cv_heads
 
-    df = load_table("speechocean762", "train")
-    t = table_columns(df)
-    od = pd.read_parquet(calib_cache() / "sound_oof.parquet")
-    od = df[["utt", "phone_index"]].astype({"phone_index": int}).merge(od, on=["utt", "phone_index"], how="left")
-    sl = od["U_z_len"].to_numpy(float)
-    ss = od["U_z_str"].to_numpy(float)
-    sr = np.clip(od["U_reg_raw"].to_numpy(float), 0, 2)
-    W = F.word_table(t, sl, ss, sr, group=t["_group"])
-    wutt = df.utt.values[W["row"]]
-    wo = pd.read_parquet(calib_cache() / "word_oof.parquet")
-    key = pd.DataFrame({"utt": wutt, "word_index": W["word_index"]})
-    wo = key.merge(wo, on=["utt", "word_index"], how="left")
-    assert wo["z_len"].notna().all()
-    gcodes, _ = F._codes(np.asarray(t["_group"]).astype(object))
-    firsts = np.r_[0, np.flatnonzero(np.diff(gcodes)) + 1]
-    dur = np.asarray(t["utt_dur"], dtype=np.float64)[firsts]
-    S = F.sentence_table(t, sl, ss, sr, W, wo["z_len"].to_numpy(float), wo["z_str"].to_numpy(float),
-                         np.clip(wo["reg"].to_numpy(float), 0, 10), dur, group=t["_group"])
-    XB = np.column_stack([np.asarray(S[c], dtype=np.float64) for c in F.SENT_NUM])
-    utt = df.utt.values[firsts]
-    spk = df.speaker.astype(str).values[firsts]
-    Y = np.column_stack([np.asarray(t[f"sent_{k}"], dtype=np.float64)[firsts] for k in HEADS])
+    parts = W2.build()
+    cols = sorted(set(F.WORD2_NUM) | set(F.WORD_NUM))
+    T = W2.stack(parts, cols)
+    X2 = np.column_stack([T[c].astype(float) for c in F.WORD2_NUM])
+    # round 2 chose "full/s3"; only the speechocean762 out-of-fold logits are needed here
+    corp = T["corpus"]
+    so = np.flatnonzero(corp == "so762")
+    inc = np.isin(corp, W2.CANDS["full"])
+    z = {h: np.full(len(corp), np.nan) for h in ("len", "str")}
+    for h in ("len", "str"):
+        y = T[f"y_{h}"]
+        for tr, te in speaker_folds(T["grp"][so]):
+            hold = np.zeros(len(corp), bool)
+            hold[so[te]] = True
+            m = np.flatnonzero(inc & ~hold & np.isfinite(y))
+            mdl = fit("prob", G["s3"], X2[m], y[m], [False] * X2.shape[1], W2.weights(T, m, h))
+            z[h][so[te]] = raw(mdl, X2[so[te]])
+    zc, _ = W2.calibrated(T, z)
+    yreg = T["y_reg"][so]
+    Xr = np.column_stack([T[c].astype(float)[so] for c in F.WORD_NUM])
+    o, _ = cv_heads(Xr, {"reg": yreg}, {"reg": "reg"}, T["grp"][so], G["s2"], [False] * Xr.shape[1])
+    Wso, tso, (sl, ss, sr) = parts["so762"]
+    gc, _ = F._codes(np.asarray(tso["_group"]).astype(object))
+    firsts = np.r_[0, np.flatnonzero(np.diff(gc)) + 1]
+    dur = np.asarray(tso["utt_dur"], float)[firsts]
+    S = F.sentence_table(tso, sl, ss, sr, Wso, zc["len"][so], zc["str"][so], np.clip(o["reg"], 0, 10), dur,
+                         group=tso["_group"])
+    out = {"XB": np.column_stack([np.asarray(S[c], dtype=np.float64) for c in F.SENT_NUM]),
+           "utt": np.asarray(tso["utt"])[firsts].astype(str),
+           "spk": np.asarray(tso["speaker"])[firsts].astype(str),
+           "Y": np.column_stack([np.asarray(tso[f"sent_{k}"], dtype=np.float64)[firsts] for k in HEADS])}
+    np.savez(p, **out)
+    return out
+
+
+def load_data():
+    r2 = round2_sentence_inputs()
+    XB, utt, spk, Y = r2["XB"], r2["utt"], r2["spk"], r2["Y"]
     z = np.load(calib_cache() / "delivery_speechocean762_train.npz")
     pos = {u: i for i, u in enumerate(z["utt"])}
     ix = np.array([pos[u] for u in utt])
@@ -170,18 +197,23 @@ def build_X(data, groups):
 
 
 def fit_linear(Xtr, Ytr, spk, seed=0):
-    """Ridge on all sentence inputs (NaN -> train median), alpha by grouped CV."""
+    """Ridge on all sentence inputs (NaN -> train median; every input clipped to its train
+    1st-99th percentile so the linear part cannot extrapolate on unusual audio), alpha by
+    grouped CV."""
     med = np.nanmedian(Xtr, 0)
     med = np.where(np.isfinite(med), med, 0.0)
-    A = np.where(np.isnan(Xtr), med, Xtr)
+    lo = np.nanpercentile(Xtr, 1, axis=0)
+    hi = np.nanpercentile(Xtr, 99, axis=0)
+    lo, hi = np.where(np.isfinite(lo), lo, -np.inf), np.where(np.isfinite(hi), hi, np.inf)
+    A = np.clip(np.where(np.isnan(Xtr), med, Xtr), lo, hi)
     a, _, _ = pick_alpha(A, Ytr, spk, alphas=LIN_ALPHAS, seed=seed)
     path, mu, sd = ridge_path(A, Ytr, [a])
     W, b = path[0]
-    return {"alpha": a, "med": med, "mu": mu, "sd": sd, "W": W, "b": b}
+    return {"alpha": a, "med": med, "lo": lo, "hi": hi, "mu": mu, "sd": sd, "W": W, "b": b}
 
 
 def apply_linear(lin, X):
-    A = np.where(np.isnan(X), lin["med"], X)
+    A = np.clip(np.where(np.isnan(X), lin["med"], X), lin["lo"], lin["hi"])
     return ((A - lin["mu"]) / lin["sd"]) @ lin["W"] + lin["b"]
 
 
@@ -325,7 +357,7 @@ def fit_ship(a):
             arrays[f"proj/{k}"] = np.asarray(proj[k], dtype=np.float32 if k == "W" else np.float64)
         meta["projection"] = {"names": EMB_NAMES, "layers": list(layers), "alpha": proj["alpha"]}
     if lin is not None:
-        for k in ("med", "mu", "sd", "W", "b"):
+        for k in ("med", "lo", "hi", "mu", "sd", "W", "b"):
             arrays[f"lin/{k}"] = np.asarray(lin[k], dtype=np.float64)
         meta["linear_blend"] = {"heads": [f"reg_{h}" for h in HEADS], "tree_weight": a.blend,
                                 "alpha": lin["alpha"]}

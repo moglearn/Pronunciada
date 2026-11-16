@@ -347,23 +347,23 @@ def load_projection(name: str, directory: str | None = None) -> dict | None:
 
 
 def load_linear(name: str, directory: str | None = None) -> dict | None:
-    """Ridge heads blended with the trees (round-5 sentence model): arrays lin/med, lin/mu,
-    lin/sd, lin/W, lin/b and meta["linear_blend"] = {"heads": [...], "tree_weight": w}.
-    Output = clip(w * trees + (1 - w) * (((x with NaN -> med) - mu) / sd) @ W + b)."""
+    """Ridge heads blended with the trees (round-5 sentence model): arrays lin/med, lin/lo,
+    lin/hi, lin/mu, lin/sd, lin/W, lin/b and meta["linear_blend"] = {"heads", "tree_weight": w}.
+    a = clip(x with NaN -> med, lo, hi);  output = clip(w * trees + (1 - w) * ((a - mu) / sd) @ W + b, 0, 10)."""
     p = (Path(directory) if directory else data_dir()) / f"{name}.npz"
     with np.load(p, allow_pickle=False) as z:
         if "lin/W" not in z.files:
             return None
         meta = json.loads(bytes(z["meta"]).decode("utf-8"))["linear_blend"]
         return {"heads": list(meta["heads"]), "w": float(meta["tree_weight"]),
-                **{k: z[f"lin/{k}"].astype(np.float64) for k in ("med", "mu", "sd", "W", "b")}}
+                **{k: z[f"lin/{k}"].astype(np.float64) for k in ("med", "lo", "hi", "mu", "sd", "W", "b")}}
 
 
 def apply_linear_blend(lin: dict | None, X: np.ndarray, out: dict) -> dict:
     """Blend the regression outputs `out` (already clipped trees) with the ridge heads."""
     if lin is None:
         return out
-    A = np.where(np.isnan(X), lin["med"], X)
+    A = np.clip(np.where(np.isnan(X), lin["med"], X), lin["lo"], lin["hi"])
     z = ((A - lin["mu"]) / lin["sd"]) @ lin["W"] + lin["b"]
     out = dict(out)
     for j, h in enumerate(lin["heads"]):

@@ -17,13 +17,13 @@ Phone level is scored on THEIR 47369 canonical phones: 47041 are aligned to one 
 | phone | Azure | 0.538 [0.458, 0.600] | 0.339 [0.288, 0.388] | – |
 | word accuracy | **ours — shipped** | 0.585 [0.505, 0.644] | 0.411 [0.361, 0.458] | -0.004 [-0.043, +0.033], p=0.817 |
 | word accuracy | Azure | 0.589 [0.515, 0.647] | 0.417 [0.363, 0.467] | – |
-| sentence accuracy | **ours — shipped** | 0.747 [0.684, 0.793] | 0.710 [0.650, 0.759] | +0.073 [+0.035, +0.108], p=0.002 |
+| sentence accuracy | **ours — shipped** | 0.761 [0.703, 0.804] | 0.732 [0.675, 0.775] | +0.088 [+0.052, +0.123], p=0.002 |
 | sentence accuracy | Azure | 0.673 [0.613, 0.720] | 0.652 [0.586, 0.706] | – |
-| sentence fluency | **ours — shipped** | 0.783 [0.703, 0.838] | 0.767 [0.712, 0.808] | +0.074 [-0.016, +0.161], p=0.0899 |
+| sentence fluency | **ours — shipped** | 0.792 [0.717, 0.846] | 0.790 [0.738, 0.828] | +0.084 [+0.000, +0.175], p=0.0519 |
 | sentence fluency | Azure | 0.708 [0.628, 0.760] | 0.613 [0.541, 0.679] | – |
-| sentence prosodic | **ours — shipped** | 0.772 [0.697, 0.829] | 0.753 [0.695, 0.796] | -0.055 [-0.127, -0.005], p=0.018 |
+| sentence prosodic | **ours — shipped** | 0.782 [0.709, 0.836] | 0.780 [0.723, 0.819] | -0.045 [-0.115, +0.007], p=0.16 |
 | sentence prosodic | Azure | 0.827 [0.788, 0.854] | 0.782 [0.726, 0.823] | – |
-| sentence total | **ours — shipped** | 0.761 [0.697, 0.811] | 0.735 [0.679, 0.780] | -0.035 [-0.092, +0.006], p=0.166 |
+| sentence total | **ours — shipped** | 0.773 [0.717, 0.820] | 0.755 [0.701, 0.794] | -0.023 [-0.074, +0.021], p=0.414 |
 | sentence total | Azure | 0.796 [0.743, 0.834] | 0.762 [0.709, 0.801] | – |
 
 ## 2. Calibration on speechocean762 TEST
@@ -127,12 +127,12 @@ First 100 speechocean762 test clips (mean 3.53 s of audio), one process, end-to-
 
 | precision | threads | median ms | p95 ms | real-time factor | load | g2p | fbank | model | adapter | align | features | calibrate |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| fp32 | 4 | 48.8 | 67.5 | 0.0142 | 1.4 | 0.1 | 3.1 | 33.4 | 0.1 | 2.8 | 0.7 | 2.0 |
-| fp32 | 1 | 98.7 | 153.4 | 0.0293 | 0.6 | 0.1 | 3.1 | 84.8 | 0.1 | 2.7 | 0.7 | 1.8 |
-| int8 | 4 | 37.7 | 51.9 | 0.0110 | 0.7 | 0.1 | 3.1 | 23.5 | 0.1 | 2.7 | 0.7 | 1.9 |
-| int8 | 1 | 64.5 | 97.3 | 0.0189 | 0.6 | 0.1 | 3.0 | 49.6 | 0.1 | 2.7 | 0.7 | 1.9 |
+| fp32 | 4 | 53.0 | 72.1 | 0.0155 | 1.3 | 0.1 | 3.2 | 36.5 | 0.1 | 3.1 | 0.8 | 2.1 |
+| fp32 | 1 | 101.1 | 153.9 | 0.0301 | 0.8 | 0.1 | 3.1 | 85.1 | 0.1 | 2.7 | 0.7 | 1.9 |
+| int8 | 4 | 39.0 | 54.7 | 0.0114 | 0.8 | 0.1 | 3.1 | 23.7 | 0.1 | 2.8 | 0.7 | 1.9 |
+| int8 | 1 | 67.3 | 97.2 | 0.0195 | 0.7 | 0.1 | 3.1 | 51.0 | 0.1 | 2.8 | 0.7 | 1.9 |
 
-Calibrators alone (sound, word, sentence; English = shipped B + universal U): 5.35 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 1.1, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.3, 'sentence.npz': 128.1, 'sound_B.npz': 314.4, 'sound_U.npz': 284.3, 'word.npz': 114.7, 'word_reg.npz': 21.4}.
+Calibrators alone (sound, word, sentence; English = shipped B + universal U): 5.61 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 1.6, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.3, 'sentence.npz': 151.3, 'sentence_r4.npz': 128.1, 'sound_B.npz': 314.4, 'sound_U.npz': 284.3, 'word.npz': 114.7, 'word_reg.npz': 21.4}.
 
 ## 5. Does int8 change the benchmark? (speechocean762 TEST, same protocol)
 
@@ -141,10 +141,10 @@ Calibrators alone (sound, word, sentence; English = shipped B + universal U): 5.
 | phone (shipped B) | 0.660 | 0.659 |
 | phone (U) | 0.628 | 0.628 |
 | word accuracy | 0.585 | 0.593 |
-| sentence accuracy | 0.747 | 0.742 |
-| sentence fluency | 0.783 | 0.780 |
-| sentence prosodic | 0.772 | 0.771 |
-| sentence total | 0.761 | 0.759 |
+| sentence accuracy | 0.761 | 0.760 |
+| sentence fluency | 0.792 | 0.792 |
+| sentence prosodic | 0.782 | 0.782 |
+| sentence total | 0.773 | 0.773 |
 
 ## 6. Rounds 2 and 3 (word / sentence redesign, recalibration) — before → after on speechocean762 TEST
 
@@ -155,10 +155,10 @@ Columns: round 1, round 2, round 3 (= current: round-2 models + re-fitted word c
 | level | round 1 ours | round 2 ours | round 3 ours | Azure | round 3 Δ vs Azure, p |
 |---|---|---|---|---|---|
 | word accuracy | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.589 [0.515, 0.647] | -0.004 [-0.043, +0.033], p=0.817 |
-| sentence accuracy | 0.749 [0.685, 0.794] | 0.749 [0.686, 0.795] | 0.747 [0.684, 0.793] | 0.673 [0.613, 0.720] | +0.073 [+0.035, +0.108], p=0.002 |
-| sentence fluency | 0.778 [0.690, 0.839] | 0.783 [0.702, 0.840] | 0.783 [0.703, 0.838] | 0.708 [0.628, 0.760] | +0.074 [-0.016, +0.161], p=0.0899 |
-| sentence prosodic | 0.767 [0.683, 0.828] | 0.773 [0.696, 0.830] | 0.772 [0.697, 0.829] | 0.827 [0.788, 0.854] | -0.055 [-0.127, -0.005], p=0.018 |
-| sentence total | 0.763 [0.700, 0.814] | 0.763 [0.699, 0.813] | 0.761 [0.697, 0.811] | 0.796 [0.743, 0.834] | -0.035 [-0.092, +0.006], p=0.166 |
+| sentence accuracy | 0.749 [0.685, 0.794] | 0.749 [0.686, 0.795] | 0.761 [0.703, 0.804] | 0.673 [0.613, 0.720] | +0.088 [+0.052, +0.123], p=0.002 |
+| sentence fluency | 0.778 [0.690, 0.839] | 0.783 [0.702, 0.840] | 0.792 [0.717, 0.846] | 0.708 [0.628, 0.760] | +0.084 [+0.000, +0.175], p=0.0519 |
+| sentence prosodic | 0.767 [0.683, 0.828] | 0.773 [0.696, 0.830] | 0.782 [0.709, 0.836] | 0.827 [0.788, 0.854] | -0.045 [-0.115, +0.007], p=0.16 |
+| sentence total | 0.763 [0.700, 0.814] | 0.763 [0.699, 0.813] | 0.773 [0.717, 0.820] | 0.796 [0.743, 0.834] | -0.023 [-0.074, +0.021], p=0.414 |
 
 Calibration (ECE, 15 equal-mass bins). Round-1 word truths: accuracy ≥ 5 / ≥ 8; round-2 word truths: accuracy ≥ 5 AND every phone ≥ 1.0 (lenient), accuracy ≥ 8 AND every phone ≥ 1.8 (strict), midpoint 6.5 / 1.4; round-2 sentence strict truth: accuracy ≥ 8 AND every word lenient-ok.
 
@@ -193,7 +193,7 @@ Ours: end-to-end `Scorer.score` on this Mac, 1 ONNX thread per process, 5 proces
 | lang | ours median ms (median audio s) | ours RTF | Azure median s | Azure p90 s |
 |---|---|---|---|---|
 | en | 321 (9.4) | 0.034 | 2.34 | 3.58 |
-| zh | 357 (10.7) | 0.034 | 1.82 | 2.86 |
+| zh | 341 (10.7) | 0.032 | 1.82 | 2.86 |
 | es | 403 (11.6) | 0.035 | 1.94 | 2.99 |
 | it | 496 (13.9) | 0.037 | 2.95 | 4.08 |
 | ja | 442 (12.4) | 0.036 | 2.22 | 3.01 |

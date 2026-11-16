@@ -195,10 +195,20 @@ Sections 1–6 are the plan the code was built against. Measurements changed fou
 - **Tones use pitch only.** A model that also sees the spectrum or the phone posteriors scores
   higher on native speech but guesses the tone from the syllable's sounds (it keeps "hearing" the
   dictionary tone when the pitch is flattened), which is useless for grading learners.
+- **Sentence delivery inputs (round 5, `delivery.py`).** The four sentence regression heads
+  (accuracy / fluency / prosodic / total) also read recogniser disfluency evidence (greedy decode
+  vs the reference: insertion / substitution / deletion rates, extra sounds in pauses, mean max
+  posterior, frame entropy, blank share) and a ridge projection of the mean / std of the
+  encoder's stack-1 activations over speech frames (exposed as extra ONNX outputs by editing the
+  model's protobuf, `acoustic.add_graph_outputs`; log-probs unchanged), blended 0.7 / 0.3 with a
+  clipped ridge model. Rhythm, pause, pitch and loudness features are computed but were not
+  adopted by speaker-grouped CV on speechocean762 train. The acceptance heads (`len`, `str`) are
+  the round-4 trees. Languages whose native medians dropped by > 0.3 keep the round-4 heads
+  (config `sentence_model`).
 - An "explain-away" second pass (re-scoring neighbours of a badly wrong word) is implemented
   (`Scorer(..., explain_away=True)`) but off: it did not help on held-out data.
 
 Held-out discipline: nothing is fitted or selected on speechocean762 test, L2-ARCTIC test, EpaDB
 test or FLEURS test. The word redesign (round 2), the prosody channel (round 3) and the omission
-channel and prosody leniency rule (round 4) were each designed after looking at an earlier
+channel and prosody leniency rule (round 4) and the sentence delivery inputs (round 5) were each designed after looking at an earlier
 held-out evaluation and then fitted on train / validation data only; the results files say so.

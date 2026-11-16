@@ -7,6 +7,7 @@ stay the same, so the same alignment spans are reused; ZIPA posteriors (bench.po
 
     .venv/bin/python -m bench.prosody.leak_test make          # 300 aishell3 test utterances
     .venv/bin/python -m bench.prosody.leak_test eval d_ref d_spec ...
+    .venv/bin/python -m bench.prosody.leak_test eval tone_v2 t3_reg ...     # utterance-level models
 
 Metrics per model, on syllables whose label tone is 2, 3 or 4 (a flat contour is wrong for them):
   acc_orig / acc_mono   accuracy vs the label on original / monotone audio
@@ -117,9 +118,51 @@ def text_prior():
     return {"n": n, "acc_from_phones": ok_ph / n, "acc_from_character": ok_ch / n}
 
 
+def eval_seq(name):
+    """Utterance-level models (tone2 / tone3 checkpoints, e.g. tone_v2 and the v3 candidates):
+    the same syllables (label 2/3/4), inputs rebuilt from the monotone audio (pitch track and,
+    for spectral models, the low-frequency log-mel of the resynthesised audio)."""
+    import json
+
+    import torch
+
+    from bench.prosody import tone2, tone3
+
+    net, kind, ck = tone3.load3(name)
+    T = json.load(open(OUT / "results" / f"{name}.json"))["temperature"]
+    P = {}
+    for cond in ("orig", "mono"):
+        utts = load_prepped(f"aishell3{cond}", "zh", "test")
+        ex, keep = tone2.examples(utts)
+        P[cond] = ([tone2.softmax(z, T) for z in tone2.predict_utts(net, kind, [x for x, _, _, _ in ex])], keep, utts)
+    (Po, keep, uo), (Pm, _, _) = P["orig"], P["mono"]
+    pa_o, pa_m, ok_o, ok_m, pred1 = [], [], [], [], []
+    for po, pm, ui in zip(Po, Pm, keep):
+        for si, s in enumerate(uo[ui]["ref"].syllables):
+            if s.tone in (2, 3, 4):
+                acc = {s.tone, *s.tone_alts}
+                pa_o.append(sum(po[si, t - 1] for t in acc))
+                pa_m.append(sum(pm[si, t - 1] for t in acc))
+                ok_o.append(int(po[si].argmax()) + 1 == s.tone)
+                ok_m.append(int(pm[si].argmax()) + 1 == s.tone)
+                pred1.append(int(pm[si].argmax()) == 0)
+    lab = np.r_[np.zeros(len(pa_o)), np.ones(len(pa_m))]
+    out = {"n": len(pa_o), "acc_orig": float(np.mean(ok_o)), "acc_mono": float(np.mean(ok_m)),
+           "still_label_mono": float(np.mean(ok_m)), "pred_tone1_mono": float(np.mean(pred1)),
+           "mono_auc": M.roc_auc(lab, 1 - np.r_[pa_o, pa_m]),
+           "mean_p_acc_orig": float(np.mean(pa_o)), "mean_p_acc_mono": float(np.mean(pa_m))}
+    print(name, {k: round(v, 4) if isinstance(v, float) else v for k, v in out.items()}, flush=True)
+    _ = torch
+    return out
+
+
 def eval_model(name):
     from bench.prosody.tone_eval import load_model, logits, softmax
 
+    import torch
+
+    if "model" in torch.load(OUT / "models" / f"{name}.pt", weights_only=False):
+        return eval_seq(name)
     net, ck = load_model(name)       # also sets the feature options of the model
     T = __import__("json").load(open(OUT / "results" / f"{name}.json"))["temperature"]
     out = {}
@@ -157,4 +200,5 @@ if __name__ == "__main__":
         print("text prior", res["text_prior"])
         for n in sys.argv[2:]:
             res[n] = eval_model(n)
-        save_json(res, "leak_test.json")
+        save_json(res, "leak_test.json" if all(not n.startswith(("t3", "tone_v")) for n in sys.argv[2:])
+                  else "leak_test_v3.json")

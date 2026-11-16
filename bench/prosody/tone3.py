@@ -121,6 +121,8 @@ tone2.utt_example = utt_example
 
 
 def load_data(which: str):
+    if which == "fleurs":         # in-domain fine-tuning: FLEURS zh TRAIN only (3242 clips)
+        return load_prepped("fleurs", "zh", "train") + load_prepped("fleurs_zh_rest", "zh", "train")
     utts = tone2.load_data("new")
     if which == "v3":
         utts += load_prepped("fleurs_zh_rest", "zh", "train")
@@ -158,6 +160,7 @@ def make_net(cfg):
 
 
 _load2_v2 = tone2.load2
+DEV_SETS = [("aishell3", "test"), ("zhtw", "test")]
 
 
 def load3(name):
@@ -184,7 +187,12 @@ def train(a):
     cfg = {"reg": a.reg, "lowmel": a.lowmel, "spec_dropout": a.spec_dropout, "seq_hid": a.seq_hid}
     CFG.update(cfg)
     dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    net = make_net(cfg).to(dev)
+    net = make_net(cfg)
+    if a.init:                    # fine-tune from a trained v3 checkpoint (same inputs)
+        ck0 = torch.load(MODELS_DIR / f"{a.init}.pt", weights_only=False)
+        assert ck0["cfg"]["reg"] == cfg["reg"] and ck0["cfg"]["lowmel"] == cfg["lowmel"]
+        net.load_state_dict(ck0["state"])
+    net = net.to(dev)
     dev_u = load_prepped("fleurs_val", "zh", "dev")
     dev_ex = [utt_example(u)[:3] for u in dev_u if u["ref"].syllables]
     utts = load_data(a.data)
@@ -258,7 +266,7 @@ def train(a):
     pool.terminate()
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
     torch.save({"state": best_state, "model": "seq", "cfg": cfg, "data": a.data, "transplant": a.transplant,
-                "fleurs_weight": a.fleurs_weight, "steps": a.steps, "curve": curve, "best_dev_acc": best,
+                "fleurs_weight": a.fleurs_weight, "init": a.init, "lr": a.lr, "steps": a.steps, "curve": curve, "best_dev_acc": best,
                 "n_train_utts": int(len(base_idx))}, MODELS_DIR / f"{a.name}.pt")
     print("saved", a.name, best)
 
@@ -283,7 +291,10 @@ if __name__ == "__main__":
         ap.add_argument("--eval-every", type=int, default=1000)
         ap.add_argument("--workers", type=int, default=2)
         ap.add_argument("--seed", type=int, default=0)
+        ap.add_argument("--init", default=None, help="checkpoint to fine-tune from")
         train(ap.parse_args())
     else:
+        # selection sets only: FLEURS validation (inside evaluate) + aishell3 test + zhtw.
+        # FLEURS zh TEST is the held-out product test: never used here.
         for nm in sys.argv[2:]:
-            tone2.evaluate(nm)
+            tone2.evaluate(nm, sets=DEV_SETS, quick=True)

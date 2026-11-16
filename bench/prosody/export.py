@@ -66,6 +66,35 @@ def export_tone_v2(name: str, out: str = "tone_zh_v2"):
     return Utt(net)
 
 
+def export_tone_v3(name: str, out: str = "tone_zh_v3", out_dir: str | None = None, leniency: str = ""):
+    """tone v3 (bench.prosody.tone3): x [S, 160, 10 + extras]; meta "inputs" says which extra
+    frame columns the runtime must append (register features, low-frequency log-mel)."""
+    from bench.prosody.tone3 import load3, n_in
+
+    net, kind, ck = load3(name)
+
+    class Utt(torch.nn.Module):
+        def __init__(self, m):
+            super().__init__()
+            self.m = m
+
+        def forward(self, x):
+            return self.m.forward_utt(x)
+
+    d = Path(out_dir) if out_dir else DATA
+    d.mkdir(parents=True, exist_ok=True)
+    _export(Utt(net), d / f"{out}.onnx", {"x": torch.zeros(5, CTX_LEN, n_in(ck["cfg"]))},
+            {"x": {0: "n"}, "logits": {0: "n"}})
+    res = json.load(open(OUT / "results" / f"{name}.json"))
+    meta = {"model": name, "temperature": res["temperature"], "platt": res["platt"], "ctx_len": CTX_LEN,
+            "sequence": True, "inputs": {"reg": bool(ck["cfg"]["reg"]), "lowmel": bool(ck["cfg"]["lowmel"])},
+            "leniency": [x for x in leniency.split(",") if x]}
+    json.dump(meta, open(d / f"{out}.json", "w"), indent=1)
+    x = np.random.default_rng(0).normal(size=(7, CTX_LEN, n_in(ck["cfg"]))).astype(np.float32)
+    print("onnx vs torch max |dlogit|", parity(d / f"{out}.onnx", Utt(net), {"x": x}))
+    return Utt(net)
+
+
 def export_pitch(name: str):
     from bench.prosody.tone_eval import load_model
 
@@ -106,5 +135,9 @@ def parity(onnx_path: Path, net, feeds: dict) -> float:
 
 if __name__ == "__main__":
     what, name = sys.argv[1], sys.argv[2]
-    {"tone": export_tone, "tone_v2": export_tone_v2, "pitch": export_pitch, "stress": export_stress}[what](name)
+    if what == "tone_v3":     # tone_v3 <ckpt> [out_stem] [out_dir] [leniency rules]
+        a = sys.argv[3:] + [None] * 3
+        export_tone_v3(name, a[0] or "tone_zh_v3", a[1] or None, a[2] or "")
+    else:
+        {"tone": export_tone, "tone_v2": export_tone_v2, "pitch": export_pitch, "stress": export_stress}[what](name)
     print("exported", what, name)

@@ -24,6 +24,7 @@ Evaluation: 5-fold utterance-grouped CV of the whole fit (regression + shifts).
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 
@@ -51,10 +52,18 @@ def _words(res, field, wrong):
     zl, zs = c["w_zl"], np.minimum(c["w_zs"], c["w_zl"])
     snd = {s: sigmoid(blend_logit(zl, zs, s)) for s in (0.0, 0.5, 1.0)}
     out = []
+    ref, pros = c.get("ref"), c.get("prosody")
     for wi, w in enumerate(res.words):
         vals = [getattr(x, field) for x in w.syllables if getattr(x, field) is not None]
         out.append({"vals": [float(v) for v in vals], "snd": [float(snd[s][wi]) for s in (0.0, 0.5, 1.0)],
                     "wrong": bool(wrong[wi])})
+        if field == "tone_prob" and pros is not None:
+            # per scored syllable, for offline re-scoring under other tone-leniency rules
+            s0, s1 = ref.words[wi].syllables
+            out[-1]["syl"] = [{"i": i, "probs": pros[i]["tone_probs"], "tone": ref.syllables[i].tone,
+                               "alts": list(ref.syllables[i].tone_alts)}
+                              for i in range(s0, s1) if pros[i].get("tone_prob") is not None]
+            out[-1]["ref_obj"] = ref
     return out
 
 
@@ -118,7 +127,7 @@ def cached_collect(lang, n):
     # the model choice / tone leniency can be switched by environment variables: part of the key
     env = "".join(f"_{os.environ[v]}" for v in ("PRONUNCIADA_TONE_MODEL", "PRONUNCIADA_TONE_LENIENCY")
                   if os.environ.get(v))
-    p = calib_cache() / f"prosody_rows_{lang}_{n}_{h}{env}.pkl"
+    p = calib_cache() / f"prosody_rows_{lang}_{n}_{h}{env}_r5.pkl"
     if p.exists():
         return pickle.loads(p.read_bytes())
     out = collect(lang, n)
@@ -126,10 +135,39 @@ def cached_collect(lang, n):
     return out
 
 
+LENIENCY = None      # --leniency: re-score the collected tone rows offline under these rules
+
+
+def apply_leniency(rows, meta, rules):
+    """Recompute each word's tone values with pronunciada.prosody.tone_leniency `rules` added to
+    the acceptable set (same formula as ProsodyScorer._tone), from the stored tone_probs."""
+    from pronunciada.prosody import _platt
+    from pronunciada.prosody.tone_leniency import extra_tones
+
+    out = []
+    for r in rows:
+        if "syl" not in r:
+            out.append(r)
+            continue
+        vals = []
+        for q in r["syl"]:
+            acc = {q["tone"], *q["alts"]} | extra_tones(r["ref_obj"], q["i"], rules)
+            vals.append(float(_platt(sum(q["probs"][t - 1] for t in acc if 1 <= t <= 5), meta["platt"])))
+        out.append(dict(r, vals=vals))
+    return out
+
+
+def get_rows(lang, n):
+    rows, meta = cached_collect(lang, n)
+    if LENIENCY is not None:
+        rows = apply_leniency(rows, meta, LENIENCY)
+    return rows, meta
+
+
 def sweep(lang, n):
     """Dev-CV trade-off of the native quantiles (report only; the shipped pair is Q_LEN, Q_STR)."""
     global Q_LEN, Q_STR
-    rows, _ = cached_collect(lang, n)
+    rows, _ = get_rows(lang, n)
     keep, out = (Q_LEN, Q_STR), []
     for q in Q_GRID:
         Q_LEN, Q_STR = q
@@ -226,6 +264,21 @@ def evaluate(rows):
         return {"auc": roc_auc(y, 1 - score[m]), "hit_at_5pct": float(np.mean(score[(ref == tag) & wrong] < thr)),
                 "n_err": int(y.sum())}
 
+    syl = [q for r in rows if r["ref"] == "clean" for q in r.get("syl", ())]
+    if syl:                                # zh: heard tone (argmax) is the tone or an alt
+        lr = LENIENCY or ()
+        from pronunciada.prosody.tone_leniency import extra_tones
+
+        agree = collections.defaultdict(list)
+        for r in rows:
+            if r["ref"] != "clean":
+                continue
+            for q in r.get("syl", ()):
+                acc = {q["tone"], *q["alts"]} | extra_tones(r["ref_obj"], q["i"], lr) if "ref_obj" in r else {q["tone"], *q["alts"]}
+                ok = int(np.argmax(q["probs"])) + 1 in acc
+                agree["all"].append(ok)
+                agree[f"tone{q['tone']}"].append(ok)
+        out["native_syllable_agreement"] = {k: float(np.mean(v)) for k, v in sorted(agree.items())}
     out["prosodic_error"] = {"sounds": det(snd[:, 1], "prosody"), "p_pros": det(pp[:, 1], "prosody"),
                              "product": det(prod[:, 1], "prosody")}
     out["sound_error"] = {"before": det(snd[:, 1], "sound"), "after": det(prod[:, 1], "sound")}
@@ -240,7 +293,7 @@ def run(lang, n):
     from bench.pipeline.common import repo_root
 
     global Q_LEN, Q_STR
-    rows, meta = cached_collect(lang, n)
+    rows, meta = get_rows(lang, n)
     for q in Q_GRID:
         Q_LEN, Q_STR = q
         ev = evaluate(rows)
@@ -277,9 +330,15 @@ def main():
     ap.add_argument("--workers", type=int, default=5)
     ap.add_argument("--sweep", action="store_true", help="print the native-quantile trade-off and exit")
     ap.add_argument("--dry-run", action="store_true", help="evaluate only; do not overwrite the shipped json")
+    ap.add_argument("--leniency", default=None,
+                    help="zh, with --dry-run: re-score offline with these tone-leniency rules (comma list or none)")
     a = ap.parse_args()
-    global DRY_RUN
+    global DRY_RUN, LENIENCY
     DRY_RUN = a.dry_run
+    if a.leniency is not None:
+        if not a.dry_run:
+            raise SystemExit("--leniency only with --dry-run (ship rules through the model json / runtime)")
+        LENIENCY = tuple(x for x in a.leniency.split(",") if x and x != "none")
     langs = list(KIND) if a.lang == "all" else a.lang.split(",")
     if a.sweep:
         with ProcessPoolExecutor(min(a.workers, len(langs))) as ex:
@@ -299,6 +358,7 @@ def main():
               "native s=.5 before/after %.3f/%.3f" % (e["native_accept"]["0.5"]["before"], e["native_accept"]["0.5"]["after"]),
               "pros AUC sounds/p_pros/product %.3f/%.3f/%.3f" % (e["prosodic_error"]["sounds"]["auc"], e["prosodic_error"]["p_pros"]["auc"], e["prosodic_error"]["product"]["auc"]),
               "hit %.3f" % e["prosodic_error"]["product"]["hit_at_5pct"],
+              "native syllable agreement %s" % {k: round(v, 3) for k, v in e.get("native_syllable_agreement", {}).items()},
               "sound AUC %.4f -> %.4f" % (e["sound_error"]["before"]["auc"], e["sound_error"]["after"]["auc"]), flush=True)
 
 

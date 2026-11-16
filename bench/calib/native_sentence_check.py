@@ -57,6 +57,7 @@ def run_lang(args):
     by = {int(r["audio"].split(":")[2]): r for r in recs}
     path = recs[0]["audio"].split(":")[1]
     new, old = {k: [] for k in KEYS}, {k: [] for k in KEYS}
+    rows = []
     for i, wav in iter_parquet_audio(path, set(by)):
         try:
             res = sc.score((wav, 16000), by[i]["text"])
@@ -68,6 +69,13 @@ def run_lang(args):
         for k in KEYS:
             new[k].append(float(c["sent"][f"reg_{k}"][0]))
             old[k].append(float(o[f"reg_{k}"][0]))
+        rows.append({"utt": by[i]["id"], "S": {k: float(np.asarray(v)[0]) for k, v in c["S"].items()},
+                     "delivery": c["delivery"], "pooled": c["pooled"]})
+    import pickle
+
+    from bench.calib.common import calib_cache
+
+    (calib_cache() / f"r5_native_rows_{lang}_{n}.pkl").write_bytes(pickle.dumps(rows))
     return lang, new, old, sc.delivery
 
 

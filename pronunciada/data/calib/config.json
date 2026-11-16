@@ -39,5 +39,16 @@
   "threshold": 0.5,
   "max_passes": 2,
   "note": "selected on FLEURS validation (0.5 / 2) but DISABLED by default: on held-out data it lowered speechocean762 phone Pearson 0.660 -> 0.644 and word 0.585 -> 0.560 and did not improve the swap right-word rate; available as Scorer(..., explain_away=True)"
- }
+ },
+ "sentence_model": {
+  "de": "sentence_r4",
+  "es": "sentence_r4",
+  "fr": "sentence_r4",
+  "it": "sentence_r4",
+  "ja": "sentence_r4",
+  "ko": "sentence_r4",
+  "ru": "sentence_r4",
+  "zh": "sentence_r4"
+ },
+ "sentence_model_note": "round 5: languages listed in sentence_model keep the round-4 sentence heads because the round-5 heads lowered their native FLEURS-validation median fluency / prosodic / total by more than 0.3 (bench/calib/native_sentence_check.py)"
 }

@@ -1,7 +1,8 @@
 """Latency of ProsodyScorer.score on a 10 s clip (F0 + features + windows + ONNX model).
 
     .venv/bin/python -m bench.prosody.latency [zh|ja|en ...]
-Uses a FLEURS test clip of the language tiled to 10 s, its reference repeated accordingly and the
+PRONUNCIADA_LAT_THREADS sets the onnxruntime threads (default 2, as in Scorer); PRONUNCIADA_TONE_MODEL
+picks the tone model. Uses a FLEURS test clip of the language tiled to 10 s, its reference repeated accordingly and the
 cached ZIPA posteriors for the alignment (alignment time not included).
 """
 from __future__ import annotations
@@ -32,7 +33,7 @@ def run(lang: str, n: int = 30) -> dict:
     wav = np.pad(wav, (0, 160000 - len(wav)))
     ref = g2p(r["text"])
     ev = score_reference(postcache.get_posteriors("fleurs", r["id"], r["audio"]), ref)
-    sc = ProsodyScorer(lang)
+    sc = ProsodyScorer(lang, threads=int(os.environ.get("PRONUNCIADA_LAT_THREADS", "2")))
     sc.score(wav, ref, ev)
     tot, f0t = [], []
     for _ in range(n):
