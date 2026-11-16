@@ -70,6 +70,7 @@
  "prosody_model_files": {
   "pitch_ja.onnx": "b6a74615b22e",
   "pitch_ja_v3.onnx": "52c37712f74b",
+  "pitch_ja_v3r.onnx": "5ec9cd8659b0",
   "stress.onnx": "a7ed773ec4e0",
   "stress_v3.onnx": "7a93506dbbde",
   "tone_zh.onnx": "4e7428ce226a",
