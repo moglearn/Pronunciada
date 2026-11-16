@@ -10,7 +10,9 @@ RMS):
                   >= 3 samples at the recording's own peak (clipped, then rescaled)
   noise_db        10th percentile frame level (the quiet floor)
   speech_db       mean level of the speech frames
-  snr_db          speech_db - mean level of the non-speech frames (an SNR estimate)
+  snr_db          p95 - p10 of the frame levels (loud speech over the quiet floor; an SNR
+                  estimate that needs no voice-activity decision; white noise at 0 / 5 / 10 dB
+                  SNR reads about 5 / 9 / 14 dB)
   speech_s        frames above the speech threshold (max(p95 - 30 dB, noise + 35 % of the
                   p95 - noise range)), with gaps < 100 ms bridged
   speech_share    speech_s / duration
@@ -23,8 +25,6 @@ of it, checked on Common Voice dev clips (bench/coach/audio_gate.py, results/coa
 """
 from __future__ import annotations
 
-import math
-
 import numpy as np
 
 SR = 16000
@@ -32,16 +32,15 @@ FRAME = 320                      # 20 ms
 ISSUES = ("clipped", "too_noisy", "too_quiet", "too_short", "mostly_silence")
 
 # median speech seconds per prompt syllable (Japanese: per mora) on FLEURS validation
-SEC_PER_SYL = {"en": 0.229, "zh": 0.226, "ja": 0.135, "es": 0.168, "fr": 0.181, "de": 0.214,
-               "it": 0.172, "pt": 0.182, "ru": 0.209, "ko": 0.181}
+SEC_PER_SYL = {"de": 0.183, "en": 0.192, "es": 0.154, "fr": 0.171, "it": 0.173, "ja": 0.122, "ko": 0.167, "pt": 0.167, "ru": 0.158, "zh": 0.185}
 
 THRESHOLDS = {
-    "clipped_share": 0.01,       # clipped:        > 1 % of samples clipped
-    "snr_db": 18.0,              # too_noisy:      SNR estimate below
-    "speech_db": -42.0,          # too_quiet:      speech level below (dBFS)
-    "speech_ratio": 0.45,        # too_short:      speech shorter than 45 % of what the prompt needs
-    "speech_share": 0.15,        # mostly_silence: < 15 % of the recording is speech ...
-    "min_speech_s": 0.3,         # ... or less than 0.3 s of speech at all
+    "clipped_share": 0.002,      # clipped:        share of clipped samples above
+    "snr_db": 12.1,             # too_noisy:      SNR estimate (p95 - p10, dB) below
+    "speech_db": -69.1,          # too_quiet:      speech level below (dBFS)
+    "speech_ratio": 0.716,       # too_short:      speech shorter than this share of what the prompt needs
+    "speech_share": 0.312,       # mostly_silence: speech share of the recording below ...
+    "min_speech_s": 0.3,         # ... or less than this much speech at all
 }
 
 
@@ -100,13 +99,12 @@ def measure(wav, n_syllables: int | None = None, lang: str | None = None) -> dic
         sp[:] = False
     n_sp = int(sp.sum())
     speech_db = float(db[sp].mean()) if n_sp else None
-    rest = db[~sp]
-    snr = (speech_db - float(rest.mean())) if (n_sp and len(rest)) else (p95 - p10 if n_sp else None)
+    snr = (p95 - p10) if n_sp else None
     idx = np.flatnonzero(sp)
     out.update(noise_db=p10, speech_db=speech_db, snr_db=snr, speech_s=n_sp * FRAME / SR,
                speech_share=n_sp / len(db),
-               lead_sil_s=(idx[0] * FRAME / SR) if n_sp else dur,
-               trail_sil_s=(dur - (idx[-1] + 1) * FRAME / SR) if n_sp else 0.0)
+               lead_sil_s=float(idx[0] * FRAME / SR) if n_sp else dur,
+               trail_sil_s=float(dur - (idx[-1] + 1) * FRAME / SR) if n_sp else 0.0)
     exp = None
     if n_syllables:
         exp = n_syllables * SEC_PER_SYL.get(lang or "", 0.2)
@@ -141,18 +139,3 @@ def check(wav, n_syllables: int | None = None, lang: str | None = None,
     iss = issues(m, thresholds)
     return {"schema_version": 1, **m, "issues": iss, "retry_recommended": bool(iss)}
 
-
-def trim_bounds(wav, pad_s: float = 0.15) -> tuple[int, int]:
-    """Sample range [a, b) of the speech region plus `pad_s` on each side (energy-based, the
-    same speech frames as measure()); the whole clip when no speech is found."""
-    wav = np.asarray(wav, dtype=np.float32).reshape(-1)
-    db = _frame_db(wav)
-    if len(db) == 0:
-        return 0, len(wav)
-    p10, p95 = float(np.percentile(db, 10)), float(np.percentile(db, 95))
-    sp = db >= max(p95 - 30.0, p10 + 0.35 * (p95 - p10))
-    idx = np.flatnonzero(sp)
-    if len(idx) == 0 or p95 < -90:
-        return 0, len(wav)
-    pad = int(math.ceil(pad_s * SR))
-    return max(idx[0] * FRAME - pad, 0), min((idx[-1] + 1) * FRAME + pad, len(wav))

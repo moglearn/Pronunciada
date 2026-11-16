@@ -37,7 +37,8 @@ class Scorer:
                  strictness: float = 0.5, threads: int | None = None, *,
                  calib_dir: str | None = None, sound_model: str | None = None,
                  prosody: bool = True, cache_size: int = 4, explain_away: bool | None = None,
-                 experimental: bool = False, delivery: bool | None = None, match: bool = True):
+                 experimental: bool = False, delivery: bool | None = None, match: bool = True,
+                 audio_check: bool = True):
         from .acoustic import AcousticModel
         from .adapter import Adapter
         from .text import get_g2p, normalize_lang
@@ -134,6 +135,7 @@ class Scorer:
             ea["enabled"] = bool(explain_away)
         self.ea = ea if ea.get("enabled") else None
         self._calib_dir = calib_dir
+        self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
         if prosody:
@@ -204,6 +206,13 @@ class Scorer:
             warnings.append(f"audio is very short ({dur:.2f} s)")
         if len(wav) == 0 or float(np.max(np.abs(wav))) < SILENCE_PEAK:
             warnings.append("audio is silent")
+        aq = None
+        if self.audio_check:
+            from . import quality as Q
+
+            t = time.perf_counter()
+            aq = Q.check(wav, len(ref.syllables), self.lang)
+            timing["audio_check"] = (time.perf_counter() - t) * 1e3
         lpa, fb, emb = self._posteriors(wav, timing)
         t = time.perf_counter()
         ev = score_reference(lpa, ref)
@@ -237,6 +246,7 @@ class Scorer:
         cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
         cache.update(ref=ref, ev=ev, tab=tab, match_e=_match.evidence(lpa, ref, ev, tab))
+        cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             # the expected sounds cannot all fit into the audio: nothing was said in a scorable
             # way, so every level gets the floor probability (the calibrators never saw the
@@ -474,6 +484,7 @@ class Scorer:
             scores = _sentence_recal(self.sent_recal, scores, [sy.tone_prob for w in words for sy in w.syllables])
         res = SentenceResult(self.lang, ref.text, sp, s, words, fluency=flu, completeness=comp,
                              warnings=list(c["warnings"]), scores=scores, match_prob=pm)
+        res.audio = c.get("audio")
         res._pronunciada = c  # noqa: SLF001  (cached evidence for rescore / details)
         return res
 

@@ -1,0 +1,446 @@
+{
+ "l2arctic": {
+  "n_correct": 25560,
+  "n_sub": 3168,
+  "nflag_sub": 89,
+  "diagnosed_sub": 89,
+  "n_del": 919,
+  "sub_unmappable": 214,
+  "nflag_correct": 71,
+  "diagnosed_correct": 62,
+  "nflag_del": 125,
+  "diagnosed_del": 116,
+  "coverage_sub": 0.028093434343434344,
+  "flagged_sub": 0.028093434343434344,
+  "precision_exact": 0.18250950570342206,
+  "precision_within1": 0.26996197718631176,
+  "sub_exact": 0.5647058823529412,
+  "sub_within1": 0.6588235294117647,
+  "diagnosed_labels": {
+   "sub": 85,
+   "del": 116,
+   "correct": 62
+  },
+  "top_sub": [
+   [
+    "ʃ",
+    "s",
+    "s",
+    6
+   ],
+   [
+    "oʊ",
+    "ɔ",
+    "ɑ",
+    2
+   ],
+   [
+    "p",
+    "t",
+    "t",
+    2
+   ],
+   [
+    "oʊ",
+    "aʊ",
+    "ʊ",
+    2
+   ],
+   [
+    "s",
+    "t",
+    "t",
+    2
+   ],
+   [
+    "d",
+    "n",
+    "n",
+    2
+   ],
+   [
+    "p",
+    "f",
+    "f",
+    2
+   ],
+   [
+    "ʊ",
+    "ɔ",
+    "ɑ",
+    1
+   ],
+   [
+    "m",
+    "b",
+    "b",
+    1
+   ],
+   [
+    "ɑ",
+    "ɛ",
+    "ɛ",
+    1
+   ],
+   [
+    "u",
+    "ɑ",
+    "ɑ",
+    1
+   ],
+   [
+    "ɛ",
+    "ɪ",
+    "u",
+    1
+   ]
+  ]
+ },
+ "epadb": {
+  "n_correct": 16315,
+  "n_del": 259,
+  "n_sub": 3848,
+  "nflag_correct": 68,
+  "diagnosed_correct": 63,
+  "sub_unmappable": 518,
+  "nflag_sub": 113,
+  "diagnosed_sub": 111,
+  "nflag_del": 45,
+  "diagnosed_del": 43,
+  "coverage_sub": 0.028846153846153848,
+  "flagged_sub": 0.029365904365904368,
+  "precision_exact": 0.24242424242424243,
+  "precision_within1": 0.3888888888888889,
+  "sub_exact": 0.5217391304347826,
+  "sub_within1": 0.6630434782608695,
+  "diagnosed_labels": {
+   "sub": 92,
+   "del": 43,
+   "correct": 63
+  },
+  "top_sub": [
+   [
+    "eɪ",
+    "aɪ",
+    "aɪ",
+    7
+   ],
+   [
+    "eɪ",
+    "i",
+    "i",
+    4
+   ],
+   [
+    "ə",
+    "i",
+    "i",
+    4
+   ],
+   [
+    "ə",
+    "ɛ",
+    "ɛ",
+    3
+   ],
+   [
+    "z",
+    "s",
+    "s",
+    3
+   ],
+   [
+    "dʒ",
+    "ʃ",
+    "ʃ",
+    3
+   ],
+   [
+    "aɪ",
+    "ɔ",
+    "ɔ",
+    3
+   ],
+   [
+    "ɛ",
+    "i",
+    "i",
+    3
+   ],
+   [
+    "ə",
+    "aɪ",
+    "i",
+    3
+   ],
+   [
+    "eɪ",
+    "ɛ",
+    "ə",
+    2
+   ],
+   [
+    "ʒ",
+    "ʃ",
+    "s",
+    2
+   ],
+   [
+    "ʒ",
+    "s",
+    "s",
+    2
+   ]
+  ]
+ },
+ "ompal": {
+  "units": 7257,
+  "units_any_wrong": 1220,
+  "tone": {
+   "ours": 210,
+   "teacher": 1113,
+   "precision_type": 0.47619047619047616,
+   "precision_any": 0.49047619047619045,
+   "recall": 0.08984725965858041
+  },
+  "consonant": {
+   "ours": 81,
+   "teacher": 143,
+   "precision_type": 0.4074074074074074,
+   "precision_any": 0.6049382716049383,
+   "recall": 0.23076923076923078
+  },
+  "vowel": {
+   "ours": 102,
+   "teacher": 142,
+   "precision_type": 0.3235294117647059,
+   "precision_any": 0.47058823529411764,
+   "recall": 0.2323943661971831
+  },
+  "type_agreement_when_both_flag": 0.867816091954023,
+  "n_both": 174
+ },
+ "strictness_1": {
+  "l2arctic": {
+   "n_correct": 25560,
+   "n_sub": 3168,
+   "nflag_sub": 256,
+   "diagnosed_sub": 223,
+   "n_del": 919,
+   "sub_unmappable": 214,
+   "nflag_correct": 254,
+   "diagnosed_correct": 187,
+   "nflag_del": 210,
+   "diagnosed_del": 191,
+   "coverage_sub": 0.07039141414141414,
+   "flagged_sub": 0.08080808080808081,
+   "precision_exact": 0.2182741116751269,
+   "precision_within1": 0.3570219966159052,
+   "sub_exact": 0.6056338028169014,
+   "sub_within1": 0.7323943661971831,
+   "diagnosed_labels": {
+    "sub": 213,
+    "del": 191,
+    "correct": 187
+   },
+   "top_sub": [
+    [
+     "z",
+     "s",
+     "s",
+     16
+    ],
+    [
+     "ʃ",
+     "s",
+     "s",
+     16
+    ],
+    [
+     "m",
+     "n",
+     "n",
+     7
+    ],
+    [
+     "oʊ",
+     "ɔ",
+     "ɑ",
+     4
+    ],
+    [
+     "ɛ",
+     "ɪ",
+     "ɪ",
+     3
+    ],
+    [
+     "ð",
+     "h",
+     "h",
+     3
+    ],
+    [
+     "b",
+     "v",
+     "v",
+     3
+    ],
+    [
+     "s",
+     "t",
+     "t",
+     3
+    ],
+    [
+     "ɜ˞",
+     "ə",
+     "ə",
+     3
+    ],
+    [
+     "s",
+     "ʃ",
+     "ʃ",
+     3
+    ],
+    [
+     "d",
+     "n",
+     "n",
+     3
+    ],
+    [
+     "d",
+     "t",
+     "t",
+     2
+    ]
+   ]
+  },
+  "epadb": {
+   "n_correct": 16315,
+   "n_del": 259,
+   "nflag_del": 64,
+   "diagnosed_del": 59,
+   "nflag_correct": 187,
+   "diagnosed_correct": 157,
+   "n_sub": 3848,
+   "sub_unmappable": 518,
+   "nflag_sub": 356,
+   "diagnosed_sub": 301,
+   "coverage_sub": 0.07822245322245322,
+   "flagged_sub": 0.09251559251559252,
+   "precision_exact": 0.3559322033898305,
+   "precision_within1": 0.4957627118644068,
+   "sub_exact": 0.65625,
+   "sub_within1": 0.75,
+   "diagnosed_labels": {
+    "sub": 256,
+    "del": 59,
+    "correct": 157
+   },
+   "top_sub": [
+    [
+     "z",
+     "s",
+     "s",
+     74
+    ],
+    [
+     "eɪ",
+     "i",
+     "i",
+     11
+    ],
+    [
+     "eɪ",
+     "aɪ",
+     "aɪ",
+     10
+    ],
+    [
+     "ɛ",
+     "i",
+     "i",
+     8
+    ],
+    [
+     "dʒ",
+     "ʃ",
+     "ʃ",
+     6
+    ],
+    [
+     "ʒ",
+     "ʃ",
+     "ʃ",
+     6
+    ],
+    [
+     "eɪ",
+     "ɛ",
+     "ə",
+     5
+    ],
+    [
+     "ə",
+     "i",
+     "i",
+     5
+    ],
+    [
+     "ʒ",
+     "s",
+     "s",
+     4
+    ],
+    [
+     "ə",
+     "aɪ",
+     "i",
+     4
+    ],
+    [
+     "eɪ",
+     "aɪ",
+     "ɪ",
+     4
+    ],
+    [
+     "ə",
+     "ɛ",
+     "ɛ",
+     3
+    ]
+   ]
+  },
+  "ompal": {
+   "units": 7257,
+   "units_any_wrong": 1220,
+   "tone": {
+    "ours": 521,
+    "teacher": 1113,
+    "precision_type": 0.4510556621880998,
+    "precision_any": 0.46257197696737046,
+    "recall": 0.21114106019766396
+   },
+   "consonant": {
+    "ours": 143,
+    "teacher": 143,
+    "precision_type": 0.2867132867132867,
+    "precision_any": 0.4405594405594406,
+    "recall": 0.2867132867132867
+   },
+   "vowel": {
+    "ours": 189,
+    "teacher": 142,
+    "precision_type": 0.24338624338624337,
+    "precision_any": 0.3915343915343915,
+    "recall": 0.323943661971831
+   },
+   "type_agreement_when_both_flag": 0.8942598187311178,
+   "n_both": 331
+  }
+ }
+}

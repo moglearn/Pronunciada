@@ -1,0 +1,37 @@
+{
+ "schema_version": 1,
+ "fitted_on": "FLEURS validation, planted substitutions (bench/coach/fit_gate.py)",
+ "thresholds": {
+  "flag_prob": 0.5,
+  "min_log_ratio": -1.0,
+  "min_heard_post": 0.0,
+  "min_frames": 0,
+  "missing_max_frames": 0,
+  "missing_min_llr_del": -1000000000.0,
+  "tone_min_post": 0.3,
+  "tone_min_log_ratio": 0.0,
+  "stress_min_post": 0.3,
+  "missing_word_prob": 0.5,
+  "confidence": {
+   "edges": [
+    6.755,
+    7.917,
+    8.998
+   ],
+   "values": [
+    0.865,
+    0.974,
+    0.976,
+    0.976
+   ]
+  },
+  "tone_confidence": 0.959,
+  "stress_confidence": 0.92,
+  "missing_confidence": 0,
+  "by_lang": {
+   "de": {
+    "min_heard_post": 0.25
+   }
+  }
+ }
+}

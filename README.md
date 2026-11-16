@@ -32,6 +32,40 @@ strict = scorer.rescore(res, strictness=0.9)          # re-grade without re-runn
 python -m pronunciada score clip.wav "The quick brown fox" --lang en --strictness 0.5
 ```
 
+## Coaching feedback
+
+`res.coaching()` turns the scores into structured, versioned diagnoses (most important first):
+what was expected, what it sounded like (only when that is reliable), which articulatory
+features differ, and a confidence. `pronunciada.tips.tips(items)` writes up to three short
+English tips with stable `tip_key`s an app can replace with its own copy. `res.audio` reports
+recording problems (`clipped`, `too_noisy`, `too_quiet`, `too_short`, `mostly_silence`) and
+`retry_recommended`. No score changes; coaching costs under 1 ms.
+
+```bash
+python -m pronunciada score clip.wav "El cristianismo ortodoxo es la religión mayoritaria en Moldavia." \
+    --lang es --coach            # add --json for the full items
+```
+
+Real output of the same scorer on a native FLEURS validation recording of that sentence, scored
+against a prompt in which two sounds were changed (“religión” with /p/ for /l/, “mayoritaria”
+with /ɾ/ for /t/), so the speaker "said" /l/ and /t/:
+
+```
+coaching:
+  substitution religión            p -> l    p 0.31  conf 0.976  place,manner,voicing,lateral
+  substitution mayoritaria         ɾ -> t    p 0.39  conf 0.976  manner,voicing
+tips:
+  [manner.stop] Close completely and release for /p/ in “religión”; it sounded like /l/.
+  [manner.flap] Make /ɾ/ in “mayoritaria” a single quick tap of the tongue tip; it sounded like /t/.
+```
+
+When a sound is flagged on FLEURS validation with planted substitutions, the reported "heard"
+sound is right within one articulatory feature 95 % of the time (88 % exactly). On real English
+learners it agrees with expert annotators on 66 % of the substitutions it diagnoses, but only
+about 3 % of annotated substitutions are flagged at the default strictness; German, affricates
+and skipped sounds are not reliable yet. Details: [docs/COACHING.md](docs/COACHING.md),
+[results/coaching.md](results/coaching.md).
+
 ## Install
 
 ```bash

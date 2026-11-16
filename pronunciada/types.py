@@ -151,3 +151,12 @@ class SentenceResult:
     # round 9: P(the recording is a reading of this prompt at all); already multiplied into
     # prob. None when the channel is not shipped / disabled
     match_prob: float | None = None
+    # audio-quality gate (pronunciada.quality.check): measured values, "issues" and
+    # "retry_recommended"; scores are returned either way. None when the check is disabled
+    audio: dict | None = None
+
+    def coaching(self, max_items: int | None = None, **gate) -> list[dict]:
+        """Structured coaching items, most important first (pronunciada.coach.coaching)."""
+        from .coach import coaching
+
+        return coaching(self, max_items=max_items, **gate)

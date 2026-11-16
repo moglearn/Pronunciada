@@ -1,4 +1,4 @@
-"""Command line: python -m pronunciada score AUDIO "TEXT" --lang en [--strictness 0.5] [--json]"""
+"""Command line: python -m pronunciada score AUDIO "TEXT" --lang en [--strictness 0.5] [--json] [--coach]"""
 from __future__ import annotations
 
 import argparse
@@ -38,6 +38,9 @@ def main(argv=None) -> int:
     s.add_argument("--precision", default="fp32", choices=("fp32", "fp16", "int8"))
     s.add_argument("--threads", type=int, default=None)
     s.add_argument("--json", action="store_true", help="print the SentenceResult as JSON")
+    s.add_argument("--coach", action="store_true",
+                   help="add coaching items and default tips (pronunciada.coach, pronunciada.tips)")
+    s.add_argument("--max-tips", type=int, default=3)
     a = ap.parse_args(argv)
     from .scorer import Scorer
 
@@ -47,10 +50,34 @@ def main(argv=None) -> int:
     except ValueError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+    items = tp = None
+    if a.coach:
+        from .tips import tips
+
+        items = res.coaching()
+        tp = [{k: v for k, v in t.items() if k != "item"} for t in tips(items, a.max_tips, res)]
     if a.json:
-        print(json.dumps(dataclasses.asdict(res), ensure_ascii=False, indent=1))
+        d = dataclasses.asdict(res)
+        if a.coach:
+            from .coach import SCHEMA_VERSION
+
+            d["coaching"] = {"schema_version": SCHEMA_VERSION, "items": items, "tips": tp}
+        print(json.dumps(d, ensure_ascii=False, indent=1))
     else:
         print(table(res))
+        if res.audio is not None:
+            iss = ", ".join(res.audio["issues"]) or "none"
+            print(f"audio: issues {iss}" + ("  (retry recommended)" if res.audio["retry_recommended"] else ""))
+        if a.coach:
+            print("\ncoaching:")
+            for it in items:
+                h = "?" if it["heard"] is None else (it["heard"] or "∅")
+                print(f"  {it['kind']:<12} {it['word'][:16]:<16} {it['expected']!s:>4} -> {h!s:<4} "
+                      f"p {it['prob']:.2f}  conf {it['confidence'] if it['confidence'] is not None else '-'}  "
+                      f"{','.join(it['diff_keys'])}")
+            print("tips:")
+            for t in tp:
+                print(f"  [{t['tip_key']}] {t['text']}")
     return 0
 
 

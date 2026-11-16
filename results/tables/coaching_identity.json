@@ -1,0 +1,9 @@
+{
+ "clips": 50,
+ "per_lang": 5,
+ "identical": "yes (0 of 50 clips differ)",
+ "coach_ms_per_10s_median": 0.012,
+ "coach_ms_per_10s_p90": 0.044,
+ "worst_case_ms_10s": 0.69,
+ "audio_ms_per_10s": 0.5
+}

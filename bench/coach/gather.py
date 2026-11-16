@@ -169,7 +169,7 @@ def main():
     ap.add_argument("--max-clips", type=int, default=0)
     a = ap.parse_args()
     langs = list(LANGS) if a.lang == "all" else a.lang.split(",")
-    with ProcessPoolExecutor(min(a.workers, 3)) as ex:
+    with ProcessPoolExecutor(min(a.workers, 2)) as ex:
         for lang, n, npn, npr, dt in ex.map(run_lang, [(l, a.max_clips) for l in langs]):
             print(f"{lang}: {n} clips, {npn} phone rows, {npr} prosody rows, {dt:.0f}s", flush=True)
 
