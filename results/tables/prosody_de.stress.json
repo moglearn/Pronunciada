@@ -1,0 +1,116 @@
+{
+ "lang": "de",
+ "kind": "stress",
+ "coef": [
+  2.6532090945559634,
+  0.4523649029871661,
+  0.4523649029871661,
+  -0.004666941516654706
+ ],
+ "c_len": 1.2957713338756183,
+ "c_str": -0.025898349067545304,
+ "n_fit_words": 4492,
+ "n_fit_errors": 400,
+ "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
+ "err_prior": 0.1,
+ "native_quantiles": [
+  0.005,
+  0.02
+ ],
+ "fit_on": "FLEURS validation, 200 clips",
+ "prosody_model_meta": {
+  "model": "stress_multi",
+  "langs": [
+   "en",
+   "de",
+   "es",
+   "it",
+   "pt",
+   "ru"
+  ],
+  "platt": {
+   "en": [
+    0.8875426054000854,
+    -0.030651040375232697
+   ],
+   "de": [
+    0.9106214046478271,
+    -0.03450525552034378
+   ],
+   "es": [
+    0.908573567867279,
+    -0.03238803148269653
+   ],
+   "it": [
+    1.0535646677017212,
+    0.021200399845838547
+   ],
+   "pt": [
+    0.8309008479118347,
+    -0.05801231786608696
+   ],
+   "ru": [
+    0.8516965508460999,
+    -0.07865753024816513
+   ]
+  },
+  "ctx_len": 160,
+  "n_lang": 6
+ },
+ "prosody_model_files": {
+  "pitch_ja.onnx": "b6a74615b22e",
+  "stress.onnx": "a7ed773ec4e0",
+  "tone_zh.onnx": "4e7428ce226a"
+ },
+ "experimental": null,
+ "dev_cv": {
+  "n_words": 28070,
+  "share_native_words_scored": 0.5600997506234414,
+  "native_accept": {
+   "0.0": {
+    "before": 0.9788029925187033,
+    "after": 0.9758104738154614,
+    "p_pros_only": 0.9970074812967581
+   },
+   "0.5": {
+    "before": 0.9768079800498753,
+    "after": 0.9698254364089776,
+    "p_pros_only": 0.9945137157107232
+   },
+   "1.0": {
+    "before": 0.9765586034912718,
+    "after": 0.9623441396508728,
+    "p_pros_only": 0.9887780548628429
+   }
+  },
+  "prosodic_error": {
+   "sounds": {
+    "auc": 0.6166006857855362,
+    "hit_at_5pct": 0.0425,
+    "n_err": 400
+   },
+   "p_pros": {
+    "auc": 0.9591904613466334,
+    "hit_at_5pct": 0.755,
+    "n_err": 400
+   },
+   "product": {
+    "auc": 0.9194996882793017,
+    "hit_at_5pct": 0.485,
+    "n_err": 400
+   }
+  },
+  "sound_error": {
+   "before": {
+    "auc": 0.9488804239401496,
+    "hit_at_5pct": 0.7875,
+    "n_err": 2000
+   },
+   "after": {
+    "auc": 0.9405493142144639,
+    "hit_at_5pct": 0.7645,
+    "n_err": 2000
+   }
+  }
+ }
+}

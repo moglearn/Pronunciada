@@ -179,6 +179,9 @@ include upload and network. Four requests ran in parallel. Each request is one w
   Round 10 added an offline stress lexicon and set the bias to 0.0. Near-swap AUC is now 0.901
   [0.874, 0.926], with 24 of 150 replaced words scoring > 0.9 and right word 0.540
   ([round8_ru.md](round8_ru.md)).
+* **Word stress model `stress_v3` (round 11, en de es it pt ru).** Azure's tables above do not
+  change. Pronunciada's near-swap AUC moved by +0.000 to +0.005 (de 0.956, es 0.989, it 0.976,
+  pt 0.960, ru 0.902, en 0.981); no language got worse ([round11_stress.md](round11_stress.md)).
 * **Tone (zh).** Same syllable with a different tone: AUC 0.846, and only 40 % of these swaps
   are caught at 5 % FA. Azure zh-CN is weak on tone-only errors, which is where we can win.
 * **Statistics.** The bootstrap clusters are recordings, not sentences. 119–130 distinct

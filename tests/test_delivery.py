@@ -145,7 +145,11 @@ def test_sentence_model_per_language_config(tmp_path, tts):
     cfg.pop("word_score_model", None)
     (d / "config.json").write_text(json.dumps(cfg))
     r4 = pronunciada.Scorer("en", threads=2, calib_dir=str(d))
-    assert r4.sentence_name == "sentence_r4" and not r4.delivery and not r4.am.embeddings
+    from pronunciada.prosody import needs_embeddings
+
+    # the acoustic model runs plain unless the stress model needs its activations (stress_v3, round 11)
+    assert r4.sentence_name == "sentence_r4" and not r4.delivery
+    assert r4.am.embeddings == needs_embeddings("en")
     new = pronunciada.Scorer("en", threads=2)
     wav = tts("The quick brown fox jumps over the lazy dog")
     a = r4.score(wav, "The quick brown fox jumps over the lazy dog")

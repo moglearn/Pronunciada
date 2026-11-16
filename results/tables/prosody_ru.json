@@ -2,13 +2,13 @@
  "lang": "ru",
  "kind": "stress",
  "coef": [
-  2.882934419549523,
-  0.5839560448973595,
-  0.5839560448973595,
-  -0.0006806962615324222
+  2.8944006829128615,
+  0.5913221110301604,
+  0.5913221110301604,
+  -0.05343856112021045
  ],
- "c_len": 1.5412441552698728,
- "c_str": 0.448536826700997,
+ "c_len": 1.9843210234609863,
+ "c_str": 0.9237408267864077,
  "n_fit_words": 5324,
  "n_fit_errors": 400,
  "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
@@ -17,9 +17,46 @@
   0.0025,
   0.01
  ],
- "fit_on": "FLEURS validation, 200 clips (round 10: fit_prosody's rows and fit rebuilt at sound bias 0.0 with the round-10 references and the round-8 adapter, bench/calib/bias_grid.py)",
+ "fit_on": "FLEURS validation, 200 clips",
  "prosody_model_meta": {
-  "model": "stress_multi",
+  "model": "stress_v3",
+  "platt": {
+   "en": [
+    0.892639696598053,
+    -0.025702904909849167
+   ],
+   "de": [
+    1.1708177328109741,
+    0.057797372341156006
+   ],
+   "es": [
+    1.1729342937469482,
+    0.052678342908620834
+   ],
+   "it": [
+    1.1208007335662842,
+    0.043406009674072266
+   ],
+   "pt": [
+    0.9509466886520386,
+    -0.015012380667030811
+   ],
+   "ru": [
+    0.8739357590675354,
+    -0.06162503734230995
+   ]
+  },
+  "ctx_len": 160,
+  "inputs": {
+   "reg": true,
+   "lowmel": true,
+   "zemb": true
+  },
+  "zemb_layers": [
+   "enc1",
+   "enc3"
+  ],
+  "round": 8,
   "langs": [
    "en",
    "de",
@@ -28,39 +65,18 @@
    "pt",
    "ru"
   ],
-  "platt": {
-   "en": [
-    0.8875426054000854,
-    -0.030651040375232697
-   ],
-   "de": [
-    0.9106214046478271,
-    -0.03450525552034378
-   ],
-   "es": [
-    0.908573567867279,
-    -0.03238803148269653
-   ],
-   "it": [
-    1.0535646677017212,
-    0.021200399845838547
-   ],
-   "pt": [
-    0.8309008479118347,
-    -0.05801231786608696
-   ],
-   "ru": [
-    0.8516965508460999,
-    -0.07865753024816513
-   ]
-  },
-  "ctx_len": 160,
   "n_lang": 6
  },
  "prosody_model_files": {
   "pitch_ja.onnx": "b6a74615b22e",
+  "pitch_ja_v3.onnx": "52c37712f74b",
+  "pitch_ja_v3r.onnx": "5ec9cd8659b0",
   "stress.onnx": "a7ed773ec4e0",
-  "tone_zh.onnx": "4e7428ce226a"
+  "stress_v3.onnx": "7a93506dbbde",
+  "tone_zh.onnx": "4e7428ce226a",
+  "tone_zh_v2.onnx": "47849e1029a7",
+  "tone_zh_v3.onnx": "d3c9c21c3ebd",
+  "tone_zh_v3z.onnx": "ffd41da84a8f"
  },
  "experimental": null,
  "dev_cv": {
@@ -69,18 +85,18 @@
   "native_accept": {
    "0.0": {
     "before": 0.9916550764951322,
-    "after": 0.9880389429763561,
+    "after": 0.9885952712100139,
     "p_pros_only": 0.9977746870653685
    },
    "0.5": {
     "before": 0.9847009735744089,
-    "after": 0.9802503477051461,
-    "p_pros_only": 0.9969401947148818
+    "after": 0.9785813630041724,
+    "p_pros_only": 0.996105702364395
    },
    "1.0": {
     "before": 0.9568845618915159,
-    "after": 0.9415855354659249,
-    "p_pros_only": 0.9908205841446454
+    "after": 0.9446453407510431,
+    "p_pros_only": 0.9919332406119611
    }
   },
   "prosodic_error": {
@@ -90,13 +106,13 @@
     "n_err": 400
    },
    "p_pros": {
-    "auc": 0.9206943671766342,
-    "hit_at_5pct": 0.6575,
+    "auc": 0.9587583449235049,
+    "hit_at_5pct": 0.83,
     "n_err": 400
    },
    "product": {
-    "auc": 0.8751943671766342,
-    "hit_at_5pct": 0.465,
+    "auc": 0.9152326147426982,
+    "hit_at_5pct": 0.5425,
     "n_err": 400
    }
   },
@@ -107,10 +123,11 @@
     "n_err": 2000
    },
    "after": {
-    "auc": 0.9155691933240612,
-    "hit_at_5pct": 0.737,
+    "auc": 0.9191531988873435,
+    "hit_at_5pct": 0.73,
     "n_err": 2000
    }
   }
- }
+ },
+ "prosody_model": "stress_v3"
 }

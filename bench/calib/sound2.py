@@ -42,15 +42,19 @@ def work_dir():
 
 
 _SC = None
+_PROTO = None
 
 
 def _init(lang):
     from bench.calib import api_run
 
     api_run._init(lang, "fp32", 1)
-    global _SC
+    global _SC, _PROTO
     _SC = api_run._SC
     _SC.ea = None
+    from bench.calib.sound_emb import Protos, proto_path
+
+    _PROTO = Protos(lang) if (proto_path(lang).exists() and _SC.am.embeddings) else None
 
 
 def _item(res, phone_wrong=None, word_wrong=None, extra=None):
@@ -74,6 +78,11 @@ def _item(res, phone_wrong=None, word_wrong=None, extra=None):
     present = np.array([_present_prob(sc.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]]) if sc.omit_cal else 1.0
                         for w in ref.words], np.float32)
     bad = not np.isfinite(ev.L_can) or ev.L_can <= -1e5
+    if _PROTO is not None:                      # candidate d: prototype features (sound_emb.py)
+        from bench.calib.sound_emb import last_emb, phone_vectors
+
+        F3 = _PROTO.features(phone_vectors(last_emb(sc), ev, len(ref.phones)), ref)
+        P["proto_cos"], P["proto_other"], P["proto_margin"] = F3[:, 0], F3[:, 1], F3[:, 2]
     out = {"P": P, "ipa": [p.ipa for p in ref.phones], "raw": raw, "present": present, "bad": bad,
            "w_zl": np.asarray(c["w_zl"], np.float32), "w_zs": np.asarray(c["w_zs"], np.float32)}
     if phone_wrong is not None:

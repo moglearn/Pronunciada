@@ -118,15 +118,15 @@ where Pronunciada is ahead.
 
 | language | wrong word: detection | wrong word: right word blamed | near-miss word: detection | near-miss: caught at 5 % false alarms | native words flagged (< 0.6) |
 |---|---|---|---|---|---|
-| en | **0.995** / 0.994 | **0.900** / 0.898 | **0.981** / 0.963 | **0.900** / 0.793 | 0.034 / 0.022 |
+| en | **0.995** / 0.994 | 0.893 / 0.898 | **0.981** / 0.963 | **0.900** / 0.793 | 0.035 / 0.022 |
 | zh | **0.991** / 0.989 | 0.887 / 0.899 | 0.964 / 0.966 | 0.860 / 0.896 | 0.046 / 0.036 |
 | ja | **0.991** / 0.979 | **0.920** / 0.875 | **0.965** / 0.919 | **0.840** / 0.680 | 0.025 / 0.020 |
-| es | **0.998** / 0.993 | **0.953** / 0.910 | **0.988** / 0.942 | **0.927** / 0.679 | 0.024 / 0.018 |
+| es | **0.998** / 0.993 | **0.947** / 0.910 | **0.989** / 0.942 | **0.953** / 0.679 | 0.024 / 0.018 |
 | fr | **0.997** / 0.986 | **0.920** / 0.823 | **0.986** / 0.937 | **0.947** / 0.647 | 0.026 / 0.020 |
-| de | **0.996** / 0.982 | 0.913 / 0.921 | **0.953** / 0.887 | **0.773** / 0.517 | **0.044** / 0.049 |
-| it | **0.998** / 0.990 | **0.987** / 0.929 | **0.971** / 0.970 | 0.833 / 0.913 | **0.025** / 0.037 |
-| pt | **0.997** / 0.991 | **0.960** / 0.906 | **0.956** / 0.938 | **0.827** / 0.724 | 0.027 / 0.020 |
-| ru | **0.990** / 0.982 | **0.907** / 0.761 | 0.901 / 0.909 | **0.607** / 0.342 | **0.050** / 0.054 |
+| de | **0.996** / 0.982 | 0.907 / 0.921 | **0.956** / 0.887 | **0.767** / 0.517 | **0.043** / 0.049 |
+| it | **0.998** / 0.990 | **0.980** / 0.929 | **0.976** / 0.970 | 0.847 / 0.913 | **0.022** / 0.037 |
+| pt | **0.997** / 0.991 | **0.947** / 0.906 | **0.960** / 0.938 | **0.833** / 0.724 | 0.025 / 0.020 |
+| ru | **0.991** / 0.982 | **0.920** / 0.761 | 0.902 / 0.909 | **0.607** / 0.342 | **0.052** / 0.054 |
 | ko | 0.994 / 0.995 | 0.960 / 0.973 | **0.941** / 0.937 | **0.767** / 0.708 | **0.021** / 0.045 |
 
 - Detection = area under the ROC curve. "Right word blamed" = the changed word gets the lowest
@@ -136,7 +136,7 @@ where Pronunciada is ahead.
   better; Azure is a little more forgiving of native speakers in six languages.
 - Where Pronunciada is behind: Russian near-misses overall (0.90 against 0.91, although it catches
   more of them at 5 % false alarms), Italian and Mandarin near-misses at 5 % false alarms, and by
-  about one point blaming the right word in German, Korean and Mandarin. Round 8 changed
+  about one point blaming the right word in English, German, Korean and Mandarin. Round 8 changed
   Russian in three ways: measured, reduction-aware vowel targets; an adapter retrained on them;
   and a stricter sound bias (+1.08 → +0.60, chosen on dev). Near-swap AUC rose 0.872 → 0.887 on
   test, which still trails Azure. cv-real ru got worse (0.793 → 0.772). Round 10 added an offline
@@ -172,8 +172,12 @@ references; Taiwan-accented speech is tested separately ([results/prosody.md](re
 ### Word stress (English, German, Spanish, Italian, Portuguese, Russian)
 
 Azure offers no comparable per-word stress check in these languages, so there is no head-to-head.
-On FLEURS test, a word whose stress is moved to another syllable is detected with AUC 0.92–0.95
-(Russian 0.87). French and Korean have no word stress and nothing is scored there. Japanese pitch
+On FLEURS test, a word whose stress is moved to another syllable is detected with AUC 0.94–0.97
+(Russian 0.90). Since round 11 the stress model (`stress_v3`) also uses a low-frequency spectrum
+patch and the acoustic model's per-syllable activations; on real learner stress marks
+(speechocean762 train) it detects misplaced stress at AUC 0.81 vs 0.78 for the previous model
+([results/round11_stress.md](results/round11_stress.md)); `PRONUNCIADA_STRESS_MODEL=stress`
+selects the previous one. French and Korean have no word stress and nothing is scored there. Japanese pitch
 accent is reported per syllable but is experimental and does not affect the word score.
 
 ### Native speakers are not punished
