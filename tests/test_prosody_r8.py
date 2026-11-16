@@ -16,6 +16,7 @@ CASES = [  # env var, model stem, language, `say` voice, text
     ("PRONUNCIADA_STRESS_MODEL", "stress_v3", "en", "Samantha",
      "The government announced a remarkable economic recovery yesterday."),
     ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3", "ja", "Kyoko", "今日はとても良い天気ですね。"),
+    ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3r", "ja", "Kyoko", "今日はとても良い天気ですね。"),
 ]
 
 
@@ -41,7 +42,8 @@ def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang,
 
     sc = Scorer(lang, threads=2, experimental=True)
     assert sc.prosody is not None and sc.prosody.meta["model"]
-    assert sc.prosody.inputs.get("zemb") and sc.am.embeddings
+    if sc.prosody.inputs.get("zemb"):
+        assert sc.am.embeddings
     assert sc.pros_cal and sc.pros_cal.get("prosody_model") == stem, "candidate without its own calibrator"
     res = sc.score(str(out), text)
     assert not any("prosody failed" in w for w in res.warnings)

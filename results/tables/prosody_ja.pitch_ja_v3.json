@@ -1,0 +1,103 @@
+{
+ "lang": "ja",
+ "kind": "pitch",
+ "coef": [
+  2.383155598179927,
+  0.9855538224128925,
+  0.11709968450535849,
+  0.10471116612983564
+ ],
+ "c_len": 0.6419345452140924,
+ "c_str": 0.14708833890227924,
+ "n_fit_words": 11022,
+ "n_fit_errors": 400,
+ "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
+ "err_prior": 0.1,
+ "native_quantiles": [
+  0.0025,
+  0.01
+ ],
+ "fit_on": "FLEURS validation, 200 clips",
+ "prosody_model_meta": {
+  "model": "pitch_ja_v3",
+  "platt": [
+   0.7972526550292969,
+   0.0
+  ],
+  "ctx_len": 160,
+  "inputs": {
+   "reg": true,
+   "lowmel": true,
+   "zemb": true
+  },
+  "zemb_layers": [
+   "enc1",
+   "enc3"
+  ],
+  "round": 8,
+  "sequence": true
+ },
+ "prosody_model_files": {
+  "pitch_ja.onnx": "b6a74615b22e",
+  "pitch_ja_v3.onnx": "52c37712f74b",
+  "pitch_ja_v3r.onnx": "5ec9cd8659b0",
+  "stress.onnx": "a7ed773ec4e0",
+  "stress_v3.onnx": "7a93506dbbde",
+  "tone_zh.onnx": "4e7428ce226a",
+  "tone_zh_v2.onnx": "47849e1029a7",
+  "tone_zh_v3.onnx": "d3c9c21c3ebd",
+  "tone_zh_v3z.onnx": "ffd41da84a8f"
+ },
+ "experimental": "pitch-accent labels agree with native speech on ~71 % of morae",
+ "dev_cv": {
+  "n_words": 38577,
+  "share_native_words_scored": 1.0,
+  "native_accept": {
+   "0.0": {
+    "before": 0.9894755942660134,
+    "after": 0.9842133913990201,
+    "p_pros_only": 0.9972781709308656
+   },
+   "0.5": {
+    "before": 0.9869352204681546,
+    "after": 0.9793140990745781,
+    "p_pros_only": 0.994556341861731
+   },
+   "1.0": {
+    "before": 0.9849392124841226,
+    "after": 0.9704227907820722,
+    "p_pros_only": 0.9900199600798403
+   }
+  },
+  "prosodic_error": {
+   "sounds": {
+    "auc": 0.5309106786427146,
+    "hit_at_5pct": 0.0675,
+    "n_err": 400
+   },
+   "p_pros": {
+    "auc": 0.8658485302123027,
+    "hit_at_5pct": 0.445,
+    "n_err": 400
+   },
+   "product": {
+    "auc": 0.8467258664489203,
+    "hit_at_5pct": 0.3425,
+    "n_err": 400
+   }
+  },
+  "sound_error": {
+   "before": {
+    "auc": 0.9439419343131918,
+    "hit_at_5pct": 0.765,
+    "n_err": 2000
+   },
+   "after": {
+    "auc": 0.90861522409726,
+    "hit_at_5pct": 0.7055,
+    "n_err": 2000
+   }
+  }
+ },
+ "prosody_model": "pitch_ja_v3"
+}
