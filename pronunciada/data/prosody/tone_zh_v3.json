@@ -1,0 +1,17 @@
+{
+ "model": "t3_lm_tp8",
+ "temperature": 0.9555104601917317,
+ "platt": [
+  0.9660374967738519,
+  0.06173192513247814
+ ],
+ "ctx_len": 160,
+ "sequence": true,
+ "inputs": {
+  "reg": true,
+  "lowmel": true
+ },
+ "leniency": [
+  "neutral4"
+ ]
+}

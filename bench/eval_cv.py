@@ -418,7 +418,10 @@ def markdown(ev: dict, build: dict, usage: dict, fp: str) -> str:
          "(`SentenceResult.prob`, default strictness), Azure = `PronScore`; primary metric = AUC with 95 % "
          "bootstrap CIs resampling speakers and a paired speaker-bootstrap two-sided p-value for ours − Azure. "
          "Everything in the sensitivity table is secondary. Nothing in `pronunciada/` was tuned on this data.",
-         "", HOW_TO_READ, ""]
+         "", "Our numbers come from the Pronunciada tree at the fingerprint above; the English sentence scorer "
+         "and the Mandarin tone model were being changed by other work at the time, so re-run "
+         "`python -m bench.eval_cv --steps ours,report` before quoting them (Azure responses are cached and are "
+         "not re-sent).", "", HOW_TO_READ, ""]
     for test, title in (("A", "Test A — reviewer-rejected vs reviewer-accepted clips"),
                         ("B", "Test B — self-declared non-native vs native speakers (accepted clips only)")):
         rows = [e for e in ev.values() if e["test"] == test]
@@ -488,10 +491,16 @@ def markdown(ev: dict, build: dict, usage: dict, fp: str) -> str:
                  f"{ta['audio_rules_on_fetched'] or 0} | {reg} |")
     short = [l for l, v in build["locales"].items() if v["tests"]["A"]["test"]["n_pos"] < CB.TARGET]
     if short:
-        L += ["", "Fewer than 200 rejected clips per side in the test half: " + ", ".join(
-            f"{l} ({build['locales'][l]['tests']['A']['test']['n_pos']} per side; "
-            f"{build['locales'][l]['counts']['after_votes']['rejected']} clearly rejected clips in the whole corpus "
-            "before the duration/speaker rules)" for l in short) + "."]
+        L += ["", "Fewer than 200 clips per side in the Test A test half: " + ", ".join(
+            f"{l} ({build['locales'][l]['tests']['A']['test']['n_pos']} per side, "
+            f"pool after all metadata rules {build['locales'][l]['tests']['A']['test']['pool']['pos']} rejected clips "
+            f"from {build['locales'][l]['tests']['A']['test']['pool']['pos_spk']} speakers)" for l in short) +
+            ". Apart from ko, where Common Voice 22.0 has only 279 clearly rejected clips from 47 speakers in total, "
+            "the 1–7 missing pairs are strata where the near-silent rule removed more clips than the fetched reserve "
+            "(35 % + 2 per stratum); a stratum is always trimmed on both sides so the matching stays exact."]
+    L += ["", "The near-silent rule (system-independent) removes almost only rejected clips (e.g. en: 122 of 638 "
+          "fetched rejected candidates vs 8 of 628 accepted, both halves): empty or near-empty recordings are an "
+          "obvious reason for rejection and would have made Test A easier for both systems."]
     L += ["", "## Azure usage", "",
           f"{usage['clips']} test clips sent once each ({usage['requests']} HTTP requests including retries), "
           f"{usage['hours']:.2f} h of audio, Azure region from the environment; responses cached in "
