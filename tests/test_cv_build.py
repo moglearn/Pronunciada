@@ -212,3 +212,9 @@ def test_evaluate_counts_failures_not_drops():
     assert ev["n_scored_both"] == 40 and ev["azure_failures"] == {"NoMatch": 4}
     assert ev["azure_failures_by_side"] == {1: 2, 0: 2}
     assert "primary" in ev and "azure:FluencyScore" in ev["secondary"]
+
+
+def test_weak_reject_rule():
+    assert CB.is_weak_rejected(0, 1) and CB.is_weak_rejected(0, 3)
+    assert not CB.is_weak_rejected(1, 1) and not CB.is_weak_rejected(0, 0) and not CB.is_weak_rejected(1, 0)
+    assert "ko" in CB.WEAK_LOCALES and CB.WEAK_MIN_POS == 60

@@ -29,9 +29,11 @@ from .features import (N_STRESS_EXTRA, context_input, frame_features, stress_ext
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "prosody"
 # Mandarin tone model file stem in DATA. tone_zh = round 1 (one syllable + neighbours);
-# tone_zh_v2 = utterance-level sequence model (sees all syllables of the utterance in order).
-# PRONUNCIADA_TONE_MODEL overrides it (e.g. to compare the two).
-TONE_MODEL = "tone_zh_v2"
+# tone_zh_v2 = utterance-level sequence model (sees all syllables of the utterance in order);
+# tone_zh_v3 = v2 + local-register pitch + low-frequency log-mel; tone_zh_v3z = v3 + pooled ZIPA
+# encoder activations per syllable (default since round 7: results/tone_v3.md, results/round7.md).
+# PRONUNCIADA_TONE_MODEL overrides it; a non-default model uses calib/prosody/zh.<model>.json.
+TONE_MODEL = "tone_zh_v3z"
 STRESS_LANGS = ("en", "de", "es", "it", "pt", "ru")
 
 
@@ -129,9 +131,12 @@ class ProsodyScorer:
         aligned phone frames, PCA-projected, broadcast over the syllable's window, + a flag."""
         from .features import pool_syllables
 
-        if embeddings is None or any(k not in embeddings for k in self.zemb[2]):
-            raise ValueError("this tone model needs the acoustic model's embeddings (enc1, enc3)")
         mu, W, layers = self.zemb
+        if embeddings is None or any(k not in embeddings for k in layers):
+            # no activations given (direct ProsodyScorer use): the model was trained with this
+            # stream dropped for 30 % of utterances (flag 0), so it falls back to pitch + low mel.
+            # pronunciada.Scorer always passes them.
+            return np.zeros((T, W.shape[1] + 1), np.float32)
         emb = np.concatenate([np.asarray(embeddings[k], np.float32) for k in layers], 1)
         Z = np.clip((pool_syllables(ref, spans, emb) - mu) @ W, -5, 5)
         out = np.zeros((T, W.shape[1] + 1), np.float32)

@@ -383,6 +383,9 @@ mistakes; acceptances can still contain mild errors. Volunteers are not trained 
 clip has only a handful of votes. A high AUC therefore means "agrees with crowd rejection", which
 mixes pronunciation with reading accuracy and audio quality; neither system was built for exactly
 this question, and absolute values are not comparable with the English expert-rated benchmarks.
+Test A-weak (Korean only) adds clips with a single down-vote and no up-vote from
+the not-yet-decided pool; one down-vote is a much weaker label than the strict rule (≥ 2 down-votes
+and down − up ≥ 2): many such clips would have been accepted with more votes.
 Test B compares accepted (correctly read) clips of speakers who self-declare a non-native accent
 with speakers who declare a native variety. A pronunciation scorer is expected to give accented
 speech somewhat lower scores, but a lower score here is **not** an error: the words were read
@@ -423,11 +426,12 @@ def markdown(ev: dict, build: dict, usage: dict, fp: str) -> str:
          "`python -m bench.eval_cv --steps ours,report` before quoting them (Azure responses are cached and are "
          "not re-sent).", "", HOW_TO_READ, ""]
     for test, title in (("A", "Test A — reviewer-rejected vs reviewer-accepted clips"),
+                        ("Aweak", "Test A-weak (ko only) — weak-label rejected vs reviewer-accepted clips"),
                         ("B", "Test B — self-declared non-native vs native speakers (accepted clips only)")):
         rows = [e for e in ev.values() if e["test"] == test]
         L += [f"## {title}", "",
               "| locale | rejected / accepted | speakers | Pronunciada AUC [95 % CI] | Azure AUC [95 % CI] | ours − Azure [95 % CI] | p | |"
-              if test == "A" else
+              if test in ("A", "Aweak") else
               "| locale | non-native / native | speakers | Pronunciada AUC [95 % CI] | Azure AUC [95 % CI] | ours − Azure [95 % CI] | p | |",
               "|---|---|---|---|---|---|---|---|"]
         for e in rows:
@@ -438,6 +442,26 @@ def markdown(ev: dict, build: dict, usage: dict, fp: str) -> str:
             p = e["primary"]
             L.append(f"| {e['locale']} | {e['n_pos']} / {e['n_neg']} | {e['n_speakers']} | {o} | {a} | "
                      f"{p['delta']:+.3f} [{p['delta_ci'][0]:+.3f}, {p['delta_ci'][1]:+.3f}] | {p['p_two_sided']:.3f} | {verdict} |")
+        if test == "Aweak":
+            for loc, v in build["locales"].items():
+                w = v.get("testAweak_eligibility")
+                if not w:
+                    continue
+                t = v["tests"].get("Aweak", {}).get("test", {})
+                L += ["", f"{loc}: positives = the strict Test A rejected candidates plus `other.tsv` clips with "
+                          f"down_votes ≥ 1 and up_votes = 0 (`other.tsv` = clips with too few votes to be validated or "
+                          f"invalidated; vote table up/down → clips: "
+                          + ", ".join(f"{k} → {n}" for k, n in w["other_vote_table"].items())
+                          + f"). {w['other_weak_candidates']} weak candidates; after the duration/text rules "
+                          f"{w['positives_after_cleaning']} positives ({w['positives_strict']} strict + "
+                          f"{w['positives_weak']} weak) from {w['positive_speakers']} speakers (build threshold "
+                          f"{CB.WEAK_MIN_POS}). Test half: {t.get('n_pos', 0)} per side after the speaker split, "
+                          f"speaker/sentence disjointness, 2-per-speaker cap, matching and the near-silent rule "
+                          f"({t.get('audio_rules_on_fetched') or 0}); the manifest flags each positive `strict` "
+                          "true/false. Negatives and every other rule are as in Test A. The 11-per-side strict "
+                          "Test A row above is unchanged.",
+                      "", "`reported.tsv` cannot be used for this: its header (ko) is `sentence_id, sentence, "
+                          "locale, reason`, i.e. reports on sentence prompts, with no clip or speaker."]
         if test == "B":
             no_b = [l for l, v in build["locales"].items() if "B" not in v["tests"]]
             L += ["", f"Test B exists only where ≥ {CB.TESTB_MIN_CLIPS} clips from ≥ {CB.TESTB_MIN_SPK} self-declared "

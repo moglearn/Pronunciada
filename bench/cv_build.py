@@ -65,6 +65,8 @@ LEN_BINS, DUR_BINS = 5, 4
 RESERVE = 1.35          # fetch this many candidates per stratum slot (silence-rule reserve)
 TESTB_MIN_CLIPS, TESTB_MIN_SPK = 100, 30
 SHARD_ROWS = 40000      # rows per tar shard in the mirror
+WEAK_LOCALES = ("ko",)  # Test A-weak: other.tsv single-down-vote clips added to the positives
+WEAK_MIN_POS = 60       # A-weak is built only if this many positives survive the cleaning rules
 SIL_DBFS, SIL_MIN_ACTIVE_S = -45.0, 0.3
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -117,6 +119,11 @@ def dur_rule(dur: float | None) -> str | None:
 
 def is_rejected(up: int, down: int) -> bool:
     return down >= 2 and up <= down - 2
+
+
+def is_weak_rejected(up: int, down: int) -> bool:
+    """other.tsv (too few votes to be validated / invalidated): at least one down-vote, no up-vote."""
+    return down >= 1 and up == 0
 
 
 def is_accepted(up: int, down: int) -> bool:
@@ -487,6 +494,33 @@ def candidate_pools(locale: str) -> tuple[list[dict], list[dict], dict]:
     return rej, acc, counts
 
 
+def weak_pool(locale: str, rej_strict: list[dict]) -> tuple[list[dict], dict]:
+    """Test A-weak positives: the strict rejected candidates (flagged strict=True) plus other.tsv
+    clips with is_weak_rejected (strict=False), after the same duration / text rules."""
+    durs = durations(locale)
+    rows = read_tsv(meta_dir(locale) / "other.tsv")
+    c = Counter()
+    votes = Counter((int(r["up_votes"] or 0), int(r["down_votes"] or 0)) for r in rows)
+    weak = []
+    for r in rows:
+        if not is_weak_rejected(int(r["up_votes"] or 0), int(r["down_votes"] or 0)):
+            c["votes_not_weak_reject"] += 1
+            continue
+        x = _row(r, locale, "other", 0, durs.get(r["path"]))
+        why = dur_rule(x["dur"]) or text_rule(x["sentence"], locale)
+        if why:
+            c[why] += 1
+            continue
+        weak.append(dict(x, strict=False))
+    pos = [dict(r, strict=True) for r in rej_strict] + weak
+    info = {"other_rows": len(rows), "other_vote_table": {f"up={u},down={d}": n for (u, d), n in sorted(votes.items())},
+            "other_weak_candidates": sum(1 for r in rows if is_weak_rejected(int(r["up_votes"] or 0), int(r["down_votes"] or 0))),
+            "other_rules": dict(c), "positives_after_cleaning": len(pos),
+            "positives_strict": len(rej_strict), "positives_weak": len(weak),
+            "positive_speakers": len({r["client_id"] for r in pos})}
+    return pos, info
+
+
 def _apply_region(locale: str, rej: list, acc: list, counts: dict) -> tuple[list, list, str]:
     """es: Latin American speakers preferred; pt: Brazilian preferred."""
     if locale not in ("es", "pt"):
@@ -550,12 +584,20 @@ def step_select(locales) -> None:
         sel["testB_eligibility"] = elig
         if len(pb_cap) >= TESTB_MIN_CLIPS and elig["nonnative_speakers"] >= TESTB_MIN_SPK:
             sel["tests"]["B"] = build_test(pb, nb, SEED + 7)
+        if loc in WEAK_LOCALES and (meta_dir(loc) / "other.tsv").exists():
+            pw, winfo = weak_pool(loc, rej)
+            sel["testAweak_eligibility"] = winfo
+            if winfo["positives_after_cleaning"] >= WEAK_MIN_POS:
+                sel["tests"]["Aweak"] = build_test(pw, acc, SEED)
+            else:
+                print(f"{loc}: A-weak NOT built: only {winfo['positives_after_cleaning']} positives", flush=True)
         p = work_dir("select") / f"{loc}.json"
         p.write_text(json.dumps(_jsonable(sel), ensure_ascii=False))
         qa = sel["tests"]["A"]["test"]["quota"]
         msg = f"{loc}: A test quota {sum(qa.values())} / side (pool {sel['tests']['A']['test']['pool']})"
-        if "B" in sel["tests"]:
-            msg += f"; B test quota {sum(sel['tests']['B']['test']['quota'].values())}"
+        for tn in ("B", "Aweak"):
+            if tn in sel["tests"]:
+                msg += f"; {tn} test quota {sum(sel['tests'][tn]['test']['quota'].values())}"
         print(msg, f"B elig {elig['nonnative_clips_capped']} clips / {elig['nonnative_speakers']} spk",
               f"[{time.time() - t0:.0f}s]", flush=True)
 
@@ -702,6 +744,7 @@ def step_finalize(locales) -> None:
         flog = json.loads(flog_p.read_text()) if flog_p.exists() else {}
         rows_out = []
         info = {"counts": sel["counts"], "region": sel["region"], "testB_eligibility": sel["testB_eligibility"],
+                **({"testAweak_eligibility": sel["testAweak_eligibility"]} if "testAweak_eligibility" in sel else {}),
                 "shards_read": sorted(f"{loc}/{k}" for k in flog), "streamed_gb": round(sum(v["bytes"] for v in flog.values()) / 1e9, 2),
                 "tests": {}}
         for tname, t in sel["tests"].items():
@@ -745,7 +788,8 @@ def step_finalize(locales) -> None:
 
 
 def _manifest_row(loc, test, half, side, skey, r, st) -> dict:
-    pos_name = {"A": ("rejected", "accepted"), "B": ("nonnative", "native")}[test]
+    pos_name = {"A": ("rejected", "accepted"), "Aweak": ("rejected", "accepted"),
+                "B": ("nonnative", "native")}[test]
     return {"id": f"cv22-{loc}-{r['stem'].rsplit('_', 1)[-1]}", "locale": loc, "lang": SCORER_LANG[loc],
             "test": test, "half": half, "label": 1 if side == "pos" else 0,
             "side": pos_name[0] if side == "pos" else pos_name[1], "stratum": skey,
@@ -753,6 +797,7 @@ def _manifest_row(loc, test, half, side, skey, r, st) -> dict:
             "sentence_id": r["sentence_id"], "sentence": r["sentence"], "n_chars": r["n_chars"],
             "dur": round(st["dur"], 3), "up_votes": r["up_votes"], "down_votes": r["down_votes"],
             "accents": r["accents"], "variant": r["variant"],
+            **({"strict": r["strict"]} if "strict" in r else {}),
             "source": f"{REPO}@{REV[:12]}:audio/{loc}/{r['src_split']}/{loc}_{r['src_split']}_{r['src_shard']}.tar"}
 
 

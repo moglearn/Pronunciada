@@ -1283,12 +1283,32 @@
      "nonnative": 5
     }
    },
+   "testAweak_eligibility": {
+    "other_rows": 3813,
+    "other_vote_table": {
+     "up=0,down=0": 2554,
+     "up=0,down=1": 323,
+     "up=1,down=0": 753,
+     "up=1,down=1": 183
+    },
+    "other_weak_candidates": 323,
+    "other_rules": {
+     "votes_not_weak_reject": 3490,
+     "latin_in_prompt": 2,
+     "too_long": 1
+    },
+    "positives_after_cleaning": 597,
+    "positives_strict": 277,
+    "positives_weak": 320,
+    "positive_speakers": 85
+   },
    "shards_read": [
     "ko/dev_0",
     "ko/invalidated_0",
+    "ko/other_0",
     "ko/test_0"
    ],
-   "streamed_gb": 0.05,
+   "streamed_gb": 0.16,
    "tests": {
     "A": {
      "test": {
@@ -1352,6 +1372,70 @@
         4.005,
         5.022,
         5.877
+       ]
+      ]
+     }
+    },
+    "Aweak": {
+     "test": {
+      "n_pos": 29,
+      "n_neg": 29,
+      "quota": 30,
+      "pool": {
+       "pos": 53,
+       "neg": 57,
+       "pos_spk": 33,
+       "neg_spk": 31
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 169,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 321
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 2
+      },
+      "edges": [
+       [
+        10.4,
+        19.0,
+        24.200000000000003,
+        29.0
+       ],
+       [
+        3.348,
+        5.472,
+        7.416
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 27,
+      "n_neg": 27,
+      "quota": 27,
+      "pool": {
+       "pos": 40,
+       "neg": 39,
+       "pos_spk": 26,
+       "neg_spk": 23
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 137,
+       "sentence_on_both_sides": 1,
+       "over_speaker_cap": 654
+      },
+      "audio_rules_on_fetched": {},
+      "edges": [
+       [
+        13.8,
+        19.6,
+        23.0,
+        29.200000000000003
+       ],
+       [
+        3.843,
+        4.698,
+        6.561
        ]
       ]
      }

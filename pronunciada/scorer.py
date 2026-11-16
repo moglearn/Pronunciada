@@ -113,6 +113,15 @@ class Scorer:
             self.pros_cal = None
         # omission channel (round 4): P(word was said at all), pooled over languages
         # (bench/calib/fit_omission.py); replaces the hard llr_del rule for WordResult.omitted
+        # round 7: Mandarin sentence accuracy / prosodic scores recalibrated on OMPAL DEV learners
+        # (bench/calib/fit_sentence_zh.py); other languages and other scores unchanged
+        pr7 = _d / f"sentence_{self.lang}_recal.json"
+        self.sent_recal = json.loads(pr7.read_text()) if pr7.exists() else None
+        if self.sent_recal and self.sent_recal.get("tone_model"):
+            from .prosody import selected_tone_model
+
+            if self.sent_recal["tone_model"] != selected_tone_model():
+                self.sent_recal = None        # fitted on another tone model's outputs
         po = _d / "omission.json"
         self.omit_cal = json.loads(po.read_text()) if po.exists() else None
         # explain-away second pass (round 3): config "explain_away" {threshold, max_passes, enabled}
@@ -453,6 +462,8 @@ class Scorer:
             else float(c["S"]["completeness"][0])
         scores = {k: float(np.clip(c["sent"][f"reg_{k}"][0] / 10.0, 0.0, 1.0))
                   for k in ("accuracy", "fluency", "prosodic", "total")}
+        if self.sent_recal:
+            scores = _sentence_recal(self.sent_recal, scores, [sy.tone_prob for w in words for sy in w.syllables])
         res = SentenceResult(self.lang, ref.text, sp, s, words, fluency=flu, completeness=comp,
                              warnings=list(c["warnings"]), scores=scores)
         res._pronunciada = c  # noqa: SLF001  (cached evidence for rescore / details)
@@ -468,6 +479,20 @@ def _pros_prob(cal: dict, probs: list[float], s: float) -> float:
     z = b[0] + b[1] * f[0] + b[2] * f[1] + b[3] * f[2]
     zl, zs = z + cal["c_len"], z + cal["c_str"]
     return float(C.sigmoid(C.blend_logit(zl, min(zs, zl), s)))
+
+
+def _sentence_recal(cal: dict, scores: dict, tone_probs) -> dict:
+    """Round 7 (zh): score_k = clip((ridge_k(features) - 1) / 4, 0, 1) for the recalibrated k;
+    features = the four sentence heads + mean / mean-log / share-below-0.5 of syllable tone_prob
+    (bench/calib/fit_sentence_zh.features)."""
+    t = np.asarray([x for x in tone_probs if x is not None] or [1.0], np.float64)
+    f = np.array([scores[k] for k in ("accuracy", "fluency", "prosodic", "total")]
+                 + [t.mean(), np.log(np.clip(t, 1e-3, 1)).mean(), (t < 0.5).mean()], np.float64)
+    out = dict(scores)
+    for k, m in cal["scores"].items():
+        c = np.asarray(m["coef"], np.float64)
+        out[k] = float(np.clip((c[0] + c[1:] @ f - 1) / 4, 0.0, 1.0))
+    return out
 
 
 def _present_prob(cal: dict, llr_del) -> float:

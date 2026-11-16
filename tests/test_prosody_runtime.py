@@ -45,10 +45,11 @@ def _evidence(acoustic, wav, ref):
     return score_reference(acoustic.posteriors(wav), ref)
 
 
-def test_default_tone_model_is_v2():
+def test_default_tone_model_is_v3z():
     from pronunciada import prosody
 
-    assert prosody.TONE_MODEL == "tone_zh_v2" and (DATA / "tone_zh.onnx").exists()
+    assert prosody.TONE_MODEL == "tone_zh_v3z"
+    assert all((DATA / f"{m}.onnx").exists() for m in ("tone_zh", "tone_zh_v2", "tone_zh_v3"))
 
 
 def test_model_files_small():
