@@ -2,13 +2,13 @@
  "lang": "zh",
  "kind": "tone",
  "coef": [
-  3.8750984869563414,
-  1.0606557975156543,
-  0.04392782411939598,
-  -0.005447099423031315
+  3.601443186384195,
+  1.0061585436721354,
+  0.03639087554014269,
+  0.055330815282608824
  ],
- "c_len": 0.6756850620912427,
- "c_str": 0.1913504275265932,
+ "c_len": 1.2976610018684522,
+ "c_str": 0.46090461421063994,
  "n_fit_words": 7522,
  "n_fit_errors": 400,
  "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
@@ -19,20 +19,34 @@
  ],
  "fit_on": "FLEURS validation, 200 clips",
  "prosody_model_meta": {
-  "model": "tone_v2",
-  "temperature": 1.0017762213297001,
+  "model": "t3_B_zemb",
+  "temperature": 0.9113814244102849,
   "platt": [
-   0.9748673030427767,
-   0.061887254036674645
+   0.9679653385685854,
+   0.046979555217060834
   ],
   "ctx_len": 160,
-  "sequence": true
+  "sequence": true,
+  "inputs": {
+   "reg": true,
+   "lowmel": true,
+   "zemb": true
+  },
+  "leniency": [
+   "neutral4"
+  ],
+  "zemb_layers": [
+   "enc1",
+   "enc3"
+  ]
  },
  "prosody_model_files": {
   "pitch_ja.onnx": "b6a74615b22e",
   "stress.onnx": "a7ed773ec4e0",
   "tone_zh.onnx": "4e7428ce226a",
-  "tone_zh_v2.onnx": "47849e1029a7"
+  "tone_zh_v2.onnx": "47849e1029a7",
+  "tone_zh_v3.onnx": "d3c9c21c3ebd",
+  "tone_zh_v3z.onnx": "ffd41da84a8f"
  },
  "experimental": null,
  "dev_cv": {
@@ -41,27 +55,27 @@
   "native_accept": {
    "0.0": {
     "before": 0.9872374368519011,
-    "after": 0.9827173624036161,
+    "after": 0.9840467960648763,
     "p_pros_only": 0.9970752459452273
    },
    "0.5": {
     "before": 0.9848444562616325,
-    "after": 0.9773996277585748,
-    "p_pros_only": 0.9941504918904547
+    "after": 0.9792608348843392,
+    "p_pros_only": 0.9949481520872109
    },
    "1.0": {
     "before": 0.9829832491358681,
-    "after": 0.9688912523265089,
-    "p_pros_only": 0.9888327572454134
+    "after": 0.9728795533102899,
+    "p_pros_only": 0.9901621909066738
    }
   },
   "native_syllable_agreement": {
-   "all": 0.6698431315056443,
-   "tone1": 0.6086286594761171,
-   "tone2": 0.6695804195804196,
-   "tone3": 0.544385026737968,
-   "tone4": 0.7587918907736864,
-   "tone5": 0.6307692307692307
+   "all": 0.7608855006597273,
+   "tone1": 0.7033898305084746,
+   "tone2": 0.7698135198135199,
+   "tone3": 0.6951871657754011,
+   "tone4": 0.7914770376499793,
+   "tone5": 0.8637362637362638
   },
   "prosodic_error": {
    "sounds": {
@@ -70,13 +84,13 @@
     "n_err": 400
    },
    "p_pros": {
-    "auc": 0.8763244482850305,
-    "hit_at_5pct": 0.4925,
+    "auc": 0.9137094522733316,
+    "hit_at_5pct": 0.5875,
     "n_err": 400
    },
    "product": {
-    "auc": 0.8516694363201276,
-    "hit_at_5pct": 0.3825,
+    "auc": 0.889046463706461,
+    "hit_at_5pct": 0.4725,
     "n_err": 400
    }
   },
@@ -87,10 +101,11 @@
     "n_err": 2000
    },
    "after": {
-    "auc": 0.9351163919170433,
-    "hit_at_5pct": 0.7925,
+    "auc": 0.9422813081627227,
+    "hit_at_5pct": 0.805,
     "n_err": 2000
    }
   }
- }
+ },
+ "tone_model": "tone_zh_v3z"
 }

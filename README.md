@@ -108,19 +108,27 @@ where Pronunciada is ahead.
 
 ### Mandarin tones
 
-Same syllable, different tone in the prompt (so only the pitch tells them apart):
+Same syllable, different tone in the prompt (so only the pitch tells them apart), FLEURS test:
 
 | | Pronunciada | Azure |
 |---|---|---|
-| detection (AUC) | 0.824 | **0.846** |
-| caught at 5 % false alarms | 31 % | **40 %** |
+| detection (AUC) | 0.845 | 0.846 |
+| caught at 5 % false alarms | 37 % | **40 %** |
 
-Azure is still ahead here (round 5 tried richer tone-model inputs; see
-[results/tone_v3.md](results/tone_v3.md)). The tone model itself listens to pitch only (171 k parameters); it
-agrees with the dictionary tone on 84 % of syllables of unseen studio speakers and 68–75 % on
-harder crowd-sourced speech, and tells a wrong tone from a right one with AUC 0.90–0.97 on native
-speech. Simplified and Traditional text give identical references; Taiwan-accented speech is
-tested separately ([results/prosody.md](results/prosody.md)).
+Real learners (OMPAL test: French learners of Taiwan Mandarin, every character marked by
+teachers): word-level AUC for any error 0.795 vs Azure 0.704; tone-only errors 0.785 vs 0.679;
+sentence accuracy Pearson with teachers 0.64 vs 0.36. Caveat: since round 7, Mandarin sentence
+scores are recalibrated on OMPAL's DEV learners (same first language, different speakers), while
+Azure is untuned ([results/round7.md](results/round7.md)).
+
+The default tone model (`tone_zh_v3z`, 0.8 MB) reads the pitch contour, a low-frequency spectrum
+patch and the acoustic model's per-syllable activations. It agrees with the dictionary tone on
+76 % of syllables of fast crowd-sourced read speech (FLEURS) and 86 % of studio speech. Because
+it partly recognises the syllable, it recovers a deliberately wrong pitch contour slightly less
+often than the pitch-only v2 on synthetic tests. On real learner tone errors it is as good or
+better (OMPAL dev). `PRONUNCIADA_TONE_MODEL=tone_zh_v2` selects the pitch-only model
+([results/tone_v3.md](results/tone_v3.md)). Simplified and Traditional text give identical
+references; Taiwan-accented speech is tested separately ([results/prosody.md](results/prosody.md)).
 
 ### Word stress (English, German, Spanish, Italian, Portuguese, Russian)
 
@@ -151,7 +159,7 @@ calibration error is 1–2 % for sounds, 3–4 % for words and 2–4 % for sente
 
 - **Sentence-level intonation** in English trails Azure (0.77 against 0.83), which also pulls the
   overall sentence score slightly below Azure's.
-- **Mandarin tones** trail Azure on the head-to-head above.
+- **Mandarin tones**: level with Azure on the FLEURS tone-swap AUC but still behind at 5 % false alarms.
 - **Real learner mistakes outside English are untested**: the ten-language comparison uses native
   recordings with altered prompts. Detection of real mistakes is much harder (0.71–0.72 in English
   against 0.98–0.99 on the controlled test) and the same drop should be expected elsewhere.

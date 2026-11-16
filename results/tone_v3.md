@@ -232,3 +232,10 @@ extra tracker. Per the instruction ("no clear advantage → stop after step 1"),
 models were trained, so `tone_zh_v2s` / `tone_zh_v3zs` do not exist and nothing was vendored.
 If it is ever used, it would be a drop-in pitch source for the tone, stress and pitch-accent
 models (same `F0Track`), each needing a retrain.
+
+## 9. Round 7: `tone_zh_v3z` became the default
+
+Chosen by the coordinator on OMPAL DEV (real learner tone errors), with v2 and v3 still
+selectable. Training-vs-runtime parity on 150 FLEURS validation clips: max |ΔP| 0.019, argmax
+agreement 99.94 %. Held-out results are in [round7.md](round7.md): FLEURS tone swap AUC 0.845
+(Azure 0.846), OMPAL TEST word AUC unchanged (0.795 vs 0.797).
