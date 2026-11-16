@@ -10,6 +10,8 @@ Irregular words (что, его, солнце ...) come from the same lexicon as
 from __future__ import annotations
 
 import gzip
+import json
+import math
 import unicodedata
 
 from . import _eu_common as C
@@ -171,6 +173,67 @@ PLAIN_BEFORE_V = set("kgxf")
 VOWEL_ALTS = {"a": ["ɐ", "ə", "ɑ", "ʌ"], "i": ["ɪ", "ɛ", "ɨ"], "ɛ": ["ɪ", "i", "e"], "u": ["ʊ"],
               "ɨ": ["ɪ", "a"]}
 
+# Round 8: reduction-aware targets. pronunciada/data/lex/ru_vowels.json holds, per position class,
+# how native FLEURS-ru validation speech is realised according to the acoustic model
+# (bench/calib/ru_round8.py audit): vowels keyed (letter, position, context), soft / plain t and d
+# keyed (origin, next). For words whose stress is known (lexicon, accent mark, ё, one vowel,
+# unstressed clitic) the primary symbol becomes the most frequent realisation and an alternative
+# is kept only if natives produce it in at least VOWEL_MIN of the cases (log prior = log of its
+# share relative to the primary's). Words with predicted stress keep the broad rule-based alts.
+#
+# On by default since round 8 together with the adapter retrained on these targets and the Russian
+# sound bias chosen by the detection-aware rule (results/round8_ru.md). `measured_targets = False`
+# on a G2P instance gives the round-7 references (the shipped adapter expects the measured ones).
+MEASURED_TARGETS = True
+VOWEL_MIN = 0.15
+CLASS_MIN_N = 30
+KNOWN_STRESS = frozenset({"lex", "accent", "yo", "mono", "clitic"})
+
+
+def vowel_keys(word: str, stressed: int | None) -> list[tuple[str, str, str]]:
+    """One (letter, position, context) per vowel letter of a Cyrillic word.
+    position: S stressed, P1 first pretonic, P2 earlier pretonic, T post-tonic non-final,
+    F post-tonic word-final, C unstressed word (stressed is None);
+    context: V word-initial / after a vowel / after ь ъ, H after ж ш ц, C after another consonant."""
+    letters = [c for c in word.lower() if c in VOWELS or c in CONS or c in "ьъ"]
+    vpos = [i for i, c in enumerate(letters) if c in VOWELS]
+    out = []
+    for k, i in enumerate(vpos):
+        if stressed is None:
+            pos = "C"
+        elif k == stressed:
+            pos = "S"
+        elif k == stressed - 1:
+            pos = "P1"
+        elif k < stressed:
+            pos = "P2"
+        elif k == len(vpos) - 1:
+            pos = "F"
+        else:
+            pos = "T"
+        prev = letters[i - 1] if i else ""
+        ctx = "V" if (not prev or prev in VOWELS or prev in "ьъ") else ("H" if prev in HARD_ONLY else "C")
+        out.append((letters[i], pos, ctx))
+    return out
+
+
+def cons_key(origin: str, nxt: str | None, nxt_nucleus: bool = False) -> tuple[str, str]:
+    """origin: 't' 'tʲ' 'd' 'dʲ' (before the ZIPA mapping); next: Vi before и-type vowels,
+    V other vowel, C consonant, # word end."""
+    if nxt is None:
+        return (origin, "#")
+    if nxt_nucleus:
+        return (origin, "Vi" if nxt[:1] in "iɪ" else "V")
+    return (origin, "C")
+
+
+def load_vowel_table() -> dict:
+    p = C.lex_path("ru_vowels.json")
+    if not p.exists():
+        return {}
+    raw = json.loads(p.read_text(encoding="utf-8"))
+    return {tuple(e["key"]): (int(e["n"]), dict(e["dist"])) for e in raw["classes"]}
+
 
 class Russian(EuG2P):
     lang = "ru"
@@ -204,6 +267,10 @@ class Russian(EuG2P):
                     continue
                 self.stress[k] = v
         self._keys = sorted(self.stress)
+        self._src: dict[str, str] = {}               # word -> where its stress came from
+        self.vowel_table = load_vowel_table()
+        self.vowel_min = VOWEL_MIN
+        self.measured_targets = MEASURED_TARGETS
 
     def normalise_word(self, w):
         w = unicodedata.normalize("NFC", C.fold_apos(w)).lower()
@@ -225,7 +292,9 @@ class Russian(EuG2P):
     def lookup(self, w):
         w2, marked = self._strip_accent(w)
         v = self.stress.get(w2)
+        self._src[w] = "lex" if v is not None else "stem"
         if marked is not None:
+            self._src[w] = "accent"
             if v is not None and not v.isdigit():
                 ph = v.split()
                 nuc = [i for i, x in enumerate(ph) if C.is_nucleus_ipa(x.rstrip("1"))]
@@ -234,6 +303,7 @@ class Russian(EuG2P):
                              for x in ph]]
             return [rules(w2, marked, True)]
         if w2 in CLITICS and (v is None or v.isdigit()):
+            self._src[w] = "clitic"
             return [rules(w2, -1, True)]               # unstressed: reduced vowels
         if v is not None:
             return [rules(w2, int(v), True)] if v.isdigit() else [[EXC_VOWEL.get(x.rstrip("1"), x.rstrip("1")) +
@@ -241,8 +311,10 @@ class Russian(EuG2P):
                                                                      for x in v.split()]]
         vow = [c for c in w2 if c in VOWELS]
         if "ё" in vow:
+            self._src[w] = "yo"
             return [rules(w2, vow.index("ё"), True)]
         if len(vow) <= 1:
+            self._src[w] = "mono"
             return [rules(w2, 0, True)]
         k = self._stem_stress(w2, len(vow))
         if k is not None:
@@ -276,6 +348,7 @@ class Russian(EuG2P):
         return None
 
     def oov(self, w):
+        self._src[w] = "oov"
         w2, _ = self._strip_accent(w)
         if "ё" in w2:
             return rules(w2, [c for c in w2 if c in VOWELS].index("ё"), True)
@@ -306,6 +379,7 @@ class Russian(EuG2P):
             if st == 1:
                 stressed.update(range(a, b))
         n = len(w.phones)
+        origin = {k: p.ipa for k, p in enumerate(w.phones) if p.ipa in ("t", "tʲ", "d", "dʲ")}
         for k, p in enumerate(w.phones):
             if not p.nucleus and ("ˠ" in p.ipa or ("ː" in p.ipa and p.ipa != "ɕː")):
                 base = p.ipa.replace("ˠ", "").replace("ː", "")
@@ -336,7 +410,35 @@ class Russian(EuG2P):
                 p.add_alt({"ɛ": "e", "o": "ʌ", "a": "ɑ"}[p.ipa], C.P_COMMON)
             elif p.ipa == "j" and 0 < k < len(w.phones) - 1 and w.phones[k - 1].nucleus and w.phones[k + 1].nucleus:
                 p.add_alt("", C.P_MED)
+        if self.measured_targets and self.vowel_table and len(items) == 1 and self._src.get(items[0]) in KNOWN_STRESS:
+            self._measured_targets(w, items[0], origin)
         return w
+
+    def _set_target(self, p, key) -> bool:
+        e = self.vowel_table.get(key)
+        if e is None or e[0] < CLASS_MIN_N:
+            return False
+        dist = e[1]
+        prim = max(dist, key=dist.get)
+        top = dist[prim]
+        keep_drop = [(a, w) for a, w in p.alts if a == ""]
+        p.ipa = prim
+        p.alts = [(a, math.log(s / top)) for a, s in sorted(dist.items(), key=lambda kv: -kv[1])
+                  if a != prim and a and s >= self.vowel_min] + keep_drop
+        return True
+
+    def _measured_targets(self, w, word: str, origin: dict) -> None:
+        """Round 8: measured primary + alternatives for vowels and t/d (see VOWEL_MIN)."""
+        st = [i for i, (_, _, s) in enumerate(w.syls) if s == 1]
+        nuc = [p for p in w.phones if p.nucleus]
+        keys = vowel_keys(word, st[0] if st else None)
+        if len(keys) == len(nuc) == len(w.syls):
+            for p, key in zip(nuc, keys):
+                self._set_target(p, key)
+        n = len(w.phones)
+        for k, o in origin.items():
+            nx = w.phones[k + 1] if k + 1 < n else None
+            self._set_target(w.phones[k], cons_key(o, nx.ipa if nx else None, bool(nx and nx.nucleus)))
 
     def connected(self, words):
         for i in range(len(words) - 1):

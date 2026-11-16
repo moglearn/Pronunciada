@@ -127,6 +127,10 @@ def cached_collect(lang, n):
     # the model choice / tone leniency can be switched by environment variables: part of the key
     env = "".join(f"_{os.environ[v]}" for v in ("PRONUNCIADA_TONE_MODEL", "PRONUNCIADA_TONE_LENIENCY")
                   if os.environ.get(v))
+    from pronunciada.prosody import default_model, selected_model
+
+    if lang != "zh" and selected_model(lang) != default_model(lang):    # round 8: stress / pitch candidates
+        env += "_" + selected_model(lang)
     if lang == "zh":                           # the model in use and the default leniency rules
         from pronunciada.prosody import selected_tone_model
         from pronunciada.prosody.tone_leniency import DEFAULT
@@ -323,12 +327,11 @@ def run(lang, n):
     d = ship_dir() / "prosody"
     d.mkdir(exist_ok=True)
     fn = f"{lang}.json"
-    if lang == "zh":       # a non-default tone model (PRONUNCIADA_TONE_MODEL) gets its own file
-        from pronunciada.prosody import TONE_MODEL, selected_tone_model
+    from pronunciada.prosody import default_model, selected_model
 
-        if selected_tone_model() != TONE_MODEL:
-            fn = f"zh.{selected_tone_model()}.json"
-            out["tone_model"] = selected_tone_model()
+    if selected_model(lang) != default_model(lang):   # a non-default model gets its own file
+        fn = f"{lang}.{selected_model(lang)}.json"
+        out["tone_model" if lang == "zh" else "prosody_model"] = selected_model(lang)
     (d / fn).write_text(json.dumps(out, indent=1, default=float))
     save_json(f"prosody_{fn}", out)
     return lang, out

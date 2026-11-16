@@ -1,4 +1,5 @@
-"""Evaluate Pronunciada and Azure on cv-real (bench/cv_build.py), TEST half only.
+"""Evaluate Pronunciada and Azure on cv-real (bench/cv_build.py), TEST half by default
+(`--half dev`: the tuning half, separate caches, writes results/tables/cv_real_dev.json only).
 
     python -m bench.eval_cv --steps ours,report              # re-score ours (cached) + report
     python -m bench.eval_cv --steps ours,report --clear-ours # drop our cached outputs first
@@ -54,9 +55,13 @@ REPO = Path(__file__).resolve().parents[1]
 N_BOOT = 2000
 
 
-def records(locales=CB.LOCALES) -> list[dict]:
-    recs = CB.load_manifest(locales, half="test")
-    assert all(r["half"] == "test" for r in recs)
+HALF = "test"   # set by --half; "dev" (round 8, tuning half) uses separate caches throughout
+
+
+def records(locales=CB.LOCALES, half: str | None = None) -> list[dict]:
+    half = half or HALF
+    recs = CB.load_manifest(locales, half=half)
+    assert all(r["half"] == half for r in recs)
     return recs
 
 
@@ -74,14 +79,14 @@ def unique_clips(recs: list[dict]) -> list[dict]:
 def azure_dir() -> Path:
     from bench.azure_pa import cache_dir
 
-    return cache_dir(DATASET)
+    return cache_dir(DATASET if HALF == "test" else f"{DATASET}-{HALF}")
 
 
 def run_azure(locales, dry_run: bool = False, workers: int = 4, max_tries: int = 10,
               limit: int | None = None) -> None:
     from bench import azure_pa as AZ
 
-    clips = [r for r in unique_clips(records(locales)) if r["half"] == "test"]
+    clips = [r for r in unique_clips(records(locales)) if r["half"] == HALF]
     out = azure_dir()
     todo = [r for r in clips if not (out / f"{r['id']}.json").exists()]
     n_cached = len(clips) - len(todo)
@@ -90,7 +95,7 @@ def run_azure(locales, dry_run: bool = False, workers: int = 4, max_tries: int =
     secs = defaultdict(float)
     for r in todo:
         secs[AZURE_LOCALE[r["locale"]]] += r["dur"]
-    print(f"{DATASET}: {len(clips)} test clips, {n_cached} cached, {len(todo)} to send, "
+    print(f"{DATASET}: {len(clips)} {HALF} clips, {n_cached} cached, {len(todo)} to send, "
           f"{sum(secs.values()) / 3600:.2f} audio-h", flush=True)
     for loc, s in sorted(secs.items()):
         print(f"  {loc}: {sum(1 for r in todo if AZURE_LOCALE[r['locale']] == loc)} requests, {s / 3600:.2f} h")
@@ -106,7 +111,7 @@ def run_azure(locales, dry_run: bool = False, workers: int = 4, max_tries: int =
     def one(r: dict) -> str:
         if abort.is_set():
             return "skipped"
-        assert r["half"] == "test"
+        assert r["half"] == HALF
         if not hasattr(local, "s"):
             local.s = requests.Session()
         locale = AZURE_LOCALE[r["locale"]]
@@ -197,7 +202,7 @@ def fingerprint() -> str:
 
 
 def ours_root() -> Path:
-    return CB.cache_root() / "cv-real" / "ours"
+    return CB.cache_root() / ("cv-real" if HALF == "test" else f"cv-real-{HALF}") / "ours"
 
 
 _SC = None
@@ -250,7 +255,7 @@ def run_ours(locales, workers: int = 3, clear: bool = False) -> dict:
         if not (d / f"{r['id']}.json").exists():
             by_lang[r["lang"]].append(r)
     n = sum(len(v) for v in by_lang.values())
-    print(f"ours (pronunciada fingerprint {fp}): {len(clips)} test clips, {len(clips) - n} cached, {n} to score",
+    print(f"ours (pronunciada fingerprint {fp}): {len(clips)} {HALF} clips, {len(clips) - n} cached, {n} to score",
           flush=True)
     t0 = time.time()
     for lang, recs in sorted(by_lang.items()):
@@ -543,10 +548,27 @@ def report(locales) -> None:
     ours, fp = ours_scores(recs)
     az = azure_scores(recs)
     ev = evaluate(recs, ours, az)
-    build = json.loads((CB.OUT_DIR / "build.json").read_text())
     usage = azure_usage(az)
     tables = REPO / "results" / "tables"
     tables.mkdir(parents=True, exist_ok=True)
+    if HALF != "test":     # tuning half: numbers only, never the published report
+        (tables / f"cv_real_{HALF}.json").write_text(json.dumps(
+            {"fingerprint": fp, "half": HALF, "azure_usage": usage, "results": ev}, indent=1, ensure_ascii=False))
+        for e in ev.values():
+            if "primary" in e:
+                p = e["primary"]
+                print(f"{e['locale']:6s} {e['test']} [{HALF}] n={e['n_pos']}/{e['n_neg']}  ours {p['ours']:.3f} "
+                      f"{p['ours_ci']}  azure {p['azure']:.3f}  delta {p['delta']:+.3f}  p={p['p_two_sided']:.3f}")
+            elif ours:
+                y = np.array([r["label"] for r in recs if r["id"] in ours and r["locale"] == e["locale"]
+                              and r["test"] == e["test"]])
+                a = np.array([ours[r["id"]][OURS_PRIMARY] for r in recs if r["id"] in ours
+                              and r["locale"] == e["locale"] and r["test"] == e["test"]])
+                if 0 < y.sum() < len(y):
+                    print(f"{e['locale']:6s} {e['test']} [{HALF}] ours only {_auc_bad(y, a):.3f} (no Azure)")
+        print(f"wrote results/tables/cv_real_{HALF}.json; azure usage {usage}")
+        return
+    build = json.loads((CB.OUT_DIR / "build.json").read_text())
     (tables / "cv_real.json").write_text(json.dumps(
         {"fingerprint": fp, "pre_specified": {"ours": OURS_PRIMARY, "azure": AZ_PRIMARY, "metric": "AUC",
                                               "ci": "speaker bootstrap 95 %", "n_boot": N_BOOT},
@@ -570,7 +592,11 @@ def main(argv=None) -> None:
     ap.add_argument("--clear-ours", action="store_true", help="delete all cached outputs of ours first")
     ap.add_argument("--dry-run", action="store_true", help="azure: only count what would be sent")
     ap.add_argument("--limit", type=int, help="azure: send at most N uncached clips")
+    ap.add_argument("--half", default="test", choices=("test", "dev"),
+                    help="manifest half (dev = tuning half; separate ours / Azure caches, no cv_real.md)")
     a = ap.parse_args(argv)
+    global HALF
+    HALF = a.half
     locs = list(CB.LOCALES) if a.locales == "all" else a.locales.split(",")
     steps = [s.strip() for s in a.steps.split(",") if s.strip()]
     for s in steps:

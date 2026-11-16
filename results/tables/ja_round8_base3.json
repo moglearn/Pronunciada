@@ -1,0 +1,192 @@
+{
+ "tag": "base3",
+ "auc": 0.7628733127856308,
+ "words": {
+  "accepted": {
+   "clip: decode does not match the prompt (PER > 0.6)": 212,
+   "word not heard (present < 0.5)": 56,
+   "other substitution": 46,
+   "another dictionary reading fits better": 16,
+   "i/u devoiced or dropped": 15,
+   "katakana loanword": 4,
+   "particle は/へ/を": 4,
+   "long vowel": 3,
+   "moraic nasal": 3
+  },
+  "rejected": {
+   "clip: decode does not match the prompt (PER > 0.6)": 1011,
+   "word not heard (present < 0.5)": 133,
+   "other substitution": 83,
+   "i/u devoiced or dropped": 19,
+   "another dictionary reading fits better": 11,
+   "particle は/へ/を": 5,
+   "long vowel": 4,
+   "moraic nasal": 3,
+   "katakana loanword": 2
+  }
+ },
+ "examples": {
+  "accepted": {
+   "another dictionary reading fits better": [
+    "角 [カド] heard kakku",
+    "物 [モノ] heard moa",
+    "等 [トー] heard ra",
+    "身体 [シンタイ] heard karadaw",
+    "上っ [ノボ] heard abat"
+   ],
+   "other substitution": [
+    "わたし [ワタシ] heard bafaeb",
+    "八百屋 [ヤオヤ] heard taka",
+    "買い [カイ] heard abib",
+    "我々 [ワレワレ] heard waroware",
+    "の [ノ] heard tom"
+   ],
+   "i/u devoiced or dropped": [
+    "野菜 [ヤサイ] heard gasaŋa",
+    "飛び出し [トビダシ] heard toasi",
+    "何かしら [ナニカシラ] heard nawaʃak",
+    "向け [ムケ] heard mkre",
+    "思う [オモウ] heard wat"
+   ],
+   "word not heard (present < 0.5)": [
+    "で [デ] heard -",
+    "いる [イル] heard eːn",
+    "て [テ] heard iki",
+    "周 [シュー] heard ma",
+    "は [ワ] heard dz"
+   ],
+   "clip: decode does not match the prompt (PER > 0.6)": [
+    "た [タ] heard ʃ",
+    "もの [モノ] heard mono",
+    "に [ニ] heard o",
+    "て [テ] heard ni",
+    "自己 [ジコ] heard io"
+   ],
+   "katakana loanword": [
+    "リニューアル [リニューアル] heard rioru",
+    "バッジ [バッジ] heard batʃig",
+    "ダヴィンチ [ダヴィンチ] heard tabintʃiw",
+    "パソコン [パソコン] heard pasko"
+   ],
+   "particle は/へ/を": [
+    "は [ワ] heard ha",
+    "は [ワ] heard a",
+    "は [ワ] heard hai",
+    "は [ワ] heard o"
+   ],
+   "long vowel": [
+    "大きな [オーキナ] heard okika",
+    "ほう [ホー] heard a",
+    "表 [ヒョー] heard mo"
+   ],
+   "moraic nasal": [
+    "みんな [ミンナ] heard mina",
+    "中頓別 [ナカトンベツ] heard tʃuːtombetsum",
+    "パソコン [パソコン] heard basuno"
+   ]
+  },
+  "rejected": {
+   "word not heard (present < 0.5)": [
+    "図書館 [トショカン] heard u",
+    "時 [ジ] heard i",
+    "上 [ウエ] heard i",
+    "の [ノ] heard wa",
+    "行為 [コーイ] heard wai"
+   ],
+   "other substitution": [
+    "返し [カエシ] heard ʃi",
+    "に [ニ] heard i",
+    "すべて [スベテ] heard uwageb",
+    "的 [テキ] heard kuit",
+    "はいる [ハイル] heard wairu"
+   ],
+   "clip: decode does not match the prompt (PER > 0.6)": [
+    "あした [アシタ] heard su",
+    "イ [イ] heard -",
+    "さん [サン] heard unmu",
+    "に [ニ] heard na",
+    "電話 [デンワ] heard uesu"
+   ],
+   "i/u devoiced or dropped": [
+    "一 [イチ] heard etʃi",
+    "使い方 [ツカイカタ] heard tsitatb",
+    "科学 [カガク] heard kogati",
+    "に [ニ] heard no",
+    "一人 [ヒトリ] heard itoin"
+   ],
+   "particle は/へ/を": [
+    "は [ワ] heard wa",
+    "は [ワ] heard aa",
+    "は [ワ] heard k",
+    "は [ワ] heard am",
+    "へ [エ] heard im"
+   ],
+   "katakana loanword": [
+    "バトル [バトル] heard maturu",
+    "ポルト・ヴェーリョ [ポルトヴェーリョ] heard protoberubero"
+   ],
+   "long vowel": [
+    "ペルスペクティーフ [ペルスペクティーフ] heard penartiskurufn",
+    "無用の長物 [ムヨーノチョーブツ] heard buoononakamono",
+    "どうしても [ドーシテモ] heard doʃtʃoŋi",
+    "症状 [ショージョー] heard od"
+   ],
+   "another dictionary reading fits better": [
+    "一 [イチ] heard ikk",
+    "一宮 [イチノミヤ] heard itimia",
+    "中 [チュー] heard dʒon",
+    "側 [ガワ] heard soba",
+    "薬 [ヤク] heard gosur"
+   ],
+   "moraic nasal": [
+    "観点 [カンテン] heard kantreki",
+    "試飲 [シイン] heard ʃo",
+    "販売 [ハンバイ] heard hopaʃ"
+   ]
+  }
+ },
+ "clips": {
+  "accepted": {
+   "n": 194,
+   "with_low_word": 62,
+   "prob_lt_0.5": 16,
+   "prob_ge_0.95": 142,
+   "empty_decode(<=2 tokens)": 5,
+   "empty_decode_prob_ge_0.5": 1,
+   "too_long_warning": 2,
+   "per_bins": {
+    "[0,0.2)": 109,
+    "[0.2,0.4)": 63,
+    "[0.4,0.6)": 11,
+    "[0.6,10.0)": 11
+   },
+   "prob_ge_0.95_by_per": {
+    "[0,0.2)": 100,
+    "[0.2,0.4)": 42,
+    "[0.4,0.6)": 0,
+    "[0.6,10.0)": 0
+   }
+  },
+  "rejected": {
+   "n": 194,
+   "with_low_word": 133,
+   "prob_lt_0.5": 53,
+   "prob_ge_0.95": 56,
+   "empty_decode(<=2 tokens)": 11,
+   "empty_decode_prob_ge_0.5": 4,
+   "too_long_warning": 4,
+   "per_bins": {
+    "[0,0.2)": 35,
+    "[0.2,0.4)": 78,
+    "[0.4,0.6)": 30,
+    "[0.6,10.0)": 51
+   },
+   "prob_ge_0.95_by_per": {
+    "[0,0.2)": 26,
+    "[0.2,0.4)": 29,
+    "[0.4,0.6)": 1,
+    "[0.6,10.0)": 0
+   }
+  }
+ }
+}

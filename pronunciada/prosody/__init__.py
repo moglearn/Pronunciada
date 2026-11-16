@@ -34,7 +34,44 @@ DATA = Path(__file__).resolve().parent.parent / "data" / "prosody"
 # encoder activations per syllable (default since round 7: results/tone_v3.md, results/round7.md).
 # PRONUNCIADA_TONE_MODEL overrides it; a non-default model uses calib/prosody/zh.<model>.json.
 TONE_MODEL = "tone_zh_v3z"
+# Word stress (en de es it pt ru) and Japanese pitch accent: shipped models and the environment
+# variables that select an alternative (round 8: stress_v3 / pitch_ja_v3, results/round8_prosody.md).
+STRESS_MODEL = "stress"
+PITCH_MODEL = "pitch_ja"
 STRESS_LANGS = ("en", "de", "es", "it", "pt", "ru")
+_KIND_ENV = {"tone": ("PRONUNCIADA_TONE_MODEL", "TONE_MODEL"), "stress": ("PRONUNCIADA_STRESS_MODEL", "STRESS_MODEL"),
+             "pitch": ("PRONUNCIADA_PITCH_MODEL", "PITCH_MODEL")}
+
+
+def kind_of(lang: str) -> str | None:
+    return "tone" if lang == "zh" else "pitch" if lang == "ja" else "stress" if lang in STRESS_LANGS else None
+
+
+def default_model(lang: str) -> str | None:
+    k = kind_of(lang)
+    return globals()[_KIND_ENV[k][1]] if k else None
+
+
+def selected_model(lang: str) -> str | None:
+    """Stem of the prosody model in use for `lang` (its environment variable, else the default)."""
+    k = kind_of(lang)
+    if k is None:
+        return None
+    return Path(os.environ.get(_KIND_ENV[k][0], default_model(lang))).name
+
+
+def needs_embeddings(lang: str) -> bool:
+    """True when the selected prosody model of `lang` reads ZIPA encoder activations (meta
+    inputs.zemb), so the caller must run the acoustic model with embeddings=True."""
+    k = kind_of(lang)
+    if k is None:
+        return False
+    stem = os.environ.get(_KIND_ENV[k][0], default_model(lang))
+    p = Path(stem + ".json") if os.sep in stem else DATA / f"{stem}.json"
+    try:
+        return bool(json.loads(p.read_text()).get("inputs", {}).get("zemb"))
+    except OSError:
+        return False
 
 
 def selected_tone_model() -> str:
@@ -89,9 +126,9 @@ class ProsodyScorer:
             if os.sep in stem:                        # a path stem outside the package (experiments)
                 d, stem = Path(stem).parent, Path(stem).name
         elif self.lang == "ja":
-            self.kind, stem = "pitch", "pitch_ja"
+            self.kind, stem = "pitch", os.environ.get("PRONUNCIADA_PITCH_MODEL", PITCH_MODEL)
         elif self.lang in STRESS_LANGS:
-            self.kind, stem = "stress", "stress"
+            self.kind, stem = "stress", os.environ.get("PRONUNCIADA_STRESS_MODEL", STRESS_MODEL)
         else:
             return                                    # fr, ko: nothing to score
         self.meta = json.load(open(d / f"{stem}.json"))
@@ -197,7 +234,10 @@ class ProsodyScorer:
         idx = [i for i, s in enumerate(ref.syllables) if s.pitch_high is not None]
         if not idx:
             return out
-        z = self.sess.run(None, {"x": self._ctx(feats, wins, idx)})[0][:, 0]
+        if self.meta.get("sequence"):     # utterance-level model: every mora, in order
+            z = self.sess.run(None, {"x": self._ctx(feats, wins, range(len(ref.syllables)))})[0][idx, 0]
+        else:
+            z = self.sess.run(None, {"x": self._ctx(feats, wins, idx)})[0][:, 0]
         ph = 1 / (1 + np.exp(-z))
         for k, i in enumerate(idx):
             p = ph[k] if ref.syllables[i].pitch_high else 1 - ph[k]

@@ -24,7 +24,7 @@ from bench.prosody.common import OUT, load_prepped  # noqa: E402
 LOWMEL = OUT / "lowmel"
 
 
-def audio_index(dataset: str, split: str):
+def audio_index(dataset: str, split: str, lang: str = "zh"):
     """id -> audio path or waveform source for every prepared set."""
     from bench.data import load
     from bench.prosody.leak_test import MONO
@@ -36,9 +36,9 @@ def audio_index(dataset: str, split: str):
     if dataset == "fleurs_val":
         from bench.prosody.prep import fleurs_validation
 
-        wavs = {r["id"]: r["wav"] for r in fleurs_validation("zh")}
+        wavs = {r["id"]: r["wav"] for r in fleurs_validation(lang)}
         return lambda uid: wavs[uid]
-    recs = {r["id"]: r["audio"] for r in load(dataset, split=split)}
+    recs = {r["id"]: r["audio"] for r in load(dataset, split=split, lang=None if dataset != "fleurs" else lang)}
     return lambda uid: recs[uid]
 
 
@@ -46,9 +46,10 @@ def _one(key):
     from pronunciada.audio import load_audio
     from pronunciada.prosody.features import lowmel_features
 
-    dataset, split = key.split(":")
-    utts = load_prepped(dataset, "zh", split)
-    src = audio_index(dataset, split)
+    dataset, split, *rest = key.split(":")       # dataset:split[:lang] (default zh)
+    lang = rest[0] if rest else "zh"
+    utts = load_prepped(dataset, lang, split)
+    src = audio_index(dataset, split, lang)
     index, chunks, off = {}, [], 0
     for u in utts:
         a = src(u["id"])
@@ -59,7 +60,7 @@ def _one(key):
         chunks.append(x)
         off += T
     LOWMEL.mkdir(parents=True, exist_ok=True)
-    name = f"{dataset}-zh-{split}"
+    name = f"{dataset}-{lang}-{split}"
     tmp = LOWMEL / f"{name}.tmp.npy"
     np.save(tmp, np.concatenate(chunks))
     os.replace(tmp, LOWMEL / f"{name}.npy")
@@ -70,7 +71,7 @@ def _one(key):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     w = int(next((a.split("=")[1] for a in sys.argv[1:] if a.startswith("--workers=")), 2))
-    todo = [k for k in args if not (LOWMEL / f"{k.split(':')[0]}-zh-{k.split(':')[1]}.npy").exists()]
+    todo = [k for k in args if not (LOWMEL / f"{k.split(':')[0]}-{(k.split(':') + ['zh'])[2]}-{k.split(':')[1]}.npy").exists()]
     with ProcessPoolExecutor(w) as ex:
         for name, n, T in ex.map(_one, todo):
             print("wrote", name, n, "utts", T, "frames", flush=True)

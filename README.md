@@ -104,7 +104,11 @@ where Pronunciada is ahead.
   better; Azure is a little more forgiving of native speakers in six languages.
 - Where Pronunciada is behind: Russian near-misses overall (0.87 against 0.91, although it catches
   more of them at 5 % false alarms), Italian and Mandarin near-misses at 5 % false alarms, and by
-  about one point blaming the right word in German, Korean and Mandarin.
+  about one point blaming the right word in German, Korean and Mandarin. Round 8 tried
+  reduction-aware Russian vowel targets and a retrained adapter. On dev, near-swap AUC rose only
+  0.871 → 0.883, under the +0.02 bar, so the change was not adopted and the Russian rows are
+  unchanged. The remaining misses are mostly calibration leniency (Russian bias +1.1), not the
+  references ([results/round8_ru.md](results/round8_ru.md)).
 
 ### Mandarin tones
 

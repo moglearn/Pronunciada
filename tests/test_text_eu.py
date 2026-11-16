@@ -141,7 +141,7 @@ ALTS = [
     ("pt", "Ele vai falar.", "falar", "r", ""),                               # final r loss
     ("pt", "Ele come a maçã.", "come", "i", ""),                              # vowel sandhi
     ("ru", "Вот дом.", "Вот", "t", "d"),                                      # voicing across words
-    ("ru", "Он сказал.", "сказал", "a", "ɐ"),                                 # reduction variants
+    ("ru", "Он сказал.", "сказал", "a", "ɑ"),                                 # measured reduction variant (round 8)
     ("de", "Wir haben es.", "haben", "ə", ""),                                # -en -> syllabic n
     ("de", "Der Lehrer.", "Lehrer", "ʀ", "ɐ"),                                # r vocalisation
     ("de", "Er ist alt.", "alt", "a", "ʔa"),                                  # glottal stop

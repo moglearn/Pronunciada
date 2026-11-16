@@ -42,11 +42,12 @@ def _one(key):
     from pronunciada.acoustic import AcousticModel
     from pronunciada.audio import load_audio
 
-    dataset, split = key.split(":")
+    dataset, split, *rest = key.split(":")       # dataset:split[:lang] (default zh)
+    lang = rest[0] if rest else "zh"
     m = AcousticModel(threads=2, embeddings=True)
     assert m.embeddings
-    utts = load_prepped(dataset, "zh", split)
-    src = audio_index(dataset, split)
+    utts = load_prepped(dataset, lang, split)
+    src = audio_index(dataset, split, lang)
     res = {}
     for u in utts:
         a = src(u["id"])
@@ -55,7 +56,7 @@ def _one(key):
         emb = np.concatenate([np.asarray(e[k]).reshape(-1, np.asarray(e[k]).shape[-1]) for k in LAYERS], 1)
         res[u["id"]] = pool(u["ref"], u["spans"], emb).astype(np.float16)
     EMB.mkdir(parents=True, exist_ok=True)
-    name = f"{dataset}-zh-{split}"
+    name = f"{dataset}-{lang}-{split}"
     np.savez(EMB / f"{name}.tmp.npz", **res)
     os.replace(EMB / f"{name}.tmp.npz", EMB / f"{name}.npz")
     return name, len(res)
@@ -64,7 +65,7 @@ def _one(key):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     w = int(next((a.split("=")[1] for a in sys.argv[1:] if a.startswith("--workers=")), 2))
-    todo = [k for k in args if not (EMB / f"{k.split(':')[0]}-zh-{k.split(':')[1]}.npz").exists()]
+    todo = [k for k in args if not (EMB / f"{k.split(':')[0]}-{(k.split(':') + ['zh'])[2]}-{k.split(':')[1]}.npz").exists()]
     with ProcessPoolExecutor(w) as ex:
         for name, n in ex.map(_one, todo):
             print("wrote", name, n, flush=True)

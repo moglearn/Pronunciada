@@ -13,7 +13,7 @@
   "fr": -0.548873,
   "de": 0.908746,
   "pt": 0.697079,
-  "ru": 1.075104
+  "ru": 0.6
  },
  "universal_trained_on": "so762",
  "files_kb": {
@@ -63,5 +63,6 @@
   "pt": "word_reg_r6",
   "ru": "word_reg_r6"
  },
- "word_score_model_note": "round 6: reported 0-10 word score with word-pooled ZIPA stack-1 activations (bench/calib/train_word_emb.py) for the listed languages; the others keep word_reg.npz (native FLEURS-validation median dropped by more than 0.3, bench/calib/native_word_check.py)"
+ "word_score_model_note": "round 6: reported 0-10 word score with word-pooled ZIPA stack-1 activations (bench/calib/train_word_emb.py) for the listed languages; the others keep word_reg.npz (native FLEURS-validation median dropped by more than 0.3, bench/calib/native_word_check.py)",
+ "bias_note": "ru (round 8): chosen on FLEURS-ru validation by the detection-aware rule of bench/calib/bias_grid.py (highest dev near-swap AUC with native / planted-error / stress guards vs round 7) with the round-8 references and adapter; the other languages keep the finalize rule (median native logit = English)"
 }

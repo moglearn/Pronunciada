@@ -74,10 +74,10 @@ class Scorer:
         self._dcols = [c for c in self.sentence.num if c in dcols]
         want_emb = self.delivery and (self.sentence_proj is not None or self.word_score is not None
                                       or delivery is True)
-        if prosody and self.lang == "zh":       # a selected tone model may read ZIPA activations
-            from .prosody import tone_needs_embeddings
+        if prosody:                              # a selected prosody model may read ZIPA activations
+            from .prosody import needs_embeddings
 
-            want_emb = want_emb or tone_needs_embeddings()
+            want_emb = want_emb or needs_embeddings(self.lang)
         self.am = AcousticModel(model, precision, threads, embeddings=want_emb)
         self._word_layers = tuple(sorted(set(
             (["enc1"] if delivery is True else []) + list((self.word_score_proj or {}).get("layers", [])))))
@@ -99,12 +99,11 @@ class Scorer:
         # prosody channel (round 3): per-language word-level calibrator of the tone / stress /
         # pitch evidence, pronunciada/data/calib/prosody/<lang>.json (bench/calib/fit_prosody.py)
         pp = _d / "prosody" / f"{self.lang}.json"
-        if self.lang == "zh":                   # a non-default tone model has its own calibrator
-            from .prosody import TONE_MODEL, selected_tone_model
+        from .prosody import default_model, selected_model
 
-            if selected_tone_model() != TONE_MODEL:
-                pm = _d / "prosody" / f"zh.{selected_tone_model()}.json"
-                pp = pm if pm.exists() else pp
+        if selected_model(self.lang) != default_model(self.lang):   # its own channel calibrator
+            pm = _d / "prosody" / f"{self.lang}.{selected_model(self.lang)}.json"
+            pp = pm if pm.exists() else pp
         self.pros_cal = json.loads(pp.read_text()) if pp.exists() else None
         # A channel marked experimental (Japanese pitch accent: it costs more on correct speech
         # than it catches) only enters WordResult.prob with Scorer(..., experimental=True); the
