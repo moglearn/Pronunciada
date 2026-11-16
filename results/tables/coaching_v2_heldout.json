@@ -1,0 +1,990 @@
+{
+ "so762_test": {
+  "v1": {
+   "flagged": 1980,
+   "precision": 0.7727272727272727,
+   "recall": 0.17495711835334476,
+   "precision_acc<1.5": 0.6409090909090909,
+   "recall_acc<1.5": 0.3981801066834013,
+   "named": 1980,
+   "named_on_substitutions": 306,
+   "heard_exact": 0.3300653594771242,
+   "heard_within1": 0.5,
+   "heard_coverage_of_substitutions": 0.5387323943661971,
+   "named_on_correct": 450,
+   "named_on_deleted": 297,
+   "missing_said": 0,
+   "missing_precision": null,
+   "heard_by_class": {
+    "affricate": {
+     "n": 5,
+     "within1": 0.8
+    },
+    "approximant": {
+     "n": 13,
+     "within1": 0.46153846153846156
+    },
+    "fricative": {
+     "n": 43,
+     "within1": 0.6744186046511628
+    },
+    "nasal": {
+     "n": 8,
+     "within1": 0.375
+    },
+    "stop": {
+     "n": 35,
+     "within1": 0.6
+    },
+    "vowel": {
+     "n": 202,
+     "within1": 0.44554455445544555
+    }
+   },
+   "n_sounds": 47041,
+   "n_substitutions": 568
+  },
+  "careful": {
+   "flagged": 2300,
+   "precision": 0.7460869565217392,
+   "recall": 0.19622641509433963,
+   "precision_acc<1.5": 0.5743478260869566,
+   "recall_acc<1.5": 0.4144963915908378,
+   "named": 252,
+   "named_on_substitutions": 36,
+   "heard_exact": 0.6111111111111112,
+   "heard_within1": 0.7777777777777778,
+   "heard_coverage_of_substitutions": 0.06338028169014084,
+   "named_on_correct": 71,
+   "named_on_deleted": 23,
+   "missing_said": 0,
+   "missing_precision": null,
+   "heard_by_class": {
+    "approximant": {
+     "n": 3,
+     "within1": 0.6666666666666666
+    },
+    "fricative": {
+     "n": 17,
+     "within1": 0.9411764705882353
+    },
+    "stop": {
+     "n": 10,
+     "within1": 0.6
+    },
+    "vowel": {
+     "n": 6,
+     "within1": 0.6666666666666666
+    }
+   },
+   "n_sounds": 47041,
+   "n_substitutions": 568
+  },
+  "balanced": {
+   "flagged": 4409,
+   "precision": 0.646858698117487,
+   "recall": 0.3261292166952544,
+   "precision_acc<1.5": 0.43116352914493083,
+   "recall_acc<1.5": 0.596485723250706,
+   "named": 455,
+   "named_on_substitutions": 44,
+   "heard_exact": 0.6363636363636364,
+   "heard_within1": 0.7727272727272727,
+   "heard_coverage_of_substitutions": 0.07746478873239436,
+   "named_on_correct": 172,
+   "named_on_deleted": 26,
+   "missing_said": 0,
+   "missing_precision": null,
+   "heard_by_class": {
+    "approximant": {
+     "n": 5,
+     "within1": 0.8
+    },
+    "fricative": {
+     "n": 19,
+     "within1": 0.9473684210526315
+    },
+    "stop": {
+     "n": 12,
+     "within1": 0.5833333333333334
+    },
+    "vowel": {
+     "n": 8,
+     "within1": 0.625
+    }
+   },
+   "n_sounds": 47041,
+   "n_substitutions": 568
+  },
+  "eager": {
+   "flagged": 7343,
+   "precision": 0.5542693721912025,
+   "recall": 0.46540880503144655,
+   "precision_acc<1.5": 0.32302873484951655,
+   "recall_acc<1.5": 0.7442736115469093,
+   "named": 648,
+   "named_on_substitutions": 55,
+   "heard_exact": 0.6545454545454545,
+   "heard_within1": 0.8,
+   "heard_coverage_of_substitutions": 0.09683098591549295,
+   "named_on_correct": 267,
+   "named_on_deleted": 28,
+   "missing_said": 0,
+   "missing_precision": null,
+   "heard_by_class": {
+    "approximant": {
+     "n": 7,
+     "within1": 0.8571428571428571
+    },
+    "fricative": {
+     "n": 23,
+     "within1": 0.9565217391304348
+    },
+    "stop": {
+     "n": 16,
+     "within1": 0.625
+    },
+    "vowel": {
+     "n": 9,
+     "within1": 0.6666666666666666
+    }
+   },
+   "n_sounds": 47041,
+   "n_substitutions": 568
+  }
+ },
+ "ompal_test": {
+  "units": 7257,
+  "careful": {
+   "tone": {
+    "flagged": 10,
+    "precision": 0.6,
+    "recall": 0.005390835579514825,
+    "threshold": 0.005140364026567785
+   },
+   "consonant": {
+    "flagged": 0,
+    "precision": null,
+    "recall": 0.0,
+    "threshold": 1.01
+   },
+   "vowel": {
+    "flagged": 0,
+    "precision": null,
+    "recall": 0.0,
+    "threshold": 1.01
+   }
+  },
+  "balanced": {
+   "tone": {
+    "flagged": 51,
+    "precision": 0.5490196078431373,
+    "recall": 0.025157232704402517,
+    "threshold": 0.007427134764662936
+   },
+   "consonant": {
+    "flagged": 30,
+    "precision": 0.26666666666666666,
+    "recall": 0.055944055944055944,
+    "threshold": 0.8491621052328209
+   },
+   "vowel": {
+    "flagged": 0,
+    "precision": null,
+    "recall": 0.0,
+    "threshold": 1.01
+   }
+  },
+  "eager": {
+   "tone": {
+    "flagged": 204,
+    "precision": 0.5490196078431373,
+    "recall": 0.10062893081761007,
+    "threshold": 0.013100456116304782
+   },
+   "consonant": {
+    "flagged": 40,
+    "precision": 0.325,
+    "recall": 0.09090909090909091,
+    "threshold": 0.8271389282853192
+   },
+   "vowel": {
+    "flagged": 37,
+    "precision": 0.4594594594594595,
+    "recall": 0.11971830985915492,
+    "threshold": 0.8358556293313395
+   }
+  }
+ },
+ "learners": {
+  "l2arctic": {
+   "v2_careful": {
+    "n_correct": 25560,
+    "n_sub": 3168,
+    "nflag_sub": 188,
+    "n_del": 919,
+    "sub_unmappable": 214,
+    "nflag_correct": 197,
+    "nflag_del": 195,
+    "diagnosed_correct": 11,
+    "diagnosed_del": 27,
+    "diagnosed_sub": 35,
+    "coverage_sub": 0.011047979797979798,
+    "flagged_sub": 0.059343434343434344,
+    "precision_exact": 0.3835616438356164,
+    "precision_within1": 0.4657534246575342,
+    "sub_exact": 0.8,
+    "sub_within1": 0.8571428571428571,
+    "diagnosed_labels": {
+     "sub": 35,
+     "del": 27,
+     "correct": 11
+    },
+    "top_sub": [
+     [
+      "ʃ",
+      "s",
+      "s",
+      7
+     ],
+     [
+      "ð",
+      "h",
+      "h",
+      3
+     ],
+     [
+      "z",
+      "s",
+      "v",
+      1
+     ],
+     [
+      "t",
+      "k",
+      "k",
+      1
+     ],
+     [
+      "s",
+      "h",
+      "h",
+      1
+     ],
+     [
+      "t",
+      "l",
+      "l",
+      1
+     ],
+     [
+      "g",
+      "dʒ",
+      "ʒ",
+      1
+     ],
+     [
+      "b",
+      "v",
+      "v",
+      1
+     ],
+     [
+      "ə",
+      "ɪ",
+      "ɪ",
+      1
+     ],
+     [
+      "æ",
+      "ə",
+      "ə",
+      1
+     ],
+     [
+      "s",
+      "t",
+      "t",
+      1
+     ],
+     [
+      "i",
+      "ɛ",
+      "ɛ",
+      1
+     ]
+    ]
+   },
+   "v2_balanced": {
+    "n_correct": 25560,
+    "n_sub": 3168,
+    "nflag_sub": 446,
+    "nflag_correct": 538,
+    "n_del": 919,
+    "sub_unmappable": 214,
+    "nflag_del": 290,
+    "diagnosed_correct": 29,
+    "diagnosed_sub": 64,
+    "diagnosed_del": 42,
+    "coverage_sub": 0.020202020202020204,
+    "flagged_sub": 0.1407828282828283,
+    "precision_exact": 0.37037037037037035,
+    "precision_within1": 0.5333333333333333,
+    "sub_exact": 0.78125,
+    "sub_within1": 0.859375,
+    "diagnosed_labels": {
+     "sub": 64,
+     "del": 42,
+     "correct": 29
+    },
+    "top_sub": [
+     [
+      "ʃ",
+      "s",
+      "s",
+      9
+     ],
+     [
+      "ð",
+      "h",
+      "h",
+      3
+     ],
+     [
+      "v",
+      "f",
+      "f",
+      2
+     ],
+     [
+      "b",
+      "v",
+      "v",
+      2
+     ],
+     [
+      "z",
+      "s",
+      "s",
+      2
+     ],
+     [
+      "s",
+      "t",
+      "t",
+      2
+     ],
+     [
+      "l̴",
+      "n",
+      "n",
+      2
+     ],
+     [
+      "s",
+      "ʃ",
+      "ʃ",
+      2
+     ],
+     [
+      "t",
+      "s",
+      "s",
+      2
+     ],
+     [
+      "d",
+      "t",
+      "t",
+      1
+     ],
+     [
+      "z",
+      "s",
+      "v",
+      1
+     ],
+     [
+      "t",
+      "k",
+      "k",
+      1
+     ]
+    ]
+   },
+   "v2_eager": {
+    "n_correct": 25560,
+    "n_sub": 3168,
+    "nflag_correct": 1312,
+    "nflag_sub": 739,
+    "n_del": 919,
+    "sub_unmappable": 214,
+    "nflag_del": 377,
+    "diagnosed_correct": 49,
+    "diagnosed_sub": 84,
+    "diagnosed_del": 52,
+    "coverage_sub": 0.026515151515151516,
+    "flagged_sub": 0.23327020202020202,
+    "precision_exact": 0.34054054054054056,
+    "precision_within1": 0.5351351351351351,
+    "sub_exact": 0.75,
+    "sub_within1": 0.8452380952380952,
+    "diagnosed_labels": {
+     "sub": 84,
+     "del": 52,
+     "correct": 49
+    },
+    "top_sub": [
+     [
+      "ʃ",
+      "s",
+      "s",
+      9
+     ],
+     [
+      "θ",
+      "s",
+      "s",
+      3
+     ],
+     [
+      "ð",
+      "h",
+      "h",
+      3
+     ],
+     [
+      "z",
+      "s",
+      "s",
+      3
+     ],
+     [
+      "d",
+      "t",
+      "t",
+      2
+     ],
+     [
+      "v",
+      "f",
+      "f",
+      2
+     ],
+     [
+      "t",
+      "l",
+      "l",
+      2
+     ],
+     [
+      "b",
+      "v",
+      "v",
+      2
+     ],
+     [
+      "s",
+      "t",
+      "t",
+      2
+     ],
+     [
+      "l̴",
+      "n",
+      "n",
+      2
+     ],
+     [
+      "s",
+      "ʃ",
+      "ʃ",
+      2
+     ],
+     [
+      "t",
+      "s",
+      "s",
+      2
+     ]
+    ]
+   }
+  },
+  "epadb": {
+   "v2_careful": {
+    "n_correct": 16315,
+    "n_del": 259,
+    "nflag_del": 65,
+    "nflag_correct": 111,
+    "n_sub": 3848,
+    "sub_unmappable": 518,
+    "nflag_sub": 268,
+    "diagnosed_sub": 38,
+    "diagnosed_del": 5,
+    "diagnosed_correct": 9,
+    "coverage_sub": 0.009875259875259876,
+    "flagged_sub": 0.06964656964656965,
+    "precision_exact": 0.47058823529411764,
+    "precision_within1": 0.6666666666666666,
+    "sub_exact": 0.6486486486486487,
+    "sub_within1": 0.8108108108108109,
+    "diagnosed_labels": {
+     "sub": 37,
+     "del": 5,
+     "correct": 9
+    },
+    "top_sub": [
+     [
+      "z",
+      "s",
+      "s",
+      18
+     ],
+     [
+      "k",
+      "tʃ",
+      "t",
+      4
+     ],
+     [
+      "ʒ",
+      "ʃ",
+      "ʃ",
+      2
+     ],
+     [
+      "z",
+      "θ",
+      "s",
+      1
+     ],
+     [
+      "ɔ",
+      "i",
+      "ɪ",
+      1
+     ],
+     [
+      "z",
+      "s",
+      "f",
+      1
+     ],
+     [
+      "ʒ",
+      "s",
+      "s",
+      1
+     ],
+     [
+      "ə",
+      "ɪ",
+      "i",
+      1
+     ],
+     [
+      "ð",
+      "tʃ",
+      "t",
+      1
+     ],
+     [
+      "ʃ",
+      "tʃ",
+      "t",
+      1
+     ],
+     [
+      "ɑ",
+      "ɪ",
+      "ə",
+      1
+     ],
+     [
+      "t",
+      "ð",
+      "ð",
+      1
+     ]
+    ]
+   },
+   "v2_balanced": {
+    "n_correct": 16315,
+    "nflag_correct": 306,
+    "n_del": 259,
+    "nflag_del": 80,
+    "n_sub": 3848,
+    "sub_unmappable": 518,
+    "nflag_sub": 542,
+    "diagnosed_sub": 59,
+    "diagnosed_del": 6,
+    "diagnosed_correct": 15,
+    "coverage_sub": 0.015332640332640333,
+    "flagged_sub": 0.14085239085239085,
+    "precision_exact": 0.5256410256410257,
+    "precision_within1": 0.7051282051282052,
+    "sub_exact": 0.7192982456140351,
+    "sub_within1": 0.8421052631578947,
+    "diagnosed_labels": {
+     "sub": 57,
+     "del": 6,
+     "correct": 15
+    },
+    "top_sub": [
+     [
+      "z",
+      "s",
+      "s",
+      27
+     ],
+     [
+      "k",
+      "tʃ",
+      "t",
+      4
+     ],
+     [
+      "ʒ",
+      "ʃ",
+      "ʃ",
+      4
+     ],
+     [
+      "v",
+      "b",
+      "b",
+      2
+     ],
+     [
+      "ɪ",
+      "i",
+      "i",
+      2
+     ],
+     [
+      "ə",
+      "i",
+      "i",
+      2
+     ],
+     [
+      "z",
+      "θ",
+      "s",
+      1
+     ],
+     [
+      "ɔ",
+      "i",
+      "ɪ",
+      1
+     ],
+     [
+      "z",
+      "s",
+      "f",
+      1
+     ],
+     [
+      "ʒ",
+      "s",
+      "s",
+      1
+     ],
+     [
+      "ə",
+      "ɪ",
+      "i",
+      1
+     ],
+     [
+      "ð",
+      "tʃ",
+      "t",
+      1
+     ]
+    ]
+   },
+   "v2_eager": {
+    "n_correct": 16315,
+    "nflag_correct": 739,
+    "n_del": 259,
+    "nflag_del": 100,
+    "n_sub": 3848,
+    "sub_unmappable": 518,
+    "nflag_sub": 889,
+    "diagnosed_sub": 69,
+    "diagnosed_correct": 29,
+    "diagnosed_del": 7,
+    "coverage_sub": 0.017931392931392932,
+    "flagged_sub": 0.23102910602910603,
+    "precision_exact": 0.46601941747572817,
+    "precision_within1": 0.6601941747572816,
+    "sub_exact": 0.7164179104477612,
+    "sub_within1": 0.835820895522388,
+    "diagnosed_labels": {
+     "sub": 67,
+     "del": 7,
+     "correct": 29
+    },
+    "top_sub": [
+     [
+      "z",
+      "s",
+      "s",
+      31
+     ],
+     [
+      "v",
+      "b",
+      "b",
+      4
+     ],
+     [
+      "k",
+      "tʃ",
+      "t",
+      4
+     ],
+     [
+      "ʒ",
+      "ʃ",
+      "ʃ",
+      4
+     ],
+     [
+      "θ",
+      "f",
+      "f",
+      2
+     ],
+     [
+      "ɪ",
+      "i",
+      "i",
+      2
+     ],
+     [
+      "ʃ",
+      "dʒ",
+      "ʒ",
+      2
+     ],
+     [
+      "ə",
+      "i",
+      "i",
+      2
+     ],
+     [
+      "z",
+      "θ",
+      "s",
+      1
+     ],
+     [
+      "ɔ",
+      "i",
+      "ɪ",
+      1
+     ],
+     [
+      "z",
+      "s",
+      "f",
+      1
+     ],
+     [
+      "ʒ",
+      "s",
+      "s",
+      1
+     ]
+    ]
+   }
+  }
+ },
+ "examples": [
+  {
+   "id": "so762-004610290",
+   "text": "FIRST PLACE IN THE DIVISION",
+   "ours": [
+    {
+     "word": "FIRST",
+     "expected": "t",
+     "heard": null,
+     "kind": "substitution",
+     "error_prob": 0.588
+    },
+    {
+     "word": "DIVISION",
+     "expected": "v",
+     "heard": "f",
+     "kind": "substitution",
+     "error_prob": 0.561
+    }
+   ],
+   "experts": [
+    {
+     "word": "THE",
+     "phones": [
+      "DH",
+      "AH0"
+     ],
+     "scores": [
+      1.2,
+      2.0
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "DIVISION",
+     "phones": [
+      "D",
+      "IH0",
+      "V",
+      "IH1",
+      "ZH",
+      "N"
+     ],
+     "scores": [
+      2.0,
+      2.0,
+      0.4,
+      1.6,
+      0.8,
+      2.0
+     ],
+     "mispronunciations": [
+      {
+       "index": 2,
+       "canonical_phone": "V",
+       "pronounced_phone": "F"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "so762-090880130",
+   "text": "DO YOU REALLY AND TRULY SAY SO",
+   "ours": [
+    {
+     "word": "SAY",
+     "expected": "s",
+     "heard": null,
+     "kind": "substitution",
+     "error_prob": 0.62
+    },
+    {
+     "word": "SAY",
+     "expected": "eɪ",
+     "heard": null,
+     "kind": "substitution",
+     "error_prob": 0.946
+    },
+    {
+     "word": "SO",
+     "expected": "s",
+     "heard": "n",
+     "kind": "substitution",
+     "error_prob": 0.757
+    }
+   ],
+   "experts": [
+    {
+     "word": "DO",
+     "phones": [
+      "D",
+      "UH0"
+     ],
+     "scores": [
+      2.0,
+      1.8
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "YOU",
+     "phones": [
+      "Y",
+      "UW0"
+     ],
+     "scores": [
+      2.0,
+      1.8
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "REALLY",
+     "phones": [
+      "R",
+      "IH",
+      "AH1",
+      "L",
+      "IY0"
+     ],
+     "scores": [
+      2.0,
+      1.6,
+      1.6,
+      2.0,
+      2.0
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "AND",
+     "phones": [
+      "AE0",
+      "N",
+      "D"
+     ],
+     "scores": [
+      2.0,
+      2.0,
+      1.6
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "TRULY",
+     "phones": [
+      "T",
+      "R",
+      "UW1",
+      "L",
+      "IY0"
+     ],
+     "scores": [
+      2.0,
+      2.0,
+      2.0,
+      1.6,
+      2.0
+     ],
+     "mispronunciations": []
+    },
+    {
+     "word": "SO",
+     "phones": [
+      "S",
+      "OW0"
+     ],
+     "scores": [
+      0.4,
+      2.0
+     ],
+     "mispronunciations": [
+      {
+       "index": 0,
+       "canonical_phone": "S",
+       "pronounced_phone": "N"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

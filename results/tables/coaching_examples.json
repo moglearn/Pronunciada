@@ -1,37 +1,37 @@
 {
  "en": {
-  "id": "fleurs-en-validation-10098964113747380446",
-  "text": "Then, Lakkha Singh took the lead in singing the bhajans.",
+  "id": "fleurs-en-validation-10010138729160973689",
+  "text": "When you call someone who is thousands of miles away, you are using a satellite.",
   "planted": [
    {
-    "kind": "stress",
-    "word": "bhajans",
-    "from_syllable_local": 0,
-    "to_syllable_local": 1
+    "kind": "phone_sub_far",
+    "word": "a",
+    "syllable_local": 0,
+    "from": "ɪ",
+    "to": "ɔ",
+    "distance": 1.5
    },
    {
-    "kind": "phone_sub_far",
-    "word": "singing",
-    "syllable_local": 1,
-    "from": "ŋ",
-    "to": "f",
-    "distance": 6.0
+    "kind": "stress",
+    "word": "away",
+    "from_syllable_local": 1,
+    "to_syllable_local": 0
    }
   ],
   "audio": {
    "schema_version": 1,
-   "duration_s": 4.14,
+   "duration_s": 6.54,
    "clipped_share": 0.0,
-   "peak_dbfs": -44.9021,
-   "noise_db": -82.8452,
-   "speech_db": -66.134,
-   "snr_db": 25.7576,
-   "speech_s": 3.0,
-   "speech_share": 0.7246,
-   "lead_sil_s": 0.38,
-   "trail_sil_s": 0.34,
-   "expected_s": 2.496,
-   "speech_ratio": 1.2019,
+   "peak_dbfs": -32.5328,
+   "noise_db": -68.9703,
+   "speech_db": -50.9045,
+   "snr_db": 25.7277,
+   "speech_s": 3.94,
+   "speech_share": 0.6024,
+   "lead_sil_s": 1.14,
+   "trail_sil_s": 1.08,
+   "expected_s": 4.032,
+   "speech_ratio": 0.9772,
    "issues": [],
    "retry_recommended": false
   },
@@ -39,218 +39,66 @@
    "schema_version": 1,
    "items": [
     {
-     "schema_version": 1,
+     "schema_version": 2,
      "kind": "substitution",
-     "word": "bhajans",
-     "word_index": 9,
-     "syllable_index": 1,
-     "phone_index": 3,
-     "position": "medial",
-     "expected": "æ",
-     "heard": "ə",
-     "expected_ipa": "æ",
-     "heard_ipa": "ə",
+     "word": "a",
+     "word_index": 13,
+     "syllable_index": 0,
+     "phone_index": 0,
+     "position": "only",
+     "expected": "ɔ",
+     "heard": "ɪ",
+     "expected_ipa": "ɔ",
+     "heard_ipa": "ɪ",
      "diff_keys": [
       "height",
-      "backness"
-     ],
-     "prob": 0.0971,
-     "confidence": 0.974,
-     "start": 3.39,
-     "end": 3.41
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "took",
-     "word_index": 3,
-     "syllable_index": 0,
-     "phone_index": 2,
-     "position": "final",
-     "expected": "k",
-     "heard": "t",
-     "expected_ipa": "k",
-     "heard_ipa": "t",
-     "diff_keys": [
-      "place"
-     ],
-     "prob": 0.1343,
-     "confidence": 0.865,
-     "start": 1.43,
-     "end": 1.45
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "Lakkha",
-     "word_index": 1,
-     "syllable_index": 1,
-     "phone_index": 3,
-     "position": "medial",
-     "expected": "k",
-     "heard": "h",
-     "expected_ipa": "k",
-     "heard_ipa": "h",
-     "diff_keys": [
-      "place",
-      "manner"
-     ],
-     "prob": 0.1795,
-     "confidence": 0.865,
-     "start": 0.89,
-     "end": 0.91
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "bhajans",
-     "word_index": 9,
-     "syllable_index": 1,
-     "phone_index": 2,
-     "position": "medial",
-     "expected": "dʒ",
-     "heard": "ʃ",
-     "expected_ipa": "dʒ",
-     "heard_ipa": "ʃ",
-     "diff_keys": [
-      "manner",
-      "voicing"
-     ],
-     "prob": 0.2317,
-     "confidence": 0.865,
-     "start": 2.95,
-     "end": 3.33
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "singing",
-     "word_index": 7,
-     "syllable_index": 1,
-     "phone_index": 2,
-     "position": "medial",
-     "expected": "f",
-     "heard": "ŋ",
-     "expected_ipa": "f",
-     "heard_ipa": "ŋ",
-     "diff_keys": [
-      "place",
-      "manner",
-      "voicing"
-     ],
-     "prob": 0.4349,
-     "confidence": 0.976,
-     "start": 2.29,
-     "end": 2.31
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "bhajans",
-     "word_index": 9,
-     "syllable_index": 0,
-     "phone_index": 1,
-     "position": "medial",
-     "expected": "ɑ",
-     "heard": "u",
-     "expected_ipa": "ɑ",
-     "heard_ipa": "u",
-     "diff_keys": [
-      "height",
+      "backness",
       "rounded"
      ],
-     "prob": 0.3666,
-     "confidence": 0.865,
-     "start": 2.75,
-     "end": 2.77
+     "error_prob": 0.8003,
+     "prob": 0.3863,
+     "confidence": 0.755,
+     "start": 4.87,
+     "end": 4.89
     },
     {
-     "schema_version": 1,
+     "schema_version": 2,
      "kind": "substitution",
-     "word": "Lakkha",
-     "word_index": 1,
-     "syllable_index": 0,
-     "phone_index": 1,
-     "position": "medial",
-     "expected": "ə",
-     "heard": "ɑ",
-     "expected_ipa": "ə",
-     "heard_ipa": "ɑ",
-     "diff_keys": [
-      "height",
-      "backness"
-     ],
-     "prob": 0.4659,
-     "confidence": 0.865,
-     "start": 0.73,
-     "end": 0.75
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "Lakkha",
-     "word_index": 1,
-     "syllable_index": 0,
-     "phone_index": 2,
-     "position": "medial",
-     "expected": "k",
-     "heard": null,
-     "expected_ipa": "k",
-     "heard_ipa": null,
-     "diff_keys": [],
-     "prob": 0.2314,
-     "confidence": null,
-     "start": 0.85,
-     "end": 0.87
-    },
-    {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "bhajans",
-     "word_index": 9,
+     "word": "thousands",
+     "word_index": 6,
      "syllable_index": 1,
-     "phone_index": 4,
-     "position": "medial",
-     "expected": "n",
+     "phone_index": 6,
+     "position": "final",
+     "expected": "z",
      "heard": null,
-     "expected_ipa": "n",
+     "expected_ipa": "z",
      "heard_ipa": null,
      "diff_keys": [],
-     "prob": 0.4837,
+     "error_prob": 0.5354,
+     "prob": 0.9769,
      "confidence": null,
-     "start": 3.51,
-     "end": 3.55
+     "start": 3.01,
+     "end": 3.03
     }
    ]
   },
   "tips": [
    {
     "tip_key": "vowel.open",
-    "text": "Open your mouth a little more for /æ/ in “bhajans”; it sounded like /ə/.",
+    "text": "Open your mouth a little more for /ɔ/ in “a”; it sounded like /ɪ/.",
     "params": {
-     "word": "bhajans",
-     "expected": "æ",
-     "heard": "ə"
+     "word": "a",
+     "expected": "ɔ",
+     "heard": "ɪ"
     }
    },
    {
-    "tip_key": "place",
-    "text": "Make /k/ in “took” with the back of the tongue against the soft palate; it sounded like /t/, made with the tongue tip just behind the upper teeth.",
+    "tip_key": "sound.unclear",
+    "text": "Listen to /z/ in “thousands” and try it again; it did not sound quite right.",
     "params": {
-     "word": "took",
-     "expected": "k",
-     "heard": "t",
-     "expected_place": "the back of the tongue against the soft palate",
-     "heard_place": "the tongue tip just behind the upper teeth"
-    }
-   },
-   {
-    "tip_key": "manner.stop",
-    "text": "Close completely and release for /k/ in “Lakkha”; it sounded like /h/.",
-    "params": {
-     "word": "Lakkha",
-     "expected": "k",
-     "heard": "h"
+     "word": "thousands",
+     "expected": "z",
+     "heard": null
     }
    }
   ]
@@ -296,7 +144,26 @@
    "schema_version": 1,
    "items": [
     {
-     "schema_version": 1,
+     "schema_version": 2,
+     "kind": "missing_word",
+     "word": "的",
+     "word_index": 2,
+     "syllable_index": null,
+     "phone_index": null,
+     "position": null,
+     "expected": "的",
+     "heard": null,
+     "expected_ipa": null,
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.9241,
+     "prob": 0.0759,
+     "confidence": null,
+     "start": 0.97,
+     "end": 1.03
+    },
+    {
+     "schema_version": 2,
      "kind": "tone",
      "word": "后",
      "word_index": 6,
@@ -310,35 +177,14 @@
      "diff_keys": [
       "tone"
      ],
+     "error_prob": 0.6338,
      "prob": 0.0069,
      "confidence": 0.959,
      "start": 1.99,
      "end": 2.15
     },
     {
-     "schema_version": 1,
-     "kind": "substitution",
-     "word": "其",
-     "word_index": 11,
-     "syllable_index": 0,
-     "phone_index": 1,
-     "position": "final",
-     "expected": "ɑʊ",
-     "heard": "i",
-     "expected_ipa": "ɑʊ",
-     "heard_ipa": "i",
-     "diff_keys": [
-      "height",
-      "backness",
-      "glide"
-     ],
-     "prob": 0.4151,
-     "confidence": 0.976,
-     "start": 3.57,
-     "end": 3.61
-    },
-    {
-     "schema_version": 1,
+     "schema_version": 2,
      "kind": "missing_word",
      "word": "中",
      "word_index": 1,
@@ -350,32 +196,24 @@
      "expected_ipa": null,
      "heard_ipa": null,
      "diff_keys": [],
+     "error_prob": 0.7706,
      "prob": 0.2294,
-     "confidence": 0.0,
+     "confidence": null,
      "start": 0.91,
      "end": 0.97
-    },
-    {
-     "schema_version": 1,
-     "kind": "missing_word",
-     "word": "的",
-     "word_index": 2,
-     "syllable_index": null,
-     "phone_index": null,
-     "position": null,
-     "expected": "的",
-     "heard": null,
-     "expected_ipa": null,
-     "heard_ipa": null,
-     "diff_keys": [],
-     "prob": 0.0759,
-     "confidence": 0.0,
-     "start": 0.97,
-     "end": 1.03
     }
    ]
   },
   "tips": [
+   {
+    "tip_key": "word.missing",
+    "text": "The word “的” seemed to be missing; try saying every word.",
+    "params": {
+     "word": "的",
+     "expected": "的",
+     "heard": null
+    }
+   },
    {
     "tip_key": "tone.wrong",
     "text": "“后” should be high and level (tone 1); it sounded falling (tone 4).",
@@ -386,15 +224,6 @@
      "syllable": "后",
      "expected_tone": "high and level",
      "heard_tone": "falling"
-    }
-   },
-   {
-    "tip_key": "vowel.open",
-    "text": "Open your mouth a little more for /ɑʊ/ in “其”; it sounded like /i/.",
-    "params": {
-     "word": "其",
-     "expected": "ɑʊ",
-     "heard": "i"
     }
    },
    {
@@ -450,7 +279,7 @@
    "schema_version": 1,
    "items": [
     {
-     "schema_version": 1,
+     "schema_version": 2,
      "kind": "substitution",
      "word": "religión",
      "word_index": 5,
@@ -467,13 +296,14 @@
       "voicing",
       "lateral"
      ],
+     "error_prob": 0.682,
      "prob": 0.3059,
-     "confidence": 0.976,
+     "confidence": 0.865,
      "start": 4.27,
      "end": 4.29
     },
     {
-     "schema_version": 1,
+     "schema_version": 2,
      "kind": "substitution",
      "word": "mayoritaria",
      "word_index": 6,
@@ -481,15 +311,13 @@
      "phone_index": 6,
      "position": "medial",
      "expected": "ɾ",
-     "heard": "t",
+     "heard": null,
      "expected_ipa": "ɾ",
-     "heard_ipa": "t",
-     "diff_keys": [
-      "manner",
-      "voicing"
-     ],
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.6101,
      "prob": 0.3896,
-     "confidence": 0.976,
+     "confidence": null,
      "start": 4.99,
      "end": 5.01
     }
@@ -506,12 +334,12 @@
     }
    },
    {
-    "tip_key": "manner.flap",
-    "text": "Make /ɾ/ in “mayoritaria” a single quick tap of the tongue tip; it sounded like /t/.",
+    "tip_key": "sound.unclear",
+    "text": "Listen to /ɾ/ in “mayoritaria” and try it again; it did not sound quite right.",
     "params": {
      "word": "mayoritaria",
      "expected": "ɾ",
-     "heard": "t"
+     "heard": null
     }
    }
   ]

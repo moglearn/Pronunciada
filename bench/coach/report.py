@@ -100,7 +100,7 @@ def main():
             f"{l} {f(v['planted']['precision'])} precision, {pct(v['planted']['coverage'])} coverage"
             for l, v in P["by_lang"].items()) + ".", ""]
     if L:
-        o += ["## 2. Real learners (report only)", "",
+        o += ["### 2. Real learners, round 1 (report only)", "",
               "`bench/coach/eval_learners.py`: the shipped gate on L2-ARCTIC test (900 utterances, 24 "
               "speakers of 6 L1s) and EpaDB test (1,263, Spanish L1), phones aligned to the annotators' "
               "as in `bench/eval_english.py`. Precision is over every diagnosis we give on a matched "
@@ -173,14 +173,14 @@ def main():
         o += ["## 4. Scores unchanged, latency", "",
               f"`bench/coach/identity_check.py`: {ID['clips']} FLEURS validation clips ({ID['per_lang']} per "
               "language) scored by a copy of the package with the pre-coaching `scorer.py` / `types.py` "
-              "(git HEAD) and by the current tree with `result.coaching()` and `tips()` called: every "
+              "(commit 773347f) and by the current tree with `result.coaching()` and `tips()` called: every "
               f"sound, word, syllable and sentence probability and score identical as repr() strings: "
               f"**{ID['identical']}**. coaching() + tips(): median {ID['coach_ms_per_10s_median']:.2f} ms, "
               f"90th percentile {ID['coach_ms_per_10s_p90']:.2f} ms per 10 s of audio (native clips flag few "
               f"sounds); worst case measured, a 10 s clip scored against a different sentence (82 "
               f"flagged sounds): {ID['worst_case_ms_10s']:.2f} ms. The audio check "
               f"(always on, `Scorer(audio_check=False)` disables it) median {ID.get('audio_ms_per_10s', 0):.2f} ms "
-              "per 10 s. Nothing is computed for coaching unless `coaching()` is called.", ""]
+              "per 10 s. Nothing is computed for coaching unless `coaching()` is called. " + ID.get("note", ""), ""]
     Path("results/coaching.md").write_text("\n".join(o), encoding="utf-8")
     print("wrote results/coaching.md")
 

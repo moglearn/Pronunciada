@@ -1,9 +1,25 @@
 """Tone round 3: extra frame inputs, the selectable tone_zh_v3 model, reference-side leniency."""
+import os
+from pathlib import Path
+
 import numpy as np
 import pytest
 
 from pronunciada.prosody import DATA, ProsodyScorer
 from pronunciada.prosody import tone_leniency as TL
+
+
+RETIRED = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "prosody" / "retired"
+
+
+def model_stem(name):
+    """Package model name, or the path stem of a model retired from the package (round 11:
+    selectable as PRONUNCIADA_*_MODEL=<path stem>); skips the test if neither exists."""
+    if (DATA / f"{name}.onnx").exists():
+        return name
+    if (RETIRED / f"{name}.onnx").exists():
+        return str(RETIRED / name)
+    pytest.skip(f"{name} neither in the package nor in {RETIRED}")
 from pronunciada.prosody.features import N_LOWMEL, N_REG, lowmel_features, register_features
 
 
@@ -61,11 +77,10 @@ def test_leniency_env(monkeypatch):
         TL.enabled({"leniency": ["nope"]})
 
 
-@pytest.mark.skipif(not (DATA / "tone_zh_v3.onnx").exists(), reason="v3 tone model not exported")
 def test_v3_selectable_and_runs(monkeypatch):
     from pronunciada.text import get_g2p
 
-    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", "tone_zh_v3")
+    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", model_stem("tone_zh_v3"))
     sc = ProsodyScorer("zh")
     assert sc.inputs == {"reg": True, "lowmel": True}
     ref = get_g2p("zh")("我们今天去学校")
@@ -95,8 +110,7 @@ def test_selectable_tone_model_through_scorer(tmp_path, monkeypatch, stem):
     ZIPA = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "models" / \
         "zipa-small-crctc-500k" / "model.onnx"
 
-    if not (DATA / f"{stem}.onnx").exists():
-        pytest.skip(f"{stem} not exported")
+    path_stem = model_stem(stem)
     if not ZIPA.exists() or shutil.which("say") is None:
         pytest.skip("needs the cached ZIPA model and macOS `say`")
     out = tmp_path / "say.wav"
@@ -105,7 +119,7 @@ def test_selectable_tone_model_through_scorer(tmp_path, monkeypatch, stem):
                        capture_output=True)
     if r.returncode != 0:
         pytest.skip("voice unavailable")
-    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", stem)
+    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", path_stem)
     from pronunciada.prosody import TONE_MODEL
     from pronunciada.scorer import Scorer
 

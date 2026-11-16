@@ -26,12 +26,13 @@
    ]
   },
   "tone_confidence": 0.959,
-  "stress_confidence": 0.92,
+  "stress_confidence": 0.942,
   "missing_confidence": 0,
   "by_lang": {
    "de": {
     "min_heard_post": 0.25
    }
   }
- }
+ },
+ "stress_model": "stress_v3"
 }

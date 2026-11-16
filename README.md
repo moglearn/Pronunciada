@@ -34,37 +34,26 @@ python -m pronunciada score clip.wav "The quick brown fox" --lang en --strictnes
 
 ## Coaching feedback
 
-`res.coaching()` turns the scores into structured, versioned diagnoses (most important first):
-what was expected, what it sounded like (only when that is reliable), which articulatory
-features differ, and a confidence. `pronunciada.tips.tips(items)` writes up to three short
-English tips with stable `tip_key`s an app can replace with its own copy. `res.audio` reports
+`res.coaching(sensitivity="balanced")` lists the speaker's clearest real errors, most important
+first: what was expected, what it sounded like (named only when that is reliable), which
+articulatory features differ, and how sure we are. `pronunciada.tips.tips(items)` writes up to
+three short English tips with stable `tip_key`s for an app's own copy. `res.audio` reports
 recording problems (`clipped`, `too_noisy`, `too_quiet`, `too_short`, `mostly_silence`) and
-`retry_recommended`. No score changes; coaching costs under 1 ms.
+`retry_recommended`. No score changes; coaching costs under 2 ms.
 
 ```bash
-python -m pronunciada score clip.wav "El cristianismo ortodoxo es la religión mayoritaria en Moldavia." \
-    --lang es --coach            # add --json for the full items
+python -m pronunciada score clip.wav "FIRST PLACE IN THE DIVISION" --lang en --coach --sensitivity balanced
 ```
 
-Real output of the same scorer on a native FLEURS validation recording of that sentence, scored
-against a prompt in which two sounds were changed (“religión” with /p/ for /l/, “mayoritaria”
-with /ɾ/ for /t/), so the speaker "said" /l/ and /t/:
-
-```
-coaching:
-  substitution religión            p -> l    p 0.31  conf 0.976  place,manner,voicing,lateral
-  substitution mayoritaria         ɾ -> t    p 0.39  conf 0.976  manner,voicing
-tips:
-  [manner.stop] Close completely and release for /p/ in “religión”; it sounded like /l/.
-  [manner.flap] Make /ɾ/ in “mayoritaria” a single quick tap of the tongue tip; it sounded like /t/.
-```
-
-When a sound is flagged on FLEURS validation with planted substitutions, the reported "heard"
-sound is right within one articulatory feature 95 % of the time (88 % exactly). On real English
-learners it agrees with expert annotators on 66 % of the substitutions it diagnoses, but only
-about 3 % of annotated substitutions are flagged at the default strictness; German, affricates
-and skipped sounds are not reliable yet. Details: [docs/COACHING.md](docs/COACHING.md),
-[results/coaching.md](results/coaching.md).
+The sound operating point is fitted on English learners (speechocean762 train). On held-out
+speechocean762 test, "balanced" flags sounds that experts also marked as errors 65 % of the time
+and finds 33 % of all marked errors ("careful": 75 % / 20 %; round 1 found 18 %). When it names
+the sound it heard on a real substitution, the name is right within one articulatory feature
+77 % of the time. For example, on the test utterance “FIRST PLACE IN THE DIVISION”, the experts marked the /v/ of “division” as pronounced /f/; Pronunciada flags /v/ → /f/ (and
+/t/ in “first” without naming it). Mandarin tones are calibrated on OMPAL learners but only the
+most certain few percent reach 55 % precision on test; Mandarin consonants / vowels, missing
+sounds and all other languages are not verified on learners. Details:
+[docs/COACHING.md](docs/COACHING.md), [results/coaching.md](results/coaching.md).
 
 ## Install
 

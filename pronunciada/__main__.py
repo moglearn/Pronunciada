@@ -41,6 +41,7 @@ def main(argv=None) -> int:
     s.add_argument("--coach", action="store_true",
                    help="add coaching items and default tips (pronunciada.coach, pronunciada.tips)")
     s.add_argument("--max-tips", type=int, default=3)
+    s.add_argument("--sensitivity", default="balanced", choices=("careful", "balanced", "eager"))
     a = ap.parse_args(argv)
     from .scorer import Scorer
 
@@ -54,7 +55,7 @@ def main(argv=None) -> int:
     if a.coach:
         from .tips import tips
 
-        items = res.coaching()
+        items = res.coaching(sensitivity=a.sensitivity)
         tp = [{k: v for k, v in t.items() if k != "item"} for t in tips(items, a.max_tips, res)]
     if a.json:
         d = dataclasses.asdict(res)
@@ -73,7 +74,7 @@ def main(argv=None) -> int:
             for it in items:
                 h = "?" if it["heard"] is None else (it["heard"] or "∅")
                 print(f"  {it['kind']:<12} {it['word'][:16]:<16} {it['expected']!s:>4} -> {h!s:<4} "
-                      f"p {it['prob']:.2f}  conf {it['confidence'] if it['confidence'] is not None else '-'}  "
+                      f"err {it['error_prob'] if it['error_prob'] is not None else '-'}  conf {it['confidence'] if it['confidence'] is not None else '-'}  "
                       f"{','.join(it['diff_keys'])}")
             print("tips:")
             for t in tp:

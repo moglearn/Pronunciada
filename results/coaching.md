@@ -1,8 +1,138 @@
 # Coaching feedback and audio-quality gate
 
-Design and schema: [docs/COACHING.md](../docs/COACHING.md). Code: `pronunciada/coach.py`, `pronunciada/tips.py`, `pronunciada/articulatory.py`, `pronunciada/quality.py`; benchmarks `bench/coach/`. Everything was fitted or chosen on FLEURS **validation** (planted errors and synthetic degradations) and Common Voice cv-real **dev**; L2-ARCTIC test, EpaDB test and OMPAL test are reported only (nothing was tuned on them). No cv-real test clip was read.
+Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md). Round 2 (this section) replaced the sound / Mandarin-tone operating point of round 1 (below) with one fitted on real learners.
 
-## 1. Reliability gate for "what it sounded like" (FLEURS validation, planted substitutions)
+## Round 2: a coaching operating point fitted on learner data
+
+Data. Fitted on speechocean762 **train** (2,500 utterances of Mandarin-L1 children and adults reading English; per-phone expert scores 0–2; 864 phones with the pronounced phone, 443 marked deleted) and OMPAL **dev** (Mandarin learners, per-character tone / consonant / vowel marks). FLEURS validation (native) sets the per-language caps. Held out: speechocean762 test and OMPAL test; L2-ARCTIC test and EpaDB test are report-only (non-commercial licences). Scripts: `bench/coach/dump.py` (public Scorer outputs), `bench/coach/fit_v2.py`, `bench/coach/eval_v2.py`.
+
+**Held-out discipline, plainly.** The held-out sets were evaluated twice. The first fit used the English sound calibrator's logits on speechocean762 train, where that calibrator was itself fitted (in-sample), so the coaching model over-trusted them: out-of-fold precision 0.70 on train but 0.512 on test at "balanced". The fix (the calibrator's out-of-fold logits on train, `bench/calib/train_sound.py`) was found from that first test run; everything else (rules, targets, grid) is unchanged. Both runs are reported (`results/tables/coaching_v2_heldout_leaky.json`, `coaching_v2_heldout.json`).
+
+### 1. Which sounds to flag (speechocean762)
+
+Coaching score = logistic regression (monotone in each input) on the calibrated lenient and strict log-odds, `llr_sub`, `z_llr_sub`, competitor log-ratio, log duration, nucleus, `llr_del`, peak posterior and blank share; target expert phone score < 2. Thresholds = lowest score with out-of-fold (5-fold, speaker-grouped) precision ≥ 0.8 / 0.7 / 0.6. OOF AUC 0.826 (the strict sound probability alone: 0.821). Coefficients (standardised): zl +0.38, zs -1.65, llr_sub -0.10, z_llr_sub -0.06, log_ratio_comp +0.00, log_frames -0.09, nucleus +0.14, llr_del -0.11, peak_post +0.12, blank_mean +0.04.
+
+| setting | threshold | train OOF precision | train OOF recall | **test precision** | **test recall** | test precision / recall, error = score < 1.5 | flags per FLEURS native clip (en) |
+|---|---|---|---|---|---|---|---|
+| round 1 (prob < 0.5) | – | 0.825 | 0.193 | 0.773 | 0.175 | 0.641 / 0.398 | – |
+| careful | 0.653 | 0.800 | 0.221 | 0.746 | 0.196 | 0.574 / 0.414 | 1.42 |
+| balanced | 0.514 | 0.700 | 0.351 | 0.647 | 0.326 | 0.431 / 0.596 | 2.90 |
+| eager | 0.390 | 0.600 | 0.487 | 0.554 | 0.465 | 0.323 / 0.744 | 5.66 |
+
+Test precision is 5 points below the train target at every setting (0.65 at "balanced"). The gain over round 1 is coverage: "balanced" finds 1.9× as many expert-marked errors (recall 0.326 vs 0.175).
+
+### 2. When to name the heard sound (speechocean762 pronounced phones)
+
+Candidate as in round 1. Gate fitted on the 642 "balanced"-flagged train sounds with a pronounced-phone substitution label: per sound class ON when exact-or-within-one-feature precision ≥ 0.75 on ≥ 15 items; the setting with the most correct names. Chosen: log-ratio ≥ 3.0, heard posterior ≥ 0.3; ON classes approximant, fricative, stop, vowel; OFF affricate, click, flap, implosive, nasal, trill (too few or too inaccurate). Per language the posterior bar is raised until "balanced" makes ≤ 0.3 wrong named sounds per FLEURS native clip: de 0.3, en 0.4, ja 0.375, es 0.375, fr 0.4, it 0.35, ru 0.35.
+
+| | named sounds on test | on real substitutions | exact | within one feature | share of real substitutions named | named where experts gave 2 / marked deleted |
+|---|---|---|---|---|---|---|
+| round 1 | 1980 | 306 | 0.330 | 0.500 | 53.9 % | 450 / 297 |
+| careful | 252 | 36 | 0.611 | 0.778 | 6.3 % | 71 / 23 |
+| balanced | 455 | 44 | 0.636 | 0.773 | 7.7 % | 172 / 26 |
+| eager | 648 | 55 | 0.655 | 0.800 | 9.7 % | 267 / 28 |
+
+By class at "balanced" (test, within one feature): approximant 0.800 (n 5), fricative 0.947 (n 19), stop 0.583 (n 12), vowel 0.625 (n 8). Train (OOF flags): affricate 0.667 (n 3), approximant 0.818 (n 22), fricative 0.840 (n 50), nasal 0.750 (n 12), stop 0.865 (n 37), vowel 0.755 (n 49).
+
+When a sound is named on a real substitution it is right within one feature 77 % of the time (round 1: 50 %), but only 8 % of the experts' substitutions get a name (round 1: 54 %, mostly wrong). Many named sounds still fall on phones the experts scored 2: the experts and the recogniser disagree about mild accents.
+
+### 3. Missing sounds
+
+Logistic on flagged train sounds, label `<DEL>` (393 of 4620): OOF AUC 0.864, best precision on ≥ 20 items 0.690 < 0.7, so `kind: "missing"` stays **off**; a skipped sound is reported as "this sound was off".
+
+### 4. Mandarin (OMPAL dev → test)
+
+Per character, learners only (12518 dev characters; teachers marked 1454 tone, 202 consonant, 205 vowel errors). Tone: threshold on the syllable tone probability; consonant / vowel: the English coaching score of the syllable's initial / other sounds. Type precision target 0.8 / 0.7 / 0.6.
+
+Tone curve on dev (flag when the syllable tone probability ≤ threshold):
+
+| threshold | flagged | precision | recall |
+|---|---|---|---|
+| 0.7272 | 6259 | 0.216 | 0.932 |
+| 0.2367 | 3756 | 0.326 | 0.842 |
+| 0.0872 | 2504 | 0.408 | 0.703 |
+| 0.0312 | 1252 | 0.503 | 0.433 |
+| 0.0177 | 626 | 0.553 | 0.238 |
+| 0.0131 | 376 | 0.596 | 0.154 |
+| 0.0110 | 251 | 0.594 | 0.102 |
+| 0.0083 | 126 | 0.643 | 0.056 |
+| 0.0065 | 63 | 0.714 | 0.031 |
+
+| setting | type | dev threshold | dev precision / recall | test flagged | **test precision** | **test recall** |
+|---|---|---|---|---|---|---|
+| careful | tone | 0.0051 | 0.800 / 0.017 | 10 | 0.600 | 0.005 |
+| careful | consonant | off | – | 0 | – | 0.000 |
+| careful | vowel | off | – | 0 | – | 0.000 |
+| balanced | tone | 0.0074 | 0.703 / 0.044 | 51 | 0.549 | 0.025 |
+| balanced | consonant | 0.8492 | 0.720 / 0.089 | 30 | 0.267 | 0.056 |
+| balanced | vowel | off | – | 0 | – | 0.000 |
+| eager | tone | 0.0131 | 0.601 / 0.153 | 204 | 0.549 | 0.101 |
+| eager | consonant | 0.8271 | 0.613 / 0.094 | 40 | 0.325 | 0.091 |
+| eager | vowel | 0.8359 | 0.607 / 0.166 | 37 | 0.459 | 0.120 |
+
+The expected gain on tones did not materialise: the tone probability ranks tone errors well (dev AUC 0.86) but OMPAL teachers mark tone errors on 12 % of characters and the top of the ranking is noisy, so precision 0.7 is reached only for the ~3 % most certain tone errors; adding the tone posteriors, the word channel or the tone identity did not help (dev CV, 0.86 → 0.88 AUC, no gain at precision 0.7). Consonant / vowel thresholds were set on 25–56 dev items and do not hold on test (0.27–0.46 precision): **Mandarin sound coaching is not reliable**.
+
+### 5. Other languages (no learner labels; unverified on learners)
+
+The English thresholds are used as they are (the calibrated probabilities are comparable across languages by construction); German keeps an extra heard-sound bar. FLEURS validation native clips (2,476; every flag is a false alarm) and planted substitutions (round-1 data):
+
+| lang | flags / native clip (careful, balanced, eager) | wrong named sounds / native clip (careful, balanced, eager) | planted substitutions flagged (balanced) | named | named within one feature |
+|---|---|---|---|---|---|
+| en | 1.42 / 2.90 / 5.66 | 0.15 / 0.26 / 0.36 | 83.2 % | 35.1 % | 0.966 |
+| zh | 0.00 / 0.02 / 0.11 | 0.00 / 0.00 / 0.02 | 0.0 % | 0.0 % | – |
+| ja | 0.87 / 2.48 / 5.30 | 0.12 / 0.28 / 0.49 | 69.4 % | 12.8 % | 0.977 |
+| es | 1.94 / 3.97 / 6.93 | 0.22 / 0.29 / 0.32 | 86.8 % | 41.5 % | 0.988 |
+| fr | 1.78 / 4.01 / 8.33 | 0.11 / 0.24 / 0.32 | 90.4 % | 37.2 % | 0.987 |
+| de | 0.76 / 1.67 / 4.02 | 0.04 / 0.12 / 0.34 | 41.2 % | 11.2 % | 0.929 |
+| it | 0.38 / 2.37 / 6.26 | 0.05 / 0.29 / 0.45 | 66.1 % | 33.5 % | 0.985 |
+| pt | 0.43 / 1.16 / 3.20 | 0.05 / 0.23 / 0.53 | 43.7 % | 18.2 % | 0.962 |
+| ru | 1.26 / 4.43 / 11.76 | 0.12 / 0.22 / 0.39 | 77.9 % | 22.6 % | 0.951 |
+| ko | 0.23 / 0.92 / 2.84 | 0.04 / 0.21 / 0.45 | 45.7 % | 22.3 % | 0.911 |
+| pooled | | | 60.6 % | 23.5 % | 0.968 |
+
+"Balanced" stays ≤ 0.3 wrong named sounds per native clip in every language (the cap; FLEURS clips are ~10 s). Flags without a name are far more frequent on native speech (1–4.4 per clip at "balanced", up to 11.8 at "eager" in Russian): an app should say "listen and try again" for those, not "you said X". Mandarin sounds are almost never flagged (thresholds from OMPAL). Planted substitutions are now flagged far more often than in round 1 (round 1: 23 %), with the named sound still right within one feature 97 % of the time.
+
+### 6. Real learners, report only (L2-ARCTIC test, EpaDB test)
+
+| corpus | system | annotated substitutions flagged | named (coverage) | precision of all names: exact / within 1 | on substitutions: exact / within 1 | names on phones marked deleted / correct |
+|---|---|---|---|---|---|---|
+| l2arctic | round 1 | 2.8 % | 2.8 % | 0.183 / 0.270 | 0.565 / 0.659 | 116 / 62 |
+| l2arctic | careful | 5.9 % | 1.1 % | 0.384 / 0.466 | 0.800 / 0.857 | 27 / 11 |
+| l2arctic | balanced | 14.1 % | 2.0 % | 0.370 / 0.533 | 0.781 / 0.859 | 42 / 29 |
+| l2arctic | eager | 23.3 % | 2.7 % | 0.341 / 0.535 | 0.750 / 0.845 | 52 / 49 |
+| epadb | round 1 | 2.9 % | 2.9 % | 0.242 / 0.389 | 0.522 / 0.663 | 43 / 63 |
+| epadb | careful | 7.0 % | 1.0 % | 0.471 / 0.667 | 0.649 / 0.811 | 5 / 9 |
+| epadb | balanced | 14.1 % | 1.5 % | 0.526 / 0.705 | 0.719 / 0.842 | 6 / 15 |
+| epadb | eager | 23.1 % | 1.8 % | 0.466 / 0.660 | 0.716 / 0.836 | 7 / 29 |
+
+Round 2 flags 5× more of the annotated substitutions and the sounds it names on them are right 84–86 % of the time within one feature (round 1: 66 %), but it names fewer of them (1.5–2 %) and many names still land on phones annotated as deleted.
+
+### 7. Word stress gate
+
+The stress-model switch landed (`STRESS_MODEL = "stress_v3"`), so the heard-syllable bar was re-fitted on FLEURS validation planted stress moves with the new model (round-1 rule):
+
+| bar | planted flagged | diagnosed | precision | coverage of planted | native items with a diagnosis |
+|---|---|---|---|---|---|
+| 0.3 | 1235 / 2995 | 1233 | 0.942 | 41.2 % | 169 of 18717 |
+| 0.4 | 1235 / 2995 | 1231 | 0.943 | 41.1 % | 165 of 18717 |
+| 0.5 | 1235 / 2995 | 1214 | 0.950 | 40.5 % | 159 of 18717 |
+| 0.6 | 1235 / 2995 | 1170 | 0.963 | 39.1 % | 152 of 18717 |
+| 0.7 | 1235 / 2995 | 1118 | 0.974 | 37.3 % | 141 of 18717 |
+| 0.8 | 1235 / 2995 | 1040 | 0.982 | 34.7 % | 128 of 18717 |
+| 0.9 | 1235 / 2995 | 901 | 0.990 | 30.1 % | 112 of 18717 |
+
+By language at the chosen bar: en 0.979 / 29.1 %; es 0.953 / 50.6 %; de 0.920 / 45.2 %; it 0.905 / 44.4 %; pt 0.950 / 51.6 %; ru 0.962 / 26.0 %.
+
+### Examples (speechocean762 test, "balanced")
+
+- “FIRST PLACE IN THE DIVISION”. Ours: FIRST /t/ → off (no name) (error_prob 0.588); DIVISION /v/ → /f/ (error_prob 0.561). Experts: THE ['DH', 'AH0'] scores [1.2, 2.0]; DIVISION ['D', 'IH0', 'V', 'IH1', 'ZH', 'N'] scores [2.0, 2.0, 0.4, 1.6, 0.8, 2.0], pronounced [('V', 'F')].
+- “DO YOU REALLY AND TRULY SAY SO”. Ours: SAY /s/ → off (no name) (error_prob 0.62); SAY /eɪ/ → off (no name) (error_prob 0.946); SO /s/ → /n/ (error_prob 0.757). Experts: DO ['D', 'UH0'] scores [2.0, 1.8]; YOU ['Y', 'UW0'] scores [2.0, 1.8]; REALLY ['R', 'IH', 'AH1', 'L', 'IY0'] scores [2.0, 1.6, 1.6, 2.0, 2.0]; AND ['AE0', 'N', 'D'] scores [2.0, 2.0, 1.6]; TRULY ['T', 'R', 'UW1', 'L', 'IY0'] scores [2.0, 2.0, 2.0, 1.6, 2.0]; SO ['S', 'OW0'] scores [0.4, 2.0], pronounced [('S', 'N')].
+
+---
+
+## Round 1 (planted errors; the sound operating point is superseded)
+
+### 1. Reliability gate for "what it sounded like" (FLEURS validation, planted substitutions)
 
 Protocol (`bench/coach/gather.py`): 250 validation clips per language (Korean: 226), the native audio scored against references in which `bench.corrupt` replaced a sound X by Y (`phone_sub_near` and `phone_sub_far`, 2 per reference), so the true "heard" sound is X. A planted sound is *flagged* when its probability is < 0.5 (default strictness); a flagged sound gets a *diagnosis* (`heard_ipa`) when it passes the gate. The heard candidate is the language's sound of the same type (vowel / consonant) with the highest geometric-mean span posterior of its tokens (adapted model output, the sound's aligned span ± 1 frame), never the expected sound or one of its accepted alternatives.
 
@@ -87,7 +217,7 @@ By language at the chosen bar: zh 0.959 precision, 14.6 % coverage.
 
 By language at the chosen bar: en 0.901 precision, 24.4 % coverage; es 0.948 precision, 42.4 % coverage; de 0.895 precision, 34.2 % coverage; it 0.891 precision, 46.0 % coverage; pt 0.949 precision, 35.6 % coverage; ru 0.949 precision, 15.8 % coverage.
 
-## 2. Real learners (report only)
+### 2. Real learners, round 1 (report only)
 
 `bench/coach/eval_learners.py`: the shipped gate on L2-ARCTIC test (900 utterances, 24 speakers of 6 L1s) and EpaDB test (1,263, Spanish L1), phones aligned to the annotators' as in `bench/eval_english.py`. Precision is over every diagnosis we give on a matched phone: right when it equals what the annotator heard (canonical sound when marked correct, nothing when marked deleted). English vowel labels folded ʌ→ə, ə˞→ɜ˞.
 
@@ -156,4 +286,4 @@ FLEURS validation flag rate by language: de 0.0 %, en 3.6 %, es 0.0 %, fr 0.3 %,
 
 ## 4. Scores unchanged, latency
 
-`bench/coach/identity_check.py`: 50 FLEURS validation clips (5 per language) scored by a copy of the package with the pre-coaching `scorer.py` / `types.py` (git HEAD) and by the current tree with `result.coaching()` and `tips()` called: every sound, word, syllable and sentence probability and score identical as repr() strings: **yes (0 of 50 clips differ)**. coaching() + tips(): median 0.01 ms, 90th percentile 0.04 ms per 10 s of audio (native clips flag few sounds); worst case measured, a 10 s clip scored against a different sentence (82 flagged sounds): 0.69 ms. The audio check (always on, `Scorer(audio_check=False)` disables it) median 0.50 ms per 10 s. Nothing is computed for coaching unless `coaching()` is called.
+`bench/coach/identity_check.py`: 50 FLEURS validation clips (5 per language) scored by a copy of the package with the pre-coaching `scorer.py` / `types.py` (commit 773347f) and by the current tree with `result.coaching()` and `tips()` called: every sound, word, syllable and sentence probability and score identical as repr() strings: **yes (0 of 50 clips differ, PYTHONHASHSEED=0 in both runs)**. coaching() + tips(): median 0.25 ms, 90th percentile 0.35 ms per 10 s of audio (native clips flag few sounds); worst case measured, a 10 s clip scored against a different sentence (82 flagged sounds): 1.48 ms. The audio check (always on, `Scorer(audio_check=False)` disables it) median 0.50 ms per 10 s. Nothing is computed for coaching unless `coaching()` is called. Without a fixed PYTHONHASHSEED, two runs of the UNCHANGED package already differ in the last digit of WordResult.present_prob on 1-3 Russian clips (hash-ordered sets in the Russian path); with PYTHONHASHSEED=0 old and new are identical.

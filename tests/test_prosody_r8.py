@@ -9,6 +9,19 @@ import pytest
 
 from pronunciada.prosody import DATA
 
+
+RETIRED = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "prosody" / "retired"
+
+
+def model_stem(name):
+    """Package model name, or the path stem of a model retired from the package (round 11:
+    selectable as PRONUNCIADA_*_MODEL=<path stem>); skips the test if neither exists."""
+    if (DATA / f"{name}.onnx").exists():
+        return name
+    if (RETIRED / f"{name}.onnx").exists():
+        return str(RETIRED / name)
+    pytest.skip(f"{name} neither in the package nor in {RETIRED}")
+
 ZIPA = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "models" / \
     "zipa-small-crctc-500k" / "model.onnx"
 
@@ -31,15 +44,14 @@ def test_defaults_unchanged():
 
 @pytest.mark.parametrize("env,stem,lang,voice,text", CASES)
 def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang, voice, text):
-    if not (DATA / f"{stem}.onnx").exists():
-        pytest.skip(f"{stem} not exported")
+    path_stem = model_stem(stem)
     if not ZIPA.exists() or shutil.which("say") is None:
         pytest.skip("needs the cached ZIPA model and macOS `say`")
     out = tmp_path / "say.wav"
     r = subprocess.run(["say", "-v", voice, "-o", str(out), "--data-format=LEI16@16000", text], capture_output=True)
     if r.returncode != 0:
         pytest.skip("voice unavailable")
-    monkeypatch.setenv(env, stem)
+    monkeypatch.setenv(env, path_stem)
     from pronunciada.scorer import Scorer
 
     sc = Scorer(lang, threads=2, experimental=True)

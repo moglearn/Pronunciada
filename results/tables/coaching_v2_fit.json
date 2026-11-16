@@ -1,0 +1,2576 @@
+{
+ "n_sounds": 46727,
+ "error_rate": 0.19735912855522503,
+ "auc_oof": 0.8263053771678126,
+ "auc_prob_only": 0.8214343039521282,
+ "operating_points": {
+  "careful": {
+   "threshold": 0.6534890008522345,
+   "flagged": 2542,
+   "precision": 0.8001573564122738,
+   "recall": 0.22055953155497723
+  },
+  "balanced": {
+   "threshold": 0.5135794086799622,
+   "flagged": 4620,
+   "precision": 0.7,
+   "recall": 0.35068314899154196
+  },
+  "eager": {
+   "threshold": 0.38978792058885375,
+   "flagged": 7488,
+   "precision": 0.6000267094017094,
+   "recall": 0.4872045109520711
+  }
+ },
+ "v1_prob_below_0.5": {
+  "threshold": -0.5,
+  "flagged": 2158,
+  "precision": 0.8253012048192772,
+  "recall": 0.19312513554543484
+ },
+ "strict_error_target_acc_below_1.5": {
+  "careful": {
+   "threshold": 0.6534890008522345,
+   "flagged": 2542,
+   "precision": 0.6380802517702596,
+   "recall": 0.4197722567287785
+  },
+  "balanced": {
+   "threshold": 0.5135794086799622,
+   "flagged": 4620,
+   "precision": 0.5023809523809524,
+   "recall": 0.6006728778467909
+  },
+  "eager": {
+   "threshold": 0.38978792058885375,
+   "flagged": 7488,
+   "precision": 0.3870192307692308,
+   "recall": 0.75
+  }
+ },
+ "coef": {
+  "zl": 0.383,
+  "zs": -1.648,
+  "llr_sub": -0.098,
+  "z_llr_sub": -0.06,
+  "log_ratio_comp": 0.0,
+  "log_frames": -0.091,
+  "nucleus": 0.136,
+  "llr_del": -0.11,
+  "peak_post": 0.122,
+  "blank_mean": 0.039
+ },
+ "heard": {
+  "best": {
+   "min_log_ratio": 3.0,
+   "min_heard_post": 0.3,
+   "on": [
+    "approximant",
+    "fricative",
+    "stop",
+    "vowel"
+   ],
+   "per_class": {
+    "affricate": {
+     "n": 3,
+     "precision": 0.6666666666666666
+    },
+    "approximant": {
+     "n": 22,
+     "precision": 0.8181818181818182
+    },
+    "fricative": {
+     "n": 50,
+     "precision": 0.84
+    },
+    "nasal": {
+     "n": 12,
+     "precision": 0.75
+    },
+    "stop": {
+     "n": 37,
+     "precision": 0.8648648648648649
+    },
+    "vowel": {
+     "n": 49,
+     "precision": 0.7551020408163265
+    }
+   },
+   "pooled": 0.8164556962025317,
+   "exact": 0.6645569620253164,
+   "named": 158,
+   "right": 129,
+   "coverage": 0.24610591900311526
+  },
+  "grid": [
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.0,
+    "on": [],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 41,
+      "precision": 0.6097560975609756
+     },
+     "fricative": {
+      "n": 92,
+      "precision": 0.6521739130434783
+     },
+     "nasal": {
+      "n": 27,
+      "precision": 0.5185185185185185
+     },
+     "stop": {
+      "n": 66,
+      "precision": 0.6818181818181818
+     },
+     "vowel": {
+      "n": 407,
+      "precision": 0.4914004914004914
+     }
+    },
+    "pooled": null,
+    "exact": null,
+    "named": 0,
+    "right": 0,
+    "coverage": 0.0
+   },
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 29,
+      "precision": 0.7241379310344828
+     },
+     "fricative": {
+      "n": 76,
+      "precision": 0.75
+     },
+     "nasal": {
+      "n": 17,
+      "precision": 0.7058823529411765
+     },
+     "stop": {
+      "n": 52,
+      "precision": 0.7884615384615384
+     },
+     "vowel": {
+      "n": 270,
+      "precision": 0.5444444444444444
+     }
+    },
+    "pooled": 0.765625,
+    "exact": 0.625,
+    "named": 128,
+    "right": 98,
+    "coverage": 0.19937694704049844
+   },
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 8,
+      "precision": 0.875
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 72,
+      "precision": 0.7638888888888888
+     },
+     "nasal": {
+      "n": 17,
+      "precision": 0.7058823529411765
+     },
+     "stop": {
+      "n": 50,
+      "precision": 0.82
+     },
+     "vowel": {
+      "n": 202,
+      "precision": 0.5891089108910891
+     }
+    },
+    "pooled": 0.78,
+    "exact": 0.66,
+    "named": 150,
+    "right": 117,
+    "coverage": 0.2336448598130841
+   },
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 61,
+      "precision": 0.8032786885245902
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.7857142857142857
+     },
+     "stop": {
+      "n": 46,
+      "precision": 0.8478260869565217
+     },
+     "vowel": {
+      "n": 113,
+      "precision": 0.6637168141592921
+     }
+    },
+    "pooled": 0.8106060606060606,
+    "exact": 0.6818181818181818,
+    "named": 132,
+    "right": 107,
+    "coverage": 0.205607476635514
+   },
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 52,
+      "precision": 0.8461538461538461
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 38,
+      "precision": 0.8421052631578947
+     },
+     "vowel": {
+      "n": 51,
+      "precision": 0.7254901960784313
+     }
+    },
+    "pooled": 0.8392857142857143,
+    "exact": 0.7232142857142857,
+    "named": 112,
+    "right": 94,
+    "coverage": 0.17445482866043613
+   },
+   {
+    "min_log_ratio": -1000000000.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 28,
+      "precision": 0.8571428571428571
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 28,
+      "precision": 0.8214285714285714
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8369565217391305,
+    "exact": 0.7065217391304348,
+    "named": 92,
+    "right": 77,
+    "coverage": 0.14330218068535824
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.0,
+    "on": [],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 37,
+      "precision": 0.6216216216216216
+     },
+     "fricative": {
+      "n": 87,
+      "precision": 0.6666666666666666
+     },
+     "nasal": {
+      "n": 21,
+      "precision": 0.6190476190476191
+     },
+     "stop": {
+      "n": 60,
+      "precision": 0.7
+     },
+     "vowel": {
+      "n": 379,
+      "precision": 0.5118733509234829
+     }
+    },
+    "pooled": null,
+    "exact": null,
+    "named": 0,
+    "right": 0,
+    "coverage": 0.0
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 29,
+      "precision": 0.7241379310344828
+     },
+     "fricative": {
+      "n": 74,
+      "precision": 0.7567567567567568
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 50,
+      "precision": 0.78
+     },
+     "vowel": {
+      "n": 266,
+      "precision": 0.5488721804511278
+     }
+    },
+    "pooled": 0.7642857142857142,
+    "exact": 0.6428571428571429,
+    "named": 140,
+    "right": 107,
+    "coverage": 0.21806853582554517
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 8,
+      "precision": 0.875
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 70,
+      "precision": 0.7714285714285715
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 48,
+      "precision": 0.8125
+     },
+     "vowel": {
+      "n": 201,
+      "precision": 0.5920398009950248
+     }
+    },
+    "pooled": 0.7777777777777778,
+    "exact": 0.6728395061728395,
+    "named": 162,
+    "right": 126,
+    "coverage": 0.2523364485981308
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 61,
+      "precision": 0.8032786885245902
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.7857142857142857
+     },
+     "stop": {
+      "n": 45,
+      "precision": 0.8444444444444444
+     },
+     "vowel": {
+      "n": 113,
+      "precision": 0.6637168141592921
+     }
+    },
+    "pooled": 0.8091603053435115,
+    "exact": 0.6870229007633588,
+    "named": 131,
+    "right": 106,
+    "coverage": 0.20404984423676012
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 52,
+      "precision": 0.8461538461538461
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 38,
+      "precision": 0.8421052631578947
+     },
+     "vowel": {
+      "n": 51,
+      "precision": 0.7254901960784313
+     }
+    },
+    "pooled": 0.8392857142857143,
+    "exact": 0.7232142857142857,
+    "named": 112,
+    "right": 94,
+    "coverage": 0.17445482866043613
+   },
+   {
+    "min_log_ratio": 0.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 28,
+      "precision": 0.8571428571428571
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 28,
+      "precision": 0.8214285714285714
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8369565217391305,
+    "exact": 0.7065217391304348,
+    "named": 92,
+    "right": 77,
+    "coverage": 0.14330218068535824
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.0,
+    "on": [],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 32,
+      "precision": 0.65625
+     },
+     "fricative": {
+      "n": 85,
+      "precision": 0.6823529411764706
+     },
+     "nasal": {
+      "n": 18,
+      "precision": 0.7222222222222222
+     },
+     "stop": {
+      "n": 55,
+      "precision": 0.7454545454545455
+     },
+     "vowel": {
+      "n": 346,
+      "precision": 0.5260115606936416
+     }
+    },
+    "pooled": null,
+    "exact": null,
+    "named": 0,
+    "right": 0,
+    "coverage": 0.0
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 29,
+      "precision": 0.7241379310344828
+     },
+     "fricative": {
+      "n": 74,
+      "precision": 0.7567567567567568
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 50,
+      "precision": 0.78
+     },
+     "vowel": {
+      "n": 248,
+      "precision": 0.5564516129032258
+     }
+    },
+    "pooled": 0.7642857142857142,
+    "exact": 0.6428571428571429,
+    "named": 140,
+    "right": 107,
+    "coverage": 0.21806853582554517
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 8,
+      "precision": 0.875
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 70,
+      "precision": 0.7714285714285715
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 48,
+      "precision": 0.8125
+     },
+     "vowel": {
+      "n": 192,
+      "precision": 0.59375
+     }
+    },
+    "pooled": 0.7777777777777778,
+    "exact": 0.6728395061728395,
+    "named": 162,
+    "right": 126,
+    "coverage": 0.2523364485981308
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 61,
+      "precision": 0.8032786885245902
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.7857142857142857
+     },
+     "stop": {
+      "n": 45,
+      "precision": 0.8444444444444444
+     },
+     "vowel": {
+      "n": 110,
+      "precision": 0.6636363636363637
+     }
+    },
+    "pooled": 0.8091603053435115,
+    "exact": 0.6870229007633588,
+    "named": 131,
+    "right": 106,
+    "coverage": 0.20404984423676012
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 52,
+      "precision": 0.8461538461538461
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 38,
+      "precision": 0.8421052631578947
+     },
+     "vowel": {
+      "n": 50,
+      "precision": 0.74
+     }
+    },
+    "pooled": 0.8392857142857143,
+    "exact": 0.7232142857142857,
+    "named": 112,
+    "right": 94,
+    "coverage": 0.17445482866043613
+   },
+   {
+    "min_log_ratio": 1.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 28,
+      "precision": 0.8571428571428571
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 28,
+      "precision": 0.8214285714285714
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8369565217391305,
+    "exact": 0.7065217391304348,
+    "named": 92,
+    "right": 77,
+    "coverage": 0.14330218068535824
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.0,
+    "on": [
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 30,
+      "precision": 0.7
+     },
+     "fricative": {
+      "n": 81,
+      "precision": 0.7037037037037037
+     },
+     "nasal": {
+      "n": 17,
+      "precision": 0.7058823529411765
+     },
+     "stop": {
+      "n": 54,
+      "precision": 0.7592592592592593
+     },
+     "vowel": {
+      "n": 293,
+      "precision": 0.5324232081911263
+     }
+    },
+    "pooled": 0.7592592592592593,
+    "exact": 0.5555555555555556,
+    "named": 54,
+    "right": 41,
+    "coverage": 0.08411214953271028
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 29,
+      "precision": 0.7241379310344828
+     },
+     "fricative": {
+      "n": 72,
+      "precision": 0.7638888888888888
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 50,
+      "precision": 0.78
+     },
+     "vowel": {
+      "n": 219,
+      "precision": 0.5616438356164384
+     }
+    },
+    "pooled": 0.7681159420289855,
+    "exact": 0.644927536231884,
+    "named": 138,
+    "right": 106,
+    "coverage": 0.21495327102803738
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 8,
+      "precision": 0.875
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 68,
+      "precision": 0.7794117647058824
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 48,
+      "precision": 0.8125
+     },
+     "vowel": {
+      "n": 176,
+      "precision": 0.5852272727272727
+     }
+    },
+    "pooled": 0.78125,
+    "exact": 0.675,
+    "named": 160,
+    "right": 125,
+    "coverage": 0.24922118380062305
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 59,
+      "precision": 0.8135593220338984
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.7857142857142857
+     },
+     "stop": {
+      "n": 45,
+      "precision": 0.8444444444444444
+     },
+     "vowel": {
+      "n": 109,
+      "precision": 0.6605504587155964
+     }
+    },
+    "pooled": 0.813953488372093,
+    "exact": 0.689922480620155,
+    "named": 129,
+    "right": 105,
+    "coverage": 0.20093457943925233
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 52,
+      "precision": 0.8461538461538461
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 38,
+      "precision": 0.8421052631578947
+     },
+     "vowel": {
+      "n": 50,
+      "precision": 0.74
+     }
+    },
+    "pooled": 0.8392857142857143,
+    "exact": 0.7232142857142857,
+    "named": 112,
+    "right": 94,
+    "coverage": 0.17445482866043613
+   },
+   {
+    "min_log_ratio": 2.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 28,
+      "precision": 0.8571428571428571
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 28,
+      "precision": 0.8214285714285714
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8369565217391305,
+    "exact": 0.7065217391304348,
+    "named": 92,
+    "right": 77,
+    "coverage": 0.14330218068535824
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.0,
+    "on": [
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 29,
+      "precision": 0.7241379310344828
+     },
+     "fricative": {
+      "n": 74,
+      "precision": 0.7162162162162162
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 51,
+      "precision": 0.7843137254901961
+     },
+     "vowel": {
+      "n": 229,
+      "precision": 0.5676855895196506
+     }
+    },
+    "pooled": 0.7761194029850746,
+    "exact": 0.6268656716417911,
+    "named": 67,
+    "right": 52,
+    "coverage": 0.1043613707165109
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "approximant",
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 68,
+      "precision": 0.75
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 48,
+      "precision": 0.8125
+     },
+     "vowel": {
+      "n": 178,
+      "precision": 0.5898876404494382
+     }
+    },
+    "pooled": 0.76875,
+    "exact": 0.6625,
+    "named": 160,
+    "right": 123,
+    "coverage": 0.24922118380062305
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "nasal",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 8,
+      "precision": 0.875
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 65,
+      "precision": 0.7692307692307693
+     },
+     "nasal": {
+      "n": 16,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 46,
+      "precision": 0.8478260869565217
+     },
+     "vowel": {
+      "n": 150,
+      "precision": 0.6066666666666667
+     }
+    },
+    "pooled": 0.7870967741935484,
+    "exact": 0.6838709677419355,
+    "named": 155,
+    "right": 122,
+    "coverage": 0.24143302180685358
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 57,
+      "precision": 0.8070175438596491
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.7857142857142857
+     },
+     "stop": {
+      "n": 44,
+      "precision": 0.8636363636363636
+     },
+     "vowel": {
+      "n": 94,
+      "precision": 0.6914893617021277
+     }
+    },
+    "pooled": 0.8174603174603174,
+    "exact": 0.6904761904761905,
+    "named": 126,
+    "right": 103,
+    "coverage": 0.19626168224299065
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 50,
+      "precision": 0.84
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 37,
+      "precision": 0.8648648648648649
+     },
+     "vowel": {
+      "n": 49,
+      "precision": 0.7551020408163265
+     }
+    },
+    "pooled": 0.8164556962025317,
+    "exact": 0.6645569620253164,
+    "named": 158,
+    "right": 129,
+    "coverage": 0.24610591900311526
+   },
+   {
+    "min_log_ratio": 3.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 27,
+      "precision": 0.8518518518518519
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 27,
+      "precision": 0.8518518518518519
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8444444444444444,
+    "exact": 0.7111111111111111,
+    "named": 90,
+    "right": 76,
+    "coverage": 0.14018691588785046
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.0,
+    "on": [
+     "approximant",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 65,
+      "precision": 0.7384615384615385
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.8571428571428571
+     },
+     "stop": {
+      "n": 46,
+      "precision": 0.8260869565217391
+     },
+     "vowel": {
+      "n": 169,
+      "precision": 0.5739644970414202
+     }
+    },
+    "pooled": 0.7972972972972973,
+    "exact": 0.6621621621621622,
+    "named": 74,
+    "right": 59,
+    "coverage": 0.11526479750778816
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "approximant",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 6,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 63,
+      "precision": 0.746031746031746
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.8571428571428571
+     },
+     "stop": {
+      "n": 45,
+      "precision": 0.8222222222222222
+     },
+     "vowel": {
+      "n": 143,
+      "precision": 0.5944055944055944
+     }
+    },
+    "pooled": 0.7945205479452054,
+    "exact": 0.6712328767123288,
+    "named": 73,
+    "right": 58,
+    "coverage": 0.11370716510903427
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 5,
+      "precision": 0.8
+     },
+     "approximant": {
+      "n": 28,
+      "precision": 0.75
+     },
+     "fricative": {
+      "n": 60,
+      "precision": 0.7666666666666667
+     },
+     "nasal": {
+      "n": 14,
+      "precision": 0.8571428571428571
+     },
+     "stop": {
+      "n": 44,
+      "precision": 0.8409090909090909
+     },
+     "vowel": {
+      "n": 124,
+      "precision": 0.5967741935483871
+     }
+    },
+    "pooled": 0.7878787878787878,
+    "exact": 0.6742424242424242,
+    "named": 132,
+    "right": 104,
+    "coverage": 0.205607476635514
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 4,
+      "precision": 0.75
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 55,
+      "precision": 0.8
+     },
+     "nasal": {
+      "n": 13,
+      "precision": 0.8461538461538461
+     },
+     "stop": {
+      "n": 42,
+      "precision": 0.8571428571428571
+     },
+     "vowel": {
+      "n": 85,
+      "precision": 0.6941176470588235
+     }
+    },
+    "pooled": 0.8114754098360656,
+    "exact": 0.6885245901639344,
+    "named": 122,
+    "right": 99,
+    "coverage": 0.19003115264797507
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 48,
+      "precision": 0.8333333333333334
+     },
+     "nasal": {
+      "n": 11,
+      "precision": 0.8181818181818182
+     },
+     "stop": {
+      "n": 36,
+      "precision": 0.8611111111111112
+     },
+     "vowel": {
+      "n": 46,
+      "precision": 0.782608695652174
+     }
+    },
+    "pooled": 0.8223684210526315,
+    "exact": 0.6644736842105263,
+    "named": 152,
+    "right": 125,
+    "coverage": 0.2367601246105919
+   },
+   {
+    "min_log_ratio": 4.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 27,
+      "precision": 0.8518518518518519
+     },
+     "nasal": {
+      "n": 9,
+      "precision": 0.7777777777777778
+     },
+     "stop": {
+      "n": 27,
+      "precision": 0.8518518518518519
+     },
+     "vowel": {
+      "n": 21,
+      "precision": 0.8095238095238095
+     }
+    },
+    "pooled": 0.8444444444444444,
+    "exact": 0.7111111111111111,
+    "named": 90,
+    "right": 76,
+    "coverage": 0.14018691588785046
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.0,
+    "on": [
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 4,
+      "precision": 0.5
+     },
+     "approximant": {
+      "n": 26,
+      "precision": 0.7307692307692307
+     },
+     "fricative": {
+      "n": 53,
+      "precision": 0.7169811320754716
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.8333333333333334
+     },
+     "stop": {
+      "n": 43,
+      "precision": 0.8372093023255814
+     },
+     "vowel": {
+      "n": 111,
+      "precision": 0.6126126126126126
+     }
+    },
+    "pooled": 0.8372093023255814,
+    "exact": 0.627906976744186,
+    "named": 43,
+    "right": 36,
+    "coverage": 0.06697819314641744
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.05,
+    "on": [
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 4,
+      "precision": 0.5
+     },
+     "approximant": {
+      "n": 26,
+      "precision": 0.7307692307692307
+     },
+     "fricative": {
+      "n": 53,
+      "precision": 0.7169811320754716
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.8333333333333334
+     },
+     "stop": {
+      "n": 42,
+      "precision": 0.8333333333333334
+     },
+     "vowel": {
+      "n": 99,
+      "precision": 0.6161616161616161
+     }
+    },
+    "pooled": 0.8333333333333334,
+    "exact": 0.6428571428571429,
+    "named": 42,
+    "right": 35,
+    "coverage": 0.06542056074766354
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.1,
+    "on": [
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 26,
+      "precision": 0.7307692307692307
+     },
+     "fricative": {
+      "n": 50,
+      "precision": 0.74
+     },
+     "nasal": {
+      "n": 12,
+      "precision": 0.8333333333333334
+     },
+     "stop": {
+      "n": 42,
+      "precision": 0.8333333333333334
+     },
+     "vowel": {
+      "n": 88,
+      "precision": 0.6363636363636364
+     }
+    },
+    "pooled": 0.8333333333333334,
+    "exact": 0.6428571428571429,
+    "named": 42,
+    "right": 35,
+    "coverage": 0.06542056074766354
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.2,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 25,
+      "precision": 0.76
+     },
+     "fricative": {
+      "n": 45,
+      "precision": 0.7777777777777778
+     },
+     "nasal": {
+      "n": 11,
+      "precision": 0.8181818181818182
+     },
+     "stop": {
+      "n": 40,
+      "precision": 0.85
+     },
+     "vowel": {
+      "n": 67,
+      "precision": 0.7014925373134329
+     }
+    },
+    "pooled": 0.8,
+    "exact": 0.6636363636363637,
+    "named": 110,
+    "right": 88,
+    "coverage": 0.17133956386292834
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.3,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "approximant": {
+      "n": 22,
+      "precision": 0.8181818181818182
+     },
+     "fricative": {
+      "n": 38,
+      "precision": 0.8157894736842105
+     },
+     "nasal": {
+      "n": 10,
+      "precision": 0.8
+     },
+     "stop": {
+      "n": 34,
+      "precision": 0.8529411764705882
+     },
+     "vowel": {
+      "n": 39,
+      "precision": 0.7948717948717948
+     }
+    },
+    "pooled": 0.8195488721804511,
+    "exact": 0.6466165413533834,
+    "named": 133,
+    "right": 109,
+    "coverage": 0.2071651090342679
+   },
+   {
+    "min_log_ratio": 5.0,
+    "min_heard_post": 0.4,
+    "on": [
+     "approximant",
+     "fricative",
+     "stop",
+     "vowel"
+    ],
+    "per_class": {
+     "affricate": {
+      "n": 0,
+      "precision": null
+     },
+     "approximant": {
+      "n": 15,
+      "precision": 0.8666666666666667
+     },
+     "fricative": {
+      "n": 21,
+      "precision": 0.8571428571428571
+     },
+     "nasal": {
+      "n": 8,
+      "precision": 0.75
+     },
+     "stop": {
+      "n": 25,
+      "precision": 0.84
+     },
+     "vowel": {
+      "n": 20,
+      "precision": 0.8
+     }
+    },
+    "pooled": 0.8395061728395061,
+    "exact": 0.691358024691358,
+    "named": 81,
+    "right": 68,
+    "coverage": 0.1261682242990654
+   }
+  ],
+  "n_labelled_flagged": 642
+ },
+ "flag_labels_balanced": {
+  "scored<2, no label": 1821,
+  "correct": 1386,
+  "substituted": 642,
+  "unk": 378,
+  "deleted": 393
+ },
+ "missing": {
+  "n_flagged": 4620,
+  "n_deleted": 393,
+  "auc_oof": 0.8638860445783226,
+  "threshold_p70": null,
+  "at": null,
+  "best_precision": 0.6904761904761905
+ },
+ "zh": {
+  "thresholds": {
+   "initial": {
+    "careful": null,
+    "balanced": 0.8491621052328209,
+    "eager": 0.8271389282853192
+   },
+   "final": {
+    "careful": null,
+    "balanced": null,
+    "eager": 0.8358556293313395
+   },
+   "tone": {
+    "careful": 0.005140364026567785,
+    "balanced": 0.007427134764662936,
+    "eager": 0.013100456116304782
+   }
+  },
+  "curves": {
+   "initial": {
+    "curve": [
+     {
+      "threshold": 0.08144976520262323,
+      "flagged": 5443,
+      "precision": 0.03270255373874702,
+      "recall": 0.8811881188118812
+     },
+     {
+      "threshold": 0.13485789062305556,
+      "flagged": 3266,
+      "precision": 0.04470300061236987,
+      "recall": 0.7227722772277227
+     },
+     {
+      "threshold": 0.18295045151770792,
+      "flagged": 2178,
+      "precision": 0.06106519742883379,
+      "recall": 0.6584158415841584
+     },
+     {
+      "threshold": 0.27286909804024206,
+      "flagged": 1089,
+      "precision": 0.10560146923783287,
+      "recall": 0.5693069306930693
+     },
+     {
+      "threshold": 0.3671854336258968,
+      "flagged": 545,
+      "precision": 0.1889908256880734,
+      "recall": 0.5099009900990099
+     },
+     {
+      "threshold": 0.4554220155695064,
+      "flagged": 327,
+      "precision": 0.27522935779816515,
+      "recall": 0.44554455445544555
+     },
+     {
+      "threshold": 0.5415238840959838,
+      "flagged": 218,
+      "precision": 0.3623853211009174,
+      "recall": 0.3910891089108911
+     },
+     {
+      "threshold": 0.66700279194084,
+      "flagged": 109,
+      "precision": 0.46788990825688076,
+      "recall": 0.2524752475247525
+     },
+     {
+      "threshold": 0.7674663874845292,
+      "flagged": 55,
+      "precision": 0.4909090909090909,
+      "recall": 0.13366336633663367
+     }
+    ],
+    "n_units": 10886,
+    "n_wrong": 202,
+    "at": {
+     "careful": null,
+     "balanced": {
+      "threshold": 0.8491621052328209,
+      "flagged": 25,
+      "precision": 0.72,
+      "recall": 0.0891089108910891
+     },
+     "eager": {
+      "threshold": 0.8271389282853192,
+      "flagged": 31,
+      "precision": 0.6129032258064516,
+      "recall": 0.09405940594059406
+     }
+    }
+   },
+   "final": {
+    "curve": [
+     {
+      "threshold": 0.15334595913533394,
+      "flagged": 6259,
+      "precision": 0.03067582680939447,
+      "recall": 0.9365853658536586
+     },
+     {
+      "threshold": 0.2229700755010236,
+      "flagged": 3756,
+      "precision": 0.04845580404685836,
+      "recall": 0.8878048780487805
+     },
+     {
+      "threshold": 0.2707124981676651,
+      "flagged": 2504,
+      "precision": 0.06669329073482429,
+      "recall": 0.8146341463414634
+     },
+     {
+      "threshold": 0.36451137997128824,
+      "flagged": 1252,
+      "precision": 0.1182108626198083,
+      "recall": 0.7219512195121951
+     },
+     {
+      "threshold": 0.4886673354300475,
+      "flagged": 626,
+      "precision": 0.19808306709265175,
+      "recall": 0.6048780487804878
+     },
+     {
+      "threshold": 0.5813136594939672,
+      "flagged": 376,
+      "precision": 0.27393617021276595,
+      "recall": 0.5024390243902439
+     },
+     {
+      "threshold": 0.649657707255362,
+      "flagged": 251,
+      "precision": 0.32270916334661354,
+      "recall": 0.3951219512195122
+     },
+     {
+      "threshold": 0.747169102303949,
+      "flagged": 126,
+      "precision": 0.46825396825396826,
+      "recall": 0.28780487804878047
+     },
+     {
+      "threshold": 0.827469788800386,
+      "flagged": 63,
+      "precision": 0.5555555555555556,
+      "recall": 0.17073170731707318
+     }
+    ],
+    "n_units": 12518,
+    "n_wrong": 205,
+    "at": {
+     "careful": null,
+     "balanced": null,
+     "eager": {
+      "threshold": 0.8358556293313395,
+      "flagged": 56,
+      "precision": 0.6071428571428571,
+      "recall": 0.16585365853658537
+     }
+    }
+   },
+   "tone": {
+    "curve": [
+     {
+      "threshold": 0.727210568624632,
+      "flagged": 6259,
+      "precision": 0.21648825691004953,
+      "recall": 0.9319119669876204
+     },
+     {
+      "threshold": 0.23669824268420334,
+      "flagged": 3756,
+      "precision": 0.3258785942492013,
+      "recall": 0.8418156808803301
+     },
+     {
+      "threshold": 0.08718901300095215,
+      "flagged": 2504,
+      "precision": 0.40814696485623003,
+      "recall": 0.7028885832187071
+     },
+     {
+      "threshold": 0.031180878840941006,
+      "flagged": 1252,
+      "precision": 0.5031948881789138,
+      "recall": 0.4332874828060523
+     },
+     {
+      "threshold": 0.01770781668381611,
+      "flagged": 626,
+      "precision": 0.5527156549520766,
+      "recall": 0.23796423658872076
+     },
+     {
+      "threshold": 0.013135685341081638,
+      "flagged": 376,
+      "precision": 0.5957446808510638,
+      "recall": 0.15405777166437415
+     },
+     {
+      "threshold": 0.011005520267118136,
+      "flagged": 251,
+      "precision": 0.5936254980079682,
+      "recall": 0.10247592847317744
+     },
+     {
+      "threshold": 0.008263480573197415,
+      "flagged": 126,
+      "precision": 0.6428571428571429,
+      "recall": 0.05570839064649243
+     },
+     {
+      "threshold": 0.006507714604485748,
+      "flagged": 63,
+      "precision": 0.7142857142857143,
+      "recall": 0.030949105914718018
+     }
+    ],
+    "n_units": 12518,
+    "n_wrong": 1454,
+    "at": {
+     "careful": {
+      "threshold": -0.005140364026567785,
+      "flagged": 30,
+      "precision": 0.8,
+      "recall": 0.016506189821182942
+     },
+     "balanced": {
+      "threshold": -0.007427134764662936,
+      "flagged": 91,
+      "precision": 0.7032967032967034,
+      "recall": 0.04401650618982118
+     },
+     "eager": {
+      "threshold": -0.013100456116304782,
+      "flagged": 371,
+      "precision": 0.601078167115903,
+      "recall": 0.15337001375515819
+     }
+    }
+   }
+  },
+  "n_units": 12518
+ },
+ "native_before_cap": {
+  "en": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.424,
+    "diagnoses_per_clip": 0.308
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.896,
+    "diagnoses_per_clip": 0.548
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 5.664,
+    "diagnoses_per_clip": 0.772
+   }
+  },
+  "zh": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.0,
+    "diagnoses_per_clip": 0.0
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 0.024,
+    "diagnoses_per_clip": 0.0
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 0.108,
+    "diagnoses_per_clip": 0.02
+   }
+  },
+  "ja": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.868,
+    "diagnoses_per_clip": 0.196
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.476,
+    "diagnoses_per_clip": 0.512
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 5.304,
+    "diagnoses_per_clip": 0.908
+   }
+  },
+  "es": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.944,
+    "diagnoses_per_clip": 0.264
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 3.972,
+    "diagnoses_per_clip": 0.36
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 6.928,
+    "diagnoses_per_clip": 0.404
+   }
+  },
+  "fr": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.784,
+    "diagnoses_per_clip": 0.284
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 4.008,
+    "diagnoses_per_clip": 0.56
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 8.328,
+    "diagnoses_per_clip": 0.72
+   }
+  },
+  "de": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.756,
+    "diagnoses_per_clip": 0.04
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 1.668,
+    "diagnoses_per_clip": 0.116
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 4.02,
+    "diagnoses_per_clip": 0.34
+   }
+  },
+  "it": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.376,
+    "diagnoses_per_clip": 0.068
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.368,
+    "diagnoses_per_clip": 0.38
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 6.256,
+    "diagnoses_per_clip": 0.6
+   }
+  },
+  "pt": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.428,
+    "diagnoses_per_clip": 0.048
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 1.16,
+    "diagnoses_per_clip": 0.228
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 3.204,
+    "diagnoses_per_clip": 0.532
+   }
+  },
+  "ru": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.26,
+    "diagnoses_per_clip": 0.18
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 4.428,
+    "diagnoses_per_clip": 0.416
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 11.764,
+    "diagnoses_per_clip": 0.768
+   }
+  },
+  "ko": {
+   "careful": {
+    "clips": 226,
+    "flags_per_clip": 0.2345132743362832,
+    "diagnoses_per_clip": 0.04424778761061947
+   },
+   "balanced": {
+    "clips": 226,
+    "flags_per_clip": 0.915929203539823,
+    "diagnoses_per_clip": 0.21238938053097345
+   },
+   "eager": {
+    "clips": 226,
+    "flags_per_clip": 2.84070796460177,
+    "diagnoses_per_clip": 0.45132743362831856
+   }
+  }
+ },
+ "native": {
+  "en": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.424,
+    "diagnoses_per_clip": 0.152
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.896,
+    "diagnoses_per_clip": 0.256
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 5.664,
+    "diagnoses_per_clip": 0.356
+   }
+  },
+  "zh": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.0,
+    "diagnoses_per_clip": 0.0
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 0.024,
+    "diagnoses_per_clip": 0.0
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 0.108,
+    "diagnoses_per_clip": 0.02
+   }
+  },
+  "ja": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.868,
+    "diagnoses_per_clip": 0.116
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.476,
+    "diagnoses_per_clip": 0.276
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 5.304,
+    "diagnoses_per_clip": 0.492
+   }
+  },
+  "es": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.944,
+    "diagnoses_per_clip": 0.22
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 3.972,
+    "diagnoses_per_clip": 0.288
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 6.928,
+    "diagnoses_per_clip": 0.32
+   }
+  },
+  "fr": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.784,
+    "diagnoses_per_clip": 0.108
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 4.008,
+    "diagnoses_per_clip": 0.24
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 8.328,
+    "diagnoses_per_clip": 0.32
+   }
+  },
+  "de": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.756,
+    "diagnoses_per_clip": 0.04
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 1.668,
+    "diagnoses_per_clip": 0.116
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 4.02,
+    "diagnoses_per_clip": 0.34
+   }
+  },
+  "it": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.376,
+    "diagnoses_per_clip": 0.048
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 2.368,
+    "diagnoses_per_clip": 0.288
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 6.256,
+    "diagnoses_per_clip": 0.452
+   }
+  },
+  "pt": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 0.428,
+    "diagnoses_per_clip": 0.048
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 1.16,
+    "diagnoses_per_clip": 0.228
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 3.204,
+    "diagnoses_per_clip": 0.532
+   }
+  },
+  "ru": {
+   "careful": {
+    "clips": 250,
+    "flags_per_clip": 1.26,
+    "diagnoses_per_clip": 0.12
+   },
+   "balanced": {
+    "clips": 250,
+    "flags_per_clip": 4.428,
+    "diagnoses_per_clip": 0.22
+   },
+   "eager": {
+    "clips": 250,
+    "flags_per_clip": 11.764,
+    "diagnoses_per_clip": 0.388
+   }
+  },
+  "ko": {
+   "careful": {
+    "clips": 226,
+    "flags_per_clip": 0.2345132743362832,
+    "diagnoses_per_clip": 0.04424778761061947
+   },
+   "balanced": {
+    "clips": 226,
+    "flags_per_clip": 0.915929203539823,
+    "diagnoses_per_clip": 0.21238938053097345
+   },
+   "eager": {
+    "clips": 226,
+    "flags_per_clip": 2.84070796460177,
+    "diagnoses_per_clip": 0.45132743362831856
+   }
+  }
+ },
+ "planted": {
+  "en": {
+   "careful": {
+    "flagged": 0.589,
+    "named": 0.232,
+    "within1": 0.9655172413793104
+   },
+   "balanced": {
+    "flagged": 0.832,
+    "named": 0.351,
+    "within1": 0.9658119658119658
+   },
+   "eager": {
+    "flagged": 0.927,
+    "named": 0.392,
+    "within1": 0.9668367346938775
+   }
+  },
+  "zh": {
+   "careful": {
+    "flagged": 0.0,
+    "named": 0.0,
+    "within1": null
+   },
+   "balanced": {
+    "flagged": 0.0,
+    "named": 0.0,
+    "within1": null
+   },
+   "eager": {
+    "flagged": 0.052,
+    "named": 0.012,
+    "within1": 0.8333333333333334
+   }
+  },
+  "ja": {
+   "careful": {
+    "flagged": 0.398,
+    "named": 0.06,
+    "within1": 0.9666666666666667
+   },
+   "balanced": {
+    "flagged": 0.694,
+    "named": 0.128,
+    "within1": 0.9765625
+   },
+   "eager": {
+    "flagged": 0.852,
+    "named": 0.181,
+    "within1": 0.9834254143646409
+   }
+  },
+  "es": {
+   "careful": {
+    "flagged": 0.622,
+    "named": 0.282,
+    "within1": 0.9858156028368794
+   },
+   "balanced": {
+    "flagged": 0.868,
+    "named": 0.415,
+    "within1": 0.9879518072289156
+   },
+   "eager": {
+    "flagged": 0.959,
+    "named": 0.454,
+    "within1": 0.9889867841409692
+   }
+  },
+  "fr": {
+   "careful": {
+    "flagged": 0.661,
+    "named": 0.256,
+    "within1": 0.98046875
+   },
+   "balanced": {
+    "flagged": 0.904,
+    "named": 0.372,
+    "within1": 0.9865591397849462
+   },
+   "eager": {
+    "flagged": 0.97,
+    "named": 0.41,
+    "within1": 0.9878048780487805
+   }
+  },
+  "de": {
+   "careful": {
+    "flagged": 0.171,
+    "named": 0.022,
+    "within1": 0.8636363636363636
+   },
+   "balanced": {
+    "flagged": 0.412,
+    "named": 0.112,
+    "within1": 0.9285714285714286
+   },
+   "eager": {
+    "flagged": 0.723,
+    "named": 0.254,
+    "within1": 0.9291338582677166
+   }
+  },
+  "it": {
+   "careful": {
+    "flagged": 0.286,
+    "named": 0.131,
+    "within1": 0.9770992366412213
+   },
+   "balanced": {
+    "flagged": 0.661,
+    "named": 0.335,
+    "within1": 0.9850746268656716
+   },
+   "eager": {
+    "flagged": 0.882,
+    "named": 0.475,
+    "within1": 0.9894736842105263
+   }
+  },
+  "pt": {
+   "careful": {
+    "flagged": 0.138,
+    "named": 0.049,
+    "within1": 0.9795918367346939
+   },
+   "balanced": {
+    "flagged": 0.437,
+    "named": 0.182,
+    "within1": 0.9615384615384616
+   },
+   "eager": {
+    "flagged": 0.768,
+    "named": 0.38,
+    "within1": 0.9578947368421052
+   }
+  },
+  "ru": {
+   "careful": {
+    "flagged": 0.51,
+    "named": 0.126,
+    "within1": 0.9444444444444444
+   },
+   "balanced": {
+    "flagged": 0.779,
+    "named": 0.226,
+    "within1": 0.9513274336283186
+   },
+   "eager": {
+    "flagged": 0.925,
+    "named": 0.274,
+    "within1": 0.9598540145985401
+   }
+  },
+  "ko": {
+   "careful": {
+    "flagged": 0.15376106194690264,
+    "named": 0.0752212389380531,
+    "within1": 0.8823529411764706
+   },
+   "balanced": {
+    "flagged": 0.45685840707964603,
+    "named": 0.2234513274336283,
+    "within1": 0.9108910891089109
+   },
+   "eager": {
+    "flagged": 0.7256637168141593,
+    "named": 0.3672566371681416,
+    "within1": 0.9307228915662651
+   }
+  },
+  "pooled": {
+   "careful": {
+    "flagged": 0.3548061389337641,
+    "named": 0.12378836833602584,
+    "within1": 0.966557911908646
+   },
+   "balanced": {
+    "flagged": 0.6058158319870759,
+    "named": 0.23455169628432956,
+    "within1": 0.9681446405510116
+   },
+   "eager": {
+    "flagged": 0.7788772213247173,
+    "named": 0.3194668820678514,
+    "within1": 0.968078381795196
+   }
+  }
+ }
+}

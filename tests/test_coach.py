@@ -116,6 +116,19 @@ def test_gate_file_and_overrides():
     assert len(vals) == len(edges) + 1 and all(0 <= v <= 1 for v in vals)
 
 
+def test_model_file():
+    m = coach.model()
+    assert m["version"] == 2 and len(m["sound"]["coef"]) == len(m["sound"]["features"])
+    t = m["thresholds"]
+    assert t["careful"] > t["balanced"] > t["eager"]
+    for lang in SAMPLES:
+        for s in coach.SENSITIVITIES:
+            assert 0 < coach.sound_threshold(m, lang, s, True) <= 1.01
+    assert m["tone"]["thresholds"]["careful"] <= m["tone"]["thresholds"]["eager"]
+    with pytest.raises(ValueError):
+        coach.coaching(object(), sensitivity="loud")
+
+
 def test_heard_candidate_picks_dominant_sound():
     from pronunciada.text.ipa import token_ids
 
@@ -165,15 +178,22 @@ def test_coaching_on_scorer_result(tts):
     assert res.audio is not None and "issues" in res.audio
     items = res.coaching()
     json.dumps(items)
-    flagged = {(wi, j) for wi, w in enumerate(res.words) if not (w.present_prob is not None and w.present_prob < 0.5)
-               for j, p in enumerate(w.phones) if p.prob < 0.5}
-    assert {(it["word_index"], it["phone_index"]) for it in items if it["kind"] == "substitution"} == flagged
+    omitted = {wi for wi, w in enumerate(res.words) if w.present_prob is not None and w.present_prob < 0.5}
+    X = coach.sound_inputs(res)
+    ep = coach.error_prob(X)
+    thr = coach.sound_threshold(coach.model(), "en", "balanced", False)
+    flagged = {(int(X["word"][i]), int(X["k"][i])) for i in range(len(ep)) if ep[i] >= thr and X["word"][i] not in omitted}
+    assert {(it["word_index"], it["phone_index"]) for it in items if it["kind"] in ("substitution", "missing")} == flagged
     for it in items:
         assert it["schema_version"] == coach.SCHEMA_VERSION and it["kind"] in coach.KINDS
         if it["heard_ipa"]:
             assert it["diff_keys"] == A.diff(it["expected_ipa"], it["heard_ipa"])
-    ranks = [(1 - it["prob"]) * (it["confidence"] if it["confidence"] is not None else 0.4) for it in items]
+            assert coach.sound_class(it["expected_ipa"]) not in coach.model()["heard"]["off_classes"]
+    ranks = [coach._rank(it) for it in items]  # noqa: SLF001
     assert ranks == sorted(ranks, reverse=True)
+    # sensitivities are nested: careful <= balanced <= eager
+    key = lambda L: {(i["word_index"], i["phone_index"]) for i in L if i["kind"] == "substitution"}  # noqa: E731
+    assert key(res.coaching(sensitivity="careful")) <= key(items) <= key(res.coaching(sensitivity="eager"))
     assert len(tips.tips(items)) <= 3
     # rescore keeps the audio report and coaching still works
     r2 = sc.rescore(res, 0.9)

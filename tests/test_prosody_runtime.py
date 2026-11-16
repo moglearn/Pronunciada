@@ -13,6 +13,19 @@ from pronunciada.prosody import DATA, ProsodyScorer
 from pronunciada.prosody.features import context_input, frame_features, syllable_windows
 from pronunciada.prosody.f0 import track
 
+
+RETIRED = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "prosody" / "retired"
+
+
+def model_stem(name):
+    """Package model name, or the path stem of a model retired from the package (round 11:
+    selectable as PRONUNCIADA_*_MODEL=<path stem>); skips the test if neither exists."""
+    if (DATA / f"{name}.onnx").exists():
+        return name
+    if (RETIRED / f"{name}.onnx").exists():
+        return str(RETIRED / name)
+    pytest.skip(f"{name} neither in the package nor in {RETIRED}")
+
 ZIPA = Path(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada"))) / "models" / \
     "zipa-small-crctc-500k" / "model.onnx"
 
@@ -49,7 +62,7 @@ def test_default_tone_model_is_v3z():
     from pronunciada import prosody
 
     assert prosody.TONE_MODEL == "tone_zh_v3z"
-    assert all((DATA / f"{m}.onnx").exists() for m in ("tone_zh", "tone_zh_v2", "tone_zh_v3"))
+    assert all((DATA / f"{m}.onnx").exists() for m in ("tone_zh_v2", "tone_zh_v3z"))
 
 
 def test_model_files_small():
@@ -129,7 +142,7 @@ def test_parity_with_training_pipeline(acoustic, tmp_path, monkeypatch):
     from bench.prosody.tone_eval import load_model, softmax
     from pronunciada.text import get_g2p
 
-    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", "tone_zh")
+    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", model_stem("tone_zh"))
     try:
         net, _ = load_model(ProsodyScorer("zh").meta["model"])
     except FileNotFoundError:
@@ -177,7 +190,7 @@ def test_both_tone_models_end_to_end(acoustic, tmp_path, monkeypatch, stem):
     interface; v2 must see the whole utterance (the meta flag `sequence`)."""
     from pronunciada.text import get_g2p
 
-    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", stem)
+    monkeypatch.setenv("PRONUNCIADA_TONE_MODEL", model_stem(stem))
     text = "今天天气很好，我们一起去公园散步吧。"
     wav = _say(text, "Tingting", tmp_path)
     ref = get_g2p("zh")(text)

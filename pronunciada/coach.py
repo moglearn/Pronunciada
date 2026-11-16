@@ -1,32 +1,35 @@
 """Coaching feedback: structured, versioned diagnoses of what went wrong in one utterance.
 
-    items = result.coaching()            # == pronunciada.coach.coaching(result)
-    tips = pronunciada.tips.tips(items)  # optional default English tip sentences
+    items = result.coaching()                         # sensitivity "balanced"
+    items = result.coaching(sensitivity="careful")    # fewer, surer items ("eager": more)
+    tips = pronunciada.tips.tips(items)               # optional default English tip sentences
 
-Every item is a plain JSON-serialisable dict with the same keys (SCHEMA_VERSION 1):
+Every item is a plain JSON-serialisable dict with the same keys (SCHEMA_VERSION 2):
 
-  schema_version  1
+  schema_version  2
   kind            "substitution" | "missing" | "extra" | "tone" | "stress" | "missing_word"
   word, word_index        the prompt word and its index in result.words
   syllable_index          index into that word's syllables (None for missing_word)
   phone_index             index into that word's phones (sounds only, else None)
   position                "initial" | "medial" | "final" | "only" (sound in its word)
   expected, heard         sounds: IPA strings; tones: 1-5; stress: syllable index in the word;
-                          heard None = flagged, but what was heard is not reliable enough to say
+                          heard None = "this sound was off", without naming a replacement
   expected_ipa, heard_ipa sounds only (same as expected / heard), else None
   diff_keys               articulatory features that differ (pronunciada.articulatory.diff);
                           ["tone"] / ["stress_position"]; [] when heard is None
-  prob                    the calibrated probability the item was acceptable (PhoneResult.prob,
+  error_prob              coaching score: P(an expert would mark this sound / tone as an error),
+                          the model of pronunciada/data/coach/model.json (fitted on learner data)
+  prob                    the calibrated "acceptable?" probability (PhoneResult.prob,
                           SyllableResult.tone_prob / stress_prob, WordResult.present_prob)
-  confidence              estimated precision of the diagnosis: P(heard is right within one
-                          articulatory feature) from the calibration table (None without heard)
+  confidence              estimated precision of `heard` (sounds: exact or within one feature;
+                          tones / stress: exact) on learner / planted data; None without heard
   start, end              seconds
-  gate                    the gate inputs, for logging (heard_post, log_ratio, n_frames)
+  gate                    gate inputs, for logging
 
-The reliability gate (when `heard` is filled in) was set on FLEURS validation with planted
-substitutions (bench/coach/fit_gate.py, results/coaching.md); thresholds live in
-pronunciada/data/coach/gate.json and can be overridden per call.
-Nothing here changes any probability: it reads the evidence cached on the result.
+Round 2: sounds and Mandarin tones are flagged by a separate coaching operating point (the
+coaching score above a per-sensitivity threshold set for precision 0.8 / 0.7 / 0.6 on
+speechocean762 train and OMPAL dev), not by prob < 0.5. Nothing here changes any probability:
+it reads the evidence cached on the result.
 """
 from __future__ import annotations
 
@@ -40,7 +43,8 @@ import numpy as np
 from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+SENSITIVITIES = ("careful", "balanced", "eager")
 KINDS = ("substitution", "missing", "extra", "tone", "stress", "missing_word")
 DEFAULT_GATE = {
     "flag_prob": 0.5,          # a sound / tone / stress item is reported when prob < this
@@ -84,10 +88,17 @@ def inventory(lang: str) -> tuple[str, ...]:
 def _cand_ids(lang: str, vowel: bool):
     """Candidate sounds of the same type (vowel / consonant) as the expected one: planted and
     annotated learner substitutions are within a type, and a cross-type "heard" is nearly
-    always a boundary effect of the alignment."""
+    always a boundary effect of the alignment. Returns (names, padded token ids [n, L],
+    1 / length per row, mask [n, L])."""
     tid = token_ids()
     cands = [c for c in inventory(lang) if A.covered(c) and (A.features(c)["type"] == "vowel") == vowel]
-    return cands, [np.array([tid[ch] for ch in c]) for c in cands]
+    L = max((len(c) for c in cands), default=1)
+    ids = np.zeros((len(cands), L), dtype=np.int64)
+    mask = np.zeros((len(cands), L))
+    for r, c in enumerate(cands):
+        ids[r, :len(c)] = [tid[ch] for ch in c]
+        mask[r, :len(c)] = 1.0
+    return cands, ids, 1.0 / np.maximum(mask.sum(1), 1), mask
 
 
 def span_mean(lpa: np.ndarray, s: int, e: int) -> np.ndarray:
@@ -100,128 +111,270 @@ def span_mean(lpa: np.ndarray, s: int, e: int) -> np.ndarray:
 
 
 def heard_candidate(m: np.ndarray, expected: str, alts, lang: str):
-    """Best other sound of the language by the geometric-mean span posterior of its tokens.
-    Returns (heard, log P heard, log P expected)."""
+    """Best other sound of the language (same type) by the geometric-mean span posterior of its
+    tokens. Returns (heard, log P heard, log P expected)."""
     tid = token_ids()
     lm = np.log(m + 1e-6)
-    cands, ids = _cand_ids(lang, A.features(expected)["type"] == "vowel")
-    skip = {expected, *alts}
-    best, bs = None, -math.inf
-    for c, ix in zip(cands, ids):
-        if c in skip:
-            continue
-        s = float(lm[ix].mean())
-        if s > bs:
-            best, bs = c, s
+    cands, ids, inv, mask = _cand_ids(lang, A.features(expected)["type"] == "vowel")
     le = float(lm[[tid[ch] for ch in expected]].mean())
-    return best, bs, le
-
-
-def _confidence(x: float, table: dict) -> float:
-    edges, vals = table["edges"], table["values"]
-    k = int(np.searchsorted(np.asarray(edges, dtype=np.float64), x, side="right")) if edges else 0
-    return float(vals[min(k, len(vals) - 1)])
+    if not cands:
+        return None, -math.inf, le
+    sc = (lm[ids] * mask).sum(1) * inv
+    skip = {expected, *alts}
+    for r in np.argsort(-sc):
+        if cands[r] not in skip:
+            return cands[r], float(sc[r]), le
+    return None, -math.inf, le
 
 
 def _position(k: int, n: int) -> str:
     return "only" if n == 1 else "initial" if k == 0 else "final" if k == n - 1 else "medial"
 
 
-def _item(kind, w, wi, si, pi, pos, expected, heard, diff, prob, conf, start, end, gate=None, ipa=True):
+@lru_cache(maxsize=1)
+def model() -> dict:
+    """The fitted coaching model (bench/coach/fit_v2.py); {} when not shipped."""
+    p = resources.files("pronunciada").joinpath("data/coach/model.json")
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (FileNotFoundError, OSError):
+        return {}
+
+
+def sound_class(ipa: str) -> str:
+    """'vowel' or the consonant manner (stop, affricate, fricative, nasal, approximant, ...)."""
+    f = A.features(ipa)
+    return "vowel" if f["type"] == "vowel" else f["manner"]
+
+
+GLIDES = frozenset(("j", "w", "ɥ"))
+SOUND_FEATURES = ("zl", "zs", "llr_sub", "z_llr_sub", "log_ratio_comp", "log_frames", "nucleus",
+                  "llr_del", "peak_post", "blank_mean")
+
+
+def sound_inputs(result, heard: bool | list = False) -> dict:
+    """Per reference sound (arrays, one entry per sound): everything the coaching model and the
+    gates read. heard=True computes the heard candidate for every sound, a list of indices for
+    those only (others None)."""
+    c = result._pronunciada  # noqa: SLF001
+    ref, ev, tab = c["ref"], c["ev"], c["tab"]
+    n = len(ref.phones)
+    f = lambda k: np.asarray(tab[k], dtype=np.float64)  # noqa: E731
+    first = np.zeros(n, bool)
+    for sy in ref.syllables:
+        first[sy.phones[0]] = True
+    X = {"i": np.arange(n), "word": np.array([p.word for p in ref.phones]),
+         "syl": np.array([p.syllable - ref.words[p.word].syllables[0] for p in ref.phones]),
+         "k": np.array([i - ref.words[p.word].phones[0] for i, p in enumerate(ref.phones)]),
+         "expected": [p.ipa for p in ref.phones], "alts": [[a for a, _ in p.alts] for p in ref.phones],
+         "nucleus": np.array([float(p.is_nucleus) for p in ref.phones]), "first_in_syl": first,
+         "zl": np.asarray(c["s_zl"], np.float64), "zs": np.asarray(c["s_zs"], np.float64),
+         "llr_sub": f("llr_sub"), "llr_del": f("llr_del"), "z_llr_sub": f("z_llr_sub"),
+         "log_ratio_comp": f("log_ratio_comp"), "comp_mean": f("comp_mean"), "can_mean": f("can_mean"),
+         "peak_post": f("peak_post"), "blank_mean": f("blank_mean"), "n_frames": f("n_frames"),
+         "slot_heard": [s.heard for s in ev.slots],
+         "start_frame": np.array([s.start_frame for s in ev.slots]),
+         "end_frame": np.array([s.end_frame for s in ev.slots])}
+    X["log_frames"] = np.log1p(X["n_frames"])
+    # syllable-initial consonant (Mandarin "initial"; medial glides belong to the final)
+    X["initial"] = first & (X["nucleus"] == 0) & np.array([e not in GLIDES for e in X["expected"]])
+    X["cand"], X["lh"], X["le"] = [None] * n, np.full(n, np.nan), np.full(n, np.nan)
+    _add_heard(X, result, range(n) if heard is True else (heard or []))
+    return X
+
+
+def _add_heard(X: dict, result, idx) -> None:
+    c = result._pronunciada  # noqa: SLF001
+    lpa = c.get("lpa")
+    if lpa is None or not len(lpa):
+        return
+    for i in idx:
+        m = span_mean(lpa, int(X["start_frame"][i]), int(X["end_frame"][i]))
+        X["cand"][i], X["lh"][i], X["le"][i] = heard_candidate(m, X["expected"][i], X["alts"][i], c["ref"].lang)
+
+
+_CLIP = {"zl": (-12, 12), "zs": (-12, 12), "llr_sub": (-30, 0), "z_llr_sub": (-6, 6),
+         "log_ratio_comp": (-10, 10), "log_frames": (0, 4), "nucleus": (0, 1), "llr_del": (-30, 30),
+         "peak_post": (0, 1), "blank_mean": (0, 1)}
+
+
+def feature_matrix(X: dict, names=SOUND_FEATURES) -> np.ndarray:
+    cols = []
+    for k in names:
+        v = np.nan_to_num(np.asarray(X[k], np.float64), nan=0.0, posinf=_CLIP[k][1], neginf=_CLIP[k][0])
+        cols.append(np.clip(v, *_CLIP[k]))
+    return np.column_stack(cols) if cols else np.zeros((0, 0))
+
+
+def _logistic(M: dict, F: np.ndarray) -> np.ndarray:
+    z = ((F - np.asarray(M["mean"])) / np.asarray(M["scale"])) @ np.asarray(M["coef"]) + M["intercept"]
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def error_prob(X: dict, mdl: dict | None = None) -> np.ndarray:
+    """Coaching score per sound: P(an expert marks it as an error)."""
+    mdl = mdl or model()
+    M = mdl["sound"]
+    return _logistic(M, feature_matrix(X, M["features"]))
+
+
+def missing_prob(X: dict, mdl: dict | None = None) -> np.ndarray | None:
+    mdl = mdl or model()
+    M = mdl.get("missing")
+    if not M or M.get("threshold") is None:
+        return None
+    return _logistic(M, feature_matrix(X, M["features"]))
+
+
+def sound_threshold(mdl: dict, lang: str, sensitivity: str, initial: bool) -> float:
+    bl = mdl.get("by_lang", {}).get(lang, {})
+    if "initial" in bl and "final" in bl:
+        return bl["initial" if initial else "final"][sensitivity]
+    if "sound" in bl:
+        return bl["sound"][sensitivity]
+    return mdl["thresholds"][sensitivity]
+
+
+def heard_ok(mdl: dict, lang: str, expected: str, cand, lh: float, le: float) -> bool:
+    """The fitted heard-sound gate (learner data): class switched on, log-ratio and posterior bars."""
+    H = mdl.get("heard", {})
+    if cand is None or not np.isfinite(lh):
+        return False
+    cls = sound_class(expected)
+    if cls in H.get("off_classes", []):
+        return False
+    g = {**H, **H.get("by_lang", {}).get(lang, {})}
+    return (lh - le) >= g.get("min_log_ratio", -1e9) and math.exp(lh) >= g.get("min_heard_post", 0.0)
+
+
+def decide(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict | None = None,
+           threshold: float | None = None, skip_words=()) -> dict:
+    """Per-sound decisions shared by coaching() and the benchmarks: error_prob, flagged,
+    kind ("missing" / "substitution" / None) and heard (None = not named). X must carry the
+    heard candidate for the flagged sounds (sound_inputs(..., heard=...))."""
+    mdl = mdl or model()
+    ep = error_prob(X, mdl)
+    ti = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, True)
+    tf = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, False)
+    flag = np.where(X["initial"], ep >= ti, ep >= tf)
+    flag &= ~np.isin(X["word"], list(skip_words))
+    mp = missing_prob(X, mdl)
+    n = len(ep)
+    kind, heard = [None] * n, [None] * n
+    for i in np.flatnonzero(flag):
+        if mp is not None and mp[i] >= mdl["missing"]["threshold"]:
+            kind[i], heard[i] = "missing", ""
+            continue
+        kind[i] = "substitution"
+        if heard_ok(mdl, lang, X["expected"][i], X["cand"][i], X["lh"][i], X["le"][i]):
+            heard[i] = X["cand"][i]
+    return {"error_prob": ep, "flag": flag, "kind": kind, "heard": heard, "missing_prob": mp}
+
+
+def flagged_indices(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict | None = None,
+                    threshold: float | None = None) -> np.ndarray:
+    mdl = mdl or model()
+    ep = error_prob(X, mdl)
+    ti = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, True)
+    tf = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, False)
+    return np.flatnonzero(np.where(X["initial"], ep >= ti, ep >= tf))
+
+
+def _item(kind, w, wi, si, pi, pos, expected, heard, diff, eprob, prob, conf, start, end, gate=None, ipa=True):
     return {"schema_version": SCHEMA_VERSION, "kind": kind, "word": w.text, "word_index": wi,
             "syllable_index": si, "phone_index": pi, "position": pos, "expected": expected,
             "heard": heard, "expected_ipa": expected if ipa else None,
             "heard_ipa": heard if ipa else None, "diff_keys": list(diff),
-            "prob": round(float(prob), 4), "confidence": None if conf is None else round(float(conf), 3),
+            "error_prob": None if eprob is None else round(float(eprob), 4),
+            "prob": None if prob is None else round(float(prob), 4),
+            "confidence": None if conf is None else round(float(conf), 3),
             "start": start, "end": end, "gate": gate}
 
 
-def phone_diagnosis(m, expected, alts, lang, prob, n_frames, slot_heard, llr_del, g):
-    """(kind, heard, diff_keys, confidence, gate inputs) for one flagged sound."""
-    if n_frames <= g["missing_max_frames"] and not slot_heard and llr_del <= g["missing_min_llr_del"]:
-        return "missing", "", [], g["missing_confidence"], {"n_frames": int(n_frames), "llr_del": round(float(llr_del), 3)}
-    h, lh, le = heard_candidate(m, expected, alts, lang)
-    lr = lh - le
-    gin = {"heard_post": round(math.exp(lh), 4), "log_ratio": round(lr, 3), "n_frames": int(n_frames),
-           "candidate": h}
-    if (h is None or lr < g["min_log_ratio"] or math.exp(lh) < g["min_heard_post"]
-            or n_frames < g["min_frames"]):
-        return "substitution", None, [], None, gin
-    try:
-        d = A.diff(expected, h)
-    except KeyError:
-        return "substitution", None, [], None, gin
-    return "substitution", h, d, _confidence(lr, g["confidence"]), gin
-
-
 def _rank(it) -> float:
-    c = it["confidence"] if it["confidence"] is not None else 0.4
-    return (1.0 - it["prob"]) * c
+    e = it["error_prob"] if it["error_prob"] is not None else 1.0 - (it["prob"] or 0.0)
+    c = it["confidence"] if it["confidence"] is not None else 0.5
+    return e * (0.5 + 0.5 * c)
 
 
-def coaching(result, max_items: int | None = None, **gate) -> list[dict]:
+def coaching(result, max_items: int | None = None, sensitivity: str = "balanced", **gate) -> list[dict]:
     """Coaching items for a SentenceResult from Scorer.score / rescore, most important first
-    (by (1 - prob) x confidence; flag-only items count with confidence 0.4). Gate thresholds:
-    pronunciada/data/coach/gate.json, override with keyword arguments (see DEFAULT_GATE)."""
+    (by error_prob x (0.5 + 0.5 confidence)). sensitivity: "careful" | "balanced" | "eager".
+    Keyword overrides: `threshold` (coaching-score bar for sounds), `tone_threshold`, and the
+    stress / missing-word bars of DEFAULT_GATE."""
+    if sensitivity not in SENSITIVITIES:
+        raise ValueError(f"sensitivity must be one of {SENSITIVITIES}")
     c = getattr(result, "_pronunciada", None)
     if c is None:
         raise ValueError("result has no cached evidence (was it produced by Scorer.score?)")
-    ref, ev, tab = c["ref"], c["ev"], c["tab"]
+    mdl = model()
+    if not mdl:
+        raise RuntimeError("pronunciada/data/coach/model.json is missing")
+    ref = c["ref"]
     lang = ref.lang
-    g = gate_params(**gate)
-    g = {**g, **{k: v for k, v in g.get("by_lang", {}).get(lang, {}).items() if k not in gate}}
-    lpa = c.get("lpa")
+    g = gate_params(**{k: v for k, v in gate.items() if k in DEFAULT_GATE})
     pr = c.get("prosody") or []
+    omitted = {wi for wi, w in enumerate(result.words)
+               if w.present_prob is not None and w.present_prob < g["missing_word_prob"]}
+    X = sound_inputs(result)
+    sel = [i for i in flagged_indices(X, lang, sensitivity, mdl, gate.get("threshold"))
+           if X["word"][i] not in omitted]
+    if sel:
+        _add_heard(X, result, sel)
+    D = decide(X, lang, sensitivity, mdl, gate.get("threshold"), omitted)
+    hconf = mdl.get("heard", {}).get("confidence", {})
     items: list[dict] = []
-    for wi, w in enumerate(result.words):
-        rw = ref.words[wi]
-        p0, p1 = rw.phones
-        s0, _s1 = rw.syllables
-        if w.present_prob is not None and w.present_prob < g["missing_word_prob"]:
-            items.append(_item("missing_word", w, wi, None, None, None, w.text, None, [],
-                               w.present_prob, g["missing_confidence"], w.start, w.end, ipa=False))
+    for wi in sorted(omitted):
+        w = result.words[wi]
+        items.append(_item("missing_word", w, wi, None, None, None, w.text, None, [], 1.0 - w.present_prob,
+                           w.present_prob, None, w.start, w.end, ipa=False))
+    for i in np.flatnonzero(D["flag"]):
+        wi, k = int(X["word"][i]), int(X["k"][i])
+        w = result.words[wi]
+        p = w.phones[k]
+        e = X["expected"][i]
+        gin = {"error_prob": round(float(D["error_prob"][i]), 4)}
+        if X["cand"][i] is not None:
+            gin.update(candidate=X["cand"][i], heard_post=round(math.exp(X["lh"][i]), 4),
+                       log_ratio=round(float(X["lh"][i] - X["le"][i]), 3))
+        h = D["heard"][i]
+        if D["kind"][i] == "missing":
+            items.append(_item("missing", w, wi, int(X["syl"][i]), k, _position(k, len(w.phones)), e, "", [],
+                               D["error_prob"][i], p.prob, mdl["missing"].get("confidence"), p.start, p.end, gin))
             continue
-        for k, p in enumerate(w.phones):
-            i = p0 + k
-            if p.prob >= g["flag_prob"]:
-                continue
-            sl = ev.slots[i]
-            rp = ref.phones[i]
-            m = span_mean(lpa, sl.start_frame, sl.end_frame) if lpa is not None and len(lpa) else None
-            if m is None:
-                kind, h, d, conf, gin = "substitution", None, [], None, None
-            else:
-                kind, h, d, conf, gin = phone_diagnosis(
-                    m, rp.ipa, [a for a, _ in rp.alts], lang, p.prob, sl.n_frames, sl.heard,
-                    float(tab["llr_del"][i]), g)
-            items.append(_item(kind, w, wi, rp.syllable - s0, k, _position(k, len(w.phones)),
-                               rp.ipa, h, d, p.prob, conf, p.start, p.end, gin))
+        d = A.diff(e, h) if h else []
+        conf = hconf.get(sound_class(e), hconf.get("all")) if h else None
+        items.append(_item("substitution", w, wi, int(X["syl"][i]), k, _position(k, len(w.phones)), e, h, d,
+                           D["error_prob"][i], p.prob, conf, p.start, p.end, gin))
+    T = mdl.get("tone", {})
+    for wi, w in enumerate(result.words):
+        if wi in omitted:
+            continue
+        s0 = ref.words[wi].syllables[0]
         for k, sy in enumerate(w.syllables):
             si = s0 + k
             d = pr[si] if si < len(pr) else {}
-            # tones / stress: the syllable AND the word's calibrated channel (WordResult.tone_prob
-            # / stress_prob, what the word score uses) must both be below the flag bar
-            wt = w.tone_prob if w.tone_prob is not None else 0.0
+            if sy.tone_prob is not None and d.get("tone_probs") and T:
+                tthr = gate.get("tone_threshold", T["thresholds"][sensitivity])
+                if sy.tone_prob <= tthr:
+                    P = np.asarray(d["tone_probs"], dtype=np.float64)
+                    acc = {sy.tone_expected, *ref.syllables[si].tone_alts}
+                    ht = int(P.argmax()) + 1
+                    lr = math.log(P[ht - 1] + 1e-6) - math.log(P[sy.tone_expected - 1] + 1e-6)
+                    ok = ht not in acc and P[ht - 1] >= g["tone_min_post"] and lr >= g["tone_min_log_ratio"]
+                    items.append(_item("tone", w, wi, k, None, None, sy.tone_expected, ht if ok else None,
+                                       ["tone"] if ok else [], tone_error_prob(T, sy.tone_prob),
+                                       sy.tone_prob, g["tone_confidence"] if ok else None, sy.start, sy.end,
+                                       {"heard_post": round(float(P[ht - 1]), 4), "log_ratio": round(lr, 3)},
+                                       ipa=False))
             ws = w.stress_prob if w.stress_prob is not None else 0.0
-            if (sy.tone_prob is not None and sy.tone_prob < g["flag_prob"] and wt < g["flag_prob"]
-                    and d.get("tone_probs")):
-                P = np.asarray(d["tone_probs"], dtype=np.float64)
-                acc = {sy.tone_expected, *ref.syllables[si].tone_alts}
-                ht = int(P.argmax()) + 1
-                lr = math.log(P[ht - 1] + 1e-6) - math.log(P[sy.tone_expected - 1] + 1e-6)
-                ok = ht not in acc and P[ht - 1] >= g["tone_min_post"] and lr >= g["tone_min_log_ratio"]
-                items.append(_item("tone", w, wi, k, None, None, sy.tone_expected, ht if ok else None,
-                                   ["tone"] if ok else [], sy.tone_prob,
-                                   g["tone_confidence"] if ok else None, sy.start, sy.end,
-                                   {"heard_post": round(float(P[ht - 1]), 4), "log_ratio": round(lr, 3)},
-                                   ipa=False))
             if (sy.stress_prob is not None and sy.stress_prob < g["flag_prob"] and ws < g["flag_prob"]
                     and d.get("stress_dist")):
                 P = np.asarray(d["stress_dist"], dtype=np.float64)
                 hs = int(P.argmax())
                 ok = hs != k and P[hs] >= g["stress_min_post"]
                 items.append(_item("stress", w, wi, k, None, None, k, hs if ok else None,
-                                   ["stress_position"] if ok else [], sy.stress_prob,
+                                   ["stress_position"] if ok else [], None, sy.stress_prob,
                                    g["stress_confidence"] if ok else None, w.start, w.end,
                                    {"heard_post": round(float(P[hs]), 4), "n_syllables": len(P)},
                                    ipa=False))
@@ -229,9 +382,15 @@ def coaching(result, max_items: int | None = None, **gate) -> list[dict]:
     return items[:max_items] if max_items else items
 
 
+def tone_error_prob(T: dict, tone_prob: float) -> float:
+    """P(teachers mark the tone wrong) from the syllable tone probability (OMPAL dev fit)."""
+    q = min(max(float(tone_prob), 1e-4), 1 - 1e-4)
+    return float(1.0 / (1.0 + math.exp(-(T["a"] + T["b"] * math.log(q / (1 - q))))))
+
+
 def to_json(items: list[dict], **kw) -> str:
     return json.dumps({"schema_version": SCHEMA_VERSION, "items": items}, ensure_ascii=False, **kw)
 
 
-__all__ = ["SCHEMA_VERSION", "KINDS", "DEFAULT_GATE", "coaching", "gate_params", "heard_candidate",
-           "phone_diagnosis", "to_json", "MODIFIERS"]
+__all__ = ["SCHEMA_VERSION", "SENSITIVITIES", "KINDS", "DEFAULT_GATE", "coaching", "gate_params",
+           "heard_candidate", "sound_inputs", "error_prob", "to_json", "MODIFIERS"]

@@ -104,7 +104,7 @@ def _pros_rows(res, kind, cor=None):
 
 
 def run_lang(args):
-    lang, max_clips = args
+    lang, max_clips, only = (args + (None,))[:3]
     for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS"):
         os.environ[v] = "1"
     from bench.corrupt import NotApplicable, corrupt
@@ -127,14 +127,17 @@ def run_lang(args):
             continue
         ref = res._pronunciada["ref"]  # noqa: SLF001
         flat = [p for w in res.words for p in w.phones]
-        bad = [i for i, p in enumerate(flat) if p.prob < 0.5]
+        bad = [] if only else [i for i, p in enumerate(flat) if p.prob < 0.5]
         phones += phone_rows(sc, res, wav, bad, [ref.phones[i].ipa for i in bad], "clean", rec["id"])
         clips.append({"utt": rec["id"], "n_phones": len(flat), "n_flagged": len(bad),
                       "n_words": len(res.words), "omitted": [w.omitted for w in res.words],
                       "present": [w.present_prob for w in res.words]})
         if lang in PROS:
             pros += [dict(r, utt=rec["id"], kind=PROS[lang]) for r in _pros_rows(res, PROS[lang])]
-        for kind in PHONE_KINDS + ((PROS[lang],) if lang in PROS else ()):
+        kinds = PHONE_KINDS + ((PROS[lang],) if lang in PROS else ())
+        if only:
+            kinds = tuple(k for k in kinds if k in only)
+        for kind in kinds:
             try:
                 cor = corrupt(ref, [kind], inv, n_errors=2, seed=stable_seed(rec["id"], kind, "coach-v1"),
                               strict=False)
@@ -154,7 +157,8 @@ def run_lang(args):
             else:
                 pros += [dict(r, utt=rec["id"], kind=kind) for r in _pros_rows(r2, kind, cor)]
     out = {"lang": lang, "phones": phones, "pros": pros, "clips": clips}
-    (out_dir() / f"gather-{lang}.pkl").write_bytes(pickle.dumps(out))
+    tag = f"-{'-'.join(only)}" if only else ""
+    (out_dir() / f"gather{tag}-{lang}.pkl").write_bytes(pickle.dumps(out))
     return lang, len(clips), len(phones), len(pros), time.time() - t0
 
 
@@ -167,10 +171,11 @@ def main():
     ap.add_argument("--lang", default="all")
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--max-clips", type=int, default=0)
+    ap.add_argument("--only", default="", help="comma-separated kinds (e.g. stress); writes gather-<kinds>-<lang>.pkl")
     a = ap.parse_args()
     langs = list(LANGS) if a.lang == "all" else a.lang.split(",")
     with ProcessPoolExecutor(min(a.workers, 2)) as ex:
-        for lang, n, npn, npr, dt in ex.map(run_lang, [(l, a.max_clips) for l in langs]):
+        for lang, n, npn, npr, dt in ex.map(run_lang, [(l, a.max_clips, tuple(a.only.split(",")) if a.only else None) for l in langs]):
             print(f"{lang}: {n} clips, {npn} phone rows, {npr} prosody rows, {dt:.0f}s", flush=True)
 
 

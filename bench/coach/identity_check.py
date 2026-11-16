@@ -30,7 +30,7 @@ def dump(out, use_coach, per_lang):
 
     rows, lat = {}, []
     for lang in LANGS:
-        sc = pronunciada.Scorer(lang, threads=2)
+        sc = pronunciada.Scorer(lang, threads=1)
         recs = fleurs_validation_records(lang)[:per_lang]
         by_row = {int(r["audio"].rsplit(":", 1)[1]): r for r in recs}
         path = recs[0]["audio"].split(":", 1)[1].rsplit(":", 1)[0]

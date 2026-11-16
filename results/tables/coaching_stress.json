@@ -1,0 +1,229 @@
+{
+ "stress_model": "stress_v3",
+ "curve": [
+  {
+   "bar": 0.3,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1233,
+    "precision": 0.9416058394160584,
+    "coverage": 0.411686143572621
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 169,
+    "precision": 0.0,
+    "coverage": 0.009029224768926643
+   }
+  },
+  {
+   "bar": 0.4,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1231,
+    "precision": 0.9431356620633631,
+    "coverage": 0.4110183639398998
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 165,
+    "precision": 0.0,
+    "coverage": 0.008815515306940214
+   }
+  },
+  {
+   "bar": 0.5,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1214,
+    "precision": 0.9497528830313015,
+    "coverage": 0.40534223706176964
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 159,
+    "precision": 0.0,
+    "coverage": 0.00849495111396057
+   }
+  },
+  {
+   "bar": 0.6,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1170,
+    "precision": 0.9632478632478633,
+    "coverage": 0.39065108514190316
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 152,
+    "precision": 0.0,
+    "coverage": 0.008120959555484319
+   }
+  },
+  {
+   "bar": 0.7,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1118,
+    "precision": 0.9740608228980322,
+    "coverage": 0.37328881469115194
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 141,
+    "precision": 0.0,
+    "coverage": 0.007533258535021638
+   }
+  },
+  {
+   "bar": 0.8,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 1040,
+    "precision": 0.9817307692307692,
+    "coverage": 0.34724540901502504
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 128,
+    "precision": 0.0,
+    "coverage": 0.006838702783565742
+   }
+  },
+  {
+   "bar": 0.9,
+   "planted": {
+    "n": 2995,
+    "flagged": 1235,
+    "diagnosed": 901,
+    "precision": 0.9900110987791343,
+    "coverage": 0.3008347245409015
+   },
+   "clean": {
+    "n": 18717,
+    "flagged": 170,
+    "diagnosed": 112,
+    "precision": 0.0,
+    "coverage": 0.005983864935620024
+   }
+  }
+ ],
+ "target_met": true,
+ "by_lang": {
+  "en": {
+   "bar": 0.3,
+   "planted": {
+    "n": 495,
+    "flagged": 144,
+    "diagnosed": 144,
+    "precision": 0.9791666666666666,
+    "coverage": 0.2909090909090909
+   },
+   "clean": {
+    "n": 2193,
+    "flagged": 20,
+    "diagnosed": 20,
+    "precision": 0.0,
+    "coverage": 0.009119927040583675
+   }
+  },
+  "es": {
+   "bar": 0.3,
+   "planted": {
+    "n": 500,
+    "flagged": 254,
+    "diagnosed": 253,
+    "precision": 0.9525691699604744,
+    "coverage": 0.506
+   },
+   "clean": {
+    "n": 3431,
+    "flagged": 24,
+    "diagnosed": 23,
+    "precision": 0.0,
+    "coverage": 0.006703584960652871
+   }
+  },
+  "de": {
+   "bar": 0.3,
+   "planted": {
+    "n": 500,
+    "flagged": 227,
+    "diagnosed": 226,
+    "precision": 0.9203539823008849,
+    "coverage": 0.452
+   },
+   "clean": {
+    "n": 2810,
+    "flagged": 24,
+    "diagnosed": 24,
+    "precision": 0.0,
+    "coverage": 0.008540925266903915
+   }
+  },
+  "it": {
+   "bar": 0.3,
+   "planted": {
+    "n": 500,
+    "flagged": 222,
+    "diagnosed": 222,
+    "precision": 0.9054054054054054,
+    "coverage": 0.444
+   },
+   "clean": {
+    "n": 3626,
+    "flagged": 52,
+    "diagnosed": 52,
+    "precision": 0.0,
+    "coverage": 0.014340871483728626
+   }
+  },
+  "pt": {
+   "bar": 0.3,
+   "planted": {
+    "n": 500,
+    "flagged": 258,
+    "diagnosed": 258,
+    "precision": 0.9496124031007752,
+    "coverage": 0.516
+   },
+   "clean": {
+    "n": 3354,
+    "flagged": 30,
+    "diagnosed": 30,
+    "precision": 0.0,
+    "coverage": 0.008944543828264758
+   }
+  },
+  "ru": {
+   "bar": 0.3,
+   "planted": {
+    "n": 500,
+    "flagged": 130,
+    "diagnosed": 130,
+    "precision": 0.9615384615384616,
+    "coverage": 0.26
+   },
+   "clean": {
+    "n": 3303,
+    "flagged": 20,
+    "diagnosed": 20,
+    "precision": 0.0,
+    "coverage": 0.006055101422948834
+   }
+  }
+ }
+}

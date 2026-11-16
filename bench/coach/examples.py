@@ -15,13 +15,14 @@ from pronunciada.scorer import Scorer
 from pronunciada.tips import tips
 
 PLAN = {"en": ["phone_sub_far", "stress"], "zh": ["tone", "phone_sub_far"], "es": ["phone_sub_far", "phone_sub_near"]}
+N_CLIPS = 200
 
 
 def main():
     out = {}
     for lang, kinds in PLAN.items():
         sc = Scorer(lang, threads=2)
-        recs = fleurs_validation_records(lang)[:80]
+        recs = fleurs_validation_records(lang)[:N_CLIPS]
         by_row = {int(r["audio"].rsplit(":", 1)[1]): r for r in recs}
         path = recs[0]["audio"].split(":", 1)[1].rsplit(":", 1)[0]
         for row, wav in iter_parquet_audio(path, set(by_row)):
@@ -36,7 +37,9 @@ def main():
             res = sc.score(wav, cor.ref)
             items = res.coaching()
             dg = [i for i in items if i["heard"] is not None]
-            if len(dg) < (1 if lang == "zh" else 2):
+            need = (lambda its: any(i["kind"] == "tone" and i["heard"] for i in its)) if lang == "zh" else \
+                (lambda its: sum(i["heard"] is not None for i in its) >= 1 and len(its) <= 6)
+            if not need(items):
                 continue
             for i in items:
                 i.pop("gate")
