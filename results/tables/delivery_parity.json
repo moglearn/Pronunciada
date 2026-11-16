@@ -59,6 +59,7 @@
    "nan_mismatch": 0
   }
  },
+ "word_emb_word_max_abs": 0.0,
  "worst": [
   [
    "dec_ins_rate",

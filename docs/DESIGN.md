@@ -205,6 +205,11 @@ Sections 1–6 are the plan the code was built against. Measurements changed fou
   adopted by speaker-grouped CV on speechocean762 train. The acceptance heads (`len`, `str`) are
   the round-4 trees. Languages whose native medians dropped by > 0.3 keep the round-4 heads
   (config `sentence_model`).
+- **Word 0-10 score (round 6).** The reported word accuracy (`details()["word_accuracy"]`) adds a
+  ridge projection of the ZIPA stack-1 activations pooled over the word's frames
+  (`word_reg_r6.npz`, config `word_score_model`); the sentence level still reads the round-2 word
+  regression and word probabilities are unchanged. Outside encoders (Whisper tiny/base,
+  wav2vec 2.0, HuBERT) were tried for the sentence heads and not adopted (round 6).
 - An "explain-away" second pass (re-scoring neighbours of a badly wrong word) is implemented
   (`Scorer(..., explain_away=True)`) but off: it did not help on held-out data.
 

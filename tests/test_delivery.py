@@ -142,6 +142,7 @@ def test_sentence_model_per_language_config(tmp_path, tts):
     shutil.copytree(src, d)
     cfg = json.loads((d / "config.json").read_text())
     cfg["sentence_model"] = {"en": "sentence_r4"}
+    cfg.pop("word_score_model", None)
     (d / "config.json").write_text(json.dumps(cfg))
     r4 = pronunciada.Scorer("en", threads=2, calib_dir=str(d))
     assert r4.sentence_name == "sentence_r4" and not r4.delivery and not r4.am.embeddings
@@ -159,3 +160,51 @@ def test_sentence_model_per_language_config(tmp_path, tts):
 def test_groups_cover_all_names():
     names = list(itertools.chain.from_iterable(D.GROUPS.values()))
     assert names == D.ALL and len(set(names)) == len(names)
+
+
+@pytest.mark.model
+def test_word_score_model(tts):
+    """Round 6: the reported 0-10 word score reads word-pooled activations; the sentence level
+    keeps the round-2 word regression; word probabilities are unchanged."""
+    import pronunciada
+    from pronunciada import calibrate as C
+
+    sc = pronunciada.Scorer("en", threads=2)
+    if sc.word_score is None:
+        pytest.skip("no word_score_model configured for en")
+    text = "The quick brown fox jumps over the lazy dog"
+    wav = tts(text)
+    res = sc.score(wav, text)
+    c = res._pronunciada
+    assert set(c["word_pooled"]) >= set(sc.word_score_proj["layers"])
+    assert len(c["w_reg"]) == len(c["w_reg_r2"]) == len(res.words)
+    assert np.all((c["w_reg"] >= 0) & (c["w_reg"] <= 10))
+    assert np.array_equal(sc.details(res)["word_accuracy"], c["w_reg"])
+    r2 = C.load_level("word_reg").predict(X=np.column_stack(
+        [np.asarray(c["W"][k], dtype=np.float64) for k in C.load_level("word_reg").num]))["reg"]
+    assert np.allclose(r2, c["w_reg_r2"])
+    # spans: one per word, inside the utterance
+    assert len(c["word_spans"]) == len(res.words) and all(a < b for a, b in c["word_spans"])
+
+
+def test_word_frame_spans_and_pool():
+    class P:
+        def __init__(self, w):
+            self.word = w
+
+    class W:
+        def __init__(self, a, b):
+            self.phones = (a, b)
+
+    class R:
+        phones = [P(0), P(0), P(1)]
+        words = [W(0, 2), W(2, 3)]
+
+    class Ev:
+        slots = [type("S", (), {"start_frame": a, "end_frame": b})() for a, b in ((2, 4), (5, 7), (9, 9))]
+
+    sp = D.word_frame_spans(R(), Ev(), 20)
+    assert sp == [(2, 7), (8, 10)]
+    emb = np.arange(40, dtype=np.float32).reshape(20, 2)
+    p = D.pool_words(emb, sp)
+    assert p.shape == (2, 4) and np.allclose(p[0, :2], emb[2:7].mean(0)) and np.allclose(p[1, 2:], emb[8:10].std(0))

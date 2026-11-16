@@ -10,7 +10,9 @@ round-4 sentence model, so no projection is applied here (bench/calib/train_deli
 in-fold from the pooled vectors).
 
 Output: $PRONUNCIADA_CACHE/calib/delivery_<dataset>_<split>.npz with
-utt [N], names [K], D [N, K] float64, emb_<layer> [N, 2C] float32.
+utt [N], names [K], D [N, K] float64, emb_<layer> [N, 2C] float32; and (round 6)
+delivery_<dataset>_<split>_align.pkl: per utterance the speech segments and word frame spans of
+the alignment (ZIPA 20 ms frames) and the word-pooled stack-1 activations [n_words, 2C].
 """
 from __future__ import annotations
 
@@ -62,7 +64,14 @@ def _one(rec):
     except ValueError as e:
         return rec["id"], None, str(e)
     c = res._pronunciada  # noqa: SLF001
-    return rec["id"], (c["delivery"], c["pooled"]), None
+    from pronunciada import delivery as D
+
+    s = [x.start_frame for x in c["ev"].slots]
+    e = [x.end_frame for x in c["ev"].slots]
+    segs, _ = D.speech_segments(s, e)
+    al = {"segs": segs, "word_spans": c["word_spans"], "n_frames": int(c["ev"].n_frames),
+          "word_pooled": (c["word_pooled"] or {}).get("enc1"), "words": [w.text for w in c["ref"].words]}
+    return rec["id"], (c["delivery"], c["pooled"], al), None
 
 
 def extract(recs, workers=6, calib_dir=None):
@@ -71,14 +80,15 @@ def extract(recs, workers=6, calib_dir=None):
     from pronunciada import delivery as D
 
     calib_dir = calib_dir or r4_calib_dir()
-    utt, rows, emb, errs = [], [], {}, {}
+    utt, rows, emb, errs, align = [], [], {}, {}, {}
     t0 = time.time()
     with ProcessPoolExecutor(workers, initializer=_init, initargs=(calib_dir,)) as ex:
         for k, (uid, val, err) in enumerate(ex.map(_one, recs, chunksize=4)):
             if val is None:
                 errs[uid] = err
                 continue
-            d, pooled = val
+            d, pooled, al = val
+            align[uid] = al
             utt.append(uid)
             rows.append([d.get(c, np.nan) for c in D.ALL])
             for layer, v in (pooled or {}).items():
@@ -88,7 +98,7 @@ def extract(recs, workers=6, calib_dir=None):
     out = {"utt": np.array(utt), "names": np.array(D.ALL), "D": np.array(rows, dtype=np.float64)}
     out.update({f"emb_{k}": np.stack(v).astype(np.float32) for k, v in emb.items()})
     print(f"{len(utt)} utts in {time.time() - t0:.0f}s, {len(errs)} errors", flush=True)
-    return out, errs
+    return out, errs, align
 
 
 def main():
@@ -101,8 +111,11 @@ def main():
     ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args()
     recs = [r for r in records(a.dataset) if r["split"] == a.split]
-    out, errs = extract(recs, a.workers)
+    import pickle
+
+    out, errs, align = extract(recs, a.workers)
     np.savez(calib_cache() / f"delivery_{a.dataset}_{a.split}.npz", **out)
+    (calib_cache() / f"delivery_{a.dataset}_{a.split}_align.pkl").write_bytes(pickle.dumps(align))
     if errs:
         print("errors:", list(errs.items())[:5])
 

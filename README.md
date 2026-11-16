@@ -6,7 +6,7 @@ was meant to say; it returns a 0–1 probability that each **sound**, **word** a
 words were skipped. One `strictness` knob moves every probability between "understandable" and
 "native-like".
 
-It runs locally on a laptop CPU: about 53 ms for a 3.5 s recording, 0.3–0.5 s for a 10–14 s one.
+It runs locally on a laptop CPU: about 50 ms for a 3.5 s recording, 0.3–0.5 s for a 10–14 s one.
 No audio leaves the device.
 
 Languages: English, Mandarin Chinese (Simplified and Traditional), Japanese, Spanish (Latin
@@ -61,13 +61,13 @@ Correlation with the human scores, higher is better.
 | level | Pronunciada | Azure | |
 |---|---|---|---|
 | individual sounds | **0.660** | 0.538 | ahead (p = 0.002) |
-| words | 0.585 | 0.589 | tie |
+| words | **0.609** | 0.589 | ahead, not significant (p = 0.33) |
 | sentence accuracy | **0.761** | 0.673 | ahead (p = 0.002) |
 | sentence fluency | **0.792** | 0.708 | ahead, borderline (p = 0.05) |
 | sentence intonation ("prosodic") | 0.782 | **0.827** | behind, not significant (p = 0.16) |
 | sentence overall | 0.773 | **0.796** | behind, not significant (p = 0.41) |
 
-The sentence scores use delivery inputs added in round 5 ([results/round5.md](results/round5.md)).
+The sentence scores use delivery inputs added in round 5 ([results/round5.md](results/round5.md)); the word score uses word-pooled model activations since round 6 ([results/round6.md](results/round6.md)).
 
 ### English: finding real learner mistakes (area under the ROC curve, higher is better)
 

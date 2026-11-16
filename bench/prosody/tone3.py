@@ -38,13 +38,49 @@ from bench.prosody.common import (MODELS_DIR, agree_map, jitter_windows, load_pr
 from pronunciada.prosody.features import (N_IN, N_LOWMEL, N_REG, context_input, frame_features,  # noqa: E402
                                           register_features, syllable_windows)
 
-CFG = {"reg": False, "lowmel": False, "spec_dropout": 0.0}
+CFG = {"reg": False, "lowmel": False, "spec_dropout": 0.0, "zemb": False, "zemb_dropout": 0.0}
 _LM = None
+_ZE = None
+N_ZE = 32          # PCA dims of the pooled ZIPA enc1+enc3 syllable vector (+ 1 availability flag)
 
 
 def n_in(cfg=None):
     c = cfg or CFG
-    return N_IN + (N_REG if c["reg"] else 0) + (N_LOWMEL if c["lowmel"] else 0)
+    return (N_IN + (N_REG if c["reg"] else 0) + (N_LOWMEL if c["lowmel"] else 0)
+            + (N_ZE + 1 if c.get("zemb") else 0))
+
+
+def zemb_pca():
+    """Fixed PCA (mean, [768, N_ZE] / sqrt(eigenvalue)) fitted on FLEURS zh TRAIN (rest) syllables."""
+    from bench.prosody.zipa_emb_cache import EMB
+
+    p = EMB / "pca.npz"
+    if not p.exists():
+        d = np.load(EMB / "fleurs_zh_rest-zh-train.npz")
+        X = np.concatenate([d[k].astype(np.float32) for k in d.files])
+        mu = X.mean(0)
+        U, S, Vt = np.linalg.svd(X - mu, full_matrices=False)
+        W = Vt[:N_ZE].T / (S[:N_ZE] / np.sqrt(len(X)))
+        np.savez(p, mu=mu, W=W.astype(np.float32))
+    d = np.load(p)
+    return d["mu"], d["W"]
+
+
+def _zemb_frames(u, wins, T0):
+    global _ZE
+    if _ZE is None:
+        from bench.prosody.zipa_emb_cache import ZipaEmb
+
+        _ZE = (ZipaEmb(), *zemb_pca())
+    src, mu, W = _ZE
+    E, flag = src(u)
+    out = np.zeros((T0, N_ZE + 1), np.float32)
+    if flag:
+        Z = np.clip((E - mu) @ W, -5, 5)
+        for si, w in enumerate(wins):
+            out[w.start:w.end, :N_ZE] = Z[si]
+            out[w.start:w.end, N_ZE] = 1.0
+    return out
 
 
 def _lowmel(u):
@@ -85,6 +121,11 @@ def utt_example(u, rng=None, aug=False, tp_p=0.0, tp_k=(1, 3), agree=None, train
         tr, labs, tps = tone2.transplant(tr, wins, labs, accs, r, k)
         for i, _, _ in tps:
             mask[i] = True
+    ze = None
+    if CFG.get("zemb"):
+        ze = _zemb_frames(u, wins, T0)
+        if aug and rng.random() < CFG.get("zemb_dropout", 0.0):
+            ze = np.zeros_like(ze)
     lm = None
     if CFG["lowmel"]:
         lm = _lowmel(u)
@@ -97,8 +138,11 @@ def utt_example(u, rng=None, aug=False, tp_p=0.0, tp_k=(1, 3), agree=None, train
         tr = stretch_track(tr, r)
         T1 = len(tr.f0)
         wins = scale_windows(wins, T1 / T0, T1)
+        ix = np.clip(np.round(np.linspace(0, T0 - 1, T1)).astype(int), 0, T0 - 1)
         if lm is not None:
-            lm = lm[np.clip(np.round(np.linspace(0, T0 - 1, T1)).astype(int), 0, T0 - 1)]
+            lm = lm[ix]
+        if ze is not None:
+            ze = ze[ix]
     feats = frame_features(tr)
     if aug:
         s = float(rng.uniform(0.7, 1.3))
@@ -112,6 +156,8 @@ def utt_example(u, rng=None, aug=False, tp_p=0.0, tp_k=(1, 3), agree=None, train
     elif jitter:
         wins = jitter_windows(wins, rng, jitter, len(feats))
     feats = extend_feats(feats, CFG, lm)
+    if ze is not None:
+        feats = np.concatenate([feats, ze], 1)
     X = np.stack([context_input(feats, wins, i) for i in range(len(wins))])
     return X, labs, mask, tps
 
@@ -134,6 +180,7 @@ _W = {}
 
 def _init(which, tp_p, cfg):
     CFG.update(cfg)
+    _W["tp_k"] = tuple(cfg.get("tp_k", (1, 3)))
     _W["utts"] = load_data(which)
     _W["agree"] = agree_map(_W["utts"])
     _W["tp"] = tp_p
@@ -147,7 +194,8 @@ def _gen(args):
         u = _W["utts"][k]
         if not u["ref"].syllables or len(u["ref"].syllables) > tone2.MAX_SYL:
             continue
-        X, y, m, _ = utt_example(u, rng, aug=True, tp_p=_W["tp"], agree=_W["agree"], train_only=True)
+        X, y, m, _ = utt_example(u, rng, aug=True, tp_p=_W["tp"], tp_k=_W["tp_k"], agree=_W["agree"],
+                                 train_only=True)
         if m.any():
             out.append((X.astype(np.float16), y, m))
     return out
@@ -168,8 +216,9 @@ def load3(name):
 
     ck = torch.load(MODELS_DIR / f"{name}.pt", weights_only=False)
     if "cfg" not in ck:
-        CFG.update(reg=False, lowmel=False)
+        CFG.update(reg=False, lowmel=False, zemb=False)
         return _load2_v2(name)
+    CFG.update(zemb=False, zemb_dropout=0.0)
     CFG.update(ck["cfg"])
     net = make_net(ck["cfg"])
     net.load_state_dict(ck["state"])
@@ -184,14 +233,23 @@ def train(a):
     import torch
 
     torch.set_num_threads(1)
-    cfg = {"reg": a.reg, "lowmel": a.lowmel, "spec_dropout": a.spec_dropout, "seq_hid": a.seq_hid}
+    cfg = {"reg": a.reg, "lowmel": a.lowmel, "spec_dropout": a.spec_dropout, "seq_hid": a.seq_hid,
+           "zemb": a.zemb, "zemb_dropout": a.zemb_dropout,
+           "tp_k": [int(x) for x in a.tp_k.split("-")]}
     CFG.update(cfg)
     dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     net = make_net(cfg)
     if a.init:                    # fine-tune from a trained v3 checkpoint (same inputs)
         ck0 = torch.load(MODELS_DIR / f"{a.init}.pt", weights_only=False)
         assert ck0["cfg"]["reg"] == cfg["reg"] and ck0["cfg"]["lowmel"] == cfg["lowmel"]
-        net.load_state_dict(ck0["state"])
+        st = dict(ck0["state"])
+        w0 = st["enc.conv1.weight"]                    # warm start with extra input channels
+        w = net.state_dict()["enc.conv1.weight"].clone()
+        if w0.shape != w.shape:
+            w.zero_()
+            w[:, :w0.shape[1]] = w0
+            st["enc.conv1.weight"] = w
+        net.load_state_dict(st)
     net = net.to(dev)
     dev_u = load_prepped("fleurs_val", "zh", "dev")
     dev_ex = [utt_example(u)[:3] for u in dev_u if u["ref"].syllables]
@@ -284,6 +342,7 @@ if __name__ == "__main__":
         ap.add_argument("--spec-dropout", type=float, default=0.3)
         ap.add_argument("--fleurs-weight", type=int, default=3)
         ap.add_argument("--transplant", type=float, default=0.4)
+        ap.add_argument("--tp-k", default="1-3", help="transplanted syllables per utterance, min-max")
         ap.add_argument("--seq-hid", type=int, default=64)
         ap.add_argument("--steps", type=int, default=14000)
         ap.add_argument("--bs", type=int, default=256)
@@ -292,6 +351,8 @@ if __name__ == "__main__":
         ap.add_argument("--workers", type=int, default=2)
         ap.add_argument("--seed", type=int, default=0)
         ap.add_argument("--init", default=None, help="checkpoint to fine-tune from")
+        ap.add_argument("--zemb", action="store_true", help="B: pooled ZIPA enc1+enc3 per syllable")
+        ap.add_argument("--zemb-dropout", type=float, default=0.3)
         train(ap.parse_args())
     else:
         # selection sets only: FLEURS validation (inside evaluate) + aishell3 test + zhtw.

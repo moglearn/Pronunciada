@@ -349,3 +349,35 @@ def project(pooled: dict | None, proj: dict | None) -> dict:
     x = np.concatenate([pooled[k] for k in proj["layers"]]).astype(np.float64)
     z = ((x - proj["mu"]) / proj["sd"]) @ proj["W"] + proj["b"]
     return {k: float(v) for k, v in zip(names, z)}
+
+
+def word_frame_spans(ref, ev, n_frames: int) -> list[tuple[int, int]]:
+    """Per reference word, the ZIPA-frame span [a, b) from its first sound's start to its last
+    sound's end; a word whose sounds all have empty spans gets the 2 frames around its first
+    sound's position (round 6, word-level pooling)."""
+    s, e = _slot_spans(ev)
+    out = []
+    T = max(int(n_frames), 1)
+    for w in ref.words:
+        a, b = w.phones
+        ok = e[a:b] > s[a:b]
+        if ok.any():
+            lo, hi = int(s[a:b][ok].min()), int(e[a:b][ok].max())
+        else:
+            c = int(s[a]) if b > a else 0
+            lo, hi = c - 1, c + 1
+        lo = min(max(lo, 0), T - 1)
+        hi = min(max(hi, lo + 1), T)
+        out.append((lo, hi))
+    return out
+
+
+def pool_words(emb: np.ndarray, spans) -> np.ndarray:
+    """[T, C] activations -> [n_words, 2C] float32 mean ++ std over each word's frame span."""
+    emb = np.asarray(emb, dtype=np.float32)
+    out = np.empty((len(spans), 2 * emb.shape[1]), dtype=np.float32)
+    for k, (a, b) in enumerate(spans):
+        x = emb[a:b]
+        out[k, :emb.shape[1]] = x.mean(0)
+        out[k, emb.shape[1]:] = x.std(0)
+    return out

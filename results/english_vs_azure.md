@@ -15,7 +15,7 @@ Phone level is scored on THEIR 47369 canonical phones: 47041 are aligned to one 
 | phone | ours C (+duration/rate) | 0.689 [0.616, 0.741] | 0.463 [0.431, 0.496] | +0.151 [+0.127, +0.172], p=0.002 |
 | phone | ours U (shipped universal) | 0.628 [0.544, 0.684] | 0.431 [0.397, 0.466] | +0.089 [+0.069, +0.107], p=0.002 |
 | phone | Azure | 0.538 [0.458, 0.600] | 0.339 [0.288, 0.388] | – |
-| word accuracy | **ours — shipped** | 0.585 [0.505, 0.644] | 0.411 [0.361, 0.458] | -0.004 [-0.043, +0.033], p=0.817 |
+| word accuracy | **ours — shipped** | 0.609 [0.533, 0.663] | 0.415 [0.363, 0.463] | +0.020 [-0.022, +0.059], p=0.326 |
 | word accuracy | Azure | 0.589 [0.515, 0.647] | 0.417 [0.363, 0.467] | – |
 | sentence accuracy | **ours — shipped** | 0.761 [0.703, 0.804] | 0.732 [0.675, 0.775] | +0.088 [+0.052, +0.123], p=0.002 |
 | sentence accuracy | Azure | 0.673 [0.613, 0.720] | 0.652 [0.586, 0.706] | – |
@@ -127,12 +127,12 @@ First 100 speechocean762 test clips (mean 3.53 s of audio), one process, end-to-
 
 | precision | threads | median ms | p95 ms | real-time factor | load | g2p | fbank | model | adapter | align | features | calibrate |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| fp32 | 4 | 53.0 | 72.1 | 0.0155 | 1.3 | 0.1 | 3.2 | 36.5 | 0.1 | 3.1 | 0.8 | 2.1 |
-| fp32 | 1 | 101.1 | 153.9 | 0.0301 | 0.8 | 0.1 | 3.1 | 85.1 | 0.1 | 2.7 | 0.7 | 1.9 |
-| int8 | 4 | 39.0 | 54.7 | 0.0114 | 0.8 | 0.1 | 3.1 | 23.7 | 0.1 | 2.8 | 0.7 | 1.9 |
-| int8 | 1 | 67.3 | 97.2 | 0.0195 | 0.7 | 0.1 | 3.1 | 51.0 | 0.1 | 2.8 | 0.7 | 1.9 |
+| fp32 | 4 | 49.6 | 68.0 | 0.0145 | 1.2 | 0.1 | 3.0 | 33.5 | 0.1 | 2.9 | 0.7 | 2.1 |
+| fp32 | 1 | 100.4 | 156.2 | 0.0298 | 0.6 | 0.1 | 3.0 | 85.3 | 0.1 | 2.8 | 0.7 | 2.0 |
+| int8 | 4 | 40.2 | 54.5 | 0.0116 | 0.7 | 0.1 | 3.1 | 23.6 | 0.1 | 2.9 | 0.7 | 2.1 |
+| int8 | 1 | 67.8 | 100.3 | 0.0199 | 0.7 | 0.1 | 3.1 | 52.0 | 0.1 | 2.9 | 0.8 | 2.2 |
 
-Calibrators alone (sound, word, sentence; English = shipped B + universal U): 5.61 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 1.6, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.3, 'sentence.npz': 151.3, 'sentence_r4.npz': 128.1, 'sound_B.npz': 314.4, 'sound_U.npz': 284.3, 'word.npz': 114.7, 'word_reg.npz': 21.4}.
+Calibrators alone (sound, word, sentence; English = shipped B + universal U): 6.68 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 2.1, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.3, 'sentence.npz': 151.3, 'sentence_r4.npz': 128.1, 'sound_B.npz': 314.4, 'sound_U.npz': 284.3, 'word.npz': 114.7, 'word_reg.npz': 21.4, 'word_reg_r6.npz': 31.9}.
 
 ## 5. Does int8 change the benchmark? (speechocean762 TEST, same protocol)
 
@@ -140,7 +140,7 @@ Calibrators alone (sound, word, sentence; English = shipped B + universal U): 5.
 |---|---|---|
 | phone (shipped B) | 0.660 | 0.659 |
 | phone (U) | 0.628 | 0.628 |
-| word accuracy | 0.585 | 0.593 |
+| word accuracy | 0.609 | 0.611 |
 | sentence accuracy | 0.761 | 0.760 |
 | sentence fluency | 0.792 | 0.792 |
 | sentence prosodic | 0.782 | 0.782 |
@@ -154,7 +154,7 @@ Columns: round 1, round 2, round 3 (= current: round-2 models + re-fitted word c
 
 | level | round 1 ours | round 2 ours | round 3 ours | Azure | round 3 Δ vs Azure, p |
 |---|---|---|---|---|---|
-| word accuracy | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.589 [0.515, 0.647] | -0.004 [-0.043, +0.033], p=0.817 |
+| word accuracy | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.609 [0.533, 0.663] | 0.589 [0.515, 0.647] | +0.020 [-0.022, +0.059], p=0.326 |
 | sentence accuracy | 0.749 [0.685, 0.794] | 0.749 [0.686, 0.795] | 0.761 [0.703, 0.804] | 0.673 [0.613, 0.720] | +0.088 [+0.052, +0.123], p=0.002 |
 | sentence fluency | 0.778 [0.690, 0.839] | 0.783 [0.702, 0.840] | 0.792 [0.717, 0.846] | 0.708 [0.628, 0.760] | +0.084 [+0.000, +0.175], p=0.0519 |
 | sentence prosodic | 0.767 [0.683, 0.828] | 0.773 [0.696, 0.830] | 0.782 [0.709, 0.836] | 0.827 [0.788, 0.854] | -0.045 [-0.115, +0.007], p=0.16 |

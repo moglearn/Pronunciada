@@ -127,6 +127,13 @@ def cached_collect(lang, n):
     # the model choice / tone leniency can be switched by environment variables: part of the key
     env = "".join(f"_{os.environ[v]}" for v in ("PRONUNCIADA_TONE_MODEL", "PRONUNCIADA_TONE_LENIENCY")
                   if os.environ.get(v))
+    if lang == "zh":                           # the runtime's default tone leniency rules
+        from pronunciada.prosody.tone_leniency import DEFAULT
+
+        if DEFAULT and not os.environ.get("PRONUNCIADA_TONE_LENIENCY"):
+            env += "_len-" + "-".join(DEFAULT)
+    if env:
+        env = "_" + hashlib.sha256(env.encode()).hexdigest()[:8]
     p = calib_cache() / f"prosody_rows_{lang}_{n}_{h}{env}_r5.pkl"
     if p.exists():
         return pickle.loads(p.read_bytes())

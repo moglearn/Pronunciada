@@ -1,0 +1,1362 @@
+{
+ "source": {
+  "dataset": "Common Voice Corpus 22.0",
+  "license": "CC0-1.0",
+  "mirror": "https://huggingface.co/datasets/fsicoli/common_voice_22_0",
+  "revision": "ae911de250fe9375d08e2daa2105b671d659d446",
+  "note": "mirror card states license cc0-1.0; TSVs from transcript/<locale>/, audio from audio/<locale>/<split>/ tar shards"
+ },
+ "rules": {
+  "rejected": "invalidated, down_votes >= 2 and up_votes <= down_votes - 2",
+  "accepted": "dev/test (validated), up_votes >= 2 and down_votes == 0",
+  "duration": "1.0 s <= clip_durations <= 15.0 s",
+  "text": "non-Latin-script locales (zh-CN, zh-TW, ja, ru, ko): no digits / Latin letters",
+  "silence": "near-silent if < 0.3 s of 25 ms frames above -45.0 dBFS",
+  "per_speaker": 2,
+  "target_per_side_per_half": 200,
+  "seed": 20261116,
+  "strata": "5 character-length x 4 duration quantile bins of the positives"
+ },
+ "locales": {
+  "zh-TW": {
+   "counts": {
+    "invalidated_rows": 4880,
+    "invalidated_rows_in_shards_read": 4880,
+    "accepted_rows": 10174,
+    "after_votes": {
+     "rejected": 3061,
+     "accepted": 9218
+    },
+    "votes": {
+     "votes_not_clear_reject": 1819,
+     "votes_not_clear_accept": 956
+    },
+    "rules_rejected": {
+     "too_short": 7,
+     "digits_in_prompt": 50,
+     "too_long": 2
+    },
+    "rules_accepted": {
+     "latin_in_prompt": 10
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 0,
+    "nonnative_clips_capped": 0,
+    "nonnative_speakers": 0,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 9208
+    }
+   },
+   "shards_read": [
+    "zh-TW/dev_0",
+    "zh-TW/invalidated_0",
+    "zh-TW/test_0"
+   ],
+   "streamed_gb": 0.41,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 354,
+       "neg": 1155,
+       "pos_spk": 226,
+       "neg_spk": 628
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 951,
+       "sentence_on_both_sides": 275,
+       "over_speaker_cap": 3159
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 23
+      },
+      "edges": [
+       [
+        6.0,
+        8.0,
+        9.0,
+        11.0
+       ],
+       [
+        2.79,
+        3.4859999999999998,
+        4.296
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 340,
+       "neg": 1224,
+       "pos_spk": 224,
+       "neg_spk": 669
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1081,
+       "sentence_on_both_sides": 300,
+       "over_speaker_cap": 3371
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 32
+      },
+      "edges": [
+       [
+        6.0,
+        8.0,
+        9.0,
+        11.0
+       ],
+       [
+        2.7,
+        3.426,
+        4.356
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "en": {
+   "counts": {
+    "invalidated_rows": 306854,
+    "invalidated_rows_in_shards_read": 40000,
+    "accepted_rows": 32802,
+    "after_votes": {
+     "rejected": 27533,
+     "accepted": 24674
+    },
+    "votes": {
+     "votes_not_clear_reject": 12467,
+     "votes_not_clear_accept": 8128
+    },
+    "rules_rejected": {
+     "too_short": 1304,
+     "too_long": 503,
+     "empty_prompt": 57
+    },
+    "rules_accepted": {
+     "too_long": 27,
+     "too_short": 2
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 254,
+    "nonnative_clips_capped": 227,
+    "nonnative_speakers": 156,
+    "native_clips": 2986,
+    "native_speakers": 1874,
+    "labels": {
+     "unknown": 21405,
+     "native": 2986,
+     "nonnative": 254
+    }
+   },
+   "shards_read": [
+    "en/dev_0",
+    "en/invalidated_0",
+    "en/test_0"
+   ],
+   "streamed_gb": 3.28,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 5331,
+       "neg": 10481,
+       "pos_spk": 3492,
+       "neg_spk": 7369
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 573,
+       "sentence_on_both_sides": 2021,
+       "over_speaker_cap": 7492
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 58
+      },
+      "edges": [
+       [
+        24.0,
+        33.0,
+        43.0,
+        56.0
+       ],
+       [
+        3.456,
+        4.776,
+        6.288
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 198,
+      "n_neg": 198,
+      "quota": 200,
+      "pool": {
+       "pos": 5330,
+       "neg": 10509,
+       "pos_spk": 3480,
+       "neg_spk": 7425
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 568,
+       "sentence_on_both_sides": 1623,
+       "over_speaker_cap": 6386
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 72
+      },
+      "edges": [
+       [
+        25.0,
+        33.0,
+        43.0,
+        56.0
+       ],
+       [
+        3.384,
+        4.752,
+        6.384
+       ]
+      ]
+     }
+    },
+    "B": {
+     "test": {
+      "n_pos": 130,
+      "n_neg": 130,
+      "quota": 130,
+      "pool": {
+       "pos": 130,
+       "neg": 1311,
+       "pos_spk": 85,
+       "neg_spk": 903
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 0,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 149
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 2
+      },
+      "edges": [
+       [
+        34.0,
+        46.6,
+        54.0,
+        62.0
+       ],
+       [
+        4.788,
+        5.76,
+        6.75
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 96,
+      "n_neg": 96,
+      "quota": 97,
+      "pool": {
+       "pos": 97,
+       "neg": 1407,
+       "pos_spk": 71,
+       "neg_spk": 971
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 0,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 146
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 3
+      },
+      "edges": [
+       [
+        40.2,
+        48.400000000000006,
+        54.0,
+        62.60000000000002
+       ],
+       [
+        5.148,
+        6.048,
+        7.092
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "zh-CN": {
+   "counts": {
+    "invalidated_rows": 59020,
+    "invalidated_rows_in_shards_read": 40000,
+    "accepted_rows": 21270,
+    "after_votes": {
+     "rejected": 29931,
+     "accepted": 16665
+    },
+    "votes": {
+     "votes_not_clear_reject": 10069,
+     "votes_not_clear_accept": 4605
+    },
+    "rules_rejected": {
+     "too_long": 33,
+     "too_short": 42,
+     "digits_in_prompt": 12,
+     "latin_in_prompt": 2
+    },
+    "rules_accepted": {
+     "latin_in_prompt": 11
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 1,
+    "nonnative_clips_capped": 1,
+    "nonnative_speakers": 1,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 16653,
+     "nonnative": 1
+    }
+   },
+   "shards_read": [
+    "zh-CN/dev_0",
+    "zh-CN/invalidated_0",
+    "zh-CN/test_0"
+   ],
+   "streamed_gb": 1.94,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 193,
+      "n_neg": 193,
+      "quota": 200,
+      "pool": {
+       "pos": 1359,
+       "neg": 2723,
+       "pos_spk": 853,
+       "neg_spk": 1481
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 4032,
+       "sentence_on_both_sides": 1073,
+       "over_speaker_cap": 13976
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 65
+      },
+      "edges": [
+       [
+        1.0,
+        11.0,
+        17.0,
+        22.0
+       ],
+       [
+        2.88,
+        4.8,
+        7.02
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 190,
+      "n_neg": 190,
+      "quota": 200,
+      "pool": {
+       "pos": 1363,
+       "neg": 2514,
+       "pos_spk": 878,
+       "neg_spk": 1380
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 2931,
+       "sentence_on_both_sides": 1256,
+       "over_speaker_cap": 15269
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 59
+      },
+      "edges": [
+       [
+        1.0,
+        11.0,
+        16.0,
+        22.0
+       ],
+       [
+        2.904,
+        4.896,
+        7.056
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "ja": {
+   "counts": {
+    "invalidated_rows": 31567,
+    "invalidated_rows_in_shards_read": 31567,
+    "accepted_rows": 16008,
+    "after_votes": {
+     "rejected": 23630,
+     "accepted": 12636
+    },
+    "votes": {
+     "votes_not_clear_reject": 7937,
+     "votes_not_clear_accept": 3372
+    },
+    "rules_rejected": {
+     "digits_in_prompt": 3022,
+     "too_long": 173,
+     "too_short": 100,
+     "latin_in_prompt": 418,
+     "empty_prompt": 18
+    },
+    "rules_accepted": {
+     "latin_in_prompt": 185,
+     "too_long": 3
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 10,
+    "nonnative_clips_capped": 5,
+    "nonnative_speakers": 3,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 12438,
+     "nonnative": 10
+    }
+   },
+   "shards_read": [
+    "ja/dev_0",
+    "ja/invalidated_0",
+    "ja/test_0"
+   ],
+   "streamed_gb": 1.39,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 195,
+      "n_neg": 195,
+      "quota": 200,
+      "pool": {
+       "pos": 1813,
+       "neg": 1937,
+       "pos_spk": 1072,
+       "neg_spk": 1070
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 3629,
+       "sentence_on_both_sides": 1073,
+       "over_speaker_cap": 7449
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 53
+      },
+      "edges": [
+       [
+        9.0,
+        18.0,
+        29.0,
+        48.0
+       ],
+       [
+        2.88,
+        4.428,
+        7.02
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 194,
+      "n_neg": 194,
+      "quota": 200,
+      "pool": {
+       "pos": 1904,
+       "neg": 1953,
+       "pos_spk": 1123,
+       "neg_spk": 1094
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 4491,
+       "sentence_on_both_sides": 967,
+       "over_speaker_cap": 7131
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 52
+      },
+      "edges": [
+       [
+        9.0,
+        18.0,
+        28.0,
+        48.40000000000009
+       ],
+       [
+        2.88,
+        4.176,
+        6.768
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "es": {
+   "counts": {
+    "invalidated_rows": 94323,
+    "invalidated_rows_in_shards_read": 40000,
+    "accepted_rows": 31786,
+    "after_votes": {
+     "rejected": 22948,
+     "accepted": 25717
+    },
+    "votes": {
+     "votes_not_clear_reject": 17052,
+     "votes_not_clear_accept": 6069
+    },
+    "rules_rejected": {
+     "too_long": 37,
+     "too_short": 7
+    },
+    "rules_accepted": {},
+    "region": {
+     "rule": "only latam-labelled speakers",
+     "removed_rejected": 20075,
+     "removed_accepted": 22116
+    }
+   },
+   "region": "only speakers whose accent label is latam",
+   "testB_eligibility": {
+    "nonnative_clips": 0,
+    "nonnative_clips_capped": 0,
+    "nonnative_speakers": 0,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 3601
+    }
+   },
+   "shards_read": [
+    "es/dev_0",
+    "es/invalidated_0",
+    "es/test_0"
+   ],
+   "streamed_gb": 3.2,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 198,
+      "n_neg": 198,
+      "quota": 200,
+      "pool": {
+       "pos": 543,
+       "neg": 1120,
+       "pos_spk": 357,
+       "neg_spk": 654
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 184,
+       "sentence_on_both_sides": 1,
+       "over_speaker_cap": 1309
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 17
+      },
+      "edges": [
+       [
+        12.800000000000011,
+        35.80000000000001,
+        51.0,
+        63.0
+       ],
+       [
+        3.864,
+        5.376,
+        6.624
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 199,
+      "n_neg": 199,
+      "quota": 200,
+      "pool": {
+       "pos": 544,
+       "neg": 1031,
+       "pos_spk": 346,
+       "neg_spk": 609
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 175,
+       "sentence_on_both_sides": 2,
+       "over_speaker_cap": 1521
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 13
+      },
+      "edges": [
+       [
+        7.0,
+        39.0,
+        52.0,
+        64.0
+       ],
+       [
+        3.762,
+        5.460000000000001,
+        7.008
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "fr": {
+   "counts": {
+    "invalidated_rows": 67073,
+    "invalidated_rows_in_shards_read": 40000,
+    "accepted_rows": 32372,
+    "after_votes": {
+     "rejected": 23573,
+     "accepted": 27306
+    },
+    "votes": {
+     "votes_not_clear_reject": 16427,
+     "votes_not_clear_accept": 5066
+    },
+    "rules_rejected": {
+     "too_short": 41,
+     "empty_prompt": 21,
+     "too_long": 15
+    },
+    "rules_accepted": {}
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 77,
+    "nonnative_clips_capped": 56,
+    "nonnative_speakers": 32,
+    "native_clips": 5324,
+    "native_speakers": 1479,
+    "labels": {
+     "native": 5324,
+     "unknown": 21905,
+     "nonnative": 77
+    }
+   },
+   "shards_read": [
+    "fr/dev_0",
+    "fr/invalidated_0",
+    "fr/test_0"
+   ],
+   "streamed_gb": 3.17,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 198,
+      "n_neg": 198,
+      "quota": 200,
+      "pool": {
+       "pos": 3423,
+       "neg": 7108,
+       "pos_spk": 2224,
+       "neg_spk": 3754
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1524,
+       "sentence_on_both_sides": 193,
+       "over_speaker_cap": 11883
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 49
+      },
+      "edges": [
+       [
+        24.0,
+        41.0,
+        53.0,
+        65.0
+       ],
+       [
+        3.792,
+        5.256,
+        6.708
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 3287,
+       "neg": 6958,
+       "pos_spk": 2130,
+       "neg_spk": 3679
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1427,
+       "sentence_on_both_sides": 201,
+       "over_speaker_cap": 14798
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 40
+      },
+      "edges": [
+       [
+        24.0,
+        40.0,
+        53.0,
+        64.0
+       ],
+       [
+        3.744,
+        5.256,
+        6.744
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "de": {
+   "counts": {
+    "invalidated_rows": 56237,
+    "invalidated_rows_in_shards_read": 40000,
+    "accepted_rows": 32394,
+    "after_votes": {
+     "rejected": 25609,
+     "accepted": 28154
+    },
+    "votes": {
+     "votes_not_clear_reject": 14391,
+     "votes_not_clear_accept": 4240
+    },
+    "rules_rejected": {
+     "too_long": 46,
+     "too_short": 80,
+     "empty_prompt": 15
+    },
+    "rules_accepted": {
+     "too_long": 1
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 206,
+    "nonnative_clips_capped": 122,
+    "nonnative_speakers": 68,
+    "native_clips": 5142,
+    "native_speakers": 1410,
+    "labels": {
+     "unknown": 22805,
+     "native": 5142,
+     "nonnative": 206
+    }
+   },
+   "shards_read": [
+    "de/dev_0",
+    "de/invalidated_0",
+    "de/test_0"
+   ],
+   "streamed_gb": 3.15,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 198,
+      "n_neg": 198,
+      "quota": 200,
+      "pool": {
+       "pos": 3861,
+       "neg": 6886,
+       "pos_spk": 2531,
+       "neg_spk": 3681
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1689,
+       "sentence_on_both_sides": 590,
+       "over_speaker_cap": 13848
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 49
+      },
+      "edges": [
+       [
+        33.0,
+        48.0,
+        60.0,
+        73.0
+       ],
+       [
+        3.984,
+        5.448,
+        7.02
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 3810,
+       "neg": 6855,
+       "pos_spk": 2512,
+       "neg_spk": 3661
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1851,
+       "sentence_on_both_sides": 700,
+       "over_speaker_cap": 13531
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 41
+      },
+      "edges": [
+       [
+        34.0,
+        48.0,
+        60.0,
+        73.0
+       ],
+       [
+        4.08,
+        5.544,
+        7.056
+       ]
+      ]
+     }
+    },
+    "B": {
+     "test": {
+      "n_pos": 51,
+      "n_neg": 51,
+      "quota": 51,
+      "pool": {
+       "pos": 51,
+       "neg": 1266,
+       "pos_spk": 28,
+       "neg_spk": 667
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 0,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 1178
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 1
+      },
+      "edges": [
+       [
+        34.0,
+        47.0,
+        56.0,
+        69.0
+       ],
+       [
+        4.296,
+        6.576,
+        7.71
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 71,
+      "n_neg": 71,
+      "quota": 71,
+      "pool": {
+       "pos": 71,
+       "neg": 1400,
+       "pos_spk": 40,
+       "neg_spk": 743
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 0,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 1382
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 2
+      },
+      "edges": [
+       [
+        36.0,
+        43.0,
+        60.00000000000001,
+        74.0
+       ],
+       [
+        4.536,
+        5.76,
+        6.912
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "it": {
+   "counts": {
+    "invalidated_rows": 20632,
+    "invalidated_rows_in_shards_read": 20632,
+    "accepted_rows": 30356,
+    "after_votes": {
+     "rejected": 13692,
+     "accepted": 25392
+    },
+    "votes": {
+     "votes_not_clear_reject": 6940,
+     "votes_not_clear_accept": 4964
+    },
+    "rules_rejected": {
+     "too_short": 29,
+     "empty_prompt": 3,
+     "too_long": 6
+    },
+    "rules_accepted": {
+     "too_long": 1
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 2,
+    "nonnative_clips_capped": 2,
+    "nonnative_speakers": 1,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 25389,
+     "nonnative": 2
+    }
+   },
+   "shards_read": [
+    "it/dev_0",
+    "it/invalidated_0",
+    "it/test_0"
+   ],
+   "streamed_gb": 2.33,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 199,
+      "n_neg": 199,
+      "quota": 200,
+      "pool": {
+       "pos": 1588,
+       "neg": 4481,
+       "pos_spk": 988,
+       "neg_spk": 2328
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 2334,
+       "sentence_on_both_sides": 75,
+       "over_speaker_cap": 12229
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 54
+      },
+      "edges": [
+       [
+        36.0,
+        49.0,
+        60.0,
+        71.0
+       ],
+       [
+        4.704,
+        6.12,
+        7.536
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 1495,
+       "neg": 4445,
+       "pos_spk": 957,
+       "neg_spk": 2309
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 2274,
+       "sentence_on_both_sides": 73,
+       "over_speaker_cap": 10051
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 34
+      },
+      "edges": [
+       [
+        38.0,
+        51.0,
+        61.0,
+        72.0
+       ],
+       [
+        4.824,
+        6.144,
+        7.523999999999999
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "pt": {
+   "counts": {
+    "invalidated_rows": 7686,
+    "invalidated_rows_in_shards_read": 7686,
+    "accepted_rows": 19281,
+    "after_votes": {
+     "rejected": 4741,
+     "accepted": 17536
+    },
+    "votes": {
+     "votes_not_clear_reject": 2945,
+     "votes_not_clear_accept": 1745
+    },
+    "rules_rejected": {
+     "too_short": 27,
+     "too_long": 2,
+     "empty_prompt": 4
+    },
+    "rules_accepted": {},
+    "region": {
+     "rule": "portugal-labelled speakers removed; brazil-labelled and unlabelled kept (only 157 / 361 brazil-labelled speakers rejected / accepted)",
+     "removed_rejected": 86,
+     "removed_accepted": 240
+    }
+   },
+   "region": "portugal-labelled speakers excluded, brazil-labelled + unlabelled kept",
+   "testB_eligibility": {
+    "nonnative_clips": 0,
+    "nonnative_clips_capped": 0,
+    "nonnative_speakers": 0,
+    "native_clips": 1249,
+    "native_speakers": 154,
+    "labels": {
+     "unknown": 16047,
+     "native": 1249
+    }
+   },
+   "shards_read": [
+    "pt/dev_0",
+    "pt/invalidated_0",
+    "pt/test_0"
+   ],
+   "streamed_gb": 0.84,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 552,
+       "neg": 2096,
+       "pos_spk": 368,
+       "neg_spk": 1097
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1782,
+       "sentence_on_both_sides": 187,
+       "over_speaker_cap": 5291
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 27
+      },
+      "edges": [
+       [
+        19.0,
+        29.0,
+        38.60000000000002,
+        51.0
+       ],
+       [
+        3.447,
+        4.68,
+        6.336
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 581,
+       "neg": 2252,
+       "pos_spk": 376,
+       "neg_spk": 1179
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 1786,
+       "sentence_on_both_sides": 412,
+       "over_speaker_cap": 6979
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 26
+      },
+      "edges": [
+       [
+        20.0,
+        30.0,
+        41.0,
+        54.0
+       ],
+       [
+        3.42,
+        4.824,
+        6.3
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "ru": {
+   "counts": {
+    "invalidated_rows": 10469,
+    "invalidated_rows_in_shards_read": 10469,
+    "accepted_rows": 20487,
+    "after_votes": {
+     "rejected": 6609,
+     "accepted": 18141
+    },
+    "votes": {
+     "votes_not_clear_reject": 3860,
+     "votes_not_clear_accept": 2346
+    },
+    "rules_rejected": {
+     "latin_in_prompt": 7,
+     "digits_in_prompt": 5,
+     "too_long": 13,
+     "too_short": 2
+    },
+    "rules_accepted": {
+     "latin_in_prompt": 4,
+     "too_short": 1
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 6,
+    "nonnative_clips_capped": 2,
+    "nonnative_speakers": 1,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 18130,
+     "nonnative": 6
+    }
+   },
+   "shards_read": [
+    "ru/dev_0",
+    "ru/invalidated_0",
+    "ru/test_0"
+   ],
+   "streamed_gb": 1.2,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 672,
+       "neg": 1977,
+       "pos_spk": 437,
+       "neg_spk": 1034
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 2132,
+       "sentence_on_both_sides": 280,
+       "over_speaker_cap": 6682
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 39
+      },
+      "edges": [
+       [
+        26.0,
+        43.0,
+        61.0,
+        79.0
+       ],
+       [
+        3.8609999999999998,
+        5.460000000000001,
+        7.056
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 200,
+      "n_neg": 200,
+      "quota": 200,
+      "pool": {
+       "pos": 673,
+       "neg": 1977,
+       "pos_spk": 429,
+       "neg_spk": 1037
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 2088,
+       "sentence_on_both_sides": 493,
+       "over_speaker_cap": 7744
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 38
+      },
+      "edges": [
+       [
+        29.400000000000006,
+        47.0,
+        61.0,
+        79.0
+       ],
+       [
+        4.068,
+        5.508,
+        7.056
+       ]
+      ]
+     }
+    }
+   }
+  },
+  "ko": {
+   "counts": {
+    "invalidated_rows": 399,
+    "invalidated_rows_in_shards_read": 399,
+    "accepted_rows": 946,
+    "after_votes": {
+     "rejected": 279,
+     "accepted": 875
+    },
+    "votes": {
+     "votes_not_clear_reject": 120,
+     "votes_not_clear_accept": 71
+    },
+    "rules_rejected": {
+     "too_long": 2
+    },
+    "rules_accepted": {
+     "latin_in_prompt": 1
+    }
+   },
+   "region": "all speakers",
+   "testB_eligibility": {
+    "nonnative_clips": 5,
+    "nonnative_clips_capped": 4,
+    "nonnative_speakers": 2,
+    "native_clips": 0,
+    "native_speakers": 0,
+    "labels": {
+     "unknown": 869,
+     "nonnative": 5
+    }
+   },
+   "shards_read": [
+    "ko/dev_0",
+    "ko/invalidated_0",
+    "ko/test_0"
+   ],
+   "streamed_gb": 0.05,
+   "tests": {
+    "A": {
+     "test": {
+      "n_pos": 11,
+      "n_neg": 11,
+      "quota": 14,
+      "pool": {
+       "pos": 21,
+       "neg": 70,
+       "pos_spk": 15,
+       "neg_spk": 39
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 57,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 307
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 3
+      },
+      "edges": [
+       [
+        14.0,
+        18.0,
+        21.0,
+        27.0
+       ],
+       [
+        3.636,
+        5.4,
+        7.308
+       ]
+      ]
+     },
+     "dev": {
+      "n_pos": 11,
+      "n_neg": 11,
+      "quota": 12,
+      "pool": {
+       "pos": 16,
+       "neg": 51,
+       "pos_spk": 12,
+       "neg_spk": 31
+      },
+      "dedup_cap": {
+       "speaker_on_both_sides": 109,
+       "sentence_on_both_sides": 0,
+       "over_speaker_cap": 520
+      },
+      "audio_rules_on_fetched": {
+       "near_silent": 1
+      },
+      "edges": [
+       [
+        17.0,
+        19.0,
+        24.0,
+        26.0
+       ],
+       [
+        4.005,
+        5.022,
+        5.877
+       ]
+      ]
+     }
+    }
+   }
+  }
+ }
+}

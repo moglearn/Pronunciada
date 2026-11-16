@@ -217,17 +217,21 @@ def apply_linear(lin, X):
     return ((A - lin["mu"]) / lin["sd"]) @ lin["W"] + lin["b"]
 
 
-def cv_score(data, groups, seed, layers=("final",), params=PARAMS, ridge_blend=None, return_oof=False):
-    """ridge_blend: trees' weight w of the blend clip(w * clip(trees) + (1 - w) * ridge) (None = trees)."""
+def cv_score(data, groups, seed, layers=("final",), params=PARAMS, ridge_blend=None, return_oof=False,
+             ext=(), folds=None):
+    """ridge_blend: trees' weight w of the blend clip(w * clip(trees) + (1 - w) * ridge) (None = trees).
+    ext: extra pooled-activation matrices (round 6, outside encoders), each with its own in-fold
+    projection onto the four targets. folds: explicit (train, test) splits instead of the seeded
+    speaker folds."""
     X, cols = build_X(data, groups)
     Y, spk = data["Y"], data["spk"]
     use_emb = "emb" in groups
     E = np.column_stack([data["emb"][k] for k in layers]) if use_emb else None
     oof = np.zeros_like(Y)
-    for tr, te in seeded_folds(spk, seed):
+    for tr, te in (folds or seeded_folds(spk, seed)):
         Xtr, Xte = X[tr], X[te]
-        if use_emb:
-            ptr, pte, _ = stacked_projection(E, Y, spk, tr, te, seed)
+        for M in ([E] if use_emb else []) + list(ext):
+            ptr, pte, _ = stacked_projection(M, Y, spk, tr, te, seed)
             Xtr, Xte = np.column_stack([Xtr, ptr]), np.column_stack([Xte, pte])
         for j in range(len(HEADS)):
             m = fit("reg", params, Xtr, Y[tr, j], [False] * Xtr.shape[1])
@@ -236,7 +240,10 @@ def cv_score(data, groups, seed, layers=("final",), params=PARAMS, ridge_blend=N
             lin = fit_linear(Xtr, Y[tr], spk[tr], seed=seed + 7)
             oof[te] = ridge_blend * oof[te] + (1 - ridge_blend) * apply_linear(lin, Xte)
     oof = np.clip(oof, 0, 10)
-    r = {h: float(np.corrcoef(oof[:, j], Y[:, j])[0, 1]) for j, h in enumerate(HEADS)}
+    ev = np.zeros(len(Y), bool)
+    for _, te in (folds or seeded_folds(spk, seed)):
+        ev[te] = True
+    r = {h: float(np.corrcoef(oof[ev, j], Y[ev, j])[0, 1]) for j, h in enumerate(HEADS)}
     return (r, oof) if return_oof else r
 
 

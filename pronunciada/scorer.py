@@ -59,10 +59,24 @@ class Scorer:
 
         dcols = set(D.ALL) | set((self.sentence_proj or {}).get("names", []))
         uses = any(c in dcols for c in self.sentence.num)
+        # reported 0-10 word score (round 6): per-language choice in config "word_score_model";
+        # reads the word-pooled ZIPA stack-1 activations. The sentence level keeps reading the
+        # round-2 word regression (word_reg.npz), so sentence inputs do not change.
+        ws_name = cfg.get("word_score_model", {}).get(self.lang)
+        from pathlib import Path as _Pw
+
+        _dw = _Pw(calib_dir) if calib_dir else C.data_dir()
+        self.word_score = C.load_level(ws_name, calib_dir) if ws_name and (_dw / f"{ws_name}.npz").exists() else None
+        self.word_score_proj = C.load_projection(ws_name, calib_dir) if self.word_score is not None else None
+        uses = uses or self.word_score is not None
         self.delivery = uses if delivery is None else bool(delivery)
+        self._delivery_forced = delivery is True        # training extraction: every feature
         self._dcols = [c for c in self.sentence.num if c in dcols]
-        want_emb = self.delivery and (self.sentence_proj is not None or delivery is True)
+        want_emb = self.delivery and (self.sentence_proj is not None or self.word_score is not None
+                                      or delivery is True)
         self.am = AcousticModel(model, precision, threads, embeddings=want_emb)
+        self._word_layers = tuple(sorted(set(
+            (["enc1"] if delivery is True else []) + list((self.word_score_proj or {}).get("layers", [])))))
         self.universal_name = cfg["universal_sound_model"]
         name, bias = C.sound_model_for(self.lang, calib_dir)
         if sound_model is not None:
@@ -176,7 +190,7 @@ class Scorer:
         t = time.perf_counter()
         tab = F.phone_table(lpa, ref, ev, self.native, dur)
         timing["features"] = (time.perf_counter() - t) * 1e3
-        trk = dv = pooled = None
+        trk = dv = pooled = wpooled = spans = None
         if self.delivery:
             from . import delivery as D
             from .prosody.f0 import track
@@ -184,15 +198,20 @@ class Scorer:
             t = time.perf_counter()
             # the pitch track is shared with the prosody channel; skipped when neither needs it
             need_pitch = self.prosody is not None or any(k in D.PITCH for k in self._dcols) \
-                or not self._dcols
+                or self._delivery_forced
             trk = track(wav) if need_pitch else None
             dv = D.features(wav, fb, lpa, ref, ev, trk, pitch=need_pitch)
             pooled = D.pool_embeddings(emb, ev)
             dv.update(D.project(pooled, self.sentence_proj))
+            if emb is not None:      # word-level pooled activations (round 6 word head / training)
+                spans = D.word_frame_spans(ref, ev, len(lpa))
+                wpooled = {k: D.pool_words(emb[k], spans) for k in self._word_layers}
+            else:
+                spans = wpooled = None
             timing["delivery"] = (time.perf_counter() - t) * 1e3
         t = time.perf_counter()
-        cache = self._calibrate(tab, ref, dur, dv)
-        cache.update(delivery=dv, pooled=pooled)
+        cache = self._calibrate(tab, ref, dur, dv, wpooled)
+        cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
         cache.update(ref=ref, ev=ev, tab=tab)
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -280,7 +299,7 @@ class Scorer:
             slots = [i for k in keep for i in range(*ref.words[k].phones)]
             ev2 = score_reference(lpa, ref, wild_slots=slots)
             tab2 = F.phone_table(lpa, ref, ev2, self.native, dur)
-            c2 = self._calibrate(tab2, ref, dur)
+            c2 = self._calibrate(tab2, ref, dur, c.get("delivery"), c.get("word_pooled"))
             c2.update(ref=ref, ev=ev2, tab=tab2)
             passes.append(c2)
         if not keep:
@@ -313,7 +332,8 @@ class Scorer:
         return out
 
     # ------------------------------------------------------------------ calibration
-    def _calibrate(self, tab: dict, ref, dur: float, dv: dict | None = None) -> dict:
+    def _calibrate(self, tab: dict, ref, dur: float, dv: dict | None = None,
+                   wpooled: dict | None = None) -> dict:
         Xu = self.universal.matrix(tab)
         u = self.universal.logits(X=Xu)
         uzl, uzs = u["z_len"] + self.universal_bias, u["z_str"] + self.universal_bias
@@ -336,8 +356,17 @@ class Scorer:
             S[k] = np.array([np.nan if dv is None else float(dv.get(k, np.nan))])
         XS = np.column_stack([np.asarray(S[c], dtype=np.float64) for c in self.sentence.num])
         so = C.apply_linear_blend(self.sentence_lin, XS, self.sentence.logits(X=XS))
+        w_rep = w["reg"]
+        pj = self.word_score_proj
+        if self.word_score is not None and wpooled and all(k in wpooled for k in pj["layers"]):
+            P = np.concatenate([wpooled[k] for k in pj["layers"]], axis=1).astype(np.float64)
+            z = ((P - pj["mu"]) / pj["sd"]) @ pj["W"] + pj["b"]
+            for j, nm in enumerate(pj["names"]):
+                W[nm] = z[:, j]
+            XR2 = np.column_stack([np.asarray(W[c], dtype=np.float64) for c in self.word_score.num])
+            w_rep = self.word_score.predict(X=XR2)["reg"]
         return {"s_zl": zl, "s_zs": np.minimum(zs, zl), "s_reg": sreg, "W": W, "w_zl": w["z_len"],
-                "w_zs": w["z_str"], "w_reg": w["reg"], "S": S, "sent": so,
+                "w_zs": w["z_str"], "w_reg": w_rep, "w_reg_r2": w["reg"], "S": S, "sent": so,
                 "sent_zl": so["z_len"][0], "sent_zs": so["z_str"][0]}
 
     # ------------------------------------------------------------------ result objects

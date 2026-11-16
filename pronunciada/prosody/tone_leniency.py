@@ -20,7 +20,7 @@ from __future__ import annotations
 import os
 
 RULES = ("neutral", "neutral4", "yibu")
-DEFAULT: tuple[str, ...] = ()
+DEFAULT: tuple[str, ...] = ("neutral4",)      # kept on dev (results/tone_v3.md); others rejected
 
 
 def enabled(meta: dict | None = None) -> tuple[str, ...]:
