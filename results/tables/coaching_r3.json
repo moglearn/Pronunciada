@@ -1,0 +1,769 @@
+{
+ "extra_speech": {
+  "en": {
+   "min_sounds": 5,
+   "native_rate": 0.0,
+   "hit_rate": 0.268,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.316,
+     "hit": 0.932
+    },
+    "2": {
+     "native": 0.1,
+     "hit": 0.8
+    },
+    "3": {
+     "native": 0.048,
+     "hit": 0.532
+    },
+    "4": {
+     "native": 0.024,
+     "hit": 0.392
+    },
+    "5": {
+     "native": 0.0,
+     "hit": 0.268
+    },
+    "6": {
+     "native": 0.0,
+     "hit": 0.212
+    },
+    "7": {
+     "native": 0.0,
+     "hit": 0.136
+    },
+    "8": {
+     "native": 0.0,
+     "hit": 0.076
+    }
+   }
+  },
+  "zh": {
+   "min_sounds": 7,
+   "native_rate": 0.02,
+   "hit_rate": 0.14,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.26,
+     "hit": 0.828
+    },
+    "2": {
+     "native": 0.168,
+     "hit": 0.804
+    },
+    "3": {
+     "native": 0.112,
+     "hit": 0.624
+    },
+    "4": {
+     "native": 0.072,
+     "hit": 0.448
+    },
+    "5": {
+     "native": 0.068,
+     "hit": 0.364
+    },
+    "6": {
+     "native": 0.04,
+     "hit": 0.26
+    },
+    "7": {
+     "native": 0.02,
+     "hit": 0.14
+    },
+    "8": {
+     "native": 0.008,
+     "hit": 0.056
+    }
+   }
+  },
+  "ja": {
+   "min_sounds": 7,
+   "native_rate": 0.016,
+   "hit_rate": 0.052,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.38,
+     "hit": 0.824
+    },
+    "2": {
+     "native": 0.128,
+     "hit": 0.692
+    },
+    "3": {
+     "native": 0.084,
+     "hit": 0.416
+    },
+    "4": {
+     "native": 0.076,
+     "hit": 0.272
+    },
+    "5": {
+     "native": 0.048,
+     "hit": 0.14
+    },
+    "6": {
+     "native": 0.028,
+     "hit": 0.08
+    },
+    "7": {
+     "native": 0.016,
+     "hit": 0.052
+    },
+    "8": {
+     "native": 0.008,
+     "hit": 0.028
+    }
+   }
+  },
+  "es": {
+   "min_sounds": 4,
+   "native_rate": 0.02,
+   "hit_rate": 0.44,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.168,
+     "hit": 0.852
+    },
+    "2": {
+     "native": 0.052,
+     "hit": 0.736
+    },
+    "3": {
+     "native": 0.028,
+     "hit": 0.548
+    },
+    "4": {
+     "native": 0.02,
+     "hit": 0.44
+    },
+    "5": {
+     "native": 0.008,
+     "hit": 0.296
+    },
+    "6": {
+     "native": 0.004,
+     "hit": 0.212
+    },
+    "7": {
+     "native": 0.0,
+     "hit": 0.128
+    },
+    "8": {
+     "native": 0.0,
+     "hit": 0.048
+    }
+   }
+  },
+  "fr": {
+   "min_sounds": 4,
+   "native_rate": 0.016,
+   "hit_rate": 0.288,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.328,
+     "hit": 0.884
+    },
+    "2": {
+     "native": 0.084,
+     "hit": 0.784
+    },
+    "3": {
+     "native": 0.036,
+     "hit": 0.476
+    },
+    "4": {
+     "native": 0.016,
+     "hit": 0.288
+    },
+    "5": {
+     "native": 0.008,
+     "hit": 0.192
+    },
+    "6": {
+     "native": 0.008,
+     "hit": 0.108
+    },
+    "7": {
+     "native": 0.004,
+     "hit": 0.056
+    },
+    "8": {
+     "native": 0.0,
+     "hit": 0.032
+    }
+   }
+  },
+  "de": {
+   "min_sounds": 3,
+   "native_rate": 0.02,
+   "hit_rate": 0.48,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.116,
+     "hit": 0.824
+    },
+    "2": {
+     "native": 0.04,
+     "hit": 0.712
+    },
+    "3": {
+     "native": 0.02,
+     "hit": 0.48
+    },
+    "4": {
+     "native": 0.012,
+     "hit": 0.348
+    },
+    "5": {
+     "native": 0.008,
+     "hit": 0.268
+    },
+    "6": {
+     "native": 0.0,
+     "hit": 0.176
+    },
+    "7": {
+     "native": 0.0,
+     "hit": 0.12
+    },
+    "8": {
+     "native": 0.0,
+     "hit": 0.084
+    }
+   }
+  },
+  "it": {
+   "min_sounds": 3,
+   "native_rate": 0.012,
+   "hit_rate": 0.536,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.332,
+     "hit": 0.788
+    },
+    "2": {
+     "native": 0.024,
+     "hit": 0.728
+    },
+    "3": {
+     "native": 0.012,
+     "hit": 0.536
+    },
+    "4": {
+     "native": 0.008,
+     "hit": 0.448
+    },
+    "5": {
+     "native": 0.008,
+     "hit": 0.34
+    },
+    "6": {
+     "native": 0.008,
+     "hit": 0.228
+    },
+    "7": {
+     "native": 0.008,
+     "hit": 0.148
+    },
+    "8": {
+     "native": 0.008,
+     "hit": 0.112
+    }
+   }
+  },
+  "pt": {
+   "min_sounds": 4,
+   "native_rate": 0.02,
+   "hit_rate": 0.412,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.292,
+     "hit": 0.872
+    },
+    "2": {
+     "native": 0.068,
+     "hit": 0.744
+    },
+    "3": {
+     "native": 0.04,
+     "hit": 0.52
+    },
+    "4": {
+     "native": 0.02,
+     "hit": 0.412
+    },
+    "5": {
+     "native": 0.02,
+     "hit": 0.312
+    },
+    "6": {
+     "native": 0.012,
+     "hit": 0.196
+    },
+    "7": {
+     "native": 0.012,
+     "hit": 0.128
+    },
+    "8": {
+     "native": 0.012,
+     "hit": 0.076
+    }
+   }
+  },
+  "ru": {
+   "min_sounds": 9,
+   "native_rate": 0.02,
+   "hit_rate": 0.1,
+   "n_removed": 250,
+   "curve": {
+    "1": {
+     "native": 0.36,
+     "hit": 0.852
+    },
+    "2": {
+     "native": 0.156,
+     "hit": 0.748
+    },
+    "3": {
+     "native": 0.144,
+     "hit": 0.62
+    },
+    "4": {
+     "native": 0.1,
+     "hit": 0.524
+    },
+    "5": {
+     "native": 0.068,
+     "hit": 0.444
+    },
+    "6": {
+     "native": 0.068,
+     "hit": 0.336
+    },
+    "7": {
+     "native": 0.036,
+     "hit": 0.252
+    },
+    "8": {
+     "native": 0.028,
+     "hit": 0.168
+    }
+   }
+  },
+  "ko": {
+   "min_sounds": 8,
+   "native_rate": 0.017699115044247787,
+   "hit_rate": 0.11946902654867257,
+   "n_removed": 226,
+   "curve": {
+    "1": {
+     "native": 0.3805309734513274,
+     "hit": 0.8185840707964602
+    },
+    "2": {
+     "native": 0.11504424778761062,
+     "hit": 0.7212389380530974
+    },
+    "3": {
+     "native": 0.07079646017699115,
+     "hit": 0.6150442477876106
+    },
+    "4": {
+     "native": 0.04424778761061947,
+     "hit": 0.5
+    },
+    "5": {
+     "native": 0.030973451327433628,
+     "hit": 0.39823008849557523
+    },
+    "6": {
+     "native": 0.02654867256637168,
+     "hit": 0.2610619469026549
+    },
+    "7": {
+     "native": 0.02654867256637168,
+     "hit": 0.17256637168141592
+    },
+    "8": {
+     "native": 0.017699115044247787,
+     "hit": 0.11946902654867257
+    }
+   }
+  }
+ },
+ "delivery": {
+  "en": {
+   "long_pause_s": 0.962,
+   "mid_pause_s": 0.901,
+   "rushed": {
+    "stop": 0.1,
+    "comma": null
+   },
+   "flat_range_st": 6.5,
+   "slow_rate": 11.185,
+   "fast_rate": 16.022
+  },
+  "zh": {
+   "long_pause_s": 1.38,
+   "mid_pause_s": 1.141,
+   "rushed": {
+    "stop": 0.2,
+    "comma": 0.02
+   },
+   "flat_range_st": 7.22,
+   "slow_rate": 11.679,
+   "fast_rate": 15.902
+  },
+  "ja": {
+   "long_pause_s": 1.022,
+   "mid_pause_s": 0.98,
+   "rushed": {
+    "stop": null,
+    "comma": 0.1
+   },
+   "flat_range_st": 5.5,
+   "slow_rate": 11.945,
+   "fast_rate": 16.719
+  },
+  "es": {
+   "long_pause_s": 1.042,
+   "mid_pause_s": 0.9,
+   "rushed": {
+    "stop": 0.3,
+    "comma": null
+   },
+   "flat_range_st": 6.2,
+   "slow_rate": 13.114,
+   "fast_rate": 16.702
+  },
+  "fr": {
+   "long_pause_s": 0.842,
+   "mid_pause_s": 0.762,
+   "rushed": {
+    "stop": 0.12,
+    "comma": null
+   },
+   "flat_range_st": 5.46,
+   "slow_rate": 11.904,
+   "fast_rate": 16.672
+  },
+  "de": {
+   "long_pause_s": 0.94,
+   "mid_pause_s": 0.86,
+   "rushed": {
+    "stop": 0.1,
+    "comma": null
+   },
+   "flat_range_st": 4.56,
+   "slow_rate": 10.183,
+   "fast_rate": 17.684
+  },
+  "it": {
+   "long_pause_s": 1.06,
+   "mid_pause_s": 0.881,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.16
+   },
+   "flat_range_st": 3.14,
+   "slow_rate": 10.443,
+   "fast_rate": 15.244
+  },
+  "pt": {
+   "long_pause_s": 1.281,
+   "mid_pause_s": 1.08,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.04
+   },
+   "flat_range_st": 6.69,
+   "slow_rate": 11.706,
+   "fast_rate": 15.081
+  },
+  "ru": {
+   "long_pause_s": 1.083,
+   "mid_pause_s": 0.822,
+   "rushed": {
+    "stop": 0.18,
+    "comma": null
+   },
+   "flat_range_st": 5.45,
+   "slow_rate": 12.226,
+   "fast_rate": 17.281
+  },
+  "ko": {
+   "long_pause_s": 1.16,
+   "mid_pause_s": 0.92,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.14
+   },
+   "flat_range_st": 6.1,
+   "slow_rate": 13.18,
+   "fast_rate": 17.581
+  }
+ },
+ "delivery_rates": {
+  "en": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.004,
+   "rushed_punctuation": 0.024,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.16
+  },
+  "zh": {
+   "long_pause": 0.044,
+   "pause_mid_phrase": 0.028,
+   "rushed_punctuation": 0.032,
+   "flat_pitch": 0.04,
+   "slow": 0.044,
+   "fast": 0.04,
+   "any": 0.212
+  },
+  "ja": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.012,
+   "rushed_punctuation": 0.048,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.188
+  },
+  "es": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.02,
+   "rushed_punctuation": 0.028,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.188
+  },
+  "fr": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.016,
+   "rushed_punctuation": 0.028,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.172
+  },
+  "de": {
+   "long_pause": 0.044,
+   "pause_mid_phrase": 0.032,
+   "rushed_punctuation": 0.028,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.2
+  },
+  "it": {
+   "long_pause": 0.048,
+   "pause_mid_phrase": 0.032,
+   "rushed_punctuation": 0.048,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.22
+  },
+  "pt": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.028,
+   "rushed_punctuation": 0.028,
+   "flat_pitch": 0.04,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.2
+  },
+  "ru": {
+   "long_pause": 0.04,
+   "pause_mid_phrase": 0.02,
+   "rushed_punctuation": 0.028,
+   "flat_pitch": 0.044,
+   "slow": 0.04,
+   "fast": 0.04,
+   "any": 0.2
+  },
+  "ko": {
+   "long_pause": 0.04424778761061947,
+   "pause_mid_phrase": 0.017699115044247787,
+   "rushed_punctuation": 0.048672566371681415,
+   "flat_pitch": 0.04424778761061947,
+   "slow": 0.04424778761061947,
+   "fast": 0.03982300884955752,
+   "any": 0.22123893805309736
+  }
+ },
+ "punct_stats": {
+  "en": {
+   "stop": {
+    "n_marks": 33,
+    "native_pause_share": 0.8181818181818182
+   },
+   "comma": {
+    "n_marks": 277,
+    "native_pause_share": 0.6931407942238267
+   }
+  },
+  "zh": {
+   "stop": {
+    "n_marks": 45,
+    "native_pause_share": 0.9555555555555556
+   },
+   "comma": {
+    "n_marks": 389,
+    "native_pause_share": 0.8637532133676092
+   }
+  },
+  "ja": {
+   "stop": {
+    "n_marks": 26,
+    "native_pause_share": 0.9615384615384616
+   },
+   "comma": {
+    "n_marks": 373,
+    "native_pause_share": 0.9651474530831099
+   }
+  },
+  "es": {
+   "stop": {
+    "n_marks": 45,
+    "native_pause_share": 0.9555555555555556
+   },
+   "comma": {
+    "n_marks": 399,
+    "native_pause_share": 0.8872180451127819
+   }
+  },
+  "fr": {
+   "stop": {
+    "n_marks": 36,
+    "native_pause_share": 0.8611111111111112
+   },
+   "comma": {
+    "n_marks": 283,
+    "native_pause_share": 0.734982332155477
+   }
+  },
+  "de": {
+   "stop": {
+    "n_marks": 48,
+    "native_pause_share": 0.8541666666666666
+   },
+   "comma": {
+    "n_marks": 362,
+    "native_pause_share": 0.5883977900552486
+   }
+  },
+  "it": {
+   "stop": {
+    "n_marks": 39,
+    "native_pause_share": 1.0
+   },
+   "comma": {
+    "n_marks": 281,
+    "native_pause_share": 0.9715302491103203
+   }
+  },
+  "pt": {
+   "stop": {
+    "n_marks": 38,
+    "native_pause_share": 1.0
+   },
+   "comma": {
+    "n_marks": 336,
+    "native_pause_share": 0.8809523809523809
+   }
+  },
+  "ru": {
+   "stop": {
+    "n_marks": 41,
+    "native_pause_share": 0.9024390243902439
+   },
+   "comma": {
+    "n_marks": 461,
+    "native_pause_share": 0.7505422993492408
+   }
+  },
+  "ko": {
+   "stop": {
+    "n_marks": 46,
+    "native_pause_share": 0.9782608695652174
+   },
+   "comma": {
+    "n_marks": 142,
+    "native_pause_share": 0.9225352112676056
+   }
+  }
+ },
+ "so762_train_sanity": {
+  "long_pause": {
+   "n_flagged": 246,
+   "share": 0.0984,
+   "fluency_flagged": 5.056910569105691,
+   "fluency_rest": 8.019964507542147,
+   "prosodic_flagged": 4.971544715447155,
+   "prosodic_rest": 7.689884649511979
+  },
+  "pause_mid_phrase": {
+   "n_flagged": 71,
+   "share": 0.0284,
+   "fluency_flagged": 4.887323943661972,
+   "fluency_rest": 7.811445039110745,
+   "prosodic_flagged": 4.802816901408451,
+   "prosodic_rest": 7.498970769864141
+  },
+  "rushed_punctuation": {
+   "n_flagged": 0,
+   "share": 0.0,
+   "fluency_flagged": null,
+   "fluency_rest": 7.7284,
+   "prosodic_flagged": null,
+   "prosodic_rest": 7.4224
+  },
+  "flat_pitch": {
+   "n_flagged": 1276,
+   "share": 0.5104,
+   "fluency_flagged": 7.731191222570533,
+   "fluency_rest": 7.7254901960784315,
+   "prosodic_flagged": 7.38871473354232,
+   "prosodic_rest": 7.457516339869281
+  },
+  "slow": {
+   "n_flagged": 1679,
+   "share": 0.6716,
+   "fluency_flagged": 7.8606313281715305,
+   "fluency_rest": 7.457978075517661,
+   "prosodic_flagged": 7.551518761167362,
+   "prosodic_rest": 7.158343483556639
+  },
+  "fast": {
+   "n_flagged": 28,
+   "share": 0.0112,
+   "fluency_flagged": 5.392857142857143,
+   "fluency_rest": 7.754854368932039,
+   "prosodic_flagged": 5.214285714285714,
+   "prosodic_rest": 7.447411003236246
+  },
+  "any": {
+   "n_flagged": 2184,
+   "share": 0.8736,
+   "fluency_flagged": 7.663919413919414,
+   "fluency_rest": 8.174050632911392,
+   "prosodic_flagged": 7.3598901098901095,
+   "prosodic_rest": 7.8544303797468356
+  }
+ },
+ "so762_train_extra_rate": 0.0036
+}

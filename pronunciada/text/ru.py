@@ -423,7 +423,7 @@ class Russian(EuG2P):
                 plain = soft[:-1]
                 mapped = {"t": "ts", "d": "dz", "l": "ɭ", "tɕ": "ʈʂ"}.get(plain, plain)
                 p.ipa = mapped if (before_c or before_i or plain in PLAIN_BEFORE_V) else mapped + "ʲ"
-                for x in {soft, mapped, mapped + "ʲ", plain}:
+                for x in dict.fromkeys((soft, mapped, mapped + "ʲ", plain)):  # ordered: a set gave hash-seed order
                     p.add_alt(x, C.P_COMMON)
                 continue
             if p.ipa in CONS_ZIPA:

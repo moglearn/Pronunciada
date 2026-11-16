@@ -52,7 +52,16 @@ the sound it heard on a real substitution, the name is right within one articula
 77 % of the time. For example, on the test utterance “FIRST PLACE IN THE DIVISION”, the experts marked the /v/ of “division” as pronounced /f/; Pronunciada flags /v/ → /f/ (and
 /t/ in “first” without naming it). Mandarin tones are calibrated on OMPAL learners but only the
 most certain few percent reach 55 % precision on test; Mandarin consonants / vowels, missing
-sounds and all other languages are not verified on learners. Details:
+sounds and all other languages are not verified on learners. Against the same expert labels,
+Azure's phoneme accuracy scores reach 0.46 precision at the "balanced" recall (ours 0.65;
+precision–recall AUC 0.38 vs 0.55).
+
+The same call also tags reading miscues at word level (`missing_word`, `mispronounced_word`,
+`extra_speech` with its time span and decoded sounds) and delivery problems (`long_pause`,
+`pause_mid_phrase`, `rushed_punctuation`, `fast`; `slow` and `flat_pitch` on request), each with a
+`tip_key`. Their thresholds come from native FLEURS readers (each flag on at most 5 % of native
+clips); long and mid-phrase pauses and fast reading go with about 3 points lower expert fluency
+on English learners, the rest is not yet checked on learners. Details:
 [docs/COACHING.md](docs/COACHING.md), [results/coaching.md](results/coaching.md).
 
 ## Install

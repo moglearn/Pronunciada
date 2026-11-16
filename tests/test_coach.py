@@ -198,3 +198,56 @@ def test_coaching_on_scorer_result(tts):
     # rescore keeps the audio report and coaching still works
     r2 = sc.rescore(res, 0.9)
     assert r2.audio == res.audio and isinstance(r2.coaching(), list)
+    for it in res.coaching(delivery="all"):
+        assert it["kind"] in coach.KINDS and it["schema_minor"] == coach.SCHEMA_MINOR
+        json.dumps(it)
+    assert all(t["tip_key"] in tips.TEMPLATES for t in tips.tips(res.coaching(delivery="all"), 10, res))
+
+
+# ----------------------------------------------------------------------------- round 3
+
+def test_delivery_flags_rules():
+    from pronunciada.delivery_coach import delivery_flags
+
+    T = {"long_pause_s": 1.0, "mid_pause_s": 0.6, "rushed": {"stop": 0.1, "comma": None},
+         "flat_range_st": 5.0, "slow_rate": 10.0, "fast_rate": 16.0}
+    D = {"pauses": [{"start": 1.0, "end": 2.2, "duration": 1.2, "after_word": 1, "before_word": 2, "in_word": False,
+                     "punctuation": "stop"},
+                    {"start": 3.0, "end": 3.7, "duration": 0.7, "after_word": 3, "before_word": 4, "in_word": False,
+                     "punctuation": None},
+                    {"start": 4.0, "end": 4.7, "duration": 0.7, "after_word": 5, "before_word": 6, "in_word": False,
+                     "punctuation": "comma"}],
+         "marks": [{"after_word": 7, "kind": "stop", "gap": 0.02, "time": 5.0},
+                   {"after_word": 8, "kind": "comma", "gap": 0.0, "time": 6.0}],
+         "articulation_rate": 18.0, "n_sounds": 40, "f0_range_st": 3.0}
+    kinds = [k for k, _ in delivery_flags(D, T, 10)]
+    assert kinds == ["long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "fast"]
+    assert [k for k, _ in delivery_flags(dict(D, n_sounds=5), T, 2)] == ["long_pause", "pause_mid_phrase",
+                                                                       "rushed_punctuation"]
+
+
+def test_model_has_round3_thresholds():
+    m = coach.model()
+    for lang in SAMPLES:
+        T = m["delivery"][lang]
+        assert T["slow_rate"] < T["fast_rate"] and T["mid_pause_s"] <= T["long_pause_s"]
+        assert m["extra_speech"]["min_sounds"][lang] >= 1
+
+
+def test_tips_for_word_and_delivery_kinds():
+    base = {"schema_version": 2, "schema_minor": 1, "syllable_index": None, "phone_index": None,
+            "position": None, "expected": None, "heard": None, "expected_ipa": None, "heard_ipa": None,
+            "diff_keys": [], "error_prob": None, "prob": None, "confidence": None, "start": 0.0, "end": 1.0,
+            "gate": None}
+    words = ["the", "cat", "sat", "down"]
+    items = [dict(base, kind="extra_speech", word=None, word_index=None, heard="ə", heard_ipa="ə", after_word=1,
+                  before_word=2, where="between", restart=False, n_sounds=3),
+             dict(base, kind="long_pause", word="cat", word_index=1, duration=1.4, after_word=1, before_word=2,
+                  at_punctuation=False),
+             dict(base, kind="rushed_punctuation", word="sat", word_index=2, punctuation="stop", gap=0.0, after_word=2),
+             dict(base, kind="fast", word=None, word_index=None, sounds_per_s=19.0),
+             dict(base, kind="flat_pitch", word=None, word_index=None, pitch_range_st=2.0)]
+    out = [tips.tip_for(it, None, words) for it in items]
+    assert [t["tip_key"] for t in out] == ["speech.extra", "pause.long", "punctuation.rushed", "rate.fast", "pitch.flat"]
+    assert "between “cat” and “sat”" in out[0]["text"] and "1.4 s" in out[1]["text"] and "full stop" in out[2]["text"]
+    assert len(tips.tips(items, max_tips=5)) == 5

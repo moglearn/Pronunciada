@@ -1,6 +1,67 @@
 # Coaching feedback and audio-quality gate
 
-Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md). Round 2 (this section) replaced the sound / Mandarin-tone operating point of round 1 (below) with one fitted on real learners.
+Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md).
+
+## Yardstick: Azure Pronunciation Assessment, speechocean762 test
+
+Which sounds to flag, on the same 47,041 expert-scored phones (error = expert score < 2, 18.6 % of phones). Ours = the coaching score; Azure = 100 − its phoneme accuracy from the cached responses (no new requests), aligned to the corpus phones as in `bench/eval_azure_so762.py`. Azure is thresholded to reach our recall. 95 % CIs: 1,000 speaker bootstraps (`bench/coach/azure_yardstick.py`). This is a third, report-only look at speechocean762 test; nothing was changed after it.
+
+| operating point | recall | precision ours [CI] | precision Azure [CI] | ours − Azure [CI] |
+|---|---|---|---|---|
+| careful | 0.196 | 0.746 [0.689, 0.793] | 0.561 [0.496, 0.621] | [0.144, 0.228] |
+| balanced | 0.326 | 0.647 [0.597, 0.693] | 0.464 [0.416, 0.513] | [0.157, 0.209] |
+| eager | 0.465 | 0.554 [0.510, 0.594] | 0.386 [0.347, 0.424] | [0.148, 0.190] |
+| precision–recall AUC | | 0.546 [0.485, 0.598] | 0.382 [0.324, 0.437] | [0.144, 0.180] |
+
+What it heard instead, on the experts' 568 real substitutions (pronounced phone known). The responses were requested with 5 n-best phonemes per phone, so Azure's candidates exist:
+
+| | substitutions named | exact | within one feature |
+|---|---|---|---|
+| ours (balanced) | 44 (8 %) | 0.636 | 0.773 |
+| Azure: top candidate ≠ expected | 442 (78 %) | 0.369 | 0.493 |
+| Azure: same, its lowest-scored 44 only (our coverage) | 44 | 0.273 | 0.455 |
+| Azure: best candidate other than expected | 475 (84 %) | 0.358 | 0.476 |
+
+OMPAL (Mandarin): not comparable by error type: the cached zh-TW responses carry no phoneme labels (empty strings) and zh-CN gives one score per syllable ('ta 1'), not separate initial / final / tone scores; Azure has no tone score. Only word-level any-error detection is comparable (results/ompal.md).
+
+## Round 3: word-level reading miscues and delivery flags
+
+Scripts `bench/coach/dump_r3.py`, `bench/coach/fit_r3.py`; definitions in docs/COACHING.md §3b. Thresholds from FLEURS validation natives (250 clips per language, Korean 226), each flag ≤ 5 % of native clips (extra speech ≤ 2 %).
+
+| lang | extra speech bar (sounds) | natives flagged | removed word caught | long pause | mid-phrase pause | rushed punctuation | flat pitch | slow | fast | any delivery flag |
+|---|---|---|---|---|---|---|---|---|---|---|
+| en | 5 | 0.0 % | 27 % (250) | 4.0 % | 0.4 % | 2.4 % | 4.0 % | 4.0 % | 4.0 % | 16.0 % |
+| zh | 7 | 2.0 % | 14 % (250) | 4.4 % | 2.8 % | 3.2 % | 4.0 % | 4.4 % | 4.0 % | 21.2 % |
+| ja | 7 | 1.6 % | 5 % (250) | 4.0 % | 1.2 % | 4.8 % | 4.0 % | 4.0 % | 4.0 % | 18.8 % |
+| es | 4 | 2.0 % | 44 % (250) | 4.0 % | 2.0 % | 2.8 % | 4.0 % | 4.0 % | 4.0 % | 18.8 % |
+| fr | 4 | 1.6 % | 29 % (250) | 4.0 % | 1.6 % | 2.8 % | 4.0 % | 4.0 % | 4.0 % | 17.2 % |
+| de | 3 | 2.0 % | 48 % (250) | 4.4 % | 3.2 % | 2.8 % | 4.0 % | 4.0 % | 4.0 % | 20.0 % |
+| it | 3 | 1.2 % | 54 % (250) | 4.8 % | 3.2 % | 4.8 % | 4.0 % | 4.0 % | 4.0 % | 22.0 % |
+| pt | 4 | 2.0 % | 41 % (250) | 4.0 % | 2.8 % | 2.8 % | 4.0 % | 4.0 % | 4.0 % | 20.0 % |
+| ru | 9 | 2.0 % | 10 % (250) | 4.0 % | 2.0 % | 2.8 % | 4.4 % | 4.0 % | 4.0 % | 20.0 % |
+| ko | 8 | 1.8 % | 12 % (226) | 4.4 % | 1.8 % | 4.9 % | 4.4 % | 4.4 % | 4.0 % | 22.1 % |
+
+Extra speech catches a removed inner word in 5–54 % of clips: well for multi-sound words in Romance languages and German, poorly in Japanese, Russian, Korean and Mandarin, where natives' decodes already leave several sounds outside the expected words, so the 2 % bar is high (7–9 sounds).
+
+Hit rate by bar (pooled curve per language in `results/tables/coaching_r3.json`).
+
+Sanity check on speechocean762 train (English thresholds; mean expert 0–10 sentence score, flagged minus not flagged):
+
+| flag | flagged | fluency | prosody |
+|---|---|---|---|
+| long_pause | 246 (9.8 %) | -2.96 | -2.72 |
+| pause_mid_phrase | 71 (2.8 %) | -2.92 | -2.70 |
+| rushed_punctuation | 0 (0.0 %) | – | – |
+| flat_pitch | 1276 (51.0 %) | +0.01 | -0.07 |
+| slow | 1679 (67.2 %) | +0.40 | +0.39 |
+| fast | 28 (1.1 %) | -2.36 | -2.23 |
+| any | 2184 (87.4 %) | -0.51 | -0.49 |
+
+`long_pause`, `pause_mid_phrase` and `fast` go with ~2.2–3 points lower expert fluency and prosody. `slow` and `flat_pitch` do not (they fire on most of these short, carefully read learner prompts and the flagged ones score no lower), so they are off by default (`coaching(delivery="all")`). `rushed_punctuation` cannot be checked there (no internal punctuation in the prompts).
+
+Russian `present_prob` nondeterminism: `pronunciada/text/ru.py` built some alternatives by iterating a Python `set` of strings, so their order (and the summation order in the lattice) depended on `PYTHONHASHSEED`; now an ordered tuple. Two hash seeds now give identical Russian outputs on 30 clips; against the old code the largest difference is 9e-16 (the old code differed from itself by 4e-16 between seeds). No other language reads that file.
+
+Scores unchanged: the scorer now keeps the pitch track it computes for the prosody models (the same `track(wav)` ProsodyScorer would compute) and the waveform in the result's cache; 50 clips (5 per language, `PYTHONHASHSEED=0`) are identical to the previous commit as repr() strings. coaching() with miscues and default delivery flags: median 0.5 ms per 10 s; `delivery="all"` in French / Korean adds a pitch track on first use (~10 ms).
 
 ## Round 2: a coaching operating point fitted on learner data
 
@@ -129,6 +190,9 @@ By language at the chosen bar: en 0.979 / 29.1 %; es 0.953 / 50.6 %; de 0.920 / 
 - “DO YOU REALLY AND TRULY SAY SO”. Ours: SAY /s/ → off (no name) (error_prob 0.62); SAY /eɪ/ → off (no name) (error_prob 0.946); SO /s/ → /n/ (error_prob 0.757). Experts: DO ['D', 'UH0'] scores [2.0, 1.8]; YOU ['Y', 'UW0'] scores [2.0, 1.8]; REALLY ['R', 'IH', 'AH1', 'L', 'IY0'] scores [2.0, 1.6, 1.6, 2.0, 2.0]; AND ['AE0', 'N', 'D'] scores [2.0, 2.0, 1.6]; TRULY ['T', 'R', 'UW1', 'L', 'IY0'] scores [2.0, 2.0, 2.0, 1.6, 2.0]; SO ['S', 'OW0'] scores [0.4, 2.0], pronounced [('S', 'N')].
 
 ---
+
+
+Design and schema: [docs/COACHING.md](../docs/COACHING.md). Code: `pronunciada/coach.py`, `pronunciada/tips.py`, `pronunciada/articulatory.py`, `pronunciada/quality.py`; benchmarks `bench/coach/`. Everything was fitted or chosen on FLEURS **validation** (planted errors and synthetic degradations) and Common Voice cv-real **dev**; L2-ARCTIC test, EpaDB test and OMPAL test are reported only (nothing was tuned on them). No cv-real test clip was read.
 
 ## Round 1 (planted errors; the sound operating point is superseded)
 

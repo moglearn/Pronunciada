@@ -24,12 +24,12 @@ def _r(x):
     return None if x is None else repr(float(x))
 
 
-def dump(out, use_coach, per_lang):
+def dump(out, use_coach, per_lang, langs=None):
     import pronunciada
     from bench.pipeline.common import LANGS, fleurs_validation_records, iter_parquet_audio
 
     rows, lat = {}, []
-    for lang in LANGS:
+    for lang in (langs or LANGS):
         sc = pronunciada.Scorer(lang, threads=1)
         recs = fleurs_validation_records(lang)[:per_lang]
         by_row = {int(r["audio"].rsplit(":", 1)[1]): r for r in recs}
@@ -80,9 +80,10 @@ def main():
     ap.add_argument("--coach", action="store_true")
     ap.add_argument("--per-lang", type=int, default=3)
     ap.add_argument("--compare", nargs=2)
+    ap.add_argument("--langs", default="")
     a = ap.parse_args()
     if a.dump:
-        dump(a.dump, a.coach, a.per_lang)
+        dump(a.dump, a.coach, a.per_lang, a.langs.split(",") if a.langs else None)
     if a.compare:
         sys.exit(0 if compare(*a.compare) else 1)
 

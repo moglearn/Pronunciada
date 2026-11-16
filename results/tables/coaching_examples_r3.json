@@ -1,0 +1,309 @@
+{
+ "mispronounced_word": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10010138729160973689",
+  "prompt": "When you call someone who is thousands of miles away, you are using a satellite.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "mispronounced_word",
+   "word": "thousands",
+   "word_index": 6,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": "thousands",
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": 0.5358,
+   "prob": 0.9669,
+   "confidence": null,
+   "start": 2.59,
+   "end": 3.03,
+   "n_sounds_flagged": 1
+  },
+  "tip": {
+   "tip_key": "word.mispronounced",
+   "text": "Try “thousands” again; some of its sounds were off.",
+   "params": {
+    "word": "thousands",
+    "expected": "thousands",
+    "heard": null
+   }
+  }
+ },
+ "extra_speech": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10010138729160973689",
+  "prompt": "When you call who is thousands of miles away, you are using a satellite.",
+  "removed_word": "someone",
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "extra_speech",
+   "word": null,
+   "word_index": null,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": "səmwən",
+   "expected_ipa": null,
+   "heard_ipa": "səmwən",
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 1.73,
+   "end": 2.15,
+   "after_word": 2,
+   "before_word": 3,
+   "where": "between",
+   "restart": false,
+   "n_sounds": 6
+  },
+  "tip": {
+   "tip_key": "speech.extra",
+   "text": "There was extra speech between “call” and “who”; read only the words of the sentence.",
+   "params": {
+    "word": null,
+    "expected": null,
+    "heard": "səmwən",
+    "next_word": "who",
+    "where": "between “call” and “who”"
+   }
+  }
+ },
+ "slow": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10098964113747380446",
+  "prompt": "Then, Lakkha Singh took the lead in singing the bhajans.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "slow",
+   "word": null,
+   "word_index": null,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 0.41,
+   "end": 3.71,
+   "sounds_per_s": 10.3
+  },
+  "tip": {
+   "tip_key": "rate.slow",
+   "text": "Try reading a little faster and more smoothly.",
+   "params": {
+    "word": null,
+    "expected": null,
+    "heard": null
+   }
+  }
+ },
+ "long_pause": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10312254140358477897",
+  "prompt": "In this dynamic transport shuttle everyone is somehow connected with, and supporting, a transport system based on private cars.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "long_pause",
+   "word": "somehow",
+   "word_index": 7,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 3.51,
+   "end": 4.51,
+   "duration": 1.0,
+   "after_word": 7,
+   "before_word": 8,
+   "at_punctuation": false
+  },
+  "tip": {
+   "tip_key": "pause.long",
+   "text": "Try not to stop for so long (1.0 s) after “somehow”.",
+   "params": {
+    "word": "somehow",
+    "expected": null,
+    "heard": null,
+    "duration": "1.0",
+    "next_word": "connected"
+   }
+  }
+ },
+ "fast": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10408474834696432538",
+  "prompt": "Local authorities are warning residents in the vicinity of the plant to stay indoors, turn off air-conditioners and not to drink tap water.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "fast",
+   "word": null,
+   "word_index": null,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 0.99,
+   "end": 6.95,
+   "sounds_per_s": 16.61
+  },
+  "tip": {
+   "tip_key": "rate.fast",
+   "text": "Slow down a little so that every sound is clear.",
+   "params": {
+    "word": null,
+    "expected": null,
+    "heard": null
+   }
+  }
+ },
+ "rushed_punctuation": {
+  "lang": "en",
+  "id": "fleurs-en-validation-10630374883688952860",
+  "prompt": "Some reports put the official death toll at eight, and official reports confirm that up to 30 were injured; but final numbers are not yet known.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "rushed_punctuation",
+   "word": "injured",
+   "word_index": 18,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 5.71,
+   "end": 5.71,
+   "punctuation": "stop",
+   "gap": 0.02,
+   "after_word": 18
+  },
+  "tip": {
+   "tip_key": "punctuation.rushed",
+   "text": "Make a short pause at the full stop after “injured”.",
+   "params": {
+    "word": "injured",
+    "expected": null,
+    "heard": null,
+    "mark": "full stop"
+   }
+  }
+ },
+ "flat_pitch": {
+  "lang": "en",
+  "id": "fleurs-en-validation-1105184381995491301",
+  "prompt": "The first cases of the disease this season were reported in late July.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "flat_pitch",
+   "word": null,
+   "word_index": null,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 0.81,
+   "end": 4.35,
+   "pitch_range_st": 6.45
+  },
+  "tip": {
+   "tip_key": "pitch.flat",
+   "text": "Let your voice rise and fall more; it sounded quite flat.",
+   "params": {
+    "word": null,
+    "expected": null,
+    "heard": null
+   }
+  }
+ },
+ "pause_mid_phrase": {
+  "lang": "en",
+  "id": "fleurs-en-validation-14225189458852066857",
+  "prompt": "The Tibetan Buddhism is based on the teachings of Buddha, but were extended by the mahayana path of love and by a lot of techniques from Indian Yoga.",
+  "removed_word": null,
+  "item": {
+   "schema_version": 2,
+   "schema_minor": 1,
+   "kind": "pause_mid_phrase",
+   "word": "mahayana",
+   "word_index": 15,
+   "syllable_index": null,
+   "phone_index": null,
+   "position": null,
+   "expected": null,
+   "heard": null,
+   "expected_ipa": null,
+   "heard_ipa": null,
+   "diff_keys": [],
+   "error_prob": null,
+   "prob": null,
+   "confidence": null,
+   "start": 5.73,
+   "end": 6.65,
+   "duration": 0.92,
+   "after_word": 15,
+   "before_word": 16,
+   "in_word": false
+  },
+  "tip": {
+   "tip_key": "pause.mid_phrase",
+   "text": "Keep “mahayana” and “path” together; there was a 0.9 s pause between them.",
+   "params": {
+    "word": "mahayana",
+    "expected": null,
+    "heard": null,
+    "duration": "0.9",
+    "next_word": "path"
+   }
+  }
+ }
+}

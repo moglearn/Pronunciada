@@ -44,8 +44,14 @@ from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
 SCHEMA_VERSION = 2
+SCHEMA_MINOR = 1      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
 SENSITIVITIES = ("careful", "balanced", "eager")
-KINDS = ("substitution", "missing", "extra", "tone", "stress", "missing_word")
+KINDS = ("substitution", "missing", "extra", "tone", "stress", "missing_word", "mispronounced_word",
+         "extra_speech", "long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
+WORD_KINDS = ("mispronounced_word", "extra_speech")
+DELIVERY_KINDS = ("long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
+FIXED_RANK = {"extra_speech": 0.6, "long_pause": 0.35, "pause_mid_phrase": 0.3, "rushed_punctuation": 0.25,
+              "flat_pitch": 0.2, "slow": 0.2, "fast": 0.2}
 DEFAULT_GATE = {
     "flag_prob": 0.5,          # a sound / tone / stress item is reported when prob < this
     "min_log_ratio": 0.0,      # log(P heard / P expected) over the sound's span, at least
@@ -281,7 +287,8 @@ def flagged_indices(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict
 
 
 def _item(kind, w, wi, si, pi, pos, expected, heard, diff, eprob, prob, conf, start, end, gate=None, ipa=True):
-    return {"schema_version": SCHEMA_VERSION, "kind": kind, "word": w.text, "word_index": wi,
+    return {"schema_version": SCHEMA_VERSION, "schema_minor": SCHEMA_MINOR, "kind": kind, "word": w.text,
+            "word_index": wi,
             "syllable_index": si, "phone_index": pi, "position": pos, "expected": expected,
             "heard": heard, "expected_ipa": expected if ipa else None,
             "heard_ipa": heard if ipa else None, "diff_keys": list(diff),
@@ -292,16 +299,21 @@ def _item(kind, w, wi, si, pi, pos, expected, heard, diff, eprob, prob, conf, st
 
 
 def _rank(it) -> float:
+    if it["kind"] in FIXED_RANK:
+        return FIXED_RANK[it["kind"]]
     e = it["error_prob"] if it["error_prob"] is not None else 1.0 - (it["prob"] or 0.0)
     c = it["confidence"] if it["confidence"] is not None else 0.5
     return e * (0.5 + 0.5 * c)
 
 
-def coaching(result, max_items: int | None = None, sensitivity: str = "balanced", **gate) -> list[dict]:
+def coaching(result, max_items: int | None = None, sensitivity: str = "balanced", miscues: bool = True,
+             delivery: bool | str = True, **gate) -> list[dict]:
     """Coaching items for a SentenceResult from Scorer.score / rescore, most important first
     (by error_prob x (0.5 + 0.5 confidence)). sensitivity: "careful" | "balanced" | "eager".
     Keyword overrides: `threshold` (coaching-score bar for sounds), `tone_threshold`, and the
-    stress / missing-word bars of DEFAULT_GATE."""
+    stress / missing-word bars of DEFAULT_GATE. miscues / delivery add the word-level reading
+    miscues (mispronounced_word, extra_speech) and delivery flags (pronunciada.delivery_coach);
+    delivery="all" also reports the unvalidated slow / flat_pitch flags."""
     if sensitivity not in SENSITIVITIES:
         raise ValueError(f"sensitivity must be one of {SENSITIVITIES}")
     c = getattr(result, "_pronunciada", None)
@@ -378,6 +390,14 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
                                    g["stress_confidence"] if ok else None, w.start, w.end,
                                    {"heard_post": round(float(P[hs]), 4), "n_syllables": len(P)},
                                    ipa=False))
+    if miscues or delivery:
+        from . import delivery_coach as DC
+
+        if miscues:
+            items += DC.miscue_items(result, items, mdl)
+        if delivery:
+            kinds = DELIVERY_KINDS if delivery == "all" else DC.DEFAULT_DELIVERY
+            items += DC.delivery_items(result, mdl, kinds)
     items.sort(key=_rank, reverse=True)
     return items[:max_items] if max_items else items
 
@@ -389,7 +409,7 @@ def tone_error_prob(T: dict, tone_prob: float) -> float:
 
 
 def to_json(items: list[dict], **kw) -> str:
-    return json.dumps({"schema_version": SCHEMA_VERSION, "items": items}, ensure_ascii=False, **kw)
+    return json.dumps({"schema_version": SCHEMA_VERSION, "schema_minor": SCHEMA_MINOR, "items": items}, ensure_ascii=False, **kw)
 
 
 __all__ = ["SCHEMA_VERSION", "SENSITIVITIES", "KINDS", "DEFAULT_GATE", "coaching", "gate_params",

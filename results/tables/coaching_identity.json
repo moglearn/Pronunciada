@@ -2,9 +2,9 @@
  "clips": 50,
  "per_lang": 5,
  "identical": "yes (0 of 50 clips differ, PYTHONHASHSEED=0 in both runs)",
- "coach_ms_per_10s_median": 0.25,
- "coach_ms_per_10s_p90": 0.35,
+ "coach_ms_per_10s_median": 0.51,
+ "coach_ms_per_10s_p90": 0.63,
  "worst_case_ms_10s": 1.48,
  "audio_ms_per_10s": 0.5,
- "note": "Without a fixed PYTHONHASHSEED, two runs of the UNCHANGED package already differ in the last digit of WordResult.present_prob on 1-3 Russian clips (hash-ordered sets in the Russian path); with PYTHONHASHSEED=0 old and new are identical."
+ "note": "Without a fixed PYTHONHASHSEED, two runs of the UNCHANGED package already differ in the last digit of WordResult.present_prob on 1-3 Russian clips (hash-ordered sets in the Russian path); with PYTHONHASHSEED=0 old and new are identical. Round 3: identical again (scorer keeps the pitch track and waveform for coaching); Russian alternative order fixed in pronunciada/text/ru.py."
 }

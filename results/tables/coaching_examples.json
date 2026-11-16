@@ -40,6 +40,7 @@
    "items": [
     {
      "schema_version": 2,
+     "schema_minor": 1,
      "kind": "substitution",
      "word": "a",
      "word_index": 13,
@@ -63,6 +64,28 @@
     },
     {
      "schema_version": 2,
+     "schema_minor": 1,
+     "kind": "mispronounced_word",
+     "word": "a",
+     "word_index": 13,
+     "syllable_index": null,
+     "phone_index": null,
+     "position": null,
+     "expected": "a",
+     "heard": null,
+     "expected_ipa": null,
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.8003,
+     "prob": 0.2991,
+     "confidence": null,
+     "start": 4.87,
+     "end": 4.89,
+     "n_sounds_flagged": 1
+    },
+    {
+     "schema_version": 2,
+     "schema_minor": 1,
      "kind": "substitution",
      "word": "thousands",
      "word_index": 6,
@@ -79,6 +102,27 @@
      "confidence": null,
      "start": 3.01,
      "end": 3.03
+    },
+    {
+     "schema_version": 2,
+     "schema_minor": 1,
+     "kind": "mispronounced_word",
+     "word": "thousands",
+     "word_index": 6,
+     "syllable_index": null,
+     "phone_index": null,
+     "position": null,
+     "expected": "thousands",
+     "heard": null,
+     "expected_ipa": null,
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.5354,
+     "prob": 0.9904,
+     "confidence": null,
+     "start": 2.59,
+     "end": 3.03,
+     "n_sounds_flagged": 1
     }
    ]
   },
@@ -145,6 +189,7 @@
    "items": [
     {
      "schema_version": 2,
+     "schema_minor": 1,
      "kind": "missing_word",
      "word": "的",
      "word_index": 2,
@@ -164,6 +209,7 @@
     },
     {
      "schema_version": 2,
+     "schema_minor": 1,
      "kind": "tone",
      "word": "后",
      "word_index": 6,
@@ -185,6 +231,7 @@
     },
     {
      "schema_version": 2,
+     "schema_minor": 1,
      "kind": "missing_word",
      "word": "中",
      "word_index": 1,
@@ -280,6 +327,7 @@
    "items": [
     {
      "schema_version": 2,
+     "schema_minor": 1,
      "kind": "substitution",
      "word": "religión",
      "word_index": 5,
@@ -304,6 +352,28 @@
     },
     {
      "schema_version": 2,
+     "schema_minor": 1,
+     "kind": "mispronounced_word",
+     "word": "religión",
+     "word_index": 5,
+     "syllable_index": null,
+     "phone_index": null,
+     "position": null,
+     "expected": "religión",
+     "heard": null,
+     "expected_ipa": null,
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.682,
+     "prob": 0.0093,
+     "confidence": null,
+     "start": 4.13,
+     "end": 4.59,
+     "n_sounds_flagged": 1
+    },
+    {
+     "schema_version": 2,
+     "schema_minor": 1,
      "kind": "substitution",
      "word": "mayoritaria",
      "word_index": 6,
@@ -320,6 +390,27 @@
      "confidence": null,
      "start": 4.99,
      "end": 5.01
+    },
+    {
+     "schema_version": 2,
+     "schema_minor": 1,
+     "kind": "mispronounced_word",
+     "word": "mayoritaria",
+     "word_index": 6,
+     "syllable_index": null,
+     "phone_index": null,
+     "position": null,
+     "expected": "mayoritaria",
+     "heard": null,
+     "expected_ipa": null,
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.6101,
+     "prob": 0.0294,
+     "confidence": null,
+     "start": 4.59,
+     "end": 5.25,
+     "n_sounds_flagged": 1
     }
    ]
   },

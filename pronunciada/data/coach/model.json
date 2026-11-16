@@ -124,5 +124,132 @@
   },
   "a": -2.7825844279338137,
   "b": -0.6711797074295623
+ },
+ "extra_speech": {
+  "min_sounds": {
+   "en": 5,
+   "zh": 7,
+   "ja": 7,
+   "es": 4,
+   "fr": 4,
+   "de": 3,
+   "it": 3,
+   "pt": 4,
+   "ru": 9,
+   "ko": 8,
+   "default": 9
+  }
+ },
+ "delivery": {
+  "en": {
+   "long_pause_s": 0.962,
+   "mid_pause_s": 0.901,
+   "rushed": {
+    "stop": 0.1,
+    "comma": null
+   },
+   "flat_range_st": 6.5,
+   "slow_rate": 11.185,
+   "fast_rate": 16.022
+  },
+  "zh": {
+   "long_pause_s": 1.38,
+   "mid_pause_s": 1.141,
+   "rushed": {
+    "stop": 0.2,
+    "comma": 0.02
+   },
+   "flat_range_st": 7.22,
+   "slow_rate": 11.679,
+   "fast_rate": 15.902
+  },
+  "ja": {
+   "long_pause_s": 1.022,
+   "mid_pause_s": 0.98,
+   "rushed": {
+    "stop": null,
+    "comma": 0.1
+   },
+   "flat_range_st": 5.5,
+   "slow_rate": 11.945,
+   "fast_rate": 16.719
+  },
+  "es": {
+   "long_pause_s": 1.042,
+   "mid_pause_s": 0.9,
+   "rushed": {
+    "stop": 0.3,
+    "comma": null
+   },
+   "flat_range_st": 6.2,
+   "slow_rate": 13.114,
+   "fast_rate": 16.702
+  },
+  "fr": {
+   "long_pause_s": 0.842,
+   "mid_pause_s": 0.762,
+   "rushed": {
+    "stop": 0.12,
+    "comma": null
+   },
+   "flat_range_st": 5.46,
+   "slow_rate": 11.904,
+   "fast_rate": 16.672
+  },
+  "de": {
+   "long_pause_s": 0.94,
+   "mid_pause_s": 0.86,
+   "rushed": {
+    "stop": 0.1,
+    "comma": null
+   },
+   "flat_range_st": 4.56,
+   "slow_rate": 10.183,
+   "fast_rate": 17.684
+  },
+  "it": {
+   "long_pause_s": 1.06,
+   "mid_pause_s": 0.881,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.16
+   },
+   "flat_range_st": 3.14,
+   "slow_rate": 10.443,
+   "fast_rate": 15.244
+  },
+  "pt": {
+   "long_pause_s": 1.281,
+   "mid_pause_s": 1.08,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.04
+   },
+   "flat_range_st": 6.69,
+   "slow_rate": 11.706,
+   "fast_rate": 15.081
+  },
+  "ru": {
+   "long_pause_s": 1.083,
+   "mid_pause_s": 0.822,
+   "rushed": {
+    "stop": 0.18,
+    "comma": null
+   },
+   "flat_range_st": 5.45,
+   "slow_rate": 12.226,
+   "fast_rate": 17.281
+  },
+  "ko": {
+   "long_pause_s": 1.16,
+   "mid_pause_s": 0.92,
+   "rushed": {
+    "stop": 0.3,
+    "comma": 0.14
+   },
+   "flat_range_st": 6.1,
+   "slow_rate": 13.18,
+   "fast_rate": 17.581
+  }
  }
 }

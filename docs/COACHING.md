@@ -26,16 +26,19 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2)
+## 1. Item schema (`schema_version` 2, `schema_minor` 1)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
-Version 2 added `error_prob` (round 1 = version 1).
+Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) added the key
+`schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
+Consumers should ignore kinds they do not know.
 
 | key | type | meaning |
 |---|---|---|
-| `schema_version` | int | 2. Additive changes keep the number; renamed / removed keys bump it. |
-| `kind` | str | `substitution`, `missing`, `extra`, `tone`, `stress`, `missing_word` |
+| `schema_version` | int | 2. Renamed / removed keys bump it. |
+| `schema_minor` | int | 1. Added kinds / keys bump it. |
+| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
 | `phone_index` | int / null | sound inside the word (`result.words[i].phones[j]`); sounds only |
@@ -50,7 +53,8 @@ Version 2 added `error_prob` (round 1 = version 1).
 | `start`, `end` | float | seconds (the word span for stress / missing words) |
 | `gate` | dict / null | gate inputs, for logging only |
 
-Order: by `error_prob × (0.5 + 0.5 × confidence)` (confidence 0.5 when null). What produces items:
+Order: by `error_prob × (0.5 + 0.5 × confidence)` (confidence 0.5 when null); `extra_speech` ranks at
+0.6 and delivery items at 0.2–0.35, so they follow the clear sound errors. What produces items:
 
 - **Sounds**: `error_prob` ≥ the sensitivity's threshold (section 3); `kind` `substitution`;
   `heard` filled only when the heard-sound gate passes.
@@ -63,6 +67,7 @@ Order: by `error_prob × (0.5 + 0.5 × confidence)` (confidence 0.5 when null). 
   < 0.5); `heard` = most probable stressed syllable if its share ≥ 0.3
   (re-fitted for the `stress_v3` stress model).
 - **Missing words**: `present_prob < 0.5`; the word's sounds are not listed separately.
+- **Word-level miscues and delivery**: section 3b; switch off with `coaching(miscues=False, delivery=False)`.
 
 ## 2. Articulatory feature table (`pronunciada/articulatory.py`)
 
@@ -122,6 +127,13 @@ On OMPAL test the tone type is right 0.55 of the time at "balanced" with recall
 0.025 (eager: 0.55 / 0.10); Mandarin consonant / vowel items are **not
 reliable** (0.27–0.46 precision on test).
 
+**Yardstick: Azure Pronunciation Assessment** on the same speechocean762 test phones (cached
+responses, nothing re-sent): thresholding Azure's phoneme accuracy at our recall points gives
+precision 0.56 / 0.46 / 0.39 against our 0.75 / 0.65 / 0.55; precision–recall AUC
+0.546 (95 % CI 0.485–0.598) vs Azure 0.382 (0.324–0.437). Azure's top n-best
+phoneme names another sound on 78 % of the experts' substitutions but matches the pronounced phone
+0.37 exactly / 0.49 within one feature (ours: 8 %, 0.64 / 0.77).
+
 **The other eight languages have no learner labels.** They use the English thresholds through
 the calibrated probabilities (comparable across languages by construction). This is
 **unverified on learners**. Checked only on FLEURS validation: at "balanced" 0.12–0.29 wrong named
@@ -129,6 +141,140 @@ sounds per native 10-s clip (cap 0.3, met in every language) but 1–4.4 unnamed
 and 41–90 % of planted substitutions flagged with the named sound right within one feature 0.93–0.99.
 
 Overrides: `res.coaching(threshold=0.6)` (sound bar), `res.coaching(tone_threshold=0.02)`.
+
+## 3b. Word-level reading miscues and delivery flags (round 3)
+
+All from evidence the scorer already computed (`pronunciada/delivery_coach.py`); no score
+changes. Thresholds in `pronunciada/data/coach/model.json` (`extra_speech`, `delivery`), set on
+FLEURS validation natives reading correctly (`bench/coach/fit_r3.py`).
+
+- **`missing_word`**: `present_prob` < 0.5 (unchanged).
+- **`mispronounced_word`**: a word with at least one flagged sound; `error_prob` = its highest
+  sound `error_prob`; extra key `n_sounds_flagged`. A word-level summary of the sound items.
+- **`extra_speech`**: sounds the recogniser decoded (greedy decode) that fall outside every
+  expected word's aligned span, grouped into segments; reported when a segment has at least
+  `min_sounds` sounds. Keys: `heard_ipa` (best-effort decoded string, no attempt to name a word),
+  `start`, `end`, `after_word` / `before_word` (−1 / n at the ends), `where` (`start`, `between`,
+  `end`), `restart` (the segment starts like the next word: a restarted word), `n_sounds`.
+  Bar: per language the smallest `min_sounds` with ≤ 2 % of native clips flagged. Hit rate =
+  native clips scored against their prompt with one inner word removed, where a segment overlaps
+  the removed word. Low for short words (an extra "is" has 2 sounds): it catches inserted
+  multi-sound words, not single sounds.
+- **`long_pause`**: a silent stretch ≥ the language's bar (96th percentile of the longest native
+  pause per clip). Keys `duration`, `after_word`, `before_word`, `at_punctuation`.
+- **`pause_mid_phrase`**: a pause not at punctuation (between words without a comma / full stop
+  in the prompt, or inside a word: `in_word`) ≥ the bar (96th percentile of natives' longest such
+  pause, at least 0.25 s).
+- **`rushed_punctuation`**: at a sentence-internal full stop (`.!?;:`) or comma, the silence
+  between the two words is below the bar; only for mark types where natives pause ≥ 0.1 s at
+  ≥ 60 % of marks and ≥ 30 marks were seen; bars chosen so ≤ 3 % (stops) /
+  ≤ 5 % (both) of native clips are flagged (commas fit that budget only in zh, ja, it, pt, ko;
+  Japanese full stops were too rare). Keys `punctuation` (`stop` / `comma`), `gap`.
+- **`fast`** / **`slow`**: articulation rate (aligned sounds per second of speech, pauses
+  excluded) above the 96th / below the 4th native percentile; utterances of ≥ 8 sounds.
+- **`flat_pitch`**: pitch range (95th − 5th percentile of voiced F0 in semitones over the speech
+  span) below the 4th native percentile; ≥ 3 words.
+- `slow` and `flat_pitch` are **off by default** (`coaching(delivery="all")` reports them): on
+  speechocean762 train they fire on 67 % / 51 % of the short read learner utterances and do not go
+  with lower expert fluency / prosody (table below). `flat_pitch` in French and Korean computes a
+  pitch track on first use (≈ 10 ms per 10 s); elsewhere it reuses the scorer's.
+
+| lang | extra speech `min_sounds` | natives flagged | hit (removed word) | long pause (s) | mid-phrase pause (s) | rushed bar stop / comma (s) | flat pitch (st) | slow / fast (sounds/s) | native clips with any delivery flag (all kinds) |
+|---|---|---|---|---|---|---|---|---|---|
+| en | 5 | 0.0 % | 27 % | 0.96 | 0.90 | 0.1 / – | 6.5 | 11.2 / 16.0 | 16 % |
+| zh | 7 | 2.0 % | 14 % | 1.38 | 1.14 | 0.2 / 0.02 | 7.22 | 11.7 / 15.9 | 21 % |
+| ja | 7 | 1.6 % | 5 % | 1.02 | 0.98 | – / 0.1 | 5.5 | 11.9 / 16.7 | 19 % |
+| es | 4 | 2.0 % | 44 % | 1.04 | 0.90 | 0.3 / – | 6.2 | 13.1 / 16.7 | 19 % |
+| fr | 4 | 1.6 % | 29 % | 0.84 | 0.76 | 0.12 / – | 5.46 | 11.9 / 16.7 | 17 % |
+| de | 3 | 2.0 % | 48 % | 0.94 | 0.86 | 0.1 / – | 4.56 | 10.2 / 17.7 | 20 % |
+| it | 3 | 1.2 % | 54 % | 1.06 | 0.88 | 0.3 / 0.16 | 3.14 | 10.4 / 15.2 | 22 % |
+| pt | 4 | 2.0 % | 41 % | 1.28 | 1.08 | 0.3 / 0.04 | 6.69 | 11.7 / 15.1 | 20 % |
+| ru | 9 | 2.0 % | 10 % | 1.08 | 0.82 | 0.18 / – | 5.45 | 12.2 / 17.3 | 20 % |
+| ko | 8 | 1.8 % | 12 % | 1.16 | 0.92 | 0.3 / 0.14 | 6.1 | 13.2 / 17.6 | 22 % |
+
+Each delivery flag fires on ≤ 5 % of native clips per language (4–4.9 %); together on 16–22 %.
+
+Sanity check, speechocean762 train (English thresholds; experts' 0–10 sentence fluency and
+prosody; flagged minus not flagged):
+
+| flag | utterances flagged | fluency | prosody |
+|---|---|---|---|
+| `long_pause` | 246 (9.8 %) | -2.96 | -2.72 |
+| `pause_mid_phrase` | 71 (2.8 %) | -2.92 | -2.70 |
+| `rushed_punctuation` | 0 (0.0 %) | – | – |
+| `flat_pitch` | 1276 (51.0 %) | +0.01 | -0.07 |
+| `slow` | 1679 (67.2 %) | +0.40 | +0.39 |
+| `fast` | 28 (1.1 %) | -2.36 | -2.23 |
+| `any` | 2184 (87.4 %) | -0.51 | -0.49 |
+
+`rushed_punctuation` never fires there (the prompts have no internal punctuation), so it is
+unverified on learners; all thresholds are unverified on learners outside English.
+
+### One example per new kind
+
+**`mispronounced_word`** (en, `fleurs-en-validation-10010138729160973689`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "mispronounced_word", "word": "thousands", "word_index": 6, "syllable_index": null, "phone_index": null, "position": null, "expected": "thousands", "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": 0.5358, "prob": 0.9669, "confidence": null, "start": 2.59, "end": 3.03, "n_sounds_flagged": 1}
+```
+
+Tip `word.mispronounced`: Try “thousands” again; some of its sounds were off.
+
+**`extra_speech`** (en, `fleurs-en-validation-10010138729160973689`, prompt without “someone”):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "extra_speech", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": "səmwən", "expected_ipa": null, "heard_ipa": "səmwən", "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 1.73, "end": 2.15, "after_word": 2, "before_word": 3, "where": "between", "restart": false, "n_sounds": 6}
+```
+
+Tip `speech.extra`: There was extra speech between “call” and “who”; read only the words of the sentence.
+
+**`slow`** (en, `fleurs-en-validation-10098964113747380446`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "slow", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.41, "end": 3.71, "sounds_per_s": 10.3}
+```
+
+Tip `rate.slow`: Try reading a little faster and more smoothly.
+
+**`long_pause`** (en, `fleurs-en-validation-10312254140358477897`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "long_pause", "word": "somehow", "word_index": 7, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 3.51, "end": 4.51, "duration": 1.0, "after_word": 7, "before_word": 8, "at_punctuation": false}
+```
+
+Tip `pause.long`: Try not to stop for so long (1.0 s) after “somehow”.
+
+**`fast`** (en, `fleurs-en-validation-10408474834696432538`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "fast", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.99, "end": 6.95, "sounds_per_s": 16.61}
+```
+
+Tip `rate.fast`: Slow down a little so that every sound is clear.
+
+**`rushed_punctuation`** (en, `fleurs-en-validation-10630374883688952860`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "rushed_punctuation", "word": "injured", "word_index": 18, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.71, "end": 5.71, "punctuation": "stop", "gap": 0.02, "after_word": 18}
+```
+
+Tip `punctuation.rushed`: Make a short pause at the full stop after “injured”.
+
+**`flat_pitch`** (en, `fleurs-en-validation-1105184381995491301`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "flat_pitch", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.81, "end": 4.35, "pitch_range_st": 6.45}
+```
+
+Tip `pitch.flat`: Let your voice rise and fall more; it sounded quite flat.
+
+**`pause_mid_phrase`** (en, `fleurs-en-validation-14225189458852066857`):
+
+```json
+{"schema_version": 2, "schema_minor": 1, "kind": "pause_mid_phrase", "word": "mahayana", "word_index": 15, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.73, "end": 6.65, "duration": 0.92, "after_word": 15, "before_word": 16, "in_word": false}
+```
+
+Tip `pause.mid_phrase`: Keep “mahayana” and “path” together; there was a 0.9 s pause between them.
 
 ## 4. Default tips (`pronunciada/tips.py`)
 
@@ -184,6 +330,17 @@ own or localised copy from `tip_key`.
 | `tone.unclear` | Check the tone of “{syllable}”: it should be {expected_tone} (tone {expected}). |
 | `stress.position` | In “{word}”, stress the {expected_ord} syllable; it sounded stressed on the {heard_ord}. |
 | `stress.unclear` | In “{word}”, put the stress on the {expected_ord} syllable. |
+| `word.mispronounced` | Try “{word}” again; some of its sounds were off. |
+| `speech.extra` | There was extra speech {where}; read only the words of the sentence. |
+| `speech.restart` | You started “{next_word}” twice; try to say it in one go. |
+| `pause.long` | Try not to stop for so long ({duration} s) after “{word}”. |
+| `pause.long_punctuation` | Keep the pause after “{word}” shorter ({duration} s). |
+| `pause.mid_phrase` | Keep “{word}” and “{next_word}” together; there was a {duration} s pause between them. |
+| `pause.in_word` | Say “{word}” in one go, without stopping in the middle. |
+| `punctuation.rushed` | Make a short pause at the {mark} after “{word}”. |
+| `pitch.flat` | Let your voice rise and fall more; it sounded quite flat. |
+| `rate.slow` | Try reading a little faster and more smoothly. |
+| `rate.fast` | Slow down a little so that every sound is clear. |
 | `word.missing` | The word “{word}” seemed to be missing; try saying every word. |
 
 ## 5. Audio-quality gate (`pronunciada/quality.py`, `result.audio`)
@@ -226,6 +383,9 @@ was not added: the gate reports `lead_sil_s` / `trail_sil_s` instead.
 4. Use `tip_key` + `params` for localised tips, or `pronunciada.tips.tips()` for English; at most
    3 per utterance.
 5. Outside English and Mandarin tones, treat coaching as unverified on learners (section 3).
+   Word-level `extra_speech` / `missing_word` can drive "read only the words shown" prompts;
+   `long_pause`, `pause_mid_phrase` and `fast` go with lower expert fluency on English learners,
+   the others are native-derived only (section 3b).
 6. Log `schema_version`, `error_prob` and `gate` with the app's events to monitor drift.
 
 ## 7. Example outputs
@@ -258,6 +418,7 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
   "items": [
    {
     "schema_version": 2,
+    "schema_minor": 1,
     "kind": "substitution",
     "word": "a",
     "word_index": 13,
@@ -281,6 +442,28 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
    },
    {
     "schema_version": 2,
+    "schema_minor": 1,
+    "kind": "mispronounced_word",
+    "word": "a",
+    "word_index": 13,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "a",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.8003,
+    "prob": 0.2991,
+    "confidence": null,
+    "start": 4.87,
+    "end": 4.89,
+    "n_sounds_flagged": 1
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 1,
     "kind": "substitution",
     "word": "thousands",
     "word_index": 6,
@@ -297,6 +480,27 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
     "confidence": null,
     "start": 3.01,
     "end": 3.03
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 1,
+    "kind": "mispronounced_word",
+    "word": "thousands",
+    "word_index": 6,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "thousands",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.5354,
+    "prob": 0.9904,
+    "confidence": null,
+    "start": 2.59,
+    "end": 3.03,
+    "n_sounds_flagged": 1
    }
   ]
  }
@@ -336,6 +540,7 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
   "items": [
    {
     "schema_version": 2,
+    "schema_minor": 1,
     "kind": "missing_word",
     "word": "的",
     "word_index": 2,
@@ -355,6 +560,7 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
    },
    {
     "schema_version": 2,
+    "schema_minor": 1,
     "kind": "tone",
     "word": "后",
     "word_index": 6,
@@ -376,6 +582,7 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
    },
    {
     "schema_version": 2,
+    "schema_minor": 1,
     "kind": "missing_word",
     "word": "中",
     "word_index": 1,
@@ -432,6 +639,7 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
   "items": [
    {
     "schema_version": 2,
+    "schema_minor": 1,
     "kind": "substitution",
     "word": "religión",
     "word_index": 5,
@@ -456,6 +664,28 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
    },
    {
     "schema_version": 2,
+    "schema_minor": 1,
+    "kind": "mispronounced_word",
+    "word": "religión",
+    "word_index": 5,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "religión",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.682,
+    "prob": 0.0093,
+    "confidence": null,
+    "start": 4.13,
+    "end": 4.59,
+    "n_sounds_flagged": 1
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 1,
     "kind": "substitution",
     "word": "mayoritaria",
     "word_index": 6,
@@ -472,6 +702,27 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
     "confidence": null,
     "start": 4.99,
     "end": 5.01
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 1,
+    "kind": "mispronounced_word",
+    "word": "mayoritaria",
+    "word_index": 6,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "mayoritaria",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.6101,
+    "prob": 0.0294,
+    "confidence": null,
+    "start": 4.59,
+    "end": 5.25,
+    "n_sounds_flagged": 1
    }
   ]
  }

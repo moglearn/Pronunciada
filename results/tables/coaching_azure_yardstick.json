@@ -1,0 +1,104 @@
+{
+ "n_phones": 47041,
+ "error_rate": 0.18590166025382113,
+ "pr_auc": {
+  "ours": 0.545737933413682,
+  "ours_ci": [
+   0.48476942995742883,
+   0.5978394054243813
+  ],
+  "azure": 0.3823961932536229,
+  "azure_ci": [
+   0.3243262573961836,
+   0.4369784218580279
+  ]
+ },
+ "diff_ap_ci": [
+  0.14391629819237955,
+  0.1800118637564356
+ ],
+ "at_recall": {
+  "careful": {
+   "recall": 0.19622641509433963,
+   "precision_ours": 0.7460869565217392,
+   "ours_ci": [
+    0.6888835690022743,
+    0.7933713572052195
+   ],
+   "precision_azure": 0.5609597924773022,
+   "azure_recall_reached": 0.1978273299028016,
+   "azure_ci": [
+    0.49568879780558345,
+    0.6207945319160526
+   ],
+   "diff_ci": [
+    0.1443719087089642,
+    0.2280661950340277
+   ]
+  },
+  "balanced": {
+   "recall": 0.3261292166952544,
+   "precision_ours": 0.646858698117487,
+   "ours_ci": [
+    0.5970984850511039,
+    0.6926586006063222
+   ],
+   "precision_azure": 0.4639291465378422,
+   "azure_recall_reached": 0.3294453973699257,
+   "azure_ci": [
+    0.41550290080957897,
+    0.5132834206570134
+   ],
+   "diff_ci": [
+    0.15680647596392383,
+    0.20884169845096323
+   ]
+  },
+  "eager": {
+   "recall": 0.46540880503144655,
+   "precision_ours": 0.5542693721912025,
+   "ours_ci": [
+    0.5095891434245824,
+    0.5938845073774379
+   ],
+   "precision_azure": 0.38591682419659734,
+   "azure_recall_reached": 0.46689536878216126,
+   "azure_ci": [
+    0.3466595616401714,
+    0.42363181904133235
+   ],
+   "diff_ci": [
+    0.14847934931035517,
+    0.19033891007060855
+   ]
+  }
+ },
+ "heard": {
+  "n_substitutions": 568,
+  "nbest_available": true,
+  "azure_top_names_other": {
+   "n": 442,
+   "coverage": 0.778169014084507,
+   "exact": 0.36877828054298645,
+   "within1": 0.49321266968325794
+  },
+  "azure_best_other_candidate": {
+   "n": 475,
+   "coverage": 0.8362676056338029,
+   "exact": 0.35789473684210527,
+   "within1": 0.47578947368421054
+  },
+  "ours_balanced": {
+   "n": 44,
+   "coverage": 0.07746478873239436,
+   "exact": 0.6363636363636364,
+   "within1": 0.7727272727272727
+  },
+  "azure_top_at_our_coverage": {
+   "n": 44,
+   "exact": 0.2727272727272727,
+   "within1": 0.45454545454545453
+  }
+ },
+ "ompal": "not comparable by error type: the cached zh-TW responses carry no phoneme labels (empty strings) and zh-CN gives one score per syllable ('ta 1'), not separate initial / final / tone scores; Azure has no tone score. Only word-level any-error detection is comparable (results/ompal.md)."
+}

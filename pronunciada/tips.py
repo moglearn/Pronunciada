@@ -70,6 +70,17 @@ TEMPLATES = {
     "tone.unclear": "Check the tone of “{syllable}”: it should be {expected_tone} (tone {expected}).",
     "stress.position": "In “{word}”, stress the {expected_ord} syllable; it sounded stressed on the {heard_ord}.",
     "stress.unclear": "In “{word}”, put the stress on the {expected_ord} syllable.",
+    "word.mispronounced": "Try “{word}” again; some of its sounds were off.",
+    "speech.extra": "There was extra speech {where}; read only the words of the sentence.",
+    "speech.restart": "You started “{next_word}” twice; try to say it in one go.",
+    "pause.long": "Try not to stop for so long ({duration} s) after “{word}”.",
+    "pause.long_punctuation": "Keep the pause after “{word}” shorter ({duration} s).",
+    "pause.mid_phrase": "Keep “{word}” and “{next_word}” together; there was a {duration} s pause between them.",
+    "pause.in_word": "Say “{word}” in one go, without stopping in the middle.",
+    "punctuation.rushed": "Make a short pause at the {mark} after “{word}”.",
+    "pitch.flat": "Let your voice rise and fall more; it sounded quite flat.",
+    "rate.slow": "Try reading a little faster and more smoothly.",
+    "rate.fast": "Slow down a little so that every sound is clear.",
     "word.missing": "The word “{word}” seemed to be missing; try saying every word.",
 }
 
@@ -141,7 +152,7 @@ def sound_tip_key(expected: str, heard: str, diff: list[str]) -> tuple[str, dict
     return "sound.substitution", {}
 
 
-def tip_for(item: dict, syllable_text: str | None = None) -> dict:
+def tip_for(item: dict, syllable_text: str | None = None, words: list[str] | None = None) -> dict:
     k = item["kind"]
     P = {"word": item["word"], "expected": item["expected"], "heard": item["heard"]}
     if k == "missing_word":
@@ -165,6 +176,34 @@ def tip_for(item: dict, syllable_text: str | None = None) -> dict:
         else:
             key = "stress.position"
             P["heard_ord"] = _ord(item["heard"])
+    elif k == "mispronounced_word":
+        key = "word.mispronounced"
+    elif k == "extra_speech":
+        W = words or []
+        a, b = item.get("after_word", -1), item.get("before_word", len(W))
+        nm = (lambda i: (W[i] or "") if 0 <= i < len(W) else "")
+        P["next_word"] = nm(b)
+        if item.get("restart") and P["next_word"]:
+            key = "speech.restart"
+        else:
+            key = "speech.extra"
+            P["where"] = ("at the start" if a < 0 else "at the end" if b >= len(W) or not W
+                          else f"between “{nm(a)}” and “{nm(b)}”")
+    elif k in ("long_pause", "pause_mid_phrase"):
+        W = words or []
+        P["duration"] = f"{item['duration']:.1f}"
+        P["next_word"] = (W[item["before_word"]] or "") if 0 <= item["before_word"] < len(W) else ""
+        if k == "long_pause":
+            key = "pause.long_punctuation" if item.get("at_punctuation") else "pause.long"
+        else:
+            key = "pause.in_word" if item.get("in_word") else "pause.mid_phrase"
+    elif k == "rushed_punctuation":
+        key = "punctuation.rushed"
+        P["mark"] = "full stop" if item["punctuation"] == "stop" else "comma"
+    elif k == "flat_pitch":
+        key = "pitch.flat"
+    elif k in ("slow", "fast"):
+        key = f"rate.{k}"
     elif item["heard"] is None:
         key = "sound.unclear"
     else:
@@ -177,24 +216,33 @@ def tips(items: list[dict], max_tips: int = 3, result=None) -> list[dict]:
     """Up to `max_tips` tips: diagnosed items first in coaching order, then flag-only items.
     `result` (optional SentenceResult) supplies syllable text for tone tips."""
     def target(it):
-        return (it["word_index"], it["kind"] in ("tone", "stress"), it["syllable_index"],
-                it["phone_index"])
+        return (it["word_index"], it["kind"] if it["word_index"] is None else it["kind"] in ("tone", "stress"),
+                it["syllable_index"], it["phone_index"])
 
     diagnosed = [it for it in items if it["heard"] is not None or it["kind"] in ("missing", "missing_word", "extra")]
+    diagnosed = [it for it in diagnosed if it["kind"] != "mispronounced_word"]
     rest = [it for it in items if it not in diagnosed]
-    out, seen, words_done = [], set(), set()
+    out, seen, words_done, kinds_done = [], set(), set(), set()
+    words = [w.text for w in result.words] if result is not None else (
+        [None] * (1 + max([i["word_index"] for i in items if i["word_index"] is not None] or [-1])))
+    for it in items:                     # word texts for tips that name neighbouring words
+        if it["word_index"] is not None and words[it["word_index"]] is None:
+            words[it["word_index"]] = it["word"]
     for it in diagnosed + rest:
         if len(out) >= max_tips:
             break
         t = target(it)
-        if t in seen or it["word_index"] in words_done:
-            continue                     # one tip per sound, and per word (no pile-ups)
+        if t in seen or (it["word_index"] is not None and it["word_index"] in words_done) \
+                or (it["kind"] in kinds_done and it["word_index"] is None):
+            continue                     # one tip per sound, per word and per utterance-level kind
         seen.add(t)
-        words_done.add(it["word_index"])
+        if it["word_index"] is not None:
+            words_done.add(it["word_index"])
+        kinds_done.add(it["kind"])
         syl = None
         if result is not None and it["kind"] == "tone":
             syl = result.words[it["word_index"]].syllables[it["syllable_index"]].text or None
-        tp = tip_for(it, syl)
+        tp = tip_for(it, syl, words)
         tp["item"] = it
         out.append(tp)
     return out

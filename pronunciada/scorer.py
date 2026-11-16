@@ -264,13 +264,17 @@ class Scorer:
         if self.prosody is not None:
             t = time.perf_counter()
             try:
+                if trk is None:     # the same track ProsodyScorer.score would compute; kept for coaching
+                    from .prosody.f0 import track as _f0_track
+
+                    trk = _f0_track(np.asarray(wav, dtype=np.float32))
                 pros = self.prosody.score(wav, ref, ev, track=trk, embeddings=emb)
             except Exception as e:  # noqa: BLE001
                 warnings.append(f"prosody failed: {type(e).__name__}: {e}")
             timing["prosody"] = (time.perf_counter() - t) * 1e3
         if self.pros_cal and self.pros_cal.get("experimental"):
             warnings.append(f"{self.pros_cal['kind']} scoring is experimental: {self.pros_cal['experimental']}")
-        cache.update(prosody=pros, dur=dur, warnings=warnings)
+        cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav)   # f0 / wav: coaching only
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
         timing["total"] = (time.perf_counter() - t_all) * 1e3
         res.timing_ms = {k: round(v, 3) for k, v in timing.items()}

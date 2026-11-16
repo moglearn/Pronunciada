@@ -119,9 +119,13 @@ def so762_rows(name, split):
         n = len(X["expected"])
         acc = np.full(n, np.nan)
         pron = [None] * n
+        tj, tk = np.full(n, -1), np.full(n, -1)
         for i, (j, k) in o2t.items():
             acc[i] = W[j]["phones_accuracy"][k]
             pron[i] = mis.get((j, k))
+            tj[i], tk[i] = j, k
+        cols["tj"].extend(tj)
+        cols["tk"].extend(tk)
         for k, v in X.items():
             cols[k].extend(list(v))
         cols["acc"].extend(acc)
