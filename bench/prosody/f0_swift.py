@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 from scipy.signal import resample_poly
 
-from .f0 import F0Track, n_frames
+from pronunciada.prosody.f0 import F0Track, n_frames
 
 SR = 16000
 S_HOP = 256                  # SwiftF0 frame period (samples)
