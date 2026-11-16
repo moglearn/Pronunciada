@@ -1,0 +1,132 @@
+{
+ "lang": "pt",
+ "kind": "stress",
+ "coef": [
+  2.6769826556369694,
+  0.4598079487105393,
+  0.4598079487105393,
+  -0.012893418503255732
+ ],
+ "c_len": 1.8436074861447755,
+ "c_str": 0.05261731434689769,
+ "n_fit_words": 5524,
+ "n_fit_errors": 400,
+ "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
+ "err_prior": 0.1,
+ "native_quantiles": [
+  0.005,
+  0.02
+ ],
+ "fit_on": "FLEURS validation, 200 clips",
+ "prosody_model_meta": {
+  "model": "stress_v3",
+  "platt": {
+   "en": [
+    0.892639696598053,
+    -0.025702904909849167
+   ],
+   "de": [
+    1.1708177328109741,
+    0.057797372341156006
+   ],
+   "es": [
+    1.1729342937469482,
+    0.052678342908620834
+   ],
+   "it": [
+    1.1208007335662842,
+    0.043406009674072266
+   ],
+   "pt": [
+    0.9509466886520386,
+    -0.015012380667030811
+   ],
+   "ru": [
+    0.8739357590675354,
+    -0.06162503734230995
+   ]
+  },
+  "ctx_len": 160,
+  "inputs": {
+   "reg": true,
+   "lowmel": true,
+   "zemb": true
+  },
+  "zemb_layers": [
+   "enc1",
+   "enc3"
+  ],
+  "round": 8,
+  "langs": [
+   "en",
+   "de",
+   "es",
+   "it",
+   "pt",
+   "ru"
+  ],
+  "n_lang": 6
+ },
+ "prosody_model_files": {
+  "pitch_ja.onnx": "b6a74615b22e",
+  "pitch_ja_v3.onnx": "52c37712f74b",
+  "stress.onnx": "a7ed773ec4e0",
+  "stress_v3.onnx": "7a93506dbbde",
+  "tone_zh.onnx": "4e7428ce226a",
+  "tone_zh_v2.onnx": "47849e1029a7",
+  "tone_zh_v3.onnx": "d3c9c21c3ebd",
+  "tone_zh_v3z.onnx": "ffd41da84a8f"
+ },
+ "experimental": null,
+ "dev_cv": {
+  "n_words": 30744,
+  "share_native_words_scored": 0.6288706739526412,
+  "native_accept": {
+   "0.0": {
+    "before": 0.9913479052823315,
+    "after": 0.9872495446265938,
+    "p_pros_only": 0.9963570127504554
+   },
+   "0.5": {
+    "before": 0.9904371584699454,
+    "after": 0.9820127504553734,
+    "p_pros_only": 0.9927140255009107
+   },
+   "1.0": {
+    "before": 0.9879326047358834,
+    "after": 0.9744990892531876,
+    "p_pros_only": 0.9870218579234973
+   }
+  },
+  "prosodic_error": {
+   "sounds": {
+    "auc": 0.5803193306010929,
+    "hit_at_5pct": 0.0725,
+    "n_err": 400
+   },
+   "p_pros": {
+    "auc": 0.9767116347905282,
+    "hit_at_5pct": 0.9075,
+    "n_err": 400
+   },
+   "product": {
+    "auc": 0.9637437386156649,
+    "hit_at_5pct": 0.8125,
+    "n_err": 400
+   }
+  },
+  "sound_error": {
+   "before": {
+    "auc": 0.948848531420765,
+    "hit_at_5pct": 0.813,
+    "n_err": 2000
+   },
+   "after": {
+    "auc": 0.9421416780510018,
+    "hit_at_5pct": 0.7695,
+    "n_err": 2000
+   }
+  }
+ },
+ "prosody_model": "stress_v3"
+}

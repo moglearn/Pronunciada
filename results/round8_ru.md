@@ -177,7 +177,28 @@ Reading the held-out results:
 * **cv-real "before".** This is the last full `bench.eval_cv` run (fingerprint 3afad851c345e9d4).
   The "after" was scored separately (`ru_round8 cv`) so that `cv_real.md` and the shared
   `eval_cv` caches were not touched; another agent was editing `bench/eval_cv.py` at the time.
-  **`results/cv_real.md` is therefore not updated.**
+  `results/cv_real.md` was regenerated afterwards (see the keep-or-revert decision).
+
+### Keep-or-revert decision (rule fixed before computing)
+
+The rule: revert to round 7 if the cv-real drop has p < 0.10 **and** the near-swap gain has
+p ≥ 0.10; otherwise keep round 8. Both comparisons are **paired** (round 8 − round 7) on the same
+clips, with the bootstrap of `bench/eval_cv.py` (2000 resamples, two-sided p).
+
+| comparison | round 7 | round 8 | Δ (8 − 7) [95 % CI] | p |
+|---|---|---|---|---|
+| cv-real ru Test A AUC (400 clips, speaker resampling, `speaker_bootstrap`) | 0.793 | 0.772 | −0.021 [−0.045, +0.002] | 0.080 |
+| swap near-swap AUC (150 source clips, utterance-cluster resampling, `bench.eval_swap` metrics) | 0.872 | 0.887 | +0.016 [+0.003, +0.030] | 0.022 |
+
+The cv-real drop has p < 0.10, but the near-swap gain also has p < 0.10. The revert condition is
+therefore not met, and **round 8 is kept**.
+
+Kept: `results/cv_real.md` and `results/tables/cv_real.json` were regenerated with
+`python -m bench.eval_cv --steps ours,report`. All 4 396 test clips were re-scored, and cached
+Azure answers were used, with no requests.
+* The ru row reads 0.772 vs Azure 0.809 (Δ −0.038, p = 0.095). This matches the separate
+  `ru_round8 cv` scoring.
+* All 13 other locale / test rows are identical to before: ours, Azure and Δ are equal to 1e-12.
 
 ## 5. The same bias rule for the other languages (dev only, nothing changed)
 
