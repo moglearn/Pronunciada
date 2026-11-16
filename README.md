@@ -112,10 +112,11 @@ Same syllable, different tone in the prompt (so only the pitch tells them apart)
 
 | | Pronunciada | Azure |
 |---|---|---|
-| detection (AUC) | 0.816 | **0.846** |
-| caught at 5 % false alarms | 30 % | **40 %** |
+| detection (AUC) | 0.824 | **0.846** |
+| caught at 5 % false alarms | 31 % | **40 %** |
 
-Azure is still ahead here. The tone model itself listens to pitch only (171 k parameters); it
+Azure is still ahead here (round 5 tried richer tone-model inputs; see
+[results/tone_v3.md](results/tone_v3.md)). The tone model itself listens to pitch only (171 k parameters); it
 agrees with the dictionary tone on 84 % of syllables of unseen studio speakers and 68–75 % on
 harder crowd-sourced speech, and tells a wrong tone from a right one with AUC 0.90–0.97 on native
 speech. Simplified and Traditional text give identical references; Taiwan-accented speech is
