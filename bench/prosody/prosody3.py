@@ -376,6 +376,8 @@ def train(a):
 
     torch.set_num_threads(1)
     cfg = dict(V3 if a.v3 else BASE)
+    if a.inputs is not None:
+        cfg = {k: k in a.inputs.split(",") for k in BASE}
     dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     net = make_net(a.task, cfg).to(dev)
     dev_data = load_dev(a.task)
@@ -545,6 +547,7 @@ if __name__ == "__main__":
         ap.add_argument("--name", required=True)
         ap.add_argument("--base", dest="v3", action="store_false", help="old inputs (ablation)")
         ap.add_argument("--transplant", type=float, default=0.4)
+        ap.add_argument("--inputs", default=None, help="comma list of reg,lowmel,zemb (default: all three)")
         ap.add_argument("--steps", type=int, default=6000)
         ap.add_argument("--bs", type=int, default=64)
         ap.add_argument("--lr", type=float, default=2e-3)
