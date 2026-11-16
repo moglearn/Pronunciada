@@ -1,0 +1,51 @@
+# Mandarin words (Simplified script) with a lexical neutral tone in Putonghua.
+# Hand-written for pronunciada (no third-party source; public-domain linguistic facts).
+# Format:
+#   word word word ...     -> the last syllable of each word is neutral (tone 5)
+#   =word 4 5 3            -> explicit surface tones for every syllable (5 = neutral)
+# Mainland standard. Taiwan usage mostly keeps the full tone; the front-end always offers
+# the citation tone as a tone alternative for these (except grammatical particles).
+
+# kinship / reduplicated nouns
+爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 爷爷 奶奶 姥姥 姥爷 叔叔 舅舅 伯伯 婶婶 姑姑 宝宝 娃娃 星星 猩猩
+太太 公公 婆婆 嫂子 媳妇 丈夫 姑娘 女婿 外甥 侄子 孙子 亲戚 爱人 闺女 丫头 大夫 师父 师傅
+姑父 姨父 东家 冤家 亲家 人家
+
+# verb reduplication (AA)
+看看 想想 说说 试试 走走 听听 问问 谈谈 找找 写写 读读 坐坐 歇歇 尝尝 玩玩 谢谢 摸摸 洗洗
+讲讲 聊聊 逛逛 动动 帮帮 学学 练练 算算 查查 比比 量量 猜猜 等等
+
+# common lexical neutral tones
+朋友 东西 衣服 先生 知道 认识 告诉 喜欢 明白 清楚 地方 时候 事情 意思 麻烦 漂亮 舒服 关系
+消息 收拾 打扮 打听 打算 豆腐 便宜 窗户 聪明 太阳 月亮 眼睛 耳朵 鼻子 嘴巴 脑袋
+指头 骨头 石头 木头 馒头 舌头 枕头 念头 甜头 苦头 上头 里头 外头 前头 后头 码头 跟头
+学生 买卖 本事 招呼 照顾 商量 嘱咐 吩咐 应酬 热闹 暖和 凉快 干净 结实 规矩 糊涂 啰嗦
+机灵 实在 老实 欺负 名字 客气 力气 运气 脾气 福气 和气 小气 志气 神气 口气
+觉得 记得 懂得 显得 晓得 认得 舍得 值得 免得 省得 使得
+什么 怎么 这么 那么 多么 要么
+委屈 窝囊 疙瘩 哆嗦 琢磨 折腾 张罗 打量 拾掇 磨蹭 嘀咕 唠叨 吆喝 咳嗽 喇叭 琵琶 葡萄 萝卜
+芝麻 玻璃 玫瑰 蘑菇 狐狸 骆驼 蛤蟆 苍蝇 蚂蚁 云彩 胭脂 首饰 屁股 胳膊 巴掌
+钥匙 扫帚 笤帚 簸箕 篱笆 棉花 庄稼 粮食 衣裳 被窝 铺盖 包袱 行李 风筝 灯笼 算盘 世故 体面
+点心 月饼 烧饼 包子 饺子 生意 工夫 功夫 本钱 差事 在乎 合同 精神 休息 学问 见识 知识 马虎
+早上 晚上 地上 头上 身上 心里 家里 这里 那里 哪里 这个 那个 哪个
+
+=小伙子 3 3 5
+=怎么样 3 5 4
+=对不起 4 5 3
+=差不多 4 5 1
+=了不起 3 5 3
+=来不及 2 5 2
+=看不起 4 5 3
+=受不了 4 5 3
+=忍不住 3 5 4
+=用不着 4 5 2
+=说不定 1 5 4
+=怪不得 4 5 2
+=舍不得 3 5 2
+=巴不得 1 5 2
+=恨不得 4 5 2
+=等一等 3 5 3
+=看一看 4 5 4
+=想一想 3 5 3
+=试一试 4 5 4
+=听一听 1 5 1

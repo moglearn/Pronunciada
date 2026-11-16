@@ -1,0 +1,124 @@
+{
+ "n_utts": 200,
+ "threads": 1,
+ "sentence_model": "sentence",
+ "columns": {
+  "dec_ins_rate": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "dec_sub_rate": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "dec_del_rate": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "dec_extra_in_pauses": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "post_max_mean": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "post_entropy_mean": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "blank_share_speech": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "pauses_per_word": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "pause_mean_s": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "pause_max_s": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "pauses_in_word": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "lead_sil_s": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "trail_sil_s": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "run_length": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "phonation_ratio": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "emb_accuracy": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "emb_fluency": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "emb_prosodic": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  },
+  "emb_total": {
+   "max_abs": 0.0,
+   "n_diff_gt_1e-6": 0,
+   "nan_mismatch": 0
+  }
+ },
+ "worst": [
+  [
+   "dec_ins_rate",
+   0.0
+  ],
+  [
+   "dec_sub_rate",
+   0.0
+  ],
+  [
+   "dec_del_rate",
+   0.0
+  ],
+  [
+   "dec_extra_in_pauses",
+   0.0
+  ],
+  [
+   "post_max_mean",
+   0.0
+  ]
+ ]
+}

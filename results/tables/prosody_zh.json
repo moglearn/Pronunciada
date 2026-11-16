@@ -1,0 +1,88 @@
+{
+ "lang": "zh",
+ "kind": "tone",
+ "coef": [
+  4.021607621852614,
+  1.055233376701566,
+  0.019997457832399316,
+  -0.05696232857016095
+ ],
+ "c_len": 0.6025714800284543,
+ "c_str": 0.13570580251746375,
+ "n_fit_words": 7522,
+ "n_fit_errors": 400,
+ "features": "[1, min prosody logit, second-min prosody logit, n scored syllables]",
+ "err_prior": 0.1,
+ "native_quantiles": [
+  0.0025,
+  0.01
+ ],
+ "fit_on": "FLEURS validation, 200 clips",
+ "prosody_model_meta": {
+  "model": "tone_v2",
+  "temperature": 1.0017762213297001,
+  "platt": [
+   0.9748673030427767,
+   0.061887254036674645
+  ],
+  "ctx_len": 160,
+  "sequence": true
+ },
+ "prosody_model_files": {
+  "pitch_ja.onnx": "b6a74615b22e",
+  "stress.onnx": "a7ed773ec4e0",
+  "tone_zh.onnx": "4e7428ce226a",
+  "tone_zh_v2.onnx": "47849e1029a7"
+ },
+ "experimental": null,
+ "dev_cv": {
+  "n_words": 26327,
+  "share_native_words_scored": 1.0,
+  "native_accept": {
+   "0.0": {
+    "before": 0.9872374368519011,
+    "after": 0.9827173624036161,
+    "p_pros_only": 0.9970752459452273
+   },
+   "0.5": {
+    "before": 0.9848444562616325,
+    "after": 0.9766019675618187,
+    "p_pros_only": 0.9938846051582026
+   },
+   "1.0": {
+    "before": 0.9829832491358681,
+    "after": 0.9688912523265089,
+    "p_pros_only": 0.9893645307099176
+   }
+  },
+  "prosodic_error": {
+   "sounds": {
+    "auc": 0.5430340999734113,
+    "hit_at_5pct": 0.0425,
+    "n_err": 400
+   },
+   "p_pros": {
+    "auc": 0.8688181334751396,
+    "hit_at_5pct": 0.485,
+    "n_err": 400
+   },
+   "product": {
+    "auc": 0.8449734113267748,
+    "hit_at_5pct": 0.3775,
+    "n_err": 400
+   }
+  },
+  "sound_error": {
+   "before": {
+    "auc": 0.9603040414783303,
+    "hit_at_5pct": 0.862,
+    "n_err": 2000
+   },
+   "after": {
+    "auc": 0.9335130949215634,
+    "hit_at_5pct": 0.792,
+    "n_err": 2000
+   }
+  }
+ }
+}

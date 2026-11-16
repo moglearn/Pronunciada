@@ -1,0 +1,31 @@
+# Mandarin characters whose standard Taiwan (Guoyu) reading differs from Putonghua only in tone.
+# Hand-written for pronunciada from well-known reading differences (public linguistic facts).
+# Format: simplified-char  mainland-pinyin+tone  taiwan-tone
+# Applied when the Mainland reading of the character is exactly that syllable; the Taiwan tone
+# becomes a tone alternative (tone_alts). Segmental differences (和 hàn, 垃圾 lèsè, 液 yì,
+# 携 xī, 暂 zhàn ...) cannot be expressed this way and are listed in docs/text_cjk_notes.md.
+期 qi1 2
+企 qi3 4
+危 wei1 2
+微 wei1 2
+质 zhi4 2
+识 shi2 4
+究 jiu1 4
+夕 xi1 4
+迹 ji4 1
+击 ji1 2
+室 shi4 3
+绩 ji4 1
+息 xi1 2
+惜 xi1 2
+昔 xi1 2
+熄 xi1 2
+档 dang4 3
+亚 ya4 3
+播 bo1 4
+帆 fan1 2
+突 tu1 2
+拥 yong1 3
+发 fa4 3
+框 kuang4 1
+跌 die1 2

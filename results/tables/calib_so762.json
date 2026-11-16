@@ -1,0 +1,245 @@
+{
+ "n_phones_ours_matched": 46727,
+ "n_utts": 2500,
+ "n_speakers": 125,
+ "features_numeric": [
+  "llr_sub",
+  "llr_del",
+  "n_frames",
+  "peak_post",
+  "alt_nonzero",
+  "z_llr_sub",
+  "z_llr_del",
+  "z_n_frames",
+  "utt_mean_llr_sub",
+  "utt_median_llr_sub",
+  "utt_dur",
+  "phones_per_s",
+  "llr_sub_per_frame",
+  "llr_sub_rel",
+  "is_nucleus_f",
+  "stress_f",
+  "can_mean",
+  "can_max",
+  "comp_mean",
+  "comp_max",
+  "log_ratio_comp",
+  "ent_nonblank",
+  "blank_mean",
+  "comp_dist",
+  "span_frames_padded",
+  "has_last",
+  "last_can_mean",
+  "last_can_max",
+  "last_comp_mean",
+  "last_comp_max",
+  "last_log_ratio_comp",
+  "prev_llr_sub",
+  "next_llr_sub",
+  "word_mean_llr_sub",
+  "word_min_llr_sub"
+ ],
+ "features_cat": [
+  "cls",
+  "position",
+  "comp_cls",
+  "phone",
+  "comp_tok"
+ ],
+ "ours": {
+  "llr_sub": {
+   "pearson": 0.5109197250441864,
+   "spearman": 0.361384640739582,
+   "pearson_ci": [
+    0.46643828770203394,
+    0.5426582035240636
+   ]
+  },
+  "z_llr_sub": {
+   "pearson": 0.48394021581801844,
+   "spearman": 0.36261067950880455,
+   "pearson_ci": [
+    0.4363117031153696,
+    0.5186487322436065
+   ]
+  },
+  "ordinal_logistic": {
+   "pearson": 0.581679610984062,
+   "spearman": 0.38934600724491386,
+   "pearson_ci": [
+    0.5123655103939533,
+    0.6501905853795351
+   ]
+  },
+  "gbm": {
+   "pearson": 0.7031060923458828,
+   "spearman": 0.48796638635067685,
+   "pearson_ci": [
+    0.6517838428530962,
+    0.7349747845644652
+   ]
+  },
+  "gbm_no_phone_id": {
+   "pearson": 0.6843214835176622,
+   "spearman": 0.4708719033894156,
+   "pearson_ci": [
+    0.6281802701788771,
+    0.7213139950324954
+   ]
+  },
+  "phone_prior_only": {
+   "pearson": 0.1295316405488907,
+   "spearman": 0.21582941032765568,
+   "pearson_ci": [
+    0.1177118037981152,
+    0.14371025176307173
+   ]
+  }
+ },
+ "theirs": {
+  "llr_sub": {
+   "pearson": 0.5094657148063257,
+   "spearman": 0.36250780657074977,
+   "pearson_ci": [
+    0.4648461996235107,
+    0.5408676165615224
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  },
+  "z_llr_sub": {
+   "pearson": 0.48290735003603963,
+   "spearman": 0.3635778358966823,
+   "pearson_ci": [
+    0.43549664233442614,
+    0.5176148122213399
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  },
+  "ordinal_logistic": {
+   "pearson": 0.5789111964713269,
+   "spearman": 0.3902267073759772,
+   "pearson_ci": [
+    0.5101065856646073,
+    0.646348190945756
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  },
+  "gbm": {
+   "pearson": 0.7007778761147406,
+   "spearman": 0.4879968534908326,
+   "pearson_ci": [
+    0.6486976881833948,
+    0.7322976115801879
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  },
+  "gbm_no_phone_id": {
+   "pearson": 0.6820148107903518,
+   "spearman": 0.47104246154923457,
+   "pearson_ci": [
+    0.6256349368456894,
+    0.7188374988608078
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  },
+  "phone_prior_only": {
+   "pearson": 0.12862737762490817,
+   "spearman": 0.21457020392159717,
+   "pearson_ci": [
+    0.11702316136826835,
+    0.14294145439806658
+   ],
+   "n": 47076,
+   "n_fallback": 349,
+   "n_no_prediction": 0
+  }
+ },
+ "gbm_permutation_importance_top15": [
+  [
+   "utt_dur",
+   0.06553407327544444,
+   0.014702241275717058
+  ],
+  [
+   "phone",
+   0.05390210146285035,
+   0.009494973910048117
+  ],
+  [
+   "llr_del",
+   0.05081861329463551,
+   0.01734666353078303
+  ],
+  [
+   "comp_tok",
+   0.025333396398896767,
+   0.004574482647911854
+  ],
+  [
+   "comp_dist",
+   0.018248029787762514,
+   0.005695688094853682
+  ],
+  [
+   "llr_sub",
+   0.017832294607316397,
+   0.00478842461360944
+  ],
+  [
+   "can_mean",
+   0.015219629137946795,
+   0.009958634471016982
+  ],
+  [
+   "word_mean_llr_sub",
+   0.014841201351050137,
+   0.005168185582553004
+  ],
+  [
+   "position",
+   0.012808873169070898,
+   0.004415093658078954
+  ],
+  [
+   "utt_mean_llr_sub",
+   0.011792147707461242,
+   0.004285952385103727
+  ],
+  [
+   "word_min_llr_sub",
+   0.008328552034808985,
+   0.004988957725510716
+  ],
+  [
+   "peak_post",
+   0.005821395879427227,
+   0.002700016274330401
+  ],
+  [
+   "next_llr_sub",
+   0.004485873728566806,
+   0.0019138244351291557
+  ],
+  [
+   "blank_mean",
+   0.003910862686305301,
+   0.0010559591775005461
+  ],
+  [
+   "utt_median_llr_sub",
+   0.00313318630555733,
+   0.003632815361909665
+  ]
+ ],
+ "n_their_phones": 47076
+}

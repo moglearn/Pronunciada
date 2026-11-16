@@ -1,0 +1,316 @@
+{
+ "coef": [
+  0.5831044858116586,
+  0.9145046120009002,
+  0.0,
+  4.58779161239461,
+  2.465463871540879
+ ],
+ "features": "[1, max llr_del, mean llr_del, one-sound word, two-sound word]",
+ "clip": 20.0,
+ "prior": 0.03,
+ "fit_on": "FLEURS validation, 120 clips x 10 languages, pooled",
+ "n_words_said": 25396,
+ "n_words_omitted": 3549,
+ "dev": {
+  "cv": {
+   "auc": 0.9960693729942672,
+   "sounds=1": {
+    "n_said": 1323,
+    "n_omitted": 1170,
+    "false_omitted_new": 0.009826152683295541,
+    "false_omitted_old": 0.047619047619047616,
+    "caught_new": 0.6487179487179487,
+    "caught_old": 0.8717948717948718
+   },
+   "sounds=2": {
+    "n_said": 5775,
+    "n_omitted": 1172,
+    "false_omitted_new": 0.005021645021645022,
+    "false_omitted_old": 0.008831168831168832,
+    "caught_new": 0.7824232081911263,
+    "caught_old": 0.8191126279863481
+   },
+   "sounds>=3": {
+    "n_said": 18298,
+    "n_omitted": 1207,
+    "false_omitted_new": 0.002623237512296426,
+    "false_omitted_old": 0.001420920319160564,
+    "caught_new": 0.9072079536039768,
+    "caught_old": 0.632145816072908
+   }
+  },
+  "leave_one_language_out": {
+   "de": {
+    "auc": 0.9968475838194149,
+    "sounds=1": {
+     "n_said": 21,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.047619047619047616,
+     "caught_new": 0.9416666666666667,
+     "caught_old": 0.9916666666666667
+    },
+    "sounds=2": {
+     "n_said": 486,
+     "n_omitted": 120,
+     "false_omitted_new": 0.00411522633744856,
+     "false_omitted_old": 0.00823045267489712,
+     "caught_new": 0.8833333333333333,
+     "caught_old": 0.9166666666666666
+    },
+    "sounds>=3": {
+     "n_said": 1836,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0032679738562091504,
+     "false_omitted_old": 0.0027233115468409588,
+     "caught_new": 0.425,
+     "caught_old": 0.3
+    }
+   },
+   "en": {
+    "auc": 0.9955618910298423,
+    "sounds=1": {
+     "n_said": 48,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.0,
+     "caught_new": 0.5583333333333333,
+     "caught_old": 0.9916666666666667
+    },
+    "sounds=2": {
+     "n_said": 722,
+     "n_omitted": 120,
+     "false_omitted_new": 0.01662049861495845,
+     "false_omitted_old": 0.01662049861495845,
+     "caught_new": 0.7833333333333333,
+     "caught_old": 0.8166666666666667
+    },
+    "sounds>=3": {
+     "n_said": 1773,
+     "n_omitted": 120,
+     "false_omitted_new": 0.003948110547095319,
+     "false_omitted_old": 0.001692047377326565,
+     "caught_new": 0.9833333333333333,
+     "caught_old": 0.8333333333333334
+    }
+   },
+   "es": {
+    "auc": 0.9951745438059617,
+    "sounds=1": {
+     "n_said": 153,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.0196078431372549,
+     "caught_new": 0.43333333333333335,
+     "caught_old": 0.5666666666666667
+    },
+    "sounds=2": {
+     "n_said": 789,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0012674271229404308,
+     "false_omitted_old": 0.005069708491761723,
+     "caught_new": 0.625,
+     "caught_old": 0.6666666666666666
+    },
+    "sounds>=3": {
+     "n_said": 1999,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0010005002501250625,
+     "false_omitted_old": 0.0010005002501250625,
+     "caught_new": 0.9166666666666666,
+     "caught_old": 0.7666666666666667
+    }
+   },
+   "fr": {
+    "auc": 0.9977298524404086,
+    "sounds=1": {
+     "n_said": 228,
+     "n_omitted": 118,
+     "false_omitted_new": 0.017543859649122806,
+     "false_omitted_old": 0.039473684210526314,
+     "caught_new": 0.8813559322033898,
+     "caught_old": 0.9745762711864406
+    },
+    "sounds=2": {
+     "n_said": 762,
+     "n_omitted": 118,
+     "false_omitted_new": 0.005249343832020997,
+     "false_omitted_old": 0.006561679790026247,
+     "caught_new": 0.5932203389830508,
+     "caught_old": 0.5932203389830508
+    },
+    "sounds>=3": {
+     "n_said": 1653,
+     "n_omitted": 124,
+     "false_omitted_new": 0.0024198427102238356,
+     "false_omitted_old": 0.0018148820326678765,
+     "caught_new": 0.9758064516129032,
+     "caught_old": 0.8064516129032258
+    }
+   },
+   "it": {
+    "auc": 0.9969597883597884,
+    "sounds=1": {
+     "n_said": 177,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.02824858757062147,
+     "caught_new": 0.36666666666666664,
+     "caught_old": 0.7333333333333333
+    },
+    "sounds=2": {
+     "n_said": 496,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0020161290322580645,
+     "false_omitted_old": 0.0020161290322580645,
+     "caught_new": 0.7,
+     "caught_old": 0.775
+    },
+    "sounds>=3": {
+     "n_said": 1952,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0005122950819672131,
+     "false_omitted_old": 0.0,
+     "caught_new": 0.9583333333333334,
+     "caught_old": 0.7
+    }
+   },
+   "ja": {
+    "auc": 0.9973510205375136,
+    "sounds=1": {
+     "n_said": 174,
+     "n_omitted": 102,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.06896551724137931,
+     "caught_new": 0.5784313725490197,
+     "caught_old": 0.9607843137254902
+    },
+    "sounds=2": {
+     "n_said": 1260,
+     "n_omitted": 99,
+     "false_omitted_new": 0.004761904761904762,
+     "false_omitted_old": 0.013492063492063493,
+     "caught_new": 0.9595959595959596,
+     "caught_old": 0.9797979797979798
+    },
+    "sounds>=3": {
+     "n_said": 1857,
+     "n_omitted": 125,
+     "false_omitted_new": 0.0032310177705977385,
+     "false_omitted_old": 0.004308023694130318,
+     "caught_new": 0.952,
+     "caught_old": 0.68
+    }
+   },
+   "ko": {
+    "auc": 0.9986439074989322,
+    "sounds=1": {
+     "n_said": 13,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.07692307692307693,
+     "caught_new": 0.5,
+     "caught_old": 0.975
+    },
+    "sounds=2": {
+     "n_said": 74,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.0,
+     "caught_new": 0.8916666666666667,
+     "caught_old": 0.9083333333333333
+    },
+    "sounds>=3": {
+     "n_said": 1734,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0005767012687427913,
+     "false_omitted_old": 0.0005767012687427913,
+     "caught_new": 0.9666666666666667,
+     "caught_old": 0.625
+    }
+   },
+   "pt": {
+    "auc": 0.9924329854716595,
+    "sounds=1": {
+     "n_said": 270,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.02962962962962963,
+     "caught_new": 0.38333333333333336,
+     "caught_old": 0.6
+    },
+    "sounds=2": {
+     "n_said": 523,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0019120458891013384,
+     "false_omitted_old": 0.0038240917782026767,
+     "caught_new": 0.65,
+     "caught_old": 0.6666666666666666
+    },
+    "sounds>=3": {
+     "n_said": 1922,
+     "n_omitted": 120,
+     "false_omitted_new": 0.003121748178980229,
+     "false_omitted_old": 0.001040582726326743,
+     "caught_new": 0.925,
+     "caught_old": 0.5
+    }
+   },
+   "ru": {
+    "auc": 0.9957693881727031,
+    "sounds=1": {
+     "n_said": 204,
+     "n_omitted": 120,
+     "false_omitted_new": 0.058823529411764705,
+     "false_omitted_old": 0.11274509803921569,
+     "caught_new": 0.75,
+     "caught_old": 0.95
+    },
+    "sounds=2": {
+     "n_said": 181,
+     "n_omitted": 120,
+     "false_omitted_new": 0.0055248618784530384,
+     "false_omitted_old": 0.016574585635359115,
+     "caught_new": 0.9,
+     "caught_old": 0.95
+    },
+    "sounds>=3": {
+     "n_said": 1787,
+     "n_omitted": 120,
+     "false_omitted_new": 0.001119194180190263,
+     "false_omitted_old": 0.0005595970900951316,
+     "caught_new": 0.95,
+     "caught_old": 0.775
+    }
+   },
+   "zh": {
+    "auc": 0.9989779454043005,
+    "sounds=1": {
+     "n_said": 35,
+     "n_omitted": 110,
+     "false_omitted_new": 0.0,
+     "false_omitted_old": 0.02857142857142857,
+     "caught_new": 0.9636363636363636,
+     "caught_old": 1.0
+    },
+    "sounds=2": {
+     "n_said": 482,
+     "n_omitted": 115,
+     "false_omitted_new": 0.006224066390041493,
+     "false_omitted_old": 0.006224066390041493,
+     "caught_new": 0.9391304347826087,
+     "caught_old": 0.9478260869565217
+    },
+    "sounds>=3": {
+     "n_said": 1785,
+     "n_omitted": 118,
+     "false_omitted_new": 0.002240896358543417,
+     "false_omitted_old": 0.0005602240896358543,
+     "caught_new": 0.9152542372881356,
+     "caught_old": 0.3220338983050847
+    }
+   }
+  }
+ }
+}

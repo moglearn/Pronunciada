@@ -1,0 +1,72 @@
+{
+ "speechocean762": {
+  "train": {
+   "theirs": 47076,
+   "theirs_matched": 46727,
+   "ours": 47745,
+   "ours_matched": 46727,
+   "identical": 42571,
+   "pct_theirs_matched": 99.25864559435806,
+   "pct_ours_matched": 97.8678395643523,
+   "pct_identical_of_matched": 91.10578466411283
+  },
+  "test": {
+   "theirs": 47369,
+   "theirs_matched": 47041,
+   "ours": 48082,
+   "ours_matched": 47041,
+   "identical": 42754,
+   "pct_theirs_matched": 99.30756401866199,
+   "pct_ours_matched": 97.83494862942473,
+   "pct_identical_of_matched": 90.8866733275228
+  }
+ },
+ "l2arctic": {
+  "train": {
+   "theirs": 89365,
+   "theirs_mappable": 89361,
+   "theirs_matched": 89017,
+   "ours": 89384,
+   "ours_matched": 89017,
+   "identical": 80201,
+   "pct_theirs_matched": 99.61058579980977,
+   "pct_ours_matched": 99.5894119752976,
+   "pct_identical_of_matched": 90.09627374546434
+  },
+  "test": {
+   "theirs": 29786,
+   "theirs_mappable": 29784,
+   "theirs_matched": 29673,
+   "ours": 29805,
+   "ours_matched": 29673,
+   "identical": 26699,
+   "pct_theirs_matched": 99.62062714026725,
+   "pct_ours_matched": 99.55712128837443,
+   "pct_identical_of_matched": 89.97742055066895
+  }
+ },
+ "epadb": {
+  "train": {
+   "theirs": 31077,
+   "theirs_mappable": 31077,
+   "theirs_matched": 30750,
+   "ours": 31361,
+   "ours_matched": 30750,
+   "identical": 28044,
+   "pct_theirs_matched": 98.94777488174535,
+   "pct_ours_matched": 98.05172028953159,
+   "pct_identical_of_matched": 91.2
+  },
+  "test": {
+   "theirs": 20665,
+   "theirs_mappable": 20665,
+   "theirs_matched": 20422,
+   "ours": 20831,
+   "ours_matched": 20422,
+   "identical": 18619,
+   "pct_theirs_matched": 98.82409871763852,
+   "pct_ours_matched": 98.03658009697087,
+   "pct_identical_of_matched": 91.17128586818137
+  }
+ }
+}

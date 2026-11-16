@@ -1,0 +1,43 @@
+{
+ "universal_sound_model": "sound_U",
+ "sound_model": {
+  "en": "sound_B"
+ },
+ "bias": {
+  "en": 0.0,
+  "zh": 0.089167,
+  "es": -0.722263,
+  "it": 0.078442,
+  "ja": 0.252897,
+  "ko": 0.787222,
+  "fr": -0.548873,
+  "de": 0.908746,
+  "pt": 0.697079,
+  "ru": 1.075104
+ },
+ "universal_trained_on": "so762",
+ "files_kb": {
+  "phone_dist.npz": 13.0,
+  "prosody/de.json": 2.1,
+  "prosody/en.json": 2.1,
+  "prosody/es.json": 2.1,
+  "prosody/it.json": 2.1,
+  "prosody/ja.json": 1.7,
+  "prosody/pt.json": 2.1,
+  "prosody/ru.json": 2.1,
+  "prosody/zh.json": 1.7,
+  "sentence.npz": 128.1,
+  "sound_B.npz": 314.4,
+  "sound_U.npz": 284.3,
+  "word.npz": 114.7,
+  "word_reg.npz": 21.4
+ },
+ "shipped_total_kb": 891.9,
+ "prosody_combo_round2_dropped": "replaced by the round-3 prosody channel (pronunciada/data/calib/prosody/<lang>.json)",
+ "explain_away": {
+  "enabled": false,
+  "threshold": 0.5,
+  "max_passes": 2,
+  "note": "selected on FLEURS validation (0.5 / 2) but DISABLED by default: on held-out data it lowered speechocean762 phone Pearson 0.660 -> 0.644 and word 0.585 -> 0.560 and did not improve the swap right-word rate; available as Scorer(..., explain_away=True)"
+ }
+}

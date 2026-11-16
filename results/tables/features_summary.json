@@ -1,0 +1,32 @@
+{
+ "epadb.parquet": {
+  "rows": 52192,
+  "utts": 3166,
+  "langs": "en"
+ },
+ "fleurs-validation.parquet": {
+  "rows": 2149718,
+  "utts": 3474,
+  "langs": "de,en,es,fr,it,ja,ko,pt,ru,zh"
+ },
+ "fleurs.parquet": {
+  "rows": 2573701,
+  "utts": 3982,
+  "langs": "de,en,es,fr,it,ja,ko,pt,ru,zh"
+ },
+ "l2arctic.parquet": {
+  "rows": 106777,
+  "utts": 3170,
+  "langs": "en"
+ },
+ "speechocean762.parquet": {
+  "rows": 95827,
+  "utts": 5000,
+  "langs": "en"
+ },
+ "speechocean762_theirs.parquet": {
+  "rows": 94445,
+  "utts": 5000,
+  "langs": ""
+ }
+}

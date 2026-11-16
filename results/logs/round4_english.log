@@ -1,0 +1,42 @@
+speechocean762-test-fp32: 250/2500 (7s)
+speechocean762-test-fp32: 500/2500 (13s)
+speechocean762-test-fp32: 750/2500 (18s)
+speechocean762-test-fp32: 1000/2500 (23s)
+speechocean762-test-fp32: 1250/2500 (28s)
+speechocean762-test-fp32: 1500/2500 (33s)
+speechocean762-test-fp32: 1750/2500 (38s)
+speechocean762-test-fp32: 2000/2500 (43s)
+speechocean762-test-fp32: 2250/2500 (50s)
+speechocean762-test-fp32: 2500/2500 (58s)
+speechocean762-test-fp32: 2500 utts in 58s
+l2arctic-test-fp32: 250/900 (8s)
+l2arctic-test-fp32: 500/900 (13s)
+l2arctic-test-fp32: 750/900 (18s)
+l2arctic-test-fp32: 900 utts in 22s
+epadb-test-fp32: 250/1263 (8s)
+epadb-test-fp32: 500/1263 (12s)
+epadb-test-fp32: 750/1263 (17s)
+epadb-test-fp32: 1000/1263 (21s)
+epadb-test-fp32: 1250/1263 (26s)
+epadb-test-fp32: 1263 utts in 26s
+so762 {'ours_A': 0.6276, 'ours_B': 0.6599, 'ours_C': 0.6894, 'ours_U': 0.6276, 'azure': 0.5383}
+l2arctic {'ours_B': 0.7121, 'ours_U': 0.6978, 'ours_A': 0.6978, 'ours_C': 0.7141, 'ours_W': 0.7707, 'ours_R': 0.7676, 'azure': 0.6309}
+epadb {'ours_B': 0.7212, 'ours_U': 0.7052, 'ours_A': 0.7052, 'ours_C': 0.7253, 'ours_W': 0.7505, 'ours_R': 0.7544, 'azure': 0.5865}
+l2arctic {'ours_B': 0.7121, 'ours_U': 0.6978, 'ours_A': 0.6978, 'ours_C': 0.7141, 'ours_W': 0.7707, 'ours_R': 0.7676, 'azure': 0.6309}
+epadb {'ours_B': 0.7212, 'ours_U': 0.7052, 'ours_A': 0.7052, 'ours_C': 0.7253, 'ours_W': 0.7505, 'ours_R': 0.7544, 'azure': 0.5865}
+fp32 4 48.791021001306945
+fp32 1 98.65316649847955
+int8 4 37.65704149918747
+int8 1 64.47066650071065
+speechocean762-test-int8: 250/2500 (6s)
+speechocean762-test-int8: 500/2500 (9s)
+speechocean762-test-int8: 750/2500 (12s)
+speechocean762-test-int8: 1000/2500 (16s)
+speechocean762-test-int8: 1250/2500 (19s)
+speechocean762-test-int8: 1500/2500 (23s)
+speechocean762-test-int8: 1750/2500 (26s)
+speechocean762-test-int8: 2000/2500 (29s)
+speechocean762-test-int8: 2250/2500 (34s)
+speechocean762-test-int8: 2500/2500 (39s)
+speechocean762-test-int8: 2500 utts in 39s
+wrote results/english_vs_azure.md

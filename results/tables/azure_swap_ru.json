@@ -1,0 +1,180 @@
+{
+ "counts": {
+  "orig:records": 150,
+  "units": 8253,
+  "units_unmapped": 0,
+  "orig:units": 2751,
+  "orig:units_unmapped": 0,
+  "orig:used": 150,
+  "swap_far:records": 150,
+  "swap_far:units": 2751,
+  "swap_far:units_unmapped": 0,
+  "swap_far:used": 150,
+  "swap_near:records": 150,
+  "swap_near:units": 2751,
+  "swap_near:units_unmapped": 0,
+  "swap_near:used": 150,
+  "unmapped_rate": 0.0
+ },
+ "metrics": {
+  "native:n_units": {
+   "value": 2751
+  },
+  "native:fa<60": {
+   "value": 0.054162122864412944,
+   "lo": 0.04443335437688178,
+   "hi": 0.06508693425830077
+  },
+  "native:fa<80": {
+   "value": 0.0916030534351145,
+   "lo": 0.07883990295508968,
+   "hi": 0.1056925818454326
+  },
+  "native:mean": {
+   "value": 0.9265612504543802,
+   "lo": 0.9167425968139293,
+   "hi": 0.9352858103702921
+  },
+  "native:median": {
+   "value": 1.0,
+   "lo": 1.0,
+   "hi": 1.0
+  },
+  "swap_far:n": {
+   "value": 150
+  },
+  "swap_far:auc": {
+   "value": 0.9823093681917211,
+   "lo": 0.9775920159410738,
+   "hi": 0.9865436959362378
+  },
+  "swap_far:hit@5%FA": {
+   "value": 1.0,
+   "lo": 1.0,
+   "hi": 1.0
+  },
+  "swap_far:hit@2%FA": {
+   "value": 0.77028,
+   "lo": 0.591298446091322,
+   "hi": 0.98
+  },
+  "swap_far:hit<60": {
+   "value": 1.0,
+   "lo": 1.0,
+   "hi": 1.0
+  },
+  "swap_far:hit<80": {
+   "value": 1.0,
+   "lo": 1.0,
+   "hi": 1.0
+  },
+  "swap_far:others_fa<60": {
+   "value": 0.07151095732410612,
+   "lo": 0.06019129667293449,
+   "hi": 0.08388764049018789
+  },
+  "swap_far:pos_mean": {
+   "value": 0.005466666666666667,
+   "lo": 0.0,
+   "hi": 0.013333333333333334
+  },
+  "swap_far:right_word": {
+   "value": 0.7605000000000001,
+   "lo": 0.7123819444444444,
+   "hi": 0.8082374999999999
+  },
+  "swap_far:sent_auc_AccuracyScore": {
+   "value": 0.8454444444444444,
+   "lo": 0.8131505555555555,
+   "hi": 0.8772016666666667
+  },
+  "swap_far:sent_drop_AccuracyScore": {
+   "value": 0.07813333333333333,
+   "lo": 0.07246666666666665,
+   "hi": 0.08406666666666665
+  },
+  "swap_far:sent_auc_PronScore": {
+   "value": 0.854,
+   "lo": 0.8218261111111111,
+   "hi": 0.8864905555555556
+  },
+  "swap_far:sent_drop_PronScore": {
+   "value": 0.07610666666666667,
+   "lo": 0.06989200000000001,
+   "hi": 0.08228166666666666
+  },
+  "swap_near:n": {
+   "value": 150
+  },
+  "swap_near:auc": {
+   "value": 0.9091746764065103,
+   "lo": 0.8922460129991407,
+   "hi": 0.9252622516132586
+  },
+  "swap_near:hit@5%FA": {
+   "value": 0.34183333333333343,
+   "lo": 0.23333333333333334,
+   "hi": 0.4578361111111111
+  },
+  "swap_near:hit@2%FA": {
+   "value": 0.12052,
+   "lo": 0.07340887301587302,
+   "hi": 0.1835416666666667
+  },
+  "swap_near:hit<60": {
+   "value": 0.38666666666666666,
+   "lo": 0.31333333333333335,
+   "hi": 0.47333333333333333
+  },
+  "swap_near:hit<80": {
+   "value": 0.7,
+   "lo": 0.6266666666666667,
+   "hi": 0.78
+  },
+  "swap_near:others_fa<60": {
+   "value": 0.059592464436755095,
+   "lo": 0.048807155963302755,
+   "hi": 0.07071189101769546
+  },
+  "swap_near:pos_mean": {
+   "value": 0.5819333333333333,
+   "lo": 0.5280400000000001,
+   "hi": 0.6288716666666666
+  },
+  "swap_near:right_word": {
+   "value": 0.37277777777777776,
+   "lo": 0.3022222222222222,
+   "hi": 0.44670833333333326
+  },
+  "swap_near:sent_auc_AccuracyScore": {
+   "value": 0.6492,
+   "lo": 0.6255761111111111,
+   "hi": 0.6794061111111112
+  },
+  "swap_near:sent_drop_AccuracyScore": {
+   "value": 0.028399999999999998,
+   "lo": 0.02406666666666667,
+   "hi": 0.03306833333333334
+  },
+  "swap_near:sent_auc_PronScore": {
+   "value": 0.6440444444444444,
+   "lo": 0.6183761111111111,
+   "hi": 0.6767361111111111
+  },
+  "swap_near:sent_drop_PronScore": {
+   "value": 0.025879999999999997,
+   "lo": 0.021505999999999983,
+   "hi": 0.030773666666666664
+  }
+ },
+ "latency": {
+  "n": 450,
+  "median_s": 2.2509212709996973,
+  "p90_s": 3.2638084624999464,
+  "mean_s": 2.367613124922208,
+  "mean_audio_s": 10.898399999999999,
+  "median_rtf": 0.20819653455085474
+ },
+ "system": "azure",
+ "dataset": "fleurs-swap"
+}

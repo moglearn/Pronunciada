@@ -1,0 +1,54 @@
+{
+ "model": "zipa-small-crctc-500k-fp32",
+ "datasets": {
+  "speechocean762": {
+   "n": 5000,
+   "hours": 5.57,
+   "gb": 0.25,
+   "missing": 0
+  },
+  "fleurs": {
+   "n": 15482,
+   "hours": 49.45,
+   "gb": 2.247,
+   "missing": 0
+  },
+  "l2arctic": {
+   "n": 3599,
+   "hours": 3.66,
+   "gb": 0.165,
+   "missing": 0
+  },
+  "epadb": {
+   "n": 3166,
+   "hours": 2.75,
+   "gb": 0.123,
+   "missing": 0
+  },
+  "aishell3": {
+   "n": 6837,
+   "hours": 6.66,
+   "gb": 0.299,
+   "missing": 0
+  },
+  "zhtw": {
+   "n": 400,
+   "hours": 0.46,
+   "gb": 0.021,
+   "missing": 0
+  },
+  "fleurs-validation": {
+   "n": 3474,
+   "hours": 11.23,
+   "gb": 0.51,
+   "missing": 0
+  }
+ },
+ "total": {
+  "n": 37958,
+  "hours": 79.78,
+  "gb": 3.615,
+  "missing": 0
+ },
+ "wall_s": 3021
+}

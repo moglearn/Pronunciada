@@ -1,0 +1,210 @@
+{
+ "zh": {
+  "kind": "tone",
+  "n_words": 19460,
+  "share_with_prosody": 1.0,
+  "native_accept": {
+   "sounds": 0.9863309352517986,
+   "combined": 0.9852517985611511
+  },
+  "prosodic_auc": {
+   "sounds": 0.5737528517110266,
+   "combined": 0.6735063371356147
+  },
+  "sound_auc": {
+   "sounds": 0.96466286780852,
+   "combined": 0.9619007685551164
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   0.03340378073130856,
+   0.9490308785587538,
+   0.2011605726851766,
+   0.08954367269890509
+  ],
+  "adopted": true
+ },
+ "ja": {
+  "kind": "pitch",
+  "n_words": 29666,
+  "share_with_prosody": 1.0,
+  "native_accept": {
+   "sounds": 0.9877300613496932,
+   "combined": 0.9933931099575272
+  },
+  "prosodic_auc": {
+   "sounds": 0.48743639921722115,
+   "combined": 0.5488682322243966
+  },
+  "sound_auc": {
+   "sounds": 0.9437412933244177,
+   "combined": 0.9409821269363646
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   0.01486353493766261,
+   0.9126436105336281,
+   0.23355580334893808,
+   0.19781559079395447
+  ],
+  "adopted": true
+ },
+ "en": {
+  "kind": "stress",
+  "n_words": 21350,
+  "share_with_prosody": 0.42098360655737704,
+  "native_accept": {
+   "sounds": 0.9777049180327869,
+   "combined": 0.980655737704918
+  },
+  "prosodic_auc": {
+   "sounds": 0.6730138348203476,
+   "combined": 0.861425368338704
+  },
+  "sound_auc": {
+   "sounds": 0.9591232539682539,
+   "combined": 0.9520161706349206
+  },
+  "n_prosodic_errors": 296,
+  "n_sound_errors": 1500,
+  "coef": [
+   -0.6039796035372664,
+   0.9005611705848441,
+   0.3002120775671835,
+   0.29000928458214154
+  ],
+  "adopted": false
+ },
+ "de": {
+  "kind": "stress",
+  "n_words": 20629,
+  "share_with_prosody": 0.5585341024770953,
+  "native_accept": {
+   "sounds": 0.9748897183576518,
+   "combined": 0.9833729216152018
+  },
+  "prosodic_auc": {
+   "sounds": 0.6491803718269574,
+   "combined": 0.8638371469431534
+  },
+  "sound_auc": {
+   "sounds": 0.950505499938203,
+   "combined": 0.9451082684464219
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   -0.3704561235527923,
+   0.8870055447976471,
+   0.334172490732417,
+   0.17958947897931726
+  ],
+  "adopted": false
+ },
+ "es": {
+  "kind": "stress",
+  "n_words": 24934,
+  "share_with_prosody": 0.5668163952835485,
+  "native_accept": {
+   "sounds": 0.9929814710836609,
+   "combined": 0.9882088714205502
+  },
+  "prosodic_auc": {
+   "sounds": 0.6251905041031653,
+   "combined": 0.9156714048456428
+  },
+  "sound_auc": {
+   "sounds": 0.9769446960547504,
+   "combined": 0.9708929146537842
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   -1.5946866415467016,
+   1.0291273891696915,
+   0.3216451150522952,
+   0.19312626690232976
+  ],
+  "adopted": false
+ },
+ "it": {
+  "kind": "stress",
+  "n_words": 23044,
+  "share_with_prosody": 0.6688074986981427,
+  "native_accept": {
+   "sounds": 0.9963547995139733,
+   "combined": 0.9899756986634265
+  },
+  "prosodic_auc": {
+   "sounds": 0.6058823997453852,
+   "combined": 0.8856964778272862
+  },
+  "sound_auc": {
+   "sounds": 0.9734191869384177,
+   "combined": 0.9669866681276937
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   -1.7879828790461154,
+   1.1691784233191649,
+   0.37211364979107525,
+   0.155323982481138
+  ],
+  "adopted": false
+ },
+ "pt": {
+  "kind": "stress",
+  "n_words": 22365,
+  "share_with_prosody": 0.6369327073552425,
+  "native_accept": {
+   "sounds": 0.9924882629107982,
+   "combined": 0.989358372456964
+  },
+  "prosodic_auc": {
+   "sounds": 0.5983174603174604,
+   "combined": 0.866787903667214
+  },
+  "sound_auc": {
+   "sounds": 0.9517144123750236,
+   "combined": 0.9440550839464252
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   -0.9685871787449016,
+   0.962193637037903,
+   0.2762868566241851,
+   0.15431239074769879
+  ],
+  "adopted": false
+ },
+ "ru": {
+  "kind": "stress",
+  "n_words": 18529,
+  "share_with_prosody": 0.7318257866047817,
+  "native_accept": {
+   "sounds": 0.9882886286361919,
+   "combined": 0.9863996977710616
+  },
+  "prosodic_auc": {
+   "sounds": 0.5811954345214257,
+   "combined": 0.719020824989988
+  },
+  "sound_auc": {
+   "sounds": 0.9502118156955454,
+   "combined": 0.9465271172298707
+  },
+  "n_prosodic_errors": 300,
+  "n_sound_errors": 1500,
+  "coef": [
+   -0.2988656360675356,
+   0.9945729598779293,
+   0.25734262111579187,
+   0.058034408680665374
+  ],
+  "adopted": true
+ }
+}

@@ -1,0 +1,46 @@
+{
+ "mean_input_shift": {
+  "wl_mean_oof": 5.313976177971238,
+  "wl_mean_final": 5.191096548854714
+ },
+ "len": {
+  "pos_rate": 0.9075020506025617,
+  "old_map_oof_inputs": {
+   "mean_p": 0.9074962552020895,
+   "ece": 0.002231896042788635
+  },
+  "old_map_final_inputs": {
+   "mean_p": 0.9031964374962197,
+   "ece": 0.021390978957554336
+  },
+  "new_map_final_inputs_cv": {
+   "mean_p": 0.9075875071032383,
+   "ece": 0.0026882038379384392
+  },
+  "new_map": "isotonic",
+  "map_cv_ece": {
+   "platt": 0.008556239506252762,
+   "isotonic": 0.0026882038379384392
+  }
+ },
+ "str": {
+  "pos_rate": 0.7702694176288725,
+  "old_map_oof_inputs": {
+   "mean_p": 0.7702692947538232,
+   "ece": 0.007727859217371646
+  },
+  "old_map_final_inputs": {
+   "mean_p": 0.6916613102944905,
+   "ece": 0.08621944079581752
+  },
+  "new_map_final_inputs_cv": {
+   "mean_p": 0.770454433331604,
+   "ece": 0.0061429676146691915
+  },
+  "new_map": "isotonic",
+  "map_cv_ece": {
+   "platt": 0.009556967276231768,
+   "isotonic": 0.0061429676146691915
+  }
+ }
+}

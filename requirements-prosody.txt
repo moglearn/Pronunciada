@@ -1,0 +1,11 @@
+# Prosody path (pronunciada/prosody). Runtime needs only numpy, scipy, onnxruntime (core deps).
+# Training / benchmarking only (never imported by pronunciada/ at runtime):
+torch>=2.2                 # BSD-3: ProsodyNet training (MPS)
+scikit-learn>=1.3          # BSD-3: Platt calibration, offset check
+onnx==1.23.2               # Apache-2.0: export
+onnxscript==0.7.2          # MIT: torch.onnx exporter dependency
+praat-parselmouth==0.4.7   # GPL-3.0: OFFLINE cross-check only (F0 reference, monotone resynthesis
+                           # for the leak test); never imported by pronunciada/
+pyarrow>=15                # FLEURS validation parquet reader
+# Data fetching for round-2 tone training (bench/prosody/fetch_zh_extra.py) uses the system ffmpeg
+# binary to decode Common Voice mp3 clips (offline tool, not a Python dependency).

@@ -1,0 +1,110 @@
+{
+ "groups": [
+  "emb",
+  "disfluency",
+  "pauses"
+ ],
+ "layers": [
+  "enc1"
+ ],
+ "columns": [
+  "w_len_mean",
+  "w_len_min",
+  "w_str_mean",
+  "w_str_min",
+  "w_len_share_below",
+  "w_str_share_below",
+  "w_reg_mean",
+  "w_reg_min",
+  "s_len_mean",
+  "s_len_min",
+  "s_str_mean",
+  "s_str_p10",
+  "s_len_share_below",
+  "s_str_share_below",
+  "s_reg_mean",
+  "completeness",
+  "n_words",
+  "articulation_rate",
+  "n_pauses",
+  "pause_total_s",
+  "speech_share",
+  "mean_llr_sub",
+  "mean_z_llr_sub",
+  "share_del",
+  "dec_ins_rate",
+  "dec_sub_rate",
+  "dec_del_rate",
+  "dec_extra_in_pauses",
+  "post_max_mean",
+  "post_entropy_mean",
+  "blank_share_speech",
+  "pauses_per_word",
+  "pause_mean_s",
+  "pause_max_s",
+  "pauses_in_word",
+  "lead_sil_s",
+  "trail_sil_s",
+  "run_length",
+  "phonation_ratio",
+  "emb_accuracy",
+  "emb_fluency",
+  "emb_prosodic",
+  "emb_total"
+ ],
+ "params": {
+  "learning_rate": 0.03,
+  "max_iter": 300,
+  "max_leaf_nodes": 7,
+  "min_samples_leaf": 30
+ },
+ "blend_tree_weight": 0.7,
+ "cv": {
+  "accuracy": {
+   "mean": 0.8260190503689842,
+   "per_seed": [
+    0.8275372387894278,
+    0.8239486370136262,
+    0.8265712753038983
+   ]
+  },
+  "fluency": {
+   "mean": 0.8659391170218966,
+   "per_seed": [
+    0.8676901170862122,
+    0.8666705201863713,
+    0.8634567137931063
+   ]
+  },
+  "prosodic": {
+   "mean": 0.8590787423926084,
+   "per_seed": [
+    0.8605085686595915,
+    0.8593349071914156,
+    0.8573927513268179
+   ]
+  },
+  "total": {
+   "mean": 0.8457827336912979,
+   "per_seed": [
+    0.8470529533213891,
+    0.8452356470091645,
+    0.8450596007433399
+   ]
+  }
+ },
+ "cv_trees_only": {
+  "accuracy": 0.8229660707743708,
+  "fluency": 0.8622527873272418,
+  "prosodic": 0.8554803954176909,
+  "total": 0.8423461619766154
+ },
+ "walker_parity_max_abs": {
+  "accuracy": 1.2536479410130141e-08,
+  "fluency": 2.5852065377307554e-08,
+  "prosodic": 3.2899712287814964e-08,
+  "total": 1.1884863759803466e-08
+ },
+ "kb": 150.6357421875,
+ "projection_alpha": 1000.0
+}

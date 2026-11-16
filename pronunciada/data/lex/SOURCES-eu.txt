@@ -1,0 +1,20 @@
+Lexicon files of the European text front-ends (pronunciada/text/{en,de,fr,es,it,pt,ru}.py).
+Built with: python -m pronunciada.text._eu_build <lang> <source file>   (details: docs/text_eu_notes.md)
+
+en.tsv.gz, en_lts.tsv.gz
+  CMUdict (github.com/cmusphinx/cmudict, cmudict.dict), Copyright (C) 1993-2015 Carnegie Mellon
+  University, BSD-2-Clause-style licence. Converted to ZIPA IPA tokens; letter-to-sound table
+  learned from it.
+de.tsv.gz, de_lts.tsv.gz      ipa-dict "de"     (github.com/open-dict-data/ipa-dict), MIT licence.
+fr.tsv.gz, fr_lts.tsv.gz      ipa-dict "fr_FR"  (github.com/open-dict-data/ipa-dict), MIT licence.
+es_words.txt.gz               word list of ipa-dict "es_MX" (MIT licence); pronunciations are rules.
+it.tsv.gz, it_lts.tsv.gz      WikiPron "ita_latn_broad" (github.com/CUNY-CL/wikipron, data scraped
+                              from English Wiktionary): CC BY-SA 3.0/4.0, attribution: Wiktionary
+                              contributors. Stress added by rules.
+pt.tsv.gz                     derived from WikiPron "por_latn_bz_broad" (Wiktionary, CC BY-SA):
+                              word list + stressed open-vowel flags.
+ru.tsv.gz, ru_stress.tsv.gz   derived from WikiPron "rus_cyrl_narrow" (Wiktionary, CC BY-SA):
+                              stressed-vowel index per word form, irregular transcriptions, and a
+                              suffix stress table trained on it.
+The CC BY-SA files are share-alike data: redistributions of these files (or adaptations of them)
+must keep the CC BY-SA licence and the attribution above.

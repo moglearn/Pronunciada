@@ -1,0 +1,142 @@
+fleurs/en: 100/400 (13s)
+fleurs/en: 200/400 (24s)
+fleurs/en: 300/400 (35s)
+fleurs/en: 400/400 (46s)
+fleurs/en: 400 utts in 47s
+en native {'sounds': 0.9930375170714726, 'words': 0.9725074150125484, 'sentences': 0.9925} sound auc 0.982 word auc 0.9431
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+fleurs/zh: 100/400 (16s)
+fleurs/zh: 200/400 (28s)
+fleurs/zh: 300/400 (40s)
+fleurs/zh: 400/400 (52s)
+fleurs/zh: 400 utts in 52s
+zh native {'sounds': 0.9980858468677494, 'words': 0.9707775489186405, 'sentences': 0.9925} sound auc 0.9896 word auc 0.9325
+fleurs/es: 100/400 (17s)
+fleurs/es: 200/400 (33s)
+fleurs/es: 300/400 (45s)
+fleurs/es: 400/400 (60s)
+fleurs/es: 400 utts in 60s
+es native {'sounds': 0.9969700691970683, 'words': 0.9838803651194407, 'sentences': 0.995} sound auc 0.9936 word auc 0.9682
+fleurs/it: 100/400 (23s)
+fleurs/it: 200/400 (40s)
+fleurs/it: 300/400 (56s)
+fleurs/it: 400/400 (71s)
+fleurs/it: 400 utts in 71s
+it native {'sounds': 0.9990611286866007, 'words': 0.9839657936932121, 'sentences': 0.9975} sound auc 0.9913 word auc 0.95
+fleurs/ja: 100/400 (18s)
+fleurs/ja: 200/400 (33s)
+fleurs/ja: 300/400 (47s)
+fleurs/ja: 400/400 (63s)
+fleurs/ja: 400 utts in 64s
+ja native {'sounds': 0.9964875138334216, 'words': 0.9768667381207574, 'sentences': 0.9925} sound auc 0.9754 word auc 0.9334
+fleurs/ko: 100/382 (14s)
+fleurs/ko: 200/382 (26s)
+fleurs/ko: 300/382 (37s)
+fleurs/ko: 382 utts in 47s
+ko native {'sounds': 0.9960734610701061, 'words': 0.9784021071115013, 'sentences': 0.9895287958115183} sound auc 0.9796 word auc 0.9342
+fleurs/fr: 100/400 (12s)
+fleurs/fr: 200/400 (21s)
+fleurs/fr: 300/400 (30s)
+fleurs/fr: 400/400 (39s)
+fleurs/fr: 400 utts in 39s
+fr native {'sounds': 0.9927414563583292, 'words': 0.9793425364981627, 'sentences': 0.9925} sound auc 0.9883 word auc 0.9571
+fleurs/de: 100/400 (23s)
+fleurs/de: 200/400 (38s)
+fleurs/de: 300/400 (52s)
+fleurs/de: 400/400 (68s)
+fleurs/de: 400 utts in 69s
+de native {'sounds': 0.9960961623290693, 'words': 0.9681521231917872, 'sentences': 0.9925} sound auc 0.9766 word auc 0.9427
+fleurs/pt: 100/400 (22s)
+fleurs/pt: 200/400 (37s)
+fleurs/pt: 300/400 (52s)
+fleurs/pt: 400/400 (67s)
+fleurs/pt: 400 utts in 68s
+pt native {'sounds': 0.9979876606001636, 'words': 0.97801602772363, 'sentences': 0.99} sound auc 0.9831 word auc 0.9391
+fleurs/ru: 100/400 (20s)
+fleurs/ru: 200/400 (35s)
+fleurs/ru: 300/400 (52s)
+fleurs/ru: 400/400 (69s)
+fleurs/ru: 400 utts in 69s
+ru native {'sounds': 0.9984918623405459, 'words': 0.9709187045604759, 'sentences': 0.9925} sound auc 0.979 word auc 0.9218
+swap de 450
+swap en 450
+swap es 450
+swap fr 450
+swap it 450
+swap ja 450
+swap ko 450
+swap pt 450
+swap ru 450
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:44: SyntaxWarning: invalid escape sequence '\.'
+  re_han_default = re.compile("([\u4E00-\u9FD5a-zA-Z0-9+#&\._%\-]+)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/__init__.py:46: SyntaxWarning: invalid escape sequence '\s'
+  re_skip_default = re.compile("(\r\n|\s)", re.U)
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+./.venv/lib/python3.12/site-packages/jieba/finalseg/__init__.py:78: SyntaxWarning: invalid escape sequence '\.'
+  re_skip = re.compile("([a-zA-Z0-9]+(?:\.\d+)?%?)")
+swap zh 600
+wrote results/languages.md
