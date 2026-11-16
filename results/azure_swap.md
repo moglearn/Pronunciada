@@ -172,10 +172,10 @@ include upload and network. Four requests ran in parallel. Each request is one w
   could plausibly have said, so swap_near is the hard condition. de/fr/ru also have high
   native FA at < 80 (fr 5.9 %, de 14.5 %, ru 9.2 %), which hurts their near-swap hit rates at
   a fixed FA.
-* **ru near swaps (round 8).** Measured, reduction-aware vowel targets plus a retrained adapter
-  were tried on a validation-built swap set (349 near items). Dev AUC rose 0.871 → 0.883, under
-  the +0.02 bar, so they were not adopted and the ru rows above are unchanged. The remaining
-  misses get strong per-sound evidence (llr ≈ −5) but a lenient calibration
+* **ru near swaps (round 8).** The tables above are Azure's and do not change. Pronunciada's
+  ru near-swap AUC went 0.872 → 0.887 [0.860, 0.914] against Azure's 0.909 [0.892, 0.925]. Its
+  hit@5 % FA went 0.580 → 0.607 (Azure 0.342). Replaced words scoring > 0.9: 36 → 32 of 150
+  (Azure 9). The change: measured vowel targets, a retrained adapter and sound bias +0.60
   ([round8_ru.md](round8_ru.md)).
 * **Tone (zh).** Same syllable with a different tone: AUC 0.846, and only 40 % of these swaps
   are caught at 5 % FA. Azure zh-CN is weak on tone-only errors, which is where we can win.

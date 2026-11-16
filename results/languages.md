@@ -87,6 +87,9 @@ Same records, same evaluation code (`bench.eval_swap.evaluate`, utterance-cluste
 | ko | 150 | 0.941 [0.918, 0.960] | 0.937 [0.916, 0.956] | 0.767 [0.680, 0.833] | 0.708 [0.603, 0.819] | 0.740 [0.667, 0.807] | 0.699 [0.626, 0.770] | 0.760 [0.720, 0.797] | 0.725 [0.693, 0.762] |
 | pt | 150 | 0.956 [0.937, 0.973] | 0.938 [0.920, 0.954] | 0.827 [0.767, 0.887] | 0.724 [0.644, 0.795] | 0.713 [0.647, 0.787] | 0.590 [0.510, 0.663] | 0.732 [0.700, 0.768] | 0.711 [0.680, 0.746] |
 | ru | 150 | 0.887 [0.860, 0.914] | 0.909 [0.892, 0.925] | 0.607 [0.520, 0.693] | 0.342 [0.233, 0.458] | 0.507 [0.427, 0.587] | 0.373 [0.302, 0.447] | 0.690 [0.654, 0.730] | 0.649 [0.626, 0.679] |
+
+ru (round 8): rows re-run once after the round-8 Russian package was frozen: measured vowel targets, retrained adapter, sound bias +0.60 chosen on FLEURS-ru validation, stress channel refitted. Before → after and Azure are in results/round8_ru.md. The ru latency in the first table (1061 ms) was measured while other benchmark jobs shared the CPU; it is not comparable to the other rows.
+
 | zh | 150 | 0.974 [0.964, 0.983] | 0.966 [0.949, 0.980] | 0.893 [0.840, 0.940] | 0.896 [0.833, 0.947] | 0.787 [0.727, 0.853] | 0.747 [0.677, 0.810] | 0.787 [0.752, 0.824] | 0.774 [0.745, 0.807] |
 
 **tone**

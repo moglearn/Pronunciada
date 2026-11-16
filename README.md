@@ -94,7 +94,7 @@ where Pronunciada is ahead.
 | de | **0.996** / 0.982 | 0.913 / 0.921 | **0.953** / 0.887 | **0.773** / 0.517 | **0.044** / 0.049 |
 | it | **0.998** / 0.990 | **0.987** / 0.929 | **0.971** / 0.970 | 0.833 / 0.913 | **0.025** / 0.037 |
 | pt | **0.997** / 0.991 | **0.960** / 0.906 | **0.956** / 0.938 | **0.827** / 0.724 | 0.027 / 0.020 |
-| ru | **0.991** / 0.982 | **0.913** / 0.761 | 0.872 / 0.909 | **0.580** / 0.342 | **0.048** / 0.054 |
+| ru | **0.991** / 0.982 | **0.893** / 0.761 | 0.887 / 0.909 | **0.607** / 0.342 | **0.042** / 0.054 |
 | ko | 0.994 / 0.995 | 0.960 / 0.973 | **0.941** / 0.937 | **0.767** / 0.708 | **0.021** / 0.045 |
 
 - Detection = area under the ROC curve. "Right word blamed" = the changed word gets the lowest
@@ -102,13 +102,13 @@ where Pronunciada is ahead.
   each flags 5 % of the untouched words, so it is the fairest single column.
 - The last column is each system at its own natural cut-off (probability 0.6 / score 60), lower is
   better; Azure is a little more forgiving of native speakers in six languages.
-- Where Pronunciada is behind: Russian near-misses overall (0.87 against 0.91, although it catches
+- Where Pronunciada is behind: Russian near-misses overall (0.89 against 0.91, although it catches
   more of them at 5 % false alarms), Italian and Mandarin near-misses at 5 % false alarms, and by
-  about one point blaming the right word in German, Korean and Mandarin. Round 8 tried
-  reduction-aware Russian vowel targets and a retrained adapter. On dev, near-swap AUC rose only
-  0.871 → 0.883, under the +0.02 bar, so the change was not adopted and the Russian rows are
-  unchanged. The remaining misses are mostly calibration leniency (Russian bias +1.1), not the
-  references ([results/round8_ru.md](results/round8_ru.md)).
+  about one point blaming the right word in German, Korean and Mandarin. Round 8 changed
+  Russian in three ways: measured, reduction-aware vowel targets; an adapter retrained on them;
+  and a stricter sound bias (+1.08 → +0.60, chosen on dev). Near-swap AUC rose 0.872 → 0.887 on
+  test, which still trails Azure. cv-real ru got worse (0.793 → 0.772)
+  ([results/round8_ru.md](results/round8_ru.md)).
 
 ### Mandarin tones
 

@@ -148,3 +148,6 @@ class SentenceResult:
     # regression-style 0-1 sentence scores (accuracy, fluency, prosodic, total = the
     # speechocean762 0-10 scales / 10); empty when the scorer does not provide them
     scores: dict = field(default_factory=dict)
+    # round 9: P(the recording is a reading of this prompt at all); already multiplied into
+    # prob. None when the channel is not shipped / disabled
+    match_prob: float | None = None
