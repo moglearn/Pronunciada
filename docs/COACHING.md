@@ -404,6 +404,14 @@ bar reaches 0.7 precision for the teachers' consonant marks (best 0.67 on 12 cha
 adding the evidence to the Mandarin coaching score lowers its consonant AUC (0.956 → 0.935).
 These coaching items are unverified on learners (no labelled Korean or Russian learner data).
 
+Round 18 adds **Korean lax / tense** (달 / 딸): the Korean reference marks each ㄱ/ㄲ ㄷ/ㄸ ㅂ/ㅃ ㅅ/ㅆ
+ㅈ/ㅉ obstruent `RefPhone.tense` (spelling plus the front-end's post-obstruent tensification; the
+symbol is the same plain one), a small head (`data/coach/ko_tense.npz`) gives the evidence, and the
+claim `feature: "tense"` uses the tips `feature.tense.add` ("Make /k/ in “…” tighter and stronger,
+with no puff of air.") and `feature.tense.remove` ("Relax /k/ in “…”; it sounded tense."). Since
+round 18 the contrast evidence also lowers the **word** probability in Mandarin and Japanese
+(`WordResult.contrast_prob`, results/round18_word_contrasts.md).
+
 ## 4. Default tips (`pronunciada/tips.py`)
 
 Separate from the data. `tips(items, max_tips=3, result=None)` returns at most `max_tips`
@@ -500,6 +508,8 @@ own or localised copy from `tip_key`.
 | `feature.nasal.remove` | Keep /{expected}/ in “{word}” oral (no air through the nose); it sounded nasal. |
 | `feature.long.add` | Hold /{expected}/ in “{word}” a little longer; it sounded short. |
 | `feature.long.remove` | Make /{expected}/ in “{word}” shorter; it sounded long. |
+| `feature.tense.add` | Make /{expected}/ in “{word}” tighter and stronger, with no puff of air. |
+| `feature.tense.remove` | Relax /{expected}/ in “{word}”; it sounded tense. |
 
 ## 5. Audio-quality gate (`pronunciada/quality.py`, `result.audio`)
 

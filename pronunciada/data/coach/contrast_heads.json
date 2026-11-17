@@ -24,6 +24,19 @@
      "balanced": 0.33131554413088954,
      "eager": 0.47951996894713506
     }
+   },
+   {
+    "contrast": "tense",
+    "head": "tense",
+    "members": "RefPhone.tense",
+    "s0": -5.405959122678569,
+    "slope": 0.5,
+    "cap": true,
+    "coach": {
+     "careful": 0.5690886693266013,
+     "balanced": 0.7193127441911683,
+     "eager": 0.7913682385119591
+    }
    }
   ],
   "ru": [

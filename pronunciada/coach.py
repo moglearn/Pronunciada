@@ -480,9 +480,15 @@ def _contrast_items(result, items, X, lang, sensitivity, omitted, eprob, enabled
             if wi in omitted:
                 continue
             exp = X["expected"][i]
-            ec = AH.labels(exp).get(h)
+            if h == "tense":                          # round 18: Korean lax / tense (RefPhone.tense)
+                t = getattr(c["ref"].phones[i], "tense", None)
+                if t is None:
+                    continue
+                ec = "yes" if t else "no"
+            else:
+                ec = AH.labels(exp).get(h)
             other = "no" if ec == "yes" else "yes"
-            claim = {"feature": h, "key": AH.HEADS[h][2], "expected": ec, "heard": other,
+            claim = {"feature": h, "key": AH.HEADS[h][2] if h in AH.HEADS else h, "expected": ec, "heard": other,
                      "p": round(1.0 - p, 4), "source": "contrast"}
             it = by_sound.get((wi, k))
             if it is not None:

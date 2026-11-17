@@ -9,7 +9,7 @@ from pronunciada import length as L
 
 def test_config_languages_and_switch(monkeypatch):
     langs = {e["contrast"] for lang in ("ko", "ru", "zh") for e in CH.entries(lang)}
-    assert langs == {"aspiration", "hard_soft"}
+    assert langs == {"aspiration", "hard_soft", "tense"}          # tense: round 18 (Korean)
     for lang in ("en", "es", "fr", "de", "it", "pt", "ja"):
         assert CH.entries(lang) == []                     # other languages untouched
     monkeypatch.setenv("PRONUNCIADA_HEAD_CAPS", "0")

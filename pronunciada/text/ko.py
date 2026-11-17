@@ -27,6 +27,7 @@ NEUTRAL = {"ㄱ": "ㄱ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㄳ": "ㄱ", "ㄺ": "ㄱ",
            "ㄼ": "ㄹ", "ㄽ": "ㄹ", "ㄾ": "ㄹ", "ㅀ": "ㄹ", "ㅁ": "ㅁ", "ㄻ": "ㅁ", "ㅂ": "ㅂ", "ㅍ": "ㅂ",
            "ㅄ": "ㅂ", "ㄿ": "ㅂ", "ㅇ": "ㅇ"}
 TENSE = {"ㄱ": "ㄲ", "ㄷ": "ㄸ", "ㅂ": "ㅃ", "ㅅ": "ㅆ", "ㅈ": "ㅉ"}
+LAX_TENSE = frozenset(TENSE) | frozenset(TENSE.values())
 ASPIRATE = {"ㄱ": "ㅋ", "ㄷ": "ㅌ", "ㅂ": "ㅍ", "ㅈ": "ㅊ"}
 NASAL = {"ㄱ": "ㅇ", "ㄷ": "ㄴ", "ㅂ": "ㅁ"}
 OBSTRUENT_CODA = set("ㄱㄷㅂ")
@@ -295,6 +296,8 @@ class KoG2P(G2P):
             elif l in ("ㅅ", "ㅆ") and v in ("ㅣ", "ㅟ") or (l in ("ㅅ", "ㅆ") and VOWEL_IPA[v][0] == "j"):
                 ipa = "ʃ"                             # ZIPA: 시 -> ʃi (52 %)
             p = Ph(ipa)
+            if l in LAX_TENSE:                        # round 18: lax / tense marker (same symbol)
+                p.tense = l in TENSE.values()
             if l in VOICED_ONSET:
                 p.alt(VOICED_ONSET[l] if ipa != VOICED_ONSET[l] else ONSET_IPA[l], -0.3)
                 if l == "ㅈ":

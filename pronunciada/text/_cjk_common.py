@@ -31,6 +31,7 @@ class Ph:
     ipa: str
     nucleus: bool = False
     alts: list[tuple[str, float]] = field(default_factory=list)
+    tense: bool | None = None          # Korean lax / tense obstruent (RefPhone.tense)
 
     def alt(self, ipa: str, prior: float) -> None:
         """Add an alternative unless it equals the canonical form or is already present
@@ -74,7 +75,8 @@ def assemble(lang: str, text: str, words: list[Wd], warnings: list[str]) -> Refe
             q0 = len(ref.phones)
             for ph in s.phones:
                 alts = [(a, float(p)) for a, p in ph.alts if a == "" or is_valid(a)]
-                ref.phones.append(RefPhone(ipa=ph.ipa, word=wi, syllable=si, is_nucleus=ph.nucleus, alts=alts))
+                ref.phones.append(RefPhone(ipa=ph.ipa, word=wi, syllable=si, is_nucleus=ph.nucleus, alts=alts,
+                                          tense=ph.tense))
             ref.syllables.append(RefSyllable(word=wi, phones=(q0, len(ref.phones)), text=s.text, **s.attrs))
         ref.words.append(RefWord(text=w.text, syllables=(s0, len(ref.syllables)), phones=(p0, len(ref.phones)),
                                  char_span=w.span))

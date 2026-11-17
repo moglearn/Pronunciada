@@ -55,6 +55,8 @@ FEATURE_TEMPLATES = {
     "feature.rounded.remove": "Spread your lips (no rounding) for /{expected}/ in “{word}”; they sounded rounded.",
     "feature.nasal.add": "Let some air through your nose on /{expected}/ in “{word}”; it sounded oral.",
     "feature.nasal.remove": "Keep /{expected}/ in “{word}” oral (no air through the nose); it sounded nasal.",
+    "feature.tense.add": "Make /{expected}/ in “{word}” tighter and stronger, with no puff of air.",
+    "feature.tense.remove": "Relax /{expected}/ in “{word}”; it sounded tense.",
     "feature.long.add": "Hold /{expected}/ in “{word}” a little longer; it sounded short.",
     "feature.long.remove": "Make /{expected}/ in “{word}” shorter; it sounded long.",
 }
@@ -70,7 +72,7 @@ def feature_tip_key(claim: dict) -> tuple[str, dict]:
     h, e, x = claim["feature"], claim["expected"], claim["heard"]
     if h == "voicing":
         return ("feature.voicing.add" if e == "voiced" else "feature.voicing.remove"), {}
-    if h in ("aspirated", "palatalised", "lateral", "rounded", "nasal", "long"):
+    if h in ("aspirated", "palatalised", "lateral", "rounded", "nasal", "long", "tense"):
         return (f"feature.{h}.add" if e == "yes" else f"feature.{h}.remove"), {}
     if h == "manner":
         if e == "nasal":

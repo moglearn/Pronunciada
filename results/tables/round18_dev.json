@@ -1,0 +1,7120 @@
+{
+ "zh": {
+  "base": {
+   "native_word_accept": 0.9783150183150183,
+   "contrast": {
+    "aspiration/A>B": {
+     "n": 120,
+     "word_hit5": 0.4
+    },
+    "aspiration/B>A": {
+     "n": 120,
+     "word_hit5": 0.43333333333333335
+    }
+   },
+   "contrast_pooled_hit5": 0.4166666666666667,
+   "swap_near": {
+    "auc": 0.962850386475135,
+    "hit5": 0.8379310344827586,
+    "n": 290
+   },
+   "swap_far": {
+    "auc": 0.9909434228637984,
+    "hit5": 0.9793103448275862,
+    "n": 290
+   },
+   "planted_word_auc": 0.9391895265600594
+  },
+  "pick": {
+   "q": 0.02,
+   "floor": 0.6,
+   "ok": true,
+   "cal": {
+    "knee": [
+     0.19741016578086568,
+     1.0373222125569603,
+     1.7646991218092907
+    ],
+    "width": 4.0,
+    "floor": 0.6,
+    "native_quantile": 0.02
+   },
+   "native_word_accept": 0.9772893772893773,
+   "contrast": {
+    "aspiration/A>B": {
+     "n": 120,
+     "word_hit5": 0.7166666666666667
+    },
+    "aspiration/B>A": {
+     "n": 120,
+     "word_hit5": 0.8
+    }
+   },
+   "contrast_pooled_hit5": 0.7583333333333333,
+   "swap_near": {
+    "auc": 0.9642868739632231,
+    "hit5": 0.8517241379310345,
+    "n": 290
+   },
+   "swap_far": {
+    "auc": 0.9910344827586207,
+    "hit5": 0.9827586206896551,
+    "n": 290
+   },
+   "planted_word_auc": 0.939601757560093,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.555768470398948,
+      -3.607089800347402,
+      -2.4863703476092254
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9781684981684982,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.43333333333333335,
+    "swap_near": {
+     "auc": 0.9630734479229167,
+     "hit5": 0.8379310344827586,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991076836198073,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9391540157551103,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.555768470398948,
+      -3.607089800347402,
+      -2.4863703476092254
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9781684981684982,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.425,
+    "swap_near": {
+     "auc": 0.9630353298274097,
+     "hit5": 0.8379310344827586,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910747185261003,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9391652084012272,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.555768470398948,
+      -3.607089800347402,
+      -2.4863703476092254
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9781684981684982,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.425,
+    "swap_near": {
+     "auc": 0.9629901528253274,
+     "hit5": 0.8379310344827586,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910606007129495,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9391740546371942,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.555768470398948,
+      -3.607089800347402,
+      -2.4863703476092254
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9783150183150183,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.4083333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.42083333333333334,
+    "swap_near": {
+     "auc": 0.9629336815727244,
+     "hit5": 0.8379310344827586,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991032365086648,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9391813995302685,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.607089800347402,
+      -2.4863703476092254,
+      -1.2995872373445252
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9778754578754578,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.4583333333333333,
+    "swap_near": {
+     "auc": 0.9631263897222321,
+     "hit5": 0.8413793103448276,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910747185261003,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9392178992437098,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.607089800347402,
+      -2.4863703476092254,
+      -1.2995872373445252
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.978021978021978,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     }
+    },
+    "contrast_pooled_hit5": 0.44583333333333336,
+    "swap_near": {
+     "auc": 0.9631094483464512,
+     "hit5": 0.8413793103448276,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991087424557936,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9392221515502265,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.607089800347402,
+      -2.4863703476092254,
+      -1.2995872373445252
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9781684981684982,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.44166666666666665,
+    "swap_near": {
+     "auc": 0.9630692125789715,
+     "hit5": 0.8413793103448276,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991078247979388,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9392231943991819,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.607089800347402,
+      -2.4863703476092254,
+      -1.2995872373445252
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9781684981684982,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.425
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.42916666666666664,
+    "swap_near": {
+     "auc": 0.9630063883104507,
+     "hit5": 0.8379310344827586,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910457770091413,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9392120916538371,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.3165761163155296,
+      -0.9074455742134429,
+      0.19741016578086568
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9771428571428571,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.6
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.65
+     }
+    },
+    "contrast_pooled_hit5": 0.625,
+    "swap_near": {
+     "auc": 0.9639395757597148,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991002011788374,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9394680571319406,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.3165761163155296,
+      -0.9074455742134429,
+      0.19741016578086568
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9774358974358974,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6
+     }
+    },
+    "contrast_pooled_hit5": 0.6041666666666666,
+    "swap_near": {
+     "auc": 0.9638428687396322,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991050718243744,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9394757975884118,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.3165761163155296,
+      -0.9074455742134429,
+      0.19741016578086568
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9777289377289378,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.5333333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.525
+     }
+    },
+    "contrast_pooled_hit5": 0.5291666666666667,
+    "swap_near": {
+     "auc": 0.9637031023894399,
+     "hit5": 0.8448275862068966,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.99106907140084,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9394522256059874,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.3165761163155296,
+      -0.9074455742134429,
+      0.19741016578086568
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9778754578754578,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.4583333333333333,
+    "swap_near": {
+     "auc": 0.9634532170966718,
+     "hit5": 0.8413793103448276,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910549535876892,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9393771135109623,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.9074455742134429,
+      0.19741016578086568,
+      1.0373222125569603
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.976996336996337,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.7333333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.8333333333333334
+     }
+    },
+    "contrast_pooled_hit5": 0.7833333333333333,
+    "swap_near": {
+     "auc": 0.9643885222179085,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9909391875198532,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.939717172171216,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.9074455742134429,
+      0.19741016578086568,
+      1.0373222125569603
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9771428571428571,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.6916666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.7833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.7375,
+    "swap_near": {
+     "auc": 0.964340521653196,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910330709773056,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9397448166586131,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.9074455742134429,
+      0.19741016578086568,
+      1.0373222125569603
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9777289377289378,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.6166666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.65,
+    "swap_near": {
+     "auc": 0.9642035788656337,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910556594783468,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9397210109341814,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.9074455742134429,
+      0.19741016578086568,
+      1.0373222125569603
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9777289377289378,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.5083333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5416666666666666
+     }
+    },
+    "contrast_pooled_hit5": 0.525,
+    "swap_near": {
+     "auc": 0.9638548688808104,
+     "hit5": 0.8448275862068966,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.991058483040977,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9396117455358648,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.19741016578086568,
+      1.0373222125569603,
+      1.7646991218092907
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9762637362637363,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.7916666666666666
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     }
+    },
+    "contrast_pooled_hit5": 0.8458333333333333,
+    "swap_near": {
+     "auc": 0.9641746373486747,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9908205978893869,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9393664872397092,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.19741016578086568,
+      1.0373222125569603,
+      1.7646991218092907
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9765567765567765,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.7583333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.8833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8208333333333333,
+    "swap_near": {
+     "auc": 0.964274873822045,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9909773056153601,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9395029925719487,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.19741016578086568,
+      1.0373222125569603,
+      1.7646991218092907
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9772893772893773,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.7166666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.8
+     }
+    },
+    "contrast_pooled_hit5": 0.7583333333333333,
+    "swap_near": {
+     "auc": 0.9642868739632231,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910344827586207,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.939601757560093,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.19741016578086568,
+      1.0373222125569603,
+      1.7646991218092907
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9777289377289378,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.5833333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.575
+     }
+    },
+    "contrast_pooled_hit5": 0.5791666666666667,
+    "swap_near": {
+     "auc": 0.9640405181237426,
+     "hit5": 0.8448275862068966,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910429534465112,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9395965612954701,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      1.2351522911167867,
+      2.018449553919191,
+      2.6569512061605303
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9742124542124542,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.8416666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.9666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.9041666666666667,
+    "swap_near": {
+     "auc": 0.9628772103201214,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.990488123389687,
+     "hit5": 0.9793103448275862,
+     "n": 290
+    },
+    "planted_word_auc": 0.9376891635856923,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      1.2351522911167867,
+      2.018449553919191,
+      2.6569512061605303
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9758241758241758,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.8
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.95
+     }
+    },
+    "contrast_pooled_hit5": 0.875,
+    "swap_near": {
+     "auc": 0.9633247449969999,
+     "hit5": 0.8517241379310345,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9907881269191402,
+     "hit5": 0.9793103448275862,
+     "n": 290
+    },
+    "planted_word_auc": 0.9381543731106791,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      1.2351522911167867,
+      2.018449553919191,
+      2.6569512061605303
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9771428571428571,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.775
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.9083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8416666666666667,
+    "swap_near": {
+     "auc": 0.9637433381569195,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9909469523170861,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9385876588715205,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      1.2351522911167867,
+      2.018449553919191,
+      2.6569512061605303
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9775824175824176,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.6083333333333333,
+    "swap_near": {
+     "auc": 0.9638365157237144,
+     "hit5": 0.8482758620689655,
+     "n": 290
+    },
+    "swap_far": {
+     "auc": 0.9910076589136343,
+     "hit5": 0.9827586206896551,
+     "n": 290
+    },
+    "planted_word_auc": 0.9390000696730983,
+    "near_ok": true,
+    "planted_ok": false
+   }
+  ],
+  "near_misses": {
+   "missed": 47,
+   "with_contrast_sound": 32,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": {
+   "any": [
+    0.8094799591358921,
+    0.8094799591358921
+   ],
+   "tone_only": [
+    0.8096313992621227,
+    0.8096313992621227
+   ],
+   "seg": [
+    0.8088805654831237,
+    0.8088805654831237
+   ]
+  },
+  "learners": {
+   "any": [
+    0.8094799591358921,
+    0.8088903735975815
+   ],
+   "tone_only": [
+    0.8096313992621227,
+    0.8049459019824885
+   ],
+   "seg": [
+    0.8088805654831237,
+    0.8245024264164781
+   ]
+  },
+  "checks": {
+   "contrast_gain": 0.3416666666666666
+  },
+  "adopted": true
+ },
+ "en": {
+  "base": {
+   "native_word_accept": 0.9706763164462191,
+   "contrast": {
+    "dh_z/A>B": {
+     "n": 120,
+     "word_hit5": 0.6333333333333333
+    },
+    "dh_z/B>A": {
+     "n": 120,
+     "word_hit5": 0.875
+    },
+    "th_s/A>B": {
+     "n": 120,
+     "word_hit5": 0.75
+    },
+    "th_s/B>A": {
+     "n": 120,
+     "word_hit5": 0.925
+    }
+   },
+   "contrast_pooled_hit5": 0.7958333333333333,
+   "swap_near": {
+    "auc": 0.9789198796454863,
+    "hit5": 0.9123711340206185,
+    "n": 388
+   },
+   "swap_far": {
+    "auc": 0.9969379191768952,
+    "hit5": 0.9974226804123711,
+    "n": 388
+   },
+   "planted_word_auc": 0.9459929322359513
+  },
+  "pick": {
+   "q": 0.05,
+   "floor": 0.4,
+   "ok": true,
+   "cal": {
+    "knee": [
+     -1.2887796608681754,
+     0.08699147667495691,
+     3.8427837402464147
+    ],
+    "width": 4.0,
+    "floor": 0.4,
+    "native_quantile": 0.05
+   },
+   "native_word_accept": 0.9706763164462191,
+   "contrast": {
+    "dh_z/A>B": {
+     "n": 120,
+     "word_hit5": 0.6333333333333333
+    },
+    "dh_z/B>A": {
+     "n": 120,
+     "word_hit5": 0.9416666666666667
+    },
+    "th_s/A>B": {
+     "n": 120,
+     "word_hit5": 0.75
+    },
+    "th_s/B>A": {
+     "n": 120,
+     "word_hit5": 0.95
+    }
+   },
+   "contrast_pooled_hit5": 0.81875,
+   "swap_near": {
+    "auc": 0.9789072574317548,
+    "hit5": 0.9123711340206185,
+    "n": 388
+   },
+   "swap_far": {
+    "auc": 0.9969338254859552,
+    "hit5": 0.9974226804123711,
+    "n": 388
+   },
+   "planted_word_auc": 0.9460283419465062,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0408743116639396,
+      -2.025149052764203,
+      -1.9936985349647292
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460196507943259,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0408743116639396,
+      -2.025149052764203,
+      -1.9936985349647292
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.946015213060831,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0408743116639396,
+      -2.025149052764203,
+      -1.9936985349647292
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460097474178204,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0408743116639396,
+      -2.025149052764203,
+      -1.9936985349647292
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.875
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.7979166666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460029277698617,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.025149052764203,
+      -1.9936985349647292,
+      -1.9307974993657817
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460208913747759,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.025149052764203,
+      -1.9936985349647292,
+      -1.9307974993657817
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460163756619383,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.025149052764203,
+      -1.9936985349647292,
+      -1.9307974993657817
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460108036834606,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.025149052764203,
+      -1.9936985349647292,
+      -1.9307974993657817
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8833333333333333
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.946003587049758,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.9779732760649924,
+      -1.8993469815663082,
+      -1.7420943925689396
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460236560969212,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.9779732760649924,
+      -1.8993469815663082,
+      -1.7420943925689396
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.946019204185364,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.9779732760649924,
+      -1.8993469815663082,
+      -1.7420943925689396
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460131855979244,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.9779732760649924,
+      -1.8993469815663082,
+      -1.7420943925689396
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8833333333333333
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969379191768952,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460054656430106,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.8993469815663082,
+      -1.7420943925689396,
+      -1.434578154263553
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9083333333333333
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.80625,
+    "swap_near": {
+     "auc": 0.9789195385045747,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969368957541602,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.94602718643443,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.8993469815663082,
+      -1.7420943925689396,
+      -1.434578154263553
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789195385045747,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969372368950719,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460228125022153,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.8993469815663082,
+      -1.7420943925689396,
+      -1.434578154263553
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8041666666666667,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460168151818691,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.8993469815663082,
+      -1.7420943925689396,
+      -1.434578154263553
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460079609819726,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.7420943925689396,
+      -1.434578154263553,
+      -0.6062891055200976
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.925
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8104166666666667,
+    "swap_near": {
+     "auc": 0.9789195385045747,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969362134723369,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460303835874752,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.7420943925689396,
+      -1.434578154263553,
+      -0.6062891055200976
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9166666666666666
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8083333333333333,
+    "swap_near": {
+     "auc": 0.9789195385045747,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969362134723369,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460269241402778,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.7420943925689396,
+      -1.434578154263553,
+      -0.6062891055200976
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9083333333333333
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.80625,
+    "swap_near": {
+     "auc": 0.9789195385045747,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969368957541602,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460213096276132,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.7420943925689396,
+      -1.434578154263553,
+      -0.6062891055200976
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.8916666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.8020833333333334,
+    "swap_near": {
+     "auc": 0.9789198796454863,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969375780359836,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460121931335644,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.2887796608681754,
+      0.08699147667495691,
+      3.8427837402464147
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9583333333333334
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.95
+     }
+    },
+    "contrast_pooled_hit5": 0.8229166666666666,
+    "swap_near": {
+     "auc": 0.9789041871635498,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969314374995736,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460329639948108,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.2887796608681754,
+      0.08699147667495691,
+      3.8427837402464147
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9416666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.95
+     }
+    },
+    "contrast_pooled_hit5": 0.81875,
+    "swap_near": {
+     "auc": 0.9789072574317548,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969338254859552,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460283419465062,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.2887796608681754,
+      0.08699147667495691,
+      3.8427837402464147
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.9416666666666667
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.95
+     }
+    },
+    "contrast_pooled_hit5": 0.81875,
+    "swap_near": {
+     "auc": 0.9789103276999598,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969348489086902,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460232803782707,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.2887796608681754,
+      0.08699147667495691,
+      3.8427837402464147
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9706763164462191,
+    "contrast": {
+     "dh_z/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "dh_z/B>A": {
+      "n": 120,
+      "word_hit5": 0.925
+     },
+     "th_s/A>B": {
+      "n": 120,
+      "word_hit5": 0.75
+     },
+     "th_s/B>A": {
+      "n": 120,
+      "word_hit5": 0.9416666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.8125,
+    "swap_near": {
+     "auc": 0.978914080249988,
+     "hit5": 0.9123711340206185,
+     "n": 388
+    },
+    "swap_far": {
+     "auc": 0.9969362134723369,
+     "hit5": 0.9974226804123711,
+     "n": 388
+    },
+    "planted_word_auc": 0.9460164323741874,
+    "near_ok": true,
+    "planted_ok": true
+   }
+  ],
+  "near_misses": {
+   "missed": 34,
+   "with_contrast_sound": 0,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": {
+   "n_words": 15849,
+   "pearson": [
+    0.7772457884400507,
+    0.7772457884400507
+   ],
+   "auc_acc_below_6.5": [
+    0.959725187637045,
+    0.959725187637045
+   ]
+  },
+  "learners": {
+   "n_words": 15849,
+   "pearson": [
+    0.7772457884400507,
+    0.7738304904521524
+   ],
+   "auc_acc_below_6.5": [
+    0.959725187637045,
+    0.9592499109812855
+   ]
+  },
+  "checks": {
+   "contrast_gain": 0.022916666666666696
+  },
+  "adopted": false
+ },
+ "ru": {
+  "base": {
+   "native_word_accept": 0.9756175810073789,
+   "contrast": {
+    "final_devoicing/A>B": {
+     "n": 161,
+     "word_hit5": 0.11801242236024845
+    },
+    "hard_soft/A>B": {
+     "n": 120,
+     "word_hit5": 0.1
+    },
+    "hard_soft/B>A": {
+     "n": 120,
+     "word_hit5": 0.2916666666666667
+    },
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.45
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.5666666666666667
+    }
+   },
+   "contrast_pooled_hit5": 0.29329173166926675,
+   "swap_near": {
+    "auc": 0.9220782118915638,
+    "hit5": 0.6819484240687679,
+    "n": 349
+   },
+   "swap_far": {
+    "auc": 0.9970161495882515,
+    "hit5": 0.997134670487106,
+    "n": 349
+   },
+   "planted_word_auc": 0.9304788036330758
+  },
+  "pick": {
+   "q": 0.002,
+   "floor": 0.8,
+   "ok": true,
+   "cal": {
+    "knee": [
+     -5.052309042503559,
+     -4.098624040983782,
+     -2.77426698057582
+    ],
+    "width": 4.0,
+    "floor": 0.8,
+    "native_quantile": 0.002
+   },
+   "native_word_accept": 0.9756175810073789,
+   "contrast": {
+    "final_devoicing/A>B": {
+     "n": 161,
+     "word_hit5": 0.11801242236024845
+    },
+    "hard_soft/A>B": {
+     "n": 120,
+     "word_hit5": 0.1
+    },
+    "hard_soft/B>A": {
+     "n": 120,
+     "word_hit5": 0.2916666666666667
+    },
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.45
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.5666666666666667
+    }
+   },
+   "contrast_pooled_hit5": 0.29329173166926675,
+   "swap_near": {
+    "auc": 0.9219864697732035,
+    "hit5": 0.6819484240687679,
+    "n": 349
+   },
+   "swap_far": {
+    "auc": 0.9970245799450738,
+    "hit5": 0.997134670487106,
+    "n": 349
+   },
+   "planted_word_auc": 0.9304145364129541,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -6.282830931258706,
+      -5.052309042503559,
+      -4.098624040983782
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9752967597048444,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9218560471941293,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9969710223840851,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303207812756863,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -6.282830931258706,
+      -5.052309042503559,
+      -4.098624040983782
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9752967597048444,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9219224982420227,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.997015653684909,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303622903994739,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -6.282830931258706,
+      -5.052309042503559,
+      -4.098624040983782
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9756175810073789,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9219710967695864,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970235881383888,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303967409173105,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -6.282830931258706,
+      -5.052309042503559,
+      -4.098624040983782
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9756175810073789,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9220172157804378,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970240840417313,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9304268658556634,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.052309042503559,
+      -4.098624040983782,
+      -2.77426698057582
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9748155277510426,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.3
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.2948517940717629,
+    "swap_near": {
+     "auc": 0.9217181860649177,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9969447395069332,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9302600998684859,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.052309042503559,
+      -4.098624040983782,
+      -2.77426698057582
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9748155277510426,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9218198462501277,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970092069414567,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303219936708861,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.052309042503559,
+      -4.098624040983782,
+      -2.77426698057582
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9756175810073789,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.921911588368488,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970211086216764,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303695853197436,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.052309042503559,
+      -4.098624040983782,
+      -2.77426698057582
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9756175810073789,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.29329173166926675,
+    "swap_near": {
+     "auc": 0.9219864697732035,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970245799450738,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9304145364129541,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.7585992712067675,
+      -2.501361613399244,
+      -1.5836047758980465
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9741738851459737,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.35833333333333334
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.575
+     }
+    },
+    "contrast_pooled_hit5": 0.30577223088923555,
+    "swap_near": {
+     "auc": 0.9212535246330067,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9969040754328492,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303090888541838,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.7585992712067675,
+      -2.501361613399244,
+      -1.5836047758980465
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9741738851459737,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.30109204368174725,
+    "swap_near": {
+     "auc": 0.921484615590606,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970131741681966,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303992787276015,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.7585992712067675,
+      -2.501361613399244,
+      -1.5836047758980465
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9746551170997754,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.325
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.296411856474259,
+    "swap_near": {
+     "auc": 0.9216988458345607,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.997034993915266,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.93045392898241,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.7585992712067675,
+      -2.501361613399244,
+      -1.5836047758980465
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9754571703561117,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.11801242236024845
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.3
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.2948517940717629,
+    "swap_near": {
+     "auc": 0.9218734038111164,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970335062052386,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9304802728916653,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.501361613399244,
+      -1.5836047758980465,
+      -0.8559829374043997
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9732114212383702,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.13664596273291926
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.11666666666666667
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.4583333333333333
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.725
+     }
+    },
+    "contrast_pooled_hit5": 0.36037441497659906,
+    "swap_near": {
+     "auc": 0.9204843785488083,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9969229197598638,
+     "hit5": 0.994269340974212,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303427482327798,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.501361613399244,
+      -1.5836047758980465,
+      -0.8559829374043997
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9736926531921719,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.13664596273291926
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.10833333333333334
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.7083333333333334
+     }
+    },
+    "contrast_pooled_hit5": 0.34789391575663026,
+    "swap_near": {
+     "auc": 0.9208915151929907,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970444160787733,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.93047166283084,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.501361613399244,
+      -1.5836047758980465,
+      -0.8559829374043997
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.974334295797241,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.14285714285714285
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.38333333333333336
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.65
+     }
+    },
+    "contrast_pooled_hit5": 0.33073322932917315,
+    "swap_near": {
+     "auc": 0.9213065862906529,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970652440191577,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9305507664803551,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.501361613399244,
+      -1.5836047758980465,
+      -0.8559829374043997
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9754571703561117,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.13043478260869565
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.3333333333333333
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.31201248049922,
+    "swap_near": {
+     "auc": 0.921665620310614,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970548300489654,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9305810352622061,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5836047758980465,
+      -0.8559829374043997,
+      -0.14194242649781003
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.973051010587103,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.22981366459627328
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.10833333333333334
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4083333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.8
+     }
+    },
+    "contrast_pooled_hit5": 0.41029641185647425,
+    "swap_near": {
+     "auc": 0.9191875913082029,
+     "hit5": 0.673352435530086,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9969105221763016,
+     "hit5": 0.994269340974212,
+     "n": 349
+    },
+    "planted_word_auc": 0.9301534296399803,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5836047758980465,
+      -0.8559829374043997,
+      -0.14194242649781003
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9732114212383702,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.19254658385093168
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.11666666666666667
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.5416666666666666
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.7583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.39469578783151327,
+    "swap_near": {
+     "auc": 0.9198818559876857,
+     "hit5": 0.6762177650429799,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970597890823903,
+     "hit5": 0.994269340974212,
+     "n": 349
+    },
+    "planted_word_auc": 0.9303770240835114,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5836047758980465,
+      -0.8559829374043997,
+      -0.14194242649781003
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9741738851459737,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.16149068322981366
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.10833333333333334
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.7333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.36817472698907955,
+    "swap_near": {
+     "auc": 0.9205805837972509,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970806170227748,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9305284810126583,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5836047758980465,
+      -0.8559829374043997,
+      -0.14194242649781003
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9748155277510426,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.14285714285714285
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.375
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.65
+     }
+    },
+    "contrast_pooled_hit5": 0.3291731669266771,
+    "swap_near": {
+     "auc": 0.9212183154956901,
+     "hit5": 0.6819484240687679,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970677235358701,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9306121671050469,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": false,
+    "cal": {
+     "knee": [
+      -0.6591703723881644,
+      0.18646339034856715,
+      1.1346551073841469
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9704844401668271,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.35403726708074534
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.14166666666666666
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.7
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.9416666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.48673946957878317,
+    "swap_near": {
+     "auc": 0.9169034605127045,
+     "hit5": 0.6590257879656161,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9967979521175568,
+     "hit5": 0.9914040114613181,
+     "n": 349
+    },
+    "planted_word_auc": 0.9283007664803551,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.6591703723881644,
+      0.18646339034856715,
+      1.1346551073841469
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9719281360282322,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.2981366459627329
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.125
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.6583333333333333
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.36666666666666664
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.925
+     }
+    },
+    "contrast_pooled_hit5": 0.46333853354134164,
+    "swap_near": {
+     "auc": 0.9183802606666329,
+     "hit5": 0.664756446991404,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.997036977528636,
+     "hit5": 0.994269340974212,
+     "n": 349
+    },
+    "planted_word_auc": 0.9289784132007233,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.6591703723881644,
+      0.18646339034856715,
+      1.1346551073841469
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9733718318896375,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.2360248447204969
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.11666666666666667
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4083333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.8166666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.4243369734789392,
+    "swap_near": {
+     "auc": 0.9197494497952415,
+     "hit5": 0.6762177650429799,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.9970945023163645,
+     "hit5": 0.994269340974212,
+     "n": 349
+    },
+    "planted_word_auc": 0.9296037419858623,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.6591703723881644,
+      0.18646339034856715,
+      1.1346551073841469
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9746551170997754,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 161,
+      "word_hit5": 0.16149068322981366
+     },
+     "hard_soft/A>B": {
+      "n": 120,
+      "word_hit5": 0.1
+     },
+     "hard_soft/B>A": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.7166666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.35725429017160687,
+    "swap_near": {
+     "auc": 0.9210214418687225,
+     "hit5": 0.6790830945558739,
+     "n": 349
+    },
+    "swap_far": {
+     "auc": 0.99707169076261,
+     "hit5": 0.997134670487106,
+     "n": 349
+    },
+    "planted_word_auc": 0.9302323894459971,
+    "near_ok": false,
+    "planted_ok": false
+   }
+  ],
+  "near_misses": {
+   "missed": 111,
+   "with_contrast_sound": 103,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": null,
+  "learners": null,
+  "checks": {
+   "contrast_gain": 0.0
+  },
+  "adopted": false
+ },
+ "ja": {
+  "base": {
+   "native_word_accept": 0.9818389818389819,
+   "contrast": {
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.25833333333333336
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.4666666666666667
+    }
+   },
+   "contrast_pooled_hit5": 0.3625,
+   "swap_near": {
+    "auc": 0.9666376682712445,
+    "hit5": 0.8323699421965318,
+    "n": 173
+   },
+   "swap_far": {
+    "auc": 0.9975680012372649,
+    "hit5": 1.0,
+    "n": 173
+   },
+   "planted_word_auc": 0.9390956902848795
+  },
+  "pick": {
+   "q": 0.02,
+   "floor": 0.4,
+   "ok": true,
+   "cal": {
+    "knee": [
+     -2.469571209689388,
+     -1.0646068404965214,
+     -0.1737278035750853
+    ],
+    "width": 4.0,
+    "floor": 0.4,
+    "native_quantile": 0.02
+   },
+   "native_word_accept": 0.9815529815529815,
+   "contrast": {
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.6916666666666667
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.4583333333333333
+    }
+   },
+   "contrast_pooled_hit5": 0.575,
+   "swap_near": {
+    "auc": 0.9666415347239675,
+    "hit5": 0.8265895953757225,
+    "n": 173
+   },
+   "swap_far": {
+    "auc": 0.9976466191092982,
+    "hit5": 1.0,
+    "n": 173
+   },
+   "planted_word_auc": 0.9392341139816043,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.8487509546301935,
+      -5.689732987459876,
+      -5.30265734640669
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666505564469877,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975873335008796,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391125296283598,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.8487509546301935,
+      -5.689732987459876,
+      -5.30265734640669
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666492676294134,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975796005954337,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391084867548188,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.8487509546301935,
+      -5.689732987459876,
+      -5.30265734640669
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666492676294134,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975731565075622,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391055172105365,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.8487509546301935,
+      -5.689732987459876,
+      -5.30265734640669
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.25833333333333336
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.3625,
+    "swap_near": {
+     "auc": 0.9666479788118391,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975680012372649,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391017844098926,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.689732987459876,
+      -5.30265734640669,
+      -3.9526742537732367
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.966651845264562,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975886223184539,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391184567910437,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.689732987459876,
+      -5.30265734640669,
+      -3.9526742537732367
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666505564469877,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975860446833053,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391139368822766,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.689732987459876,
+      -5.30265734640669,
+      -3.9526742537732367
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666505564469877,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975744453251365,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391089399382836,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.689732987459876,
+      -5.30265734640669,
+      -3.9526742537732367
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.26666666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.9666492676294134,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975705788724135,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391038714390065,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.030873367604435,
+      -3.228209635969505,
+      -2.469571209689388
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.4583333333333333,
+    "swap_near": {
+     "auc": 0.966855478441304,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976311532984063,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392876731116113,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.030873367604435,
+      -3.228209635969505,
+      -2.469571209689388
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.44166666666666665,
+    "swap_near": {
+     "auc": 0.9668477455358582,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976118210347916,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392878997033437,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.030873367604435,
+      -3.228209635969505,
+      -2.469571209689388
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.35833333333333334
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.4125,
+    "swap_near": {
+     "auc": 0.9668181027316488,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975963552238998,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392643937925791,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -5.030873367604435,
+      -3.228209635969505,
+      -2.469571209689388
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.3
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.38333333333333336,
+    "swap_near": {
+     "auc": 0.9667369072244669,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975783117778594,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.939234161685127,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.228209635969505,
+      -2.469571209689388,
+      -1.0646068404965214
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.575
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.5208333333333334,
+    "swap_near": {
+     "auc": 0.9668567672588784,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976414638390009,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9393191574365319,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.228209635969505,
+      -2.469571209689388,
+      -1.0646068404965214
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.525
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.49583333333333335,
+    "swap_near": {
+     "auc": 0.9668245468195205,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.997637597386278,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9393186326977833,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.228209635969505,
+      -2.469571209689388,
+      -1.0646068404965214
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.44166666666666665
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.45416666666666666,
+    "swap_near": {
+     "auc": 0.9668129474613516,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.997613109852366,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9393195390647128,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -3.228209635969505,
+      -2.469571209689388,
+      -1.0646068404965214
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9818389818389819,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.4041666666666667,
+    "swap_near": {
+     "auc": 0.9667369072244669,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.997580889413008,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.939289605104277,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.469571209689388,
+      -1.0646068404965214,
+      -0.1737278035750853
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9814099814099814,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.725
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.5916666666666667,
+    "swap_near": {
+     "auc": 0.9665165194192588,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976440414741495,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9391812346267945,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.469571209689388,
+      -1.0646068404965214,
+      -0.1737278035750853
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9815529815529815,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.6916666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.575,
+    "swap_near": {
+     "auc": 0.9666415347239675,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976466191092982,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392341139816043,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.469571209689388,
+      -1.0646068404965214,
+      -0.1737278035750853
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.55,
+    "swap_near": {
+     "auc": 0.9666441123591162,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976363085687037,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392707979904891,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.469571209689388,
+      -1.0646068404965214,
+      -0.1737278035750853
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.44166666666666665,
+    "swap_near": {
+     "auc": 0.9666905097917915,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975911999536026,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9392872676316691,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7596037501035521,
+      0.26471896786655147,
+      1.502240579324725
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.97997997997998,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.8083333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.6291666666666667,
+    "swap_near": {
+     "auc": 0.9656994090771421,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975937775887512,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9383439185462351,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7596037501035521,
+      0.26471896786655147,
+      1.502240579324725
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9806949806949807,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.7833333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.6166666666666667,
+    "swap_near": {
+     "auc": 0.9659365515108164,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976221315753862,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.93852607444731,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7596037501035521,
+      0.26471896786655147,
+      1.502240579324725
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9812669812669813,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.7333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.5916666666666667,
+    "swap_near": {
+     "auc": 0.9661453399578557,
+     "hit5": 0.8265895953757225,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9976324421159807,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.938693704625751,
+    "near_ok": false,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7596037501035521,
+      0.26471896786655147,
+      1.502240579324725
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9816959816959817,
+    "contrast": {
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.48333333333333334
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.475,
+    "swap_near": {
+     "auc": 0.9663631501279152,
+     "hit5": 0.8323699421965318,
+     "n": 173
+    },
+    "swap_far": {
+     "auc": 0.9975989328590484,
+     "hit5": 1.0,
+     "n": 173
+    },
+    "planted_word_auc": 0.9388813345060449,
+    "near_ok": false,
+    "planted_ok": false
+   }
+  ],
+  "near_misses": {
+   "missed": 29,
+   "with_contrast_sound": 2,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": null,
+  "learners": null,
+  "checks": {
+   "contrast_gain": 0.21249999999999997
+  },
+  "adopted": true
+ },
+ "de": {
+  "base": {
+   "native_word_accept": 0.9741735537190083,
+   "contrast": {
+    "final_devoicing/A>B": {
+     "n": 154,
+     "word_hit5": 0.06493506493506493
+    },
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.325
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.2833333333333333
+    }
+   },
+   "contrast_pooled_hit5": 0.21065989847715735,
+   "swap_near": {
+    "auc": 0.9521737966769441,
+    "hit5": 0.790625,
+    "n": 320
+   },
+   "swap_far": {
+    "auc": 0.9964360654333676,
+    "hit5": 0.99375,
+    "n": 320
+   },
+   "planted_word_auc": 0.950337248456743
+  },
+  "pick": {
+   "q": 0.05,
+   "floor": 0.6,
+   "ok": true,
+   "cal": {
+    "knee": [
+     0.6134829763179588,
+     1.0749607592486867,
+     2.2569584827250018
+    ],
+    "width": 4.0,
+    "floor": 0.6,
+    "native_quantile": 0.05
+   },
+   "native_word_accept": 0.9737308146399055,
+   "contrast": {
+    "final_devoicing/A>B": {
+     "n": 154,
+     "word_hit5": 0.07792207792207792
+    },
+    "voicing/A>B": {
+     "n": 120,
+     "word_hit5": 0.6166666666666667
+    },
+    "voicing/B>A": {
+     "n": 120,
+     "word_hit5": 0.36666666666666664
+    }
+   },
+   "contrast_pooled_hit5": 0.3299492385786802,
+   "swap_near": {
+    "auc": 0.9522851361767729,
+    "hit5": 0.8,
+    "n": 320
+   },
+   "swap_far": {
+    "auc": 0.99660146882494,
+    "hit5": 0.99375,
+    "n": 320
+   },
+   "planted_word_auc": 0.9506824758197598,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0885491539876484,
+      -1.479681837445452,
+      -0.9656588618498971
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27411167512690354,
+    "swap_near": {
+     "auc": 0.9525586673518328,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.996463365022268,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508575724643217,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0885491539876484,
+      -1.479681837445452,
+      -0.9656588618498971
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27411167512690354,
+    "swap_near": {
+     "auc": 0.9525276207605344,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964606885919836,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508356364407298,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0885491539876484,
+      -1.479681837445452,
+      -0.9656588618498971
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27411167512690354,
+    "swap_near": {
+     "auc": 0.9524441161356629,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964580121616992,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507978954023164,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.0885491539876484,
+      -1.479681837445452,
+      -0.9656588618498971
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.39166666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.23096446700507614,
+    "swap_near": {
+     "auc": 0.9523664996574169,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964430241521068,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507172373025089,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.479681837445452,
+      -0.9656588618498971,
+      -0.49221081671735234
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.55
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27918781725888325,
+    "swap_near": {
+     "auc": 0.9528712744090442,
+     "hit5": 0.79375,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964655061664954,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508735398267274,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.479681837445452,
+      -0.9656588618498971,
+      -0.49221081671735234
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5416666666666666
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.2766497461928934,
+    "swap_near": {
+     "auc": 0.95280704008222,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964622944501542,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508627580371604,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.479681837445452,
+      -0.9656588618498971,
+      -0.49221081671735234
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5333333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27411167512690354,
+    "swap_near": {
+     "auc": 0.9527101533059267,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964676473107229,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508220374430828,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.479681837445452,
+      -0.9656588618498971,
+      -0.49221081671735234
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.233502538071066,
+    "swap_near": {
+     "auc": 0.9525672319287427,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964473064405618,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507525431271583,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7950670874585207,
+      -0.3206616780553554,
+      0.12188774819625503
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.974025974025974,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5833333333333334
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.2893401015228426,
+    "swap_near": {
+     "auc": 0.9530382836587873,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964949468996231,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508169951181127,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7950670874585207,
+      -0.3206616780553554,
+      0.12188774819625503
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.2817258883248731,
+    "swap_near": {
+     "auc": 0.9529767257622473,
+     "hit5": 0.796875,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964799588900308,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508128313800691,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7950670874585207,
+      -0.3206616780553554,
+      0.12188774819625503
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.55
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.27918781725888325,
+    "swap_near": {
+     "auc": 0.9529237324426173,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964788883179171,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507947630489259,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.7950670874585207,
+      -0.3206616780553554,
+      0.12188774819625503
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.23857868020304568,
+    "swap_near": {
+     "auc": 0.9527278177458034,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964596180198698,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507581106943128,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.3206616780553554,
+      0.12188774819625503,
+      0.529003965353467
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9738783943329398,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.6166666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.30833333333333335
+     }
+    },
+    "contrast_pooled_hit5": 0.30710659898477155,
+    "swap_near": {
+     "auc": 0.9529874314833847,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9965902278177458,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.950781526945879,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.3206616780553554,
+      0.12188774819625503,
+      0.529003965353467
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9738783943329398,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5833333333333334
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.2918781725888325,
+    "swap_near": {
+     "auc": 0.9529681611853374,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9965586459403906,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9508011996531491,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.3206616780553554,
+      0.12188774819625503,
+      0.529003965353467
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.974025974025974,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.2817258883248731,
+    "swap_near": {
+     "auc": 0.9529397910243234,
+     "hit5": 0.796875,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9965340227817746,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507994902285855,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.3206616780553554,
+      0.12188774819625503,
+      0.529003965353467
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9741735537190083,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.425
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.24111675126903553,
+    "swap_near": {
+     "auc": 0.952802757793765,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9964756766015759,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.950759972916603,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.12188774819625503,
+      0.529003965353467,
+      0.9272577643735529
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9732880755608029,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.07142857142857142
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.6583333333333333
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.35
+     }
+    },
+    "contrast_pooled_hit5": 0.3350253807106599,
+    "swap_near": {
+     "auc": 0.9527717112024666,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9966533915724564,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507680711961006,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.12188774819625503,
+      0.529003965353467,
+      0.9272577643735529
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9735832349468713,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.07142857142857142
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.625
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.3223350253807107,
+    "swap_near": {
+     "auc": 0.9527990107913669,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9966185979787598,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507838571112062,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.12188774819625503,
+      0.529003965353467,
+      0.9272577643735529
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.974025974025974,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.5833333333333334
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.30710659898477155,
+    "swap_near": {
+     "auc": 0.952827380952381,
+     "hit5": 0.796875,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9965870161014045,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.950786492871986,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.12188774819625503,
+      0.529003965353467,
+      0.9272577643735529
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.974025974025974,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.2833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.2436548223350254,
+    "swap_near": {
+     "auc": 0.952810787084618,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.996523852346694,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9507756251336981,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.6134829763179588,
+      1.0749607592486867,
+      2.2569584827250018
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9728453364817001,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.09090909090909091
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.725
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     }
+    },
+    "contrast_pooled_hit5": 0.3934010152284264,
+    "swap_near": {
+     "auc": 0.9517792908530318,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9966951438848921,
+     "hit5": 0.996875,
+     "n": 320
+    },
+    "planted_word_auc": 0.9504674894187575,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.6134829763179588,
+      1.0749607592486867,
+      2.2569584827250018
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9732880755608029,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.08441558441558442
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.675
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.36548223350253806,
+    "swap_near": {
+     "auc": 0.9520496103117506,
+     "hit5": 0.790625,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9966485739979445,
+     "hit5": 0.996875,
+     "n": 320
+    },
+    "planted_word_auc": 0.9505804737875501,
+    "near_ok": false,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.6134829763179588,
+      1.0749607592486867,
+      2.2569584827250018
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9737308146399055,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.07792207792207792
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.6166666666666667
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.36666666666666664
+     }
+    },
+    "contrast_pooled_hit5": 0.3299492385786802,
+    "swap_near": {
+     "auc": 0.9522851361767729,
+     "hit5": 0.8,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.99660146882494,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.9506824758197598,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.6134829763179588,
+      1.0749607592486867,
+      2.2569584827250018
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.974025974025974,
+    "contrast": {
+     "final_devoicing/A>B": {
+      "n": 154,
+      "word_hit5": 0.06493506493506493
+     },
+     "voicing/A>B": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "voicing/B>A": {
+      "n": 120,
+      "word_hit5": 0.3416666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.2614213197969543,
+    "swap_near": {
+     "auc": 0.9525410029119562,
+     "hit5": 0.79375,
+     "n": 320
+    },
+    "swap_far": {
+     "auc": 0.9965452637889688,
+     "hit5": 0.99375,
+     "n": 320
+    },
+    "planted_word_auc": 0.950767192609174,
+    "near_ok": true,
+    "planted_ok": true
+   }
+  ],
+  "near_misses": {
+   "missed": 67,
+   "with_contrast_sound": 33,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": null,
+  "learners": null,
+  "checks": {
+   "contrast_gain": 0.11928934010152284
+  },
+  "adopted": false
+ },
+ "ko": {
+  "base": {
+   "native_word_accept": 0.9842449464922711,
+   "contrast": {
+    "aspiration/A>B": {
+     "n": 120,
+     "word_hit5": 0.05
+    },
+    "aspiration/B>A": {
+     "n": 120,
+     "word_hit5": 0.3
+    },
+    "tense/A>B": {
+     "n": 120,
+     "word_hit5": 0.041666666666666664
+    },
+    "tense/B>A": {
+     "n": 120,
+     "word_hit5": 0.041666666666666664
+    }
+   },
+   "contrast_pooled_hit5": 0.10833333333333334,
+   "swap_near": {
+    "auc": 0.9275804047882313,
+    "hit5": 0.8,
+    "n": 155
+   },
+   "swap_far": {
+    "auc": 0.9974456356264924,
+    "hit5": 1.0,
+    "n": 155
+   },
+   "planted_word_auc": 0.9350071112515803
+  },
+  "pick": {
+   "q": 0.01,
+   "floor": 0.8,
+   "ok": true,
+   "cal": {
+    "knee": [
+     -0.8500093961043534,
+     -0.5221183593954394,
+     0.010468646986867171
+    ],
+    "width": 4.0,
+    "floor": 0.8,
+    "native_quantile": 0.01
+   },
+   "native_word_accept": 0.9842449464922711,
+   "contrast": {
+    "aspiration/A>B": {
+     "n": 120,
+     "word_hit5": 0.058333333333333334
+    },
+    "aspiration/B>A": {
+     "n": 120,
+     "word_hit5": 0.49166666666666664
+    },
+    "tense/A>B": {
+     "n": 120,
+     "word_hit5": 0.06666666666666667
+    },
+    "tense/B>A": {
+     "n": 120,
+     "word_hit5": 0.275
+    }
+   },
+   "contrast_pooled_hit5": 0.22291666666666668,
+   "swap_near": {
+    "auc": 0.9342435459833662,
+    "hit5": 0.8129032258064516,
+    "n": 155
+   },
+   "swap_far": {
+    "auc": 0.9975449898242071,
+    "hit5": 1.0,
+    "n": 155
+   },
+   "planted_word_auc": 0.9349257573179033,
+   "near_ok": true,
+   "planted_ok": true
+  },
+  "grid": [
+   {
+    "q": 0.001,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.026221557655997,
+      -2.530583376698623,
+      -1.703469079631917
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.38333333333333336
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.041666666666666664
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.21666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.17291666666666666,
+    "swap_near": {
+     "auc": 0.9343044404916431,
+     "hit5": 0.8064516129032258,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975834495136452,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.934973287221628,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.026221557655997,
+      -2.530583376698623,
+      -1.703469079631917
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.38333333333333336
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.041666666666666664
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.2
+     }
+    },
+    "contrast_pooled_hit5": 0.16875,
+    "swap_near": {
+     "auc": 0.9341666266044901,
+     "hit5": 0.8,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975802445395253,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349776937664106,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.026221557655997,
+      -2.530583376698623,
+      -1.703469079631917
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.35833333333333334
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.041666666666666664
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.15833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.15208333333333332,
+    "swap_near": {
+     "auc": 0.9340384276396968,
+     "hit5": 0.8,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975385798759675,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.934974989059613,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.001,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -4.026221557655997,
+      -2.530583376698623,
+      -1.703469079631917
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.001
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.35
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.041666666666666664
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.12708333333333333,
+    "swap_near": {
+     "auc": 0.933435892505168,
+     "hit5": 0.8,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.997509735108889,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349779976660507,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.530583376698623,
+      -1.703469079631917,
+      -1.0909774007020927
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.48333333333333334
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.375
+     }
+    },
+    "contrast_pooled_hit5": 0.24375,
+    "swap_near": {
+     "auc": 0.9347499318943,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976347290995625,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9350296606048818,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.530583376698623,
+      -1.703469079631917,
+      -1.0909774007020927
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.3333333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.22708333333333333,
+    "swap_near": {
+     "auc": 0.9346986523083826,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975994743842443,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9350321525819314,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.530583376698623,
+      -1.703469079631917,
+      -1.0909774007020927
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.45
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.25
+     }
+    },
+    "contrast_pooled_hit5": 0.20208333333333334,
+    "swap_near": {
+     "auc": 0.9345640433953496,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975610146948063,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9350337328600603,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.002,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -2.530583376698623,
+      -1.703469079631917,
+      -1.0909774007020927
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.002
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.38333333333333336
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.041666666666666664
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.11666666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.15,
+    "swap_near": {
+     "auc": 0.9341826514750894,
+     "hit5": 0.8,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975321699277279,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9350172614995624,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5122571022974054,
+      -0.8500093961043534,
+      -0.5221183593954394
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.125
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.075
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.32916666666666666,
+    "swap_near": {
+     "auc": 0.9348492860920148,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976795987372402,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.934840331129048,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.005,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5122571022974054,
+      -0.8500093961043534,
+      -0.5221183593954394
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.09166666666666666
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5416666666666666
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.525
+     }
+    },
+    "contrast_pooled_hit5": 0.30416666666666664,
+    "swap_near": {
+     "auc": 0.9347723667131388,
+     "hit5": 0.8193548387096774,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976379340736824,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349008983273364,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.005,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5122571022974054,
+      -0.8500093961043534,
+      -0.5221183593954394
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.08333333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.525
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.4166666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.2708333333333333,
+    "swap_near": {
+     "auc": 0.9347339070237007,
+     "hit5": 0.8193548387096774,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.997586654487765,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349381868131869,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.005,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -1.5122571022974054,
+      -0.8500093961043534,
+      -0.5221183593954394
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.005
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.4666666666666667
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.05
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.20833333333333334
+     }
+    },
+    "contrast_pooled_hit5": 0.19583333333333333,
+    "swap_near": {
+     "auc": 0.9343140554140026,
+     "hit5": 0.8,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975385798759675,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349794563843237,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.01,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.8500093961043534,
+      -0.5221183593954394,
+      0.010468646986867171
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.15833333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.13333333333333333
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.6083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.36666666666666664,
+    "swap_near": {
+     "auc": 0.934846081117895,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976956236078394,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9346885332587767,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.01,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.8500093961043534,
+      -0.5221183593954394,
+      0.010468646986867171
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.14166666666666666
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.09166666666666666
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.5583333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.3375,
+    "swap_near": {
+     "auc": 0.9345512234988702,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.997644344021922,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9347832283866576,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.01,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.8500093961043534,
+      -0.5221183593954394,
+      0.010468646986867171
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.09166666666666666
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5416666666666666
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.5083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.3020833333333333,
+    "swap_near": {
+     "auc": 0.9344678941717546,
+     "hit5": 0.8193548387096774,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975930644360047,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.934891933287951,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.01,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.8500093961043534,
+      -0.5221183593954394,
+      0.010468646986867171
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.01
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.058333333333333334
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.49166666666666664
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.275
+     }
+    },
+    "contrast_pooled_hit5": 0.22291666666666668,
+    "swap_near": {
+     "auc": 0.9342435459833662,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975449898242071,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9349257573179033,
+    "near_ok": true,
+    "planted_ok": true
+   },
+   {
+    "q": 0.02,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.5221183593954394,
+      0.010468646986867171,
+      0.7179464290165551
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.24166666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6333333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.23333333333333334
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.7166666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.45625,
+    "swap_near": {
+     "auc": 0.9346666025671843,
+     "hit5": 0.8193548387096774,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.997702033556079,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9341197546922104,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.02,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.5221183593954394,
+      0.010468646986867171,
+      0.7179464290165551
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9839476813317479,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.18333333333333332
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6166666666666667
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.19166666666666668
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.6916666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.42083333333333334,
+    "swap_near": {
+     "auc": 0.9347242921013413,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976699838148807,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.934340021151415,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.02,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.5221183593954394,
+      0.010468646986867171,
+      0.7179464290165551
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.15833333333333333
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5666666666666667
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.11666666666666667
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.6
+     }
+    },
+    "contrast_pooled_hit5": 0.36041666666666666,
+    "swap_near": {
+     "auc": 0.9347659567648992,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976187042289634,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9345071659535155,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.02,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      -0.5221183593954394,
+      0.010468646986867171,
+      0.7179464290165551
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.02
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5083333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.06666666666666667
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.35833333333333334
+     }
+    },
+    "contrast_pooled_hit5": 0.25,
+    "swap_near": {
+     "auc": 0.9347467269201801,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9975610146948063,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9347957490518332,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.2,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.2928704451889248,
+      0.9785233445075223,
+      1.6194790324845816
+     ],
+     "width": 4.0,
+     "floor": 0.2,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9818668252080857,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.35
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.7333333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.43333333333333335
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.8083333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.58125,
+    "swap_near": {
+     "auc": 0.9311956155954041,
+     "hit5": 0.7870967741935484,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9977116484784385,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9314639301517067,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.4,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.2928704451889248,
+      0.9785233445075223,
+      1.6194790324845816
+     ],
+     "width": 4.0,
+     "floor": 0.4,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9836504161712247,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.31666666666666665
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.7083333333333334
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.4
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.7833333333333333
+     }
+    },
+    "contrast_pooled_hit5": 0.5520833333333334,
+    "swap_near": {
+     "auc": 0.931968014358284,
+     "hit5": 0.7935483870967742,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9977340832972774,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9321404107507537,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.6,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.2928704451889248,
+      0.9785233445075223,
+      1.6194790324845816
+     ],
+     "width": 4.0,
+     "floor": 0.6,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.275
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.6833333333333333
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.2916666666666667
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.75
+     }
+    },
+    "contrast_pooled_hit5": 0.5,
+    "swap_near": {
+     "auc": 0.9328301523965195,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976924186337195,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9328267376981426,
+    "near_ok": true,
+    "planted_ok": false
+   },
+   {
+    "q": 0.05,
+    "floor": 0.8,
+    "ok": true,
+    "cal": {
+     "knee": [
+      0.2928704451889248,
+      0.9785233445075223,
+      1.6194790324845816
+     ],
+     "width": 4.0,
+     "floor": 0.8,
+     "native_quantile": 0.05
+    },
+    "native_word_accept": 0.9842449464922711,
+    "contrast": {
+     "aspiration/A>B": {
+      "n": 120,
+      "word_hit5": 0.14166666666666666
+     },
+     "aspiration/B>A": {
+      "n": 120,
+      "word_hit5": 0.5833333333333334
+     },
+     "tense/A>B": {
+      "n": 120,
+      "word_hit5": 0.09166666666666666
+     },
+     "tense/B>A": {
+      "n": 120,
+      "word_hit5": 0.5916666666666667
+     }
+    },
+    "contrast_pooled_hit5": 0.35208333333333336,
+    "swap_near": {
+     "auc": 0.9334807621428457,
+     "hit5": 0.8129032258064516,
+     "n": 155
+    },
+    "swap_far": {
+     "auc": 0.9976187042289634,
+     "hit5": 1.0,
+     "n": 155
+    },
+    "planted_word_auc": 0.9337678237138968,
+    "near_ok": true,
+    "planted_ok": false
+   }
+  ],
+  "near_misses": {
+   "missed": 31,
+   "with_contrast_sound": 28,
+   "of_which_below_native_z_1pct": null
+  },
+  "learners_base": null,
+  "learners": null,
+  "checks": {
+   "contrast_gain": 0.11458333333333334
+  },
+  "adopted": false
+ }
+}

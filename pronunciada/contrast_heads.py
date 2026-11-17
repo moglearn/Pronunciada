@@ -38,8 +38,39 @@ def entries(lang: str) -> list[dict]:
     return list(_config().get("langs", {}).get(lang, []))
 
 
-def evidence(lang: str, ipa: list[str], V: np.ndarray) -> dict:
-    """{contrast: z per sound (NaN where the sound is not a member)} for the language's entries."""
+@lru_cache(maxsize=1)
+def _tense_head():
+    """Round 18: Korean lax / tense head (data/coach/ko_tense.npz), or None."""
+    p = resources.files("pronunciada").joinpath("data/coach/ko_tense.npz")
+    try:
+        with p.open("rb") as f:
+            z = dict(np.load(f, allow_pickle=False))
+    except (FileNotFoundError, OSError):
+        return None
+    return {k: (v.astype(np.float32) if v.dtype.kind == "f" else v) for k, v in z.items()}
+
+
+def tense_probs(V: np.ndarray, members) -> np.ndarray:
+    """P(tense) per sound from the round-18 head (own vector + neighbours' mean); NaN where not a
+    member."""
+    H = _tense_head()
+    out = np.full(len(V), np.nan)
+    idx = [i for i, m in enumerate(members) if m]
+    if H is None or not idx:
+        return out
+    C = AH.context_vectors(V)
+    X = np.concatenate([V[idx], C[idx]], axis=1)
+    Z = ((X - H["mu"]) / H["sd"]) @ H["W"] + H["b"]
+    Z -= Z.max(1, keepdims=True)
+    P = np.exp(Z)
+    P /= P.sum(1, keepdims=True)
+    out[idx] = P[:, 1]
+    return out
+
+
+def evidence(lang: str, ipa: list[str], V: np.ndarray, tense=None) -> dict:
+    """{contrast: z per sound (NaN where the sound is not a member)} for the language's entries.
+    tense: per sound RefPhone.tense (Korean; the "tense" entry reads it)."""
     E = entries(lang)
     heads = AH.shipped() if E else None
     if not E or heads is None:
@@ -47,6 +78,16 @@ def evidence(lang: str, ipa: list[str], V: np.ndarray) -> dict:
     C = AH.context_vectors(V)
     out = {}
     for e in E:
+        if e["contrast"] == "tense":
+            z = np.full(len(ipa), np.nan)
+            if tense is not None:
+                pt = tense_probs(V, [t is not None for t in tense])
+                for i, t in enumerate(tense):
+                    if t is not None and np.isfinite(pt[i]):
+                        q = min(max(pt[i] if t else 1.0 - pt[i], 1e-6), 1 - 1e-6)
+                        z[i] = e["slope"] * (np.log(q / (1 - q)) - e["s0"])
+            out["tense"] = z
+            continue
         mem = set(e["members"])
         idx = [i for i, p in enumerate(ipa) if p in mem]
         z = np.full(len(ipa), np.nan)

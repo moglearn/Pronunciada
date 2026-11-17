@@ -1,5 +1,10 @@
 # Azure Pronunciation Assessment on fleurs-swap (text-level planted errors, 10 languages)
 
+> **Round 18** (word-level contrast factor, zh and ja; paired before → after on the same records, Azure from cache):
+> zh near-swap AUC 0.9741 → 0.9741 (Azure 0.9663), hit@5 % 0.893 → 0.893 (0.896), right word 0.787 → 0.787, far-swap AUC 0.9918 → 0.9919;
+> ja near-swap AUC 0.9681 → 0.9689 (Azure 0.9194), hit@5 % 0.833 → 0.820 (0.680), right word 0.667 → 0.660, far-swap AUC 0.9909 → 0.9909.
+> The tables below predate round 18 (other rows unchanged); see results/round18_word_contrasts.md.
+
 Run: 2026-11-16, Azure region westus, REST short-audio API, settings from `bench/azure_pa.py`
 (`pa_params`: HundredMark, Phoneme granularity, Comprehensive, EnableMiscue=True; en-US also gets
 prosody and IPA). The numbers below are measured. Nothing is extrapolated.

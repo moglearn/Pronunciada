@@ -1,0 +1,208 @@
+{
+ "zh": {
+  "audit": {
+   "native_word_accept": [
+    0.9742904154668861,
+    0.9732620320855615
+   ],
+   "contrast": {
+    "aspiration/A>B": [
+     0.35,
+     0.6666666666666666,
+     120
+    ],
+    "aspiration/B>A": [
+     0.26666666666666666,
+     0.575,
+     120
+    ]
+   },
+   "pooled": [
+    0.30833333333333335,
+    0.6208333333333333
+   ]
+  },
+  "swapbench": {
+   "before": {
+    "swap_near:auc": 0.9740720509819222,
+    "swap_near:hit@5%FA": 0.8933333333333333,
+    "swap_near:right_word": 0.7866666666666666,
+    "swap_far:auc": 0.9918246846143842,
+    "swap_far:hit@5%FA": 0.9933333333333333,
+    "swap_far:right_word": 0.8933333333333333,
+    "native:fa<60": 0.036490969406561005
+   },
+   "after": {
+    "swap_near:auc": 0.9741370789439459,
+    "swap_near:hit@5%FA": 0.8933333333333333,
+    "swap_near:right_word": 0.7866666666666666,
+    "swap_far:auc": 0.9919209259981793,
+    "swap_far:hit@5%FA": 0.9933333333333333,
+    "swap_far:right_word": 0.8933333333333333,
+    "native:fa<60": 0.037596756358274974
+   },
+   "azure": {
+    "swap_near:auc": 0.9663376251788269,
+    "swap_near:hit@5%FA": 0.8963846153846154,
+    "swap_near:right_word": 0.7466666666666667,
+    "swap_far:auc": 0.9886760306931981,
+    "swap_far:hit@5%FA": 0.98,
+    "swap_far:right_word": 0.8988888888888887,
+    "native:fa<60": 0.036490969406561005
+   },
+   "p_after_not_better": {
+    "swap_near:auc": 0.374,
+    "swap_far:auc": 0.237,
+    "swap_near:hit@5%FA": 0.908,
+    "swap_near:right_word": 1.0
+   },
+   "ci_after_minus_before": {
+    "swap_near:auc": [
+     -0.0002803557176413035,
+     0.00045969964341766034
+    ],
+    "swap_far:auc": [
+     -7.963866811927789e-05,
+     0.0003840575332992534
+    ],
+    "swap_near:hit@5%FA": [
+     -0.019999999999999907,
+     0.013333333333333308
+    ],
+    "swap_near:right_word": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "learners_test": {
+   "any": [
+    0.7945973845179345,
+    0.7938342007487662
+   ],
+   "tone_only": [
+    0.7851745579767855,
+    0.7817435287023307
+   ],
+   "seg": [
+    0.8394002578833976,
+    0.8513219244412527
+   ]
+  },
+  "revert": false,
+  "lang10": {
+   "before": {
+    "native_words": 0.9738671472708548,
+    "word_auc": 0.9394038174512055,
+    "word_hit5": 0.79875,
+    "lowest": 0.816,
+    "native_sounds": 0.9963747099767981,
+    "sound_auc": 0.9884287500725313
+   },
+   "after": {
+    "native_words": 0.9727085478887745,
+    "word_auc": 0.9401124282433984,
+    "word_hit5": 0.80375,
+    "lowest": 0.815,
+    "native_sounds": 0.9963747099767981,
+    "sound_auc": 0.9884287500725313
+   }
+  }
+ },
+ "ja": {
+  "audit": {
+   "native_word_accept": [
+    0.9761804087385483,
+    0.9757575757575757
+   ],
+   "contrast": {
+    "voicing/A>B": [
+     0.325,
+     0.7333333333333333,
+     120
+    ],
+    "voicing/B>A": [
+     0.475,
+     0.4666666666666667,
+     120
+    ]
+   },
+   "pooled": [
+    0.4,
+    0.6
+   ]
+  },
+  "swapbench": {
+   "before": {
+    "swap_near:auc": 0.9680951084490426,
+    "swap_near:hit@5%FA": 0.8333333333333334,
+    "swap_near:right_word": 0.6666666666666666,
+    "swap_far:auc": 0.990942916780107,
+    "swap_far:hit@5%FA": 0.9733333333333334,
+    "swap_far:right_word": 0.92,
+    "native:fa<60": 0.027988490714098875
+   },
+   "after": {
+    "swap_near:auc": 0.9688864688265723,
+    "swap_near:hit@5%FA": 0.82,
+    "swap_near:right_word": 0.66,
+    "swap_far:auc": 0.9909211362192576,
+    "swap_far:hit@5%FA": 0.9733333333333334,
+    "swap_far:right_word": 0.92,
+    "native:fa<60": 0.029034789432382944
+   },
+   "azure": {
+    "swap_near:auc": 0.9193892367728469,
+    "swap_near:hit@5%FA": 0.6804942528735632,
+    "swap_near:right_word": 0.5388888888888889,
+    "swap_far:auc": 0.9791363906102735,
+    "swap_far:hit@5%FA": 0.9530201342281879,
+    "swap_far:right_word": 0.8747203579418346,
+    "native:fa<60": 0.020402825006539366
+   },
+   "p_after_not_better": {
+    "swap_near:auc": 0.382,
+    "swap_far:auc": 0.608,
+    "swap_near:hit@5%FA": 0.958,
+    "swap_near:right_word": 0.801
+   },
+   "ci_after_minus_before": {
+    "swap_near:auc": [
+     -0.001086074991471528,
+     0.004279506994511872
+    ],
+    "swap_far:auc": [
+     -0.0001628379715149092,
+     0.00011393374448989961
+    ],
+    "swap_near:hit@5%FA": [
+     -0.033333333333333326,
+     0.00666666666666671
+    ],
+    "swap_near:right_word": [
+     -0.033333333333333326,
+     0.013333333333333308
+    ]
+   }
+  },
+  "revert": false,
+  "lang10": {
+   "before": {
+    "native_words": 0.97508038585209,
+    "word_auc": 0.9322956329357445,
+    "word_hit5": 0.742,
+    "lowest": 0.7475,
+    "native_sounds": 0.9936486551508444,
+    "sound_auc": 0.972350361667658
+   },
+   "after": {
+    "native_words": 0.9739192568774563,
+    "word_auc": 0.9320255987879954,
+    "word_hit5": 0.7425,
+    "lowest": 0.747,
+    "native_sounds": 0.9936486551508444,
+    "sound_auc": 0.972350361667658
+   }
+  }
+ }
+}

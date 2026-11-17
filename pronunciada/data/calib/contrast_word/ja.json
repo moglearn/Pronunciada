@@ -1,0 +1,12 @@
+{
+ "lang": "ja",
+ "knee": [
+  -2.469571209689388,
+  -1.0646068404965214,
+  -0.1737278035750853
+ ],
+ "width": 4.0,
+ "floor": 0.4,
+ "native_quantile": 0.02,
+ "fit_on": "FLEURS validation natives; contrast swaps of the audit (bench/round18/fit.py)"
+}

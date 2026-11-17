@@ -26,6 +26,10 @@ class RefPhone:
     # G2P modules fill rule-based ones (weak forms, liaison, flapping ...); pronunciada.variants
     # appends the ones learned from native speech.
     alts: list[tuple[str, float]] = field(default_factory=list)
+    # Korean only (round 18): True for a tense (fortis) obstruent ㄲ ㄸ ㅃ ㅆ ㅉ, from the spelling and
+    # the front-end's post-obstruent tensification; False for its lax partner; None elsewhere. The
+    # symbol is the same plain one either way; only the round-18 tense evidence reads this.
+    tense: bool | None = None
     # Round 15: "long" / "short" when the prompt fixes this sound's length (Japanese long vowels
     # and っ, Italian doubled consonants, German stressed vowels). None = derive it from the
     # canonical symbol (pronunciada.length.labels) or not applicable. Alternatives do not change
@@ -139,6 +143,7 @@ class WordResult:
     present_prob: float | None = None      # probability the word was said at all
     omitted: bool = False                  # present_prob < 0.5
     length_prob: float | None = None       # round 15: long / short sounds held right (None if not judged)
+    contrast_prob: float | None = None     # round 18: word factor of the contrast evidence (None if not judged)
 
 
 @dataclass

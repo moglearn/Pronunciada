@@ -444,6 +444,26 @@ def contrast_caps(lang: str, directory: str | None = None) -> list[dict]:
     return out
 
 
+def contrast_cap_z(caps: list[dict], tab: dict) -> np.ndarray:
+    """Per sound, the lowest round-16 cap log-odds among the caps that fire (NaN where none)."""
+    n = len(tab["phone"])
+    out = np.full(n, np.nan)
+    if not caps or not n:
+        return out
+    X = np.column_stack([np.clip(np.nan_to_num(np.asarray(tab[k], np.float64), nan=0.0, posinf=30.0, neginf=-30.0),
+                                 -30.0, 30.0) for k in CAP_FEATS])
+    phone, comp = list(tab["phone"]), list(tab["comp_tok"])
+    for c in caps:
+        g = c["gate"]
+        fire = np.array([phone[i] in c["members"] and comp[i] in g.get(phone[i], g.get("*", ()))
+                         for i in range(n)], bool)
+        if fire.any():
+            z2 = X[fire] @ c["coef"] + c["b"] + c["offset"]
+            cur = out[fire]
+            out[fire] = np.where(np.isfinite(cur), np.minimum(cur, z2), z2)
+    return out
+
+
 def apply_contrast_caps(caps: list[dict], tab: dict, zl: np.ndarray, zs: np.ndarray):
     """Shown sound log-odds with the contrast caps applied (zl, zs; unchanged where no cap fires)."""
     if not caps:

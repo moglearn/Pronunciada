@@ -144,6 +144,9 @@ class Scorer:
         from . import length as _L
 
         self.length_cal = _L.params(self.lang) if length else None
+        from . import contrast_word as _CW                 # round 18: word-level contrast factor
+
+        self.contrast_word = _CW.params(self.lang)
         self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
@@ -247,7 +250,8 @@ class Scorer:
                 from .sound_emb import phone_vectors as _pv
 
                 V17 = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
-                contrast_ev = _CH.evidence(self.lang, [p.ipa for p in ref.phones], V17)
+                contrast_ev = _CH.evidence(self.lang, [p.ipa for p in ref.phones], V17,
+                                           tense=[getattr(p, "tense", None) for p in ref.phones])
                 capz = _CH.cap_column(self.lang, contrast_ev)
                 if capz is not None:
                     tab["head_cap_z"] = capz
@@ -440,6 +444,10 @@ class Scorer:
             detail.setdefault("coach_zl", zl)   # coaching and word / sentence inputs unchanged
             detail.setdefault("coach_zs", np.minimum(zs, zl))
             zl, zs = C.apply_contrast_caps(caps, tab, zl, zs)
+        cz = C.contrast_cap_z(caps, tab) if caps else np.full(len(zl), np.nan)   # round 18: word factor input
+        if "head_cap_z" in tab:
+            hz0 = np.asarray(tab["head_cap_z"], np.float64)
+            cz = np.where(np.isfinite(cz) & np.isfinite(hz0), np.minimum(cz, hz0), np.where(np.isfinite(cz), cz, hz0))
         if "head_cap_z" in tab:         # round 17: head-based contrast caps, composed by the minimum
             detail.setdefault("coach_zl", zl)
             detail.setdefault("coach_zs", np.minimum(zs, zl))
@@ -471,7 +479,7 @@ class Scorer:
             w_rep = self.word_score.predict(X=XR2)["reg"]
         return {**detail, "s_zl": zl, "s_zs": np.minimum(zs, zl), "s_reg": sreg, "W": W, "w_zl": w["z_len"],
                 "w_zs": w["z_str"], "w_reg": w_rep, "w_reg_r2": w["reg"], "S": S, "sent": so,
-                "sent_zl": so["z_len"][0], "sent_zs": so["z_str"][0]}
+                "sent_zl": so["z_len"][0], "sent_zs": so["z_str"][0], "contrast_z": cz}
 
     # ------------------------------------------------------------------ result objects
     def _assemble(self, c: dict, strictness: float) -> SentenceResult:
@@ -543,6 +551,13 @@ class Scorer:
 
                     p_len = _L.word_factor(self.length_cal, lv, s)
                     prob *= p_len
+            p_con = None                 # round 18: word-level contrast factor (pronunciada.contrast_word)
+            if self.contrast_word is not None and c.get("contrast_z") is not None:
+                from . import contrast_word as _CW
+
+                p_con = _CW.word_factor(self.contrast_word, c["contrast_z"][w.phones[0]:w.phones[1]], s)
+                if p_con is not None:
+                    prob *= p_con
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5
@@ -550,7 +565,7 @@ class Scorer:
                 present, om = None, bool(omitted[wi])
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
-                                    present_prob=present, omitted=om, length_prob=p_len))
+                                    present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))
         pm = None

@@ -126,8 +126,8 @@ where Pronunciada is ahead.
 | language | wrong word: detection | wrong word: right word blamed | near-miss word: detection | near-miss: caught at 5 % false alarms | native words flagged (< 0.6) |
 |---|---|---|---|---|---|
 | en | **0.995** / 0.994 | 0.893 / 0.898 | **0.981** / 0.963 | **0.900** / 0.793 | 0.035 / 0.022 |
-| zh | **0.991** / 0.989 | 0.887 / 0.899 | 0.964 / 0.966 | 0.860 / 0.896 | 0.046 / 0.036 |
-| ja | **0.991** / 0.979 | **0.920** / 0.875 | **0.965** / 0.919 | **0.840** / 0.680 | 0.025 / 0.020 |
+| zh | **0.992** / 0.989 | 0.893 / 0.899 | **0.974** / 0.966 | 0.893 / 0.896 | 0.038 / 0.036 |
+| ja | **0.991** / 0.979 | **0.920** / 0.875 | **0.969** / 0.919 | **0.820** / 0.680 | 0.029 / 0.020 |
 | es | **0.998** / 0.993 | **0.947** / 0.910 | **0.989** / 0.942 | **0.953** / 0.679 | 0.024 / 0.018 |
 | fr | **0.997** / 0.986 | **0.920** / 0.823 | **0.986** / 0.937 | **0.947** / 0.647 | 0.026 / 0.020 |
 | de | **0.996** / 0.982 | 0.907 / 0.921 | **0.956** / 0.887 | **0.767** / 0.517 | **0.043** / 0.049 |
@@ -141,6 +141,8 @@ where Pronunciada is ahead.
   each flags 5 % of the untouched words, so it is the fairest single column.
 - The last column is each system at its own natural cut-off (probability 0.6 / score 60), lower is
   better; Azure is a little more forgiving of native speakers in six languages.
+- The zh and ja rows were re-measured in round 18 (word-level contrast factor), with the same
+  Azure answers ([results/round18_word_contrasts.md](results/round18_word_contrasts.md)).
 - Where Pronunciada is behind: Russian near-misses overall (0.90 against 0.91, although it catches
   more of them at 5 % false alarms), Italian and Mandarin near-misses at 5 % false alarms, and by
   about one point blaming the right word in English, German, Korean and Mandarin. Round 8 changed
@@ -244,10 +246,12 @@ calibration error is 1–2 % for sounds, 3–4 % for words and 2–4 % for sente
   ([results/round15_length.md](results/round15_length.md)). Japanese length is verified only on
   planted errors in native recordings, not on learners. Since round 17, Korean and Mandarin
   aspiration and Russian soft / hard consonants are heard through small heads on the acoustic
-  model's internal layers (swaps caught 56–100 % on FLEURS test, from 5–90 %); they move the shown
-  sound probability and Korean / Russian coaching tips but **not word probabilities**, so a word
-  with only an aspiration error still scores well. Korean lax / tense stops (달 / 딸) are separable
-  by those activations among natives (probe AUC 0.98) but the references cannot express them yet.
+  model's internal layers (swaps caught 56–100 % on FLEURS test, from 5–90 %), and since round 18
+  so are Korean lax / tense stops (달 / 딸; 7 / 5 % → 78 / 99 %). Since round 18 the contrast
+  evidence also lowers the **word** probability in Mandarin (aspiration; contrast-swap words
+  caught 31 → 62 % on test) and Japanese (voicing; 40 → 60 %); in English, Russian, German and
+  Korean the word factor was not adopted (no gain, or the planted-error guard binds), so there a
+  word whose only error is aspiration, softness, voicing or tenseness can still score well.
   Mandarin aspiration does not reach coaching (no gain on OMPAL learners). Remaining blind spots
   (Italian doubling, Portuguese nasal vowels, Italian mid vowels) are listed in
   [results/contrast_audit.md](results/contrast_audit.md) and [results/round17_heads.md](results/round17_heads.md).
