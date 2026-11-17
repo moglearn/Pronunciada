@@ -1,0 +1,325 @@
+{
+ "meta": {
+  "lang": "zh",
+  "text": "我家有四口人",
+  "source": "OMPAL (CC BY 4.0), test split",
+  "speaker": "French-speaking learner of Mandarin",
+  "experts": {
+   "sentence": {
+    "accuracy": 4.0,
+    "fluency": 4.33,
+    "prosody": 4.0
+   },
+   "marked": [
+    {
+     "word": "口",
+     "said": "wrong tone",
+     "expected": "tone"
+    }
+   ]
+  }
+ },
+ "result": {
+  "lang": "zh",
+  "text": "我家有四口人",
+  "prob": 0.9844,
+  "strictness": 0.5,
+  "words": [
+   {
+    "text": "我家",
+    "prob": 0.9849,
+    "start": 0.59,
+    "end": 1.01,
+    "phones": [
+     {
+      "ipa": "w",
+      "prob": 0.9968,
+      "start": 0.59,
+      "end": 0.63,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɔ",
+      "prob": 0.9858,
+      "start": 0.65,
+      "end": 0.67,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "tɕ",
+      "prob": 0.7942,
+      "start": 0.83,
+      "end": 0.91,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "j",
+      "prob": 0.9893,
+      "start": 0.93,
+      "end": 0.95,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "a",
+      "prob": 0.9948,
+      "start": 0.97,
+      "end": 1.01,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "我",
+      "start": 0.59,
+      "end": 0.67,
+      "tone_expected": 3,
+      "tone_heard": 3,
+      "tone_prob": 0.9434,
+      "stress_expected": null,
+      "stress_prob": null
+     },
+     {
+      "text": "家",
+      "start": 0.83,
+      "end": 1.01,
+      "tone_expected": 1,
+      "tone_heard": 1,
+      "tone_prob": 0.9126,
+      "stress_expected": null,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.986,
+    "stress_prob": null,
+    "tone_prob": 0.9991,
+    "present_prob": 0.9998,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": 1.0
+   },
+   {
+    "text": "有",
+    "prob": 0.9913,
+    "start": 1.71,
+    "end": 1.87,
+    "phones": [
+     {
+      "ipa": "y",
+      "prob": 0.9993,
+      "start": 1.71,
+      "end": 1.75,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "oʊ",
+      "prob": 0.9975,
+      "start": 1.77,
+      "end": 1.87,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "有",
+      "start": 1.71,
+      "end": 1.87,
+      "tone_expected": 3,
+      "tone_heard": 3,
+      "tone_prob": 0.5505,
+      "stress_expected": null,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9999,
+    "stress_prob": null,
+    "tone_prob": 0.9914,
+    "present_prob": 1.0,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "四口",
+    "prob": 0.868,
+    "start": 2.03,
+    "end": 2.43,
+    "phones": [
+     {
+      "ipa": "s",
+      "prob": 0.9601,
+      "start": 2.03,
+      "end": 2.05,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɯ",
+      "prob": 0.945,
+      "start": 2.13,
+      "end": 2.15,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "kʰ",
+      "prob": 0.9663,
+      "start": 2.23,
+      "end": 2.29,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "oʊ",
+      "prob": 0.9734,
+      "start": 2.33,
+      "end": 2.43,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "四",
+      "start": 2.03,
+      "end": 2.15,
+      "tone_expected": 4,
+      "tone_heard": 1,
+      "tone_prob": 0.1781,
+      "stress_expected": null,
+      "stress_prob": null
+     },
+     {
+      "text": "口",
+      "start": 2.23,
+      "end": 2.43,
+      "tone_expected": 3,
+      "tone_heard": 2,
+      "tone_prob": 0.1348,
+      "stress_expected": null,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.966,
+    "stress_prob": null,
+    "tone_prob": 0.935,
+    "present_prob": 0.961,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": 1.0
+   },
+   {
+    "text": "人",
+    "prob": 0.9365,
+    "start": 2.55,
+    "end": 2.79,
+    "phones": [
+     {
+      "ipa": "ʐ",
+      "prob": 0.992,
+      "start": 2.55,
+      "end": 2.57,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ə",
+      "prob": 0.9845,
+      "start": 2.61,
+      "end": 2.63,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "n",
+      "prob": 0.9869,
+      "start": 2.75,
+      "end": 2.79,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "人",
+      "start": 2.55,
+      "end": 2.79,
+      "tone_expected": 2,
+      "tone_heard": 2,
+      "tone_prob": 0.9305,
+      "stress_expected": null,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9835,
+    "stress_prob": null,
+    "tone_prob": 0.9993,
+    "present_prob": 0.9529,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   }
+  ],
+  "fluency": 0.832,
+  "completeness": 1.0,
+  "timing_ms": {
+   "g2p": 0.342,
+   "load": 1.402,
+   "audio_check": 0.495,
+   "fbank": 2.931,
+   "model": 51.215,
+   "adapter": 0.194,
+   "align": 4.101,
+   "delivery": 6.408,
+   "calibrate": 1.996,
+   "prosody": 2.602,
+   "total": 76.735
+  },
+  "warnings": [],
+  "scores": {
+   "accuracy": 0.8559,
+   "fluency": 0.832,
+   "prosodic": 0.8184,
+   "total": 0.801
+  },
+  "audio": {
+   "schema_version": 1,
+   "duration_s": 3.1,
+   "clipped_share": 0.0,
+   "peak_dbfs": -12.8472,
+   "noise_db": -72.2362,
+   "speech_db": -29.2121,
+   "snr_db": 52.5504,
+   "speech_s": 2.16,
+   "speech_share": 0.6968,
+   "lead_sil_s": 0.54,
+   "trail_sil_s": 0.06,
+   "expected_s": 1.11,
+   "speech_ratio": 1.9459,
+   "issues": [],
+   "retry_recommended": false
+  },
+  "coaching": [],
+  "tips": []
+ }
+}
