@@ -33,7 +33,7 @@ FADE = 0.35
 TERMINAL_CSS = """
 #wrap{position:absolute;left:64px;right:64px;top:262px;padding:24px 28px;border-radius:18px;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
 .ap-wrapper,.ap-player{background:transparent!important}
-.asciinema-player-theme-pron{--term-color-foreground:#ececee;--term-color-background:#090b10;--term-color-0:#090b10;--term-color-1:#ff6b5e;--term-color-2:#4ade80;--term-color-3:#f5b84a;--term-color-4:#7aa2f7;--term-color-5:#c4a7e7;--term-color-6:#5fd3c6;--term-color-7:#ececee;--term-color-8:#77777f;--term-color-9:#ff6b5e;--term-color-10:#4ade80;--term-color-11:#f5b84a;--term-color-12:#7aa2f7;--term-color-13:#c4a7e7;--term-color-14:#5fd3c6;--term-color-15:#ffffff}
+.asciinema-player-theme-pron{--term-color-foreground:#ececee;--term-color-background:#090b10;--term-color-0:#090b10;--term-color-1:#ff5d7d;--term-color-2:#4ade80;--term-color-3:#f5b84a;--term-color-4:#7aa2f7;--term-color-5:#c4a7e7;--term-color-6:#5fd3c6;--term-color-7:#ececee;--term-color-8:#77777f;--term-color-9:#ff5d7d;--term-color-10:#4ade80;--term-color-11:#f5b84a;--term-color-12:#7aa2f7;--term-color-13:#c4a7e7;--term-color-14:#5fd3c6;--term-color-15:#ffffff}
 """
 TERMINAL_JS = """window.start = () => { window.player = AsciinemaPlayer.create({data: %s}, document.getElementById('term'),
   {autoPlay: true, controls: false, fit: 'width', theme: 'pron', terminalFontFamily: "'Geist Mono', Menlo, monospace", terminalLineHeight: 1.33}); };"""

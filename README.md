@@ -12,7 +12,7 @@ Pronunciada is a Python library for pronunciation assessment. It takes a recordi
 
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
-- Across 84 comparisons on public test sets, it is ahead of Microsoft Azure Pronunciation Assessment in 60 (40 of them statistically significant) and significantly behind in 7.
+- It matches or beats Microsoft Azure Pronunciation Assessment in 77 of 84 comparisons on public test sets: significantly better in 40, not significantly different in 37 and significantly worse in 7.
 - It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine.
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). It is significantly more accurate than ZIPA alone on 45 of 60 tests and significantly less accurate on none.
 

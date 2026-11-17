@@ -25,8 +25,14 @@ LANG = {"en": "English", "zh": "Mandarin", "ja": "Japanese", "es": "Spanish", "f
 WHO = {"native speaker": "native speaker", "adult learner of English": "adult learner",
        "French-speaking learner of Mandarin": "French-speaking learner"}
 GROUPS = {
-    "samples-languages": ["es-native", "ja-native", "ko-native", "zh-learner-1"],
-    "samples-english": ["en-learner-1", "en-learner-2"],
+    "sample-intro": ["en-learner-1"],
+    "samples-more": ["en-learner-2", "zh-learner-1", "es-native", "ja-native", "ko-native"],
+}
+# What the corpus annotation says about each learner recording (site/samples/*.json, meta.experts.marked), in words.
+EXPERTS = {
+    "en-learner-1": ("Expert annotators", "Marked the /l/ in “float” as dropped."),
+    "en-learner-2": ("Expert annotators", "Marked the first vowel of “register” as wrong."),
+    "zh-learner-1": ("Teachers", "Marked the tone of 口 as wrong."),
 }
 PLAY = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg>'
 esc = html.escape
@@ -62,14 +68,16 @@ def marked_up(text: str, pieces: list[dict], tag: str = "span") -> str:
     return "".join(out)
 
 
-def score_line(result: dict) -> str:
-    parts = [f'Sentence <b>{result["prob"]:.2f}</b>']
+def findings(result: dict) -> str:
+    """What was flagged, then the sentence: the line shown next to "Pronunciada" for a learner recording."""
+    parts = []
     for w in result["words"]:
         if w["prob"] < 0.5:
-            parts.append(f'{esc(w["text"])} <b class="low">{w["prob"]:.2f}</b>')
+            parts.append(f'“{esc(w["text"])}” <b class="low">{w["prob"]:.2f}</b>')
         for s in w.get("syllables") or []:
             if s.get("tone_prob") is not None and s["tone_prob"] < 0.5:
                 parts.append(f'tone of {esc(s["text"])} <b class="low">{s["tone_prob"]:.2f}</b>')
+    parts.append(f'sentence <b>{result["prob"]:.2f}</b>')
     return '<span class="dot"></span>'.join(f"<span>{p}</span>" for p in parts)
 
 
@@ -78,15 +86,37 @@ def sample(key: str) -> str:
     meta, result = d["meta"], d["result"]
     audio, sr = sf.read(str(SAMPLES / f"{key}.mp3"))
     secs = round(len(audio) / sr)
-    learner = meta["experts"] is not None
-    tip = next((t["text"] for t in result.get("tips") or [] if t.get("text")), "") if learner else ""
-    note = f'<p class="s-note">{esc(tip)}</p>' if tip else ""
-    return (f'<article class="s" data-src="samples/{key}.mp3">'
-            f'<p class="s-label">{LANG[meta["lang"]]}<span>{WHO[meta["speaker"]]}</span></p>'
-            f'<p class="s-text" lang="{meta["lang"]}">{marked_up(meta["text"], units(result))}</p>'
-            f'<div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: {esc(meta["text"])}">'
-            f'{PLAY}<time>{secs // 60}:{secs % 60:02d}</time></button><p class="s-score">{score_line(result)}</p></div>'
-            f'{note}</article>')
+    play = (f'<button class="s-play" type="button" aria-label="Play the recording: {esc(meta["text"])}">'
+            f'{PLAY}<time>{secs // 60}:{secs % 60:02d}</time></button>')
+    head = (f'<p class="s-label">{LANG[meta["lang"]]}<span>{WHO[meta["speaker"]]}</span></p>'
+            f'<p class="s-text" lang="{meta["lang"]}">{marked_up(meta["text"], units(result))}</p>')
+    if key not in EXPERTS:        # native speaker: the sentence probability is the whole result
+        return (f'<article class="s" data-src="samples/{key}.mp3">{head}<div class="s-foot">{play}'
+                f'<p class="s-score">Sentence <b>{result["prob"]:.2f}</b></p></div></article>')
+    who, marked = EXPERTS[key]
+    tip = next((t["text"] for t in result.get("tips") or [] if t.get("text")), "")
+    rows = [("Pronunciada", f'<span class="s-score">{findings(result)}</span>'), (who, esc(marked))]
+    if tip:
+        rows.append(("Coaching tip", esc(tip)))
+    table = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in rows)
+    return (f'<article class="s" data-src="samples/{key}.mp3">{head}<div class="s-foot">{play}</div>'
+            f'<dl class="s-rows">{table}</dl></article>')
+
+
+def stats() -> str:
+    """The four figures under the headline, read from the scoreboard."""
+    rows = tally()
+    total, better, same = (sum(r[k] for r in rows) for k in (1, 2, 3))
+    ms = re.match(r"(\d+) ms", next(r for r in table("End-to-end `Scorer.score`") if r[0] == "fp32")[1]).group(1)
+    ours = next(r for r in english() if r["label"] == "Phoneme")
+    alone = zipa()[0]["azure"][0]
+    cells = [
+        (f"{better + same}<small> of {total}</small>", "benchmark comparisons in which it matches or beats Azure"),
+        (f"{ms}<small> ms</small>", "to score a sentence on a laptop CPU, with no network"),
+        (f"{len(rows)}", "languages, sharing one acoustic model"),
+        (f'{ours["ours"][0]:.2f}', f'agreement with expert phoneme scores. Azure {ours["azure"][0]:.2f}, ZIPA alone {alone:.2f}'),
+    ]
+    return '<div class="stats">' + "".join(f"<div><b>{n}</b><span>{label}</span></div>" for n, label in cells) + "</div>"
 
 
 # ---- charts -------------------------------------------------------------------------------
@@ -191,7 +221,7 @@ def chart_speed() -> str:
 
 BLOCKS = {
     **{name: (lambda keys=keys: '<div class="samples">' + "".join(sample(k) for k in keys) + "</div>") for name, keys in GROUPS.items()},
-    "chart-tally": chart_tally, "table-languages": table_languages, "chart-azure": chart_azure,
+    "stats": stats, "chart-tally": chart_tally, "table-languages": table_languages, "chart-azure": chart_azure,
     "chart-speed": chart_speed, "chart-zipa": chart_zipa,
 }
 
