@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/banner.jpg" alt="Pronunciada. The waveform of a learner saying 'It was a beautiful day for a float', cut at the word boundaries, with the probability given to each word." width="100%">
+  <img src="docs/assets/banner.jpg" alt="Pronunciada: on-device pronunciation assessment with cloud-level accuracy. The waveform of a learner saying 'It was a beautiful day for a float', cut at the word boundaries, with the probability given to each word." width="100%">
 </p>
 
 # Pronunciada
@@ -8,7 +8,7 @@
 [![CI](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml/badge.svg)](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-Pronunciada is a Python library for pronunciation assessment. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
+Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
@@ -25,6 +25,11 @@ pip install pronunciada
 pronunciada check clip.wav "It was a beautiful day for a float" --lang en
 ```
 
+![The command above running in a terminal and printing the scores for each word and sound.](docs/assets/cli.gif)
+
+<details>
+<summary>Output as text</summary>
+
 ```text
 ~ Close  sentence 75% · accuracy 7.7/10 · fluency 8.1/10   en · strictness 0.5
 
@@ -38,6 +43,8 @@ pronunciada check clip.wav "It was a beautiful day for a float" --lang en
 
   → Let the air pass along the sides of the tongue for /l/ in “float”.
 ```
+
+</details>
 
 This is the output for [`site/samples/en-learner-1.mp3`](site/samples/en-learner-1.mp3), a recording from the speechocean762 test set. The corpus annotators marked the /l/ of "float" as dropped. `^` marks a word below 0.5 and `~` a word between 0.5 and 0.8.
 
@@ -179,6 +186,8 @@ The difference is smallest where the task is easy for both, such as detecting a 
 
 ## Supported languages
 
+![English, Chinese, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean, each written in its own script.](docs/assets/languages.jpg)
+
 | Language | Code | Install | Also scored |
 | --- | --- | --- | --- |
 | English | `en` | `pronunciada` | word stress |
@@ -269,6 +278,8 @@ pronunciada mcp
 This starts a Model Context Protocol server on stdio with one tool, `assess_pronunciation(audio_path, reference_text, language)`. Client configuration is in [docs/MCP.md](docs/MCP.md).
 
 ## How it works
+
+![How one word is scored. The word is "float", said without its l. Expected sounds f, l, oʊ, t. Recognized instead: nothing for l, and ɔ for oʊ. Probabilities 0.83, 0.27, 0.35, 0.56.](docs/assets/figure-word.png)
 
 1. The reference text is converted to a phoneme sequence with per-language dictionaries and rules. This includes Mandarin tone sandhi and French liaison.
 2. ZIPA produces frame-level posteriors over IPA phones from the audio alone. A small per-language adapter corrects its systematic confusions.

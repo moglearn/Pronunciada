@@ -97,8 +97,8 @@ def banner() -> str:
     """README banner, 1200x400: shown at about 880 px wide on GitHub."""
     return page(f"""
 <div class="mark" style="left:44px;top:38px">{wordmark('#ffffff')}</div>
-<div style="position:absolute;left:44px;bottom:42px;width:520px">
-  <h1 style="font-size:38px">Pronunciation assessment<span>for ten languages, on CPU</span></h1>
+<div style="position:absolute;left:44px;bottom:42px;width:500px">
+  <h1 style="font-size:34px">On-device pronunciation assessment<span>with cloud-level accuracy</span></h1>
 </div>
 <div style="position:absolute;right:44px;top:112px">{diagram(588, 150)}</div>
 <div class="note" style="position:absolute;right:44px;bottom:26px;font-size:11.5px">learner recording, speechocean762 · probability each word is accepted</div>
@@ -110,7 +110,7 @@ def social() -> str:
     return page(f"""
 <div class="mark" style="left:50%;top:60px;transform:translateX(-50%)">{wordmark('#ffffff')}</div>
 <div style="position:absolute;left:0;right:0;top:132px;text-align:center">
-  <h1 style="font-size:58px">Pronunciation assessment<span>for ten languages, on CPU</span></h1>
+  <h1 style="font-size:56px">On-device pronunciation assessment<span>with cloud-level accuracy</span></h1>
 </div>
 <div style="position:absolute;left:50%;transform:translateX(-50%);top:352px">{diagram(900, 170)}</div>
 """)

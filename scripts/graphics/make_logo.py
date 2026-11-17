@@ -1,9 +1,13 @@
-"""Write the Pronunciada wordmark and favicon as SVG outlines (no font needed to display them).
+"""Write the Pronunciada logo as SVG outlines (no font needed to display it).
 
     python scripts/graphics/make_logo.py
 
-Outputs docs/assets/logo-light.svg (black, for light backgrounds), docs/assets/logo-dark.svg
-(white) and site/assets/favicon.svg. The lettering is Geist at weight 560 with tightened spacing.
+The mark is a short waveform in which one bar has shrunk to a dot: a sound that was dropped,
+which is what the scorer exists to find. The lettering is Geist at weight 560 with tightened
+spacing. Outputs, in docs/assets/: logo-light.svg and logo-dark.svg (mark and name, for light
+and dark backgrounds), logo-mark.svg (the mark alone) and avatar.png (the mark on a dark tile,
+for a profile picture). In site/assets/: logo-light.svg, logo-dark.svg, favicon.svg and
+apple-touch-icon.png.
 """
 from __future__ import annotations
 
@@ -41,26 +45,57 @@ def outline(text: str, weight: float = WEIGHT, tracking: float = TRACKING):
     return "".join(parts), x, ext.ascender, -ext.descender, upem
 
 
-def wordmark(color: str) -> str:
+SHAPE = (0.5, None, 1.0, 0.72, 0.4)        # bar heights as a share of the mark's height; None is the dot
+ON_LIGHT, ON_DARK = ("#1d4ed8", "#0ea5a0"), ("#7db8ff", "#5eead4")      # the dot's gradient
+
+
+def mark(height: float, bar: float, gap: float, color: str, grad=ON_LIGHT, uid: str = "pron-dot") -> tuple[str, float]:
+    """The mark centered on y = 0 with its left edge at x = 0. Returns (svg, width)."""
+    out = [f'<linearGradient id="{uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{grad[0]}"/>'
+           f'<stop offset="1" stop-color="{grad[1]}"/></linearGradient>']
+    x = 0.0
+    for h in SHAPE:
+        if h is None:
+            out.append(f'<circle cx="{x + bar / 2:.1f}" cy="0" r="{bar * 0.66:.1f}" fill="url(#{uid})"/>')
+        else:
+            out.append(f'<rect x="{x:.1f}" y="{-h * height / 2:.1f}" width="{bar:.1f}" height="{h * height:.1f}" rx="{bar / 2:.1f}" fill="{color}"/>')
+        x += bar + gap
+    return "".join(out), x - gap
+
+
+def wordmark(color: str, with_mark: bool = True) -> str:
+    """The logo: mark and name. `color` is the lettering; the dot's gradient follows it."""
     paths, width, asc, desc, upem = outline("Pronunciada")
     cap = 0.72 * upem                      # trim to cap height plus descender of the "p"
     top, bottom = cap + 0.06 * upem, 0.24 * upem
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 {-top:.0f} {width:.0f} {top + bottom:.0f}" '
-            f'role="img" aria-label="Pronunciada"><g fill="{color}">{paths}</g></svg>\n')
+    sign, shift = "", 0.0
+    if with_mark:
+        light = color.lower() in ("#fff", "#ffffff")
+        shapes, w = mark(0.8 * upem, 0.105 * upem, 0.075 * upem, color, ON_DARK if light else ON_LIGHT)
+        sign = f'<g transform="translate(0 {-cap / 2:.0f})">{shapes}</g>'
+        shift = w + 0.3 * upem
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 {-top:.0f} {width + shift:.0f} {top + bottom:.0f}" '
+            f'role="img" aria-label="Pronunciada">{sign}<g fill="{color}" transform="translate({shift:.0f} 0)">{paths}</g></svg>\n')
 
 
-def favicon() -> str:
-    paths, width, asc, desc, upem = outline("P", weight=620, tracking=0)
-    size = 1.28 * upem
-    dx, dy = (size - width) / 2 + 0.02 * upem, size / 2 + 0.355 * upem
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size:.0f} {size:.0f}">'
-            f'<rect width="{size:.0f}" height="{size:.0f}" rx="{0.3 * size:.0f}" fill="#0b0b0c"/>'
-            f'<g fill="#fff" transform="translate({dx:.0f} {dy:.0f})">{paths}</g></svg>\n')
+def tile(background: str | None = "#0b0b0c", size: int = 100) -> str:
+    """The mark alone: on a rounded dark tile (favicon, profile picture) or, with background=None, in black."""
+    color, grad = ("#fff", ON_DARK) if background else ("#000", ON_LIGHT)
+    shapes, w = mark(0.54 * size, 0.088 * size, 0.064 * size, color, grad)
+    back = f'<rect width="{size}" height="{size}" rx="{0.24 * size:.0f}" fill="{background}"/>' if background else ""
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}" role="img" aria-label="Pronunciada">{back}'
+            f'<g transform="translate({(size - w) / 2:.1f} {size / 2})">{shapes}</g></svg>\n')
 
 
 if __name__ == "__main__":
-    (ROOT / "docs/assets/logo-light.svg").write_text(wordmark("#000000"), encoding="utf-8")
-    (ROOT / "docs/assets/logo-dark.svg").write_text(wordmark("#ffffff"), encoding="utf-8")
-    (ROOT / "site/assets/favicon.svg").write_text(favicon(), encoding="utf-8")
-    (ROOT / "site/assets/logo-light.svg").write_text(wordmark("#000000"), encoding="utf-8")
-    print("wrote logo-light.svg, logo-dark.svg, favicon.svg")
+    from common import render
+    docs, site = ROOT / "docs/assets", ROOT / "site/assets"
+    for folder in (docs, site):
+        (folder / "logo-light.svg").write_text(wordmark("#000000"), encoding="utf-8")
+        (folder / "logo-dark.svg").write_text(wordmark("#ffffff"), encoding="utf-8")
+    (docs / "logo-mark.svg").write_text(tile(None), encoding="utf-8")
+    (site / "favicon.svg").write_text(tile(), encoding="utf-8")
+    square = "<!doctype html><html><body style='margin:0;background:#0b0b0c'>" + tile().replace("<svg ", "<svg width='256' height='256' ") + "</body></html>"
+    render(square, docs / "avatar.png", 256, 256, scale=2)
+    render(square.replace("256", "180"), site / "apple-touch-icon.png", 180, 180, scale=1)
+    print("wrote logo-light.svg, logo-dark.svg, logo-mark.svg, favicon.svg, avatar.png, apple-touch-icon.png")
