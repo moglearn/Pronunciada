@@ -16,265 +16,212 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400..500&family=Inter:opsz,wght@14..32,400..600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#000; --text:#000; --soft:#59544f; --faint:#8c8782; --rule:rgba(0,0,0,.09); --page:#fdfcfc; --panel:#f5f3f1; --card:#fff; --flag:#1d4ed8; --pale:#e6e2de; --accent:linear-gradient(90deg,#1d4ed8,#0ea5a0);
-  --display:"Geist", "Helvetica Neue", Helvetica, "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", Arial, sans-serif;
-  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans CJK KR", Arial, sans-serif;
+  --text:#000; --soft:#59544f; --faint:#8c8782; --rule:rgba(0,0,0,.09); --page:#fdfcfc; --card:#fff; --pale:#e6e2de;
+  --accent:linear-gradient(90deg,#1d4ed8,#0ea5a0);
+  --display:"Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   --mono:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);font-size:16px;line-height:26px;letter-spacing:.005em;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);font-size:17px;line-height:30px;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:underline;text-decoration-color:rgba(0,0,0,.28);text-underline-offset:3px}
 a:hover{text-decoration-color:#000}
+
+/* top bar and buttons */
 .top{position:sticky;top:0;z-index:5;background:rgba(253,252,252,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--rule)}
 .top .in{max-width:1200px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between}
 .top .name img{height:17px;display:block}
-.pills{display:flex;gap:8px}
-.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 15px;border-radius:9999px;font-family:var(--sans);font-size:14px;line-height:1;font-weight:500;text-decoration:none;white-space:nowrap;cursor:pointer;border:0}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:9999px;font-size:15px;line-height:1;font-weight:500;text-decoration:none;white-space:nowrap}
+.pill.small{height:36px;padding:0 15px;font-size:14px}
 .pill.dark{background:#000;color:#fff}
 .pill.dark:hover{background:#262626}
 .pill.light{background:#fff;color:#000;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06)}
 .pill.light:hover{box-shadow:0 0 0 1px rgba(0,0,0,.16),0 1px 2px rgba(0,0,0,.06)}
-.pill code{font-family:var(--mono);font-size:13px;color:inherit}
-main{max-width:808px;margin:0 auto;padding:72px 20px 96px}
-.crumb{font-size:14px;color:var(--soft);margin:0 0 18px}
-h1{font-family:var(--display);font-weight:300;font-size:58px;line-height:61px;letter-spacing:-.03em;margin:0 0 26px;text-wrap:balance}
-.meta{display:flex;gap:64px;font-size:14px;line-height:20px;margin:0 0 26px}
-.meta small{display:block;font-size:13px;color:var(--soft)}
-.dots{border:0;border-top:1px dotted rgba(0,0,0,.28);margin:0}
-.actions{display:flex;gap:8px;margin:28px 0 0;flex-wrap:wrap}
-.lead{font-size:20px;line-height:31px;color:#2b2825;margin:0}
-.media{display:block;width:100%;height:auto;border-radius:20px;margin:36px 0 12px;background:#0b0b0c}
-video.media{aspect-ratio:16/9;height:auto;object-fit:cover}
-h2{font-family:var(--display);font-weight:300;font-size:32px;line-height:36px;letter-spacing:-.015em;margin:72px 0 18px}
-h3{font-family:var(--sans);font-weight:500;font-size:16px;line-height:24px;margin:40px 0 12px}
-p{margin:0 0 18px}
-ul,ol{margin:0 0 18px;padding-left:22px}
-li{margin:0 0 8px}
-code,pre{font-family:var(--mono)}
-code{font-size:.86em}
-.cap{font-size:13px;line-height:19px;color:var(--soft);margin:10px 0 30px}
-pre{margin:0 0 4px;padding:20px 22px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);font-size:13px;line-height:21px;overflow-x:auto}
-pre .c{color:var(--faint)}
-/* tables */
-.tbl{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:15px;line-height:21px}
-th,td{text-align:left;padding:10px 16px 10px 0;border-bottom:1px solid var(--rule);vertical-align:top}
-th{font-weight:500;font-size:13px;color:var(--soft)}
-td.n,th.n{text-align:right;padding-right:0;padding-left:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
-/* samples */
-.samples{margin:40px 0 16px}
-.s{padding:44px 0 42px;border-top:1px solid var(--rule)}
-.s:last-child{border-bottom:1px solid var(--rule)}
-.s-label{font-size:13px;line-height:18px;color:var(--text);margin:0 0 18px}
-.s-label span{margin-left:10px;color:var(--faint)}
-.s-text{font-family:var(--display);font-weight:300;font-size:38px;line-height:46px;letter-spacing:-.025em;margin:0 0 30px;text-wrap:pretty}
-.s-text:lang(zh),.s-text:lang(ja),.s-text:lang(ko){letter-spacing:0;font-weight:400;font-size:27px}
-.s-text span{transition:color .12s linear,opacity .12s linear}
-.s-text .low{background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.s.playing .s-text{color:#c2bdb7}
-.s.playing .s-text .low{opacity:.3}
-.s.playing .s-text .said{color:#000}
-.s.playing .s-text .low.said{opacity:1}
-.s-foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.s-play{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px 0 13px;border-radius:9999px;border:0;background:#fff;color:#000;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.05);font:500 13px/1 var(--sans);font-variant-numeric:tabular-nums;cursor:pointer}
-.s-play:hover{box-shadow:0 0 0 1px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.05)}
-.s-play time{min-width:26px;text-align:left}
-.s-play .i-pause,.s.playing .s-play .i-play{display:none}
-.s.playing .s-play .i-pause{display:inline}
-.s.playing .s-play{background:#000;color:#fff;box-shadow:none}
-.s.playing .s-play svg{fill:#fff}
-.s-score{margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px;line-height:20px;color:var(--soft);font-variant-numeric:tabular-nums}
-.s-score b{font-weight:500;color:#000}
-.s-score b.low{color:var(--flag)}
-.s-score .dot{width:3px;height:3px;border-radius:50%;background:#c9c4be}
-/* opener */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0 28px;margin:44px 0 0;padding:26px 0 24px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.stats b{display:block;font-family:var(--display);font-weight:300;font-size:44px;line-height:48px;letter-spacing:-.035em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill code{font-family:var(--mono);font-size:14px}
+
+/* column and type */
+main{max-width:808px;margin:0 auto;padding:96px 20px 112px}
+h1{font-family:var(--display);font-weight:300;font-size:60px;line-height:63px;letter-spacing:-.03em;margin:0 0 30px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:300;font-size:34px;line-height:40px;letter-spacing:-.02em;margin:112px 0 28px;text-wrap:balance}
+p{margin:0 0 28px}
+ul,ol{margin:0 0 28px;padding-left:24px}
+li{margin:0 0 12px;padding-left:4px}
+.crumb{font-size:14px;line-height:20px;color:var(--soft);margin:0 0 22px}
+.lead{font-size:21px;line-height:33px;margin:0 0 34px}
+.note{font-size:13.5px;line-height:20px;color:var(--soft)}
+
+/* key figures */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0 32px;margin:64px 0 16px;padding:30px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stats b{display:block;font-family:var(--display);font-weight:300;font-size:46px;line-height:50px;letter-spacing:-.035em;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stats small{font-size:20px;letter-spacing:-.02em;color:var(--soft)}
-.stats span{display:block;margin-top:10px;font-size:13.5px;line-height:19px;color:var(--soft)}
+.stats span{display:block;margin-top:12px;font-size:14px;line-height:20px;color:var(--soft)}
+
+/* video */
+.media{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;margin:64px 0 0;background:#05070b}
+
 /* charts */
-.chart{margin:30px 0 12px;padding:26px 28px 20px;border-radius:20px;background:var(--card);box-shadow:0 0 0 1px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04)}
-.ch-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;margin:0 0 18px}
+.chart{margin:44px 0;padding:30px 32px 24px;border-radius:20px;background:var(--card);box-shadow:0 0 0 1px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);line-height:22px}
+.ch-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;margin:0 0 22px}
 .ch-head.stack{display:block}
-.ch-head.stack .ch-key{margin-top:10px}
-.chart figcaption{font-size:15px;line-height:22px;font-weight:500}
-.ch-key{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px;line-height:18px;color:var(--soft)}
-.ch-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;background:var(--pale)}
+.ch-head.stack .ch-key{margin-top:12px}
+.chart figcaption{font-size:16px;line-height:24px;font-weight:500}
+.ch-key{display:flex;gap:6px 20px;flex-wrap:wrap;font-size:13.5px;line-height:20px;color:var(--soft)}
+.ch-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;background:var(--pale)}
 .ch-key i.own,.ch-row.own .ch-track i,.sp-row.own .ch-track i,.tl-bar i.own{background:var(--accent)}
-.ch-key i.same{background:var(--pale)}
 .ch-key i.behind{background:#8c8782}
-.ch-g{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:center;padding:15px 0;border-top:1px solid var(--rule)}
-.ch-name{font-size:15px;line-height:21px}
-.ch-name small{display:block;font-size:12.5px;line-height:17px;color:var(--soft)}
-.ch-row,.sp-row{display:grid;grid-template-columns:1fr 62px;gap:14px;align-items:center;height:28px}
+.ch-g{display:grid;grid-template-columns:236px 1fr;gap:24px;align-items:center;padding:18px 0;border-top:1px solid var(--rule)}
+.ch-name{font-size:15.5px;line-height:22px}
+.ch-name small{display:block;font-size:13px;line-height:19px;color:var(--soft)}
+.ch-row,.sp-row{display:grid;grid-template-columns:1fr 62px;gap:16px;align-items:center;height:30px}
 .ch-track{display:block;height:10px}
 .ch-track i{display:block;height:100%;min-width:10px;border-radius:9999px;background:var(--pale)}
-.ch-row b,.sp-row b{font-family:var(--display);font-weight:400;font-size:21px;line-height:1;letter-spacing:-.02em;text-align:right;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ch-row b,.sp-row b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1;letter-spacing:-.02em;text-align:right;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
 .ch-row.own b,.sp-row.own b{color:#000}
 .ch-row sup{font-family:var(--sans);font-size:10px;letter-spacing:0;color:var(--soft);margin-left:3px}
-.sp-row{grid-template-columns:210px 1fr 76px;height:auto;padding:14px 0;border-top:1px solid var(--rule)}
-.sp-who{font-size:15px;line-height:21px}
-.sp-who small{display:block;font-size:12.5px;line-height:17px;color:var(--soft)}
-.tl{border-top:1px solid var(--rule);padding-top:12px}
-.tl-row{display:grid;grid-template-columns:104px 1fr 44px;gap:14px;align-items:center;height:34px}
-.tl-name{font-size:15px}
+.sp-row{grid-template-columns:236px 1fr 78px;gap:24px;height:auto;padding:18px 0;border-top:1px solid var(--rule)}
+.sp-who{font-size:15.5px;line-height:22px}
+.sp-who small{display:block;font-size:13px;line-height:19px;color:var(--soft)}
+.tl{border-top:1px solid var(--rule);padding-top:14px}
+.tl-row{display:grid;grid-template-columns:112px 1fr 44px;gap:16px;align-items:center;height:38px}
+.tl-name{font-size:15.5px}
 .tl-bar{display:flex;gap:2px}
-.tl-bar i{display:block;height:22px;border-radius:5px;font:500 12px/22px var(--sans);font-style:normal;text-align:center;font-variant-numeric:tabular-nums}
+.tl-bar i{display:block;height:24px;border-radius:6px;font:500 12.5px/24px var(--sans);font-style:normal;text-align:center;font-variant-numeric:tabular-nums}
 .tl-bar i.own{color:#fff}
 .tl-bar i.same{background:var(--pale);color:#4a4541}
 .tl-bar i.behind{background:#8c8782;color:#fff}
-.tl-n{font-size:13px;color:var(--soft);white-space:nowrap}
-.ch-foot{font-size:12.5px;line-height:18px;color:var(--soft);margin:14px 0 0;padding-top:14px;border-top:1px solid var(--rule)}
-td b{font-weight:600}
-/* author */
-.author{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:56px 0 0;padding:24px 0;border-top:1px dotted rgba(0,0,0,.28);border-bottom:1px dotted rgba(0,0,0,.28)}
-.author small{display:block;font-size:13px;line-height:18px;color:var(--soft);margin-bottom:4px}
-.author strong{display:block;font-family:var(--display);font-weight:400;font-size:22px;line-height:28px;letter-spacing:-.015em}
-.author p{margin:4px 0 0;font-size:14px;line-height:21px;color:var(--soft)}
-/* install card */
-.cta{position:relative;border-radius:20px;overflow:hidden;margin:36px 0 0;padding:44px 40px;color:#fff;background:#06080c url(assets/gradient.jpg) center/cover}
-.cta h2{margin:0 0 10px;color:#fff}
-.cta p{margin:0 0 24px;color:rgba(255,255,255,.78);max-width:46ch}
-.cta .pills{flex-wrap:wrap}
-footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:64px;padding-top:22px;border-top:1px solid var(--rule)}
-@media (max-width:620px){
-  h1{font-size:38px;line-height:42px}
-  .lead{font-size:18px;line-height:28px}
-  .stats{grid-template-columns:1fr 1fr;gap:26px 20px}
-  .stats b{font-size:38px;line-height:42px}
+.tl-n{font-size:13.5px;color:var(--soft);white-space:nowrap}
+.ch-foot{font-size:13px;line-height:19px;color:var(--soft);margin:16px 0 0;padding-top:16px;border-top:1px solid var(--rule)}
 
-  h2{font-size:26px;line-height:30px;margin-top:56px}
-  main{padding-top:40px}
-  .top .in{padding:0 16px}
-  .meta{gap:32px}
-  .s-text{font-size:28px;line-height:35px}
-  .s{padding:34px 0 32px}
-  .s-text:lang(zh),.s-text:lang(ja),.s-text:lang(ko){font-size:22px}
-  .chart{padding:20px 18px 16px;border-radius:14px}
-  .ch-g{grid-template-columns:1fr;gap:6px}
-  .sp-row{grid-template-columns:1fr 70px}
+/* code */
+code,pre{font-family:var(--mono)}
+code{font-size:.88em}
+pre{margin:0 0 16px;padding:24px 26px;border-radius:16px;background:var(--card);box-shadow:0 0 0 1px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);font-size:13.5px;line-height:23px;overflow-x:auto}
+pre .c{color:var(--faint)}
+pre + .note{margin-top:20px}
+
+/* closing card, author, footer */
+.cta{border-radius:20px;margin:112px 0 0;padding:52px 48px;color:#fff;background:#06080c url(assets/gradient.jpg) center/cover}
+.cta h2{margin:0 0 12px;color:#fff}
+.cta p{margin:0 0 28px;color:rgba(255,255,255,.8);max-width:44ch}
+.author{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:72px 0 0;padding:28px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.author small{display:block;font-size:13.5px;line-height:20px;color:var(--soft);margin-bottom:4px}
+.author strong{display:block;font-family:var(--display);font-weight:400;font-size:22px;line-height:28px;letter-spacing:-.015em}
+.author p{margin:6px 0 0;font-size:15px;line-height:22px;color:var(--soft)}
+footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:40px}
+footer p{margin:0}
+
+@media (max-width:660px){
+  body{font-size:16px;line-height:28px}
+  main{padding:56px 20px 80px}
+  .top .in{padding:0 20px}
+  h1{font-size:40px;line-height:44px;margin-bottom:24px}
+  h2{font-size:28px;line-height:33px;margin:80px 0 22px}
+  p,ul,ol{margin-bottom:24px}
+  .lead{font-size:18px;line-height:29px;margin-bottom:28px}
+  .stats{grid-template-columns:1fr 1fr;gap:30px 20px;margin-top:48px}
+  .stats b{font-size:40px;line-height:44px}
+  .media{border-radius:14px;margin-top:48px}
+  .chart{margin:36px 0;padding:22px 20px 18px;border-radius:14px}
+  .ch-g{grid-template-columns:1fr;gap:8px}
+  .sp-row{grid-template-columns:1fr 78px;gap:6px 16px}
   .sp-row .ch-track{grid-column:1/-1;grid-row:2}
-  .tl-row{grid-template-columns:88px 1fr 40px;gap:8px}
-  .media{border-radius:12px}
-  .cta{padding:32px 22px}
-  th,td{padding-right:10px}
-  .hide-s{display:none}
+  .tl-row{grid-template-columns:92px 1fr 40px;gap:8px}
+  pre{padding:18px 18px;font-size:12.5px;line-height:21px}
+  .cta{padding:36px 24px;margin-top:80px}
+  .author{flex-wrap:wrap}
 }
 </style>
 </head>
 <body>
 <header class="top"><div class="in">
   <a class="name" href="./" aria-label="Pronunciada"><img src="assets/logo-light.svg" alt="Pronunciada"></a>
-  <div class="pills"><a class="pill light hide-s" href="https://pypi.org/project/pronunciada/">PyPI</a><a class="pill dark" href="https://github.com/moglearn/pronunciada">GitHub</a></div>
+  <a class="pill small dark" href="https://github.com/moglearn/pronunciada">GitHub</a>
 </div></header>
 
 <main>
 <p class="crumb">Open source · Apache-2.0</p>
 <h1>Pronunciation scoring that matches or beats Azure, on your device.</h1>
-<p class="lead">Pronunciada is an open-source Python library that grades a learner's speech sound by sound, in ten languages. It needs no cloud service: a sentence is scored in about 50 ms on a laptop CPU. It is built on the open ZIPA speech model and is far more accurate than ZIPA alone.</p>
-<div class="actions">
+<p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages. It runs on a laptop CPU in about 50 ms per sentence, with no cloud service.</p>
+<div class="pills">
   <a class="pill dark" href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
   <a class="pill light" href="https://pypi.org/project/pronunciada/"><code>pip install pronunciada</code></a>
 </div>
+
 <!-- gen:stats -->
-<div class="stats"><div><b>77<small> of 84</small></b><span>benchmark comparisons in which it matches or beats Azure</span></div><div><b>50<small> ms</small></b><span>to score a sentence on a laptop CPU, with no network</span></div><div><b>10</b><span>languages, sharing one acoustic model</span></div><div><b>0.69</b><span>agreement with expert phoneme scores. Azure 0.54, ZIPA alone 0.43</span></div></div>
+<div class="stats"><div><b>77<small> of 84</small></b><span>comparisons in which it matches or beats Azure</span></div><div><b>50<small> ms</small></b><span>to score a sentence on a laptop CPU</span></div><div><b>10</b><span>languages on one shared model</span></div><div><b>0.69</b><span>agreement with expert raters on English sounds (Azure: 0.54)</span></div></div>
 <!-- /gen:stats -->
-<p class="cap">The comparisons are with Microsoft Azure Pronunciation Assessment on public test sets. “Beats” means significantly better (40 of the 84) and “matches” means no statistically significant difference (37). Azure is significantly better in the other 7.</p>
+<p class="note">“Matches” means no statistically significant difference. The first section below has the breakdown.</p>
 
 <video class="media" controls preload="none" poster="assets/poster.jpg" width="808" height="455" aria-label="A one-minute video with sound: a learner recording and recordings in Spanish, Japanese, Korean and Mandarin play with the scores Pronunciada gives them, followed by the comparison with Azure, the command line scoring a recording, and the comparison with ZIPA alone.">
   <source src="assets/demo.mp4" type="video/mp4">
 </video>
-<p class="cap">One minute, with sound. The recordings are from the speechocean762, FLEURS and OMPAL test sets, and each word lights up at the time Pronunciada placed it in the audio.</p>
 
-<h2>Grades every sound, word and sentence</h2>
-<p>Given a recording and the text the speaker was reading, Pronunciada returns the probability that a human rater would accept each phoneme, each word and the sentence as a whole, and a coaching tip for what went wrong. In this recording of a learner it gives “float” a probability of 0.10. The expert annotators of the corpus marked the same word: the speaker dropped its “l”.</p>
-<!-- gen:sample-intro -->
-<div class="samples"><article class="s" data-src="samples/en-learner-1.mp3"><p class="s-label">English<span>adult learner</span></p><p class="s-text" lang="en"><span data-a="0.79">It</span> <span data-a="0.93">was</span> <span data-a="1.07">a</span> <span data-a="1.13">beautiful</span> <span data-a="1.47">day</span> <span data-a="1.83">for</span> <span data-a="2.03">a</span> <span data-a="2.09" class="low">float</span></p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: It was a beautiful day for a float"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:03</time></button><p class="s-score"><span>“float” <b class="low">0.10</b></span></p></div></article></div>
-<!-- /gen:sample-intro -->
-
-<h2>Ten languages, each tested against Azure</h2>
-<p>English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean share one acoustic model, with a small adapter per language. Every language was compared with Azure Pronunciation Assessment on held-out public data. The chart counts the comparisons in which one system is significantly better than the other.</p>
+<h2>Tested against Azure in ten languages</h2>
+<p>Most language-learning apps get their pronunciation scores from a cloud service, and the most widely used one is Microsoft Azure Pronunciation Assessment. Pronunciada was compared with it in every language it supports: English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean. There are 84 comparisons. Each is one measure on one public test set, with the same recordings and text given to both systems.</p>
 <!-- gen:chart-tally -->
-<figure class="chart"><div class="ch-head stack"><figcaption>Comparisons with Azure, by language</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada significantly better</span><span><i class="same"></i>No significant difference</span><span><i class="behind"></i>Azure significantly better</span></div></div><div class="tl"><div class="tl-row"><span class="tl-name">English</span><span class="tl-bar"><i class="own" style="width:57.89%">11</i><i class="same" style="width:26.32%">5</i><i class="behind" style="width:15.79%">3</i></span><span class="tl-n">of 19</span></div><div class="tl-row"><span class="tl-name">Mandarin</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:57.89%">11</i></span><span class="tl-n">of 16</span></div><div class="tl-row"><span class="tl-name">Japanese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:5.26%">1</i><i class="behind" style="width:10.53%">2</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Spanish</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">French</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">German</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:21.05%">4</i></span><span class="tl-n">of 7</span></div><div class="tl-row"><span class="tl-name">Italian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Portuguese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Russian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Korean</span><span class="tl-bar"><i class="own" style="width:5.26%">1</i><i class="same" style="width:26.32%">5</i></span><span class="tl-n">of 6</span></div></div><p class="ch-foot">84 comparisons, each one metric on one held-out public test set: 40 significantly better, 37 not significantly different, 7 significantly worse (paired tests, p &lt; 0.05).</p></figure>
+<figure class="chart"><div class="ch-head stack"><figcaption>Comparisons with Azure, by language</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada significantly better</span><span><i class="same"></i>No significant difference</span><span><i class="behind"></i>Azure significantly better</span></div></div><div class="tl"><div class="tl-row"><span class="tl-name">English</span><span class="tl-bar"><i class="own" style="width:57.89%">11</i><i class="same" style="width:26.32%">5</i><i class="behind" style="width:15.79%">3</i></span><span class="tl-n">of 19</span></div><div class="tl-row"><span class="tl-name">Mandarin</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:57.89%">11</i></span><span class="tl-n">of 16</span></div><div class="tl-row"><span class="tl-name">Japanese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:5.26%">1</i><i class="behind" style="width:10.53%">2</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Spanish</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">French</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">German</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:21.05%">4</i></span><span class="tl-n">of 7</span></div><div class="tl-row"><span class="tl-name">Italian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Portuguese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Russian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Korean</span><span class="tl-bar"><i class="own" style="width:5.26%">1</i><i class="same" style="width:26.32%">5</i></span><span class="tl-n">of 6</span></div></div><p class="ch-foot">84 comparisons on held-out public test sets. Significance is from paired tests at p &lt; 0.05.</p></figure>
 <!-- /gen:chart-tally -->
-<p class="cap">The comparisons in which Azure is significantly better are English sentence prosody, the share of a native speaker's words that are marked down in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings. All 84 are listed in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
+<p>Pronunciada is significantly better in 40 comparisons and Azure in 7. The other 37 show no significant difference. Azure's seven are English intonation, how often a native speaker's words are marked down in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings. Every comparison is listed in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
 
-<p>Learner recordings with expert annotation are public for English and Mandarin only. For the other eight languages the main test uses native speech: each recording is scored against a reference in which one word has been replaced by a word that differs by a single phoneme, and the figure is how well the system separates the replaced word from the unchanged ones (area under the ROC curve, 150 FLEURS test recordings per language).</p>
-<!-- gen:table-languages -->
-<div class="tbl"><table><thead><tr><th>Language</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead><tbody><tr><td>English</td><td class="n"><b>0.981</b></td><td class="n">0.963</td></tr><tr><td>Mandarin</td><td class="n">0.975</td><td class="n">0.966</td></tr><tr><td>Japanese</td><td class="n"><b>0.968</b></td><td class="n">0.919</td></tr><tr><td>Spanish</td><td class="n"><b>0.990</b></td><td class="n">0.942</td></tr><tr><td>French</td><td class="n"><b>0.986</b></td><td class="n">0.937</td></tr><tr><td>German</td><td class="n"><b>0.960</b></td><td class="n">0.887</td></tr><tr><td>Italian</td><td class="n">0.979</td><td class="n">0.970</td></tr><tr><td>Portuguese</td><td class="n"><b>0.963</b></td><td class="n">0.938</td></tr><tr><td>Russian</td><td class="n">0.900</td><td class="n">0.909</td></tr><tr><td>Korean</td><td class="n">0.944</td><td class="n">0.937</td></tr></tbody></table></div>
-<!-- /gen:table-languages -->
-<p class="cap">Bold marks a statistically significant difference. This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.</p>
-
-<h2>Ahead of Azure on most public benchmarks</h2>
-<p>Language-learning applications usually get pronunciation scores from a cloud service, most often Azure Pronunciation Assessment. Each comparison here uses its REST API (region westus, November 2026, one request per recording), with the same audio and reference text given to both systems. On English and Mandarin learner speech, where experts have scored or marked every recording, Pronunciada agrees with the experts more closely than Azure at the phoneme level, for sentence accuracy and for Mandarin tones. Azure is closer for English intonation.</p>
+<h2>Closer to expert raters on learner speech</h2>
+<p>The most direct test uses recordings of learners that experts have scored by hand. Such recordings are public for English and Mandarin. On them, Pronunciada agrees with the experts more closely than Azure on individual sounds, on whole sentences and on Mandarin tones. Azure is closer on English intonation.</p>
 <!-- gen:chart-azure -->
-<figure class="chart"><div class="ch-head"><figcaption>Learner speech scored by experts</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>Azure</span></div></div><div class="ch-g"><div class="ch-name">English phonemes<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:53.8%"></i></span><b>0.54</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert accuracy scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.3%"></i></span><b>0.67</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>detecting the phonemes annotators marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:63.1%"></i></span><b>0.63</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>detecting the tone errors teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.9%"></i></span><b>0.68</b></div></div></div><div class="ch-g"><div class="ch-name">English intonation<small>agreement with expert prosody scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.2%"></i></span><b>0.77</b></div><div class="ch-row"><span class="ch-track"><i style="width:82.7%"></i></span><b>0.83</b></div></div></div><p class="ch-foot">Agreement is the Pearson correlation with the expert score; detection is the area under the ROC curve. Higher is better. Test sets: speechocean762, L2-ARCTIC and OMPAL. All five differences are statistically significant (paired bootstrap over speakers, p &lt; 0.05).</p></figure>
+<figure class="chart"><div class="ch-head"><figcaption>Learner speech scored by experts</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>Azure</span></div></div><div class="ch-g"><div class="ch-name">English sounds<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:53.8%"></i></span><b>0.54</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.3%"></i></span><b>0.67</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>finding the sounds experts marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:63.1%"></i></span><b>0.63</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>finding the tones teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.9%"></i></span><b>0.68</b></div></div></div><div class="ch-g"><div class="ch-name">English intonation<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.2%"></i></span><b>0.77</b></div><div class="ch-row"><span class="ch-track"><i style="width:82.7%"></i></span><b>0.83</b></div></div></div><p class="ch-foot">Higher is better. Agreement is the correlation with expert scores, and finding errors is the area under the ROC curve. Test sets: speechocean762, L2-ARCTIC and OMPAL. All five differences are statistically significant.</p></figure>
 <!-- /gen:chart-azure -->
-<p class="cap">L2-ARCTIC was not used to train or tune Pronunciada. With both systems set to flag the same share of the phonemes experts marked on speechocean762, 66% of Pronunciada's flags are phonemes the experts marked, against 44% of Azure's.</p>
+<p>All figures come from held-out test recordings. Azure was used as provided, through its REST API in November 2026.</p>
 
-<p>Azure was not tuned on any of this data. Pronunciada's calibration models were fitted on the speechocean762 training set, the FLEURS training and validation sets, and the OMPAL development speakers. Every figure on this page is from a held-out split.</p>
-
-<h2>Runs on the device, in about 50 ms per sentence</h2>
-<p>Scoring needs no network connection and no GPU. Inference runs on CPU with ONNX Runtime, and the model file is 248 MB, or 67 MB quantized.</p>
-<div class="tbl"><table>
-<thead><tr><th>Model</th><th class="n">4 threads</th><th class="n">1 thread</th></tr></thead>
-<tbody>
-<tr><td>fp32, 248 MB</td><td class="n">50 ms</td><td class="n">100 ms</td></tr>
-<tr><td>int8, 67 MB</td><td class="n">40 ms</td><td class="n">65 ms</td></tr>
-</tbody></table></div>
-<p class="cap">Median time to score one recording, over 100 speechocean762 recordings with a mean length of 3.5 s, on an Apple M3 Pro laptop.</p>
+<h2>Runs on the device in about 50 ms</h2>
+<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop, using a 248 MB model. A quantized model of 67 MB takes about 40 ms. Longer recordings take longer in proportion, and they still return well before a request to the cloud does.</p>
 <!-- gen:chart-speed -->
-<figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop</small></span><span class="ch-track"><i style="width:12.9%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.34 s</b></div><p class="ch-foot">Median over English recordings of the same mean length; lower is better. This is not a controlled comparison: the two sets of recordings differ, Pronunciada ran on one CPU thread of an Apple M3 Pro, and the Azure figure is the full REST request to region westus from the same laptop, upload included.</p></figure>
+<figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop, one CPU thread</small></span><span class="ch-track"><i style="width:12.9%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.34 s</b></div><p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>
 <!-- /gen:chart-speed -->
 
-<h2>Built on ZIPA, and more accurate than ZIPA alone</h2>
-<p>No large model was trained for this project. The acoustic model is <a href="https://github.com/lingjzhu/zipa">ZIPA</a> (Zhu et al., ACL 2025), an open phone recognizer trained on speech from many languages. To measure what Pronunciada adds to it, the same held-out tests were run on the unmodified model with the standard scoring method, with no adapters, calibration, or tone and stress models.</p>
+<h2>Built on ZIPA, and far more accurate than ZIPA alone</h2>
+<p>No large model was trained for this project. The sounds in a recording are recognized by <a href="https://github.com/lingjzhu/zipa">ZIPA</a> (Zhu et al., ACL 2025), an open speech model trained on many languages, and Pronunciada adds the scoring around it. To measure what that adds, the same tests were run on ZIPA alone with the standard scoring method.</p>
 <!-- gen:chart-zipa -->
-<figure class="chart"><div class="ch-head"><figcaption>The same tests, against the model Pronunciada is built on</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>ZIPA alone</span></div></div><div class="ch-g"><div class="ch-name">English phonemes<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:43.4%"></i></span><b>0.43</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert accuracy scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:58.3%"></i></span><b>0.58</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>detecting the phonemes annotators marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:65.9%"></i></span><b>0.66</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>detecting the tone errors teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:55.2%"></i></span><b>0.55</b></div></div></div><p class="ch-foot">ZIPA alone is the unmodified model scored with the standard goodness-of-pronunciation method. All four differences are statistically significant (paired bootstrap over speakers, p &lt; 0.05).</p></figure>
+<figure class="chart"><div class="ch-head"><figcaption>The same tests, against ZIPA alone</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>ZIPA alone</span></div></div><div class="ch-g"><div class="ch-name">English sounds<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:43.4%"></i></span><b>0.43</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:58.3%"></i></span><b>0.58</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>finding the sounds experts marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:65.9%"></i></span><b>0.66</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>finding the tones teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:55.2%"></i></span><b>0.55</b></div></div></div><p class="ch-foot">Higher is better. ZIPA alone is the unmodified model with the standard goodness-of-pronunciation score. All four differences are statistically significant.</p></figure>
 <!-- /gen:chart-zipa -->
-<p class="cap">Over 60 test rows, Pronunciada is significantly better in 45 and not significantly different in 15. ZIPA alone is not significantly better in any. The gap is largest for Mandarin tones, which ZIPA does not output. The rows are in <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">the baseline write-up</a>.</p>
+<p>Across 60 tests, Pronunciada is significantly better in 45 and significantly worse in none. The gap is widest for Mandarin tones, which ZIPA does not output. The full comparison is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">baseline write-up</a>.</p>
 
-<h2>Method</h2>
+<h2>How it works</h2>
 <ol>
-<li>The reference text is converted to a phoneme sequence with per-language dictionaries and rules, including Mandarin tone sandhi and French liaison.</li>
-<li>ZIPA produces frame-level posteriors over IPA phones from the audio alone. It does not see the reference text. A small adapter per language corrects its systematic confusions.</li>
-<li>For each expected phoneme, the scorer compares the likelihood that it was produced with the likelihood of a substitution or a deletion. Each likelihood is a CTC forward score summed over all alignments, so the result does not depend on one forced alignment.</li>
-<li>Gradient-boosted calibration models, fitted on speech that experts scored, map this evidence to acceptance probabilities for phonemes, words and sentences. A strictness setting between 0 and 1 moves all of them together.</li>
-<li>Tone, stress, length and some consonant contrasts cannot be read from the phone posteriors. Separate small classifiers read ZIPA's intermediate layers for these.</li>
+<li>The text is converted to the sequence of sounds a speaker should produce, using a pronunciation dictionary and rules for each language.</li>
+<li>ZIPA listens to the recording and reports which sounds it hears, moment by moment, without seeing the text. A small adapter per language corrects its systematic confusions.</li>
+<li>For every expected sound, the scorer weighs three explanations: it was said, it was replaced by another sound, or it was dropped. It sums over every way of lining the sounds up with the audio, so no single alignment decides the result.</li>
+<li>Calibration models fitted on expert-scored speech turn that evidence into the probability that a rater would accept each sound, each word and the sentence. One strictness setting moves all of them together.</li>
+<li>Separate small models handle what the sequence of sounds cannot show: tone, stress, length and a few consonant contrasts.</li>
 </ol>
 <p>The models trained for this project add about 10 MB to the package. The <a href="https://github.com/moglearn/pronunciada/blob/main/docs/DESIGN.md">design document</a> has the details.</p>
 
 <h2>Limitations</h2>
 <ul>
-<li>Accuracy on learner speech has been measured for English and Mandarin only.</li>
-<li>English sentence prosody correlates less well with expert scores than Azure's (0.772 against 0.827).</li>
-<li>At default strictness, about 3% of a native speaker's words score below 0.6 in English, Japanese, Spanish and Portuguese, against about 2% for Azure.</li>
-<li>In Mandarin, a low tone probability on one syllable does not always lower the word probability. Applications that grade tones should read the per-syllable tone probabilities.</li>
-<li>Coaching tips were tuned on English and Mandarin learners. On native FLEURS recordings, between 9% and 43% of sentences, depending on the language, still receive at least one pronunciation tip.</li>
-<li>Italian geminate consonants and Portuguese nasal vowels are detected poorly. Japanese pitch accent is not scored.</li>
-<li>The reference text is required. There are no iOS, Android or WebAssembly builds.</li>
+<li>Accuracy on learner speech has been measured for English and Mandarin only. For the other eight languages the evidence comes from native speech.</li>
+<li>Azure agrees with expert raters more closely on English intonation (0.83 against 0.77).</li>
+<li>At the default setting, about 3% of a native speaker's words score below 0.6 in English, Japanese, Spanish and Portuguese, against about 2% for Azure.</li>
+<li>Italian double consonants and Portuguese nasal vowels are detected poorly, and Japanese pitch accent is not scored.</li>
+<li>The text being read is required, and there are no iOS, Android or browser builds yet.</li>
 </ul>
+<p>The <a href="https://github.com/moglearn/pronunciada#limitations">README</a> has the full list.</p>
 
-<h2>Usage</h2>
-<pre>pip install pronunciada
-pronunciada check clip.wav "It was a beautiful day for a float" --lang en</pre>
-<p class="cap">The model is downloaded on first use. Mandarin and Japanese need the extras <code>pronunciada[zh]</code> and <code>pronunciada[ja]</code>.</p>
+<h2>Get started</h2>
+<pre>pip install pronunciada</pre>
 <pre>import pronunciada
 
-result = pronunciada.score("clip.wav", "It was a beautiful day for a float", lang="en")
+result = pronunciada.score(
+    "clip.wav", "It was a beautiful day for a float", lang="en"
+)
 
-result.prob                      <span class="c"># sentence, 0 to 1</span>
-for word in result.words:
-    word.text, word.prob         <span class="c"># word</span>
-    for phone in word.phones:
-        phone.ipa, phone.prob    <span class="c"># phoneme</span>
-result.coaching()                <span class="c"># detected errors, most severe first</span></pre>
-<p class="cap">The library also has a local HTTP server, output in Azure's JSON layout, and an MCP server. These are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
+result.prob                <span class="c"># 0.75, the sentence</span>
+result.words[7].prob       <span class="c"># 0.10, the word "float"</span>
+result.words[7].phones     <span class="c"># f 0.83, l 0.27, oʊ 0.35, t 0.56</span>
+result.coaching()          <span class="c"># detected errors, most severe first</span></pre>
+<p class="note">The values are for the learner recording in the video, in which the “l” of “float” is dropped. The model is downloaded on first use. A command-line tool, a local HTTP server, output in Azure's JSON layout and an MCP server are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
 
 <div class="cta">
   <h2>Apache-2.0, on GitHub</h2>
-  <p>The code, the complete result tables and the scripts that produce them are in the repository.</p>
+  <p>The code, every result table and the scripts that produce them are in the repository.</p>
   <div class="pills">
     <a class="pill light" href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
     <a class="pill light" href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">Scoreboard</a>
@@ -287,41 +234,8 @@ result.coaching()                <span class="c"># detected errors, most severe 
 </div>
 
 <footer>
-<p>Code is licensed under Apache-2.0. ZIPA and the sample recordings (speechocean762, OMPAL, FLEURS) are licensed under CC BY 4.0. Azure is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.</p>
+<p>ZIPA and the recordings in the video (speechocean762, OMPAL, FLEURS) are licensed under CC BY 4.0. Azure is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.</p>
 </footer>
 </main>
-
-<script>
-(function(){
-  var playing=null;
-  function clock(t){t=Math.max(0,Math.floor(t));return Math.floor(t/60)+':'+('0'+t%60).slice(-2);}
-  [].forEach.call(document.querySelectorAll('.s'),function(el){
-    var btn=el.querySelector('.s-play'), time=btn.querySelector('time'), total=time.textContent;
-    var parts=[].slice.call(el.querySelectorAll('[data-a]')), audio=null, frame=0;
-    function paint(){
-      var t=audio.currentTime;
-      parts.forEach(function(p){p.classList.toggle('said',+p.dataset.a<=t+0.04);});
-      time.textContent=clock(t);
-      frame=requestAnimationFrame(paint);
-    }
-    function stop(){
-      cancelAnimationFrame(frame);
-      if(audio){audio.pause();audio.currentTime=0;}
-      el.classList.remove('playing');
-      parts.forEach(function(p){p.classList.remove('said');});
-      time.textContent=total;
-      if(playing===stop) playing=null;
-    }
-    btn.addEventListener('click',function(){
-      if(el.classList.contains('playing')){stop();return;}
-      if(playing) playing();
-      if(!audio){audio=new Audio(el.dataset.src);audio.addEventListener('ended',stop);}
-      playing=stop;
-      el.classList.add('playing');
-      audio.play().then(paint,stop);
-    });
-  });
-})();
-</script>
 </body>
 </html>
