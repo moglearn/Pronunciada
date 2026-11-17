@@ -63,11 +63,12 @@ li{margin:0 0 12px;padding-left:4px}
 .stats span{display:block;margin-top:10px;font-size:15px;line-height:22px;color:var(--soft)}
 
 /* video with its cover */
-.cover{position:relative;margin:56px 0 0;border-radius:20px;overflow:hidden;background:#05070b;aspect-ratio:16/9}
+.cover{position:relative;margin:56px 0 0;border-radius:20px;overflow:hidden;background:#fdfcfc;aspect-ratio:16/9;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04)}
 .cover video{display:block;width:100%;height:100%;object-fit:cover}
-.c-play{position:absolute;left:36px;bottom:32px;display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 18px 0 16px;border:0;border-radius:9999px;background:#fff;color:#000;font:500 14px/1 var(--sans);cursor:pointer}
-.c-play:hover{background:#ececec}
-.c-play span{color:var(--soft);font-variant-numeric:tabular-nums}
+.c-play{position:absolute;left:36px;bottom:32px;display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 18px 0 16px;border:0;border-radius:9999px;background:#000;color:#fff;font:500 14px/1 var(--sans);cursor:pointer}
+.c-play svg{fill:#fff}
+.c-play:hover{background:#262626}
+.c-play span{color:rgba(255,255,255,.62);font-variant-numeric:tabular-nums}
 .c-play span:empty{display:none}
 
 /* demo */
