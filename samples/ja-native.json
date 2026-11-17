@@ -928,17 +928,17 @@
   "fluency": 0.9492,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 1.114,
-   "load": 1.17,
-   "audio_check": 0.573,
-   "fbank": 6.102,
-   "model": 49.096,
-   "adapter": 0.364,
-   "align": 8.476,
-   "delivery": 1.414,
-   "calibrate": 2.433,
-   "length": 2.221,
-   "total": 75.414
+   "g2p": 4.402,
+   "load": 1.396,
+   "audio_check": 0.422,
+   "fbank": 5.832,
+   "model": 50.653,
+   "adapter": 0.311,
+   "align": 8.418,
+   "delivery": 1.335,
+   "calibrate": 2.309,
+   "length": 2.341,
+   "total": 79.698
   },
   "warnings": [],
   "scores": {

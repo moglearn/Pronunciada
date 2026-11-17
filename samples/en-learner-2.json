@@ -419,17 +419,17 @@
   "fluency": 0.7168,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.192,
-   "load": 0.681,
-   "audio_check": 0.292,
-   "fbank": 3.062,
-   "model": 29.451,
-   "adapter": 0.132,
-   "align": 3.846,
-   "delivery": 5.195,
-   "calibrate": 3.51,
-   "prosody": 1.435,
-   "total": 49.36
+   "g2p": 0.187,
+   "load": 1.293,
+   "audio_check": 0.289,
+   "fbank": 3.238,
+   "model": 29.307,
+   "adapter": 0.126,
+   "align": 3.794,
+   "delivery": 5.104,
+   "calibrate": 3.483,
+   "prosody": 1.492,
+   "total": 49.859
   },
   "warnings": [],
   "scores": {
@@ -670,36 +670,6 @@
      "confidence": 0.84,
      "start": 1.07,
      "end": 1.07,
-     "features": []
-    }
-   },
-   {
-    "tip_key": "sound.unclear",
-    "text": "Listen to /z/ in “players” and try it again; it did not sound quite right.",
-    "params": {
-     "word": "players",
-     "expected": "z",
-     "heard": null
-    },
-    "item": {
-     "schema_version": 2,
-     "schema_minor": 6,
-     "kind": "substitution",
-     "word": "players",
-     "word_index": 6,
-     "syllable_index": 1,
-     "phone_index": 4,
-     "position": "final",
-     "expected": "z",
-     "heard": null,
-     "expected_ipa": "z",
-     "heard_ipa": null,
-     "diff_keys": [],
-     "error_prob": 0.6609,
-     "prob": 0.9294,
-     "confidence": null,
-     "start": 3.53,
-     "end": 3.55,
      "features": []
     }
    }
