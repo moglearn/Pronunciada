@@ -7,6 +7,9 @@ import pytest
 
 MODEL_NAME = "zipa-small-crctc-500k"
 
+# Timing budgets are set on a laptop; shared CI runners are several times slower and noisy.
+TIME_SCALE = 5.0 if os.environ.get("CI") else 1.0
+
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "model: needs the cached ZIPA model (skipped otherwise)")

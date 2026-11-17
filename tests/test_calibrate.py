@@ -130,4 +130,5 @@ def test_calibrator_latency_100_phones():
         W.logits(X=XW)
         S.logits(X=XS)
         best = min(best, (time.perf_counter() - t0) * 1e3)
-    assert best <= 5.0, best
+    from conftest import TIME_SCALE
+    assert best <= 5.0 * TIME_SCALE, best

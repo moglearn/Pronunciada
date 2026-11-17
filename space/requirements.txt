@@ -1,1 +1,1 @@
-pronunciada[all]
+pronunciada[zh,ja,numbers]>=1.0.0
