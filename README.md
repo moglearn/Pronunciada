@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/banner.jpg" alt="Pronunciada. The waveform of a learner saying 'The ball is in their court now', cut at the word boundaries, with the probability given to each word." width="100%">
+</p>
+
 # Pronunciada
 
 [![PyPI](https://img.shields.io/pypi/v/pronunciada)](https://pypi.org/project/pronunciada/)
@@ -62,13 +66,20 @@ for phone in result.words[5].phones:
 
 The model is downloaded to `~/.cache/pronunciada` on first use.
 
+A 30-second recording of this command and of the demo app scoring a Mandarin learner, with the audio: [docs/assets/demo.mp4](docs/assets/demo.mp4).
+
 ## Benchmarks
 
-All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. Bold marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
+All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. An asterisk in a chart, and bold in a table, marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). The charts are generated from the scoreboard by `scripts/graphics/make_charts.py`. Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
 
-### English: agreement with expert scores
+### English learners
 
-speechocean762 test set: 2,500 recordings from 125 Mandarin-speaking learners, each scored by five experts. Pearson correlation between system score and expert score.
+![Pearson correlation with expert scores on speechocean762, Pronunciada and Azure. Phoneme 0.685 and 0.538, word 0.609 and 0.589, sentence accuracy 0.748 and 0.673, sentence fluency 0.779 and 0.708, sentence prosody 0.772 and 0.827, sentence total 0.762 and 0.796.](docs/assets/chart-english.png)
+
+speechocean762 test set: 2,500 recordings from 125 Mandarin-speaking learners, each scored by five experts. The figure is the Pearson correlation between system score and expert score.
+
+<details>
+<summary>Table</summary>
 
 | Level | Pronunciada | Azure |
 | --- | --- | --- |
@@ -79,32 +90,44 @@ speechocean762 test set: 2,500 recordings from 125 Mandarin-speaking learners, e
 | Sentence prosody | 0.772 | **0.827** |
 | Sentence total | 0.762 | 0.796 |
 
-### English: mispronunciation detection
+</details>
 
-Area under the ROC curve for separating phonemes the annotators marked as mispronounced from the rest. Neither corpus was used to train or tune any part of Pronunciada.
+### Mispronunciation detection
 
-| Corpus | Pronunciada | Azure |
-| --- | --- | --- |
-| L2-ARCTIC test (speakers of six first languages) | **0.712** | 0.631 |
-| EpaDB test (Spanish-speaking learners) | **0.721** | 0.587 |
+![Area under the ROC curve for detecting mispronunciations, Pronunciada and Azure. L2-ARCTIC 0.712 and 0.631, EpaDB 0.721 and 0.587, Mandarin words with any error 0.792 and 0.704, Mandarin words with tone errors 0.778 and 0.679.](docs/assets/chart-detection.png)
+
+Area under the ROC curve for separating the phonemes or words that annotators marked as mispronounced from the rest. L2-ARCTIC (speakers of six first languages) and EpaDB (Spanish-speaking learners) were not used to train or tune any part of Pronunciada. The Mandarin rows are from the OMPAL test set: 21 French-speaking learners of Taiwan Mandarin, every character marked by teachers.
 
 On speechocean762 test (47,041 phonemes, 18.6% marked as errors), with both systems thresholded to flag the same 36% of the marked phonemes, 65.9% of Pronunciada's flags are phonemes the experts marked, against 44.0% of Azure's.
 
-### Mandarin
+<details>
+<summary>Tables</summary>
 
-OMPAL test set: 21 French-speaking learners of Taiwan Mandarin, every character marked by teachers. Word rows are the area under the ROC curve for characters marked wrong. Sentence rows are Pearson correlation with the mean teacher score.
-
-| Measure | Pronunciada | Azure |
+| English, phoneme level (AUC) | Pronunciada | Azure |
 | --- | --- | --- |
-| Word, any error | **0.792** | 0.704 |
-| Word, tone error only | **0.778** | 0.679 |
-| Word, consonant or vowel error | 0.856 | 0.822 |
-| Sentence accuracy | **0.634** | 0.363 |
-| Sentence fluency | **0.590** | 0.343 |
+| L2-ARCTIC test | **0.712** | 0.631 |
+| EpaDB test | **0.721** | 0.587 |
+
+| Mandarin, OMPAL test | Pronunciada | Azure |
+| --- | --- | --- |
+| Word, any error (AUC) | **0.792** | 0.704 |
+| Word, tone error only (AUC) | **0.778** | 0.679 |
+| Word, consonant or vowel error (AUC) | 0.856 | 0.822 |
+| Sentence accuracy (Pearson) | **0.634** | 0.363 |
+| Sentence fluency (Pearson) | **0.590** | 0.343 |
+
+</details>
 
 ### All ten languages
 
-We found no public learner corpus with expert annotation for the other eight languages. The table below is a proxy test on native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
+We found no public learner corpus with expert annotation for the other eight languages. The chart below is a proxy test on native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
+
+![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.975 and 0.966, Japanese 0.968 and 0.919, Spanish 0.990 and 0.942, French 0.986 and 0.937, German 0.960 and 0.887, Italian 0.979 and 0.970, Portuguese 0.963 and 0.938, Russian 0.900 and 0.909, Korean 0.944 and 0.937.](docs/assets/chart-languages.png)
+
+This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.
+
+<details>
+<summary>Table</summary>
 
 | Language | Pronunciada | Azure |
 | --- | --- | --- |
@@ -119,7 +142,7 @@ We found no public learner corpus with expert annotation for the other eight lan
 | Russian | 0.900 | 0.909 |
 | Korean | 0.944 | 0.937 |
 
-This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.
+</details>
 
 Across all 84 comparisons in the scoreboard, Pronunciada is ahead in 60 (40 significant) and behind in 24 (7 significant). The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips).
 

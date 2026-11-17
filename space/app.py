@@ -36,6 +36,17 @@ CSS = """
 """
 
 
+THEME = gr.themes.Base(
+    primary_hue="neutral", neutral_hue="stone", radius_size=gr.themes.sizes.radius_lg,
+    font=[gr.themes.GoogleFont("Inter"), "system-ui", "sans-serif"],
+    font_mono=[gr.themes.GoogleFont("Geist Mono"), "ui-monospace", "monospace"],
+).set(
+    body_background_fill="#fdfcfc", block_background_fill="#ffffff", block_border_width="1px",
+    button_primary_background_fill="#000000", button_primary_background_fill_hover="#262626",
+    button_primary_text_color="#ffffff", button_large_radius="9999px", button_small_radius="9999px",
+)
+
+
 @lru_cache(maxsize=3)
 def scorer(lang: str) -> Scorer:
     return Scorer(lang, precision=os.environ.get("PRONUNCIADA_PRECISION", "int8"))
@@ -143,7 +154,8 @@ with gr.Blocks(title="Pronunciada") as demo:
         with gr.Column(scale=5):
             language = gr.Dropdown(list(LANGS), value="English", label="Language")
             text = gr.Textbox(label="Reference text", placeholder="The sentence that is read in the recording", lines=2)
-            audio = gr.Audio(sources=["microphone", "upload"], type="filepath", label="Recording")
+            audio = gr.Audio(sources=["microphone", "upload"], type="filepath", label="Recording",
+                             waveform_options=gr.WaveformOptions(waveform_color="#b9b4ae", waveform_progress_color="#000000"))
             with gr.Accordion("Settings", open=False):
                 strictness = gr.Slider(0, 1, value=0.5, step=0.05, label="Strictness (0 lenient, 1 strict)")
                 sensitivity = gr.Radio(list(SENSITIVITY), value="Balanced", label="Coaching tips")
@@ -161,4 +173,4 @@ with gr.Blocks(title="Pronunciada") as demo:
     go.click(assess, [audio, text, language, strictness, sensitivity], [report, raw])
 
 if __name__ == "__main__":
-    demo.launch(css=CSS)
+    demo.launch(css=CSS, theme=THEME)

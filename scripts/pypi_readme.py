@@ -26,6 +26,8 @@ def rewrite(text: str, ref: str = "main") -> str:
     # HTML images and links
     text = re.sub(r'src="([^"]+)"', lambda m: f'src="{raw}{m.group(1)}"' if is_relative(m.group(1)) else m.group(0), text)
     text = re.sub(r'href="([^"]+)"', lambda m: f'href="{blob}{m.group(1)}"' if is_relative(m.group(1)) else m.group(0), text)
+    # Markdown images: ![alt](path)
+    text = re.sub(r"(!\[[^\]]*\]\()([^)\s]+)\)", lambda m: f"{m.group(1)}{raw}{m.group(2)})" if is_relative(m.group(2)) else m.group(0), text)
     # Markdown links: [text](path)
     text = re.sub(r"\]\(([^)\s]+)\)", lambda m: f"]({blob}{m.group(1)})" if is_relative(m.group(1)) else m.group(0), text)
     return text
