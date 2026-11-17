@@ -933,16 +933,16 @@
   "fluency": 0.8987,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.222,
-   "load": 0.742,
-   "audio_check": 0.314,
-   "fbank": 3.997,
-   "model": 37.024,
-   "adapter": 0.347,
-   "align": 8.342,
-   "delivery": 1.217,
-   "calibrate": 2.257,
-   "total": 58.279
+   "g2p": 0.206,
+   "load": 1.662,
+   "audio_check": 0.332,
+   "fbank": 3.756,
+   "model": 36.466,
+   "adapter": 0.348,
+   "align": 8.485,
+   "delivery": 1.13,
+   "calibrate": 2.265,
+   "total": 58.361
   },
   "warnings": [],
   "scores": {

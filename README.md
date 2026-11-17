@@ -194,6 +194,10 @@ More detail: [docs/DESIGN.md](docs/DESIGN.md).
 - **Slightly more false alarms on native speakers than Azure** in English, Japanese, Spanish
   and Portuguese: about 3% of a native speaker's words fall below the default cut-off, against
   about 2%.
+- **Coaching is tuned on English and Mandarin learners.** A native speaker reading a long
+  sentence still gets a pronunciation tip on roughly a quarter of recordings (9% to 43%
+  depending on the language). `res.coaching()` lists every candidate; `tips()` turns one into
+  advice only when the word or sound itself was not accepted.
 - **Some contrasts are still missed:** Italian double consonants, Portuguese nasal vowels.
   Japanese pitch accent is not scored.
 - **It needs the expected text.** For free speech, pass in a transcript from your own recogniser.

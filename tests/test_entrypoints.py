@@ -68,7 +68,7 @@ def test_report_content():
     assert marks[col:col + 3] == "___"                      # skipped word underlined
     assert marks[lines[sent].index("The"):][:3] == "~~~"    # middling word
     assert any("not heard" in x for x in lines)
-    assert sum(x.strip().startswith("→") for x in lines) == 3
+    assert sum(x.strip().startswith("→") for x in lines) == 2   # round 19: no tip on the accepted /ə/ of "The"
 
 
 def test_report_cjk_alignment_and_extra_speech():

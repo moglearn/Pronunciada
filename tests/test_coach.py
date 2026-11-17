@@ -311,3 +311,87 @@ def test_attr_heads_shipped_and_small():
     assert len(out) == 2 and all(abs(sum(d.values()) - 1) < 1e-5 for d in out[0].values())
     bars, min_ep = coach.attr_policy(coach.model(), "en", "balanced")
     assert any(v is not None for v in bars.values())
+
+
+# ----------------------------------------------------------------------------- round 19 (tips gate)
+
+def _fake_result(word_probs, phone_probs):
+    from types import SimpleNamespace as NS
+
+    words = [NS(text=f"w{i}", prob=wp, phones=[NS(prob=p) for p in pp], syllables=[NS(text=f"w{i}")])
+             for i, (wp, pp) in enumerate(zip(word_probs, phone_probs))]
+    return NS(words=words)
+
+
+def test_tips_gate_on_off_and_result_none():
+    res = _fake_result([0.93, 0.93, 0.4], [[0.9, 0.9], [0.3, 0.9], [0.9, 0.9]])
+    acc = _item(word_index=0, word="w0", prob=0.9)                    # word and sound accepted
+    bad_sound = _item(word_index=1, word="w1", prob=0.3)              # sound not accepted
+    bad_word = _item(word_index=2, word="w2", prob=0.9)               # word not accepted
+    feat = _item(word_index=0, word="w0", phone_index=1, heard=None, heard_ipa=None, diff_keys=["voicing"], prob=0.9,
+                 features=[{"feature": "voicing", "key": "voicing", "expected": "voiced", "heard": "voiceless", "p": 0.9}])
+    items = [acc, bad_sound, bad_word, feat]
+    got = {t["item"]["word_index"] for t in tips.tips(items, 10, res)}
+    assert got == {1, 2}                                                # accepted candidates give no tip
+    assert len(tips.tips(items, 10, res, include_accepted=True)) == 3  # gate off: one tip per word, as before
+    assert tips.tips(items, 10) == tips.tips(items, 10, None, include_accepted=True)  # no result: unchanged
+    assert tips.tips([acc], 3, res) == []
+    # max_tips fills from the items that pass
+    assert [t["item"]["word_index"] for t in tips.tips([acc, bad_sound, bad_word], 1, res)] == [1]
+    # no item prob: the sound's prob is read from the result
+    assert len(tips.tips([_item(word_index=1, word="w1", phone_index=0, prob=None)], 3, res)) == 1
+    assert tips.tips([_item(word_index=1, word="w1", phone_index=1, prob=None)], 3, res) == []
+
+
+def test_tips_gate_mispronounced_word():
+    res = _fake_result([0.93, 0.93], [[0.9, 0.3], [0.9, 0.9]])
+    mw = lambda wi: _item(kind="mispronounced_word", word=f"w{wi}", word_index=wi, phone_index=None,  # noqa: E731
+                          syllable_index=None, heard=None, heard_ipa=None, diff_keys=[], prob=None)
+    sub = lambda wi, k, p: _item(word=f"w{wi}", word_index=wi, phone_index=k, heard=None, heard_ipa=None,  # noqa: E731
+                                 diff_keys=[], prob=p)
+    # word 0 has a flagged sound that is not accepted, word 1 only accepted ones
+    out = tips.tips([mw(0), mw(1), sub(0, 1, 0.3), sub(1, 0, 0.9)], 10, res)
+    assert [t["item"]["word_index"] for t in out] == [0] and out[0]["tip_key"] == "word.mispronounced"
+    assert tips.tips([mw(1), sub(1, 0, 0.9)], 10, res) == []
+    assert len(tips.tips([mw(1), sub(1, 0, 0.9)], 10, res, include_accepted=True)) == 1
+
+
+def test_tips_gate_leaves_other_kinds_alone():
+    res = _fake_result([0.99] * 6, [[0.99]] * 6)
+    base = {"schema_version": 2, "schema_minor": 6, "syllable_index": 0, "phone_index": None, "position": None,
+            "heard": None, "expected_ipa": None, "heard_ipa": None, "diff_keys": [], "error_prob": None,
+            "prob": 0.99, "confidence": None, "start": 0.0, "end": 1.0, "gate": None}
+    items = [dict(base, kind="missing_word", word="w0", word_index=0, expected="w0", syllable_index=None),
+             dict(base, kind="tone", word="w1", word_index=1, expected=2, heard=4, diff_keys=["tone"]),
+             dict(base, kind="stress", word="w2", word_index=2, expected=0, heard=1),
+             dict(base, kind="length", word="w3", word_index=3, phone_index=0, expected="long", heard="short",
+                  expected_ipa="aː"),
+             dict(base, kind="long_pause", word="w4", word_index=4, expected=None, duration=1.4, after_word=4, before_word=5,
+                  at_punctuation=False),
+             dict(base, kind="extra_speech", word=None, word_index=None, expected=None, heard="ə", after_word=1, before_word=2,
+                  where="between", restart=False, n_sounds=3)]
+    on, off = tips.tips(items, 10, res), tips.tips(items, 10, res, include_accepted=True)
+    assert len(on) == len(items) and [t["tip_key"] for t in on] == [t["tip_key"] for t in off]
+
+
+@pytest.mark.model
+def test_tips_gate_follows_strictness(tts):
+    import pronunciada
+
+    sc = pronunciada.Scorer("en", threads=2)
+    wav = tts("The quick brown fox jumps over the lazy dog")
+    res = sc.score((wav, 16000), "The quick brown cat jumps over the lazy dog")
+    for r in (sc.rescore(res, 0.0), sc.rescore(res, 1.0)):
+        items = r.coaching(miscues=False, delivery=False)
+        cand = [it for it in items if it["kind"] == "substitution"]
+        out = tips.tips(cand, 50, r)
+        for t in out:
+            it = t["item"]
+            w = r.words[it["word_index"]]
+            assert w.prob < 0.5 or it["prob"] < 0.5
+        want = {it["word_index"] for it in cand if r.words[it["word_index"]].prob < 0.5 or it["prob"] < 0.5}
+        assert {t["item"]["word_index"] for t in out} == want
+    strict = tips.tips(sc.rescore(res, 1.0).coaching(), 50, sc.rescore(res, 1.0))
+    lenient = tips.tips(sc.rescore(res, 0.0).coaching(), 50, sc.rescore(res, 0.0))
+    pk = lambda T: sum(t["item"]["kind"] in tips.PRONUNCIATION_KINDS for t in T)  # noqa: E731
+    assert pk(strict) >= pk(lenient)

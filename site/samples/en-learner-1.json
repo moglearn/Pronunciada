@@ -387,17 +387,17 @@
   "fluency": 0.7405,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.158,
-   "load": 0.682,
-   "audio_check": 0.296,
-   "fbank": 2.983,
-   "model": 29.596,
-   "adapter": 0.137,
-   "align": 3.214,
-   "delivery": 5.027,
-   "calibrate": 3.327,
-   "prosody": 0.952,
-   "total": 47.798
+   "g2p": 0.15,
+   "load": 1.586,
+   "audio_check": 0.283,
+   "fbank": 3.021,
+   "model": 29.744,
+   "adapter": 0.127,
+   "align": 3.227,
+   "delivery": 5.079,
+   "calibrate": 3.133,
+   "prosody": 0.88,
+   "total": 48.653
   },
   "warnings": [],
   "scores": {

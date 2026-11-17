@@ -314,6 +314,35 @@ def length(L):
     L += ["", f"Native word acceptance at strictness 0.5 on these clips: {pct(H['native_word_accept_0.5'], 1)}.", ""]
 
 
+def coach_tips(L):
+    R = load("coaching_tips_r19.json")
+    if not R:
+        return
+    N = R["natives_fleurs_test"]
+    n = next(iter(N.values()))["before"]["clips"]
+    L += ["### Coaching tips on native speakers (FLEURS test; no Azure column)", "",
+          f"Share of {n} native test clips per language that get at least one pronunciation tip from "
+          "`tips(res.coaching(), 3, res)` (\"balanced\", strictness 0.5); every such tip is a false alarm. Before = "
+          "every candidate may become a tip; after = round 19, a tip only where the scorer did not accept the "
+          "sound or the word. Source: `bench/coach/tips_r19.py` → `coaching_tips_r19.json`.", "",
+          "| lang | clips with a pronunciation tip, before → after | tips per clip, before → after |", "|---|---|---|"]
+    for lang in LANGS:
+        b = N.get(lang)
+        if b:
+            L.append(f"| {lang} | {pct(b['before']['share_clips_with_pron_tip'])} → "
+                     f"{pct(b['after']['share_clips_with_pron_tip'])} | {b['before']['pron_tips_per_clip']:.2f} → "
+                     f"{b['after']['pron_tips_per_clip']:.2f} |")
+    E, Z = R["speechocean762_test"], R["ompal_test"]
+    L += ["", "Learners, before → after: English (speechocean762 test) utterances with an expert-marked wrong sound "
+          f"that get a pronunciation tip {pct(E['before']['a_marked_utts_with_pron_tip'])} → "
+          f"{pct(E['after']['a_marked_utts_with_pron_tip'])}, tips right {pct(E['before']['b_pron_tips_right'])} → "
+          f"{pct(E['after']['b_pron_tips_right'])}, clean utterances with a tip {pct(E['before']['c_clean_utts_with_pron_tip'])} → "
+          f"{pct(E['after']['c_clean_utts_with_pron_tip'])}; Mandarin (OMPAL test) "
+          f"{pct(Z['before']['a_marked_utts_with_pron_tip'])} → {pct(Z['after']['a_marked_utts_with_pron_tip'])}, "
+          f"{pct(Z['before']['b_pron_tips_right'])} → {pct(Z['after']['b_pron_tips_right'])}, "
+          f"{pct(Z['before']['c_clean_utts_with_pron_tip'])} → {pct(Z['after']['c_clean_utts_with_pron_tip'])}.", ""]
+
+
 def speed(L):
     E = load("english_vs_azure.json") or {}
     sp = E.get("speed")
@@ -411,6 +440,7 @@ def main():
     native(body)
     contrasts(body)
     length(body)
+    coach_tips(body)
     speed(body)
     head = ["# Pronunciada scoreboard", "",
             "Every held-out number in one place, measured with the same code in one frozen run (2026-11-17, after the "

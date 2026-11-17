@@ -304,6 +304,25 @@ Shipped runtime (`PhoneResult.length_prob`, `WordResult.prob`), 400 test clips. 
 
 Native word acceptance at strictness 0.5 on these clips: 97.1 %.
 
+### Coaching tips on native speakers (FLEURS test; no Azure column)
+
+Share of 250 native test clips per language that get at least one pronunciation tip from `tips(res.coaching(), 3, res)` ("balanced", strictness 0.5); every such tip is a false alarm. Before = every candidate may become a tip; after = round 19, a tip only where the scorer did not accept the sound or the word. Source: `bench/coach/tips_r19.py` → `coaching_tips_r19.json`.
+
+| lang | clips with a pronunciation tip, before → after | tips per clip, before → after |
+|---|---|---|
+| en | 85 % → 28 % | 1.66 → 0.32 |
+| zh | 10 % → 9 % | 0.11 → 0.10 |
+| ja | 70 % → 28 % | 1.12 → 0.32 |
+| es | 74 % → 19 % | 1.35 → 0.24 |
+| fr | 89 % → 32 % | 1.96 → 0.42 |
+| de | 49 % → 22 % | 0.75 → 0.27 |
+| it | 76 % → 15 % | 1.38 → 0.16 |
+| pt | 42 % → 14 % | 0.58 → 0.16 |
+| ru | 96 % → 43 % | 2.18 → 0.55 |
+| ko | 52 % → 23 % | 0.76 → 0.27 |
+
+Learners, before → after: English (speechocean762 test) utterances with an expert-marked wrong sound that get a pronunciation tip 61 % → 34 %, tips right 64 % → 69 %, clean utterances with a tip 21 % → 7 %; Mandarin (OMPAL test) 23 % → 21 %, 70 % → 72 %, 2 % → 2 %.
+
 ## Speed, size, and what runs where
 
 End-to-end `Scorer.score` on 100 speechocean762 clips (mean 3.5 s of audio), laptop CPU (Apple M3 Pro), no other benchmark running (other processes kept the load average near 2), posterior cache cleared per clip (`bench/eval_english.py --steps speed`):

@@ -301,9 +301,45 @@ def tip_for(item: dict, syllable_text: str | None = None, words: list[str] | Non
     return {"tip_key": key, "text": TEMPLATES[key].format(**P), "params": P}
 
 
-def tips(items: list[dict], max_tips: int = 3, result=None) -> list[dict]:
+PRONUNCIATION_KINDS = ("substitution", "missing", "mispronounced_word")
+
+
+def _not_accepted(it: dict, items: list[dict], result) -> bool:
+    """Round 19 gate: a pronunciation candidate becomes advice only when the scorer itself did not
+    accept its sound or its word (prob < 0.5 at the result's current strictness). The sound's
+    prob is the item's own when it has one; a mispronounced_word passes when its word, or one of
+    the sounds flagged in it, is not accepted."""
+    wi = it.get("word_index")
+    if wi is None or not 0 <= wi < len(result.words):
+        return True
+    w = result.words[wi]
+    if w.prob is not None and w.prob < 0.5:
+        return True
+    if it["kind"] == "mispronounced_word":
+        sounds = [s for s in items if s["kind"] in ("substitution", "missing") and s.get("word_index") == wi]
+    else:
+        sounds = [it]
+    for s in sounds:
+        p = s.get("prob")
+        if p is None:
+            k = s.get("phone_index")
+            p = w.phones[k].prob if k is not None and 0 <= k < len(w.phones) else None
+        if p is not None and p < 0.5:
+            return True
+    return False
+
+
+def tips(items: list[dict], max_tips: int = 3, result=None, include_accepted: bool = False) -> list[dict]:
     """Up to `max_tips` tips: diagnosed items first in coaching order, then flag-only items.
-    `result` (optional SentenceResult) supplies syllable text for tone tips."""
+    `result` (optional SentenceResult) supplies syllable text for tone tips and, round 19, gates
+    the pronunciation candidates (substitution, missing, mispronounced_word, including feature
+    and contrast claims): such an item gives a tip only when its sound or its word has prob < 0.5
+    in `result` (so the gate follows Scorer.rescore(strictness=...)). include_accepted=True, or no
+    `result`, turns the gate off. Other kinds (missing_word, extra_speech, delivery, tone, stress,
+    length) are never gated: they have their own calibrated thresholds."""
+    if result is not None and not include_accepted:
+        items = [it for it in items if it["kind"] not in PRONUNCIATION_KINDS or _not_accepted(it, items, result)]
+
     def target(it):
         return (it["word_index"], it["kind"] if it["word_index"] is None else it["kind"] in ("tone", "stress"),
                 it["syllable_index"], it["phone_index"])

@@ -2,6 +2,60 @@
 
 Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md).
 
+## Round 19: tips only where the scorer itself did not accept the sound or word
+
+**What was wrong.** `tips()` turned every coaching candidate into advice, even when the scorer
+accepted the word and the sound: "their" at 93 % with /ɛ/ at 90 % still got "listen to /ɛ/ and
+try it again". The candidate list is tuned for precision on learner speech (about one in three
+"balanced" candidates is wrong even there), so on native speech it lists about 1–4 % of the
+sounds in every language, English included. Per native FLEURS validation clip at "balanced":
+en 3.6, ja 2.2, es 3.9, fr 3.3, de 1.2, it 2.3, pt 0.9, ru 4.5, ko 1.0, zh 0.07 candidates. A
+first plan, tuning per-language thresholds down to the English native rate, was dropped because
+English itself is at 3.6 per clip.
+
+**The change.** `pronunciada/tips.py`: with `result` given, a `substitution` (including
+feature and contrast claims), `missing` or `mispronounced_word` item gives a tip only when its
+sound's prob or its word's prob is below 0.5 at the result's strictness (`include_accepted=True`
+switches the gate off). Nothing is fitted: 0.5 is the scorer's own acceptance line. Coaching
+items, model.json and every threshold are unchanged (`res.coaching()` output byte-identical on
+200 speechocean762 test and 100 OMPAL test utterances, and on 5 FLEURS clips per language at all
+three sensitivities). Other tip kinds are not gated.
+
+**Before → after** (test splits, strictness 0.5, "balanced", `max_tips=3`; `bench/coach/tips_r19.py`
+→ `tables/coaching_tips_r19.json`). Natives, FLEURS test, 250 clips per language (every
+pronunciation tip is a false alarm):
+
+| lang | clips with a pronunciation tip | pronunciation tips per clip |
+|---|---|---|
+| en | 85 % → 28 % | 1.66 → 0.32 |
+| zh | 10 % → 9 % | 0.11 → 0.10 |
+| ja | 70 % → 28 % | 1.12 → 0.32 |
+| es | 74 % → 19 % | 1.35 → 0.24 |
+| fr | 89 % → 32 % | 1.96 → 0.42 |
+| de | 49 % → 22 % | 0.75 → 0.27 |
+| it | 76 % → 15 % | 1.38 → 0.16 |
+| pt | 42 % → 14 % | 0.58 → 0.16 |
+| ru | 96 % → 43 % | 2.18 → 0.55 |
+| ko | 52 % → 23 % | 0.76 → 0.27 |
+
+Learners (English: speechocean762 test, wrong = expert phone accuracy < 2 on a phone aligned
+to ours; Mandarin: OMPAL test learners, teachers' consonant / vowel marks):
+
+| | speechocean762 (2,500 utt.) | OMPAL (663 utt.) |
+|---|---|---|
+| (a) utterances with a wrong sound that get a pronunciation tip | 61.4 % → **33.6 %** | 23.1 % → 21.3 % |
+| (b) pronunciation tips that are right (sound-level: on a wrong sound; word-level: the word has one) | 63.6 % → 69.1 % | 70.0 % → 71.7 % |
+| (c) utterances with no wrong sound that get a pronunciation tip | 21.2 % → 6.9 % | 2.0 % → 1.8 % |
+| pronunciation tips in all | 2,450 → 1,233 | 50 → 46 |
+
+**What it costs.** On English learners the gate halves the tips: 45 % fewer utterances with a
+real error get a pronunciation tip (more than a third), because many of the experts' errors sit
+in sounds and words the scorer accepts at strictness 0.5. The tips that remain are right more
+often, and clean utterances get a third as many. A stricter `rescore` (strictness > 0.5) lowers the
+probabilities and so lets more through (not measured here). Mandarin barely moves (its candidates are already few and mostly unaccepted).
+Native pronunciation tips per clip fall by a factor of 2.7–8.6 outside Mandarin, but 14–43 % of native clips (Mandarin 9 %)
+still get one pronunciation tip.
+
 ## Coaching round 4: feature-level claims from attribute heads
 
 **Question.** Most flagged sounds are reported as "this sound was off" because naming the exact replacement is fragile (round 2: 8 % of real English substitutions named). Can small heads on the acoustic model's internal layers say *which feature* was wrong instead?

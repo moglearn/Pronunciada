@@ -181,8 +181,24 @@ matches the pronounced phone only 0.37 exactly / 0.49 within one feature. Ours n
 **The other eight languages have no learner labels.** They use the English thresholds through
 the calibrated probabilities (comparable across languages by construction). This is
 **unverified on learners**. Checked only on FLEURS validation: at "balanced" 0.12–0.29 wrong named
-sounds per native 10-s clip (cap 0.3, met in every language) but 1–4.4 unnamed flags per native clip,
-and 41–90 % of planted substitutions flagged with the named sound right within one feature 0.93–0.99.
+sounds per native 10-s clip (cap 0.3, met in every language), and 41–90 % of planted substitutions
+flagged with the named sound right within one feature 0.93–0.99.
+
+**The item list is a candidate list, not a verdict.** Its sound bar is set for precision on
+learner speech (at "balanced" about one in three candidates is wrong even there), so it lists
+candidates on native speech too, in every language including English: at "balanced", per native
+FLEURS validation clip (~10 s, 250 clips per language), en 3.6, ja 2.2, es 3.9, fr 3.3, de 1.2,
+it 2.3, pt 0.9, ru 4.5, ko 1.0 `substitution` items (about 1–4 % of the sounds); Mandarin 0.07
+(its own OMPAL thresholds). Strictness decides what counts as wrong; the coaching score ranks and
+explains. So `tips()` turns a pronunciation candidate into advice only when the scorer did not
+accept its sound or its word (section 4, round 19): with that gate, natives get a pronunciation tip
+on 9–43 % of FLEURS test clips (en 28 %, fr 32 %, ru 43 %; before the gate 42–96 % outside Mandarin, zh 10 %), 0.10–0.55
+pronunciation tips per clip (`max_tips=3`, "balanced"). The cost on learners: English utterances
+with an expert-marked wrong sound that get a pronunciation tip fall from 61 % to 34 %
+(speechocean762 test), while the share of those tips that are right rises from 64 % to 69 %.
+An app that reads the items directly should do the same: keep a `substitution` /
+`mispronounced_word` item only when its `prob` or its word's `WordResult.prob` is below 0.5
+(recipe in section 6).
 
 Overrides: `res.coaching(threshold=0.6)` (sound bar), `res.coaching(tone_threshold=0.02)`.
 
@@ -433,7 +449,20 @@ round 18 the contrast evidence also lowers the **word** probability in Mandarin 
 
 ## 4. Default tips (`pronunciada/tips.py`)
 
-Separate from the data. `tips(items, max_tips=3, result=None)` returns at most `max_tips`
+**Acceptance gate (round 19).** With `result` given, a tip from a pronunciation candidate
+(`substitution`, including feature and contrast claims, `missing`, `mispronounced_word`) is made
+only when the scorer itself did not accept the sound or the word: the item's `prob` (else the
+sound's `PhoneResult.prob`) < 0.5 or the word's `WordResult.prob` < 0.5, at the result's current
+strictness, so `scorer.rescore(result, strictness=...)` moves the gate with it. A
+`mispronounced_word` passes when its word, or one of the sounds flagged in it, is not accepted.
+`max_tips` is then filled from the items that pass. `missing_word`, `extra_speech`, delivery,
+`tone`, `stress` and `length` items are never gated (they have their own calibrated bars).
+`include_accepted=True` turns the gate off; without `result` there is nothing to gate on and
+the behaviour is the old one. No free parameter: 0.5 is the scorer's own acceptance line. The
+items themselves (`res.coaching()`) are unchanged. Measured cost: section 3 and
+[results/coaching.md](../results/coaching.md) "Round 19".
+
+Separate from the data. `tips(items, max_tips=3, result=None, include_accepted=False)` returns at most `max_tips`
 `{"tip_key", "text", "params", "item"}`: diagnosed items first in coaching order, then
 flag-only items; at most one tip per sound and per word, so a sound never gets two tips (the
 single most salient difference is chosen in a fixed priority: consonants manner → place →
@@ -567,8 +596,21 @@ was not added: the gate reports `lead_sil_s` / `trail_sil_s` instead.
    finds 2.4× more of the errors at 0.55.
 3. Show `heard` only when it is not null ("it sounded like /s/"); otherwise say "this sound was
    off, listen and try again". Do not invent a replacement sound.
-4. Use `tip_key` + `params` for localised tips, or `pronunciada.tips.tips()` for English; at most
-   3 per utterance.
+4. Use `tip_key` + `params` for localised tips, or `pronunciada.tips.tips(items, 3, result)` for
+   English; at most 3 per utterance. If you consume the items directly, apply the same gate as
+   `tips()` so the advice never contradicts the scores:
+
+   ```python
+   def not_accepted(it, res):
+       if it["kind"] not in ("substitution", "missing", "mispronounced_word"):
+           return True                                   # other kinds have their own bars
+       w = res.words[it["word_index"]]
+       return w.prob < 0.5 or (it["prob"] is not None and it["prob"] < 0.5)
+   items = [it for it in res.coaching() if not_accepted(it, res)]
+   ```
+
+   (`tips()` additionally lets a `mispronounced_word` through when one of the sounds flagged in
+   its word is below 0.5.)
 5. Outside English and Mandarin tones, treat coaching as unverified on learners (section 3).
    Word-level `extra_speech` / `missing_word` can drive "read only the words shown" prompts;
    `long_pause`, `pause_mid_phrase` and `fast` go with lower expert fluency on English learners,

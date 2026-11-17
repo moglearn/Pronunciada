@@ -971,15 +971,6 @@
     }
    },
    {
-    "tip_key": "sound.unclear",
-    "text": "Listen to /ə/ in “The” and try it again; it did not sound quite right.",
-    "params": {
-     "word": "The",
-     "expected": "ə",
-     "heard": null
-    }
-   },
-   {
     "tip_key": "rate.fast",
     "text": "Slow down a little so that every sound is clear.",
     "params": {

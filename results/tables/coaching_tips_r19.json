@@ -1,0 +1,167 @@
+{
+ "setup": "default strictness 0.5, sensitivity 'balanced', max_tips 3; before = gate off (include_accepted=True), after = gate on",
+ "natives_fleurs_test": {
+  "en": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.852,
+    "pron_tips_per_clip": 1.656
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.28,
+    "pron_tips_per_clip": 0.32
+   }
+  },
+  "zh": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.1,
+    "pron_tips_per_clip": 0.112
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.088,
+    "pron_tips_per_clip": 0.1
+   }
+  },
+  "ja": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.704,
+    "pron_tips_per_clip": 1.12
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.276,
+    "pron_tips_per_clip": 0.324
+   }
+  },
+  "es": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.736,
+    "pron_tips_per_clip": 1.352
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.192,
+    "pron_tips_per_clip": 0.244
+   }
+  },
+  "fr": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.888,
+    "pron_tips_per_clip": 1.96
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.32,
+    "pron_tips_per_clip": 0.424
+   }
+  },
+  "de": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.492,
+    "pron_tips_per_clip": 0.752
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.22,
+    "pron_tips_per_clip": 0.268
+   }
+  },
+  "it": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.76,
+    "pron_tips_per_clip": 1.376
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.148,
+    "pron_tips_per_clip": 0.16
+   }
+  },
+  "pt": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.416,
+    "pron_tips_per_clip": 0.58
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.136,
+    "pron_tips_per_clip": 0.156
+   }
+  },
+  "ru": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.964,
+    "pron_tips_per_clip": 2.184
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.428,
+    "pron_tips_per_clip": 0.552
+   }
+  },
+  "ko": {
+   "before": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.516,
+    "pron_tips_per_clip": 0.76
+   },
+   "after": {
+    "clips": 250,
+    "share_clips_with_pron_tip": 0.232,
+    "pron_tips_per_clip": 0.272
+   }
+  }
+ },
+ "speechocean762_test": {
+  "before": {
+   "utterances": 2500,
+   "with_marked_sound": 2297,
+   "a_marked_utts_with_pron_tip": 0.6142794949934698,
+   "b_pron_tips_right": 0.6359183673469387,
+   "n_pron_tips": 2450,
+   "c_clean_utts_with_pron_tip": 0.21182266009852216,
+   "n_clean_utts": 203
+  },
+  "after": {
+   "utterances": 2500,
+   "with_marked_sound": 2297,
+   "a_marked_utts_with_pron_tip": 0.33565520243796254,
+   "b_pron_tips_right": 0.6909975669099757,
+   "n_pron_tips": 1233,
+   "c_clean_utts_with_pron_tip": 0.06896551724137931,
+   "n_clean_utts": 203
+  },
+  "a_relative_change": -0.4535790219702339
+ },
+ "ompal_test": {
+  "before": {
+   "utterances": 663,
+   "with_marked_sound": 160,
+   "a_marked_utts_with_pron_tip": 0.23125,
+   "b_pron_tips_right": 0.7,
+   "n_pron_tips": 50,
+   "c_clean_utts_with_pron_tip": 0.019880715705765408,
+   "n_clean_utts": 503
+  },
+  "after": {
+   "utterances": 663,
+   "with_marked_sound": 160,
+   "a_marked_utts_with_pron_tip": 0.2125,
+   "b_pron_tips_right": 0.717391304347826,
+   "n_pron_tips": 46,
+   "c_clean_utts_with_pron_tip": 0.017892644135188866,
+   "n_clean_utts": 503
+  },
+  "a_relative_change": -0.08108108108108114
+ }
+}
