@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400..500&family=Inter:opsz,wght@14..32,400..600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#000; --text:#000; --soft:#59544f; --faint:#8c8782; --rule:rgba(0,0,0,.09); --page:#fdfcfc; --panel:#f5f3f1; --card:#fff; --flag:#e11d48; --pale:#e6e2de; --accent:linear-gradient(90deg,#1d4ed8,#0ea5a0);
+  --ink:#000; --text:#000; --soft:#59544f; --faint:#8c8782; --rule:rgba(0,0,0,.09); --page:#fdfcfc; --panel:#f5f3f1; --card:#fff; --flag:#1d4ed8; --pale:#e6e2de; --accent:linear-gradient(90deg,#1d4ed8,#0ea5a0);
   --display:"Geist", "Helvetica Neue", Helvetica, "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", Arial, sans-serif;
   --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans CJK KR", Arial, sans-serif;
   --mono:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -63,20 +63,20 @@ th,td{text-align:left;padding:10px 16px 10px 0;border-bottom:1px solid var(--rul
 th{font-weight:500;font-size:13px;color:var(--soft)}
 td.n,th.n{text-align:right;padding-right:0;padding-left:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
 /* samples */
-.samples{margin:30px 0 10px}
-.s{padding:26px 0 24px;border-top:1px solid var(--rule)}
+.samples{margin:40px 0 16px}
+.s{padding:44px 0 42px;border-top:1px solid var(--rule)}
 .s:last-child{border-bottom:1px solid var(--rule)}
-.s-label{font-size:13px;line-height:18px;color:var(--text);margin:0 0 10px}
+.s-label{font-size:13px;line-height:18px;color:var(--text);margin:0 0 18px}
 .s-label span{margin-left:10px;color:var(--faint)}
-.s-text{font-family:var(--display);font-weight:300;font-size:30px;line-height:39px;letter-spacing:-.02em;margin:0 0 18px;text-wrap:pretty}
+.s-text{font-family:var(--display);font-weight:300;font-size:38px;line-height:46px;letter-spacing:-.025em;margin:0 0 30px;text-wrap:pretty}
 .s-text:lang(zh),.s-text:lang(ja),.s-text:lang(ko){letter-spacing:0;font-weight:400;font-size:27px}
-.s-text span{transition:color .12s linear}
-.s-text .low{color:var(--flag)}
+.s-text span{transition:color .12s linear,opacity .12s linear}
+.s-text .low{background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .s.playing .s-text{color:#c2bdb7}
-.s.playing .s-text .low{color:#f4b5c3}
+.s.playing .s-text .low{opacity:.3}
 .s.playing .s-text .said{color:#000}
-.s.playing .s-text .low.said{color:var(--flag)}
-.s-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.s.playing .s-text .low.said{opacity:1}
+.s-foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .s-play{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px 0 13px;border-radius:9999px;border:0;background:#fff;color:#000;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.05);font:500 13px/1 var(--sans);font-variant-numeric:tabular-nums;cursor:pointer}
 .s-play:hover{box-shadow:0 0 0 1px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.05)}
 .s-play time{min-width:26px;text-align:left}
@@ -84,15 +84,10 @@ td.n,th.n{text-align:right;padding-right:0;padding-left:16px;font-variant-numeri
 .s.playing .s-play .i-pause{display:inline}
 .s.playing .s-play{background:#000;color:#fff;box-shadow:none}
 .s.playing .s-play svg{fill:#fff}
-.s-score{margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;line-height:20px;color:var(--soft);font-variant-numeric:tabular-nums}
+.s-score{margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px;line-height:20px;color:var(--soft);font-variant-numeric:tabular-nums}
 .s-score b{font-weight:500;color:#000}
 .s-score b.low{color:var(--flag)}
 .s-score .dot{width:3px;height:3px;border-radius:50%;background:#c9c4be}
-.s-rows{margin:22px 0 0;display:grid;gap:12px}
-.s-rows div{display:grid;grid-template-columns:168px 1fr;gap:16px;align-items:baseline}
-.s-rows dt{font-size:14px;line-height:24px;color:var(--soft)}
-.s-rows dd{margin:0;font-size:16px;line-height:24px}
-.s-rows .s-score{font-size:16px;line-height:24px;color:var(--text)}
 /* opener */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0 28px;margin:44px 0 0;padding:26px 0 24px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .stats b{display:block;font-family:var(--display);font-weight:300;font-size:44px;line-height:48px;letter-spacing:-.035em;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -148,12 +143,13 @@ footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:64px;padding
   .lead{font-size:18px;line-height:28px}
   .stats{grid-template-columns:1fr 1fr;gap:26px 20px}
   .stats b{font-size:38px;line-height:42px}
-  .s-rows div{grid-template-columns:1fr;gap:0}
+
   h2{font-size:26px;line-height:30px;margin-top:56px}
   main{padding-top:40px}
   .top .in{padding:0 16px}
   .meta{gap:32px}
-  .s-text{font-size:24px;line-height:31px}
+  .s-text{font-size:28px;line-height:35px}
+  .s{padding:34px 0 32px}
   .s-text:lang(zh),.s-text:lang(ja),.s-text:lang(ko){font-size:22px}
   .chart{padding:20px 18px 16px;border-radius:14px}
   .ch-g{grid-template-columns:1fr;gap:6px}
@@ -192,9 +188,9 @@ footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:64px;padding
 <p class="cap">One minute, with sound. The recordings are from the speechocean762, FLEURS and OMPAL test sets, and each word lights up at the time Pronunciada placed it in the audio.</p>
 
 <h2>Grades every sound, word and sentence</h2>
-<p>Given a recording and the text the speaker was reading, Pronunciada returns the probability that a human rater would accept each phoneme, each word and the sentence as a whole, with a coaching tip for what went wrong. This is a learner from the speechocean762 test set, scored by version 1.0.0 at default settings. A word below 0.5 is highlighted.</p>
+<p>Given a recording and the text the speaker was reading, Pronunciada returns the probability that a human rater would accept each phoneme, each word and the sentence as a whole, and a coaching tip for what went wrong. In this recording of a learner it gives “float” a probability of 0.10. The expert annotators of the corpus marked the same word: the speaker dropped its “l”.</p>
 <!-- gen:sample-intro -->
-<div class="samples"><article class="s" data-src="samples/en-learner-1.mp3"><p class="s-label">English<span>adult learner</span></p><p class="s-text" lang="en"><span data-a="0.79">It</span> <span data-a="0.93">was</span> <span data-a="1.07">a</span> <span data-a="1.13">beautiful</span> <span data-a="1.47">day</span> <span data-a="1.83">for</span> <span data-a="2.03">a</span> <span data-a="2.09" class="low">float</span></p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: It was a beautiful day for a float"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:03</time></button></div><dl class="s-rows"><div><dt>Pronunciada</dt><dd><span class="s-score"><span>“float” <b class="low">0.10</b></span><span class="dot"></span><span>sentence <b>0.75</b></span></span></dd></div><div><dt>Expert annotators</dt><dd>Marked the /l/ in “float” as dropped.</dd></div><div><dt>Coaching tip</dt><dd>Let the air pass along the sides of the tongue for /l/ in “float”.</dd></div></dl></article></div>
+<div class="samples"><article class="s" data-src="samples/en-learner-1.mp3"><p class="s-label">English<span>adult learner</span></p><p class="s-text" lang="en"><span data-a="0.79">It</span> <span data-a="0.93">was</span> <span data-a="1.07">a</span> <span data-a="1.13">beautiful</span> <span data-a="1.47">day</span> <span data-a="1.83">for</span> <span data-a="2.03">a</span> <span data-a="2.09" class="low">float</span></p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: It was a beautiful day for a float"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:03</time></button><p class="s-score"><span>“float” <b class="low">0.10</b></span></p></div></article></div>
 <!-- /gen:sample-intro -->
 
 <h2>Ten languages, each tested against Azure</h2>
@@ -239,13 +235,6 @@ footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:64px;padding
 <!-- /gen:chart-zipa -->
 <p class="cap">Over 60 test rows, Pronunciada is significantly better in 45 and not significantly different in 15. ZIPA alone is not significantly better in any. The gap is largest for Mandarin tones, which ZIPA does not output. The rows are in <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">the baseline write-up</a>.</p>
 
-<h2>More recordings</h2>
-<p>Two more learners, with what the corpus annotators marked, and three native speakers, whose speech should be accepted. All five come from the test splits of public corpora: speechocean762, OMPAL and FLEURS.</p>
-<!-- gen:samples-more -->
-<div class="samples"><article class="s" data-src="samples/en-learner-2.mp3"><p class="s-label">English<span>adult learner</span></p><p class="s-text" lang="en"><span data-a="0.57">Follow</span> <span data-a="0.93">the</span> <span data-a="1.11">link</span> <span data-a="1.61">below</span> <span data-a="2.07">to</span> <span data-a="2.37" class="low">register</span></p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: Follow the link below to register"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:04</time></button></div><dl class="s-rows"><div><dt>Pronunciada</dt><dd><span class="s-score"><span>“register” <b class="low">0.41</b></span><span class="dot"></span><span>sentence <b>0.98</b></span></span></dd></div><div><dt>Expert annotators</dt><dd>Marked the first vowel of “register” as wrong.</dd></div><div><dt>Coaching tip</dt><dd>In “register”, stress the first syllable; it sounded stressed on the second.</dd></div></dl></article><article class="s" data-src="samples/zh-learner-1.mp3"><p class="s-label">Mandarin<span>French-speaking learner</span></p><p class="s-text" lang="zh"><span data-a="0.59">我</span><span data-a="0.83">家</span><span data-a="1.71">有</span><span data-a="2.03" class="low">四</span><span data-a="2.23" class="low">口</span><span data-a="2.53">人</span></p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: 我家有四口人"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:03</time></button></div><dl class="s-rows"><div><dt>Pronunciada</dt><dd><span class="s-score"><span>tone of 四 <b class="low">0.13</b></span><span class="dot"></span><span>tone of 口 <b class="low">0.13</b></span><span class="dot"></span><span>sentence <b>0.98</b></span></span></dd></div><div><dt>Teachers</dt><dd>Marked the tone of 口 as wrong.</dd></div></dl></article><article class="s" data-src="samples/es-native.mp3"><p class="s-label">Spanish<span>native speaker</span></p><p class="s-text" lang="es"><span data-a="0.73">Los</span> <span data-a="0.87">luchadores</span> <span data-a="1.49">compañeros</span> <span data-a="2.03">de</span> <span data-a="2.19">Luna</span> <span data-a="2.59">también</span> <span data-a="3.11">le</span> <span data-a="3.27">rindieron</span> <span data-a="3.71">homenaje</span>.</p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: Los luchadores compañeros de Luna también le rindieron homenaje."><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:06</time></button><p class="s-score">Sentence <b>0.99</b></p></div></article><article class="s" data-src="samples/ja-native.mp3"><p class="s-label">Japanese<span>native speaker</span></p><p class="s-text" lang="ja"><span data-a="1.67">そのため</span>、<span data-a="2.35">単に</span><span data-a="2.77">ラ</span><span data-a="2.91">ベ</span><span data-a="3.03">ル</span><span data-a="3.11">と</span><span data-a="3.25">し</span><span data-a="3.31">て</span><span data-a="3.49">表記</span><span data-a="3.81">が</span><span data-a="3.93">追加</span><span data-a="4.27">さ</span><span data-a="4.39">れ</span><span data-a="4.47">がち</span><span data-a="4.71">です</span>。</p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: そのため、単にラベルとして表記が追加されがちです。"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:07</time></button><p class="s-score">Sentence <b>0.98</b></p></div></article><article class="s" data-src="samples/ko-native.mp3"><p class="s-label">Korean<span>native speaker</span></p><p class="s-text" lang="ko"><span data-a="0.67">하</span><span data-a="0.77">지</span><span data-a="0.93">만</span> <span data-a="1.07">여</span><span data-a="1.21">전</span><span data-a="1.39">히</span> <span data-a="1.49">새</span><span data-a="1.71">에</span><span data-a="1.79">는</span> <span data-a="2.07">공</span><span data-a="2.23">룡</span><span data-a="2.35">처</span><span data-a="2.49">럼</span> <span data-a="2.61">보</span><span data-a="2.75">이</span><span data-a="2.83">게</span> <span data-a="2.91">하</span><span data-a="2.97">는</span> <span data-a="3.07">것</span><span data-a="3.17">들</span><span data-a="3.27">이</span> <span data-a="3.35">많</span><span data-a="3.55">습</span><span data-a="3.67">니</span><span data-a="3.77">다</span>.</p><div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: 하지만 여전히 새에는 공룡처럼 보이게 하는 것들이 많습니다."><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:05</time></button><p class="s-score">Sentence <b>0.98</b></p></div></article></div>
-<!-- /gen:samples-more -->
-<p class="cap">In the Mandarin recording the teachers marked only 口. Pronunciada also gives a low tone probability to 四.</p>
-
 <h2>Method</h2>
 <ol>
 <li>The reference text is converted to a phoneme sequence with per-language dictionaries and rules, including Mandarin tone sandhi and French liaison.</li>
@@ -261,7 +250,7 @@ footer{font-size:13px;line-height:20px;color:var(--soft);margin-top:64px;padding
 <li>Accuracy on learner speech has been measured for English and Mandarin only.</li>
 <li>English sentence prosody correlates less well with expert scores than Azure's (0.772 against 0.827).</li>
 <li>At default strictness, about 3% of a native speaker's words score below 0.6 in English, Japanese, Spanish and Portuguese, against about 2% for Azure.</li>
-<li>In Mandarin, a low tone probability on one syllable does not always lower the word probability, as in the sample above. Applications that grade tones should read the per-syllable tone probabilities.</li>
+<li>In Mandarin, a low tone probability on one syllable does not always lower the word probability. Applications that grade tones should read the per-syllable tone probabilities.</li>
 <li>Coaching tips were tuned on English and Mandarin learners. On native FLEURS recordings, between 9% and 43% of sentences, depending on the language, still receive at least one pronunciation tip.</li>
 <li>Italian geminate consonants and Portuguese nasal vowels are detected poorly. Japanese pitch accent is not scored.</li>
 <li>The reference text is required. There are no iOS, Android or WebAssembly builds.</li>

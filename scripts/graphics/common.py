@@ -25,7 +25,7 @@ CHROME = [
 
 INK = "#0b0b0c"        # near-black used for dark cards and charts
 PAPER = "#fdfcfc"      # page background
-FLAG = "#ff5d7d"       # flagged words on dark backgrounds
+FLAG = "#7db8ff"       # flagged words on dark backgrounds
 
 
 def fonts() -> Path:

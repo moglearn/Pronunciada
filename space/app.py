@@ -24,8 +24,8 @@ SENSITIVITY = {"Careful (fewer tips)": "careful", "Balanced": "balanced", "Eager
 CSS = """
 .pr-wrap{font-size:15px;line-height:23px}
 .pr-sent{font-size:26px;line-height:34px;letter-spacing:-.015em;margin:0 0 8px}
-.pr-low{color:#e11d48}
-.dark .pr-low{color:#ff5d7d}
+.pr-low{color:#1d4ed8}
+.dark .pr-low{color:#7db8ff}
 .pr-score{font-size:14px;line-height:20px;opacity:.7;margin:0 0 12px;font-variant-numeric:tabular-nums}
 .pr-tip{margin:0 0 6px}
 .pr-note{font-size:13px;opacity:.7;margin:12px 0 0}

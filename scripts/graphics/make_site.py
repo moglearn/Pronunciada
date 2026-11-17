@@ -26,13 +26,6 @@ WHO = {"native speaker": "native speaker", "adult learner of English": "adult le
        "French-speaking learner of Mandarin": "French-speaking learner"}
 GROUPS = {
     "sample-intro": ["en-learner-1"],
-    "samples-more": ["en-learner-2", "zh-learner-1", "es-native", "ja-native", "ko-native"],
-}
-# What the corpus annotation says about each learner recording (site/samples/*.json, meta.experts.marked), in words.
-EXPERTS = {
-    "en-learner-1": ("Expert annotators", "Marked the /l/ in “float” as dropped."),
-    "en-learner-2": ("Expert annotators", "Marked the first vowel of “register” as wrong."),
-    "zh-learner-1": ("Teachers", "Marked the tone of 口 as wrong."),
 }
 PLAY = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg>'
 esc = html.escape
@@ -69,7 +62,7 @@ def marked_up(text: str, pieces: list[dict], tag: str = "span") -> str:
 
 
 def findings(result: dict) -> str:
-    """What was flagged, then the sentence: the line shown next to "Pronunciada" for a learner recording."""
+    """The one line under a recording: what was flagged, or the sentence probability if nothing was."""
     parts = []
     for w in result["words"]:
         if w["prob"] < 0.5:
@@ -77,7 +70,8 @@ def findings(result: dict) -> str:
         for s in w.get("syllables") or []:
             if s.get("tone_prob") is not None and s["tone_prob"] < 0.5:
                 parts.append(f'tone of {esc(s["text"])} <b class="low">{s["tone_prob"]:.2f}</b>')
-    parts.append(f'sentence <b>{result["prob"]:.2f}</b>')
+    if not parts:
+        parts.append(f'Sentence <b>{result["prob"]:.2f}</b>')
     return '<span class="dot"></span>'.join(f"<span>{p}</span>" for p in parts)
 
 
@@ -86,21 +80,11 @@ def sample(key: str) -> str:
     meta, result = d["meta"], d["result"]
     audio, sr = sf.read(str(SAMPLES / f"{key}.mp3"))
     secs = round(len(audio) / sr)
-    play = (f'<button class="s-play" type="button" aria-label="Play the recording: {esc(meta["text"])}">'
-            f'{PLAY}<time>{secs // 60}:{secs % 60:02d}</time></button>')
-    head = (f'<p class="s-label">{LANG[meta["lang"]]}<span>{WHO[meta["speaker"]]}</span></p>'
-            f'<p class="s-text" lang="{meta["lang"]}">{marked_up(meta["text"], units(result))}</p>')
-    if key not in EXPERTS:        # native speaker: the sentence probability is the whole result
-        return (f'<article class="s" data-src="samples/{key}.mp3">{head}<div class="s-foot">{play}'
-                f'<p class="s-score">Sentence <b>{result["prob"]:.2f}</b></p></div></article>')
-    who, marked = EXPERTS[key]
-    tip = next((t["text"] for t in result.get("tips") or [] if t.get("text")), "")
-    rows = [("Pronunciada", f'<span class="s-score">{findings(result)}</span>'), (who, esc(marked))]
-    if tip:
-        rows.append(("Coaching tip", esc(tip)))
-    table = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in rows)
-    return (f'<article class="s" data-src="samples/{key}.mp3">{head}<div class="s-foot">{play}</div>'
-            f'<dl class="s-rows">{table}</dl></article>')
+    return (f'<article class="s" data-src="samples/{key}.mp3">'
+            f'<p class="s-label">{LANG[meta["lang"]]}<span>{WHO[meta["speaker"]]}</span></p>'
+            f'<p class="s-text" lang="{meta["lang"]}">{marked_up(meta["text"], units(result))}</p>'
+            f'<div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: {esc(meta["text"])}">'
+            f'{PLAY}<time>{secs // 60}:{secs % 60:02d}</time></button><p class="s-score">{findings(result)}</p></div></article>')
 
 
 def stats() -> str:

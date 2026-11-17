@@ -57,7 +57,7 @@ CLIP_CSS = f"""
 .sent span{{transition:color .16s linear}}
 .sent .lit{{color:#fff}}
 .clip.done .sent{{color:#fff}}
-.clip.done .sent .low{{color:{FLAG}}}
+.clip.done .sent .low{{background:linear-gradient(90deg,#7db8ff,#5eead4);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}}
 .wave{{display:block;margin-top:26px}}
 .wave rect{{opacity:.26;transition:opacity .1s linear}}
 .wave .lit{{opacity:1}}
