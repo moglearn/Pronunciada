@@ -36,6 +36,18 @@
   "cat": "behind (not significant)"
  },
  {
+  "area": "learner errors",
+  "lang": "en",
+  "measure": "L2-ARCTIC test",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "learner errors",
+  "lang": "en",
+  "measure": "EpaDB test",
+  "cat": "ahead (significant)"
+ },
+ {
   "area": "coaching",
   "lang": "en",
   "measure": "precision at 'careful' recall",
@@ -96,6 +108,324 @@
   "cat": "ahead (significant)"
  },
  {
+  "area": "tone swaps",
+  "lang": "zh",
+  "measure": "detection (AUC)",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "tone swaps",
+  "lang": "zh",
+  "measure": "caught at 5 % native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "tone swaps",
+  "lang": "zh",
+  "measure": "right word blamed",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "en",
+  "measure": "far AUC",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "en",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "en",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "en",
+  "measure": "far right word",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "en",
+  "measure": "native false alarms",
+  "cat": "behind (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "zh",
+  "measure": "far AUC",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "zh",
+  "measure": "near AUC",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "zh",
+  "measure": "near hit@5 %",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "zh",
+  "measure": "far right word",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "zh",
+  "measure": "native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ja",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ja",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ja",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ja",
+  "measure": "far right word",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ja",
+  "measure": "native false alarms",
+  "cat": "behind (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "far right word",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "native false alarms",
+  "cat": "behind (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "far right word",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "de",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "de",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "de",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "de",
+  "measure": "far right word",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "de",
+  "measure": "native false alarms",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "it",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "it",
+  "measure": "near AUC",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "it",
+  "measure": "near hit@5 %",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "it",
+  "measure": "far right word",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "it",
+  "measure": "native false alarms",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "pt",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "pt",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "pt",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "pt",
+  "measure": "far right word",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "pt",
+  "measure": "native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ru",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ru",
+  "measure": "near AUC",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ru",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ru",
+  "measure": "far right word",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ru",
+  "measure": "native false alarms",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ko",
+  "measure": "far AUC",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ko",
+  "measure": "near AUC",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ko",
+  "measure": "near hit@5 %",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ko",
+  "measure": "far right word",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "ko",
+  "measure": "native false alarms",
+  "cat": "ahead (significant)"
+ },
+ {
   "area": "cv-real test A",
   "lang": "en",
   "measure": "en/A",
@@ -109,13 +439,13 @@
  },
  {
   "area": "cv-real test A",
-  "lang": "zh-CN",
+  "lang": "zh",
   "measure": "zh-CN/A",
   "cat": "ahead (not significant)"
  },
  {
   "area": "cv-real test A",
-  "lang": "zh-TW",
+  "lang": "zh",
   "measure": "zh-TW/A",
   "cat": "ahead (not significant)"
  },

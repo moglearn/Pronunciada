@@ -89,11 +89,21 @@ prompts. `lang = "zh"`, `speaker = client_id`, `labels = {client_id, sentence_id
 age, gender, accents, variant, locale}`. Volunteer recordings with mixed microphones; accents are
 self-reported.
 
-### Other learner corpora (task 6) — not obtained
+### Built later (see their own write-ups)
+- **fleurs-swap** (`bench/data/fleurs_swap.py`, `bench/textswap.py`): FLEURS test audio with one
+  word of the prompt replaced (near / far / tone variants), 150 recordings per language; the swap
+  benchmark of `results/azure_swap.md` and `bench/eval_swap.py`.
+- **cv-real** (`bench/cv_build.py`, record lists in `bench/data/cv_real/`): Common Voice 22.0 (CC0)
+  clips accepted vs rejected by reviewers (Test A) and native vs self-declared non-native speakers
+  (Test B), split by speaker into a dev half (tuning) and a test half (benchmark);
+  `results/cv_real.md`.
+- **OMPAL** (`bench/ompal_build.py`): see below and `results/ompal.md`.
+
+### Other learner corpora
 | corpus | language | status |
 |---|---|---|
 | LATIC (IEEE DataPort, DOI 10.21227/mqtj-qh10) | Mandarin by 4 learners (Russian, Korean, French, Arabic L1), 2,579 utts | files behind an IEEE DataPort login — skipped |
-| OMPAL (Interspeech 2025, Hsieh et al.) | Mandarin by 46 French L1 learners, 1,768 utts, word/sentence scores | the paper says the corpus is open, but I found no download link in ~10 min — skipped |
+| OMPAL (Interspeech 2025, Hsieh et al.) | Mandarin by French L1 learners, 1,768 utts, word/sentence scores | obtained later (CC BY 4.0, github.com/phantomhsieh/OMPAL-corpus): `python -m bench.ompal_build --clone`; dev half for tuning, test half for the benchmark (results/ompal.md) |
 | HF search (“mandarin l2”, “l2 korean”, “ifcasl”, “mispronunciation” …) | — | nothing relevant and openly downloadable for the 9 non-English languages |
 
 ## Tools
@@ -139,8 +149,9 @@ PhonemeAlphabet=IPA, NBestPhonemeCount=5 for en-US only). Key/region only from `
 utterance (request parameters + raw response, never re-sent), rate limit + exponential backoff on
 429/5xx (honours Retry-After), clips > 30 s skipped. The parser handles both the REST flat layout and
 the SDK nested `PronunciationAssessment` layout and maps Azure words onto manifest words by
-character alignment (works for CJK). **Untested against the live service** (no key); the parser is
-unit-tested on the response examples from the Azure docs (`tests/test_bench_azure.py`).
+character alignment (works for CJK). Used against the live service in November 2026 (region westus) for every cached
+benchmark; the parser is also unit-tested on the response examples from the Azure docs
+(`tests/test_bench_azure.py`).
 
 Locale map and feature support (Microsoft Learn, *Language support → Pronunciation assessment* and
 *How to use pronunciation assessment → Supported features per locale*, checked 2026-11-15):

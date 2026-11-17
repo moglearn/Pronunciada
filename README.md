@@ -48,7 +48,9 @@ pip install ".[numbers]"      # + digits read out as words (num2words, LGPL)
 Runtime dependencies are numpy, scipy, onnxruntime, kaldi-native-fbank and soundfile; no torch.
 The acoustic model ([anyspeech/zipa-small-crctc-500k](https://huggingface.co/anyspeech/zipa-small-crctc-500k),
 64 M parameters, CC BY 4.0) is downloaded on first use into `~/.cache/pronunciada`
-(`PRONUNCIADA_CACHE` overrides): 248 MB, or 67 MB with `precision="int8"`. Everything this
+(`PRONUNCIADA_CACHE` overrides): a 248 MB download (67 MB with `precision="int8"`); a derived
+copy that exposes internal layers (`model.emb.onnx`, 260 MB) is written next to it, so the cache
+takes about 0.5 GB. A clean install with the Mandarin extra is about 240 MB. Everything this
 project trained ships in the package (about 10 MB) with the pronunciation dictionaries (about
 10 MB).
 
@@ -86,7 +88,30 @@ python -m pronunciada score clip.wav "The quick brown fox" --lang en --json     
 
 ## Results in short
 
-RESULTS_SUMMARY
+All numbers are held-out and come from one frozen run of the current code (2026-11-17); Azure
+was called on the same recordings and prompts (cached responses, November 2026). Of **84
+comparisons with Azure**, Pronunciada is ahead in 59 (39 significant), behind in 25 (4
+significant), each by its own table's paired test ([tally](results/SCOREBOARD.md#tally-against-azure)).
+
+- **English learners (speechocean762 test)**: correlation with expert raters 0.685 vs 0.538 for
+  sounds and 0.761 vs 0.673 for sentence accuracy (both significant); words 0.609 vs 0.589 and
+  fluency 0.792 vs 0.708 (not significant); intonation 0.782 vs 0.827 and overall 0.773 vs 0.796
+  behind (not significant).
+- **Real English learner errors**: AUC 0.712 vs 0.631 (L2-ARCTIC) and 0.721 vs 0.587 (EpaDB).
+  Coaching: at "balanced" 66 % of flagged sounds are expert-marked errors at 36 % recall, against
+  44 % for Azure at the same recall.
+- **Mandarin learners (OMPAL test)**: word AUC 0.794 vs 0.704 for any error and 0.782 vs 0.679
+  for tone errors; sentence accuracy correlation 0.635 vs 0.363. The current Mandarin defaults were
+  tuned on OMPAL dev learners; before that tuning: 0.797 / 0.792 / 0.388.
+- **Ten languages, one word of the prompt changed on native audio**: near-miss words caught at 5 %
+  false alarms ahead in 7 languages (significant), behind in Mandarin and Italian (not
+  significant). Tone-only swaps: level with Azure (AUC 0.844 vs 0.846).
+- **Common Voice reviewer verdicts (cv-real test)**: ahead in 7 of 11 locales, significant only in
+  French; behind (not significant) in Japanese, Portuguese, Russian, Korean; native vs non-native
+  English speakers behind (significant).
+- **Natives**: 98.7–99.9 % of sounds, 96.8–98.5 % of words, 99.0–99.8 % of sentences accepted.
+- **Speed**: 51 ms for a 3.5 s clip (40 ms int8) on a laptop CPU with 4 threads; 0.3–0.45 s for a
+  9–14 s clip against Azure's 1.8–3.0 s round trip.
 
 ## Known gaps
 
@@ -125,7 +150,7 @@ below read only the cache (`--steps azure` / `run-azure` send requests and need
 | coaching vs Azure (speechocean762 test) | `python -m bench.coach.dump --sets so762-test`, `python -m bench.coach.azure_yardstick`, `python -m bench.coach.heldout_12b` | `tables/coaching_azure_yardstick.json`, `tables/coaching_12b_heldout.json` |
 | coaching feature claims | `python -m bench.coach.dump_r4 --sets so762-test,l2arctic-test,epadb-test,ompal-test`, `python -m bench.coach.fit_r4 eval` | `tables/coaching_r4_heldout.json` |
 | contrast audit on FLEURS test | `python -m bench.audit.contrast_audit run --split test` then `report --split test` | `tables/contrast_audit_test.json` |
-| Japanese length | `python -m bench.length.heldout run --lang ja` then `report --lang ja` | `tables/round15_length_heldout_ja.json` |
+| Japanese length (shipped runtime) | `python -m bench.length.heldout_runtime --lang ja` | `tables/length_runtime_ja.json` |
 | acoustic-core latency | `python scripts/bench_latency.py --threads 4` | stdout |
 | the scoreboard | `python -m bench.scoreboard` | `results/SCOREBOARD.md` |
 

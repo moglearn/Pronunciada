@@ -183,3 +183,9 @@ ffmpeg (system binary, offline decoding).
    public copy (the speaker bootstrap needs only a grouping key).
 7. **Azure output in results**: tables contain aggregate statistics of Azure responses, no raw
    responses. Check Microsoft's terms on publishing benchmark results of the service.
+8. **Benchmark audio in git**: `site/samples/` and `space/samples/` (added with the demo site,
+   18 mp3 files, about 0.5 MB) are clips from the held-out test splits of speechocean762 (3),
+   FLEURS (5) and OMPAL (1), each duplicated. All three corpora are CC BY 4.0, so redistribution is
+   allowed with attribution (the sample JSONs name the source), but they are test-split items:
+   decide whether to keep them, replace them with train-split or self-recorded clips, and add the
+   attribution to the site.

@@ -203,7 +203,8 @@ def swaps(L):
           "\"far\" = a clearly different word, \"near\" = a word one sound away. AUC = the changed word vs the untouched "
           "words; hit@5 % = share of changed words flagged at the threshold that flags 5 % of the words of the unchanged "
           "recordings; right word = the changed word gets the lowest score; native FA = share of native words below each "
-          "system's natural cut-off (0.6 / 60), lower is better. Cells: Pronunciada / Azure; the verdict is the paired "
+          "system's natural cut-off (0.6 / 60), lower is better (each system at its own cut-off, so this column is "
+          "not a matched comparison; the hit@5 % column is). Cells: Pronunciada / Azure; the verdict is the paired "
           "utterance bootstrap on the records both systems scored (two-sided p in brackets). Source: "
           "`bench/eval_languages.py --steps swap` → `swap_ours_vs_azure.json`.", "",
           "| lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6) |", "|---|---|---|---|---|---|"]
@@ -276,7 +277,8 @@ def contrasts(L):
           "keeps the original. Hit@5 % = share of changed sounds (or their words) flagged at the threshold that flags 5 % "
           "of native sounds (words). Azure was not run on these edits (it gives no comparable per-sound scores outside "
           "English), so there is no head-to-head. 250 test clips per language, the plan rule of the validation audit; "
-          "\"blind\" < 30 %, \"weak\" 30–60 %, \"seen\" ≥ 60 % at sound level. Source: "
+          "\"blind\" < 30 %, \"weak\" 30–60 %, \"seen\" ≥ 60 % at sound level. Japanese length is judged by its "
+          "own channel (next table), so its rows here are omitted. Source: "
           "`bench/audit/contrast_audit.py run/report --split test` → `contrast_audit_test.json`.", "",
           "| lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict |",
           "|---|---|---|---|---|---|---|"]
@@ -285,8 +287,8 @@ def contrasts(L):
         if not r:
             continue
         for cn, c in r["contrasts"].items():
-            if not c.get("n"):
-                continue
+            if not c.get("n") or (lang == "ja" and cn in ("vowel_length", "gemination")):
+                continue      # Japanese length is judged by the length channel: next table
             for dn, d in c["directions"].items():
                 nm = dn.replace("said ", "").replace(", expected ", " → ")
                 L.append(f"| {lang} | {cn} | {nm} | {d['n']} | {pct(d['sound_hit5'])} | {pct(d['word_hit5'])} | "
@@ -295,21 +297,21 @@ def contrasts(L):
 
 
 def length(L):
-    H = load("round15_length_heldout_ja.json")
+    H = load("length_runtime_ja.json")
     if not H:
         return
-    s, w = H["length_swaps"]["sound"], H["length_swaps"]["word"]
     L += ["### Japanese vowel length and っ (FLEURS test, planted length swaps; no Azure column)", "",
-          "Length channel off → on, same clips. Source: `bench/length/heldout.py` → `round15_length_heldout_ja.json`.", "",
-          "| direction | n | caught at 5 % native false alarms |", "|---|---|---|"]
-    for k, name in (("vowel_length:A>B", "long vowel said, short expected"), ("vowel_length:B>A", "short vowel said, long expected"),
-                    ("gemination:A>B", "doubled consonant said, single expected"),
-                    ("gemination:B>A", "single consonant said, doubled expected"), ("all", "all")):
-        if k in s:
-            L.append(f"| {name} | {s[k]['n']} | {pct(s[k]['hit5'])} |")
-    L += ["", f"Word level: length-swapped words flagged at 5 % false alarms {pct(w.get('length_word_hit5_before'))} → "
-          f"{pct(w.get('length_word_hit5_after'))}; native word acceptance (strictness 0.5) "
-          f"{pct(w['native_accept_0.5']['before'], 1)} → {pct(w['native_accept_0.5']['after'], 1)}.", ""]
+          f"Shipped runtime (`PhoneResult.length_prob`, `WordResult.prob`), {H['n_clips']} test clips. Caught = at or "
+          "below the threshold that flags 5 % of native judged sounds (words). Source: "
+          "`bench/length/heldout_runtime.py` → `length_runtime_ja.json`.", "",
+          "| direction (said → expected) | n | sound caught | word caught |", "|---|---|---|---|"]
+    names = {"vowel_length:A>B": "long vowel → short", "vowel_length:B>A": "short vowel → long",
+             "gemination:A>B": "doubled consonant → single", "gemination:B>A": "single consonant → doubled",
+             "all": "all"}
+    for k, name in names.items():
+        if k in H["sound"]:
+            L.append(f"| {name} | {H['sound'][k]['n']} | {pct(H['sound'][k]['hit5'])} | {pct(H['word'][k]['hit5'])} |")
+    L += ["", f"Native word acceptance at strictness 0.5 on these clips: {pct(H['native_word_accept_0.5'], 1)}.", ""]
 
 
 def speed(L):
@@ -319,7 +321,8 @@ def speed(L):
     L += ["## Speed, size, and what runs where", ""]
     if sp:
         L += [f"End-to-end `Scorer.score` on 100 speechocean762 clips (mean {sp['fp32_t4']['mean_audio_s']:.1f} s of audio), "
-              "laptop CPU (Apple M3 Pro), nothing else running, posterior cache cleared per clip "
+              "laptop CPU (Apple M3 Pro), no other benchmark running (other processes kept the load average near 2), "
+              "posterior cache cleared per clip "
               "(`bench/eval_english.py --steps speed`):", "",
               "| model | 4 threads, median (p95) | 1 thread, median (p95) |", "|---|---|---|"]
         for prec in ("fp32", "int8"):

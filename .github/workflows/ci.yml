@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: tests (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[all,dev]"
+      # Tests that need the speech model are skipped here (it is not cached); the smoke job covers them.
+      - name: Unit tests
+        run: pytest -q tests --ignore-glob="tests/test_bench_*" --ignore=tests/test_cv_build.py --ignore=tests/test_ompal.py --ignore=tests/test_eval_cv_half.py --ignore=tests/test_audit_contrasts.py
+
+  smoke:
+    name: install the wheel and score a clip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          twine check dist/*
+      - name: Install the wheel into a clean environment
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install "$(ls dist/*.whl)[all]"
+      - name: Cache the speech model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pronunciada/models
+          key: zipa-small-crctc-500k-int8-v1
+      - name: Score a sample end to end
+        run: |
+          cd /tmp
+          /tmp/venv/bin/pronunciada --version
+          /tmp/venv/bin/pronunciada langs
+          /tmp/venv/bin/pronunciada check "$GITHUB_WORKSPACE/site/samples/en-clean.mp3" "It was good for me" --lang en --precision int8 --json > out.json
+          /tmp/venv/bin/python -c "import json; r = json.load(open('out.json')); assert r['prob'] > 0.8, r['prob']; print('sentence probability', r['prob'])"
+          /tmp/venv/bin/pronunciada check "$GITHUB_WORKSPACE/site/samples/zh-learner-1.mp3" "我家有四口人" --lang zh --precision int8

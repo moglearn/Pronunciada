@@ -42,7 +42,7 @@ FEATURE_TEMPLATES = {
     "feature.manner.oral": "Keep the air out of your nose for /{expected}/ in “{word}”; it sounded nasal.",
     "feature.manner.rhotic": "Make /{expected}/ in “{word}” a quick tap or roll of the tongue tip.",
     "feature.manner.other": "Check how you make /{expected}/ in “{word}”: the airflow sounded different.",
-    "feature.place": "Make /{expected}/ in “{word}” with {expected_place}; it sounded {heard_place}.",
+    "feature.place": "Make /{expected}/ in “{word}” {expected_place}; it sounded {heard_place}.",
     "feature.palatalised.add": "Raise the middle of your tongue (a slight “y” colour) on /{expected}/ in “{word}”.",
     "feature.palatalised.remove": "Say /{expected}/ in “{word}” without the “y” colour.",
     "feature.lateral.add": "Let the air pass along the sides of the tongue for /{expected}/ in “{word}”.",

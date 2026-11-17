@@ -117,7 +117,9 @@ def assess(audio, text, language, strictness, sensitivity):
 
 def examples():
     rows = []
-    for meta_path in sorted((HERE / "samples").glob("*.json")):
+    order = ["en-learner-1", "en-learner-2", "zh-learner-1", "en-clean"]
+    paths = sorted((HERE / "samples").glob("*.json"), key=lambda q: (order.index(q.stem) if q.stem in order else len(order), q.stem))
+    for meta_path in paths:
         meta = json.loads(meta_path.read_text())["meta"]
         name = next((k for k, v in LANGS.items() if v == meta["lang"]), None)
         if name:
