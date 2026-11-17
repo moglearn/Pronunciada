@@ -1,33 +1,24 @@
-"""Fill the generated parts of site/index.html: the sample blocks and the charts.
+"""Fill the generated parts of site/index.html: the key figures and the charts.
 
     python scripts/graphics/make_site.py
 
 The page is static HTML. Everything between `<!-- gen:NAME -->` and `<!-- /gen:NAME -->` is
-rewritten here: samples from site/samples/*.json (the scorer's own output, with word times),
-charts from the tables in results/SCOREBOARD.md. Nothing in those blocks is typed by hand, so
-the page cannot drift from the published results.
+rewritten here from the tables in results/SCOREBOARD.md, so the figures on the page cannot
+drift from the published results. `units`, `LANG` and `WHO` are shared with the video scenes.
 """
 from __future__ import annotations
 
 import html
-import json
 import re
 
-import soundfile as sf
-
 from common import ROOT
-from make_charts import english, detection, languages, table, tally, zipa
+from make_charts import detection, english, table, tally, zipa
 
 PAGE = ROOT / "site/index.html"
-SAMPLES = ROOT / "site/samples"
 LANG = {"en": "English", "zh": "Mandarin", "ja": "Japanese", "es": "Spanish", "fr": "French", "de": "German",
         "it": "Italian", "pt": "Portuguese", "ru": "Russian", "ko": "Korean"}
 WHO = {"native speaker": "native speaker", "adult learner of English": "adult learner",
        "French-speaking learner of Mandarin": "French-speaking learner"}
-GROUPS = {
-    "sample-intro": ["en-learner-1"],
-}
-PLAY = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg>'
 esc = html.escape
 NUMBER = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven"}
 
@@ -46,59 +37,17 @@ def units(result: dict) -> list[dict]:
     return out
 
 
-def marked_up(text: str, pieces: list[dict], tag: str = "span") -> str:
-    """The reference text with each piece wrapped in a timed element; punctuation stays outside."""
-    out, at = [], 0
-    for p in pieces:
-        i = text.find(p["text"], at)
-        if i < 0:
-            i = at
-        out.append(esc(text[at:i]))
-        cls = ' class="low"' if p["low"] else ""
-        out.append(f'<{tag} data-a="{p["start"]:.2f}"{cls}>{esc(p["text"])}</{tag}>')
-        at = i + len(p["text"])
-    out.append(esc(text[at:]))
-    return "".join(out)
-
-
-def findings(result: dict) -> str:
-    """The one line under a recording: what was flagged, or the sentence probability if nothing was."""
-    parts = []
-    for w in result["words"]:
-        if w["prob"] < 0.5:
-            parts.append(f'“{esc(w["text"])}” <b class="low">{w["prob"]:.2f}</b>')
-        for s in w.get("syllables") or []:
-            if s.get("tone_prob") is not None and s["tone_prob"] < 0.5:
-                parts.append(f'tone of {esc(s["text"])} <b class="low">{s["tone_prob"]:.2f}</b>')
-    if not parts:
-        parts.append(f'Sentence <b>{result["prob"]:.2f}</b>')
-    return '<span class="dot"></span>'.join(f"<span>{p}</span>" for p in parts)
-
-
-def sample(key: str) -> str:
-    d = json.loads((SAMPLES / f"{key}.json").read_text(encoding="utf-8"))
-    meta, result = d["meta"], d["result"]
-    audio, sr = sf.read(str(SAMPLES / f"{key}.mp3"))
-    secs = round(len(audio) / sr)
-    return (f'<article class="s" data-src="samples/{key}.mp3">'
-            f'<p class="s-label">{LANG[meta["lang"]]}<span>{WHO[meta["speaker"]]}</span></p>'
-            f'<p class="s-text" lang="{meta["lang"]}">{marked_up(meta["text"], units(result))}</p>'
-            f'<div class="s-foot"><button class="s-play" type="button" aria-label="Play the recording: {esc(meta["text"])}">'
-            f'{PLAY}<time>{secs // 60}:{secs % 60:02d}</time></button><p class="s-score">{findings(result)}</p></div></article>')
-
-
 def stats() -> str:
     """The four figures under the headline, read from the scoreboard."""
     rows = tally()
     total, better, same = (sum(r[k] for r in rows) for k in (1, 2, 3))
     ms = re.match(r"(\d+) ms", next(r for r in table("End-to-end `Scorer.score`") if r[0] == "fp32")[1]).group(1)
     ours = next(r for r in english() if r["label"] == "Phoneme")
-    alone = zipa()[0]["azure"][0]
     cells = [
-        (f"{better + same}<small> of {total}</small>", "benchmark comparisons in which it matches or beats Azure"),
-        (f"{ms}<small> ms</small>", "to score a sentence on a laptop CPU, with no network"),
-        (f"{len(rows)}", "languages, sharing one acoustic model"),
-        (f'{ours["ours"][0]:.2f}', f'agreement with expert phoneme scores. Azure {ours["azure"][0]:.2f}, ZIPA alone {alone:.2f}'),
+        (f"{better + same}<small> of {total}</small>", "comparisons in which it matches or beats Azure"),
+        (f"{ms}<small> ms</small>", "to score a sentence on a laptop CPU"),
+        (f"{len(rows)}", "languages on one shared model"),
+        (f'{ours["ours"][0]:.2f}', f'agreement with expert raters on English sounds (Azure: {ours["azure"][0]:.2f})'),
     ]
     return '<div class="stats">' + "".join(f"<div><b>{n}</b><span>{label}</span></div>" for n, label in cells) + "</div>"
 
@@ -117,9 +66,9 @@ def pairs(title: str, rows: list[dict], other: str, foot: str) -> str:
             f'<div class="ch-row"><span class="ch-track"><i style="width:{b * 100:.1f}%"></i></span><b>{b:.2f}</b></div>'
             f'</div></div>')
     if all(r["sig"] for r in rows):
-        sig = f"All {NUMBER[len(rows)]} differences are statistically significant (paired bootstrap over speakers, p &lt; 0.05)."
+        sig = f"All {NUMBER[len(rows)]} differences are statistically significant."
     else:
-        sig = "Differences are statistically significant (paired bootstrap over speakers, p &lt; 0.05) except where marked n.s."
+        sig = "Differences are statistically significant except where marked n.s."
     key = f'<span><i class="own"></i>Pronunciada</span><span><i></i>{other}</span>'
     return (f'<figure class="chart"><div class="ch-head"><figcaption>{title}</figcaption><div class="ch-key">{key}</div></div>'
             f'{"".join(groups)}<p class="ch-foot">{foot} {sig}</p></figure>')
@@ -133,27 +82,27 @@ def pick(rows: list[dict], label: str, name: str, what: str) -> dict:
 def chart_azure() -> str:
     e, d = english(), detection()
     rows = [
-        pick(e, "Phoneme", "English phonemes", "agreement with expert scores"),
-        pick(e, "Sentence accuracy", "English sentences", "agreement with expert accuracy scores"),
-        pick(d, "English phonemes, L2-ARCTIC", "English mispronunciations", "detecting the phonemes annotators marked"),
-        pick(d, "Mandarin words, tone errors", "Mandarin tones", "detecting the tone errors teachers marked"),
-        pick(e, "Sentence prosody", "English intonation", "agreement with expert prosody scores"),
+        pick(e, "Phoneme", "English sounds", "agreement with expert scores"),
+        pick(e, "Sentence accuracy", "English sentences", "agreement with expert scores"),
+        pick(d, "English phonemes, L2-ARCTIC", "English mispronunciations", "finding the sounds experts marked"),
+        pick(d, "Mandarin words, tone errors", "Mandarin tones", "finding the tones teachers marked"),
+        pick(e, "Sentence prosody", "English intonation", "agreement with expert scores"),
     ]
     return pairs("Learner speech scored by experts", rows, "Azure",
-                 "Agreement is the Pearson correlation with the expert score; detection is the area under the ROC curve. "
-                 "Higher is better. Test sets: speechocean762, L2-ARCTIC and OMPAL.")
+                 "Higher is better. Agreement is the correlation with expert scores, and finding errors is the area under the ROC curve. "
+                 "Test sets: speechocean762, L2-ARCTIC and OMPAL.")
 
 
 def chart_zipa() -> str:
     z = zipa()
     rows = [
-        pick(z, "English phonemes, expert scores (r)", "English phonemes", "agreement with expert scores"),
-        pick(z, "English sentences, expert scores (r)", "English sentences", "agreement with expert accuracy scores"),
-        pick(z, "English errors, L2-ARCTIC (AUC)", "English mispronunciations", "detecting the phonemes annotators marked"),
-        pick(z, "Mandarin errors, tone (AUC)", "Mandarin tones", "detecting the tone errors teachers marked"),
+        pick(z, "English phonemes, expert scores (r)", "English sounds", "agreement with expert scores"),
+        pick(z, "English sentences, expert scores (r)", "English sentences", "agreement with expert scores"),
+        pick(z, "English errors, L2-ARCTIC (AUC)", "English mispronunciations", "finding the sounds experts marked"),
+        pick(z, "Mandarin errors, tone (AUC)", "Mandarin tones", "finding the tones teachers marked"),
     ]
-    return pairs("The same tests, against the model Pronunciada is built on", rows, "ZIPA alone",
-                 "ZIPA alone is the unmodified model scored with the standard goodness-of-pronunciation method.")
+    return pairs("The same tests, against ZIPA alone", rows, "ZIPA alone",
+                 "Higher is better. ZIPA alone is the unmodified model with the standard goodness-of-pronunciation score.")
 
 
 def chart_tally() -> str:
@@ -168,19 +117,8 @@ def chart_tally() -> str:
     key = ('<span><i class="own"></i>Pronunciada significantly better</span><span><i class="same"></i>No significant difference</span>'
            '<span><i class="behind"></i>Azure significantly better</span>')
     return (f'<figure class="chart"><div class="ch-head stack"><figcaption>Comparisons with Azure, by language</figcaption><div class="ch-key">{key}</div></div>'
-            f'<div class="tl">{"".join(out)}</div><p class="ch-foot">{total[0]} comparisons, each one metric on one held-out public test set: '
-            f'{total[1]} significantly better, {total[2]} not significantly different, {total[3]} significantly worse '
-            f'(paired tests, p &lt; 0.05).</p></figure>')
-
-
-def table_languages() -> str:
-    rows = []
-    for r in languages():
-        a, b = r["ours"][0], r["azure"][0]
-        fa, fb = (f"<b>{a:.3f}</b>", f"{b:.3f}") if r["sig"] and a > b else (f"{a:.3f}", f"<b>{b:.3f}</b>") if r["sig"] else (f"{a:.3f}", f"{b:.3f}")
-        rows.append(f'<tr><td>{r["label"]}</td><td class="n">{fa}</td><td class="n">{fb}</td></tr>')
-    return ('<div class="tbl"><table><thead><tr><th>Language</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead>'
-            f'<tbody>{"".join(rows)}</tbody></table></div>')
+            f'<div class="tl">{"".join(out)}</div><p class="ch-foot">{total[0]} comparisons on held-out public test sets. '
+            'Significance is from paired tests at p &lt; 0.05.</p></figure>')
 
 
 def speed() -> tuple[float, float, float]:
@@ -197,17 +135,12 @@ def chart_speed() -> str:
     row = lambda cls, who, sub, v: (f'<div class="sp-row {cls}"><span class="sp-who">{who}<small>{sub}</small></span>'
                                     f'<span class="ch-track"><i style="width:{v / top * 100:.1f}%"></i></span><b>{v:.2f} s</b></div>')
     return (f'<figure class="chart"><div class="ch-head"><figcaption>Time to score a {clip:.0f}-second recording</figcaption></div>'
-            f'{row("own", "Pronunciada", "on the laptop", ours)}{row("", "Azure", "request to the cloud and back", azure)}'
-            '<p class="ch-foot">Median over English recordings of the same mean length; lower is better. This is not a controlled comparison: '
-            'the two sets of recordings differ, Pronunciada ran on one CPU thread of an Apple M3 Pro, and the Azure figure is the full '
-            'REST request to region westus from the same laptop, upload included.</p></figure>')
+            f'{row("own", "Pronunciada", "on the laptop, one CPU thread", ours)}{row("", "Azure", "request to the cloud and back", azure)}'
+            '<p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of '
+            'recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>')
 
 
-BLOCKS = {
-    **{name: (lambda keys=keys: '<div class="samples">' + "".join(sample(k) for k in keys) + "</div>") for name, keys in GROUPS.items()},
-    "stats": stats, "chart-tally": chart_tally, "table-languages": table_languages, "chart-azure": chart_azure,
-    "chart-speed": chart_speed, "chart-zipa": chart_zipa,
-}
+BLOCKS = {"stats": stats, "chart-tally": chart_tally, "chart-azure": chart_azure, "chart-speed": chart_speed, "chart-zipa": chart_zipa}
 
 
 if __name__ == "__main__":
