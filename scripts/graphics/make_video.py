@@ -8,7 +8,8 @@ Web Animation, and `seek(t)` moves all of them to second t. Each frame is seeked
 screenshotted, so the motion is exact however slow the machine is. The story follows one
 recording (site/samples/en-learner-1): its words and scores, the sounds of the word that was
 flagged, three features, the results against Azure and ZIPA alone, and the logo. Numbers are
-read from results/SCOREBOARD.md. Sound is that recording plus a quiet synthesized tone.
+read from results/SCOREBOARD.md. Sound is that recording plus a quiet synthesized tone. A copy of the film and one frame of it (the cover
+image) go to site/assets/.
 --sheet writes a contact sheet of still frames instead of the film.
 """
 from __future__ import annotations
@@ -34,6 +35,7 @@ SITE = ROOT / "site/assets"
 SAMPLE = ROOT / "site/samples/en-learner-1"
 LENGTH, FPS = 52.0, 60
 VOICE_AT = 0.9                       # second at which the recording starts
+COVER_AT = 7.68                      # frame used as the cover image on the site
 
 
 def data() -> dict:
@@ -304,6 +306,8 @@ def main(sheet: str | None) -> None:
         enc.wait()
         browser.close()
     shutil.copy2(OUT, SITE / "demo.mp4")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(COVER_AT), "-i", str(OUT), "-frames:v", "1", "-vf", "scale=1616:-2",
+                    "-q:v", "2", str(SITE / "cover.jpg")], check=True)
     print(f"wrote {OUT.relative_to(ROOT)} ({LENGTH:.0f} s, {OUT.stat().st_size / 1e6:.1f} MB)")
 
 
