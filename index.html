@@ -3,354 +3,308 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pronunciada: on-device pronunciation scoring</title>
-<meta name="description" content="Open-source pronunciation scoring for ten languages that runs on the device. Scores every sound, word and sentence, with tones, stress and coaching tips.">
-<meta property="og:title" content="Pronunciada: on-device pronunciation scoring">
-<meta property="og:description" content="Open source. Ten languages. Scores every sound, word and sentence, with tones, stress and coaching tips.">
-<meta property="og:image" content="assets/social.png">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<title>Pronunciada: on-device pronunciation assessment for ten languages</title>
+<meta name="description" content="Pronunciada is an open-source Python library for pronunciation assessment in ten languages. It runs on CPU with ONNX Runtime and is compared here with Azure Pronunciation Assessment on public corpora.">
+<meta property="og:title" content="Pronunciada: on-device pronunciation assessment for ten languages">
+<meta property="og:description" content="An open-source Python library for pronunciation assessment. Sample output and benchmark results against Azure Pronunciation Assessment.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fbfaf7; --panel:#ffffff; --ink:#16181d; --muted:#5d6470; --line:#e4e1d8; --soft:#f3f1ea;
-  --good:#1f8a4c; --warn:#b7791f; --bad:#c2372c; --accent:#1c4fd6;
-  --good-bg:#e3f4e9; --warn-bg:#fbefd5; --bad-bg:#fbe1de;
-  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans CJK SC", sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f1115; --panel:#161920; --ink:#e9eaee; --muted:#9aa1ad; --line:#272b35; --soft:#1b1f28;
-    --good:#4fc57e; --warn:#e2b04f; --bad:#f0776b; --accent:#7ea2ff;
-    --good-bg:#16311f; --warn-bg:#352a12; --bad-bg:#3a1b18;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0f1115; --panel:#161920; --ink:#e9eaee; --muted:#9aa1ad; --line:#272b35; --soft:#1b1f28;
-  --good:#4fc57e; --warn:#e2b04f; --bad:#f0776b; --accent:#7ea2ff;
-  --good-bg:#16311f; --warn-bg:#352a12; --bad-bg:#3a1b18;
+  --ink:#000; --text:#595959; --faint:#8a8a8a; --rule:#e6e6e6; --fill:#fafafa; --flag:#b42318;
+  --serif:"Source Serif 4", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans CJK KR", Arial, sans-serif;
+  --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-header.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
-.brand{font-family:var(--mono);font-weight:700;font-size:19px;color:var(--ink);letter-spacing:-.2px}
-.brand .cur{display:inline-block;width:.55em;height:1.05em;background:var(--ink);vertical-align:-.15em;margin-left:2px;animation:blink 1.1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion: reduce){.brand .cur{animation:none}}
-nav a{font-family:var(--mono);font-size:14px;color:var(--muted);margin-left:20px}
-nav a:hover{color:var(--ink);text-decoration:none}
-.hero{padding:44px 0 26px}
-h1{font-size:clamp(34px,5.4vw,58px);line-height:1.04;letter-spacing:-1.4px;margin:0 0 18px;font-weight:750;max-width:15ch}
-.lede{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:62ch;margin:0 0 26px}
-.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.pip{font-family:var(--mono);font-size:15px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 12px 11px 16px;display:flex;align-items:center;gap:14px}
-.pip b{color:var(--muted);font-weight:400;user-select:none}
-.pip button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--soft);color:var(--muted);border-radius:6px;padding:4px 9px;cursor:pointer}
-.btn{font-family:var(--mono);font-size:15px;border-radius:10px;padding:11px 16px;border:1px solid var(--ink);background:var(--ink);color:var(--bg)}
-.btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn:hover{text-decoration:none;opacity:.9}
-.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:36px 0 0;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
-.facts div{padding:16px 18px;border-right:1px solid var(--line)}
-.facts div:last-child{border-right:0}
-.facts strong{display:block;font-family:var(--mono);font-size:22px;letter-spacing:-.5px}
-.facts span{font-size:13.5px;color:var(--muted)}
-section{padding:54px 0 0}
-h2{font-size:28px;letter-spacing:-.6px;margin:0 0 8px}
-.sub{color:var(--muted);max-width:68ch;margin:0 0 22px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px}
-/* sample explorer */
-.tabs{display:flex;flex-wrap:wrap;gap:8px;padding:14px 14px 0}
-.tab{font-family:var(--mono);font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
-.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.demo{padding:18px 18px 20px}
-.demo-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:14px}
-.demo audio{height:34px;max-width:100%}
-.meta{font-size:13.5px;color:var(--muted)}
-.verdict{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 16px}
-.chip{font-family:var(--mono);font-size:13px;padding:5px 10px;border-radius:8px;background:var(--soft);border:1px solid var(--line)}
-.chip b{font-weight:700}
-.sentence{font-size:clamp(22px,3.2vw,30px);line-height:1.5;letter-spacing:-.2px;margin:0 0 6px}
-.w{border-radius:7px;padding:1px 5px;margin:0 1px;cursor:pointer;border:1px solid transparent;display:inline-block}
-.w.good{color:var(--good)} .w.warn{color:var(--warn);background:var(--warn-bg)} .w.bad{color:var(--bad);background:var(--bad-bg)}
-.w.sel{border-color:currentColor}
-.hint{font-size:13px;color:var(--muted);margin:0 0 14px}
-.sounds{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;min-height:62px}
-.s{font-family:var(--mono);text-align:center;border:1px solid var(--line);border-radius:8px;padding:6px 8px 5px;min-width:46px;background:var(--bg)}
-.s i{font-style:normal;font-size:18px;display:block}
-.s small{font-size:11px;color:var(--muted)}
-.s.warn{background:var(--warn-bg);border-color:transparent} .s.bad{background:var(--bad-bg);border-color:transparent}
-.s .tone{font-size:11px;display:block;color:var(--muted)}
-.cols{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
-.box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg)}
-.box h4{margin:0 0 6px;font-size:12.5px;font-family:var(--mono);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
-.box ul{margin:0;padding-left:18px} .box li{margin:3px 0;font-size:15px}
-.box p{margin:0;font-size:15px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--text);font-family:var(--sans);font-size:16px;line-height:25px;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:#bdbdbd;text-underline-offset:3px}
+a:hover{text-decoration-color:var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:22px 28px}
+.top .name{font-family:var(--serif);font-size:19px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.top nav a{font-size:14px;color:var(--text);text-decoration:none;margin-left:22px}
+.top nav a:hover{color:var(--ink)}
+main{max-width:640px;margin:0 auto;padding:56px 20px 96px}
+h1{font-family:var(--serif);font-weight:500;font-size:46px;line-height:50px;letter-spacing:-.028em;color:var(--ink);margin:0 0 30px;text-wrap:balance}
+.byline{font-size:15px;line-height:22px;margin:0 0 30px}
+.byline .who{color:var(--ink)}
+hr{border:0;border-top:1px solid var(--rule);margin:0}
+.links{display:flex;gap:12px;margin:30px 0 34px}
+.links a{flex:1;height:42px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--rule);border-radius:8px;font-size:15px;text-decoration:none;white-space:nowrap}
+.links a:hover{border-color:#bdbdbd}
+.links code{font-size:13.5px}
+h2{font-family:var(--serif);font-weight:500;font-size:27px;line-height:32px;letter-spacing:-.015em;color:var(--ink);margin:60px 0 16px}
+h3{font-family:var(--sans);font-weight:400;font-size:16px;color:#333;margin:38px 0 12px}
+p{margin:0 0 18px}
+ul,ol{margin:0 0 18px;padding-left:22px}
+li{margin:0 0 8px}
+strong{color:var(--ink);font-weight:500}
+code,pre{font-family:var(--mono)}
+code{font-size:.88em;color:#222}
+.cap{font-size:13px;line-height:18px;color:var(--text);margin:10px 0 28px}
+pre{margin:0;padding:18px 20px;border:1px solid var(--rule);border-radius:12px;background:var(--fill);font-size:12.5px;line-height:19px;color:#222;overflow-x:auto}
 /* tables */
-table{border-collapse:collapse;width:100%;font-size:15px}
-th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-tr:last-child td{border-bottom:0}
-td.n{font-family:var(--mono);white-space:nowrap}
-.win{color:var(--good);font-weight:650} .lose{color:var(--bad);font-weight:650} .tie{color:var(--muted)}
-.note{font-size:14px;color:var(--muted);margin-top:12px;max-width:74ch}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.grid .card{padding:16px 18px}
-.grid h3{margin:0 0 4px;font-size:16.5px}
-.grid p{margin:0;font-size:14.5px;color:var(--muted)}
-/* code */
-.codetabs{display:flex;gap:6px;padding:12px 12px 0}
-pre{margin:0;padding:16px 18px 18px;overflow:auto;font-family:var(--mono);font-size:13.5px;line-height:1.55}
-code{font-family:var(--mono);font-size:.92em}
-.k{color:var(--accent)} .c{color:var(--muted)} .g{color:var(--good)} .y{color:var(--warn)} .r{color:var(--bad)}
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;counter-reset:step}
-.flow .card{padding:16px 16px 18px;position:relative}
-.flow .card:before{counter-increment:step;content:counter(step);font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px}
-.flow h3{font-size:15.5px;margin:10px 0 4px} .flow p{font-size:14px;color:var(--muted);margin:0}
-.langs{display:flex;flex-wrap:wrap;gap:8px}
-.langs span{font-family:var(--mono);font-size:13.5px;border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel)}
-.limits li{margin:6px 0}
-footer{margin:64px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
-footer .row{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
-@media (max-width:820px){
-  .facts{grid-template-columns:repeat(2,1fr)} .facts div:nth-child(2){border-right:0} .facts div:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .cols,.grid,.flow{grid-template-columns:1fr} nav a{margin-left:14px} nav a.hide{display:none}
-  .tablewrap{overflow-x:auto}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:21px}
+th,td{text-align:left;padding:9px 16px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:500;color:var(--ink)}
+td.n,th.n{text-align:right;padding-right:0;padding-left:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.n b{color:var(--ink);font-weight:600}
+/* samples */
+.sample{margin:0 0 30px}
+.play{width:100%;display:flex;align-items:center;gap:14px;min-height:42px;padding:8px 14px;border:1px solid var(--rule);border-radius:8px;background:#fff;font:inherit;font-size:15px;line-height:21px;color:var(--ink);text-align:left;cursor:pointer;position:relative;overflow:hidden}
+.play:hover{border-color:#bdbdbd}
+.play .ic{flex:none;width:10px;font-size:10px;line-height:1}
+.play .txt{flex:1}
+.play .dur{flex:none;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.play .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--ink)}
+.gloss{display:flex;flex-wrap:wrap;gap:10px 16px;margin:16px 0 4px;padding:0 2px}
+.gloss span{display:flex;flex-direction:column}
+.gloss b{font-weight:400;font-size:18px;line-height:24px;color:var(--ink)}
+.gloss i{font-style:normal;font-family:var(--mono);font-size:12px;line-height:16px;color:var(--faint)}
+.gloss .low b,.gloss .low i{color:var(--flag)}
+.detail{font-size:14px;line-height:21px;margin:12px 0 0;padding:0 2px}
+.detail dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:0}
+.detail dt{color:var(--ink)}
+.detail dd{margin:0}
+.detail .ph{font-family:var(--mono);font-size:12.5px}
+.detail .lowp,.tones .lowp td{color:var(--flag)}
+.tones{font-size:14px;line-height:20px;margin:16px 0 0}
+.tones th,.tones td{padding:6px 16px 6px 2px}
+footer{font-size:13px;line-height:19px;color:var(--text);margin-top:64px;padding-top:22px;border-top:1px solid var(--rule)}
+@media (max-width:560px){
+  h1{font-size:34px;line-height:38px}
+  main{padding-top:32px}
+  .top{padding:18px 20px}
+  .links{flex-direction:column}
+  .links a{flex:none}
+  .detail dl{grid-template-columns:1fr;gap:0}
+  .detail dt{margin-top:8px}
+  th,td{padding-right:10px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="nav">
-  <a class="brand" href="#" aria-label="Pronunciada home">pronunciada<span class="cur" aria-hidden="true"></span></a>
-  <nav>
-    <a href="#samples">Samples</a><a href="#results">Results</a><a class="hide" href="#use">Use it</a><a class="hide" href="#limits">Limits</a>
-    <a href="https://github.com/moglearn/pronunciada">GitHub</a>
-  </nav>
+<header class="top">
+  <a class="name" href="./">Pronunciada</a>
+  <nav><a href="https://github.com/moglearn/pronunciada">GitHub</a><a href="https://pypi.org/project/pronunciada/">PyPI</a></nav>
 </header>
 
-<div class="hero">
-  <h1>Pronunciation scoring that runs on the device.</h1>
-  <p class="lede">Pronunciada listens to someone reading a sentence and says how well each sound, word and sentence was pronounced, in ten languages. It is open source, works offline, and costs nothing per request.</p>
-  <div class="cta">
-    <div class="pip"><span><b>$ </b>pip install pronunciada</span><button type="button" id="copy" aria-label="Copy install command">copy</button></div>
-    <a class="btn" href="#samples">See real results</a>
-    <a class="btn alt" href="https://github.com/moglearn/pronunciada">GitHub</a>
-  </div>
-  <div class="facts" role="list">
-    <div role="listitem"><strong>10</strong><span>languages, each checked against Azure</span></div>
-    <div role="listitem"><strong>~50 ms</strong><span>to score a 3.5-second clip on a laptop</span></div>
-    <div role="listitem"><strong>67 MB</strong><span>compressed speech model (248 MB at full precision)</span></div>
-    <div role="listitem"><strong>Apache-2.0</strong><span>code; data licences listed in the repo</span></div>
-  </div>
+<main>
+<h1>Pronunciada: on-device pronunciation assessment for ten languages</h1>
+<p class="byline">November 2026<br><span class="who"><a href="https://www.linkedin.com/in/bill-s-214769325">Bill Sun</a>, <a href="https://moglearn.com">Moglearn</a></span></p>
+<hr>
+<div class="links">
+  <a href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
+  <a href="https://pypi.org/project/pronunciada/"><code>pip install pronunciada</code></a>
 </div>
 
-<section id="samples">
-  <h2>Real recordings, real output</h2>
-  <p class="sub">These are recordings from public research datasets with the exact output Pronunciada produced. For the learner clips you can compare it with what expert raters marked. Click a word to see its sounds.</p>
-  <div class="card">
-    <div class="tabs" id="tabs" role="tablist" aria-label="Samples"></div>
-    <div class="demo" id="demo" aria-live="polite"><p class="meta">Loading samples…</p></div>
-  </div>
-  <p class="note">Colour shows the probability that a teacher would accept the word: green above 0.8, amber between 0.5 and 0.8, red below 0.5. Samples are chosen to illustrate the output; overall accuracy is in the table below.</p>
-</section>
+<p>Pronunciada is an open-source Python library that scores how a sentence was read aloud. Given a recording and the reference text, it returns the probability that a human rater would accept each phoneme, each word and the sentence as a whole. It runs on CPU, and the audio does not leave the machine.</p>
+<p>Language-learning applications usually get these scores from a cloud API, most often Microsoft Azure Pronunciation Assessment. Pronunciada was written for the Moglearn app so that scoring could run on the learner's device, and it was compared with Azure on the public corpora that have expert annotation. This page shows sample output and the main results. The code, the complete result tables and the scripts that produce them are in the <a href="https://github.com/moglearn/pronunciada">repository</a>.</p>
 
-<section id="results">
-  <h2>How it compares with Azure</h2>
-  <p class="sub">Microsoft Azure Pronunciation Assessment is the service most apps use. Both systems were given the same held-out recordings. Higher is better in every row.</p>
-  <div class="card tablewrap">
-  <table>
-    <thead><tr><th>Test</th><th>What it measures</th><th>Pronunciada</th><th>Azure</th></tr></thead>
-    <tbody id="scoreboard">
-      <tr><td>English learners, sounds</td><td>Agreement with expert scores for each sound</td><td class="n win">0.69</td><td class="n">0.54</td></tr>
-      <tr><td>English learners, words</td><td>Agreement with expert scores for each word</td><td class="n">0.61</td><td class="n">0.59</td></tr>
-      <tr><td>English learners, sentence accuracy</td><td>Agreement with expert sentence scores</td><td class="n win">0.75</td><td class="n">0.67</td></tr>
-      <tr><td>English learners, fluency</td><td>Agreement with expert fluency scores</td><td class="n">0.78</td><td class="n">0.71</td></tr>
-      <tr><td>English learners, intonation</td><td>Agreement with expert prosody scores</td><td class="n">0.77</td><td class="n win">0.83</td></tr>
-      <tr><td>English: which sound was wrong</td><td>Share of flagged sounds experts also marked, at equal coverage</td><td class="n win">66%</td><td class="n">44%</td></tr>
-      <tr><td>English learners never seen in training</td><td>Finding the sounds experts marked wrong (L2-ARCTIC, six native languages)</td><td class="n win">0.71</td><td class="n">0.63</td></tr>
-      <tr><td>Mandarin learners, wrong words</td><td>Finding words teachers marked wrong</td><td class="n win">0.79</td><td class="n">0.70</td></tr>
-      <tr><td>Mandarin learners, tones</td><td>Finding tone mistakes teachers marked</td><td class="n win">0.78</td><td class="n">0.68</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p class="note">Green marks the leader where the difference is clear. Across all 84 comparisons, Pronunciada is ahead in 60 (40 significantly) and behind in 24 (7 significantly). Learner data with expert marks exists publicly only for English and Mandarin. For all ten languages we also run two further comparisons (native recordings with one word of the prompt changed, and recordings that volunteer reviewers accepted or rejected), where Pronunciada is ahead of Azure in most languages and behind in some. Every number, with confidence intervals and the commands to reproduce it, is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
-</section>
+<h2>Samples</h2>
+<p>The recordings below come from public research corpora. Each is shown with the output of version 1.0.0 at default settings. The number under a word is the probability that the word would be accepted. Words below 0.5 are in red, with their phonemes listed underneath.</p>
 
-<section id="features">
-  <h2>What you get back</h2>
-  <p class="sub">One call returns probabilities between 0 and 1 at three levels, with a strictness setting you can turn up or down.</p>
-  <div class="grid">
-    <div class="card"><h3>Sounds, words, sentences</h3><p>A calibrated probability for each, with start and end times, plus fluency and completeness for the sentence.</p></div>
-    <div class="card"><h3>Mandarin tones</h3><p>The tone expected and the tone heard for every syllable, with its own probability. Azure returns one score per syllable and no separate tone result.</p></div>
-    <div class="card"><h3>Word stress</h3><p>Whether the stress fell on the right syllable, in English, German, Spanish, Italian, Portuguese and Russian.</p></div>
-    <div class="card"><h3>Length and hard contrasts</h3><p>Japanese long and short vowels and doubled consonants, Korean and Mandarin aspiration, Russian soft and hard consonants.</p></div>
-    <div class="card"><h3>Coaching output</h3><p>For a flagged sound: what was expected, what it sounded like, which mouth feature differed, and a short tip your app can reword or translate.</p></div>
-    <div class="card"><h3>Reading slips and recording checks</h3><p>Skipped words, extra speech and long pauses, and a warning when the recording is clipped, too noisy or mostly silence.</p></div>
-  </div>
-  <div class="langs" style="margin-top:18px" aria-label="Supported languages">
-    <span>English</span><span>中文 (简体 / 繁體)</span><span>日本語</span><span>Español</span><span>Français</span><span>Deutsch</span><span>Italiano</span><span>Português</span><span>Русский</span><span>한국어</span>
-  </div>
-</section>
+<h3>English learners</h3>
+<div id="g-en"></div>
+<p class="cap">Recordings from the speechocean762 test set. “Annotators” are the corpus's five expert raters. Sentence scores are on a 0 to 10 scale.</p>
 
-<section id="use">
-  <h2>Use it</h2>
-  <p class="sub">A Python call, a command line, a local server that answers in Azure's response format, and a tool for AI agents.</p>
-  <div class="card">
-    <div class="codetabs" role="tablist" aria-label="Code examples">
-      <button class="tab" role="tab" aria-selected="true" data-code="py">Python</button>
-      <button class="tab" role="tab" aria-selected="false" data-code="cli">Command line</button>
-      <button class="tab" role="tab" aria-selected="false" data-code="az">Azure format</button>
-      <button class="tab" role="tab" aria-selected="false" data-code="mcp">Agents (MCP)</button>
-    </div>
-<pre id="code-py"><span class="k">import</span> pronunciada
+<h3>Mandarin learner</h3>
+<div id="g-zh"></div>
+<p class="cap">Recording from the OMPAL test set, a French-speaking learner. The teachers marked the tone of 口 as wrong. Pronunciada gives its two lowest tone probabilities to 四 and 口, but the word probabilities stay high. See Limitations.</p>
 
-result = pronunciada.score(<span class="g">"clip.wav"</span>, <span class="g">"The ball is in their court now"</span>, lang=<span class="g">"en"</span>)
+<h3>Native speakers</h3>
+<div id="g-native"></div>
+<p class="cap">Recordings from the FLEURS test set. These show the output on speech with no expected errors.</p>
 
-result.prob                        <span class="c"># 0.55  probability the sentence would be accepted</span>
-<span class="k">for</span> word <span class="k">in</span> result.words:
-    print(word.text, word.prob)    <span class="c"># COURT 0.22</span>
-    <span class="k">for</span> sound <span class="k">in</span> word.phones:
-        print(sound.ipa, sound.prob, sound.heard)
+<h2>Evaluation</h2>
+<p>Each comparison uses the Azure Pronunciation Assessment REST API (region westus, November 2026, one request per recording). Both systems received the same audio and reference text. A bold figure is the better of the two where the difference is significant in a paired bootstrap over speakers (p &lt; 0.05).</p>
 
-<span class="k">for</span> item <span class="k">in</span> result.coaching():    <span class="c"># expected sound, heard sound, what differed, a tip</span>
-    print(item)</pre>
-<pre id="code-cli" hidden><span class="c"># a readable report in the terminal</span>
-$ pronunciada check clip.wav <span class="g">"The ball is in their court now"</span> --lang en --coach
+<h3>English: correlation with expert scores</h3>
+<div class="tbl"><table>
+<thead><tr><th>Level</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead>
+<tbody>
+<tr><td>Phoneme</td><td class="n"><b>0.685</b></td><td class="n">0.538</td></tr>
+<tr><td>Word</td><td class="n">0.609</td><td class="n">0.589</td></tr>
+<tr><td>Sentence accuracy</td><td class="n"><b>0.748</b></td><td class="n">0.673</td></tr>
+<tr><td>Sentence fluency</td><td class="n">0.779</td><td class="n">0.708</td></tr>
+<tr><td>Sentence prosody</td><td class="n">0.772</td><td class="n"><b>0.827</b></td></tr>
+<tr><td>Sentence total</td><td class="n">0.762</td><td class="n">0.796</td></tr>
+</tbody></table></div>
+<p class="cap">Pearson correlation on the speechocean762 test set: 2,500 recordings from 125 Mandarin-speaking learners.</p>
 
-<span class="c"># the full result as JSON, for pipelines</span>
-$ pronunciada check clip.wav <span class="g">"我家有四口人"</span> --lang zh --json</pre>
-<pre id="code-az" hidden><span class="c"># Already parsing Azure Pronunciation Assessment JSON? Keep your parser.</span>
-<span class="k">from</span> pronunciada.compat.azure <span class="k">import</span> to_azure
-payload = to_azure(pronunciada.score(<span class="g">"clip.wav"</span>, <span class="g">"Good morning"</span>, lang=<span class="g">"en"</span>))
+<h3>English: detecting mispronounced phonemes</h3>
+<div class="tbl"><table>
+<thead><tr><th>Corpus</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead>
+<tbody>
+<tr><td>L2-ARCTIC test, speakers of six first languages</td><td class="n"><b>0.712</b></td><td class="n">0.631</td></tr>
+<tr><td>EpaDB test, Spanish-speaking learners</td><td class="n"><b>0.721</b></td><td class="n">0.587</td></tr>
+</tbody></table></div>
+<p class="cap">Area under the ROC curve for separating phonemes the annotators marked as mispronounced from the rest. Neither corpus was used to train or tune Pronunciada.</p>
 
-<span class="c"># or run a local server that answers in the same shape</span>
-$ pronunciada serve --azure-compat --port 8765
+<h3>Mandarin</h3>
+<div class="tbl"><table>
+<thead><tr><th>Measure</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead>
+<tbody>
+<tr><td>Word, any error (AUC)</td><td class="n"><b>0.792</b></td><td class="n">0.704</td></tr>
+<tr><td>Word, tone error only (AUC)</td><td class="n"><b>0.778</b></td><td class="n">0.679</td></tr>
+<tr><td>Word, consonant or vowel error (AUC)</td><td class="n">0.856</td><td class="n">0.822</td></tr>
+<tr><td>Sentence accuracy (Pearson)</td><td class="n"><b>0.634</b></td><td class="n">0.363</td></tr>
+</tbody></table></div>
+<p class="cap">OMPAL test set: 21 French-speaking learners of Taiwan Mandarin, every character marked by teachers.</p>
 
-<span class="c"># The format matches; the numbers are Pronunciada's own, so re-pick your thresholds.</span></pre>
-<pre id="code-mcp" hidden><span class="c"># expose pronunciation scoring as a tool to Claude, Cursor and other MCP clients</span>
-$ pip install <span class="g">"pronunciada[mcp]"</span>
-$ pronunciada mcp
+<h3>All ten languages</h3>
+<p>No public learner corpus with expert annotation was found for the other eight languages. The following is a proxy test on native speech. Each recording is scored against a reference in which one word has been replaced by a word that differs by a single phoneme, and the figure is the area under the ROC curve for separating the replaced word from the unchanged ones.</p>
+<div class="tbl"><table>
+<thead><tr><th>Language</th><th class="n">Pronunciada</th><th class="n">Azure</th></tr></thead>
+<tbody>
+<tr><td>English</td><td class="n"><b>0.981</b></td><td class="n">0.963</td></tr>
+<tr><td>Mandarin</td><td class="n">0.975</td><td class="n">0.966</td></tr>
+<tr><td>Japanese</td><td class="n"><b>0.968</b></td><td class="n">0.919</td></tr>
+<tr><td>Spanish</td><td class="n"><b>0.990</b></td><td class="n">0.942</td></tr>
+<tr><td>French</td><td class="n"><b>0.986</b></td><td class="n">0.937</td></tr>
+<tr><td>German</td><td class="n"><b>0.960</b></td><td class="n">0.887</td></tr>
+<tr><td>Italian</td><td class="n">0.979</td><td class="n">0.970</td></tr>
+<tr><td>Portuguese</td><td class="n"><b>0.963</b></td><td class="n">0.938</td></tr>
+<tr><td>Russian</td><td class="n">0.900</td><td class="n">0.909</td></tr>
+<tr><td>Korean</td><td class="n">0.944</td><td class="n">0.937</td></tr>
+</tbody></table></div>
+<p class="cap">150 FLEURS test recordings per language. This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.</p>
 
-<span class="c"># tool: assess_pronunciation(audio_path, reference_text, language)</span></pre>
-  </div>
-</section>
+<p>The <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a> in the repository lists 84 comparisons with Azure. Pronunciada is ahead in 60 of them (40 significant) and behind in 24 (7 significant). The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings.</p>
+<p>Azure was not tuned on any of this data. Pronunciada's calibration models were fitted on the speechocean762 training set, FLEURS training and validation sets, and the OMPAL development speakers. Every figure on this page is from a held-out split.</p>
 
-<section id="how">
-  <h2>How it works</h2>
-  <p class="sub">No large model was trained for this. It combines an open speech model with careful measurement.</p>
-  <div class="flow">
-    <div class="card"><h3>An open sound recogniser</h3><p><a href="https://github.com/lingjzhu/zipa">ZIPA</a> turns audio into probabilities over the sounds of the world's languages. It never sees the expected text.</p></div>
-    <div class="card"><h3>Evidence for each expected sound</h3><p>The expected text becomes a sequence of sounds. For each one we measure the evidence that it was said, replaced or skipped, without forcing an alignment.</p></div>
-    <div class="card"><h3>Calibrated probabilities</h3><p>Small models trained on expert-scored learner speech turn the evidence into probabilities for sounds, words and sentences.</p></div>
-    <div class="card"><h3>Small specialists</h3><p>Tiny models read the recogniser's internal signals for what its output drops: tones, stress, length, aspiration. Everything trained for this project adds about 10 MB.</p></div>
-  </div>
-</section>
+<h3>Latency</h3>
+<div class="tbl"><table>
+<thead><tr><th>Model</th><th class="n">4 threads</th><th class="n">1 thread</th></tr></thead>
+<tbody>
+<tr><td>fp32, 248 MB</td><td class="n">50 ms</td><td class="n">100 ms</td></tr>
+<tr><td>int8, 67 MB</td><td class="n">40 ms</td><td class="n">65 ms</td></tr>
+</tbody></table></div>
+<p class="cap">Median time to score one recording, over 100 speechocean762 recordings with a mean length of 3.5 s, on an Apple M3 Pro without a GPU.</p>
 
-<section id="limits">
-  <h2>What it does not do yet</h2>
-  <ul class="limits">
-    <li><b>Proof on real learners exists for English and Mandarin only.</b> The other eight languages are tested on native recordings and volunteer-reviewed clips, because no public learner data with expert marks exists for them.</li>
-    <li><b>English sentence intonation is behind Azure</b> (0.77 against 0.83). Closing that gap took speech models too large for a phone.</li>
-    <li><b>Some contrasts are still missed:</b> Italian double consonants, Portuguese nasal vowels, and Japanese pitch accent, which is not scored at all.</li>
-    <li><b>It needs the expected text.</b> For free speech, pass in a transcript from your own speech recogniser.</li>
-    <li><b>It is a Python package today.</b> It runs on laptops and servers; iOS, Android and browser builds are not written yet.</li>
-  </ul>
-</section>
+<h2>Method</h2>
+<p>No large model was trained for this project. The acoustic model is <a href="https://github.com/lingjzhu/zipa">ZIPA</a> (Zhu et al., ACL 2025), a phone recognizer trained on speech from many languages, used through ONNX Runtime.</p>
+<ol>
+<li>The reference text is converted to a phoneme sequence with per-language dictionaries and rules, including Mandarin tone sandhi and French liaison.</li>
+<li>ZIPA produces frame-level posteriors over IPA phones from the audio alone. It does not see the reference text. A small adapter per language corrects its systematic confusions.</li>
+<li>For each expected phoneme, the scorer compares the likelihood that it was produced with the likelihood of a substitution or a deletion. Each likelihood is a CTC forward score summed over all alignments, so the result does not depend on one forced alignment.</li>
+<li>Gradient-boosted calibration models, fitted on speech that experts scored, map this evidence to acceptance probabilities for phonemes, words and sentences. A strictness setting between 0 and 1 moves all of them together.</li>
+<li>Tone, stress, length and some consonant contrasts cannot be read from the phone posteriors. Separate small classifiers read ZIPA's intermediate layers for these.</li>
+</ol>
+<p>The models trained for this project add about 10 MB to the package. The <a href="https://github.com/moglearn/pronunciada/blob/main/docs/DESIGN.md">design document</a> has the details.</p>
 
-<section id="story">
-  <h2>Why this exists</h2>
-  <p class="sub" style="max-width:74ch">Almost every language app that grades pronunciation pays a cloud service for each recording and sends its learners' voices there. Pronunciada started at <a href="https://moglearn.com">Moglearn</a>, a language-learning app, as an attempt to do the same job on the learner's own device. The idea was to take an open speech model, add classical scoring methods and each language's sound rules, and improve it through a long series of measured rounds against the commercial service, with an AI coding agent doing the implementation. Every round was selected on development data and tested once on held-out data, and the rounds that failed are written up next to the ones that worked.</p>
-</section>
+<h2>Limitations</h2>
+<ul>
+<li>Accuracy on learner speech has been measured for English and Mandarin only.</li>
+<li>English sentence prosody correlates less well with expert scores than Azure's (0.772 against 0.827).</li>
+<li>At default strictness, about 3% of a native speaker's words score below 0.6 in English, Japanese, Spanish and Portuguese, against about 2% for Azure.</li>
+<li>In Mandarin, a low tone probability on one syllable does not always lower the word probability, as in the sample above. Applications that grade tones should read the per-syllable tone probabilities.</li>
+<li>Coaching tips were tuned on English and Mandarin learners. On native FLEURS recordings, between 9% and 43% of sentences, depending on the language, still receive at least one pronunciation tip.</li>
+<li>Italian geminate consonants and Portuguese nasal vowels are detected poorly. Japanese pitch accent is not scored.</li>
+<li>The reference text is required. There are no iOS, Android or WebAssembly builds.</li>
+</ul>
+
+<h2>Usage</h2>
+<pre>pip install pronunciada
+pronunciada check clip.wav "The ball is in their court now" --lang en</pre>
+<p class="cap">The model is downloaded on first use. Mandarin and Japanese need the extras <code>pronunciada[zh]</code> and <code>pronunciada[ja]</code>.</p>
+<pre>import pronunciada
+
+result = pronunciada.score("clip.wav", "The ball is in their court now", lang="en")
+
+result.prob                      # sentence, 0 to 1
+for word in result.words:
+    word.text, word.prob         # word
+    for phone in word.phones:
+        phone.ipa, phone.prob    # phoneme
+result.coaching()                # detected errors, most severe first</pre>
+<p class="cap">The library also has a local HTTP server, output in Azure's JSON layout, and an MCP server. These are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
 
 <footer>
-  <div class="row">
-    <span>Pronunciada is open source under Apache-2.0. Built by <a href="http://www.linkedin.com/in/bill-s-214769325">Bill Sun</a> at <a href="https://moglearn.com">Moglearn</a>.</span>
-    <span><a href="https://github.com/moglearn/pronunciada">GitHub</a> · <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">Scoreboard</a> · <a href="https://github.com/moglearn/pronunciada/blob/main/docs/COACHING.md">Coaching docs</a> · <a href="https://github.com/moglearn/pronunciada/blob/main/docs/LICENSING.md">Licences</a></span>
-  </div>
-  <p style="margin:12px 0 0">Speech model: ZIPA (CC BY 4.0). Sample recordings: speechocean762, OMPAL and FLEURS (CC BY 4.0). "Azure" is a trademark of Microsoft; this project is not affiliated with or endorsed by Microsoft.</p>
+<p>Code is licensed under Apache-2.0. ZIPA and the sample recordings (speechocean762, OMPAL, FLEURS) are licensed under CC BY 4.0. Azure is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.</p>
 </footer>
-</div>
+</main>
 
 <script>
 (function(){
-  var SAMPLES=[
-    ["en-learner-1","English learner"],["en-learner-2","English learner 2"],["en-clean","English, clean"],
-    ["zh-learner-1","Mandarin learner"],["ja-native","Japanese"],["es-native","Spanish"],["ko-native","Korean"],["fr-native","French"],["de-native","German"]
-  ];
-  var tabs=document.getElementById('tabs'), demo=document.getElementById('demo'), cache={};
-  function cls(p){return p==null?'good':(p>=0.8?'good':(p>=0.5?'warn':'bad'));}
-  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function pct(p){return p==null?'–':(Math.round(p*100)/100).toFixed(2);}
+  var GROUPS={
+    'g-en':['en-learner-1','en-learner-2','en-clean'],
+    'g-zh':['zh-learner-1'],
+    'g-native':['es-native','ja-native','ko-native']
+  };
   var CJK={zh:1,ja:1};
   var ARPA={AA:'ɑ',AE:'æ',AH:'ʌ',AO:'ɔ',AW:'aʊ',AY:'aɪ',B:'b',CH:'tʃ',D:'d',DH:'ð',EH:'ɛ',ER:'ɝ',EY:'eɪ',F:'f',G:'g',HH:'h',IH:'ɪ',IY:'i',JH:'dʒ',K:'k',L:'l',M:'m',N:'n',NG:'ŋ',OW:'oʊ',OY:'ɔɪ',P:'p',R:'ɹ',S:'s',SH:'ʃ',T:'t',TH:'θ',UH:'ʊ',UW:'u',V:'v',W:'w',Y:'j',Z:'z',ZH:'ʒ'};
-  function arpa(x){if(x==null)return null;var k=String(x).replace(/[0-9*]/g,'').toUpperCase();if(k==='<UNK>'||k==='UNK')return 'an unclear sound';if(k==='<DEL>'||k==='DEL')return 'nothing (dropped)';return ARPA[k]?('/'+ARPA[k]+'/'):String(x);}
-  function soundsHtml(w,lang){
-    var h='';
-    (w.phones||[]).forEach(function(s){
-      var extra=(s.heard&&s.heard!==s.ipa)?('<small>heard '+esc(s.heard)+'</small>'):(s.heard===''?'<small>missing</small>':('<small>'+pct(s.prob)+'</small>'));
-      h+='<div class="s '+cls(s.prob)+'"><i>'+esc(s.ipa)+'</i>'+extra+'</div>';
+  var current=null;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function f2(p){return p==null?'':p.toFixed(2);}
+  function ipa(x){var k=String(x).replace(/[0-9*]/g,'').toUpperCase();return ARPA[k]?'/'+ARPA[k]+'/':null;}
+  function annotation(m){
+    var ex=m.experts; if(!ex) return '';
+    var s=ex.sentence||{}, rows='', lang=m.lang;
+    if(lang==='en') rows+='<dt>Annotators, sentence</dt><dd>accuracy '+s.accuracy+', fluency '+s.fluency+', prosody '+s.prosodic+' (of 10)</dd>';
+    else rows+='<dt>Teachers, sentence</dt><dd>accuracy '+s.accuracy+', fluency '+s.fluency+', prosody '+s.prosody+' (of 5)</dd>';
+    var marks=(ex.marked||[]).map(function(k){
+      var w=CJK[lang]?k.word:String(k.word).toLowerCase();
+      if(k.expected==='tone') return esc(w)+': wrong tone';
+      var e=ipa(k.expected), h=ipa(k.said);
+      return esc(w)+': '+esc(e||k.expected)+(h?' produced as '+esc(h):' not a recognizable English phoneme');
     });
-    var tones=(w.syllables||[]).filter(function(y){return y.tone_expected!=null;});
-    if(tones.length){
-      h+='<div class="s" style="min-width:auto"><i style="font-size:14px">tone</i><small>'+tones.map(function(y){
-        return 'expected '+y.tone_expected+(y.tone_heard!=null&&y.tone_heard!==y.tone_expected?', heard '+y.tone_heard:'')+' ('+pct(y.tone_prob)+')';}).join('; ')+'</small></div>';
+    rows+='<dt>'+(lang==='en'?'Annotators':'Teachers')+', marked</dt><dd>'+(marks.length?marks.join('; '):'nothing marked')+'</dd>';
+    return rows;
+  }
+  function render(el,key,d){
+    var r=d.result, m=d.meta, lang=m.lang;
+    var h='<button class="play" type="button" aria-label="Play recording: '+esc(m.text)+'"><span class="ic" aria-hidden="true">&#9654;</span><span class="txt" lang="'+lang+'">'+esc(m.text)+'</span><span class="dur">'+(r.audio&&r.audio.duration_s?r.audio.duration_s.toFixed(1)+' s':'')+'</span><span class="bar"></span></button>';
+    var tones='';
+    h+='<div class="gloss" lang="'+lang+'">';
+    r.words.forEach(function(w){h+='<span'+(w.prob!=null&&w.prob<0.5?' class="low"':'')+'><b>'+esc(w.text)+'</b><i>'+f2(w.prob)+'</i></span>';});
+    h+='</div><div class="detail"><dl>';
+    h+='<dt>Sentence</dt><dd>'+f2(r.prob)+(r.fluency!=null?', fluency '+f2(r.fluency):'')+'</dd>';
+    r.words.forEach(function(w){
+      if(w.prob==null||w.prob>=0.5) return;
+      var ph=(w.phones||[]).map(function(p){
+        var t=esc(p.ipa)+' '+f2(p.prob)+(p.heard&&p.heard!==p.ipa?' (recognized as '+esc(p.heard)+')':'');
+        return p.prob!=null&&p.prob<0.5?'<span class="lowp">'+t+'</span>':t;
+      }).join(', ');
+      h+='<dt>'+esc(w.text)+'</dt><dd class="ph">'+ph+'</dd>';
+    });
+    if(lang==='zh'){
+      r.words.forEach(function(w){(w.syllables||[]).forEach(function(y){
+        if(y.tone_expected==null) return;
+        tones+='<tr'+(y.tone_prob!=null&&y.tone_prob<0.5?' class="lowp"':'')+'><td>'+esc(y.text)+'</td><td class="n">'+y.tone_expected+'</td><td class="n">'+(y.tone_heard==null?'':y.tone_heard)+'</td><td class="n">'+f2(y.tone_prob)+'</td></tr>';
+      });});
     }
-    if(w.stress_prob!=null){h+='<div class="s '+cls(w.stress_prob)+'" style="min-width:auto"><i style="font-size:14px">stress</i><small>'+pct(w.stress_prob)+'</small></div>';}
-    return h||'<span class="meta">No sound detail for this word.</span>';
+    var tips=(r.tips||[]).map(function(t){return t.text;}).filter(Boolean);
+    if(tips.length) h+='<dt>Tips</dt><dd>'+tips.map(esc).join('<br>')+'</dd>';
+    h+=annotation(m)+'</dl></div>';
+    if(tones) h+='<table class="tones"><thead><tr><th>Syllable</th><th class="n">Expected tone</th><th class="n">Recognized tone</th><th class="n">Tone probability</th></tr></thead><tbody>'+tones+'</tbody></table>';
+    el.innerHTML=h;
+    var btn=el.querySelector('.play'), ic=btn.querySelector('.ic'), bar=btn.querySelector('.bar'), audio=null;
+    function reset(){ic.innerHTML='&#9654;';bar.style.width='0';}
+    btn.addEventListener('click',function(){
+      if(!audio){
+        audio=new Audio('samples/'+key+'.mp3');
+        audio.addEventListener('timeupdate',function(){if(audio.duration) bar.style.width=(100*audio.currentTime/audio.duration)+'%';});
+        audio.addEventListener('ended',reset);
+        audio.addEventListener('pause',function(){ic.innerHTML='&#9654;';});
+        audio.addEventListener('play',function(){ic.innerHTML='&#10073;&#10073;';});
+      }
+      if(audio.paused){ if(current&&current!==audio) current.pause(); current=audio; audio.play(); }
+      else audio.pause();
+    });
   }
-  function render(key){
-    var d=cache[key], r=d.result, m=d.meta, lang=m.lang, sep=CJK[lang]?'':' ';
-    var sc=r.scores||{};
-    var h='<div class="demo-top"><audio controls preload="none" src="samples/'+key+'.mp3"></audio><span class="meta">'+esc(m.speaker)+' · '+esc(m.source)+'</span></div>';
-    h+='<div class="verdict"><span class="chip">sentence <b>'+pct(r.prob)+'</b></span>';
-    if(r.fluency!=null) h+='<span class="chip">fluency <b>'+pct(r.fluency)+'</b></span>';
-    if(r.completeness!=null) h+='<span class="chip">completeness <b>'+pct(r.completeness)+'</b></span>';
-    h+='</div><p class="sentence" lang="'+lang+'">';
-    r.words.forEach(function(w,i){h+='<span class="w '+cls(w.prob)+'" data-i="'+i+'" tabindex="0" role="button" aria-label="'+esc(w.text)+', probability '+pct(w.prob)+'">'+esc(CJK[lang]?w.text:w.text.toLowerCase())+'</span>'+sep;});
-    h+='</p><p class="hint">Click a word to see its sounds.</p><div class="sounds" id="sounds"></div><div class="cols">';
-    var tips=(r.tips||[]).map(function(t){return t.text||t.tip||'';}).filter(Boolean);
-    h+='<div class="box"><h4>Coaching tips</h4>'+(tips.length?('<ul>'+tips.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'):'<p>Nothing to correct at the default setting.</p>')+'</div>';
-    var ex=m.experts, eh='';
-    if(ex){
-      var s=ex.sentence||{}, parts=[];
-      if(s.accuracy!=null) parts.push('accuracy '+s.accuracy+(s.total!=null?' / 10':' / 5'));
-      if(s.fluency!=null) parts.push('fluency '+s.fluency);
-      eh='<p>'+esc(parts.join(', '))+'</p>';
-      if(ex.marked&&ex.marked.length){eh+='<ul>'+ex.marked.map(function(k){
-        var t=CJK[lang]?k.word:String(k.word).toLowerCase();
-        return '<li>'+esc(t)+(k.expected&&k.said&&k.expected!=='tone'?': expected '+esc(arpa(k.expected))+', heard '+esc(arpa(k.said)):(k.said?': '+esc(k.said):''))+'</li>';}).join('')+'</ul>';}
-      else eh+='<p>No sounds marked wrong.</p>';
-    } else eh='<p>Native speaker; no expert marks for this clip.</p>';
-    h+='<div class="box"><h4>What expert raters marked</h4>'+eh+'</div></div>';
-    demo.innerHTML=h;
-    var words=demo.querySelectorAll('.w'), box=document.getElementById('sounds');
-    function pick(i){words.forEach(function(e){e.classList.remove('sel');});words[i].classList.add('sel');box.innerHTML=soundsHtml(r.words[i],lang);}
-    words.forEach(function(e){var i=+e.getAttribute('data-i');e.addEventListener('click',function(){pick(i);});e.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();pick(i);}});});
-    var worst=0;r.words.forEach(function(w,i){if((w.prob==null?1:w.prob)<(r.words[worst].prob==null?1:r.words[worst].prob))worst=i;});
-    pick(worst);
-  }
-  function select(key,btn){
-    tabs.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected','false');});
-    btn.setAttribute('aria-selected','true');
-    if(cache[key]) return render(key);
-    fetch('samples/'+key+'.json').then(function(x){if(!x.ok)throw 0;return x.json();}).then(function(j){cache[key]=j;render(key);})
-      .catch(function(){demo.innerHTML='<p class="meta">This sample could not be loaded.</p>';});
-  }
-  SAMPLES.forEach(function(s,i){
-    var b=document.createElement('button');b.className='tab';b.type='button';b.setAttribute('role','tab');b.textContent=s[1];
-    b.addEventListener('click',function(){select(s[0],b);});tabs.appendChild(b);if(i===0)select(s[0],b);
-  });
-  document.querySelectorAll('.codetabs .tab').forEach(function(b){b.addEventListener('click',function(){
-    document.querySelectorAll('.codetabs .tab').forEach(function(x){x.setAttribute('aria-selected','false');});b.setAttribute('aria-selected','true');
-    ['py','cli','az','mcp'].forEach(function(k){document.getElementById('code-'+k).hidden=(k!==b.getAttribute('data-code'));});
-  });});
-  var copy=document.getElementById('copy');
-  copy.addEventListener('click',function(){
-    var done=function(){copy.textContent='copied';setTimeout(function(){copy.textContent='copy';},1400);};
-    if(navigator.clipboard){navigator.clipboard.writeText('pip install pronunciada').then(done,function(){});}
+  Object.keys(GROUPS).forEach(function(g){
+    var host=document.getElementById(g);
+    GROUPS[g].forEach(function(key){
+      var el=document.createElement('div'); el.className='sample'; host.appendChild(el);
+      fetch('samples/'+key+'.json').then(function(x){if(!x.ok) throw 0; return x.json();})
+        .then(function(d){render(el,key,d);})
+        .catch(function(){el.textContent='Sample '+key+' could not be loaded.';});
+    });
   });
 })();
 </script>
