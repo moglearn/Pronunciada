@@ -1,6 +1,13 @@
 """Universal sound model (feature set A) on a wider training mix, chosen by leave-one-corpus-out.
 
     python -m bench.calib.train_wide
+    python -m bench.calib.train_wide --clean    # licence-clean re-selection (2026-11-17)
+
+--clean: the same selection WITHOUT the non-commercial corpora (L2-ARCTIC and EpaDB are neither
+loaded nor used for evaluation). Candidates so762 and so762+fleurs; the "mean real-corpus strict
+AUC" is then the speechocean762 strict AUC alone; same 0.002 replacement margin. If "so762" wins,
+the shipped sound_U.npz (trained on speechocean762 only) stays as it is and nothing is written
+except results/tables/calib_wide_clean.json.
 
 Candidates for the two probability heads of A (the regression head is always speechocean762):
   so762 : speechocean762 train only (human scores; len = score >= 1.0, str = score >= 1.8)
@@ -36,7 +43,7 @@ FLEURS_UTTS_PER_LANG = 60          # x 5 references (clean + 4 kinds) ~ 2e4 rows
 SYN_KINDS = ("phone_sub_near", "phone_sub_far", "phone_ins", "word_swap")
 
 
-def load_corpora():
+def load_corpora(clean=False):
     so = load_table("speechocean762", "train")
     so_t = table_columns(so)
     y = np.asarray(so_t["phone_score"], dtype=np.float64)
@@ -45,7 +52,7 @@ def load_corpora():
     so_t["corpus"] = np.array(["so762"] * len(y))
     so_t["grp"] = so.speaker.astype(str).values
     parts = {"so762": so_t}
-    for ds in ("l2arctic", "epadb"):
+    for ds in (() if clean else ("l2arctic", "epadb")):
         d = load_table(ds, "train")
         t = table_columns(d)
         e = np.asarray(t["label_err"], dtype=np.float64)
@@ -93,26 +100,38 @@ CANDIDATES = {"so762": ("so762",), "real": ("so762", "l2arctic", "epadb"),
               "wide": ("so762", "l2arctic", "epadb", "fleurs")}
 
 
+CLEAN_CANDIDATES = {"so762": ("so762",), "so762+fleurs": ("so762", "fleurs")}
+
+
 def main():
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--clean", action="store_true")
+    clean = ap.parse_args().clean
+    global CANDIDATES
+    if clean:
+        CANDIDATES = CLEAN_CANDIDATES
+    corpora = ("so762", "fleurs") if clean else ("so762", "l2arctic", "epadb", "fleurs")
     spec = F.SOUND_SETS["A"]
     A = LevelModel(calib_cache() / "sound_A.npz")       # vocab of the so762 model
     vocab = A.vocab
     params = load_json("calib_sound.json")["params"]["str"]     # probability-head params
-    parts = load_corpora()
+    parts = load_corpora(clean)
     keys = spec["num"] + spec["cat"] + ["y_len", "y_str", "corpus", "grp", "_group", "utt",
                                         "phone_index"]
     from bench.calib.common import concat
 
-    T = concat([parts[k] for k in ("so762", "l2arctic", "epadb", "fleurs")], keys)
+    T = concat([parts[k] for k in corpora], keys)
     T["corpus"] = np.asarray(T["corpus"])
     T["grp"] = np.asarray(T["grp"])
     X = F.matrix(T, spec["num"], spec["cat"], vocab, A.encoding)
     cm = F.categorical_mask(spec["num"], spec["cat"], vocab, A.encoding)
     corp = T["corpus"]
-    log("rows", {c: int((corp == c).sum()) for c in CANDIDATES["wide"]})
-    out = {"n_rows": {c: int((corp == c).sum()) for c in CANDIDATES["wide"]},
-           "n_labelled_str": {c: int(np.isfinite(T["y_str"][corp == c]).sum()) for c in CANDIDATES["wide"]},
-           "err_rate_str": {c: float(1 - np.nanmean(T["y_str"][corp == c])) for c in CANDIDATES["wide"]},
+    log("rows", {c: int((corp == c).sum()) for c in corpora})
+    out = {"n_rows": {c: int((corp == c).sum()) for c in corpora},
+           "n_labelled_str": {c: int(np.isfinite(T["y_str"][corp == c]).sum()) for c in corpora},
+           "err_rate_str": {c: float(1 - np.nanmean(T["y_str"][corp == c])) for c in corpora},
            "syn_share": SYN_SHARE, "fleurs_utts_per_lang": FLEURS_UTTS_PER_LANG, "eval": {}}
     so = np.flatnonzero(corp == "so762")
     so_folds = speaker_folds(T["grp"][so])
@@ -133,7 +152,7 @@ def main():
     for name, cands in CANDIDATES.items():
         res = {}
         # --- LOCO on l2arctic / epadb (strict head)
-        for tgt in ("l2arctic", "epadb"):
+        for tgt in (() if clean else ("l2arctic", "epadb")):
             m = train_rows(cands, exclude=tgt) & np.isfinite(T["y_str"])
             w = weights(sub(T, np.flatnonzero(m)), "str")
             mdl = fit("prob", params, X[m], T["y_str"][m], cm, w)
@@ -179,20 +198,26 @@ def main():
         yf = T["y_str"][fl]
         okf = np.isfinite(yf)
         res["fleurs_val_controlled"] = head_metrics("prob", 1 - yf[okf], 1 / (1 + np.exp(zf[okf])))
-        res["mean_real_strict_auc"] = float(np.mean([res["l2arctic"]["auc"], res["epadb"]["auc"],
-                                                     res["so762_str"]["auc_err"]]))
+        res["mean_real_strict_auc"] = float(np.mean(([] if clean else [res["l2arctic"]["auc"], res["epadb"]["auc"]])
+                                                    + [res["so762_str"]["auc_err"]]))
         out["eval"][name] = res
         log(name, "fleurs auc", round(res["fleurs_val_controlled"]["auc"], 4), "mean real",
             round(res["mean_real_strict_auc"], 4))
-        save_json("calib_wide.json", out)
+        save_json("calib_wide_clean.json" if clean else "calib_wide.json", out)
     # --- choice
-    order = ["so762", "real", "wide"]
+    order = list(CANDIDATES)
     chosen = order[0]
     for c in order[1:]:
         if out["eval"][c]["mean_real_strict_auc"] > out["eval"][chosen]["mean_real_strict_auc"] + 0.002:
             chosen = c
     out["chosen"] = chosen
     log("chosen", chosen)
+    if clean:
+        save_json("calib_wide_clean.json", out)
+        if chosen == "so762":
+            log("so762 wins: shipped sound_U.npz (trained_on so762) is kept unchanged")
+            return
+        raise SystemExit(f"clean selection chose {chosen}: export it with the round-2 recipe and cascade")
     # --- final models: reg head of A + the candidate's len / str heads, calibrated on its own
     # speechocean762 OOF log-odds. Chosen -> pronunciada/data/calib/sound_U.npz (shipped); the
     # other mixes -> $PRONUNCIADA_CACHE/calib/sound_R.npz (real) / sound_W.npz (wide), benchmark only.

@@ -44,11 +44,13 @@
  },
  "sentence_model": {
   "de": "sentence_r4",
+  "en": "sentence_r4",
   "es": "sentence_r4",
   "fr": "sentence_r4",
   "it": "sentence_r4",
   "ja": "sentence_r4",
   "ko": "sentence_r4",
+  "pt": "sentence_r4",
   "ru": "sentence_r4",
   "zh": "sentence_r4"
  },

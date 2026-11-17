@@ -23,6 +23,11 @@ ru_stress_extra.tsv.gz   stress marks for 14 040 word forms, predicted     Apach
 ru_vowels.json           Russian vowel-reduction targets measured on       Apache-2.0 (project);
                          native FLEURS-ru audio with the acoustic model    data: FLEURS CC BY 4.0
 
+Also treated as CC BY-SA 4.0 (owner decision, conservative): the output adapters
+pronunciada/data/adapters/it.npz, pt.npz and ru.npz, which were trained (CTC, FLEURS train audio)
+towards references produced from the it / pt / ru lexicons above, and are therefore handled as
+adaptations of the share-alike data. Same attribution; same redistribution terms.
+
 (*) Share-alike. Attribution: "Wiktionary contributors" (https://en.wiktionary.org), extracted
 with WikiPron (Lee et al., LREC 2020, https://github.com/CUNY-CL/wikipron). Wiktionary text is
 available under CC BY-SA 4.0 (older revisions CC BY-SA 3.0); licence text:

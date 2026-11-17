@@ -1,181 +1,254 @@
-# Pronunciada
+<p align="center">
+  <img src="docs/assets/wordmark.svg" alt="Pronunciada" width="420">
+</p>
 
-On-device pronunciation checking for ten languages. Give it a recording and the text the speaker
-was meant to say; it returns how likely each **sound**, each **word** and the whole **sentence**
-was pronounced acceptably, plus coaching feedback an app can show. It runs on a laptop CPU with
-numpy and ONNX Runtime; no audio leaves the device.
+<p align="center">
+  <b>Pronunciation scoring that runs on the device.</b><br>
+  Ten languages. Every sound, word and sentence, with tones, stress and coaching tips. Open source.
+</p>
 
-Languages: English, Mandarin Chinese (Simplified and Traditional text), Japanese, Spanish (Latin
-American), French, German, Italian, Brazilian Portuguese, Russian, Korean.
+<p align="center">
+  <a href="https://github.com/moglearn/pronunciada/actions/workflows/ci.yml"><img src="https://github.com/moglearn/pronunciada/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://pypi.org/project/pronunciada/"><img src="https://img.shields.io/pypi/v/pronunciada" alt="PyPI"></a>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python 3.10+">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/code-Apache--2.0-green" alt="Apache-2.0"></a>
+  <a href="results/SCOREBOARD.md"><img src="https://img.shields.io/badge/results-scoreboard-black" alt="Scoreboard"></a>
+</p>
 
-**Results against Microsoft Azure Pronunciation Assessment: [results/SCOREBOARD.md](results/SCOREBOARD.md)**
-(one page, generated from the benchmark tables, with confidence intervals, p-values and a tally).
+<p align="center">
+  <img src="docs/assets/terminal.png" alt="pronunciada check clip.wav &quot;The ball is in their court now&quot; prints the sentence with each word coloured by its score, the weak sounds in each flagged word, and three coaching tips" width="860">
+</p>
 
-## What it checks
+Pronunciada takes a recording and the sentence the speaker was reading, and returns how likely a
+teacher would accept each **sound**, each **word** and the whole **sentence**. It also says what
+went wrong in terms an app can show a learner: the tone that was heard, the stress that was
+missed, the vowel that was too short, the sound that came out as another one.
 
-- **Sounds, words, sentences**: a calibrated 0–1 probability at each level, plus 0–1 sentence
-  scores for accuracy, fluency, intonation ("prosodic") and overall, and a 0–10 word score.
-  One `strictness` knob (0 = "understandable", 1 = "native-like", default 0.5) moves every
-  probability; `rescore()` re-grades without re-running the model.
-- **Mandarin tones** per syllable (tone sandhi applied, so correct sandhi is never punished).
-- **Word stress** in English, German, Spanish, Italian, Portuguese and Russian.
-- **Japanese vowel length and っ** (long / short vowels, doubled consonants).
-- **Contrast evidence** for sound pairs the base model hears poorly: Korean aspiration and lax /
-  tense stops, Mandarin aspiration, Russian soft / hard consonants (attribute heads), and English
-  θ / ð, German and Japanese voicing (contrast caps). In Mandarin and Japanese the evidence also
-  lowers the word probability.
-- **Words said at all**: skipped words get `omitted = True`.
-- **Coaching** (`res.coaching()`): the speaker's clearest errors, most important first, each
-  with what was expected, what it sounded like (named only when that is reliable), which
-  articulatory features differ (also as feature-level claims when the replacement cannot be
-  named, e.g. "no voice", "lips not rounded"), and how sure it is; reading miscues
-  (`missing_word`, `mispronounced_word`, `extra_speech`) and delivery flags (`long_pause`,
-  `pause_mid_phrase`, `rushed_punctuation`, `fast`; `slow`, `flat_pitch` on request), three
-  sensitivities, and default English tips with stable `tip_key`s (`pronunciada.tips`). Schema:
-  [docs/COACHING.md](docs/COACHING.md).
-- **Audio-quality gate** (`res.audio`): `clipped`, `too_noisy`, `too_quiet`, `too_short`,
-  `mostly_silence`, and `retry_recommended`.
-
-## Install
+It runs on a laptop CPU in about 50 ms for a short sentence, with numpy and ONNX Runtime. No
+audio leaves the machine and there is no fee per request.
 
 ```bash
-pip install .                 # core: English and the European languages, Korean
-pip install ".[zh]"           # + Mandarin text front-end (pypinyin, jieba, OpenCC)
-pip install ".[ja]"           # + Japanese text front-end (pyopenjtalk-plus, ~300 MB installed)
-pip install ".[numbers]"      # + digits read out as words (num2words, LGPL)
+pip install pronunciada
+pronunciada check clip.wav "The ball is in their court now" --lang en
 ```
 
-Runtime dependencies are numpy, scipy, onnxruntime, kaldi-native-fbank and soundfile; no torch.
-The acoustic model ([anyspeech/zipa-small-crctc-500k](https://huggingface.co/anyspeech/zipa-small-crctc-500k),
-64 M parameters, CC BY 4.0) is downloaded on first use into `~/.cache/pronunciada`
-(`PRONUNCIADA_CACHE` overrides): a 248 MB download (67 MB with `precision="int8"`); a derived
-copy that exposes internal layers (`model.emb.onnx`, 260 MB) is written next to it, so the cache
-takes about 0.5 GB. A clean install with the Mandarin extra is about 240 MB. Everything this
-project trained ships in the package (about 10 MB) with the pronunciation dictionaries (about
-10 MB).
+## How it compares with Azure
 
-## Usage
+Microsoft Azure Pronunciation Assessment is the service most language apps call. Both systems
+were given the same held-out recordings and prompts. Higher is better in every row.
+
+| Test | What it measures | Pronunciada | Azure |
+|---|---|---|---|
+| English learners, sounds | agreement with expert scores for each sound | **0.69** | 0.54 |
+| English learners, words | agreement with expert scores for each word | 0.61 | 0.59 |
+| English learners, sentence accuracy | agreement with expert sentence scores | **0.75** | 0.67 |
+| English learners, fluency | agreement with expert fluency scores | 0.78 | 0.71 |
+| English learners, intonation | agreement with expert prosody scores | 0.77 | **0.83** |
+| English: which sound was wrong | flagged sounds that experts also marked, at equal coverage | **66%** | 44% |
+| English learners never seen in training | finding the sounds experts marked wrong (L2-ARCTIC, six native languages) | **0.71** | 0.63 |
+| Mandarin learners, wrong words | finding the words teachers marked wrong | **0.79** | 0.70 |
+| Mandarin learners, tones | finding the tone mistakes teachers marked | **0.78** | 0.68 |
+
+Bold marks a statistically significant lead. Across all 84 comparisons we ran, Pronunciada is
+ahead in 60 (40 significantly) and behind in 24 (7 significantly). The full table, with
+confidence intervals, the cases where Azure wins, and the commands that regenerate every number,
+is in **[results/SCOREBOARD.md](results/SCOREBOARD.md)**.
+
+Two things to know before quoting these:
+
+- Expert-marked learner recordings are public only for English and Mandarin. For the other eight
+  languages the comparison uses native recordings with one word of the prompt changed, and
+  recordings that volunteer reviewers accepted or rejected.
+- Azure was not tuned on any of this data. Parts of Pronunciada were tuned on the training
+  halves of the same datasets; every number here is from the held-out half. L2-ARCTIC and EpaDB
+  were used for measurement only, so nothing shipped has seen them.
+
+## What you get
+
+| | Sounds, words, sentences | Tones | Word stress | Length | Hard contrasts | Checked on learners |
+|---|:-:|:-:|:-:|:-:|---|:-:|
+| English | ✓ | | ✓ | | th-sounds | ✓ |
+| Mandarin (简体 / 繁體) | ✓ | ✓ | | | aspiration | ✓ |
+| Japanese | ✓ | | | ✓ | voicing | |
+| Spanish | ✓ | | ✓ | | | |
+| French | ✓ | | | | | |
+| German | ✓ | | ✓ | | voicing | |
+| Italian | ✓ | | ✓ | | | |
+| Portuguese | ✓ | | ✓ | | | |
+| Russian | ✓ | | ✓ | | soft and hard consonants | |
+| Korean | ✓ | | | | aspiration, tense consonants | |
+
+- **Probabilities, not raw scores.** Every result is a calibrated probability between 0 and 1,
+  and one `strictness` setting moves all of them from "understandable" to "native-like".
+- **Coaching output.** For each flagged sound: what was expected, what it sounded like when that
+  can be named reliably, which mouth feature differed (voicing, lip rounding, tongue position),
+  and a short tip with a stable key so your app can reword or translate it.
+- **Reading slips.** Skipped words, extra speech, long pauses and rushing through punctuation.
+- **Recording check.** A warning when the audio is clipped, too noisy, too quiet or mostly
+  silence, so a bad microphone is not scored as bad pronunciation.
+
+## Use it
+
+### Python
 
 ```python
 import pronunciada
 
-scorer = pronunciada.Scorer("es")                    # loads the model once
-res = scorer.score("clip.wav", "Se recomienda a los viajeros que se informen.")
+result = pronunciada.score("clip.wav", "The ball is in their court now", lang="en")
 
-res.prob, res.scores                                 # sentence probability; accuracy / fluency / prosodic / total
-for w in res.words:
-    print(w.text, round(w.prob, 2), w.sounds_prob, w.stress_prob, w.present_prob, w.omitted)
-    for p in w.phones:
-        print("   ", p.ipa, round(p.prob, 2), p.heard)   # each sound, and what it sounded like
+result.prob                               # 0.55, probability the sentence would be accepted
+for word in result.words:
+    print(word.text, round(word.prob, 2)) # COURT 0.22
+    for sound in word.phones:
+        print("  ", sound.ipa, round(sound.prob, 2), sound.heard)
 
-strict = scorer.rescore(res, strictness=0.9)         # re-grade without re-running the model
+for item in result.coaching():            # most important first
+    print(item["kind"], item["word"], item["expected_ipa"], item["heard_ipa"], item["diff_keys"])
 ```
 
-```python
-from pronunciada.tips import tips
+For repeated calls keep a scorer: `scorer = pronunciada.Scorer("zh")`, then `scorer.score(...)`.
+`scorer.rescore(result, strictness=0.9)` re-grades without running the model again.
+The coaching schema is documented in [docs/COACHING.md](docs/COACHING.md).
 
-res = pronunciada.Scorer("zh").score("clip.wav", "我们明天去北京")
-items = res.coaching(sensitivity="balanced")          # "careful": fewer, surer; "eager": more
-for t in tips(items, max_tips=3, result=res):
-    print(t["tip_key"], t["text"])
-print(res.audio["issues"], res.audio["retry_recommended"])
-```
+### Command line
 
 ```bash
-python -m pronunciada score clip.wav "The quick brown fox" --lang en --coach --sensitivity balanced
-python -m pronunciada score clip.wav "The quick brown fox" --lang en --json      # machine-readable
+pronunciada check clip.wav "我家有四口人" --lang zh          # the report shown above
+pronunciada check clip.wav "Buenos días" --lang es --json   # full result as JSON
+pronunciada langs                                           # languages and what each needs
 ```
 
-## Results in short
+### Already parsing Azure's JSON?
 
-All numbers are held-out and come from one frozen run of the current code (2026-11-17); Azure
-was called on the same recordings and prompts (cached responses, November 2026). Of **84
-comparisons with Azure**, Pronunciada is ahead in 59 (39 significant), behind in 25 (4
-significant), each by its own table's paired test ([tally](results/SCOREBOARD.md#tally-against-azure)).
+```python
+from pronunciada.compat.azure import to_azure
 
-- **English learners (speechocean762 test)**: correlation with expert raters 0.685 vs 0.538 for
-  sounds and 0.761 vs 0.673 for sentence accuracy (both significant); words 0.609 vs 0.589 and
-  fluency 0.792 vs 0.708 (not significant); intonation 0.782 vs 0.827 and overall 0.773 vs 0.796
-  behind (not significant).
-- **Real English learner errors**: AUC 0.712 vs 0.631 (L2-ARCTIC) and 0.721 vs 0.587 (EpaDB).
-  Coaching: at "balanced" 66 % of flagged sounds are expert-marked errors at 36 % recall, against
-  44 % for Azure at the same recall.
-- **Mandarin learners (OMPAL test)**: word AUC 0.794 vs 0.704 for any error and 0.782 vs 0.679
-  for tone errors; sentence accuracy correlation 0.635 vs 0.363. The current Mandarin defaults were
-  tuned on OMPAL dev learners; before that tuning: 0.797 / 0.792 / 0.388.
-- **Ten languages, one word of the prompt changed on native audio**: near-miss words caught at 5 %
-  false alarms ahead in 7 languages (significant), behind in Mandarin and Italian (not
-  significant). Tone-only swaps: level with Azure (AUC 0.844 vs 0.846).
-- **Common Voice reviewer verdicts (cv-real test)**: ahead in 7 of 11 locales, significant only in
-  French; behind (not significant) in Japanese, Portuguese, Russian, Korean; native vs non-native
-  English speakers behind (significant).
-- **Natives**: 98.7–99.9 % of sounds, 96.8–98.5 % of words, 99.0–99.8 % of sentences accepted.
-- **Speed**: 51 ms for a 3.5 s clip (40 ms int8) on a laptop CPU with 4 threads; 0.3–0.45 s for a
-  9–14 s clip against Azure's 1.8–3.0 s round trip.
+payload = to_azure(pronunciada.score("clip.wav", "Good morning", lang="en"))
+payload["NBest"][0]["PronunciationAssessment"]["AccuracyScore"]
+```
 
-## Known gaps
+`pronunciada serve --azure-compat` runs a local server that answers Azure's short-audio REST
+request in the same shape, so an existing client only needs its base URL changed. The format
+matches; the numbers are Pronunciada's own, so thresholds need to be chosen again.
+Field-by-field notes: [docs/AZURE_COMPAT.md](docs/AZURE_COMPAT.md).
 
-- **Real-learner proof exists only for English and Mandarin.** The other eight languages are
-  measured on native recordings with altered prompts and on Common Voice reviewer votes, not on
-  learners marked by experts. Real mistakes are much harder to detect than planted ones (English:
-  AUC about 0.71–0.72 on learner errors against 0.98 on near-word swaps).
-- **Contrasts still missed or only partly heard**: Italian double consonants (fato / fatto) and
-  mid vowels, Portuguese nasal vowels; at **word** level, Korean, Russian, German and English
-  contrast errors (aspiration, softness, voicing, tenseness, θ / ð) can still leave the word score
-  high, because the word factor was adopted only for Mandarin and Japanese. Per-contrast rows:
-  [SCOREBOARD](results/SCOREBOARD.md), [results/contrast_audit.md](results/contrast_audit.md).
-- **English sentence intonation** ("prosodic") trails Azure, and the overall sentence score with it.
-- **Japanese pitch accent is not scored** (tried in rounds 1, 8 and 13; [results/round13_pitch_ja.md](results/round13_pitch_ja.md)).
-- **No phone build.** Everything is ONNX plus numpy, but no iOS / Android bindings exist and
-  nothing has been timed on a phone.
-- Text front-ends handle ordinary prose; numbers (without `num2words`), abbreviations and names
-  outside the dictionaries fall back to spelling rules and are listed in `result.warnings`.
-- **Licensing**: one shipped calibrator was trained partly on non-commercial data, and three
-  dictionaries are CC BY-SA; see [docs/LICENSING.md](docs/LICENSING.md) before any commercial use.
+### For AI agents
+
+```bash
+pip install "pronunciada[mcp]"
+pronunciada mcp          # Model Context Protocol server over stdio
+```
+
+This exposes `assess_pronunciation(audio_path, reference_text, language)` to Claude, Cursor and
+other MCP clients. Setup: [docs/MCP.md](docs/MCP.md).
+
+### Install options
+
+```bash
+pip install pronunciada              # English, Spanish, French, German, Italian, Portuguese, Russian, Korean
+pip install "pronunciada[zh]"        # + Mandarin text handling
+pip install "pronunciada[ja]"        # + Japanese text handling (about 300 MB installed)
+pip install "pronunciada[all]"       # everything
+```
+
+The speech model is downloaded on first use into `~/.cache/pronunciada` (248 MB, or 67 MB with
+`precision="int8"`). Runtime dependencies are numpy, scipy, onnxruntime, kaldi-native-fbank and
+soundfile. There is no PyTorch at runtime.
+
+## How it works
+
+```mermaid
+flowchart LR
+    T["Expected text"] --> G["Sounds a native<br>speaker would say"]
+    A["Recording"] --> Z["ZIPA sound recogniser<br>(never sees the text)"]
+    G --> E["Evidence per expected sound:<br>said, replaced or skipped"]
+    Z --> E
+    Z -. internal signals .-> H["Small specialists:<br>tones, stress, length, contrasts"]
+    E --> C["Calibration on<br>expert-scored speech"]
+    H --> C
+    C --> R["Probabilities for sounds,<br>words and the sentence"]
+    R --> K["Coaching items and tips"]
+```
+
+1. **Text to sounds.** Dictionaries and rules for each language turn the sentence into the
+   sounds a native speaker would produce, including tone changes in Mandarin and linking in French.
+2. **An open sound recogniser.** [ZIPA](https://github.com/lingjzhu/zipa) turns the audio into
+   probabilities over the sounds of the world's languages. A small adapter per language corrects
+   its habits. It never sees the expected text, so it cannot be led by it.
+3. **Evidence without forced alignment.** For each expected sound the scorer weighs "it was
+   said" against "something else was said" and "it was skipped".
+4. **Calibration.** Small models trained on speech that experts scored turn the evidence into
+   probabilities for sounds, words and sentences.
+5. **Small specialists.** The recogniser's output drops tone, stress and length. Tiny models
+   read its internal layers to recover them. Everything trained for this project adds about
+   10 MB to the package.
+
+More detail: [docs/DESIGN.md](docs/DESIGN.md).
+
+## What it does not do yet
+
+- **Proof on real learners exists for English and Mandarin only.** Real mistakes are much harder
+  to catch than planted ones, so treat the other eight languages as less proven.
+- **English sentence intonation trails Azure** (0.77 against 0.83). The models that close that
+  gap are several times too large for a phone.
+- **Slightly more false alarms on native speakers than Azure** in English, Japanese, Spanish
+  and Portuguese: about 3% of a native speaker's words fall below the default cut-off, against
+  about 2%.
+- **Some contrasts are still missed:** Italian double consonants, Portuguese nasal vowels.
+  Japanese pitch accent is not scored.
+- **It needs the expected text.** For free speech, pass in a transcript from your own recogniser.
+- **It is a Python package.** It runs on laptops and servers. iOS, Android and browser builds
+  are not written yet.
+
+The complete list, with numbers, is in the [scoreboard](results/SCOREBOARD.md) and
+[results/contrast_audit.md](results/contrast_audit.md).
 
 ## Reproducing the benchmarks
 
-Benchmark-only packages: `pip install ".[bench]"` (or `requirements-bench.txt`; torch for
-training: `requirements-prosody.txt`). Data download and layout: [docs/benchmarks_data.md](docs/benchmarks_data.md).
-Azure responses are cached under `~/.cache/pronunciada/azure/` and never re-sent; the commands
-below read only the cache (`--steps azure` / `run-azure` send requests and need
-`AZURE_SPEECH_KEY` / `AZURE_SPEECH_REGION`).
+Every benchmark is a command. The datasets are public and Azure's answers are cached locally, so
+nothing is sent anywhere when you re-run them.
 
-| table | command | writes |
-|---|---|---|
-| English vs Azure (speechocean762, L2-ARCTIC, EpaDB; speed, int8) | `python -m bench.eval_english --workers 3` | `results/english_vs_azure.md`, `tables/english_vs_azure.json` |
-| ten languages, native acceptance, planted errors, swap benchmark vs Azure | `python -m bench.eval_languages --workers 3` | `results/languages.md`, `tables/languages.json`, `tables/swap_ours_vs_azure.json` |
-| cv-real (Common Voice, test half) | `python -m bench.eval_cv --steps ours,report` | `results/cv_real.md`, `tables/cv_real.json` |
-| OMPAL (Mandarin learners) | `python -m bench.ompal_build --clone` once, then `python -m bench.eval_ompal --steps ours,report` | `results/ompal.md`, `tables/ompal.json` |
-| coaching vs Azure (speechocean762 test) | `python -m bench.coach.dump --sets so762-test`, `python -m bench.coach.azure_yardstick`, `python -m bench.coach.heldout_12b` | `tables/coaching_azure_yardstick.json`, `tables/coaching_12b_heldout.json` |
-| coaching feature claims | `python -m bench.coach.dump_r4 --sets so762-test,l2arctic-test,epadb-test,ompal-test`, `python -m bench.coach.fit_r4 eval` | `tables/coaching_r4_heldout.json` |
-| contrast audit on FLEURS test | `python -m bench.audit.contrast_audit run --split test` then `report --split test` | `tables/contrast_audit_test.json` |
-| Japanese length (shipped runtime) | `python -m bench.length.heldout_runtime --lang ja` | `tables/length_runtime_ja.json` |
-| acoustic-core latency | `python scripts/bench_latency.py --threads 4` | stdout |
-| the scoreboard | `python -m bench.scoreboard` | `results/SCOREBOARD.md` |
+```bash
+pip install -e ".[all,bench]"
+python -m bench.eval_english      # English learners against Azure
+python -m bench.eval_languages    # ten languages, native speech and changed-word tests
+python -m bench.scoreboard        # rebuilds results/SCOREBOARD.md
+```
 
-Our outputs are cached per clip; delete or move `~/.cache/pronunciada/calib/api/` (and the
-`dump-*-test.pkl` files under `~/.cache/pronunciada/bench/coach/`) before re-running after a code
-change: those two caches are keyed by name, not by code version. cv-real and OMPAL caches are
-keyed by a hash of the package and refresh themselves. With 3 workers the whole set takes about
-an hour on an M3 Pro laptop.
+Data download, the remaining commands and how long they take:
+[docs/benchmarks_data.md](docs/benchmarks_data.md).
 
-## How it works, briefly
+## How this was built
 
-1. The prompt is converted to the sounds a native speaker would produce (dictionaries plus rules
-   per language, including tone changes in Mandarin and liaison in French).
-2. A multilingual phone-recognition model (ZIPA) listens to the recording; a small per-language
-   adapter corrects its habits for that language.
-3. For every expected sound, the scorer compares "the speaker said this" with "the speaker said
-   something else" and "the speaker skipped it", without forcing a rigid alignment.
-4. Small calibration models trained on human-rated speech turn that evidence into probabilities
-   for sounds, words and the sentence; separate small models judge tone, stress and length.
+Pronunciada started at [Moglearn](https://moglearn.com), a language-learning app that needed
+pronunciation feedback without sending learners' voices to a paid cloud service.
 
-Design and what ships: [docs/DESIGN.md](docs/DESIGN.md). Per-round write-ups: [results/](results/).
+No large model was trained for it. The approach was to take an open speech model, add classical
+scoring methods and each language's sound rules, and improve the result through measured rounds
+against the commercial service, with an AI coding agent doing the implementation and a person
+setting the direction. Each round had to state its bar in advance, be selected on development
+data, and take one look at the held-out data. Eighteen rounds are written up in
+[results/](results/), including the ones that failed: Japanese pitch accent, a general
+"second opinion" for sounds, synthetic speech for training, and several outside models that did
+not earn their size.
 
-## Licence
+## Roadmap
 
-Code: Apache-2.0. The acoustic model is CC BY 4.0. The Italian, Portuguese and Russian
-pronunciation files are derived from Wiktionary and stay under CC BY-SA
-(`pronunciada/data/lex/LICENSE.txt`). Full audit and open questions:
-[docs/LICENSING.md](docs/LICENSING.md); attribution: [NOTICE](NOTICE).
+- Browser (WebAssembly) and mobile builds
+- Expert-marked learner data for more languages
+- Plugins for real-time voice-agent frameworks
+- Italian and Portuguese contrast detectors
+
+## Licence and credits
+
+Code is Apache-2.0. The speech model, [ZIPA](https://github.com/lingjzhu/zipa) by Zhu et al.,
+is CC BY 4.0 and is downloaded on first use. The Italian, Portuguese and Russian pronunciation
+files derive from Wiktionary and stay under CC BY-SA. Every data file, the dataset it was fitted
+on and its licence are listed in [docs/LICENSING.md](docs/LICENSING.md) and [NOTICE](NOTICE).
+
+Thanks to the people behind ZIPA, speechocean762, OMPAL, FLEURS, Common Voice, L2-ARCTIC, EpaDB
+and AISHELL, whose public work made the measurements possible.
+
+"Azure" is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.
+
+If you use Pronunciada in research, see [CITATION.cff](CITATION.cff).

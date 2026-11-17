@@ -1,17 +1,27 @@
 [project]
 name = "pronunciada"
-version = "0.1.0"
-description = "On-device pronunciation checking for ten languages (sounds, words, sentences, tones, stress, coaching) on the ZIPA phone recogniser"
+version = "1.0.0"
+description = "On-device pronunciation scoring for ten languages: sounds, words, sentences, tones, stress and coaching tips"
 readme = "README.md"
 requires-python = ">=3.10"
 # Code: Apache-2.0. Bundled data: the it / pt / ru lexicons under pronunciada/data/lex are
-# CC BY-SA (Wiktionary via WikiPron), en is CMUdict (BSD-2-Clause), de / fr / es ipa-dict (MIT).
+# CC BY-SA (Wiktionary via WikiPron), and so are the it / pt / ru adapters trained towards them
+# (pronunciada/data/adapters/{it,pt,ru}.npz); en is CMUdict (BSD-2-Clause), de / fr / es ipa-dict (MIT).
 # The acoustic model is downloaded at first use (CC BY 4.0). Details: docs/LICENSING.md.
 license = "Apache-2.0 AND CC-BY-SA-4.0 AND BSD-2-Clause AND MIT"
 license-files = ["LICENSE", "NOTICE", "pronunciada/data/lex/LICENSE.txt"]
-keywords = ["pronunciation", "speech", "language learning", "phone recognition", "onnx"]
+keywords = ["pronunciation", "pronunciation assessment", "speech", "language learning", "mispronunciation detection", "phone recognition", "onnx", "on-device"]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
     "Operating System :: OS Independent",
     "Topic :: Multimedia :: Sound/Audio :: Speech",
     "Topic :: Education",
@@ -24,11 +34,18 @@ dependencies = ["numpy>=1.24", "onnxruntime>=1.16", "kaldi-native-fbank>=1.18", 
 zh = ["pypinyin>=0.55", "jieba>=0.42", "opencc-python-reimplemented>=0.1.7"]
 ja = ["pyopenjtalk-plus>=0.4.1"]
 numbers = ["num2words>=0.5.14"]        # LGPL-2.1+, optional: digits read out as words
-all = ["pronunciada[zh,ja,numbers]"]
+mcp = ["mcp>=2"]                        # MIT, optional: `pronunciada mcp` only
+all = ["pronunciada[zh,ja,numbers,mcp]"]
 dev = ["pytest"]
 # Benchmarks and training only (bench/); never imported by pronunciada/ (see requirements-*.txt).
 bench = ["pyarrow>=15", "fsspec>=2024.2", "aiohttp>=3.9", "requests>=2.31", "panphon>=0.20",
          "scikit-learn>=1.3", "pandas>=2", "huggingface_hub"]
+
+[project.urls]
+Homepage = "https://github.com/moglearn/pronunciada"
+Documentation = "https://github.com/moglearn/pronunciada#readme"
+Scoreboard = "https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md"
+Issues = "https://github.com/moglearn/pronunciada/issues"
 
 [project.scripts]
 pronunciada = "pronunciada.__main__:main"
@@ -41,7 +58,7 @@ build-backend = "setuptools.build_meta"
 include = ["pronunciada*"]
 
 [tool.setuptools.package-data]
-pronunciada = ["data/**/*"]
+pronunciada = ["data/**/*", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

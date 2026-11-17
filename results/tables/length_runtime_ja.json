@@ -4,8 +4,8 @@
  "n_clips": 400,
  "n_native_judged_sounds": 18705,
  "sound_threshold_5": 0.3918947326886759,
- "word_threshold_5": 0.7131845280241687,
- "native_word_accept_0.5": 0.9739192568774563,
+ "word_threshold_5": 0.6859017126053499,
+ "native_word_accept_0.5": 0.9706145051804216,
  "sound": {
   "gemination:A>B": {
    "n": 130,
@@ -31,23 +31,23 @@
  "word": {
   "gemination:A>B": {
    "n": 333,
-   "hit5": 0.09309309309309309
+   "hit5": 0.08108108108108109
   },
   "gemination:B>A": {
    "n": 800,
-   "hit5": 0.41625
+   "hit5": 0.41875
   },
   "vowel_length:A>B": {
    "n": 739,
-   "hit5": 0.618403247631935
+   "hit5": 0.6008119079837618
   },
   "vowel_length:B>A": {
    "n": 800,
-   "hit5": 0.79375
+   "hit5": 0.795
   },
   "all": {
    "n": 2672,
-   "hit5": 0.5449101796407185
+   "hit5": 0.5396706586826348
   }
  }
 }

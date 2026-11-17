@@ -27,8 +27,18 @@ Then: word-accuracy regression (inputs WORD_NUM, optionally + the new word log-o
 CV Pearson improves), and the sentence heads (SENT_NUM vs SENT2_NUM = + min / second-min of the
 new word log-odds; strict ok = sentence accuracy >= 8 AND every word lenient-ok).
 Writes pronunciada/data/calib/word.npz, word_reg.npz, sentence.npz, results/tables/calib_round2.json.
+
+LICENCE-CLEAN REFIT (2026-11-17, results/licence_refit.md): the round-2 choice "full/s3" contained
+L2-ARCTIC train (CC BY-NC 4.0) and EpaDB train. By default this script now runs the same recipe
+WITHOUT them: candidates so762 and so762+fleurs (s1 / s2 / s3), the same rule, and it writes
+word.npz to pronunciada/data/calib/ and the word regression / round-2 sentence heads to
+$PRONUNCIADA_CACHE/calib/clean_refit/ (compared with the shipped word_reg.npz / sentence_r4.npz
+by the refit driver), tables to results/tables/calib_round2_clean.json. BENCH_ROUND2_NC=1
+reproduces the historical non-commercial mix (benchmark / history only; never ship it).
 """
 from __future__ import annotations
+
+import os
 
 import json
 
@@ -40,6 +50,9 @@ from bench.calib.fitlib import calibrate_oof, cv_heads, fit_final, head_metrics,
 from pronunciada import features as F
 from pronunciada.calibrate import LevelModel, blend_logit, config, logit, save_level
 
+CLEAN = os.environ.get("BENCH_ROUND2_NC") != "1"
+ROUND2_JSON = "calib_round2_clean.json" if CLEAN else "calib_round2.json"
+CORPORA = ("so762", "fleurs") if CLEAN else ("so762", "l2arctic", "epadb", "fleurs")
 SYN_SHARE = 0.40
 FLEURS_UTTS = 120
 WL, WS = (1.0, 5.0), (1.8, 8.0)        # (phone threshold, word-accuracy threshold)
@@ -103,7 +116,7 @@ def build():
     W["wrong"] = np.zeros(len(acc), bool)
     parts["so762"] = (W, t, (sl, ss, sr))
     # ---- l2arctic / epadb train
-    for ds in ("l2arctic", "epadb"):
+    for ds in (() if CLEAN else ("l2arctic", "epadb")):
         d = load_table(ds, "train")
         tt = table_columns(d)
         a, b, c = u_outputs(tt)
@@ -153,7 +166,7 @@ KEYS = ["y_len", "y_str", "y_reg", "grp", "utt", "corpus", "kind", "lang", "wron
 def stack(parts, cols):
     T = {}
     for k in cols + KEYS:
-        T[k] = np.concatenate([np.asarray(parts[c][0][k]) for c in ("so762", "l2arctic", "epadb", "fleurs")])
+        T[k] = np.concatenate([np.asarray(parts[c][0][k]) for c in CORPORA])
     return T
 
 
@@ -168,8 +181,8 @@ def weights(T, rows, head):
     return w
 
 
-CANDS = {"so762": ("so762",), "real": ("so762", "l2arctic", "epadb"),
-         "full": ("so762", "l2arctic", "epadb", "fleurs")}
+CANDS = {"so762": ("so762",), "so762+fleurs": ("so762", "fleurs")} if CLEAN else {
+    "so762": ("so762",), "real": ("so762", "l2arctic", "epadb"), "full": ("so762", "l2arctic", "epadb", "fleurs")}
 
 
 def fleurs_metrics(T, fl, zl, zs):
@@ -261,12 +274,12 @@ def main():
     cols = sorted(set(F.WORD2_NUM) | set(F.WORD_NUM))
     T = stack(parts, cols)
     corp = T["corpus"]
-    out = {"n_words": {c: int((corp == c).sum()) for c in CANDS["full"]}, "syn_share": SYN_SHARE,
+    out = {"n_words": {c: int((corp == c).sum()) for c in CORPORA}, "syn_share": SYN_SHARE, "clean": CLEAN,
            "fleurs_utts_per_lang": FLEURS_UTTS, "thresholds": {"len": WL, "str": WS}}
     so = corp == "so762"
     for h in ("len", "str"):
         y = T[f"y_{h}"]
-        out[f"balance_{h}"] = {c: float(np.nanmean(y[corp == c])) for c in CANDS["full"]
+        out[f"balance_{h}"] = {c: float(np.nanmean(y[corp == c])) for c in CORPORA
                                if np.isfinite(y[corp == c]).any()}
     log("words", out["n_words"], "balance", out["balance_len"], out["balance_str"])
     X2 = np.column_stack([T[c].astype(float) for c in F.WORD2_NUM])
@@ -303,7 +316,7 @@ def main():
                 "score", round(r["score"], 4))
             if r["eligible"] and r["score"] > best_score:
                 best, best_score = name, r["score"]
-            save_json("calib_round2.json", out)
+            save_json(ROUND2_JSON, out)
     out["chosen_word"] = best
     log("chosen", best)
     cname, pname = best.split("/")
@@ -340,11 +353,15 @@ def main():
     Xr = Xr_new if choice == "plus_word_logodds" else Xr_old
     num_r = F.WORD_NUM + (["word_z_len", "word_z_str"] if choice == "plus_word_logodds" else [])
     rh, rpar = fit_final(Xr, {"reg": yreg}, {"reg": "reg"}, SMALL_GRID["s2"], [False] * Xr.shape[1], clips={"reg": (0.0, 10.0)})
-    save_level(ship_dir() / "word_reg.npz", num_r, [], {},
+    stage = ship_dir()
+    if CLEAN:
+        stage = calib_cache() / "clean_refit"
+        stage.mkdir(exist_ok=True)
+    save_level(stage / "word_reg.npz", num_r, [], {},
                {h: {k: v for k, v in hh.items() if k != "_model"} for h, hh in rh.items()},
                {"level": "word_reg", "round": 2})
     out["word_reg"]["walker_parity_max_abs"] = rpar
-    save_json("calib_round2.json", out)
+    save_json(ROUND2_JSON, out)
     # ---- sentence (so762): SENT_NUM vs SENT2_NUM, new strict label
     Wso, tso, (sl, ss, sr) = parts["so762"]
     wzl, wzs, wreg = zc["len"][sidx], zc["str"][sidx], oofs[choice]
@@ -382,12 +399,12 @@ def main():
                             clips={f"reg_{k}": (0.0, 10.0) for k in ("accuracy", "fluency", "prosodic", "total")})
     for h in cal:
         heads[h]["calib"] = cal[h]
-    save_level(ship_dir() / "sentence.npz", cols_s, [], {},
+    save_level(stage / "sentence.npz", cols_s, [], {},
                {h: {k: v for k, v in hh.items() if k != "_model"} for h, hh in heads.items()},
                {"level": "sentence", "round": 2, "thresholds": {"len": "accuracy >= 6",
                                                                  "str": "accuracy >= 8 and every word lenient-ok"}})
     out["sentence"]["walker_parity_max_abs"] = spar
-    save_json("calib_round2.json", out)
+    save_json(ROUND2_JSON, out)
     log("done", json.dumps({"word": best, "word_reg": choice, "sentence": sch}))
 
 

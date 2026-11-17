@@ -1,9 +1,9 @@
 # Licensing audit
 
 Status: audit of 2026-11-17, made by reading the fit scripts in `bench/` and the metadata stored in
-the shipped files, not from memory. It is not legal advice. Items the owner must decide are
-collected in [Open questions](#open-questions) at the end; **one blocking finding** (a shipped
-calibrator fitted on non-commercial data) is in [§3](#3-non-commercial-data-l2-arctic-epadb).
+the shipped files, not from memory; updated the same day after the licence-clean refit
+([results/licence_refit.md](../results/licence_refit.md)). It is not legal advice. Remaining items
+for the owner are in [Open questions](#open-questions).
 
 Short version:
 
@@ -11,10 +11,14 @@ Short version:
 - Acoustic model: downloaded at first use, not in the repository, CC BY 4.0.
 - Bundled data: everything in `pronunciada/data/` is project-made (Apache-2.0) **except** the
   lexicons in `pronunciada/data/lex/`, which keep their source licences (BSD-2-Clause-style,
-  MIT, and CC BY-SA for it / pt / ru); see `pronunciada/data/lex/LICENSE.txt`.
-- One shipped file, `pronunciada/data/calib/word.npz`, was fitted on a mix that includes
-  L2-ARCTIC train (CC BY-NC 4.0) and EpaDB train. That must be resolved before a public or
-  commercial release.
+  MIT, and CC BY-SA for it / pt / ru), and the it / pt / ru output adapters, treated as CC BY-SA
+  adaptations of those lexicons; see `pronunciada/data/lex/LICENSE.txt`.
+- **Nothing shipped is fitted on, or selected with, non-commercial data.** The round-2 word model
+  `word.npz` had been trained partly on L2-ARCTIC train (CC BY-NC 4.0) and EpaDB train; it was
+  re-fitted without them on 2026-11-17, together with everything fitted on its outputs (§3).
+  L2-ARCTIC and EpaDB are now benchmark-only and fully unseen by the shipped system.
+- The only benchmark recordings in the repository are the nine CC BY 4.0 test-split clips in
+  `site/samples/` (attribution: `site/samples/ATTRIBUTION.md`).
 
 ## 1. Models
 
@@ -31,16 +35,16 @@ used only to pick between candidates. Datasets that only appear in benchmark tab
 
 | shipped file(s) | fitted by | data and use |
 |---|---|---|
-| `data/adapters/<lang>.npz` (4.4 MB) | `bench/pipeline/train_adapter.py` | FLEURS train (training, CTC), FLEURS validation (early stopping, selection). Targets come from the text front-ends, i.e. partly from the lexicons of §5. |
+| `data/adapters/<lang>.npz` (4.4 MB) | `bench/pipeline/train_adapter.py` | FLEURS train (training, CTC), FLEURS validation (early stopping, selection). Targets come from the text front-ends, i.e. partly from the lexicons of §5; `it.npz`, `pt.npz`, `ru.npz` are therefore treated as CC BY-SA 4.0 (owner decision). |
 | `data/native/<lang>.json` | `bench/pipeline/native_stats.py` | FLEURS train / validation natives (statistics). |
 | `data/calib/sound_B.npz`, `sound_E.npz` | `bench/calib/train_sound.py`, `train_sound_emb.py` | speechocean762 train (training + calibration). |
 | `data/calib/sound_E_emb.npz` | `bench/calib/sound_emb.py` | FLEURS-en train (native prototypes). |
-| `data/calib/sound_U.npz` (universal sound model) | `bench/calib/train_wide.py` | speechocean762 train (training, calibration; metadata `trained_on: so762`). **Selection** between candidates used leave-one-corpus-out AUC on L2-ARCTIC train and EpaDB train; the chosen candidate does not contain them. |
-| `data/calib/word.npz` (word acceptance trees, 115 KB) | `bench/calib/train_word2.py` (round 2), maps re-fitted by `recal_word.py` | **speechocean762 train + L2-ARCTIC train + EpaDB train + FLEURS validation planted errors** (training; metadata `trained_on: so762+l2arctic+epadb+fleurs`, candidate `full/s3` in `results/tables/calib_round2.json`). Calibration maps: speechocean762 train. See §3. |
+| `data/calib/sound_U.npz` (universal sound model) | `bench/calib/train_wide.py` | speechocean762 train (training, calibration; metadata `trained_on: so762`). Originally selected with L2-ARCTIC / EpaDB in the comparison; the selection was **repeated without them** (`train_wide --clean`, `results/tables/calib_wide_clean.json`: so762 0.8705 vs so762+FLEURS 0.8683 strict AUC) and the same candidate wins, so the file is unchanged. |
+| `data/calib/word.npz` (word acceptance trees) | `bench/calib/train_word2.py` (round-2 recipe, clean candidates), maps by `recal_word.py` | **re-fitted 2026-11-17**: speechocean762 train + FLEURS validation planted errors (`trained_on: so762+fleurs`, chosen `so762+fleurs/s3` by the round-2 rule among the clean candidates, `results/tables/calib_round2_clean.json`). Calibration maps: speechocean762 train. The previous file (`so762+l2arctic+epadb+fleurs`) is no longer shipped. |
 | `data/calib/word_reg.npz` | `bench/calib/train_word2.py` | speechocean762 train (the regression target is missing for the other corpora, so only speechocean762 rows enter the regression). |
 | `data/calib/word_reg_r6.npz` | `bench/calib/train_word_emb.py` | speechocean762 train. |
-| `data/calib/sentence.npz`, `sentence_r4.npz` | `bench/calib/train_delivery.py`, `train_word2.py` / `train_levels.py` | speechocean762 train. |
-| `data/calib/config.json` (per-language biases, model choices) | `bench/calib/finalize.py`, `bias_grid.py` | FLEURS train / validation natives (bias), FLEURS validation (Russian bias rule), cv-real dev half = Common Voice (guards). |
+| `data/calib/sentence_r4.npz`, `sentence.npz` | `bench/calib/train_word2.py` (round-2 heads), `train_delivery.py` (round-5 heads) | speechocean762 train; re-fitted 2026-11-17 on the clean word log-odds. |
+| `data/calib/config.json` (per-language biases, model choices) | `bench/calib/finalize.py`, `bias_grid.py`, `native_sentence_check.py` | FLEURS train / validation natives (bias, round-5 native guard), FLEURS validation (Russian bias rule), cv-real dev half = Common Voice (guards). |
 | `data/calib/omission.json` | `bench/calib/fit_omission.py` | FLEURS validation planted extra words. |
 | `data/calib/phone_dist.npz` | `bench/calib/phone_dist.py` | panphon feature table (MIT), computed offline. |
 | `data/calib/prosody/<lang>.json`, `*.stress.json`, `zh.tone_zh_v2.json`, `zh.tone_zh_v3.json` | `bench/calib/fit_prosody.py` | FLEURS validation (calibration, leniency rule). `zh.tone_zh_v3.json` belongs to a retired model that is not in the repository. |
@@ -61,33 +65,31 @@ used only to pick between candidates. Datasets that only appear in benchmark tab
 | `data/cjk/zh_neutral.txt`, `zh_tw_tones.txt` | hand-written | project (Apache-2.0). |
 | `data/lex/*` | `pronunciada/text/_eu_build.py`, `bench/calib/ru_stress_lex.py`, `ru_round8.py` | see §5. |
 
-Everything except `word.npz` was checked against the non-commercial corpora: no other fit script
-that writes into `pronunciada/data/` reads L2-ARCTIC or EpaDB (searched every script under
-`bench/` that writes there; `fit_r4.py` reads them only in its `eval` step, which writes to
-`results/`).
+Checked against the non-commercial corpora: after the refit, no fit or selection script that
+writes into `pronunciada/data/` reads L2-ARCTIC or EpaDB (searched every script under `bench/`
+that writes there; `train_word2.py` / `train_wide.py` exclude them by default and need
+`BENCH_ROUND2_NC=1` / no `--clean` to reproduce the historical mix; `fit_r4.py` reads them only
+in its `eval` step, which writes to `results/`).
 
 ## 3. Non-commercial data (L2-ARCTIC, EpaDB)
 
-- **L2-ARCTIC v5.0** is CC BY-NC 4.0. It is meant to be benchmark / report-only here.
-- **EpaDB**: the repository docs say ODC-By 1.0 (CONICET repository, handle 11336/150678). The
-  downloaded `readme.md` states no licence and the repository page could not be read
-  automatically, so this is **not verified** (open question 2).
+- **L2-ARCTIC v5.0** is CC BY-NC 4.0: benchmark / report-only.
+- **EpaDB**: earlier notes say ODC-By 1.0 (CONICET repository, handle 11336/150678); the downloaded
+  `readme.md` states no licence and the repository page could not be read automatically, so this
+  is **not verified** (open question 1). Treated as benchmark-only either way.
 
-Finding: `pronunciada/data/calib/word.npz` (the word "every sound acceptable" model behind
+What happened: `word.npz` (the word "every sound acceptable" model behind
 `WordResult.sounds_prob`, hence every word and sentence probability) was trained in round 2 on
-L2-ARCTIC train and EpaDB train together with speechocean762 train and FLEURS. Its calibration
-maps were later re-fitted on speechocean762 only, but the trees themselves include the
-non-commercial rows. The NOTICE previously said L2-ARCTIC was "never trained on for shipped
-models"; that sentence was wrong and has been corrected.
+L2-ARCTIC train and EpaDB train together with speechocean762 train and FLEURS validation planted
+errors; L2-ARCTIC / EpaDB were also part of model selection for `sound_U.npz` and the word model.
 
-Not fixed here (the task forbids changing models): the clean fix is to re-fit the word model on
-the `so762` candidate (or `so762` + FLEURS), which `bench/calib/train_word2.py` already supports,
-and re-run the held-out benchmarks. Until then the package should not be released for commercial
-use.
-
-Also disclosed: L2-ARCTIC train and EpaDB train were used for **model selection** in
-`train_wide.py` (sound_U) and `train_word2.py`, and the English F1 thresholds in
-`bench/eval_english.py` are chosen on their train splits (benchmark tables only).
+Fixed on 2026-11-17 (details, every changed file and before / after numbers:
+[results/licence_refit.md](../results/licence_refit.md)): `word.npz` re-fitted with the round-2
+recipe on speechocean762 train + FLEURS validation only, the `sound_U` selection repeated without
+the non-commercial corpora (same winner, file unchanged), and everything fitted on the word
+model's outputs re-fitted mechanically with its original rule. The English F1 thresholds in
+`bench/eval_english.py` are still chosen on the L2-ARCTIC / EpaDB train splits; they exist only in
+benchmark tables.
 
 ## 4. Datasets
 
@@ -97,10 +99,10 @@ Also disclosed: L2-ARCTIC train and EpaDB train were used for **model selection*
 | speechocean762 | CC BY 4.0 on OpenSLR (SLR101); the HF card `mispeech/speechocean762` says Apache-2.0 (both checked 2026-11-17) | training / calibration (train), benchmark (test) |
 | OMPAL (Hsieh et al., Interspeech 2025, doi:10.21437/Interspeech.2025-983) | CC BY 4.0 (LICENSE in the corpus repository) | dev: calibration and selection of Mandarin defaults; test: benchmark |
 | Common Voice (cv-real 22.0 locales, zh-TW 25.0) | CC0-1.0 (as stated by the mirror cards) | dev half: guards and audio-gate thresholds; zh-TW train: tone training; test half: benchmark; ru sentence text: stress lexicon input |
-| AISHELL-3 | Apache-2.0 (HF card `AISHELL/AISHELL-3`; OpenSLR page not checked) | tone model training |
-| AISHELL-1 | Apache-2.0 on OpenSLR (SLR33), which also says "free for academic use"; 200 of 300 speakers came from a community mirror whose card states no licence | tone model training (open question 3) |
-| L2-ARCTIC v5.0 | CC BY-NC 4.0 | benchmark; **training of word.npz** (§3); selection |
-| EpaDB | ODC-By 1.0 per earlier notes, unverified | benchmark; **training of word.npz** (§3); selection |
+| AISHELL-3 | Apache License 2.0 (OpenSLR SLR93, https://www.openslr.org/93/, the primary source; also the HF card `AISHELL/AISHELL-3`) | tone model training |
+| AISHELL-1 | Apache License 2.0 (OpenSLR SLR33, https://www.openslr.org/33/, the primary source). 200 of the 300 speakers were fetched from a community mirror without a licence statement; it only re-hosts AISHELL-1, so the OpenSLR licence applies | tone model training |
+| L2-ARCTIC v5.0 | CC BY-NC 4.0 | benchmark only (since the refit; §3) |
+| EpaDB | ODC-By 1.0 per earlier notes, unverified | benchmark only (since the refit; §3) |
 | Azure Pronunciation Assessment responses | Microsoft service terms | benchmark only; cached outside the repository, never committed |
 
 ## 5. Lexicons and share-alike data
@@ -115,19 +117,20 @@ Also disclosed: L2-ARCTIC train and EpaDB train were used for **model selection*
 | `lex/ru_stress_extra.tsv.gz` | silero-stress 1.5 (MIT) predictions, offline, on FLEURS-ru (CC BY 4.0) and Common Voice ru (CC0) text | project; silero-stress is not a runtime dependency |
 | `lex/ru_vowels.json` | measured on FLEURS-ru with the acoustic model | project |
 
-What share-alike implies: the six it / pt / ru files may be redistributed inside the
-Apache-2.0 repository, but they stay CC BY-SA. Anyone who redistributes them, or a modified
-version, must keep the CC BY-SA licence and the "Wiktionary contributors" attribution. The
-share-alike clause does not reach the code that reads them (separate works). Whether models
-trained with references produced from these lexicons (it / pt / ru adapters and calibration)
-are adaptations is unsettled (open question 4).
+| `adapters/it.npz`, `pt.npz`, `ru.npz` | trained (FLEURS train audio, CTC) towards references built from the it / pt / ru lexicons | **CC BY-SA 4.0** (treated as adaptations; owner decision) |
 
-Packaging done now (no code change): `pronunciada/data/lex/LICENSE.txt` lists each file's
-licence and attribution, `pyproject.toml` declares the combined licence expression
+What share-alike implies: these nine files (six lexicon files, three adapters) may be
+redistributed inside the Apache-2.0 repository, but they stay CC BY-SA. Anyone who redistributes
+them, or a modified version, must keep the CC BY-SA licence and the "Wiktionary contributors"
+attribution. The share-alike clause does not reach the code that reads them (separate works).
+The other calibration files are fitted on scores, not on the lexicons, and stay Apache-2.0.
+
+Packaging done now (no code change, no path change): `pronunciada/data/lex/LICENSE.txt` lists
+each file's licence and attribution, including the three adapters, `pyproject.toml` declares the combined licence expression
 (`Apache-2.0 AND CC-BY-SA-4.0 AND BSD-2-Clause AND MIT`) and ships that file as a licence file,
 and `NOTICE` points to it.
 
-Cleaner option, not done because it changes load paths: move the six files to
+Cleaner option, not done because it changes load paths: move the share-alike files to
 `pronunciada/data/lex/cc-by-sa/` with their own `LICENSE`, or publish them as a separate data
 package (`pronunciada-lex-sa`) that the front-ends load when installed. Without them Italian,
 Portuguese and Russian fall back to rules, so scores would change and the benchmarks would need
@@ -167,25 +170,16 @@ ffmpeg (system binary, offline decoding).
 
 ## Open questions
 
-1. **word.npz and L2-ARCTIC / EpaDB** (blocking): re-fit without them (recommended), or obtain
-   permission. Decide also whether selection-only use (sound_U, word candidates) is acceptable.
-2. **EpaDB licence**: confirm ODC-By 1.0 on the CONICET record; the downloaded files do not say.
-3. **AISHELL-1 / AISHELL-3**: OpenSLR lists AISHELL-1 as Apache-2.0 but adds "free for academic use";
-   200 AISHELL-1 speakers came from a mirror without a licence statement. Confirm commercial
-   use of the tone models trained on them, or re-train the default tone model without AISHELL.
-4. **Models trained with CC BY-SA lexicon references** (it / pt / ru adapters, calibration): owner
-   decision whether to treat them as adaptations.
-5. **speechocean762**: OpenSLR says CC BY 4.0, the HF card Apache-2.0; both permit commercial
+1. **EpaDB licence**: confirm ODC-By 1.0 on the CONICET record; the downloaded files do not say.
+   Nothing shipped depends on EpaDB since the refit.
+2. **speechocean762**: OpenSLR says CC BY 4.0, the HF card Apache-2.0; both permit commercial
    use, but cite it either way.
-6. **Common Voice metadata in git**: `bench/data/cv_real/*.jsonl` carry Common Voice contributor
-   hashes (`client_id`), votes and self-reported accents. The data is CC0, but Common Voice asks
-   users not to try to identify speakers; consider dropping `client_id` / `accents` from the
-   public copy (the speaker bootstrap needs only a grouping key).
-7. **Azure output in results**: tables contain aggregate statistics of Azure responses, no raw
+3. **Azure output in results**: tables contain aggregate statistics of Azure responses, no raw
    responses. Check Microsoft's terms on publishing benchmark results of the service.
-8. **Benchmark audio in git**: `site/samples/` and `space/samples/` (added with the demo site,
-   18 mp3 files, about 0.5 MB) are clips from the held-out test splits of speechocean762 (3),
-   FLEURS (5) and OMPAL (1), each duplicated. All three corpora are CC BY 4.0, so redistribution is
-   allowed with attribution (the sample JSONs name the source), but they are test-split items:
-   decide whether to keep them, replace them with train-split or self-recorded clips, and add the
-   attribution to the site.
+
+Resolved on 2026-11-17: the non-commercial training data (§3); AISHELL-1 / -3 licences (OpenSLR,
+Apache 2.0; §4); the it / pt / ru adapters (treated as CC BY-SA; §5); the Common Voice manifests
+(`bench/data/cv_real/*.jsonl` now carry per-locale pseudonymous speaker labels `spk_0001` … and
+a derived `native` flag instead of contributor hashes and free-text accents; the mapping stays in
+the cache directory; the cv-real tables reproduce exactly); the sample clips (only the nine in
+`site/samples/`, with `ATTRIBUTION.md`; the duplicate copy under `space/` is no longer tracked).

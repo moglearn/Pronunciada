@@ -19,7 +19,7 @@ language after its first request, and request bodies above `--max-mb` (default 2
 
 | method, path | |
 |---|---|
-| `GET /healthz` | `{"status": "ok", "version": "0.1.0", "azure_compat": true}` |
+| `GET /healthz` | `{"status": "ok", "version": "1.0.0", "azure_compat": true}` |
 | `GET /v1/languages` | `{"languages": [...]}` as `pronunciada langs --json` |
 | `POST /v1/score` | score one recording → the `pronunciada check --json` document |
 | `POST /speech/recognition/{conversation,interactive,dictation}/cognitiveservices/v1` | only with `--azure-compat`: Azure-shaped result ([AZURE_COMPAT.md](AZURE_COMPAT.md)) |
@@ -43,7 +43,7 @@ Audio: anything libsndfile reads (WAV, FLAC, OGG), any sample rate, mono or ster
 
 ```
 $ curl -s localhost:8765/healthz
-{"status": "ok", "version": "0.1.0", "azure_compat": true}
+{"status": "ok", "version": "1.0.0", "azure_compat": true}
 
 $ curl -s -X POST "http://127.0.0.1:8765/v1/score?text=The%20quick%20brown%20fox%20jumps%20over%20the%20lazy%20dog&lang=en" \
        -H "Content-Type: audio/wav" --data-binary @clip.wav

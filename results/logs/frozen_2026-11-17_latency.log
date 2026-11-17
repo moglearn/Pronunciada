@@ -1,48 +1,25 @@
-=== 01:38:56 START swap_paired
-swap de 450
-swap en 450
-swap es 450
-swap fr 450
-swap it 450
-swap ja 450
-swap ko 450
-swap pt 450
-swap ru 450
-swap zh 600
-wrote results/languages.md
-=== 01:40:18 END rc=0
-load before latency:
- 1:40  up  9:20, 1 user, load averages: 2.35 2.37 2.43
-System-wide memory free percentage: 58%
-=== 01:40:18 START speed
-fp32 4 50.565604000439635
-fp32 1 100.80295800071326
-int8 4 40.4032919977908
-int8 1 65.7413959997939
-wrote results/english_vs_azure.md
-=== 01:40:48 END rc=0
-=== 01:40:48 START latency_core
+=== 04:03:33 START latency_core
 clips: 3s=2.55s, 10s=8.91s, 20s=16.56s
 
 model load (s):
-  fp32  0.36
-  fp16  0.54
+  fp32  0.35
+  fp16  0.53
   int8  0.30
 
 fbank ms (min / median):
-  3s      2.24 /    2.25
-  10s     7.72 /    7.73
-  20s    14.10 /   14.12
+  3s      2.25 /    2.24
+  10s     7.62 /    7.61
+  20s    14.15 /   14.24
 
 model ms (min over reps; fbank excluded):
   prec  thr       3s      10s      20s
-  fp32    4     24.7     72.8    132.7
-  fp16    4     26.6     78.7    142.3
-  int8    4     17.3     48.5     89.1
+  fp32    4     24.7     72.1    131.4
+  fp16    4     26.6     78.5    142.4
+  int8    4     17.3     48.4     88.2
 
 align ms (reference = greedy phones; fast min/median, exact single run):
-  3s   T= 124 phones= 34 fast    2.1 /    2.2
-  10s  T= 442 phones=112 fast   12.5 /   12.6
-  20s  T= 824 phones=216 fast   35.7 /   35.8
-=== 01:41:00 END rc=0
- 1:41  up  9:21, 1 user, load averages: 2.06 2.28 2.39
+  3s   T= 124 phones= 34 fast    2.0 /    2.1
+  10s  T= 442 phones=112 fast   12.3 /   12.4
+  20s  T= 824 phones=216 fast   35.4 /   35.4
+=== 04:03:44 END rc=0
+ 4:03  up 11:44, 1 user, load averages: 4.51 3.34 3.35

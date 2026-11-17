@@ -142,7 +142,7 @@ footer .row{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
   <div class="facts" role="list">
     <div role="listitem"><strong>10</strong><span>languages, each checked against Azure</span></div>
     <div role="listitem"><strong>~50 ms</strong><span>to score a 3.5-second clip on a laptop</span></div>
-    <div role="listitem"><strong>67 MB</strong><span>speech model, plus about 3 MB of our own</span></div>
+    <div role="listitem"><strong>67 MB</strong><span>compressed speech model (248 MB at full precision)</span></div>
     <div role="listitem"><strong>Apache-2.0</strong><span>code; data licences listed in the repo</span></div>
   </div>
 </div>
@@ -166,16 +166,17 @@ footer .row{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-betw
     <tbody id="scoreboard">
       <tr><td>English learners, sounds</td><td>Agreement with expert scores for each sound</td><td class="n win">0.69</td><td class="n">0.54</td></tr>
       <tr><td>English learners, words</td><td>Agreement with expert scores for each word</td><td class="n">0.61</td><td class="n">0.59</td></tr>
-      <tr><td>English learners, sentence accuracy</td><td>Agreement with expert sentence scores</td><td class="n win">0.76</td><td class="n">0.67</td></tr>
-      <tr><td>English learners, fluency</td><td>Agreement with expert fluency scores</td><td class="n win">0.79</td><td class="n">0.71</td></tr>
-      <tr><td>English learners, intonation</td><td>Agreement with expert prosody scores</td><td class="n">0.78</td><td class="n lose">0.83</td></tr>
-      <tr><td>English: which sound was wrong</td><td>Share of flagged sounds experts also marked, at equal coverage</td><td class="n win">68%</td><td class="n">46%</td></tr>
-      <tr><td>Mandarin learners, wrong words</td><td>Finding words teachers marked wrong</td><td class="n win">0.80</td><td class="n">0.70</td></tr>
-      <tr><td>Mandarin learners, tones</td><td>Finding tone mistakes teachers marked</td><td class="n win">0.79</td><td class="n">0.68</td></tr>
+      <tr><td>English learners, sentence accuracy</td><td>Agreement with expert sentence scores</td><td class="n win">0.75</td><td class="n">0.67</td></tr>
+      <tr><td>English learners, fluency</td><td>Agreement with expert fluency scores</td><td class="n">0.78</td><td class="n">0.71</td></tr>
+      <tr><td>English learners, intonation</td><td>Agreement with expert prosody scores</td><td class="n">0.77</td><td class="n win">0.83</td></tr>
+      <tr><td>English: which sound was wrong</td><td>Share of flagged sounds experts also marked, at equal coverage</td><td class="n win">66%</td><td class="n">44%</td></tr>
+      <tr><td>English learners never seen in training</td><td>Finding the sounds experts marked wrong (L2-ARCTIC, six native languages)</td><td class="n win">0.71</td><td class="n">0.63</td></tr>
+      <tr><td>Mandarin learners, wrong words</td><td>Finding words teachers marked wrong</td><td class="n win">0.79</td><td class="n">0.70</td></tr>
+      <tr><td>Mandarin learners, tones</td><td>Finding tone mistakes teachers marked</td><td class="n win">0.78</td><td class="n">0.68</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="note">Learner data with expert marks exists publicly only for English and Mandarin. For all ten languages we also run two further comparisons (native recordings with one word of the prompt changed, and recordings that volunteer reviewers accepted or rejected), where Pronunciada is ahead of Azure in most languages and behind in some. Every number, with confidence intervals and the commands to reproduce it, is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
+  <p class="note">Green marks the leader where the difference is clear. Across all 84 comparisons, Pronunciada is ahead in 60 (40 significantly) and behind in 24 (7 significantly). Learner data with expert marks exists publicly only for English and Mandarin. For all ten languages we also run two further comparisons (native recordings with one word of the prompt changed, and recordings that volunteer reviewers accepted or rejected), where Pronunciada is ahead of Azure in most languages and behind in some. Every number, with confidence intervals and the commands to reproduce it, is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
 </section>
 
 <section id="features">
@@ -241,10 +242,10 @@ $ pronunciada mcp
   <h2>How it works</h2>
   <p class="sub">No large model was trained for this. It combines an open speech model with careful measurement.</p>
   <div class="flow">
-    <div class="card"><h3>An open sound recogniser</h3><p><a href="https://github.com/anyspeech/zipa">ZIPA</a> turns audio into probabilities over the sounds of the world's languages. It never sees the expected text.</p></div>
+    <div class="card"><h3>An open sound recogniser</h3><p><a href="https://github.com/lingjzhu/zipa">ZIPA</a> turns audio into probabilities over the sounds of the world's languages. It never sees the expected text.</p></div>
     <div class="card"><h3>Evidence for each expected sound</h3><p>The expected text becomes a sequence of sounds. For each one we measure the evidence that it was said, replaced or skipped, without forcing an alignment.</p></div>
     <div class="card"><h3>Calibrated probabilities</h3><p>Small models trained on expert-scored learner speech turn the evidence into probabilities for sounds, words and sentences.</p></div>
-    <div class="card"><h3>Small specialists</h3><p>Tiny models read the recogniser's internal signals for what its output drops: tones, stress, length, aspiration. Together they add about 3 MB.</p></div>
+    <div class="card"><h3>Small specialists</h3><p>Tiny models read the recogniser's internal signals for what its output drops: tones, stress, length, aspiration. Everything trained for this project adds about 10 MB.</p></div>
   </div>
 </section>
 
@@ -252,7 +253,7 @@ $ pronunciada mcp
   <h2>What it does not do yet</h2>
   <ul class="limits">
     <li><b>Proof on real learners exists for English and Mandarin only.</b> The other eight languages are tested on native recordings and volunteer-reviewed clips, because no public learner data with expert marks exists for them.</li>
-    <li><b>English sentence intonation is behind Azure</b> (0.78 against 0.83). Closing that gap took speech models too large for a phone.</li>
+    <li><b>English sentence intonation is behind Azure</b> (0.77 against 0.83). Closing that gap took speech models too large for a phone.</li>
     <li><b>Some contrasts are still missed:</b> Italian double consonants, Portuguese nasal vowels, and Japanese pitch accent, which is not scored at all.</li>
     <li><b>It needs the expected text.</b> For free speech, pass in a transcript from your own speech recogniser.</li>
     <li><b>It is a Python package today.</b> It runs on laptops and servers; iOS, Android and browser builds are not written yet.</li>

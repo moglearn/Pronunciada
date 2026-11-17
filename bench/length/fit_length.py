@@ -3,7 +3,7 @@
     python -m bench.length.fit_length collect --lang ja --split train        # natives (fit data)
     python -m bench.length.fit_length collect --lang ja --split validation   # dev: natives + swaps
     python -m bench.length.fit_length fit --lang ja [--dry-run]              # -> pronunciada/data/length/ja.json
-    python -m bench.length.fit_length heldout --lang ja                      # FLEURS test, once
+    python -m bench.length.heldout_runtime --lang ja                         # FLEURS test, once (shipped runtime)
 
 Collection runs the public Scorer WITHOUT the length channel (Scorer(..., length=False)) and
 stores, per scored reference, the compact timing inputs of pronunciada.length.frame_inputs, the

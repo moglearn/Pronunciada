@@ -27,7 +27,7 @@
   "area": "speechocean762",
   "lang": "en",
   "measure": "sentence prosodic (intonation)",
-  "cat": "behind (not significant)"
+  "cat": "behind (significant)"
  },
  {
   "area": "speechocean762",
@@ -171,7 +171,7 @@
   "area": "swap benchmark",
   "lang": "zh",
   "measure": "near hit@5 %",
-  "cat": "behind (not significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -363,7 +363,7 @@
   "area": "swap benchmark",
   "lang": "pt",
   "measure": "native false alarms",
-  "cat": "behind (not significant)"
+  "cat": "behind (significant)"
  },
  {
   "area": "swap benchmark",
@@ -429,7 +429,7 @@
   "area": "cv-real test A",
   "lang": "en",
   "measure": "en/A",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "cv-real test B",
@@ -453,7 +453,7 @@
   "area": "cv-real test A",
   "lang": "ja",
   "measure": "ja/A",
-  "cat": "behind (not significant)"
+  "cat": "behind (significant)"
  },
  {
   "area": "cv-real test A",

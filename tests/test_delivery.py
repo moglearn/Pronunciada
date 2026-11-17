@@ -156,8 +156,10 @@ def test_sentence_model_per_language_config(tmp_path, tts):
     b = new.score(wav, "The quick brown fox jumps over the lazy dog")
     assert a.prob == pytest.approx(b.prob, abs=1e-12)        # acceptance heads unchanged
     assert set(a.scores) == set(b.scores)
-    if new.delivery:
-        assert new.sentence_name == "sentence"
+    # since the licence-clean refit (2026-11-17) every language, English included, keeps the
+    # round-4 heads (config "sentence_model"); the round-5 file is only used when selected
+    assert new.sentence_name == C.config().get("sentence_model", {}).get("en", "sentence")
+    if new.sentence_name == "sentence":
         assert any(c in D.ALL or c.startswith("emb_") for c in new.sentence.num)
 
 

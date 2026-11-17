@@ -11,7 +11,7 @@ PRE-SPECIFIED (fixed before any result was looked at):
                  Azure = PronScore
   primary metric AUC of "bad" = rejected (Test A) / non-native (Test B) vs accepted / native,
                  using 1 - prob and 100 - PronScore; 95 % percentile bootstrap CI resampling
-                 speakers (client_id); paired bootstrap of AUC(ours) - AUC(Azure) on the same
+                 speakers (pseudonymous speaker label); paired bootstrap of AUC(ours) - AUC(Azure) on the same
                  speaker resamples, two-sided p = 2 * min(P(delta <= 0), P(delta >= 0)).
   secondary      ours: mean word prob, lowest word prob, scores["accuracy"], fluency
                  (scores["fluency"] when present, else SentenceResult.fluency), scores["total"];
@@ -501,7 +501,7 @@ def markdown(ev: dict, build: dict, usage: dict, fp: str) -> str:
           f"(stated on the mirror's dataset card), Hugging Face mirror `{build['source']['mirror'].split('datasets/')[-1]}` "
           f"at revision `{build['source']['revision']}`. Only the TSV metadata and the tar shards named below were "
           "read; shards were streamed and only selected clips were stored (16 kHz FLAC, outside the repo). "
-          "Manifests (clip ids, speaker hashes, votes, accents, source shard): `bench/data/cv_real/<locale>.jsonl`; "
+          "Manifests (clip ids, pseudonymous speaker labels, votes, derived native / non-native flag, source shard): `bench/data/cv_real/<locale>.jsonl`; "
           "build log with all counts: `bench/data/cv_real/build.json`.", "",
           "Rules: " + "; ".join(f"{k}: {v}" for k, v in build["rules"].items()) + ".", "",
           "Rejected clips come from invalidated shard 0 only (the first rows of `invalidated.tsv`) where a locale has "

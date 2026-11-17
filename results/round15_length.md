@@ -185,7 +185,7 @@ after more work.
     python -m bench.length.fit_length collect --lang ja --split validation
     python -m bench.length.fit_length collect --lang ja --split train
     python -m bench.length.fit_length fit --lang ja            # writes pronunciada/data/length/ja.json
-    python -m bench.length.heldout run --lang ja && python -m bench.length.heldout report --lang ja
+    python -m bench.length.heldout_runtime --lang ja   # replaces bench/length/heldout.py (removed 2026-11-17: it no longer matched the runtime after round 17)
 
 Tables: `results/tables/round15_length.json` (dev grids, coaching points, held-out for ja and de)
 and `results/tables/round15_length_heldout_{ja,de}.json`. Tests: `tests/test_length.py`.

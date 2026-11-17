@@ -5,7 +5,7 @@
     res = scorer.score("clip.wav", "The quick brown fox", strictness=0.5)
     pronunciada.score("clip.wav", "The quick brown fox", "en")
 """
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 from .types import (PhoneResult, Reference, SentenceResult, SyllableResult,  # noqa: E402,F401
                     WordResult)

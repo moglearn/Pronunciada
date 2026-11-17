@@ -58,11 +58,16 @@ LIN_ALPHAS = np.logspace(-2, 3, 11)
 def round2_sentence_inputs():
     """SENT_NUM matrix of speechocean762 train as bench/calib/train_word2.py built it for the
     shipped sentence model (cached)."""
-    p = calib_cache() / "round2_sentence_inputs.npz"
+    from bench.calib import train_word2 as W2
+    from bench.calib.common import load_json
+
+    # licence-clean refit: the word log-odds come from the clean round-2 choice
+    # (results/tables/calib_round2_clean.json); BENCH_ROUND2_NC=1 = the historical "full/s3"
+    chosen = load_json(W2.ROUND2_JSON)["chosen_word"]
+    p = calib_cache() / ("round2_sentence_inputs_clean.npz" if W2.CLEAN else "round2_sentence_inputs.npz")
     if p.exists():
         z = np.load(p, allow_pickle=False)
         return {k: z[k] for k in z.files}
-    from bench.calib import train_word2 as W2
     from bench.calib.common import SMALL_GRID as G
     from bench.calib.fitlib import cv_heads
 
@@ -70,10 +75,12 @@ def round2_sentence_inputs():
     cols = sorted(set(F.WORD2_NUM) | set(F.WORD_NUM))
     T = W2.stack(parts, cols)
     X2 = np.column_stack([T[c].astype(float) for c in F.WORD2_NUM])
-    # round 2 chose "full/s3"; only the speechocean762 out-of-fold logits are needed here
+    # round 2 chose "full/s3" (clean refit: see calib_round2_clean.json); only the
+    # speechocean762 out-of-fold logits are needed here
+    cname, pname = chosen.split("/")
     corp = T["corpus"]
     so = np.flatnonzero(corp == "so762")
-    inc = np.isin(corp, W2.CANDS["full"])
+    inc = np.isin(corp, W2.CANDS[cname])
     z = {h: np.full(len(corp), np.nan) for h in ("len", "str")}
     for h in ("len", "str"):
         y = T[f"y_{h}"]
@@ -81,7 +88,7 @@ def round2_sentence_inputs():
             hold = np.zeros(len(corp), bool)
             hold[so[te]] = True
             m = np.flatnonzero(inc & ~hold & np.isfinite(y))
-            mdl = fit("prob", G["s3"], X2[m], y[m], [False] * X2.shape[1], W2.weights(T, m, h))
+            mdl = fit("prob", G[pname], X2[m], y[m], [False] * X2.shape[1], W2.weights(T, m, h))
             z[h][so[te]] = raw(mdl, X2[so[te]])
     zc, _ = W2.calibrated(T, z)
     yreg = T["y_reg"][so]
@@ -281,7 +288,7 @@ def ablate(a):
                       ("emb_enc5", ("enc5",)), ("emb_all", LAYERS), ("emb_enc3_final", ("enc3", "final"))):
         jobs[name] = (["emb"], {"layers": lay})
     jobs["all_delivery"] = (list(DV.GROUPS), {})
-    with ProcessPoolExecutor(min(8, len(jobs))) as ex:
+    with ProcessPoolExecutor(min(3, len(jobs))) as ex:     # laptop limit: <= 3 workers
         futs = {k: ex.submit(multi_seed, data, g, **kw) for k, (g, kw) in jobs.items()}
         res = {k: f.result() for k, f in futs.items()}
     out = {"seeds": list(SEEDS), "params": PARAMS, "single": {}}

@@ -182,8 +182,9 @@ call actually does today:
   caps (`contrast_heads.py`: ko aspiration and lax / tense, ru soft / hard, zh aspiration).
 - **Word probability** = `sounds_prob × P_prosody × present_prob` × (ja) length factor ×
   (zh, ja) contrast factor:
-  - `sounds_prob`: the word model of §4 (`data/calib/word.npz`; see docs/LICENSING.md §3 about its
-    training data); it reads the uncapped sound outputs.
+  - `sounds_prob`: the word model of §4 (`data/calib/word.npz`, speechocean762 train + FLEURS
+    validation planted errors since the licence-clean refit of 2026-11-17); it reads the uncapped
+    sound outputs.
   - `P_prosody`: tone (zh) or stress (en de es it pt ru) through a word-level calibrator whose
     leniency costs at most one point of native word acceptance on FLEURS validation.
   - `present_prob`: the word was said at all (`data/calib/omission.json`).
@@ -193,9 +194,12 @@ call actually does today:
     native quantile; adopted for zh (aspiration) and ja (voicing) only.
 - **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
 - **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
-  probability. en and pt use the round-5 heads with delivery inputs (`delivery.py`); the others
-  keep the round-4 heads (config `sentence_model`). Mandarin accuracy / prosodic are recalibrated
-  on OMPAL dev (`data/calib/sentence_zh_recal.json`).
+  probability, the round-2/4 heads (`sentence_r4.npz`) in every language. The round-5 heads with
+  delivery inputs (`sentence.npz`) were used for English and Portuguese until the licence-clean
+  refit; re-fitted on the clean word log-odds they fail their own native guard (median native
+  prosodic score drops > 0.3) in every language, so config `sentence_model` now selects
+  `sentence_r4` everywhere (results/licence_refit.md). Mandarin accuracy / prosodic are
+  recalibrated on OMPAL dev (`data/calib/sentence_zh_recal.json`).
 - **Tones and stress** (`prosody/`): the default tone model `tone_zh_v3z` reads the pitch contour,
   a low-frequency spectrum patch and per-syllable ZIPA activations (`tone_zh_v2` = pitch only,
   selectable); the stress model `stress_v3` likewise (`stress` = the previous one, selectable).
@@ -218,7 +222,8 @@ Italian and German length channels (round 15), Korean aspiration and Italian mid
 (round 16), word-level contrast factors for en / ru / de / ko (round 18), a wider training mix for
 the universal sound model (round 2).
 
-Held-out discipline: nothing is fitted or selected on speechocean762 test, L2-ARCTIC test, EpaDB
-test, FLEURS test, OMPAL test or the cv-real test half. Rounds 2–18 were each designed after an
+Held-out discipline: nothing is fitted or selected on speechocean762 test, FLEURS test, OMPAL test
+or the cv-real test half; L2-ARCTIC and EpaDB (both splits) are not used for any shipped fit or
+selection at all. Rounds 2–18 were each designed after an
 earlier held-out evaluation had been seen and then fitted / selected on train, validation or dev
 data only; every results file says so. The current numbers are in results/SCOREBOARD.md.

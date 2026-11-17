@@ -22,18 +22,18 @@
  "result": {
   "lang": "zh",
   "text": "我家有四口人",
-  "prob": 0.9844,
+  "prob": 0.9822,
   "strictness": 0.5,
   "words": [
    {
     "text": "我家",
-    "prob": 0.9849,
+    "prob": 0.9711,
     "start": 0.59,
     "end": 1.01,
     "phones": [
      {
       "ipa": "w",
-      "prob": 0.9968,
+      "prob": 0.9967,
       "start": 0.59,
       "end": 0.63,
       "heard": null,
@@ -42,7 +42,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.9858,
+      "prob": 0.9853,
       "start": 0.65,
       "end": 0.67,
       "heard": null,
@@ -51,7 +51,7 @@
      },
      {
       "ipa": "tɕ",
-      "prob": 0.7942,
+      "prob": 0.8363,
       "start": 0.83,
       "end": 0.91,
       "heard": null,
@@ -60,7 +60,7 @@
      },
      {
       "ipa": "j",
-      "prob": 0.9893,
+      "prob": 0.9876,
       "start": 0.93,
       "end": 0.95,
       "heard": null,
@@ -69,7 +69,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9948,
+      "prob": 0.9942,
       "start": 0.97,
       "end": 1.01,
       "heard": null,
@@ -84,7 +84,7 @@
       "end": 0.67,
       "tone_expected": 3,
       "tone_heard": 3,
-      "tone_prob": 0.9434,
+      "tone_prob": 0.9509,
       "stress_expected": null,
       "stress_prob": null
      },
@@ -94,14 +94,14 @@
       "end": 1.01,
       "tone_expected": 1,
       "tone_heard": 1,
-      "tone_prob": 0.9126,
+      "tone_prob": 0.9025,
       "stress_expected": null,
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.986,
+    "sounds_prob": 0.9723,
     "stress_prob": null,
-    "tone_prob": 0.9991,
+    "tone_prob": 0.999,
     "present_prob": 0.9998,
     "omitted": false,
     "length_prob": null,
@@ -109,13 +109,13 @@
    },
    {
     "text": "有",
-    "prob": 0.9913,
+    "prob": 0.9921,
     "start": 1.71,
     "end": 1.87,
     "phones": [
      {
       "ipa": "y",
-      "prob": 0.9993,
+      "prob": 0.9992,
       "start": 1.71,
       "end": 1.75,
       "heard": null,
@@ -124,7 +124,7 @@
      },
      {
       "ipa": "oʊ",
-      "prob": 0.9975,
+      "prob": 0.9972,
       "start": 1.77,
       "end": 1.87,
       "heard": null,
@@ -139,14 +139,14 @@
       "end": 1.87,
       "tone_expected": 3,
       "tone_heard": 3,
-      "tone_prob": 0.5505,
+      "tone_prob": 0.5756,
       "stress_expected": null,
       "stress_prob": null
      }
     ],
     "sounds_prob": 0.9999,
     "stress_prob": null,
-    "tone_prob": 0.9914,
+    "tone_prob": 0.9923,
     "present_prob": 1.0,
     "omitted": false,
     "length_prob": null,
@@ -154,13 +154,13 @@
    },
    {
     "text": "四口",
-    "prob": 0.868,
+    "prob": 0.8294,
     "start": 2.03,
     "end": 2.43,
     "phones": [
      {
       "ipa": "s",
-      "prob": 0.9601,
+      "prob": 0.9617,
       "start": 2.03,
       "end": 2.05,
       "heard": null,
@@ -169,16 +169,16 @@
      },
      {
       "ipa": "ɯ",
-      "prob": 0.945,
-      "start": 2.13,
-      "end": 2.15,
+      "prob": 0.9566,
+      "start": 2.11,
+      "end": 2.13,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "kʰ",
-      "prob": 0.9663,
+      "prob": 0.9561,
       "start": 2.23,
       "end": 2.29,
       "heard": null,
@@ -187,7 +187,7 @@
      },
      {
       "ipa": "oʊ",
-      "prob": 0.9734,
+      "prob": 0.965,
       "start": 2.33,
       "end": 2.43,
       "heard": null,
@@ -199,10 +199,10 @@
      {
       "text": "四",
       "start": 2.03,
-      "end": 2.15,
+      "end": 2.13,
       "tone_expected": 4,
       "tone_heard": 1,
-      "tone_prob": 0.1781,
+      "tone_prob": 0.1327,
       "stress_expected": null,
       "stress_prob": null
      },
@@ -212,37 +212,37 @@
       "end": 2.43,
       "tone_expected": 3,
       "tone_heard": 2,
-      "tone_prob": 0.1348,
+      "tone_prob": 0.1332,
       "stress_expected": null,
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.966,
+    "sounds_prob": 0.9301,
     "stress_prob": null,
-    "tone_prob": 0.935,
-    "present_prob": 0.961,
+    "tone_prob": 0.933,
+    "present_prob": 0.9558,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": 1.0
    },
    {
     "text": "人",
-    "prob": 0.9365,
-    "start": 2.55,
-    "end": 2.79,
+    "prob": 0.9342,
+    "start": 2.53,
+    "end": 2.77,
     "phones": [
      {
       "ipa": "ʐ",
-      "prob": 0.992,
-      "start": 2.55,
-      "end": 2.57,
+      "prob": 0.9955,
+      "start": 2.53,
+      "end": 2.55,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ə",
-      "prob": 0.9845,
+      "prob": 0.9833,
       "start": 2.61,
       "end": 2.63,
       "heard": null,
@@ -251,9 +251,9 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9869,
+      "prob": 0.9864,
       "start": 2.75,
-      "end": 2.79,
+      "end": 2.77,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -262,54 +262,54 @@
     "syllables": [
      {
       "text": "人",
-      "start": 2.55,
-      "end": 2.79,
+      "start": 2.53,
+      "end": 2.77,
       "tone_expected": 2,
       "tone_heard": 2,
-      "tone_prob": 0.9305,
+      "tone_prob": 0.9236,
       "stress_expected": null,
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9835,
+    "sounds_prob": 0.9638,
     "stress_prob": null,
-    "tone_prob": 0.9993,
-    "present_prob": 0.9529,
+    "tone_prob": 0.9992,
+    "present_prob": 0.97,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    }
   ],
-  "fluency": 0.832,
+  "fluency": 0.8372,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.342,
-   "load": 1.402,
-   "audio_check": 0.495,
-   "fbank": 2.931,
-   "model": 51.215,
-   "adapter": 0.194,
-   "align": 4.101,
-   "delivery": 6.408,
-   "calibrate": 1.996,
-   "prosody": 2.602,
-   "total": 76.735
+   "g2p": 0.197,
+   "load": 0.763,
+   "audio_check": 0.278,
+   "fbank": 2.617,
+   "model": 27.051,
+   "adapter": 0.185,
+   "align": 2.596,
+   "delivery": 4.385,
+   "calibrate": 1.525,
+   "prosody": 1.836,
+   "total": 45.408
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.8559,
-   "fluency": 0.832,
-   "prosodic": 0.8184,
-   "total": 0.801
+   "accuracy": 0.8519,
+   "fluency": 0.8372,
+   "prosodic": 0.8186,
+   "total": 0.8002
   },
   "audio": {
    "schema_version": 1,
    "duration_s": 3.1,
    "clipped_share": 0.0,
-   "peak_dbfs": -12.8472,
-   "noise_db": -72.2362,
-   "speech_db": -29.2121,
-   "snr_db": 52.5504,
+   "peak_dbfs": -13.1121,
+   "noise_db": -72.8234,
+   "speech_db": -29.7058,
+   "snr_db": 52.6799,
    "speech_s": 2.16,
    "speech_share": 0.6968,
    "lead_sil_s": 0.54,

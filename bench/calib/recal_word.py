@@ -28,7 +28,9 @@ from pronunciada.calibrate import save_level
 def main():
     from bench.calib.common import ece, load_json, load_table, table_columns
 
-    r2 = load_json("calib_round2.json")
+    from bench.calib.train_word2 import ROUND2_JSON
+
+    r2 = load_json(ROUND2_JSON)      # licence-clean refit: calib_round2_clean.json
     cname, pname = r2["chosen_word"].split("/")
     cands, params = CANDS[cname], SMALL_GRID[pname]
     parts = build()
@@ -93,7 +95,7 @@ def main():
     extra = {k: v for k, v in meta.items() if k not in ("num", "cat", "vocab", "encoding", "heads")}
     extra["calibration_inputs"] = "final universal-model sound outputs (round 3)"
     save_level(ship_dir() / "word.npz", meta["num"], meta["cat"], meta["vocab"], tree, extra, meta.get("encoding", "mixed"))
-    save_json("calib_recal_word.json", out)
+    save_json("calib_recal_word_clean.json" if ROUND2_JSON.endswith("_clean.json") else "calib_recal_word.json", out)
 
 
 if __name__ == "__main__":

@@ -15,7 +15,9 @@ Shipped data files with their own licences (pronunciada/data/lex; per-file list 
   it, pt, ru  derived from WikiPron / Wiktionary: CC BY-SA, attribution "Wiktionary
             contributors". These files (it.tsv.gz, it_lts.tsv.gz, pt.tsv.gz, ru.tsv.gz,
             ru_stress.tsv.gz) stay under CC BY-SA when redistributed; the Apache licence of the
-            code does not apply to them.
+            code does not apply to them. The output adapters pronunciada/data/adapters/it.npz,
+            pt.npz and ru.npz, trained towards references built from these files, are treated as
+            share-alike adaptations as well (CC BY-SA 4.0, same attribution).
   ru_stress_extra.tsv.gz  stress marks (and restored ё) for 14 040 Russian word forms missing from
             ru.tsv.gz, derived offline with silero-stress 1.5 (MIT, github.com/snakers4/silero-stress)
             from FLEURS-ru train/validation and Common Voice ru (CC0) sentence text
@@ -28,19 +30,24 @@ Runtime text packages (optional extras, installed separately)
 
 Models trained for this project (pronunciada/data; details per file in docs/LICENSING.md)
   Output adapters, stress models, attribute heads, length model: FLEURS (Google, CC BY 4.0).
-  Sound / word / sentence calibrators: speechocean762 train (CC BY 4.0 on OpenSLR).
-  The round-2 word model (pronunciada/data/calib/word.npz) was ALSO trained on L2-ARCTIC train
-  (CC BY-NC 4.0) and EpaDB train; see docs/LICENSING.md section 3 (unresolved).
+  Sound / word / sentence calibrators: speechocean762 train (CC BY 4.0 on OpenSLR); the word
+  model also uses FLEURS validation planted errors. Nothing shipped is fitted on, or selected
+  with, L2-ARCTIC or EpaDB (the word model was re-fitted without them on 2026-11-17;
+  results/licence_refit.md).
   Mandarin defaults, coaching models: OMPAL dev (CC BY 4.0), Common Voice (CC0).
-  Mandarin tone models: AISHELL-3 and AISHELL-1 (Apache-2.0 per their distribution pages; 200 of
-  the 300 AISHELL-1 speakers were fetched from a community mirror whose card states no licence),
-  Common Voice zh-TW (CC0), FLEURS zh train.
+  Mandarin tone models: AISHELL-3 (OpenSLR SLR93) and AISHELL-1 (OpenSLR SLR33), both Apache
+  License 2.0 (200 of the 300 AISHELL-1 speakers were fetched from a community mirror that
+  re-hosts the same corpus), Common Voice zh-TW (CC0), FLEURS zh train.
 
-Benchmark-only data (not shipped)
-  L2-ARCTIC test (CC BY-NC 4.0), EpaDB test, Microsoft Azure Pronunciation Assessment responses
+Benchmark data (not shipped; nothing shipped was fitted or selected on L2-ARCTIC or EpaDB)
+  L2-ARCTIC (CC BY-NC 4.0), EpaDB, Microsoft Azure Pronunciation Assessment responses
   (cached outside the repository; only aggregate statistics are in results/).
   OMPAL corpus (CC BY 4.0), github.com/phantomhsieh/OMPAL-corpus: Hsieh et al., "OMPAL: Bridging
   Speech and Learning with an Open-Source Mandarin Pronunciation Assessment Corpus for Global
   Learners", Interspeech 2025, doi:10.21437/Interspeech.2025-983 (test half: benchmark; dev half:
   tuning, see above).
   praat-parselmouth (GPL-3.0) is used offline to cross-check the pitch tracker only.
+
+Sample recordings (site/samples/, the only benchmark audio in the repository)
+  Nine CC BY 4.0 test-split clips from speechocean762, FLEURS and OMPAL; sources and citations in
+  site/samples/ATTRIBUTION.md.

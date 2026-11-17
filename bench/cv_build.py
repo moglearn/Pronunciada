@@ -26,7 +26,11 @@ per speaker; no speaker and no (normalised) sentence on both sides; dev / test h
 speaker hash (seed SEED); the two sides are matched by stratified sampling on (characters,
 duration) bins, with the same number of clips per stratum on each side.
 
-Outputs: bench/data/cv_real/<locale>.jsonl (ids + metadata, no audio, no paths),
+Outputs: bench/data/cv_real/<locale>.jsonl (ids + metadata, no audio, no paths; speakers are
+pseudonymised as per-locale labels spk_0001 ... numbered in sorted order of the Common Voice
+client_id, whose mapping stays in $PRONUNCIADA_CACHE/data/cv-real/speaker_map/<locale>.json; the
+free-text accent strings are replaced by the derived flag "native" = native / nonnative /
+unknown; `python -m bench.cv_build pseudonymise` converts existing manifests),
 bench/data/cv_real/build.json (cleaning counts, sources). Audio:
 $PRONUNCIADA_CACHE/data/cv-real/audio/<locale>/<stem>.flac.
 """
@@ -778,6 +782,7 @@ def step_finalize(locales) -> None:
                                               "audio_rules_on_fetched": dict(sil), "edges": h["edges"]}
         rows_out.sort(key=lambda r: (r["test"], r["half"], -r["label"], r["id"]))
         mp = OUT_DIR / f"{loc}.jsonl"
+        rows_out = pseudonymise_rows(loc, rows_out)
         with open(mp, "w", encoding="utf-8") as f:
             for r in rows_out:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
@@ -801,6 +806,45 @@ def _manifest_row(loc, test, half, side, skey, r, st) -> dict:
             "source": f"{REPO}@{REV[:12]}:audio/{loc}/{r['src_split']}/{loc}_{r['src_split']}_{r['src_shard']}.tar"}
 
 
+def pseudonymise_rows(loc: str, rows: list[dict]) -> list[dict]:
+    """client_id -> "speaker" (spk_0001 ... in sorted client_id order, so every speaker-grouped
+    bootstrap resamples exactly as before), accents -> "native" (nativeness()); the mapping is kept
+    in the cache directory, outside the repository."""
+    if not rows or "client_id" not in rows[0]:
+        return rows
+    ids = sorted({r["client_id"] for r in rows})
+    lab = {c: f"spk_{k + 1:04d}" for k, c in enumerate(ids)}
+    d = cache_root() / "speaker_map"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"{loc}.json").write_text(json.dumps(lab, indent=0))
+    out = []
+    for r in rows:
+        r = dict(r)
+        cid, acc = r.pop("client_id"), r.pop("accents", "")
+        new = {}
+        for k, v in r.items():
+            new[k] = v
+            if k == "path":
+                new["speaker"] = lab[cid]
+            if k == "down_votes":
+                new["native"] = nativeness(loc, acc)
+        out.append(new)
+    return out
+
+
+def pseudonymise_files(locales=LOCALES) -> None:
+    for loc in locales:
+        mp = OUT_DIR / f"{loc}.jsonl"
+        if not mp.exists():
+            continue
+        rows = [json.loads(x) for x in open(mp, encoding="utf-8")]
+        rows = pseudonymise_rows(loc, rows)
+        with open(mp, "w", encoding="utf-8") as f:
+            for r in rows:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        print(loc, len(rows), "rows,", len({r["speaker"] for r in rows}), "speakers", flush=True)
+
+
 # ============================================================================ loading (for eval)
 
 def load_manifest(locales=LOCALES, half: str | None = "test", test: str | None = None) -> list[dict]:
@@ -813,13 +857,14 @@ def load_manifest(locales=LOCALES, half: str | None = "test", test: str | None =
             r = json.loads(line)
             if (half is None or r["half"] == half) and (test is None or r["test"] == test):
                 r["audio"] = str(audio_path(loc, r["path"].rsplit(".", 1)[0]))
+                r.setdefault("client_id", r.get("speaker"))   # pseudonymous label; consumers group by it
                 out.append(r)
     return out
 
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("step", choices=("meta", "select", "fetch", "finalize", "all"))
+    ap.add_argument("step", choices=("meta", "select", "fetch", "finalize", "all", "pseudonymise"))
     ap.add_argument("--locales", default="all")
     ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args(argv)
@@ -835,6 +880,8 @@ def main(argv=None) -> None:
         step_fetch(locs, a.workers)
     if a.step in ("finalize", "all"):
         step_finalize(locs)
+    if a.step == "pseudonymise":
+        pseudonymise_files(locs)
 
 
 if __name__ == "__main__":

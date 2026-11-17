@@ -15,6 +15,8 @@ import subprocess
 import sys
 import threading
 import urllib.error
+
+import pronunciada
 import urllib.request
 import uuid
 from pathlib import Path
@@ -144,7 +146,7 @@ def test_cli_langs_version_and_errors(capsys, tmp_path):
     assert {x["code"] for x in L} == {"en", "zh", "ja", "es", "fr", "de", "it", "pt", "ru", "ko"}
     with pytest.raises(SystemExit) as e:
         main(["--version"])
-    assert e.value.code == 0 and "pronunciada 0." in capsys.readouterr().out
+    assert e.value.code == 0 and f"pronunciada {pronunciada.__version__}" in capsys.readouterr().out
     assert main(["check", str(tmp_path / "missing.wav"), "hi"]) == 2
     assert "not found" in capsys.readouterr().err
 

@@ -2,11 +2,12 @@
 
     python -m bench.length.heldout_runtime [--lang ja] [--workers 3]   # -> results/tables/length_runtime_<lang>.json
 
-bench/length/heldout.py recomputes the channel offline with the round-15 arithmetic; since round 17
-the runtime also feeds the attribute head's length evidence into it (pronunciada.length.score,
-head_s), which that offline path does not apply. This script reads `PhoneResult.length_prob` and
-`WordResult.prob` straight from `Scorer(lang).score(...)`, on the same clips and planted swaps as
-heldout.py (bench/audit/contrasts.py generators, PER_DIR per direction, seeds "length-v1"):
+It replaces the round-15 script bench/length/heldout.py (removed 2026-11-17), which recomputed the
+channel offline with the round-15 arithmetic and so missed the round-17 head input
+(pronunciada.length.score, head_s; its own runtime parity check differed by up to 0.166). This
+script reads `PhoneResult.length_prob` and `WordResult.prob` straight from `Scorer(lang).score(...)`,
+on the same clips and planted swaps (bench/audit/contrasts.py generators, PER_DIR per direction,
+seeds "length-v1"):
 * sound level: threshold = 5 % quantile of natives' judged length probabilities; share of swapped
   sounds (min over the edited sounds) at or below it, per contrast and direction;
 * word level: threshold = 5 % quantile of native word probabilities; share of swapped words below.
