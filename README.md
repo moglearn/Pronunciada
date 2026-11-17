@@ -96,9 +96,9 @@ import pronunciada
 
 result = pronunciada.score("clip.wav", "The ball is in their court now", lang="en")
 
-result.prob                               # 0.55, probability the sentence would be accepted
+result.prob                               # 0.48, probability the sentence would be accepted
 for word in result.words:
-    print(word.text, round(word.prob, 2)) # COURT 0.22
+    print(word.text, round(word.prob, 2)) # court 0.17
     for sound in word.phones:
         print("  ", sound.ipa, round(sound.prob, 2), sound.heard)
 

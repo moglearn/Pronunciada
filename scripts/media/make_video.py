@@ -78,14 +78,14 @@ def slides() -> list[tuple[str, float]]:
               '<div class="row"><div class="ph">k<small>0.90</small></div><div class="ph a">ɔ<small>0.60</small></div>'
               '<div class="ph r">ɹ<small>heard ŋ</small></div><div class="ph r">t<small>0.26</small></div></div>'
               '<ul><li>Keep the air out of your nose for /ɹ/ in “court”; it sounded like /ŋ/.</li>'
-              '<li>Listen to the vowel in “ball” and try it again.</li></ul>'), 7.2),
+              '<li>Listen to /l̴/ in “ball” and try it again; it did not sound quite right.</li></ul>'), 7.2),
         (page('<div class="k">What expert raters marked on the same recording</div>'
               '<h2>Sentence accuracy 4 out of 10.<br>Words marked wrong: “ball” and “court”.</h2>'
-              '<p>The red words are the ones the experts marked.</p>', "expert scores: speechocean762"), 5.2),
+              '<p>Pronunciada flagged both, and “now” as well.</p>', "expert scores: speechocean762"), 5.2),
         (page('<div class="k">Mandarin tones</div><div class="s"><span class="g">我</span><span class="g">家</span><span class="a">有</span>'
               '<span class="r">四</span><span class="r">口</span><span class="g">人</span></div>'
               '<div class="row"><div class="ph r">四<small>tone 4, heard 1</small></div><div class="ph r">口<small>tone 3, heard 2</small></div></div>'
-              '<p>The teachers marked the tone of 口 as wrong. Azure reports no tones at all.</p>', "recording and marks: OMPAL, CC BY 4.0"), 7.2),
+              '<p>The teachers marked the tone of 口 as wrong. Pronunciada gives its lowest tone scores to 口 and 四.</p>', "recording and marks: OMPAL, CC BY 4.0"), 7.2),
         (page('<div class="k">Same held-out recordings, both systems</div>'
               f'<table><tr><th></th><th>Pronunciada</th><th>Azure</th></tr>{rows}</table>'
               '<p style="font-size:30px">Ahead in 60 of 84 comparisons, behind in 24. Every number is reproducible from the repository.</p>'), 8.5),

@@ -277,8 +277,11 @@ def render(result, coaching: dict | None = None, color: bool = False, width: int
     for wi, w in enumerate(words):
         p = getattr(w, "prob", None)
         witems = by_word.get(wi, [])
-        if not (getattr(w, "omitted", False) or (p is not None and p < GOOD) or
-                any(it.get("kind") != "mispronounced_word" for it in witems)):
+        # A word that scored well gets a row only when an item says something concrete about it
+        # (a named replacement, a tone, a length); an unnamed "check this sound" is not enough.
+        concrete = any(it.get("kind") != "mispronounced_word" and
+                       not (it.get("kind") == "substitution" and it.get("heard") is None) for it in witems)
+        if not (getattr(w, "omitted", False) or (p is not None and p < GOOD) or concrete):
             continue
         rows.append((wi, w, witems))
     if rows:

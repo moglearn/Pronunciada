@@ -62,3 +62,4 @@ pronunciada = ["data/**/*", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]          # tests of the benchmark helpers import bench/
