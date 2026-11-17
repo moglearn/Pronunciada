@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/banner.jpg" alt="Pronunciada. The waveform of a learner saying 'The ball is in their court now', cut at the word boundaries, with the probability given to each word." width="100%">
+  <img src="docs/assets/banner.jpg" alt="Pronunciada. The waveform of a learner saying 'It was a beautiful day for a float', cut at the word boundaries, with the probability given to each word." width="100%">
 </p>
 
 # Pronunciada
@@ -18,59 +18,67 @@ On the public learner corpora with expert annotation (English and Mandarin), its
 
 ```bash
 pip install pronunciada
-pronunciada check clip.wav "The ball is in their court now" --lang en
+pronunciada check clip.wav "It was a beautiful day for a float" --lang en
 ```
 
 ```text
-✗ Try again  sentence 48% · accuracy 6.7/10 · fluency 7.4/10   en · strictness 0.5
+~ Close  sentence 75% · accuracy 7.7/10 · fluency 8.1/10   en · strictness 0.5
 
-  The ball is in their court now
-      ^^^^             ^^^^^ ^^^
+  It was a beautiful day for a float
+           ~~~~~~~~~         ~ ^^^^^
 
-  ball   35%  b 84%  [ɔ 38%]  [l̴ 36%]
-  court  17%  k 90%  [ɔ 60%]  [ɹ→ŋ 40%]  [t 26%]
-  now    35%  [n 26%]  aʊ 66%
+  beautiful  63%  b 92%  [j→b 67%]  u 66%  t 58%  [ə 57%]  f 84%  ə 64%
+                  [l̴ 65%]
+  a          79%  [ɪ 64%]
+  float      10%  f 83%  [l 27%]  [oʊ 35%]  t 56%
 
-  → Don't let the air flow around the sides of the tongue for /n/ in “now”; it sounded like an l.
-  → Keep the air out of your nose for /ɹ/ in “court”; it sounded like /ŋ/.
-  → Listen to /l̴/ in “ball” and try it again; it did not sound quite right.
+  → Let the air pass along the sides of the tongue for /l/ in “float”.
 ```
 
-This is the output for [`site/samples/en-learner-1.mp3`](site/samples/en-learner-1.mp3), a recording from the speechocean762 test set. The corpus annotators marked the vowels of "ball" and "court" as mispronounced. `ɹ→ŋ` means /ɹ/ was expected and /ŋ/ was recognized.
+This is the output for [`site/samples/en-learner-1.mp3`](site/samples/en-learner-1.mp3), a recording from the speechocean762 test set. The corpus annotators marked the /l/ of "float" as dropped. `^` marks a word below 0.5 and `~` a word between 0.5 and 0.8.
 
 The same call from Python:
 
 ```python
 import pronunciada
 
-result = pronunciada.score("clip.wav", "The ball is in their court now", lang="en")
+result = pronunciada.score("clip.wav", "It was a beautiful day for a float", lang="en")
 
 print(f"{result.prob:.2f}")
-# 0.48
+# 0.75
 for word in result.words:
     print(word.text, f"{word.prob:.2f}")
-# The 0.88
-# ball 0.35
-# is 0.92
-# in 0.96
-# their 0.93
-# court 0.17
-# now 0.35
-for phone in result.words[5].phones:
-    print(phone.ipa, f"{phone.prob:.2f}", phone.heard)
-# k 0.90 None
-# ɔ 0.60 None
-# ɹ 0.40 ŋ
-# t 0.26 t
+# It 0.87
+# was 0.96
+# a 0.97
+# beautiful 0.63
+# day 0.94
+# for 0.93
+# a 0.79
+# float 0.10
+for phone in result.words[7].phones:
+    print(phone.ipa, f"{phone.prob:.2f}", repr(phone.heard))
+# f 0.83 None
+# l 0.27 ''
+# oʊ 0.35 'ɔ'
+# t 0.56 None
 ```
+
+`heard` is set when a phoneme scores below 0.5. It is what the recognizer output in that span, or an empty string if it output nothing there.
 
 The model is downloaded to `~/.cache/pronunciada` on first use.
 
-A 30-second recording of this command and of the demo app scoring a Mandarin learner, with the audio: [docs/assets/demo.mp4](docs/assets/demo.mp4).
+A one-minute video with sound shows this recording being scored, the demo app scoring a Mandarin learner, and the benchmark charts: [docs/assets/demo.mp4](docs/assets/demo.mp4).
 
 ## Benchmarks
 
 All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. An asterisk in a chart, and bold in a table, marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). The charts are generated from the scoreboard by `scripts/graphics/make_charts.py`. Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
+
+### Summary
+
+![Head-to-head comparisons with Azure by language. Significantly ahead, no significant difference, significantly behind: English 11, 5, 3. Mandarin 5, 11, 0. Japanese 3, 1, 2. Spanish 3, 2, 1. French 5, 1, 0. German 3, 4, 0. Italian 3, 3, 0. Portuguese 3, 2, 1. Russian 3, 3, 0. Korean 1, 5, 0.](docs/assets/chart-tally.png)
+
+The scoreboard has 84 comparisons with Azure, each one metric on one held-out test set. Pronunciada is significantly ahead in 40, not significantly different in 37 (ahead in 20 of those) and significantly behind in 7. The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips). The sections below show the main tests.
 
 ### English learners
 
@@ -118,6 +126,14 @@ On speechocean762 test (47,041 phonemes, 18.6% marked as errors), with both syst
 
 </details>
 
+### Compared with ZIPA alone
+
+![Pronunciada and the unmodified ZIPA model on the learner tests. English phonemes 0.685 and 0.434, words 0.609 and 0.394, sentences 0.748 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, EpaDB 0.721 and 0.638, Mandarin any error 0.792 and 0.602, Mandarin tone errors 0.778 and 0.552 (AUC).](docs/assets/chart-zipa.png)
+
+To measure what this project adds to the open model, the same held-out tests were run on the unmodified ZIPA model scored with the standard goodness-of-pronunciation method: the mean log-posterior of each expected phoneme over its force-aligned frames, with no adapters, calibration, or tone and stress models. Over 60 test rows, Pronunciada is significantly ahead in 45 and not significantly different in 15. ZIPA alone is not significantly ahead in any. Repeating the correlation rows with a rank-based measure (Spearman) leaves every one of them significantly ahead, with smaller gaps at the phoneme and word level (0.469 against 0.309 for phonemes).
+
+The difference is smallest where the task is easy for both, such as detecting a clearly different word in the prompt (AUC 0.99 for both), and largest for Mandarin tones, which ZIPA does not output. For reference, ZIPA alone scores 0.659 and 0.638 at detecting marked errors on L2-ARCTIC and EpaDB, where Azure scores 0.631 and 0.587, and 0.434 in phoneme-level agreement with expert scores, where Azure scores 0.538. The differences between ZIPA alone and Azure were not tested for significance. All rows are in [results/zipa_baseline.md](results/zipa_baseline.md).
+
 ### All ten languages
 
 We found no public learner corpus with expert annotation for the other eight languages. The chart below is a proxy test on native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
@@ -143,8 +159,6 @@ This test measures whether a system detects a mismatch between audio and text. I
 | Korean | 0.944 | 0.937 |
 
 </details>
-
-Across all 84 comparisons in the scoreboard, Pronunciada is ahead in 60 (40 significant) and behind in 24 (7 significant). The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips).
 
 Azure was not tuned on any of this data. Pronunciada's calibration models were fitted on speechocean762 train, FLEURS train and validation, and the OMPAL development speakers. Every figure above is from a held-out split.
 
@@ -198,8 +212,8 @@ for word in result.words:
 ```python
 for item in result.coaching():
     print(item["kind"], item["word"], item["expected_ipa"], item["heard_ipa"], item["diff_keys"])
-# substitution now n None ['lateral']
-# substitution court ɹ ŋ ['place', 'manner']
+# substitution float l None ['lateral']
+# substitution beautiful l̴ None ['lateral']
 # ...
 ```
 

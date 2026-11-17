@@ -45,6 +45,106 @@ Significantly behind: en speechocean762: sentence prosodic (intonation); en swap
 - **Design rounds followed earlier held-out looks.** Rounds 2–18 were each designed after an earlier held-out evaluation had been seen, and each change was selected on separate dev data (train / validation / dev halves) before the held-out sets were run once. The held-out sets have therefore been looked at many times across rounds; small differences should be read with that in mind.
 - **Significance**: "significant" = two-sided paired p < 0.05 in the table's own test (or a paired 95 % CI excluding 0 where the table has no p); no correction for the number of comparisons. "Level" = equal at the shown precision.
 
+## Against ZIPA alone
+
+Ablation: the same held-out items, metrics and resampling as the tables below, with Pronunciada replaced by the unmodified ZIPA model (`zipa-small-crctc-500k`, fp32, raw log-posteriors, no adapter) and the canonical phone sequence of Pronunciada's text front end (no alternatives, calibrators, prosody / length / contrast heads or fitted thresholds). **gop** = mean log-posterior of the canonical token over its CTC Viterbi-aligned frames (word / sentence = mean of their phones); **match** = greedy decode aligned to the canonical tokens (phone matched or not; sentence = 1 − token error rate). Δ = Pronunciada − gop, paired on the table's own resampling unit, two-sided p. Pronunciada's values are recomputed from the cached per-utterance outputs and equal the tables below. Baseline audio: 11304 files, 17.1 h. Source: `bench/eval_zipa_baseline.py` → `zipa_baseline.json` (write-up: results/zipa_baseline.md). These rows are not counted in the Azure tally.
+
+Pronunciada vs gop over 60 rows: significantly ahead 45, not different 15, significantly behind 0.
+
+**speechocean762 test, Pearson with the expert scores (speaker bootstrap).**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| individual sounds | 47369 | 0.685 [0.613, 0.731] | 0.434 [0.389, 0.481] | 0.347 [0.314, 0.378] | +0.250 [+0.217, +0.274] | 0.002 | **ahead** |
+| words | 15967 | 0.609 [0.533, 0.663] | 0.394 [0.335, 0.450] | 0.338 [0.291, 0.380] | +0.215 [+0.177, +0.244] | 0.002 | **ahead** |
+| sentence accuracy | 2500 | 0.748 [0.685, 0.794] | 0.583 [0.508, 0.640] | 0.601 [0.530, 0.655] | +0.165 [+0.101, +0.212] | 0.002 | **ahead** |
+| sentence fluency | 2500 | 0.779 [0.695, 0.836] | 0.562 [0.473, 0.638] | 0.584 [0.504, 0.640] | +0.217 [+0.090, +0.317] | 0.004 | **ahead** |
+| sentence prosodic | 2500 | 0.772 [0.693, 0.830] | 0.588 [0.508, 0.657] | 0.613 [0.540, 0.662] | +0.184 [+0.066, +0.274] | 0.006 | **ahead** |
+| sentence total | 2500 | 0.762 [0.700, 0.811] | 0.614 [0.538, 0.682] | 0.619 [0.552, 0.670] | +0.148 [+0.060, +0.214] | 0.002 | **ahead** |
+
+**L2-ARCTIC and EpaDB test, ROC AUC of the sound score against the annotators' marks (speaker bootstrap).**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| L2-ARCTIC test | 29760 | 0.712 [0.647, 0.759] | 0.659 [0.586, 0.726] | 0.620 [0.562, 0.676] | +0.054 [+0.025, +0.084] | 0.002 | **ahead** |
+| EpaDB test | 20665 | 0.721 [0.707, 0.735] | 0.638 [0.614, 0.660] | 0.599 [0.578, 0.615] | +0.083 [+0.066, +0.103] | 0.002 | **ahead** |
+
+**speechocean762 test coaching yardstick, precision at Pronunciada's three recalls (gop and match thresholded to the same recall; speaker bootstrap).**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| precision at 'careful' recall (0.236) | 47041 | 0.770 [0.721, 0.811] | 0.524 [0.468, 0.568] | 0.375 [0.340, 0.410] | +0.246 [+0.221, +0.277] | 0.002 | **ahead** |
+| precision at 'balanced' recall (0.362) | 47041 | 0.659 [0.612, 0.702] | 0.466 [0.425, 0.506] | 0.375 [0.340, 0.410] | +0.193 [+0.171, +0.214] | 0.002 | **ahead** |
+| precision at 'eager' recall (0.499) | 47041 | 0.560 [0.518, 0.599] | 0.403 [0.368, 0.434] | 0.375 [0.340, 0.410] | +0.156 [+0.138, +0.176] | 0.002 | **ahead** |
+| precision-recall AUC | 47041 | 0.570 [0.510, 0.622] | 0.393 [0.347, 0.436] | 0.288 [0.254, 0.321] | +0.177 [+0.155, +0.197] | 0.002 | **ahead** |
+
+**OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker bootstrap.**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| word: any error | 8156 | 0.792 [0.750, 0.838] | 0.602 [0.560, 0.644] | 0.590 [0.556, 0.630] | +0.190 [+0.157, +0.241] | < 0.001 | **ahead** |
+| word: tone-only error | 8156 | 0.778 [0.732, 0.829] | 0.552 [0.506, 0.592] | 0.541 [0.509, 0.569] | +0.226 [+0.189, +0.292] | < 0.001 | **ahead** |
+| word: consonant / vowel error | 8156 | 0.856 [0.806, 0.895] | 0.839 [0.787, 0.882] | 0.823 [0.770, 0.863] | +0.017 [-0.009, +0.048] | 0.22 | ahead, n.s. |
+| sentence accuracy | 663 | 0.634 [0.468, 0.742] | 0.302 [0.086, 0.426] | 0.270 [0.091, 0.356] | +0.333 [+0.213, +0.462] | < 0.001 | **ahead** |
+
+**Tone swaps (zh, FLEURS test), ROC AUC; utterance bootstrap.**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| zh tone AUC | 150 | 0.834 [0.801, 0.864] | 0.5 (blind) | 0.5 (blind) | +0.334 [+0.301, +0.364] | 0.002 | **ahead** |
+
+150 of 150 tone-swapped prompts map to the same ZIPA token sequence as the original prompt (ZIPA has no tone tokens), so the baseline cannot see the change; its AUC is 0.5 by construction and was not computed. Δ = Pronunciada − 0.5, CI and p from Pronunciada's utterance bootstrap.
+
+**Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / gop / match, then Δ vs gop and verdict (p).
+
+| lang | far AUC | near AUC | near hit@5 % |
+|---|---|---|---|
+| en | 0.995 / 0.995 / 0.984, -0.000 level (0.67) | 0.981 / 0.962 / 0.884, +0.019 **ahead** (0.002) | 0.893 / 0.840 / 0.082, +0.053 ahead, n.s. (0.16) |
+| zh | 0.992 / 0.992 / 0.977, -0.000 level (0.74) | 0.975 / 0.960 / 0.910, +0.015 **ahead** (0.02) | 0.900 / 0.827 / 0.338, +0.073 ahead, n.s. (0.08) |
+| ja | 0.991 / 0.986 / 0.949, +0.005 **ahead** (0.03) | 0.968 / 0.896 / 0.726, +0.072 **ahead** (0.002) | 0.840 / 0.353 / 0.032, +0.487 **ahead** (0.002) |
+| es | 0.998 / 0.997 / 0.989, +0.000 level (0.71) | 0.990 / 0.916 / 0.811, +0.074 **ahead** (0.002) | 0.967 / 0.380 / 0.091, +0.587 **ahead** (0.002) |
+| fr | 0.997 / 0.995 / 0.969, +0.002 **ahead** (0.010) | 0.986 / 0.925 / 0.809, +0.062 **ahead** (0.002) | 0.927 / 0.440 / 0.182, +0.487 **ahead** (0.002) |
+| de | 0.996 / 0.989 / 0.979, +0.007 **ahead** (0.002) | 0.960 / 0.852 / 0.724, +0.108 **ahead** (0.002) | 0.767 / 0.240 / 0.187, +0.527 **ahead** (0.002) |
+| it | 0.998 / 0.997 / 0.976, +0.001 ahead, n.s. (0.57) | 0.979 / 0.949 / 0.834, +0.030 **ahead** (0.002) | 0.887 / 0.700 / 0.065, +0.187 **ahead** (0.004) |
+| pt | 0.997 / 0.996 / 0.967, +0.002 ahead, n.s. (0.12) | 0.963 / 0.919 / 0.781, +0.044 **ahead** (0.002) | 0.853 / 0.547 / 0.187, +0.307 **ahead** (0.002) |
+| ru | 0.990 / 0.988 / 0.957, +0.003 **ahead** (0.05) | 0.900 / 0.847 / 0.709, +0.052 **ahead** (0.002) | 0.620 / 0.340 / 0.086, +0.280 **ahead** (0.002) |
+| ko | 0.994 / 0.993 / 0.972, +0.001 ahead, n.s. (0.51) | 0.944 / 0.838 / 0.695, +0.106 **ahead** (0.002) | 0.753 / 0.300 / 0.142, +0.453 **ahead** (0.002) |
+
+**cv-real test A, AUC of the sentence score (speaker bootstrap).**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| en/A | 400 | 0.748 [0.698, 0.799] | 0.719 [0.668, 0.769] | 0.689 [0.637, 0.741] | +0.029 [+0.000, +0.057] | 0.05 | **ahead** |
+| zh-CN/A | 386 | 0.771 [0.720, 0.819] | 0.717 [0.665, 0.769] | 0.738 [0.685, 0.790] | +0.053 [+0.024, +0.083] | < 0.001 | **ahead** |
+| zh-TW/A | 400 | 0.885 [0.849, 0.916] | 0.844 [0.802, 0.884] | 0.841 [0.801, 0.880] | +0.041 [+0.012, +0.071] | 0.003 | **ahead** |
+| ja/A | 390 | 0.798 [0.747, 0.845] | 0.735 [0.678, 0.789] | 0.756 [0.705, 0.803] | +0.064 [+0.032, +0.095] | < 0.001 | **ahead** |
+| es/A | 396 | 0.766 [0.718, 0.811] | 0.677 [0.624, 0.728] | 0.704 [0.653, 0.754] | +0.089 [+0.034, +0.146] | < 0.001 | **ahead** |
+| fr/A | 396 | 0.789 [0.743, 0.832] | 0.759 [0.710, 0.807] | 0.779 [0.733, 0.823] | +0.030 [-0.000, +0.062] | 0.05 | ahead, n.s. |
+| de/A | 396 | 0.823 [0.782, 0.863] | 0.630 [0.573, 0.686] | 0.700 [0.648, 0.750] | +0.193 [+0.143, +0.247] | < 0.001 | **ahead** |
+| it/A | 398 | 0.767 [0.718, 0.814] | 0.717 [0.663, 0.768] | 0.714 [0.665, 0.764] | +0.050 [+0.017, +0.084] | 0.003 | **ahead** |
+| pt/A | 400 | 0.729 [0.677, 0.779] | 0.688 [0.635, 0.739] | 0.721 [0.670, 0.770] | +0.041 [-0.002, +0.084] | 0.06 | ahead, n.s. |
+| ru/A | 400 | 0.788 [0.743, 0.829] | 0.754 [0.704, 0.801] | 0.725 [0.674, 0.773] | +0.033 [-0.007, +0.075] | 0.11 | ahead, n.s. |
+| ko/A | 22 | 0.802 [0.581, 0.985] | 0.826 [0.615, 0.985] | 0.860 [0.667, 1.000] | -0.025 [-0.222, +0.127] | 0.90 | behind, n.s. |
+
+**cv-real test B, AUC of the sentence score (speaker bootstrap).**
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| en/B | 260 | 0.517 [0.445, 0.588] | 0.537 [0.463, 0.609] | 0.520 [0.447, 0.596] | -0.021 [-0.068, +0.027] | 0.41 | behind, n.s. |
+| de/B | 102 | 0.541 [0.423, 0.649] | 0.540 [0.410, 0.663] | 0.600 [0.492, 0.710] | +0.001 [-0.137, +0.144] | 0.98 | ahead, n.s. |
+
+**Rank check (Spearman).** GOP scores are unbounded log-posteriors with a floor, so Pearson could understate the baseline through nonlinearity alone; this repeats the Pearson rows with Spearman on the same items and the same paired speaker bootstrap (not counted in the row count above).
+
+| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
+|---|---|---|---|---|---|---|---|
+| speechocean762 individual sounds | 47369 | 0.469 [0.439, 0.501] | 0.309 [0.276, 0.339] | 0.317 [0.286, 0.346] | +0.160 [+0.147, +0.174] | 0.002 | **ahead** |
+| speechocean762 words | 15967 | 0.415 [0.363, 0.463] | 0.350 [0.308, 0.390] | 0.339 [0.298, 0.376] | +0.065 [+0.051, +0.080] | 0.002 | **ahead** |
+| speechocean762 sentence accuracy | 2500 | 0.709 [0.648, 0.758] | 0.606 [0.543, 0.658] | 0.614 [0.547, 0.666] | +0.103 [+0.080, +0.129] | 0.002 | **ahead** |
+| speechocean762 sentence fluency | 2500 | 0.764 [0.708, 0.806] | 0.541 [0.455, 0.609] | 0.574 [0.488, 0.638] | +0.222 [+0.180, +0.269] | 0.002 | **ahead** |
+| speechocean762 sentence prosodic | 2500 | 0.752 [0.694, 0.795] | 0.568 [0.486, 0.631] | 0.603 [0.524, 0.660] | +0.184 [+0.145, +0.227] | 0.002 | **ahead** |
+| speechocean762 sentence total | 2500 | 0.734 [0.677, 0.778] | 0.619 [0.553, 0.671] | 0.627 [0.558, 0.677] | +0.114 [+0.088, +0.141] | 0.002 | **ahead** |
+| OMPAL sentence accuracy | 663 | 0.638 [0.454, 0.764] | 0.308 [0.068, 0.468] | 0.295 [0.094, 0.426] | +0.330 [+0.217, +0.436] | < 0.001 | **ahead** |
+
 ## English
 
 ### Agreement with expert raters (speechocean762 test, 2,500 recordings of 125 Mandarin-L1 learners)

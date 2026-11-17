@@ -22,17 +22,13 @@ NO_SPACES = {"zh", "ja"}
 SENSITIVITY = {"Careful (fewer tips)": "careful", "Balanced": "balanced", "Eager (more tips)": "eager"}
 
 CSS = """
-.pr-wrap{font-size:15px;line-height:22px}
-.pr-gloss{display:flex;flex-wrap:wrap;gap:10px 16px;margin:4px 0 14px}
-.pr-gloss span{display:flex;flex-direction:column}
-.pr-gloss b{font-weight:400;font-size:20px;line-height:26px}
-.pr-gloss i{font-style:normal;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:16px;opacity:.6}
-.pr-low b,.pr-low i,.pr-lowp{color:#b42318;opacity:1}
-.dark .pr-low b,.dark .pr-low i,.dark .pr-lowp{color:#f97066}
-.pr-dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:0 0 12px}
-.pr-dl dt{font-weight:500}.pr-dl dd{margin:0}
-.pr-ph{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
-.pr-note{font-size:13px;opacity:.7}
+.pr-wrap{font-size:15px;line-height:23px}
+.pr-sent{font-size:26px;line-height:34px;letter-spacing:-.015em;margin:0 0 8px}
+.pr-low{color:#c8321f}
+.dark .pr-low{color:#f97066}
+.pr-score{font-size:14px;line-height:20px;opacity:.7;margin:0 0 12px;font-variant-numeric:tabular-nums}
+.pr-tip{margin:0 0 6px}
+.pr-note{font-size:13px;opacity:.7;margin:12px 0 0}
 """
 
 
@@ -61,48 +57,29 @@ def _low(p) -> bool:
 
 
 def render(res, lang: str, tips: list[dict]) -> str:
-    """Words with their acceptance probability underneath; phonemes for words below 0.5."""
+    """The sentence with words below 0.5 in red, one line of scores, then the tips."""
     e = html.escape
-    out = ['<div class="pr-wrap"><div class="pr-gloss">']
+    sep = "" if lang in NO_SPACES else " "
+    words, line, notes = [], [f"Sentence {_f(res.prob)}"], []
     for w in res.words:
-        cls = ' class="pr-low"' if _low(w.prob) else ""
-        out.append(f"<span{cls}><b>{e(w.text)}</b><i>{_f(w.prob)}</i></span>")
-    out.append('</div><dl class="pr-dl">')
-    sentence = _f(res.prob)
-    if getattr(res, "fluency", None) is not None:
-        sentence += f", fluency {_f(res.fluency)}"
-    out.append(f"<dt>Sentence</dt><dd>{sentence}</dd>")
-    for w in res.words:
-        if not _low(w.prob):
-            continue
-        parts = []
-        for s in w.phones:
-            heard = getattr(s, "heard", None)
-            t = f"{e(s.ipa)} {_f(s.prob)}" + (f" (recognized as {e(heard)})" if heard and heard != s.ipa else "")
-            parts.append(f'<span class="pr-lowp">{t}</span>' if _low(s.prob) else t)
-        out.append(f'<dt>{e(w.text)}</dt><dd class="pr-ph">{", ".join(parts)}</dd>')
-    tones = []
-    for w in res.words:
+        words.append(f'<span class="pr-low">{e(w.text)}</span>' if _low(w.prob) else e(w.text))
+        if _low(w.prob):
+            line.append(f"{e(w.text)} {_f(w.prob)}")
         for y in w.syllables:
-            if getattr(y, "tone_expected", None) is None:
-                continue
-            t = f"{e(y.text or '')} tone {y.tone_expected}"
-            if y.tone_heard is not None and y.tone_heard != y.tone_expected:
-                t += f", recognized {y.tone_heard}"
-            t += f" {_f(y.tone_prob)}"
-            tones.append(f'<span class="pr-lowp">{t}</span>' if _low(y.tone_prob) else t)
-    if tones:
-        out.append(f'<dt>Tones</dt><dd class="pr-ph">{"; ".join(tones)}</dd>')
-    texts = [e(t["text"]) for t in tips if t.get("text")]
-    if texts:
-        out.append(f'<dt>Tips</dt><dd>{"<br>".join(texts)}</dd>')
+            if getattr(y, "tone_prob", None) is not None and _low(y.tone_prob):
+                line.append(f"tone of {e(y.text or '')} {_f(y.tone_prob)}")
+                heard = f", tone {y.tone_heard} recognized" if y.tone_heard is not None else ""
+                notes.append(f"{e(y.text or '')}: tone {y.tone_expected} expected{heard}")
+    out = [f'<div class="pr-wrap"><p class="pr-sent">{sep.join(words)}</p><p class="pr-score">{" · ".join(line)}</p>']
+    out += [f'<p class="pr-tip">{e(t["text"])}</p>' for t in tips if t.get("text")]
+    if notes:
+        out.append(f'<p class="pr-tip">{"; ".join(notes)}.</p>')
     audio = getattr(res, "audio", None)
     issues = audio.get("issues") if isinstance(audio, dict) else None
     if issues:
-        out.append(f'<dt>Recording</dt><dd>{e(", ".join(issues))}</dd>')
-    out.append("</dl>")
-    out.append('<p class="pr-note">The number under each word is the probability that a human rater would accept it. '
-               "Words below 0.5 are in red.</p></div>")
+        out.append(f'<p class="pr-tip">Recording: {e(", ".join(issues))}.</p>')
+    out.append('<p class="pr-note">Probabilities that a human rater would accept the sentence and each word. Words below 0.5 are in red. '
+               "Phoneme-level scores are in the JSON output.</p></div>")
     return "".join(out)
 
 

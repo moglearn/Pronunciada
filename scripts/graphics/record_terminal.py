@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 COLS, ROWS = 104, 16
-COMMAND = 'pronunciada check en-learner-1.mp3 "The ball is in their court now" --lang en'
+COMMAND = 'pronunciada check en-learner-1.mp3 "It was a beautiful day for a float" --lang en'
 
 
 def main(out: str) -> None:

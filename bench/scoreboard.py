@@ -407,6 +407,90 @@ def how_to_read(L):
           "shown precision.", ""]
 
 
+def zipa_alone(L):
+    """Ablation against the unmodified ZIPA model (bench/eval_zipa_baseline.py). Not part of the
+    Azure tally."""
+    Z = load("zipa_baseline.json")
+    if not Z or not Z.get("rows"):
+        return
+    rows = Z["rows"]
+    t = Z.get("tally_vs_gop", {})
+    st = Z.get("run", {})
+
+    def cell(x):
+        if x.get("by_construction"):
+            return "0.5 (blind)"
+        s = f3(x["value"])
+        return s + (f" [{f3(x['ci'][0])}, {f3(x['ci'][1])}]" if x.get("ci") else "")
+
+    def dcell(r):
+        c = r.get("delta_ci")
+        return f"{r['delta']:+.3f}" + (f" [{c[0]:+.3f}, {c[1]:+.3f}]" if c else "")
+
+    L += ["## Against ZIPA alone", "",
+          "Ablation: the same held-out items, metrics and resampling as the tables below, with Pronunciada replaced by "
+          "the unmodified ZIPA model (`zipa-small-crctc-500k`, fp32, raw log-posteriors, no adapter) and the canonical "
+          "phone sequence of Pronunciada's text front end (no alternatives, calibrators, prosody / length / contrast "
+          "heads or fitted thresholds). **gop** = mean log-posterior of the canonical token over its CTC Viterbi-aligned "
+          "frames (word / sentence = mean of their phones); **match** = greedy decode aligned to the canonical tokens "
+          "(phone matched or not; sentence = 1 − token error rate). Δ = Pronunciada − gop, paired on the table's own "
+          "resampling unit, two-sided p. Pronunciada's values are recomputed from the cached per-utterance outputs and "
+          f"equal the tables below. Baseline audio: {st.get('unique_audio', '–')} files, "
+          f"{st.get('audio_hours', float('nan')):.1f} h. Source: `bench/eval_zipa_baseline.py` → `zipa_baseline.json` "
+          "(write-up: results/zipa_baseline.md). These rows are not counted in the Azure tally.", "",
+          f"Pronunciada vs gop over {t.get('n', len(rows))} rows: significantly ahead {t.get('ahead (significant)', '–')}, "
+          f"not different {t.get('not different', '–')}, significantly behind {t.get('behind (significant)', '–')}.", ""]
+    head = ["| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |",
+            "|---|---|---|---|---|---|---|---|"]
+    titles = {"speechocean762": "speechocean762 test, Pearson with the expert scores (speaker bootstrap)",
+              "learner errors": "L2-ARCTIC and EpaDB test, ROC AUC of the sound score against the annotators' marks "
+                                "(speaker bootstrap)",
+              "coaching": "speechocean762 test coaching yardstick, precision at Pronunciada's three recalls (gop and "
+                          "match thresholded to the same recall; speaker bootstrap)",
+              "OMPAL": "OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker "
+                       "bootstrap",
+              "tone swaps": "Tone swaps (zh, FLEURS test), ROC AUC; utterance bootstrap",
+              "cv-real test A": "cv-real test A, AUC of the sentence score (speaker bootstrap)",
+              "cv-real test B": "cv-real test B, AUC of the sentence score (speaker bootstrap)"}
+    for g in ("speechocean762", "learner errors", "coaching", "OMPAL", "tone swaps", "swap benchmark",
+              "cv-real test A", "cv-real test B"):
+        rs = [r for r in rows if r["group"] == g]
+        if not rs:
+            continue
+        if g == "swap benchmark":
+            L += ["**Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / gop / match, "
+                  "then Δ vs gop and verdict (p).", "",
+                  "| lang | far AUC | near AUC | near hit@5 % |", "|---|---|---|---|"]
+            for lang in LANGS:
+                cells = []
+                for k in ("far AUC", "near AUC", "near hit@5 %"):
+                    r = next((x for x in rs if x["test"] == f"{lang} {k}"), None)
+                    cells.append("–" if r is None else
+                                 f"{f3(r['pronunciada']['value'])} / {f3(r['gop']['value'])} / {f3(r['match']['value'])}, "
+                                 f"{r['delta']:+.3f} {short(r['verdict'])} ({pv(r['p'])})")
+                if any(c != "–" for c in cells):
+                    L.append(f"| {lang} | " + " | ".join(cells) + " |")
+            L.append("")
+            continue
+        L += [f"**{titles[g]}.**", ""] + head
+        for r in rs:
+            L.append(f"| {r['test']} | {r['n']} | {cell(r['pronunciada'])} | {cell(r['gop'])} | {cell(r['match'])} | "
+                     f"{dcell(r)} | {pv(r['p'])} | {short(r['verdict'])} |")
+        note = next((r.get("note") for r in rs if g == "tone swaps" and r.get("note")), None)
+        L += ([""] + [note] if note else []) + [""]
+    rk = Z.get("rank_check") or []
+    if rk:
+        L += ["**Rank check (Spearman).** GOP scores are unbounded log-posteriors with a floor, so Pearson could "
+              "understate the baseline through nonlinearity alone; this repeats the Pearson rows with Spearman on the "
+              "same items and the same paired speaker bootstrap (not counted in the row count above).", "",
+              "| test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |",
+              "|---|---|---|---|---|---|---|---|"]
+        for r in rk:
+            L.append(f"| {r['group']} {r['test']} | {r['n']} | {cell(r['pronunciada'])} | {cell(r['gop'])} | "
+                     f"{cell(r['match'])} | {dcell(r)} | {pv(r['p'])} | {short(r['verdict'])} |")
+        L.append("")
+
+
 def tally_section(L):
     L += ["## Tally against Azure", "",
           f"Every comparison with an Azure column above, {len(TALLY)} in total, each classified by its own table's paired "
@@ -452,7 +536,9 @@ def main():
     tally_section(tl)
     hr: list[str] = []
     how_to_read(hr)
-    out = head + tl + hr + body
+    za: list[str] = []
+    zipa_alone(za)          # reads zipa_baseline.json only; adds nothing to TALLY
+    out = head + tl + hr + za + body
     (ROOT / "results" / "SCOREBOARD.md").write_text("\n".join(out) + "\n", encoding="utf-8")
     (T / "scoreboard_tally.json").write_text(json.dumps(TALLY, indent=1, ensure_ascii=False))
     print(f"wrote results/SCOREBOARD.md ({len(TALLY)} comparisons)")
