@@ -1,0 +1,434 @@
+{
+ "zh": {
+  "before": {
+   "aspiration A>B": {
+    "n": 120,
+    "hit5": 0.19166666666666668,
+    "accepted": 0.0,
+    "effective_hit5": 0.19166666666666668,
+    "word_hit5": 0.35
+   },
+   "aspiration B>A": {
+    "n": 120,
+    "hit5": 0.7333333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.7333333333333333,
+    "word_hit5": 0.26666666666666666
+   },
+   "_native_sound_accept": 0.9976336302895323,
+   "_native_word_accept": 0.9742904154668861
+  },
+  "after": {
+   "aspiration A>B": {
+    "n": 120,
+    "hit5": 0.9,
+    "accepted": 0.0,
+    "effective_hit5": 0.9,
+    "word_hit5": 0.35
+   },
+   "aspiration B>A": {
+    "n": 120,
+    "hit5": 0.675,
+    "accepted": 0.0,
+    "effective_hit5": 0.675,
+    "word_hit5": 0.26666666666666666
+   },
+   "_native_sound_accept": 0.9967984409799554,
+   "_native_word_accept": 0.9742904154668861
+  },
+  "ci": {
+   "aspiration A>B": [
+    0.6042813455657492,
+    0.7782230703986429
+   ],
+   "aspiration B>A": [
+    -0.11570247933884303,
+    -0.018769841269841287
+   ]
+  }
+ },
+ "en": {
+  "before": {
+   "dh_z A>B": {
+    "n": 120,
+    "hit5": 0.9166666666666666,
+    "accepted": 0.0,
+    "effective_hit5": 0.9166666666666666,
+    "word_hit5": 0.6333333333333333
+   },
+   "dh_z B>A": {
+    "n": 120,
+    "hit5": 0.18333333333333332,
+    "accepted": 0.0,
+    "effective_hit5": 0.18333333333333332,
+    "word_hit5": 0.8916666666666667
+   },
+   "th_s A>B": {
+    "n": 120,
+    "hit5": 0.95,
+    "accepted": 0.0,
+    "effective_hit5": 0.95,
+    "word_hit5": 0.8333333333333334
+   },
+   "th_s B>A": {
+    "n": 120,
+    "hit5": 0.24166666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.24166666666666667,
+    "word_hit5": 0.9166666666666666
+   },
+   "_native_sound_accept": 0.9937396895224399,
+   "_native_word_accept": 0.9710825953370685
+  },
+  "after": {
+   "dh_z A>B": {
+    "n": 120,
+    "hit5": 0.9166666666666666,
+    "accepted": 0.0,
+    "effective_hit5": 0.9166666666666666,
+    "word_hit5": 0.6333333333333333
+   },
+   "dh_z B>A": {
+    "n": 120,
+    "hit5": 0.9833333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.9833333333333333,
+    "word_hit5": 0.8916666666666667
+   },
+   "th_s A>B": {
+    "n": 120,
+    "hit5": 0.95,
+    "accepted": 0.0,
+    "effective_hit5": 0.95,
+    "word_hit5": 0.8333333333333334
+   },
+   "th_s B>A": {
+    "n": 120,
+    "hit5": 0.9916666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.9916666666666667,
+    "word_hit5": 0.9166666666666666
+   },
+   "_native_sound_accept": 0.9937396895224399,
+   "_native_word_accept": 0.9710825953370685
+  },
+  "ci": {
+   "dh_z A>B": [
+    0.0,
+    0.0
+   ],
+   "dh_z B>A": [
+    0.6868006993006993,
+    0.867835115131579
+   ],
+   "th_s A>B": [
+    0.0,
+    0.0
+   ],
+   "th_s B>A": [
+    0.6260869565217391,
+    0.8412649270234409
+   ]
+  }
+ },
+ "ru": {
+  "before": {
+   "final_devoicing A>B": {
+    "n": 134,
+    "hit5": 0.373134328358209,
+    "accepted": 0.06716417910447761,
+    "effective_hit5": 0.3582089552238806,
+    "word_hit5": 0.05970149253731343
+   },
+   "hard_soft A>B": {
+    "n": 120,
+    "hit5": 0.03333333333333333,
+    "accepted": 1.0,
+    "effective_hit5": 0.0,
+    "word_hit5": 0.1
+   },
+   "hard_soft B>A": {
+    "n": 120,
+    "hit5": 0.325,
+    "accepted": 0.15833333333333333,
+    "effective_hit5": 0.3,
+    "word_hit5": 0.275
+   },
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.7583333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.7583333333333333,
+    "word_hit5": 0.35
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.8083333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.8083333333333333,
+    "word_hit5": 0.65
+   },
+   "_native_sound_accept": 0.9934571477253366,
+   "_native_word_accept": 0.9661929371231697
+  },
+  "after": {
+   "final_devoicing A>B": {
+    "n": 134,
+    "hit5": 0.8208955223880597,
+    "accepted": 0.06716417910447761,
+    "effective_hit5": 0.7761194029850746,
+    "word_hit5": 0.05970149253731343
+   },
+   "hard_soft A>B": {
+    "n": 120,
+    "hit5": 0.4666666666666667,
+    "accepted": 1.0,
+    "effective_hit5": 0.0,
+    "word_hit5": 0.1
+   },
+   "hard_soft B>A": {
+    "n": 120,
+    "hit5": 0.24166666666666667,
+    "accepted": 0.15833333333333333,
+    "effective_hit5": 0.21666666666666667,
+    "word_hit5": 0.275
+   },
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.725,
+    "accepted": 0.0,
+    "effective_hit5": 0.725,
+    "word_hit5": 0.35
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.9916666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.9916666666666667,
+    "word_hit5": 0.65
+   },
+   "_native_sound_accept": 0.9900834895212132,
+   "_native_word_accept": 0.9661929371231697
+  },
+  "ci": {
+   "final_devoicing A>B": [
+    0.35979558846534915,
+    0.5615384615384615
+   ],
+   "hard_soft A>B": [
+    0.34800321703921455,
+    0.5318346842283013
+   ],
+   "hard_soft B>A": [
+    -0.16881498362056688,
+    -0.02509978991596637
+   ],
+   "voicing A>B": [
+    -0.12148406766325728,
+    -0.007717430207587685
+   ],
+   "voicing B>A": [
+    0.08893985178789844,
+    0.25738652583499855
+   ]
+  }
+ },
+ "ja": {
+  "before": {
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.5166666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.5166666666666667,
+    "word_hit5": 0.325
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.7583333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.7583333333333333,
+    "word_hit5": 0.475
+   },
+   "_native_sound_accept": 0.9967066661619411,
+   "_native_word_accept": 0.9770260747004933
+  },
+  "after": {
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.95,
+    "accepted": 0.0,
+    "effective_hit5": 0.95,
+    "word_hit5": 0.325
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.7333333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.7333333333333333,
+    "word_hit5": 0.475
+   },
+   "_native_sound_accept": 0.9937918764431994,
+   "_native_word_accept": 0.9770260747004933
+  },
+  "ci": {
+   "voicing A>B": [
+    0.32621869409660104,
+    0.5243045733144743
+   ],
+   "voicing B>A": [
+    -0.0639772727272727,
+    0.0
+   ]
+  }
+ },
+ "de": {
+  "before": {
+   "final_devoicing A>B": {
+    "n": 153,
+    "hit5": 0.05228758169934641,
+    "accepted": 0.7516339869281046,
+    "effective_hit5": 0.0392156862745098,
+    "word_hit5": 0.013071895424836602
+   },
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.38333333333333336,
+    "accepted": 0.18333333333333332,
+    "effective_hit5": 0.35833333333333334,
+    "word_hit5": 0.15833333333333333
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.5833333333333334,
+    "accepted": 0.0,
+    "effective_hit5": 0.5833333333333334,
+    "word_hit5": 0.26666666666666666
+   },
+   "_native_sound_accept": 0.9962512049698311,
+   "_native_word_accept": 0.9674644727000747
+  },
+  "after": {
+   "final_devoicing A>B": {
+    "n": 153,
+    "hit5": 0.43790849673202614,
+    "accepted": 0.7516339869281046,
+    "effective_hit5": 0.13725490196078433,
+    "word_hit5": 0.013071895424836602
+   },
+   "voicing A>B": {
+    "n": 120,
+    "hit5": 0.8,
+    "accepted": 0.18333333333333332,
+    "effective_hit5": 0.75,
+    "word_hit5": 0.15833333333333333
+   },
+   "voicing B>A": {
+    "n": 120,
+    "hit5": 0.9916666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.9916666666666667,
+    "word_hit5": 0.26666666666666666
+   },
+   "_native_sound_accept": 0.9958227712520975,
+   "_native_word_accept": 0.9674644727000747
+  },
+  "ci": {
+   "final_devoicing A>B": [
+    0.2910701704945752,
+    0.4645063025210084
+   ],
+   "voicing A>B": [
+    0.3060583333333333,
+    0.5221238938053098
+   ],
+   "voicing B>A": [
+    0.2922053571428571,
+    0.5168149717514123
+   ]
+  }
+ },
+ "pt": {
+  "before": {
+   "mid_vowels A>B": {
+    "n": 120,
+    "hit5": 0.7916666666666666,
+    "accepted": 0.016666666666666666,
+    "effective_hit5": 0.7916666666666666,
+    "word_hit5": 0.55
+   },
+   "mid_vowels B>A": {
+    "n": 120,
+    "hit5": 0.13333333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.13333333333333333,
+    "word_hit5": 0.03333333333333333
+   },
+   "nasal A>B": {
+    "n": 120,
+    "hit5": 0.19166666666666668,
+    "accepted": 1.0,
+    "effective_hit5": 0.0,
+    "word_hit5": 0.25833333333333336
+   },
+   "nasal B>A": {
+    "n": 120,
+    "hit5": 0.9666666666666667,
+    "accepted": 0.0,
+    "effective_hit5": 0.9666666666666667,
+    "word_hit5": 0.7
+   },
+   "_native_sound_accept": 0.9989413881929496,
+   "_native_word_accept": 0.979612992398065
+  },
+  "after": {
+   "mid_vowels A>B": {
+    "n": 120,
+    "hit5": 0.7916666666666666,
+    "accepted": 0.016666666666666666,
+    "effective_hit5": 0.7916666666666666,
+    "word_hit5": 0.55
+   },
+   "mid_vowels B>A": {
+    "n": 120,
+    "hit5": 0.13333333333333333,
+    "accepted": 0.0,
+    "effective_hit5": 0.13333333333333333,
+    "word_hit5": 0.03333333333333333
+   },
+   "nasal A>B": {
+    "n": 120,
+    "hit5": 0.19166666666666668,
+    "accepted": 0.425,
+    "effective_hit5": 0.15,
+    "word_hit5": 0.26666666666666666
+   },
+   "nasal B>A": {
+    "n": 120,
+    "hit5": 0.975,
+    "accepted": 0.0,
+    "effective_hit5": 0.975,
+    "word_hit5": 0.7083333333333334
+   },
+   "_native_sound_accept": 0.9987296658315395,
+   "_native_word_accept": 0.9799585348997927
+  },
+  "ci": {
+   "mid_vowels A>B": [
+    -0.021625695732838585,
+    0.018104013104013123
+   ],
+   "mid_vowels B>A": [
+    -0.008165067306410761,
+    0.00944622507122508
+   ],
+   "nasal A>B": [
+    -0.01648481973434537,
+    0.016028432377049158
+   ],
+   "nasal B>A": [
+    0.0,
+    0.03588320463320466
+   ]
+  }
+ }
+}

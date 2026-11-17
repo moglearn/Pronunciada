@@ -151,6 +151,18 @@ where Pronunciada is ahead.
   by the same rule. Near-swap AUC is now 0.901 on test, still short of Azure's 0.909. cv-real ru
   is back to 0.788 (round 7: 0.793), at a cost of 0.7 points of native word acceptance on test
   ([results/round8_ru.md](results/round8_ru.md)).
+- Contrasts that used to be hidden, round 16. Sound-level detection on FLEURS-test swaps from the
+  contrast audit:
+  - Mandarin aspirated-for-plain: 19 % → 90 %;
+  - English s-for-θ: 24 % → 99 %, and z-for-ð: 18 % → 98 %;
+  - Japanese voiced-for-voiceless: 52 % → 95 %;
+  - German voicing: 38 % / 58 % → 80 % / 99 %;
+  - Russian soft-for-hard: 3 % → 47 %.
+
+  This comes from small per-contrast caps on the shown sound probability; word and sentence scores
+  are unchanged. Portuguese word-medial nasal codas are no longer optional. Korean aspiration and
+  Italian mid vowels were tried and not adopted
+  ([results/round16_contrasts.md](results/round16_contrasts.md)).
 
 ### Mandarin tones
 
