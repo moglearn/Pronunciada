@@ -184,9 +184,6 @@ NOT_REPRESENTABLE: dict[str, list[dict]] = {
            {"contrast": "lax / tense s (ㅅ / ㅆ)", "pair": ["살", "쌀"], "phonemic": True},
            {"contrast": "ㅐ / ㅔ (merged in Seoul speech)", "pair": ["개", "게"], "phonemic": False},
            {"contrast": "r / l (allophones of ㄹ)", "pair": ["라면", "말"], "phonemic": False}],
-    "ru": [{"contrast": "hard / soft r", "pair": ["рад", "ряд"], "phonemic": True},
-           {"contrast": "hard / soft t (word-final)", "pair": ["мат", "мать"], "phonemic": True},
-           {"contrast": "hard / soft m", "pair": ["мол", "мёл"], "phonemic": True}],
     "ja": [{"contrast": "r / l (not phonemic)", "pair": ["ら", "ら"], "phonemic": False}],
     "es": [{"contrast": "b / v (not phonemic)", "pair": ["baca", "vaca"], "phonemic": False}],
 }
@@ -296,7 +293,7 @@ def sites(ref: Reference, c: Contrast) -> list[Site]:
         for w in ref.words:
             lt = letters(w.text)
             i = w.phones[1] - 1
-            if lt and lt[-1] in voiced and ref.phones[i].ipa in m:
+            if len(lt) >= 2 and lt[-1] in voiced and ref.phones[i].ipa in m:   # not clitics (в, с)
                 out.append(Site(c.name, "A>B", i, ref.phones[i].ipa, m[ref.phones[i].ipa], kind=c.kind))
     elif c.kind == "gem_it":
         for i, p in enumerate(ref.phones):
