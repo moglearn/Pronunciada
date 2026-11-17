@@ -42,7 +42,8 @@ bench = ["pyarrow>=15", "fsspec>=2024.2", "aiohttp>=3.9", "requests>=2.31", "pan
          "scikit-learn>=1.3", "pandas>=2", "huggingface_hub"]
 
 [project.urls]
-Homepage = "https://github.com/moglearn/pronunciada"
+Homepage = "https://pronunciada.dev"
+Repository = "https://github.com/moglearn/pronunciada"
 Documentation = "https://github.com/moglearn/pronunciada#readme"
 Scoreboard = "https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md"
 Issues = "https://github.com/moglearn/pronunciada/issues"
