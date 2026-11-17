@@ -188,14 +188,15 @@ class TreeEnsemble:
             codes = np.arange(256)
             words = self.bitsets[self.cat[cn]]                                   # [n_cat, 8]
             inset = ((words[:, codes // 32] >> (codes % 32).astype(np.uint32)) & 1).astype(bool)
-            lut = np.concatenate([~inset, ~self.missing_left[cn][:, None]], axis=1).astype(np.int64)
+            # 0 / 1 decisions: uint8, not int64 (the English sound models carry ~1.5 M entries)
+            lut = np.concatenate([~inset, ~self.missing_left[cn][:, None]], axis=1).astype(np.uint8)
             CB[ti[isc], slot[isc]] = 257 * np.arange(len(cn))
             luts = [lut.ravel()]
         else:
             luts = []
         off = np.arange(T) * n_int
         self._D, self._F, self._TH, self._CB = D, F.ravel(), TH.ravel(), CB.ravel()
-        self._LUT = luts[0] if luts else np.zeros(1, dtype=np.int64)
+        self._LUT = luts[0] if luts else np.zeros(1, dtype=np.uint8)
         self._has_cat = bool(luts)
         self._LV = LV.ravel()
         self._root = off[None, :]

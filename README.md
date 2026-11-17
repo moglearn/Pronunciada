@@ -15,7 +15,7 @@ Pronunciada is an open-source Python library for on-device pronunciation assessm
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
 - It matches or beats Microsoft Azure Pronunciation Assessment in 77 of 84 comparisons on public test sets: significantly better in 40, not significantly different in 37 and significantly worse in 7.
-- It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine.
+- It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is edge-optimized: 67 MB on disk and about 0.3 GB of memory.
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). It is significantly more accurate than ZIPA alone on 45 of 60 tests and significantly less accurate on none.
 
 The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
@@ -176,7 +176,7 @@ Median time for one `Scorer.score` call on 100 speechocean762 recordings (mean l
 | fp32 (248 MB) | 50 ms | 100 ms |
 | int8 (67 MB) | 40 ms | 65 ms |
 
-Peak memory of the Python process while scoring is about 0.6 GB with the fp32 model and 0.4 GB with int8 (English, one thread, Apple M3 Pro). The int8 model was sized with phones in mind; there are no packaged iOS or Android builds yet.
+Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 480 MB and 294 MB measured). The int8 model is optimized for edge devices: a 67 MB file on one CPU thread. There are no packaged iOS or Android builds yet.
 
 For recordings of about ten seconds (FLEURS test), the median is 0.30 s to 0.44 s on one thread, depending on the language. A request to Azure's REST API for recordings of similar length took 1.8 s to 3.0 s from the same laptop, upload included. This is not a controlled comparison: the two sets of recordings differ. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
 

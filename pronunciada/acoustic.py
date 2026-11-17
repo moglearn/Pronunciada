@@ -102,17 +102,65 @@ def add_graph_outputs(model_bytes: bytes, names) -> bytes:
     raise ValueError("no graph in the ONNX model")
 
 
+def _copy_range(src, dst, start: int, end: int, chunk: int = 1 << 22) -> None:
+    src.seek(start)
+    left = end - start
+    while left > 0:
+        b = src.read(min(chunk, left))
+        if not b:
+            raise ValueError("truncated ONNX model")
+        dst.write(b)
+        left -= len(b)
+
+
+def write_with_graph_outputs(src_path: str, dest_path: str, names) -> None:
+    """add_graph_outputs from file to file, streamed in 4 MB chunks: the same bytes, but without
+    holding the model in memory (three copies of it at once otherwise: ~1 GB for fp32)."""
+    size = os.path.getsize(src_path)
+    with open(src_path, "rb") as f:
+        i = 0
+        while i < size:
+            f.seek(i)
+            head = f.read(32)
+            key, j = _read_varint(head, 0)
+            field, wt = key >> 3, key & 7
+            if wt == 0:
+                _, j = _read_varint(head, j)
+                i += j
+            elif wt == 1:
+                i += j + 8
+            elif wt == 5:
+                i += j + 4
+            elif wt == 2:
+                ln, k = _read_varint(head, j)
+                if field == 7:
+                    extra = b"".join(_ld(12, _value_info(n)) for n in names)
+                    with open(dest_path, "wb") as out:
+                        _copy_range(f, out, 0, i)
+                        out.write(_varint((7 << 3) | 2) + _varint(ln + len(extra)))
+                        _copy_range(f, out, i + k, i + k + ln)
+                        out.write(extra)
+                        _copy_range(f, out, i + k + ln, size)
+                    return
+                i += k + ln
+            else:
+                raise ValueError(f"unsupported protobuf wire type {wt}")
+    raise ValueError("no graph in the ONNX model")
+
+
 def embedding_model_path(name: str, precision: str, cache_dir: str | None = None) -> str:
     """Path of the model variant with EMBED_OUTPUTS as extra outputs, built (once) next to
     the original in the model cache."""
     src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
     dest = src[:-len(".onnx")] + ".emb.onnx"
     if not os.path.exists(dest) or os.path.getmtime(dest) < os.path.getmtime(src):
-        with open(src, "rb") as f:
-            data = add_graph_outputs(f.read(), list(EMBED_OUTPUTS.values()))
         part = f"{dest}.{os.getpid()}.part"
-        with open(part, "wb") as f:
-            f.write(data)
+        try:
+            write_with_graph_outputs(src, part, list(EMBED_OUTPUTS.values()))
+        except BaseException:
+            if os.path.exists(part):
+                os.remove(part)
+            raise
         os.replace(part, dest)
     return dest
 
@@ -168,6 +216,10 @@ class AcousticModel:
         ort.set_default_logger_severity(3)
         so = ort.SessionOptions()
         so.log_severity_level = 3
+        # The memory-pattern planner keeps one preallocated block per input shape it has seen,
+        # and every clip length is a new shape: about +20 MB after a few calls, growing with
+        # use. Without it the outputs are bit-identical and a run is ~0.5 ms slower.
+        so.enable_mem_pattern = False
         if threads:
             so.intra_op_num_threads = int(threads)
             so.inter_op_num_threads = 1

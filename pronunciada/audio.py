@@ -27,7 +27,7 @@ def _to_mono_float(wav: np.ndarray) -> np.ndarray:
 def resample(wav: np.ndarray, sr_in: int, sr_out: int = SAMPLE_RATE) -> np.ndarray:
     if sr_in == sr_out:
         return wav.astype(np.float32, copy=False)
-    from scipy.signal import resample_poly
+    from ._resample import resample_poly     # = scipy.signal.resample_poly, without importing scipy
 
     f = Fraction(int(sr_out), int(sr_in)).limit_denominator(10000)
     return resample_poly(wav.astype(np.float64), f.numerator, f.denominator).astype(np.float32)

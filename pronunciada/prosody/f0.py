@@ -1,4 +1,4 @@
-"""Pitch tracker: YIN-style candidates + Viterbi smoothing, numpy/scipy only.
+"""Pitch tracker: YIN-style candidates + Viterbi smoothing, numpy only.
 
 Frames: 10 ms hop; frame i is centred at ``i * 0.01 + 0.005`` s and there are
 ``(n_samples + 80) // 160`` frames at 16 kHz, i.e. the same grid as the Kaldi fbank
@@ -22,7 +22,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.signal import resample_poly
+
+from .._resample import resample_poly     # = scipy.signal.resample_poly, without importing scipy
 
 SR = 16000
 HOP = 0.01

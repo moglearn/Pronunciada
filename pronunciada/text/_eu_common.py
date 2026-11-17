@@ -132,10 +132,19 @@ def is_acronym(tok: str) -> bool:
 
 # --------------------------------------------------------------------------- numbers
 
-try:  # optional (LGPL-2.1, used as an optional extra only)
-    from num2words import num2words as _n2w
-except Exception:  # noqa: BLE001
-    _n2w = None
+_N2W: list = []          # [num2words function or None], filled on first use
+
+
+def _num2words():
+    """num2words.num2words, or None when the optional extra (LGPL-2.1) is not installed.
+    Imported on the first prompt with digits: it loads ~70 modules (~7 MB) on import."""
+    if not _N2W:
+        try:
+            from num2words import num2words as f
+        except Exception:  # noqa: BLE001
+            f = None
+        _N2W.append(f)
+    return _N2W[0]
 
 
 DECIMAL_WORD = {"en": "point", "de": "Komma", "fr": "virgule", "es": "punto", "it": "virgola",
@@ -144,6 +153,7 @@ DECIMAL_WORD = {"en": "point", "de": "Komma", "fr": "virgule", "es": "punto", "i
 
 def number_words(tok: Tok, lang: str, decimal_comma: bool, warnings: list[str]) -> list[str] | None:
     """Digits -> list of words in `lang` (None if num2words is unavailable / fails)."""
+    _n2w = _num2words()
     if _n2w is None:
         warnings.append(f"no_num2words:{tok.text}")
         return None
