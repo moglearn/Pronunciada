@@ -79,7 +79,7 @@ for phone in result.words[7].phones:
 
 The model is downloaded to `~/.cache/pronunciada` on first use.
 
-A one-minute video with sound shows this recording being scored, recordings in Spanish, Japanese, Korean and Mandarin, the command-line tool, and the main comparisons with Azure and with ZIPA alone: [docs/assets/demo.mp4](docs/assets/demo.mp4).
+A 52-second overview with sound follows this recording from the sentence to its words and sounds, then shows the main results: [docs/assets/demo.mp4](docs/assets/demo.mp4).
 
 ## Benchmarks
 

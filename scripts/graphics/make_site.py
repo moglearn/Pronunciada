@@ -4,7 +4,7 @@
 
 The page is static HTML. Everything between `<!-- gen:NAME -->` and `<!-- /gen:NAME -->` is
 rewritten here from the tables in results/SCOREBOARD.md, so the figures on the page cannot
-drift from the published results. `units`, `LANG` and `WHO` are shared with the video scenes.
+drift from the published results.
 """
 from __future__ import annotations
 
@@ -16,26 +16,8 @@ from common import ROOT
 from make_charts import detection, english, table, tally, zipa
 
 PAGE = ROOT / "site/index.html"
-LANG = {"en": "English", "zh": "Mandarin", "ja": "Japanese", "es": "Spanish", "fr": "French", "de": "German",
-        "it": "Italian", "pt": "Portuguese", "ru": "Russian", "ko": "Korean"}
-WHO = {"native speaker": "native speaker", "adult learner of English": "adult learner",
-       "French-speaking learner of Mandarin": "French-speaking learner"}
 esc = html.escape
 NUMBER = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven"}
-
-
-def units(result: dict) -> list[dict]:
-    """The pieces of the sentence that light up: syllables where they are written characters, else words."""
-    out = []
-    for w in result["words"]:
-        syl = [s for s in w.get("syllables") or [] if s.get("text")]
-        if syl and "".join(s["text"] for s in syl) == w["text"]:
-            for s in syl:
-                tone_low = s.get("tone_prob") is not None and s["tone_prob"] < 0.5
-                out.append({"text": s["text"], "start": s["start"], "end": s["end"], "low": tone_low or w["prob"] < 0.5})
-        else:
-            out.append({"text": w["text"], "start": w["start"], "end": w["end"], "low": w["prob"] < 0.5})
-    return out
 
 
 def stats() -> str:
