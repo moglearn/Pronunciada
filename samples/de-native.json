@@ -9,12 +9,12 @@
  "result": {
   "lang": "de",
   "text": "Parisern sagt man nach, egozentrisch, unhöflich und arrogant zu sein.",
-  "prob": 0.9924,
+  "prob": 0.9882,
   "strictness": 0.5,
   "words": [
    {
     "text": "Parisern",
-    "prob": 0.9699,
+    "prob": 0.9305,
     "start": 0.57,
     "end": 1.03,
     "phones": [
@@ -29,7 +29,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9808,
+      "prob": 0.9839,
       "start": 0.65,
       "end": 0.67,
       "heard": null,
@@ -38,7 +38,7 @@
      },
      {
       "ipa": "ʀ",
-      "prob": 0.9909,
+      "prob": 0.9898,
       "start": 0.73,
       "end": 0.75,
       "heard": null,
@@ -47,7 +47,7 @@
      },
      {
       "ipa": "iː",
-      "prob": 0.9967,
+      "prob": 0.9965,
       "start": 0.79,
       "end": 0.85,
       "heard": null,
@@ -56,7 +56,7 @@
      },
      {
       "ipa": "z",
-      "prob": 0.99,
+      "prob": 0.9906,
       "start": 0.87,
       "end": 0.89,
       "heard": null,
@@ -74,8 +74,8 @@
      },
      {
       "ipa": "ʀ",
-      "prob": 0.9893,
-      "start": 0.97,
+      "prob": 0.9873,
+      "start": 0.99,
       "end": 0.99,
       "heard": null,
       "length_expected": null,
@@ -83,7 +83,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9967,
+      "prob": 0.997,
       "start": 0.99,
       "end": 1.03,
       "heard": null,
@@ -110,7 +110,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.9037
+      "stress_prob": 0.8981
      },
      {
       "text": "",
@@ -123,8 +123,8 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9784,
-    "stress_prob": 0.9962,
+    "sounds_prob": 0.9388,
+    "stress_prob": 0.996,
     "tone_prob": null,
     "present_prob": 0.9952,
     "omitted": false,
@@ -133,9 +133,9 @@
    },
    {
     "text": "sagt",
-    "prob": 0.9905,
+    "prob": 0.9795,
     "start": 1.05,
-    "end": 1.25,
+    "end": 1.27,
     "phones": [
      {
       "ipa": "z",
@@ -148,16 +148,16 @@
      },
      {
       "ipa": "ɑː",
-      "prob": 0.9965,
+      "prob": 0.9942,
       "start": 1.11,
-      "end": 1.17,
+      "end": 1.19,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "k",
-      "prob": 0.9979,
+      "prob": 0.9966,
       "start": 1.19,
       "end": 1.23,
       "heard": null,
@@ -166,9 +166,9 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9975,
+      "prob": 0.9942,
       "start": 1.23,
-      "end": 1.25,
+      "end": 1.27,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -178,7 +178,7 @@
      {
       "text": "",
       "start": 1.05,
-      "end": 1.25,
+      "end": 1.27,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
@@ -186,23 +186,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.982,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9979,
+    "present_prob": 0.9975,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "man",
-    "prob": 0.9918,
+    "prob": 0.9898,
     "start": 1.29,
     "end": 1.43,
     "phones": [
      {
       "ipa": "m",
-      "prob": 0.9993,
+      "prob": 0.9992,
       "start": 1.29,
       "end": 1.31,
       "heard": null,
@@ -211,7 +211,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9943,
+      "prob": 0.994,
       "start": 1.35,
       "end": 1.37,
       "heard": null,
@@ -220,7 +220,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9982,
+      "prob": 0.9985,
       "start": 1.39,
       "end": 1.43,
       "heard": null,
@@ -240,32 +240,32 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9999,
+    "sounds_prob": 0.9991,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9919,
+    "present_prob": 0.9907,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "nach",
-    "prob": 0.9886,
+    "prob": 0.977,
     "start": 1.47,
     "end": 1.67,
     "phones": [
      {
       "ipa": "n",
-      "prob": 0.9993,
+      "prob": 0.9982,
       "start": 1.47,
-      "end": 1.49,
+      "end": 1.51,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ɑː",
-      "prob": 0.9947,
+      "prob": 0.9961,
       "start": 1.51,
       "end": 1.57,
       "heard": null,
@@ -294,23 +294,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.981,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.996,
+    "present_prob": 0.9959,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "egozentrisch",
-    "prob": 0.9853,
+    "prob": 0.9622,
     "start": 1.73,
     "end": 2.39,
     "phones": [
      {
       "ipa": "eː",
-      "prob": 0.996,
+      "prob": 0.997,
       "start": 1.73,
       "end": 1.79,
       "heard": null,
@@ -319,7 +319,7 @@
      },
      {
       "ipa": "g",
-      "prob": 0.9988,
+      "prob": 0.9991,
       "start": 1.79,
       "end": 1.81,
       "heard": null,
@@ -328,7 +328,7 @@
      },
      {
       "ipa": "oː",
-      "prob": 0.9987,
+      "prob": 0.9991,
       "start": 1.85,
       "end": 1.89,
       "heard": null,
@@ -337,7 +337,7 @@
      },
      {
       "ipa": "ts",
-      "prob": 0.9989,
+      "prob": 0.9991,
       "start": 1.93,
       "end": 1.99,
       "heard": null,
@@ -346,7 +346,7 @@
      },
      {
       "ipa": "ɛ",
-      "prob": 0.9955,
+      "prob": 0.9953,
       "start": 2.03,
       "end": 2.05,
       "heard": null,
@@ -355,7 +355,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9982,
+      "prob": 0.9983,
       "start": 2.11,
       "end": 2.15,
       "heard": null,
@@ -364,7 +364,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9915,
+      "prob": 0.9932,
       "start": 2.19,
       "end": 2.21,
       "heard": null,
@@ -373,7 +373,7 @@
      },
      {
       "ipa": "ʀ",
-      "prob": 0.9964,
+      "prob": 0.9974,
       "start": 2.25,
       "end": 2.27,
       "heard": null,
@@ -382,7 +382,7 @@
      },
      {
       "ipa": "ɪ",
-      "prob": 0.9967,
+      "prob": 0.9977,
       "start": 2.29,
       "end": 2.31,
       "heard": null,
@@ -391,7 +391,7 @@
      },
      {
       "ipa": "ʃ",
-      "prob": 0.9978,
+      "prob": 0.9982,
       "start": 2.37,
       "end": 2.39,
       "heard": null,
@@ -428,7 +428,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.874
+      "stress_prob": 0.8735
      },
      {
       "text": "",
@@ -441,7 +441,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9904,
+    "sounds_prob": 0.9672,
     "stress_prob": 0.995,
     "tone_prob": null,
     "present_prob": 0.9998,
@@ -451,13 +451,13 @@
    },
    {
     "text": "unhöflich",
-    "prob": 0.8864,
+    "prob": 0.8825,
     "start": 2.51,
     "end": 2.97,
     "phones": [
      {
       "ipa": "ʊ",
-      "prob": 0.9969,
+      "prob": 0.9962,
       "start": 2.51,
       "end": 2.55,
       "heard": null,
@@ -475,7 +475,7 @@
      },
      {
       "ipa": "h",
-      "prob": 0.9991,
+      "prob": 0.9989,
       "start": 2.63,
       "end": 2.67,
       "heard": null,
@@ -484,7 +484,7 @@
      },
      {
       "ipa": "øː",
-      "prob": 0.9993,
+      "prob": 0.9994,
       "start": 2.69,
       "end": 2.73,
       "heard": null,
@@ -493,7 +493,7 @@
      },
      {
       "ipa": "f",
-      "prob": 0.9989,
+      "prob": 0.999,
       "start": 2.79,
       "end": 2.83,
       "heard": null,
@@ -502,7 +502,7 @@
      },
      {
       "ipa": "l",
-      "prob": 0.999,
+      "prob": 0.9988,
       "start": 2.85,
       "end": 2.87,
       "heard": null,
@@ -511,7 +511,7 @@
      },
      {
       "ipa": "ɪ",
-      "prob": 0.9965,
+      "prob": 0.9968,
       "start": 2.89,
       "end": 2.91,
       "heard": null,
@@ -520,8 +520,8 @@
      },
      {
       "ipa": "ç",
-      "prob": 0.9931,
-      "start": 2.93,
+      "prob": 0.9963,
+      "start": 2.95,
       "end": 2.97,
       "heard": null,
       "length_expected": null,
@@ -537,7 +537,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.1637
+      "stress_prob": 0.1658
      },
      {
       "text": "",
@@ -560,8 +560,8 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9911,
-    "stress_prob": 0.8946,
+    "sounds_prob": 0.9853,
+    "stress_prob": 0.8959,
     "tone_prob": null,
     "present_prob": 0.9997,
     "omitted": false,
@@ -570,13 +570,13 @@
    },
    {
     "text": "und",
-    "prob": 0.9898,
+    "prob": 0.9901,
     "start": 2.99,
     "end": 3.09,
     "phones": [
      {
       "ipa": "ʊ",
-      "prob": 0.9975,
+      "prob": 0.9981,
       "start": 2.99,
       "end": 3.01,
       "heard": null,
@@ -585,7 +585,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9983,
+      "prob": 0.9984,
       "start": 3.01,
       "end": 3.07,
       "heard": null,
@@ -594,7 +594,7 @@
      },
      {
       "ipa": "d",
-      "prob": 0.9959,
+      "prob": 0.9963,
       "start": 3.07,
       "end": 3.09,
       "heard": null,
@@ -614,23 +614,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.9927,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9972,
+    "present_prob": 0.9974,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "arrogant",
-    "prob": 0.9667,
+    "prob": 0.9614,
     "start": 3.13,
     "end": 3.45,
     "phones": [
      {
       "ipa": "a",
-      "prob": 0.9974,
+      "prob": 0.9976,
       "start": 3.13,
       "end": 3.15,
       "heard": null,
@@ -639,7 +639,7 @@
      },
      {
       "ipa": "ʀ",
-      "prob": 0.999,
+      "prob": 0.9992,
       "start": 3.17,
       "end": 3.21,
       "heard": null,
@@ -657,7 +657,7 @@
      },
      {
       "ipa": "g",
-      "prob": 0.9989,
+      "prob": 0.999,
       "start": 3.29,
       "end": 3.33,
       "heard": null,
@@ -666,7 +666,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9938,
+      "prob": 0.9947,
       "start": 3.35,
       "end": 3.37,
       "heard": null,
@@ -675,7 +675,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9991,
+      "prob": 0.9993,
       "start": 3.41,
       "end": 3.43,
       "heard": null,
@@ -684,7 +684,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9902,
+      "prob": 0.9907,
       "start": 3.43,
       "end": 3.45,
       "heard": null,
@@ -721,11 +721,11 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.6721
+      "stress_prob": 0.6735
      }
     ],
-    "sounds_prob": 0.9831,
-    "stress_prob": 0.9855,
+    "sounds_prob": 0.9776,
+    "stress_prob": 0.9856,
     "tone_prob": null,
     "present_prob": 0.9978,
     "omitted": false,
@@ -740,7 +740,7 @@
     "phones": [
      {
       "ipa": "ts",
-      "prob": 0.9903,
+      "prob": 0.9914,
       "start": 3.49,
       "end": 3.55,
       "heard": null,
@@ -749,7 +749,7 @@
      },
      {
       "ipa": "uː",
-      "prob": 0.9962,
+      "prob": 0.9973,
       "start": 3.59,
       "end": 3.67,
       "heard": null,
@@ -769,17 +769,17 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.9927,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 1.0,
+    "present_prob": 0.9999,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "sein",
-    "prob": 0.9889,
+    "prob": 0.9822,
     "start": 3.67,
     "end": 3.91,
     "phones": [
@@ -794,7 +794,7 @@
      },
      {
       "ipa": "ai",
-      "prob": 0.9928,
+      "prob": 0.9934,
       "start": 3.73,
       "end": 3.83,
       "heard": null,
@@ -823,45 +823,45 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9904,
+    "sounds_prob": 0.9835,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9984,
+    "present_prob": 0.9987,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    }
   ],
-  "fluency": 0.9343,
+  "fluency": 0.9406,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.39,
-   "load": 1.453,
-   "audio_check": 0.412,
-   "fbank": 4.334,
-   "model": 62.715,
-   "adapter": 0.321,
-   "align": 7.984,
-   "delivery": 7.043,
-   "calibrate": 2.639,
-   "prosody": 3.773,
-   "total": 93.777
+   "g2p": 0.359,
+   "load": 13.963,
+   "audio_check": 0.344,
+   "fbank": 7.016,
+   "model": 35.264,
+   "adapter": 0.259,
+   "align": 7.887,
+   "delivery": 6.497,
+   "calibrate": 2.494,
+   "prosody": 3.287,
+   "total": 82.446
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.9069,
-   "fluency": 0.9343,
-   "prosodic": 0.8855,
-   "total": 0.8589
+   "accuracy": 0.9018,
+   "fluency": 0.9406,
+   "prosodic": 0.885,
+   "total": 0.8596
   },
   "audio": {
    "schema_version": 1,
    "duration_s": 4.44,
    "clipped_share": 0.0,
-   "peak_dbfs": -10.1763,
-   "noise_db": -71.4134,
-   "speech_db": -36.826,
-   "snr_db": 48.4164,
+   "peak_dbfs": -10.6694,
+   "noise_db": -71.8443,
+   "speech_db": -37.2316,
+   "snr_db": 48.4127,
    "speech_s": 3.66,
    "speech_share": 0.8243,
    "lead_sil_s": 0.02,

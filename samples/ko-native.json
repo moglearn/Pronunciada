@@ -9,18 +9,18 @@
  "result": {
   "lang": "ko",
   "text": "하지만 여전히 새에는 공룡처럼 보이게 하는 것들이 많습니다.",
-  "prob": 0.9841,
+  "prob": 0.9753,
   "strictness": 0.5,
   "words": [
    {
     "text": "하지만",
-    "prob": 0.9887,
+    "prob": 0.9748,
     "start": 0.67,
     "end": 1.07,
     "phones": [
      {
       "ipa": "h",
-      "prob": 0.9967,
+      "prob": 0.9964,
       "start": 0.67,
       "end": 0.69,
       "heard": null,
@@ -29,7 +29,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.997,
+      "prob": 0.9955,
       "start": 0.73,
       "end": 0.75,
       "heard": null,
@@ -38,7 +38,7 @@
      },
      {
       "ipa": "tʃ",
-      "prob": 0.9755,
+      "prob": 0.9766,
       "start": 0.77,
       "end": 0.83,
       "heard": null,
@@ -47,7 +47,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.9936,
+      "prob": 0.9909,
       "start": 0.87,
       "end": 0.89,
       "heard": null,
@@ -56,7 +56,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9978,
+      "prob": 0.9972,
       "start": 0.93,
       "end": 0.95,
       "heard": null,
@@ -65,7 +65,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9957,
+      "prob": 0.9947,
       "start": 0.99,
       "end": 1.01,
       "heard": null,
@@ -74,7 +74,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9729,
+      "prob": 0.9668,
       "start": 1.05,
       "end": 1.07,
       "heard": null,
@@ -114,7 +114,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9887,
+    "sounds_prob": 0.9749,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 1.0,
@@ -124,13 +124,13 @@
    },
    {
     "text": "여전히",
-    "prob": 0.9901,
+    "prob": 0.9791,
     "start": 1.07,
     "end": 1.41,
     "phones": [
      {
       "ipa": "j",
-      "prob": 0.9987,
+      "prob": 0.9983,
       "start": 1.07,
       "end": 1.11,
       "heard": null,
@@ -139,7 +139,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.9984,
+      "prob": 0.9983,
       "start": 1.13,
       "end": 1.15,
       "heard": null,
@@ -148,7 +148,7 @@
      },
      {
       "ipa": "tʃ",
-      "prob": 0.9929,
+      "prob": 0.9909,
       "start": 1.21,
       "end": 1.25,
       "heard": null,
@@ -157,7 +157,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.9975,
+      "prob": 0.9965,
       "start": 1.27,
       "end": 1.29,
       "heard": null,
@@ -166,7 +166,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9985,
+      "prob": 0.999,
       "start": 1.33,
       "end": 1.37,
       "heard": null,
@@ -175,7 +175,7 @@
      },
      {
       "ipa": "h",
-      "prob": 0.9609,
+      "prob": 0.96,
       "start": 1.39,
       "end": 1.39,
       "heard": null,
@@ -184,7 +184,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.978,
+      "prob": 0.987,
       "start": 1.39,
       "end": 1.41,
       "heard": null,
@@ -224,23 +224,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9904,
+    "sounds_prob": 0.9797,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9997,
+    "present_prob": 0.9994,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "새에는",
-    "prob": 0.9852,
+    "prob": 0.9761,
     "start": 1.49,
     "end": 2.01,
     "phones": [
      {
       "ipa": "s",
-      "prob": 0.9927,
+      "prob": 0.9944,
       "start": 1.49,
       "end": 1.51,
       "heard": null,
@@ -249,7 +249,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9807,
+      "prob": 0.9837,
       "start": 1.57,
       "end": 1.59,
       "heard": null,
@@ -258,7 +258,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9919,
+      "prob": 0.9916,
       "start": 1.71,
       "end": 1.73,
       "heard": null,
@@ -267,7 +267,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9972,
+      "prob": 0.9976,
       "start": 1.79,
       "end": 1.81,
       "heard": null,
@@ -276,7 +276,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9922,
+      "prob": 0.9863,
       "start": 1.85,
       "end": 1.87,
       "heard": null,
@@ -285,7 +285,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9991,
+      "prob": 0.9989,
       "start": 1.97,
       "end": 2.01,
       "heard": null,
@@ -325,23 +325,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9887,
+    "sounds_prob": 0.9797,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9964,
+    "present_prob": 0.9963,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "공룡처럼",
-    "prob": 0.952,
+    "prob": 0.8951,
     "start": 2.07,
     "end": 2.59,
     "phones": [
      {
       "ipa": "k",
-      "prob": 0.9954,
+      "prob": 0.9958,
       "start": 2.07,
       "end": 2.09,
       "heard": null,
@@ -350,7 +350,7 @@
      },
      {
       "ipa": "u",
-      "prob": 0.9912,
+      "prob": 0.9846,
       "start": 2.15,
       "end": 2.17,
       "heard": null,
@@ -359,7 +359,7 @@
      },
      {
       "ipa": "ŋ",
-      "prob": 0.9718,
+      "prob": 0.9777,
       "start": 2.21,
       "end": 2.23,
       "heard": null,
@@ -368,7 +368,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9723,
+      "prob": 0.9653,
       "start": 2.23,
       "end": 2.25,
       "heard": null,
@@ -377,7 +377,7 @@
      },
      {
       "ipa": "j",
-      "prob": 0.9934,
+      "prob": 0.9806,
       "start": 2.25,
       "end": 2.27,
       "heard": null,
@@ -386,7 +386,7 @@
      },
      {
       "ipa": "u",
-      "prob": 0.998,
+      "prob": 0.9976,
       "start": 2.27,
       "end": 2.29,
       "heard": null,
@@ -395,7 +395,7 @@
      },
      {
       "ipa": "ŋ",
-      "prob": 0.9924,
+      "prob": 0.9866,
       "start": 2.31,
       "end": 2.33,
       "heard": null,
@@ -404,16 +404,16 @@
      },
      {
       "ipa": "tʃʰ",
-      "prob": 0.9219,
+      "prob": 0.8629,
       "start": 2.35,
-      "end": 2.41,
+      "end": 2.39,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ɔ",
-      "prob": 0.997,
+      "prob": 0.9955,
       "start": 2.43,
       "end": 2.45,
       "heard": null,
@@ -422,7 +422,7 @@
      },
      {
       "ipa": "r",
-      "prob": 0.996,
+      "prob": 0.994,
       "start": 2.49,
       "end": 2.51,
       "heard": null,
@@ -431,7 +431,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.9968,
+      "prob": 0.9928,
       "start": 2.53,
       "end": 2.55,
       "heard": null,
@@ -440,7 +440,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9396,
+      "prob": 0.9517,
       "start": 2.57,
       "end": 2.59,
       "heard": null,
@@ -490,7 +490,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9526,
+    "sounds_prob": 0.8957,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9993,
@@ -500,13 +500,13 @@
    },
    {
     "text": "보이게",
-    "prob": 0.9631,
+    "prob": 0.8905,
     "start": 2.61,
     "end": 2.91,
     "phones": [
      {
       "ipa": "p",
-      "prob": 0.911,
+      "prob": 0.92,
       "start": 2.61,
       "end": 2.65,
       "heard": null,
@@ -515,7 +515,7 @@
      },
      {
       "ipa": "o",
-      "prob": 0.9944,
+      "prob": 0.9946,
       "start": 2.69,
       "end": 2.71,
       "heard": null,
@@ -524,7 +524,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.9954,
+      "prob": 0.9938,
       "start": 2.75,
       "end": 2.79,
       "heard": null,
@@ -533,7 +533,7 @@
      },
      {
       "ipa": "k",
-      "prob": 0.991,
+      "prob": 0.9897,
       "start": 2.83,
       "end": 2.85,
       "heard": null,
@@ -542,7 +542,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9572,
+      "prob": 0.9369,
       "start": 2.89,
       "end": 2.91,
       "heard": null,
@@ -582,23 +582,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.964,
+    "sounds_prob": 0.8912,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9991,
+    "present_prob": 0.9992,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "하는",
-    "prob": 0.9873,
+    "prob": 0.9515,
     "start": 2.91,
     "end": 3.05,
     "phones": [
      {
       "ipa": "h",
-      "prob": 0.9663,
+      "prob": 0.9773,
       "start": 2.91,
       "end": 2.91,
       "heard": null,
@@ -607,7 +607,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9933,
+      "prob": 0.9709,
       "start": 2.91,
       "end": 2.93,
       "heard": null,
@@ -616,7 +616,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9948,
+      "prob": 0.9927,
       "start": 2.97,
       "end": 2.99,
       "heard": null,
@@ -625,7 +625,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9988,
+      "prob": 0.9958,
       "start": 3.01,
       "end": 3.03,
       "heard": null,
@@ -634,7 +634,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9643,
+      "prob": 0.9631,
       "start": 3.03,
       "end": 3.05,
       "heard": null,
@@ -664,23 +664,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9904,
+    "sounds_prob": 0.956,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9969,
+    "present_prob": 0.9953,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "것들이",
-    "prob": 0.9657,
+    "prob": 0.9057,
     "start": 3.07,
     "end": 3.33,
     "phones": [
      {
       "ipa": "k",
-      "prob": 0.9937,
+      "prob": 0.9902,
       "start": 3.07,
       "end": 3.09,
       "heard": null,
@@ -689,7 +689,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.9923,
+      "prob": 0.9926,
       "start": 3.11,
       "end": 3.13,
       "heard": null,
@@ -698,7 +698,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9472,
+      "prob": 0.9452,
       "start": 3.13,
       "end": 3.15,
       "heard": null,
@@ -707,7 +707,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9255,
+      "prob": 0.9307,
       "start": 3.17,
       "end": 3.21,
       "heard": null,
@@ -716,7 +716,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9946,
+      "prob": 0.9937,
       "start": 3.23,
       "end": 3.25,
       "heard": null,
@@ -725,7 +725,7 @@
      },
      {
       "ipa": "r",
-      "prob": 0.9847,
+      "prob": 0.9865,
       "start": 3.27,
       "end": 3.29,
       "heard": null,
@@ -734,7 +734,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.9739,
+      "prob": 0.9815,
       "start": 3.31,
       "end": 3.33,
       "heard": null,
@@ -774,23 +774,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.967,
+    "sounds_prob": 0.9071,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9986,
+    "present_prob": 0.9985,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "많습니다",
-    "prob": 0.9796,
+    "prob": 0.9493,
     "start": 3.35,
     "end": 3.85,
     "phones": [
      {
       "ipa": "m",
-      "prob": 0.9808,
+      "prob": 0.9687,
       "start": 3.35,
       "end": 3.37,
       "heard": null,
@@ -799,7 +799,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9988,
+      "prob": 0.9986,
       "start": 3.41,
       "end": 3.43,
       "heard": null,
@@ -808,7 +808,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9968,
+      "prob": 0.9959,
       "start": 3.47,
       "end": 3.51,
       "heard": null,
@@ -817,7 +817,7 @@
      },
      {
       "ipa": "s",
-      "prob": 0.9383,
+      "prob": 0.9519,
       "start": 3.55,
       "end": 3.57,
       "heard": null,
@@ -826,7 +826,7 @@
      },
      {
       "ipa": "ə",
-      "prob": 0.9983,
+      "prob": 0.9985,
       "start": 3.61,
       "end": 3.63,
       "heard": null,
@@ -835,7 +835,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9955,
+      "prob": 0.9947,
       "start": 3.65,
       "end": 3.67,
       "heard": null,
@@ -844,7 +844,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9832,
+      "prob": 0.9849,
       "start": 3.67,
       "end": 3.71,
       "heard": null,
@@ -853,7 +853,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.9959,
+      "prob": 0.9967,
       "start": 3.71,
       "end": 3.75,
       "heard": null,
@@ -862,7 +862,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.9926,
+      "prob": 0.9932,
       "start": 3.77,
       "end": 3.79,
       "heard": null,
@@ -871,7 +871,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9962,
+      "prob": 0.9974,
       "start": 3.83,
       "end": 3.85,
       "heard": null,
@@ -921,7 +921,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9802,
+    "sounds_prob": 0.9498,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9994,
@@ -930,45 +930,43 @@
     "contrast_prob": null
    }
   ],
-  "fluency": 0.9202,
+  "fluency": 0.8987,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.258,
-   "load": 1.537,
-   "audio_check": 0.384,
-   "fbank": 4.579,
-   "model": 53.735,
-   "adapter": 0.356,
-   "align": 9.208,
-   "delivery": 1.722,
-   "calibrate": 2.85,
-   "total": 78.54
+   "g2p": 0.222,
+   "load": 0.742,
+   "audio_check": 0.314,
+   "fbank": 3.997,
+   "model": 37.024,
+   "adapter": 0.347,
+   "align": 8.342,
+   "delivery": 1.217,
+   "calibrate": 2.257,
+   "total": 58.279
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.8813,
-   "fluency": 0.9202,
-   "prosodic": 0.8758,
-   "total": 0.8515
+   "accuracy": 0.873,
+   "fluency": 0.8987,
+   "prosodic": 0.8569,
+   "total": 0.8318
   },
   "audio": {
    "schema_version": 1,
    "duration_s": 4.68,
-   "clipped_share": 0.0165,
-   "peak_dbfs": 0.0,
-   "noise_db": -44.2929,
-   "speech_db": -12.0065,
-   "snr_db": 39.1977,
+   "clipped_share": 0.0,
+   "peak_dbfs": -0.0449,
+   "noise_db": -44.7254,
+   "speech_db": -12.4586,
+   "snr_db": 39.13,
    "speech_s": 3.24,
    "speech_share": 0.6923,
    "lead_sil_s": 0.7,
    "trail_sil_s": 0.74,
    "expected_s": 4.175,
    "speech_ratio": 0.776,
-   "issues": [
-    "clipped"
-   ],
-   "retry_recommended": true
+   "issues": [],
+   "retry_recommended": false
   },
   "coaching": [
    {

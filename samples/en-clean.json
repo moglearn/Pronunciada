@@ -17,19 +17,19 @@
  },
  "result": {
   "lang": "en",
-  "text": "IT WAS GOOD FOR ME",
-  "prob": 0.9938,
+  "text": "It was good for me",
+  "prob": 0.9935,
   "strictness": 0.5,
   "words": [
    {
-    "text": "IT",
-    "prob": 0.9987,
+    "text": "It",
+    "prob": 0.9982,
     "start": 0.61,
     "end": 0.71,
     "phones": [
      {
       "ipa": "ɪ",
-      "prob": 0.9985,
+      "prob": 0.9991,
       "start": 0.61,
       "end": 0.63,
       "heard": null,
@@ -38,7 +38,7 @@
      },
      {
       "ipa": "t",
-      "prob": 0.994,
+      "prob": 0.9946,
       "start": 0.67,
       "end": 0.71,
       "heard": null,
@@ -58,7 +58,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.999,
+    "sounds_prob": 0.9985,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9997,
@@ -67,14 +67,14 @@
     "contrast_prob": null
    },
    {
-    "text": "WAS",
-    "prob": 0.9728,
+    "text": "was",
+    "prob": 0.972,
     "start": 0.75,
     "end": 0.91,
     "phones": [
      {
       "ipa": "w",
-      "prob": 0.9986,
+      "prob": 0.998,
       "start": 0.75,
       "end": 0.79,
       "heard": null,
@@ -83,16 +83,16 @@
      },
      {
       "ipa": "ɑ",
-      "prob": 0.9962,
+      "prob": 0.9925,
       "start": 0.79,
-      "end": 0.81,
+      "end": 0.83,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "z",
-      "prob": 0.9952,
+      "prob": 0.9931,
       "start": 0.89,
       "end": 0.91,
       "heard": null,
@@ -112,23 +112,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9778,
+    "sounds_prob": 0.9783,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9949,
+    "present_prob": 0.9935,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "GOOD",
-    "prob": 0.9826,
+    "text": "good",
+    "prob": 0.9894,
     "start": 0.99,
     "end": 1.19,
     "phones": [
      {
       "ipa": "g",
-      "prob": 0.9993,
+      "prob": 0.9992,
       "start": 0.99,
       "end": 1.01,
       "heard": null,
@@ -137,7 +137,7 @@
      },
      {
       "ipa": "ʊ",
-      "prob": 0.9837,
+      "prob": 0.9833,
       "start": 1.05,
       "end": 1.07,
       "heard": null,
@@ -146,7 +146,7 @@
      },
      {
       "ipa": "d",
-      "prob": 0.9979,
+      "prob": 0.9978,
       "start": 1.17,
       "end": 1.19,
       "heard": null,
@@ -166,17 +166,17 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.986,
+    "sounds_prob": 0.9927,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9966,
+    "present_prob": 0.9967,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "FOR",
-    "prob": 0.9744,
+    "text": "for",
+    "prob": 0.9795,
     "start": 1.25,
     "end": 1.39,
     "phones": [
@@ -191,7 +191,7 @@
      },
      {
       "ipa": "ɔ",
-      "prob": 0.978,
+      "prob": 0.9816,
       "start": 1.33,
       "end": 1.39,
       "heard": null,
@@ -200,7 +200,7 @@
      },
      {
       "ipa": "ɹ",
-      "prob": 0.9696,
+      "prob": 0.9727,
       "start": 1.45,
       "end": 1.45,
       "heard": null,
@@ -220,17 +220,17 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9769,
+    "sounds_prob": 0.982,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9974,
+    "present_prob": 0.9975,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "ME",
-    "prob": 0.9976,
+    "text": "me",
+    "prob": 0.9981,
     "start": 1.45,
     "end": 1.53,
     "phones": [
@@ -265,7 +265,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9979,
+    "sounds_prob": 0.9985,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9996,
@@ -274,36 +274,36 @@
     "contrast_prob": null
    }
   ],
-  "fluency": 0.9593,
+  "fluency": 0.9586,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.236,
-   "load": 1.169,
-   "audio_check": 0.352,
-   "fbank": 2.152,
-   "model": 36.597,
-   "adapter": 0.115,
-   "align": 2.289,
-   "delivery": 3.879,
-   "calibrate": 3.972,
-   "prosody": 0.89,
-   "total": 52.919
+   "g2p": 0.182,
+   "load": 0.484,
+   "audio_check": 0.223,
+   "fbank": 1.887,
+   "model": 20.982,
+   "adapter": 0.11,
+   "align": 2.159,
+   "delivery": 3.644,
+   "calibrate": 3.081,
+   "prosody": 0.699,
+   "total": 34.57
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.9127,
-   "fluency": 0.9593,
-   "prosodic": 0.921,
-   "total": 0.88
+   "accuracy": 0.899,
+   "fluency": 0.9586,
+   "prosodic": 0.9073,
+   "total": 0.874
   },
   "audio": {
    "schema_version": 1,
    "duration_s": 2.211,
    "clipped_share": 0.0,
-   "peak_dbfs": -6.9108,
-   "noise_db": -67.8424,
-   "speech_db": -29.635,
-   "snr_db": 50.8427,
+   "peak_dbfs": -7.4228,
+   "noise_db": -68.25,
+   "speech_db": -29.9993,
+   "snr_db": 50.8139,
    "speech_s": 1.08,
    "speech_share": 0.4909,
    "lead_sil_s": 0.58,

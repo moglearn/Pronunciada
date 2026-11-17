@@ -9,12 +9,12 @@
  "result": {
   "lang": "es",
   "text": "Los luchadores compañeros de Luna también le rindieron homenaje.",
-  "prob": 0.9926,
+  "prob": 0.9892,
   "strictness": 0.5,
   "words": [
    {
     "text": "Los",
-    "prob": 0.9911,
+    "prob": 0.992,
     "start": 0.73,
     "end": 0.87,
     "phones": [
@@ -38,7 +38,7 @@
      },
      {
       "ipa": "s",
-      "prob": 0.9941,
+      "prob": 0.9939,
       "start": 0.83,
       "end": 0.87,
       "heard": null,
@@ -58,7 +58,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9932,
+    "sounds_prob": 0.9939,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.998,
@@ -68,13 +68,13 @@
    },
    {
     "text": "luchadores",
-    "prob": 0.9908,
+    "prob": 0.9792,
     "start": 0.87,
     "end": 1.47,
     "phones": [
      {
       "ipa": "l",
-      "prob": 0.9976,
+      "prob": 0.9973,
       "start": 0.87,
       "end": 0.91,
       "heard": null,
@@ -83,7 +83,7 @@
      },
      {
       "ipa": "u",
-      "prob": 0.9958,
+      "prob": 0.9973,
       "start": 0.93,
       "end": 0.95,
       "heard": null,
@@ -92,7 +92,7 @@
      },
      {
       "ipa": "tʃ",
-      "prob": 0.9949,
+      "prob": 0.9952,
       "start": 1.01,
       "end": 1.05,
       "heard": null,
@@ -101,7 +101,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9875,
+      "prob": 0.9871,
       "start": 1.11,
       "end": 1.13,
       "heard": null,
@@ -110,7 +110,7 @@
      },
      {
       "ipa": "d",
-      "prob": 0.9919,
+      "prob": 0.9916,
       "start": 1.19,
       "end": 1.23,
       "heard": null,
@@ -119,7 +119,7 @@
      },
      {
       "ipa": "o",
-      "prob": 0.9904,
+      "prob": 0.9902,
       "start": 1.25,
       "end": 1.29,
       "heard": null,
@@ -128,7 +128,7 @@
      },
      {
       "ipa": "r",
-      "prob": 0.9923,
+      "prob": 0.9914,
       "start": 1.35,
       "end": 1.37,
       "heard": null,
@@ -137,7 +137,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9915,
+      "prob": 0.9898,
       "start": 1.39,
       "end": 1.43,
       "heard": null,
@@ -146,7 +146,7 @@
      },
      {
       "ipa": "s",
-      "prob": 0.9957,
+      "prob": 0.9953,
       "start": 1.43,
       "end": 1.47,
       "heard": null,
@@ -183,7 +183,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.967
+      "stress_prob": 0.9672
      },
      {
       "text": "",
@@ -196,7 +196,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.9811,
     "stress_prob": 0.9983,
     "tone_prob": null,
     "present_prob": 0.9998,
@@ -206,7 +206,7 @@
    },
    {
     "text": "compañeros",
-    "prob": 0.978,
+    "prob": 0.9709,
     "start": 1.49,
     "end": 2.03,
     "phones": [
@@ -221,7 +221,7 @@
      },
      {
       "ipa": "o",
-      "prob": 0.9955,
+      "prob": 0.9951,
       "start": 1.55,
       "end": 1.59,
       "heard": null,
@@ -230,7 +230,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9891,
+      "prob": 0.9906,
       "start": 1.59,
       "end": 1.63,
       "heard": null,
@@ -239,7 +239,7 @@
      },
      {
       "ipa": "p",
-      "prob": 0.9963,
+      "prob": 0.997,
       "start": 1.67,
       "end": 1.69,
       "heard": null,
@@ -257,7 +257,7 @@
      },
      {
       "ipa": "ɲ",
-      "prob": 0.9904,
+      "prob": 0.9888,
       "start": 1.81,
       "end": 1.83,
       "heard": null,
@@ -266,7 +266,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9932,
+      "prob": 0.9942,
       "start": 1.87,
       "end": 1.91,
       "heard": null,
@@ -284,7 +284,7 @@
      },
      {
       "ipa": "o",
-      "prob": 0.9971,
+      "prob": 0.9962,
       "start": 1.95,
       "end": 1.99,
       "heard": null,
@@ -293,7 +293,7 @@
      },
      {
       "ipa": "s",
-      "prob": 0.997,
+      "prob": 0.9969,
       "start": 1.99,
       "end": 2.03,
       "heard": null,
@@ -330,7 +330,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.7316
+      "stress_prob": 0.7473
      },
      {
       "text": "",
@@ -343,23 +343,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
-    "stress_prob": 0.9858,
+    "sounds_prob": 0.9846,
+    "stress_prob": 0.9868,
     "tone_prob": null,
-    "present_prob": 0.9994,
+    "present_prob": 0.9993,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "de",
-    "prob": 0.9925,
+    "prob": 0.9938,
     "start": 2.03,
     "end": 2.11,
     "phones": [
      {
       "ipa": "d",
-      "prob": 0.9982,
+      "prob": 0.9979,
       "start": 2.03,
       "end": 2.07,
       "heard": null,
@@ -368,7 +368,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9968,
+      "prob": 0.9961,
       "start": 2.09,
       "end": 2.11,
       "heard": null,
@@ -388,7 +388,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9926,
+    "sounds_prob": 0.9939,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9998,
@@ -398,13 +398,13 @@
    },
    {
     "text": "Luna",
-    "prob": 0.9832,
+    "prob": 0.9817,
     "start": 2.19,
     "end": 2.47,
     "phones": [
      {
       "ipa": "l",
-      "prob": 0.9971,
+      "prob": 0.9969,
       "start": 2.19,
       "end": 2.23,
       "heard": null,
@@ -413,7 +413,7 @@
      },
      {
       "ipa": "u",
-      "prob": 0.9973,
+      "prob": 0.9971,
       "start": 2.25,
       "end": 2.29,
       "heard": null,
@@ -448,7 +448,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.7207
+      "stress_prob": 0.7214
      },
      {
       "text": "",
@@ -461,23 +461,23 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9999,
+    "sounds_prob": 0.9985,
     "stress_prob": 0.9851,
     "tone_prob": null,
-    "present_prob": 0.9981,
+    "present_prob": 0.998,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "también",
-    "prob": 0.9869,
+    "prob": 0.9647,
     "start": 2.59,
     "end": 3.01,
     "phones": [
      {
       "ipa": "t",
-      "prob": 0.9981,
+      "prob": 0.9975,
       "start": 2.59,
       "end": 2.61,
       "heard": null,
@@ -486,7 +486,7 @@
      },
      {
       "ipa": "a",
-      "prob": 0.9976,
+      "prob": 0.9974,
       "start": 2.65,
       "end": 2.67,
       "heard": null,
@@ -495,7 +495,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9926,
+      "prob": 0.9924,
       "start": 2.75,
       "end": 2.79,
       "heard": null,
@@ -504,7 +504,7 @@
      },
      {
       "ipa": "b",
-      "prob": 0.9961,
+      "prob": 0.9963,
       "start": 2.79,
       "end": 2.83,
       "heard": null,
@@ -513,7 +513,7 @@
      },
      {
       "ipa": "ie",
-      "prob": 0.9958,
+      "prob": 0.9954,
       "start": 2.85,
       "end": 2.89,
       "heard": null,
@@ -522,7 +522,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9885,
+      "prob": 0.9915,
       "start": 2.97,
       "end": 3.01,
       "heard": null,
@@ -549,26 +549,26 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.9189
+      "stress_prob": 0.9185
      }
     ],
-    "sounds_prob": 0.9911,
-    "stress_prob": 0.9961,
+    "sounds_prob": 0.9689,
+    "stress_prob": 0.996,
     "tone_prob": null,
-    "present_prob": 0.9997,
+    "present_prob": 0.9996,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
     "text": "le",
-    "prob": 0.9998,
+    "prob": 0.9962,
     "start": 3.11,
     "end": 3.19,
     "phones": [
      {
       "ipa": "l",
-      "prob": 0.9961,
+      "prob": 0.9965,
       "start": 3.11,
       "end": 3.15,
       "heard": null,
@@ -577,7 +577,7 @@
      },
      {
       "ipa": "e",
-      "prob": 0.9954,
+      "prob": 0.9957,
       "start": 3.17,
       "end": 3.19,
       "heard": null,
@@ -597,7 +597,7 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9999,
+    "sounds_prob": 0.9963,
     "stress_prob": null,
     "tone_prob": null,
     "present_prob": 0.9999,
@@ -607,7 +607,7 @@
    },
    {
     "text": "rindieron",
-    "prob": 0.9802,
+    "prob": 0.9609,
     "start": 3.27,
     "end": 3.67,
     "phones": [
@@ -622,7 +622,7 @@
      },
      {
       "ipa": "i",
-      "prob": 0.994,
+      "prob": 0.9944,
       "start": 3.31,
       "end": 3.35,
       "heard": null,
@@ -631,7 +631,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9978,
+      "prob": 0.9972,
       "start": 3.39,
       "end": 3.41,
       "heard": null,
@@ -640,7 +640,7 @@
      },
      {
       "ipa": "d",
-      "prob": 0.9966,
+      "prob": 0.9964,
       "start": 3.43,
       "end": 3.47,
       "heard": null,
@@ -649,7 +649,7 @@
      },
      {
       "ipa": "ie",
-      "prob": 0.9943,
+      "prob": 0.9904,
       "start": 3.47,
       "end": 3.53,
       "heard": null,
@@ -658,16 +658,16 @@
      },
      {
       "ipa": "r",
-      "prob": 0.9968,
+      "prob": 0.9935,
       "start": 3.55,
-      "end": 3.57,
+      "end": 3.59,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "o",
-      "prob": 0.9946,
+      "prob": 0.9929,
       "start": 3.59,
       "end": 3.63,
       "heard": null,
@@ -676,7 +676,7 @@
      },
      {
       "ipa": "n",
-      "prob": 0.9971,
+      "prob": 0.997,
       "start": 3.63,
       "end": 3.67,
       "heard": null,
@@ -703,7 +703,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.9547
+      "stress_prob": 0.963
      },
      {
       "text": "",
@@ -716,8 +716,8 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9824,
-    "stress_prob": 0.9977,
+    "sounds_prob": 0.9628,
+    "stress_prob": 0.9981,
     "tone_prob": null,
     "present_prob": 1.0,
     "omitted": false,
@@ -726,13 +726,13 @@
    },
    {
     "text": "homenaje",
-    "prob": 0.984,
+    "prob": 0.9784,
     "start": 3.71,
     "end": 4.17,
     "phones": [
      {
       "ipa": "o",
-      "prob": 0.9971,
+      "prob": 0.9967,
       "start": 3.71,
       "end": 3.73,
       "heard": null,
@@ -741,7 +741,7 @@
      },
      {
       "ipa": "m",
-      "prob": 0.9962,
+      "prob": 0.9958,
       "start": 3.77,
       "end": 3.79,
       "heard": null,
@@ -777,7 +777,7 @@
      },
      {
       "ipa": "x",
-      "prob": 0.9953,
+      "prob": 0.9941,
       "start": 4.07,
       "end": 4.09,
       "heard": null,
@@ -823,7 +823,7 @@
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.8176
+      "stress_prob": 0.8094
      },
      {
       "text": "",
@@ -836,8 +836,8 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9935,
-    "stress_prob": 0.9909,
+    "sounds_prob": 0.9883,
+    "stress_prob": 0.9905,
     "tone_prob": null,
     "present_prob": 0.9996,
     "omitted": false,
@@ -845,36 +845,36 @@
     "contrast_prob": null
    }
   ],
-  "fluency": 0.9222,
+  "fluency": 0.9286,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.35,
-   "load": 1.485,
-   "audio_check": 0.502,
-   "fbank": 5.204,
-   "model": 65.554,
-   "adapter": 0.444,
-   "align": 13.618,
-   "delivery": 8.574,
-   "calibrate": 2.529,
-   "prosody": 4.796,
-   "total": 105.621
+   "g2p": 0.273,
+   "load": 0.873,
+   "audio_check": 0.351,
+   "fbank": 4.728,
+   "model": 41.692,
+   "adapter": 0.387,
+   "align": 17.047,
+   "delivery": 7.098,
+   "calibrate": 2.02,
+   "prosody": 3.951,
+   "total": 80.503
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.9048,
-   "fluency": 0.9222,
-   "prosodic": 0.8955,
-   "total": 0.8528
+   "accuracy": 0.903,
+   "fluency": 0.9286,
+   "prosodic": 0.8936,
+   "total": 0.8565
   },
   "audio": {
    "schema_version": 1,
    "duration_s": 5.64,
    "clipped_share": 0.0,
-   "peak_dbfs": -8.475,
-   "noise_db": -68.6229,
-   "speech_db": -26.1988,
-   "snr_db": 49.1821,
+   "peak_dbfs": -8.9179,
+   "noise_db": -68.99,
+   "speech_db": -26.6383,
+   "snr_db": 49.0523,
    "speech_s": 3.6,
    "speech_share": 0.6383,
    "lead_sil_s": 0.7,
