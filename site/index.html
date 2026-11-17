@@ -57,13 +57,52 @@ li{margin:0 0 12px;padding-left:4px}
 .note{font-size:13.5px;line-height:20px;color:var(--soft)}
 
 /* key figures */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0 40px;margin:64px 0 0;padding:30px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0 40px;margin:40px 0 0;padding:30px 0;border-bottom:1px solid var(--rule)}
 .stats b{display:block;font-family:var(--display);font-weight:300;font-size:52px;line-height:56px;letter-spacing:-.035em;font-variant-numeric:tabular-nums;white-space:nowrap}
 .stats small{font-size:22px;letter-spacing:-.02em;color:var(--soft)}
 .stats span{display:block;margin-top:10px;font-size:15px;line-height:22px;color:var(--soft)}
 
-/* video */
-.media{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:20px;margin:64px 0 0;background:#05070b}
+/* demo */
+.demo{margin:56px 0 0;padding:28px 32px 26px;border-radius:20px;color:#fff;background:linear-gradient(rgba(4,6,10,.52),rgba(4,6,10,.52)),#06080c url(assets/gradient.jpg) center/cover;scroll-margin-top:92px}
+.d-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 36px}
+.d-tabs button{height:30px;padding:0 13px;border:0;border-radius:9999px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font:500 13px/1 var(--sans);cursor:pointer}
+.d-tabs button:hover{background:rgba(255,255,255,.18)}
+.d-tabs button[aria-selected="true"]{background:#fff;color:#000}
+.d-meta{margin:0 0 14px;font-size:13.5px;line-height:20px;color:rgba(255,255,255,.62)}
+.d-text{margin:0 0 24px;min-height:100px;font-family:var(--display),"Noto Sans CJK SC","PingFang SC","Hiragino Sans","Apple SD Gothic Neo",sans-serif;font-weight:300;font-size:40px;line-height:50px;letter-spacing:-.025em}
+.d-text:lang(zh),.d-text:lang(ja),.d-text:lang(ko){letter-spacing:0;font-weight:400;font-size:34px}
+.d-text .w{cursor:pointer;border-radius:8px;padding:1px 4px;margin:0 -4px;transition:background .12s,opacity .12s}
+.d-text .w:hover{background:rgba(255,255,255,.1)}
+.d-text .w.sel{background:rgba(255,255,255,.16)}
+.d-text .w.low,.d-grid .low,.d-word h3 .low,.d-note .low{color:#8cc4ff}
+.demo.playing .d-text .w{opacity:.42}
+.demo.playing .d-text .w.said{opacity:1}
+.d-wave{display:block;width:100%;height:48px;margin:0 0 24px}
+.d-wave rect{fill:#fff;opacity:.55}
+.demo.playing .d-wave rect{opacity:.26}
+.demo.playing .d-wave rect.lit{opacity:1}
+.d-ctrl{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap}
+.d-play{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 15px 0 14px;border:0;border-radius:9999px;background:#fff;color:#000;font:500 13.5px/1 var(--sans);font-variant-numeric:tabular-nums;cursor:pointer}
+.d-play time{min-width:28px;text-align:left}
+.d-play .i-pause,.demo.playing .d-play .i-play{display:none}
+.demo.playing .d-play .i-pause{display:inline}
+.d-sent{font-size:15px;line-height:20px;font-variant-numeric:tabular-nums}
+.d-hint{margin-left:auto;font-size:13.5px;line-height:20px;color:rgba(255,255,255,.58)}
+.d-word{margin:26px 0 0;padding:22px 0 0;border-top:1px solid rgba(255,255,255,.16);min-height:206px}
+.d-word h3{margin:0 0 12px;font:400 16px/24px var(--sans);font-variant-numeric:tabular-nums}
+.d-word h3 span{color:rgba(255,255,255,.62);margin-left:6px}
+.d-scroll{overflow-x:auto}
+.d-grid{display:grid;grid-template-columns:176px repeat(var(--n),minmax(38px,1fr));min-width:max-content}
+.d-grid > *{padding:9px 14px 9px 0;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;white-space:nowrap}
+.d-grid .l{font-size:13.5px;color:rgba(255,255,255,.62)}
+.d-grid .s{font-family:var(--display);font-weight:300;font-size:26px;line-height:32px}
+.d-grid .h{font-size:15px;color:rgba(255,255,255,.62)}
+.d-grid .h.sub{color:#fff}
+.d-grid .n{font-family:var(--display);font-size:19px;font-variant-numeric:tabular-nums}
+.d-note{margin:14px 0 0;font-size:15px;line-height:23px}
+.d-note small{font-size:13.5px;color:rgba(255,255,255,.62);margin-right:8px}
+.d-foot{margin:24px 0 0;font-size:13.5px;line-height:20px;color:rgba(255,255,255,.62)}
+.d-foot a{color:#fff;text-decoration-color:rgba(255,255,255,.4);white-space:nowrap}
 
 /* charts */
 .chart{margin:44px 0;padding:30px 32px 24px;border-radius:20px;background:var(--card);box-shadow:0 0 0 1px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);line-height:22px}
@@ -158,7 +197,14 @@ footer p{margin:0}
   .wf-grid .n{font-size:19px}
   .wf-grid .h{font-size:14px}
   .wf-grid .l{font-size:12.5px;line-height:17px;padding-right:8px}
-  .media{border-radius:14px;margin-top:48px}
+  .demo{margin-top:44px;padding:22px 20px 20px;border-radius:14px}
+  .d-tabs{margin-bottom:26px}
+  .d-text{font-size:28px;line-height:36px;min-height:72px}
+  .d-text:lang(zh),.d-text:lang(ja),.d-text:lang(ko){font-size:25px}
+  .d-hint{margin-left:0;width:100%}
+  .d-grid{grid-template-columns:112px repeat(var(--n),minmax(34px,1fr))}
+  .d-grid .l{white-space:normal;font-size:12.5px;line-height:16px}
+  .d-grid .s{font-size:22px}
   .chart{margin:36px 0;padding:22px 20px 18px;border-radius:14px}
   .ch-g{grid-template-columns:1fr;gap:8px}
   .sp-row{grid-template-columns:1fr 78px;gap:6px 16px}
@@ -174,6 +220,7 @@ footer p{margin:0}
 <header class="top"><div class="in">
   <a class="name" href="./" aria-label="Pronunciada"><img src="assets/logo-light.svg" alt="Pronunciada"></a>
   <nav class="nav">
+    <a class="link" href="#demo">Demo</a>
     <a class="link" href="#benchmarks">Benchmarks</a>
     <a class="link" href="#how">How it works</a>
     <a class="link" href="#start">Get started</a>
@@ -182,7 +229,7 @@ footer p{margin:0}
 </div></header>
 
 <main>
-<p class="crumb">Open source · Apache-2.0</p>
+<p class="crumb">Open source · Apache-2.0 · Built at Moglearn</p>
 <h1>On-device pronunciation assessment with cloud-level accuracy.</h1>
 <p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages.</p>
 <div class="pills">
@@ -190,13 +237,23 @@ footer p{margin:0}
   <a class="pill light" href="https://pypi.org/project/pronunciada/"><code>pip install pronunciada</code></a>
 </div>
 
+<div class="demo" id="demo">
+  <div class="d-tabs" role="tablist" aria-label="Sample recordings"></div>
+  <p class="d-meta"></p>
+  <p class="d-text"></p>
+  <svg class="d-wave" preserveAspectRatio="none" aria-hidden="true"></svg>
+  <div class="d-ctrl">
+    <button class="d-play" type="button" aria-label="Play the recording"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path class="i-play" d="M2.5 1.2v9.6L10.6 6z"/><path class="i-pause" d="M2.2 1.5h2.6v9H2.2zM7.2 1.5h2.6v9H7.2z"/></svg><time>0:00</time></button>
+    <span class="d-sent"></span>
+    <span class="d-hint">Select a word to see its sounds</span>
+  </div>
+  <div class="d-word"></div>
+  <p class="d-foot">Output of version 1.0.0 for recordings from public test sets, computed ahead of time. <a href="https://huggingface.co/spaces/moglearn/pronunciada">Score your own voice on Hugging Face</a></p>
+</div>
+
 <!-- gen:stats -->
 <div class="stats"><div><b>77<small> of 84</small></b><span>comparisons level with or ahead of Azure</span></div><div><b>50<small> ms</small></b><span>per sentence on a laptop CPU</span></div><div><b>10</b><span>languages</span></div></div>
 <!-- /gen:stats -->
-
-<video class="media" controls preload="none" poster="assets/poster.jpg" width="808" height="455" aria-label="A one-minute video with sound: a learner recording and recordings in Spanish, Japanese, Korean and Mandarin play with the scores Pronunciada gives them, followed by the comparison with Azure, the command line scoring a recording, and the comparison with ZIPA alone.">
-  <source src="assets/demo.mp4" type="video/mp4">
-</video>
 
 <h2 id="benchmarks">Tested against Azure in ten languages</h2>
 <p>Most language-learning apps get their pronunciation scores from a cloud service, and the most widely used one is Microsoft Azure Pronunciation Assessment. Pronunciada was compared with it in every language it supports: English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean. There are 84 comparisons. Each is one measure on one public test set, with the same recordings and text given to both systems.</p>
@@ -220,7 +277,8 @@ footer p{margin:0}
 <p>All figures come from held-out test recordings. Azure was used as provided, through its REST API in November 2026.</p>
 
 <h2>Runs on the device in about 50 ms</h2>
-<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop, using a 248 MB model. A quantized model of 67 MB takes about 40 ms. Longer recordings take longer in proportion, and they still return well before a request to the cloud does.</p>
+<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop.</p>
+<p>The system was designed with phones in mind. The quantized model is a 67 MB file, runs on a single CPU thread and uses about 0.4 GB of memory. The full model is 248 MB and uses about 0.6 GB. Packaged iOS and Android builds are not available yet.</p>
 <!-- gen:chart-speed -->
 <figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop, one CPU thread</small></span><span class="ch-track"><i style="width:12.9%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.34 s</b></div><p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>
 <!-- /gen:chart-speed -->
@@ -233,7 +291,7 @@ footer p{margin:0}
 <p>Across 60 tests, Pronunciada is significantly better in 45 and significantly worse in none. The gap is widest for Mandarin tones, which ZIPA does not output. The full comparison is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">baseline write-up</a>.</p>
 
 <h2 id="how">How it works</h2>
-<p>Pronunciada compares the sounds a sentence should contain with the sounds a speech model hears in the recording. The figure follows one word from the learner recording in the video.</p>
+<p>Pronunciada compares the sounds a sentence should contain with the sounds a speech model hears in the recording. The figure follows one word from the first recording in the demo above.</p>
 <!-- gen:figure-word -->
 <figure class="chart wf"><div class="ch-head"><figcaption>How one word is scored</figcaption><div class="ch-key">“float”, said without its “l”</div></div><div class="wf-grid"><span class="l">Expected sound</span><span class="s">f</span><span class="s">l</span><span class="s">oʊ</span><span class="s">t</span><span class="l">Recognized instead</span><span class="h">–</span><span class="h sub">nothing</span><span class="h sub">ɔ</span><span class="h">–</span><span class="l">Probability a rater accepts it</span><span><span class="n">0.83</span></span><span><span class="n low">0.27</span></span><span><span class="n low">0.35</span></span><span><span class="n">0.56</span></span></div><p class="ch-foot">The speech model heard no “l” and a different vowel, so those two sounds score low and the word as a whole gets 0.10.</p></figure>
 <!-- /gen:figure-word -->
@@ -268,7 +326,7 @@ result.prob                <span class="c"># 0.75, the sentence</span>
 result.words[7].prob       <span class="c"># 0.10, the word "float"</span>
 result.words[7].phones     <span class="c"># f 0.83, l 0.27, oʊ 0.35, t 0.56</span>
 result.coaching()          <span class="c"># detected errors, most severe first</span></pre>
-<p class="note">The values are for the learner recording in the video, in which the “l” of “float” is dropped. The model is downloaded on first use. A command-line tool, a local HTTP server, output in Azure's JSON layout and an MCP server are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
+<p class="note">The values are for the first recording in the demo above, in which the “l” of “float” is dropped. The model is downloaded on first use. A command-line tool, a local HTTP server, output in Azure's JSON layout and an MCP server are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
 
 <div class="cta">
   <h2>Apache-2.0, on GitHub</h2>
@@ -280,7 +338,7 @@ result.coaching()          <span class="c"># detected errors, most severe first<
 </div>
 
 <div class="author">
-  <div><small>Written by</small><strong>Bill Sun</strong><p>Computer science undergraduate at Johns Hopkins University and founder of <a href="https://moglearn.com">Moglearn</a>.</p></div>
+  <div><small>Made by</small><strong>Bill Sun, at Moglearn</strong><p>Pronunciada was built for <a href="https://moglearn.com">Moglearn</a>, a language-learning app, so that a learner's speech can be scored on their own device. Bill studies computer science at Johns Hopkins University.</p></div>
   <a class="pill light" href="https://www.linkedin.com/in/bill-s-214769325">LinkedIn</a>
 </div>
 
@@ -290,13 +348,116 @@ result.coaching()          <span class="c"># detected errors, most severe first<
     <nav>
       <a href="https://github.com/moglearn/pronunciada">GitHub</a>
       <a href="https://pypi.org/project/pronunciada/">PyPI</a>
+      <a href="https://huggingface.co/spaces/moglearn/pronunciada">Hugging Face</a>
       <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">Scoreboard</a>
       <a href="https://github.com/moglearn/pronunciada/blob/main/docs/DESIGN.md">Design</a>
       <a href="https://github.com/moglearn/pronunciada/blob/main/LICENSE">License</a>
     </nav>
   </div>
-  <p>Code under Apache-2.0. ZIPA and the recordings in the video (speechocean762, OMPAL, FLEURS) are licensed under CC BY 4.0. Azure is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.</p>
+  <p>Made by Bill Sun at Moglearn. Code under Apache-2.0. ZIPA and the sample recordings (speechocean762, OMPAL, FLEURS) are licensed under CC BY 4.0. Azure is a trademark of Microsoft. This project is not affiliated with or endorsed by Microsoft.</p>
 </footer>
 </main>
+<script>
+(function(){
+  var SAMPLES=[['en-learner-1','English learner'],['en-learner-2','English learner 2'],['en-clean','English, no errors'],['zh-learner-1','Mandarin learner'],
+               ['es-native','Spanish'],['fr-native','French'],['de-native','German'],['ja-native','Japanese'],['ko-native','Korean']];
+  var root=document.getElementById('demo'); if(!root) return;
+  function q(s){return root.querySelector(s);}
+  var tabs=q('.d-tabs'), meta=q('.d-meta'), text=q('.d-text'), wave=q('.d-wave'), play=q('.d-play'), time=play.querySelector('time'),
+      sent=q('.d-sent'), panel=q('.d-word');
+  var audio=new Audio(), cache={}, data=null, words=[], bars=[], frame=0, total='0:00', current='', decoder=null;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function f2(p){return p==null?'':p.toFixed(2);}
+  function clock(t){t=Math.max(0,Math.floor(t));return Math.floor(t/60)+':'+('0'+t%60).slice(-2);}
+  function num(p){return '<span class="n'+(p<0.5?' low':'')+'">'+f2(p)+'</span>';}
+
+  function stop(){
+    cancelAnimationFrame(frame); audio.pause(); try{audio.currentTime=0;}catch(e){}
+    root.classList.remove('playing');
+    words.forEach(function(w){w.classList.remove('said');}); bars.forEach(function(b){b.classList.remove('lit');});
+    time.textContent=total;
+  }
+  function paint(){
+    var t=audio.currentTime, n=audio.duration?Math.floor(t/audio.duration*bars.length):0;
+    words.forEach(function(w){w.classList.toggle('said',+w.dataset.a<=t+0.04);});
+    bars.forEach(function(b,i){b.classList.toggle('lit',i<=n);});
+    time.textContent=clock(t);
+    frame=requestAnimationFrame(paint);
+  }
+  play.addEventListener('click',function(){
+    if(root.classList.contains('playing')){stop();return;}
+    root.classList.add('playing'); audio.play().then(paint,stop);
+  });
+  audio.addEventListener('ended',stop);
+  audio.addEventListener('loadedmetadata',function(){total=clock(Math.round(audio.duration));if(!root.classList.contains('playing')) time.textContent=total;});
+
+  function drawWave(key){
+    wave.innerHTML=''; bars=[];
+    var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
+    fetch('samples/'+key+'.mp3').then(function(r){return r.arrayBuffer();}).then(function(buf){
+      decoder=decoder||new AC();
+      return new Promise(function(ok,no){decoder.decodeAudioData(buf,ok,no);});
+    }).then(function(a){
+      if(key!==current) return;
+      var d=a.getChannelData(0), n=132, step=Math.floor(d.length/n), peak=[], top=0, i, j, m;
+      for(i=0;i<n;i++){m=0;for(j=i*step;j<(i+1)*step;j+=8){var v=Math.abs(d[j]);if(v>m)m=v;}peak.push(m);if(m>top)top=m;}
+      wave.setAttribute('viewBox','0 0 '+n*6+' 48');
+      var out='';
+      for(i=0;i<n;i++){var h=Math.max(2,Math.pow(peak[i]/(top||1),0.7)*46);out+='<rect x="'+i*6+'" y="'+(24-h/2).toFixed(1)+'" width="3" height="'+h.toFixed(1)+'" rx="1.5"/>';}
+      wave.innerHTML=out; bars=[].slice.call(wave.querySelectorAll('rect'));
+    }).catch(function(){});
+  }
+
+  function select(i){
+    var w=data.result.words[i], n=w.phones.length, row1='', row2='', row3='';
+    words.forEach(function(el){el.classList.toggle('sel',+el.dataset.i===i);});
+    w.phones.forEach(function(p){
+      row1+='<span class="s">'+esc(p.ipa)+'</span>';
+      row2+=p.heard==null?'<span class="h">–</span>':'<span class="h sub">'+(esc(p.heard)||'nothing')+'</span>';
+      row3+='<span>'+num(p.prob)+'</span>';
+    });
+    var h='<h3>“'+esc(w.text)+'” '+num(w.prob).replace('class="n','class="')+'<span>probability that a human rater would accept the word</span></h3>'+
+      '<div class="d-scroll"><div class="d-grid" style="--n:'+n+'"><span class="l">Expected sound</span>'+row1+
+      '<span class="l">Recognized instead</span>'+row2+'<span class="l">Probability it is accepted</span>'+row3+'</div></div>';
+    var tones=(w.syllables||[]).filter(function(y){return y.tone_prob!=null;}).map(function(y){
+      return esc(y.text)+' '+num(y.tone_prob).replace('class="n','class="')+' (tone '+y.tone_expected+' expected'+(y.tone_heard!=null&&y.tone_heard!==y.tone_expected?', tone '+y.tone_heard+' recognized':'')+')';});
+    if(tones.length) h+='<p class="d-note"><small>Tones</small>'+tones.join(' · ')+'</p>';
+    var tip=data.meta.experts?((data.result.tips||[])[0]||{}).text:'';
+    if(tip) h+='<p class="d-note"><small>Coaching tip</small>'+esc(tip)+'</p>';
+    panel.innerHTML=h;
+  }
+
+  function show(key){
+    stop(); current=key;
+    [].forEach.call(tabs.children,function(b){b.setAttribute('aria-selected',b.dataset.k===key?'true':'false');});
+    (cache[key]?Promise.resolve(cache[key]):fetch('samples/'+key+'.json').then(function(r){return r.json();})).then(function(d){
+      if(key!==current) return;
+      cache[key]=data=d;
+      var m=d.meta, r=d.result, src=m.text, at=0, h='', lowest=0, first=-1;
+      meta.textContent=m.speaker.charAt(0).toUpperCase()+m.speaker.slice(1)+' · '+m.source.replace(/ \(.*$/,'');
+      r.words.forEach(function(w,i){
+        var k=src.indexOf(w.text,at); if(k<0) k=at;
+        var low=w.prob<0.5||(w.syllables||[]).some(function(y){return y.tone_prob!=null&&y.tone_prob<0.5;});
+        if(low&&first<0) first=i;
+        h+=esc(src.slice(at,k))+'<span class="w'+(low?' low':'')+'" role="button" tabindex="0" data-i="'+i+'" data-a="'+w.start+'">'+esc(w.text)+'</span>';
+        at=k+w.text.length;
+        if(w.prob<r.words[lowest].prob) lowest=i;
+      });
+      text.lang=m.lang; text.innerHTML=h+esc(src.slice(at));
+      words=[].slice.call(text.querySelectorAll('.w'));
+      sent.textContent='Sentence '+f2(r.prob);
+      audio.src='samples/'+key+'.mp3'; total='0:00'; time.textContent=total;
+      select(first<0?lowest:first); drawWave(key);
+    });
+  }
+  text.addEventListener('click',function(e){var w=e.target.closest('.w'); if(w&&data) select(+w.dataset.i);});
+  text.addEventListener('keydown',function(e){var w=e.target.closest('.w'); if(w&&data&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(+w.dataset.i);}});
+  SAMPLES.forEach(function(s){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('role','tab'); b.dataset.k=s[0]; b.textContent=s[1];
+    b.addEventListener('click',function(){show(s[0]);}); tabs.appendChild(b);
+  });
+  show(SAMPLES[0][0]);
+})();
+</script>
 </body>
 </html>

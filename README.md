@@ -174,6 +174,8 @@ Median time for one `Scorer.score` call on 100 speechocean762 recordings (mean l
 | fp32 (248 MB) | 50 ms | 100 ms |
 | int8 (67 MB) | 40 ms | 65 ms |
 
+Peak memory of the Python process while scoring is about 0.6 GB with the fp32 model and 0.4 GB with int8 (English, one thread, Apple M3 Pro). The int8 model was sized with phones in mind; there are no packaged iOS or Android builds yet.
+
 For recordings of about ten seconds (FLEURS test), the median is 0.30 s to 0.44 s on one thread, depending on the language. A request to Azure's REST API for recordings of similar length took 1.8 s to 3.0 s from the same laptop, upload included. This is not a controlled comparison: the two sets of recordings differ. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
 
 ### Compared with ZIPA alone
