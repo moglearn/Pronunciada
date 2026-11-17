@@ -1,0 +1,104 @@
+{
+ "version": 1,
+ "fitted_on": "FLEURS validation natives + contrast-audit swaps (bench/round17/fit.py)",
+ "langs": {
+  "ko": [
+   {
+    "contrast": "aspiration",
+    "head": "aspirated",
+    "members": [
+     "k",
+     "kʰ",
+     "p",
+     "pʰ",
+     "t",
+     "tʃ",
+     "tʃʰ",
+     "tʰ"
+    ],
+    "s0": -2.727067770649862,
+    "slope": 0.5,
+    "cap": true,
+    "coach": {
+     "careful": 0.25332702968226206,
+     "balanced": 0.33131554413088954,
+     "eager": 0.47951996894713506
+    }
+   }
+  ],
+  "ru": [
+   {
+    "contrast": "hard_soft",
+    "head": "palatalised",
+    "members": [
+     "b",
+     "bʲ",
+     "dz",
+     "dzʲ",
+     "f",
+     "fʲ",
+     "g",
+     "gʲ",
+     "k",
+     "kʲ",
+     "m",
+     "mʲ",
+     "n",
+     "nʲ",
+     "p",
+     "pʲ",
+     "s",
+     "sʲ",
+     "ts",
+     "tsʲ",
+     "v",
+     "vʲ",
+     "x",
+     "xʲ",
+     "z",
+     "zʲ",
+     "ɭ",
+     "ɭʲ"
+    ],
+    "s0": -3.7682850152263074,
+    "slope": 0.5,
+    "cap": true,
+    "coach": {
+     "careful": 0.12194438617572621,
+     "balanced": 0.21757561212564983,
+     "eager": 0.33324202405199094
+    }
+   }
+  ],
+  "zh": [
+   {
+    "contrast": "aspiration",
+    "head": "aspirated",
+    "members": [
+     "k",
+     "kʰ",
+     "p",
+     "pʰ",
+     "t",
+     "ts",
+     "tsʰ",
+     "tɕ",
+     "tɕʰ",
+     "tʰ",
+     "ʈʂ",
+     "ʈʂʰ"
+    ],
+    "s0": -2.3509884671266605,
+    "slope": 0.5,
+    "cap": true,
+    "coach": {
+     "careful": null,
+     "balanced": null,
+     "eager": null
+    },
+    "coach_note": "OMPAL dev: no bar reaches 0.7 precision on French learners' consonant errors (best 0.67 at 0.05, 12 characters); coaching off"
+   }
+  ]
+ },
+ "note": "caps on the shown sound probability (min with round-16 caps); coaching bars: <= 0.05 / 0.1 / 0.2 native items per clip"
+}

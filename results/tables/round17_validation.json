@@ -1,0 +1,218 @@
+{
+ "ko": {
+  "clips": 226,
+  "before": {
+   "native_sound_accept": 0.9995800260383856,
+   "native_word_accept": 0.9842449464922711,
+   "planted_sound_auc": 0.9784520837584176,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.025,
+      "sound_auc": 0.5024395237495275,
+      "word_hit5": 0.05
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.225,
+      "sound_auc": 0.7771975137541473,
+      "word_hit5": 0.3
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9974801562303137,
+   "native_word_accept": 0.9842449464922711,
+   "planted_sound_auc": 0.978693290042566,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.9,
+      "sound_auc": 0.9842989234667451,
+      "word_hit5": 0.05
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.9666666666666667,
+      "sound_auc": 0.9917443618495654,
+      "word_hit5": 0.3
+     }
+    }
+   }
+  }
+ },
+ "ru": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.9931073687202444,
+   "native_word_accept": 0.9736842105263158,
+   "planted_sound_auc": 0.9726971505720173,
+   "contrasts": {
+    "hard_soft": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.5,
+      "sound_auc": 0.8477576742698785,
+      "word_hit5": 0.1
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.30833333333333335,
+      "sound_auc": 0.8906262583197139,
+      "word_hit5": 0.2833333333333333
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9891991757265686,
+   "native_word_accept": 0.9736842105263158,
+   "planted_sound_auc": 0.9753828252682442,
+   "contrasts": {
+    "hard_soft": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.6666666666666666,
+      "sound_auc": 0.9373604005305668,
+      "word_hit5": 0.1
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.925,
+      "sound_auc": 0.9832258580260073,
+      "word_hit5": 0.2833333333333333
+     }
+    }
+   }
+  }
+ },
+ "zh": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.9975162847368668,
+   "native_word_accept": 0.9793577981651376,
+   "planted_sound_auc": 0.9881205773466423,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.7916666666666666,
+      "sound_auc": 0.949634862614618,
+      "word_hit5": 0.4
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.625,
+      "sound_auc": 0.9439182170360998,
+      "word_hit5": 0.43333333333333335
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9965321711420404,
+   "native_word_accept": 0.9793577981651376,
+   "planted_sound_auc": 0.9866037302591499,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.9583333333333334,
+      "sound_auc": 0.9919494040645453,
+      "word_hit5": 0.4
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 1.0,
+      "sound_auc": 0.9973866316759611,
+      "word_hit5": 0.43333333333333335
+     }
+    }
+   }
+  }
+ },
+ "ja": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.99590476572851,
+   "native_word_accept": 0.9828199052132701,
+   "planted_sound_auc": 0.9721312080941101,
+   "contrasts": {
+    "vowel_length": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.025,
+      "sound_auc": 0.5826799025708971,
+      "word_hit5": 0.6583333333333333,
+      "length_hit5": 0.9690721649484536
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.275,
+      "sound_auc": 0.8889470496915192,
+      "word_hit5": 0.5583333333333333,
+      "length_hit5": 0.780952380952381
+     }
+    },
+    "gemination": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.13333333333333333,
+      "sound_auc": 0.646384048661019,
+      "word_hit5": 0.2,
+      "length_hit5": 0.875
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.5416666666666666,
+      "sound_auc": 0.9344284070074008,
+      "word_hit5": 0.44166666666666665,
+      "length_hit5": 0.8809523809523809
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.99590476572851,
+   "native_word_accept": 0.981931279620853,
+   "planted_sound_auc": 0.9721312080941101,
+   "contrasts": {
+    "vowel_length": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.025,
+      "sound_auc": 0.5826799025708971,
+      "word_hit5": 0.6666666666666666,
+      "length_hit5": 0.9690721649484536
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.275,
+      "sound_auc": 0.8889470496915192,
+      "word_hit5": 0.8083333333333333,
+      "length_hit5": 0.9333333333333333
+     }
+    },
+    "gemination": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.13333333333333333,
+      "sound_auc": 0.646384048661019,
+      "word_hit5": 0.15,
+      "length_hit5": 0.9166666666666666
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.5416666666666666,
+      "sound_auc": 0.9344284070074008,
+      "word_hit5": 0.49166666666666664,
+      "length_hit5": 1.0
+     }
+    }
+   }
+  }
+ }
+}

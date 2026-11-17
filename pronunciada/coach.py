@@ -45,7 +45,8 @@ from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
 SCHEMA_VERSION = 2
-SCHEMA_MINOR = 5      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor";
+SCHEMA_MINOR = 6      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor";
+#                       2.6 (round 17): contrast-evidence items / claims ("source": "contrast");
 #                       2.5 (coaching round 4): key "features" (attribute-head claims)
 #                       2.2 (round 13): an experimental Japanese pitch-accent kind
 #                       2.3 (round 15): that kind removed again (Japanese pitch accent is not scored)
@@ -373,6 +374,7 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
                            D["error_prob"][i], p.prob, conf, p.start, p.end, gin))
         attr_rows.append((len(items) - 1, i))
     _attach_features(result, items, attr_rows, X, lang, mdl, sensitivity, D["error_prob"], gate.get("features", True))
+    _contrast_items(result, items, X, lang, sensitivity, omitted, D["error_prob"], gate.get("features", True))
     T = mdl.get("tone", {})
     for wi, w in enumerate(result.words):
         if wi in omitted:
@@ -450,6 +452,55 @@ def length_items(result, sensitivity: str, omitted=()) -> list[dict]:
             it["expected_ipa"] = p.ipa
             out.append(it)
     return out
+
+
+def _contrast_items(result, items, X, lang, sensitivity, omitted, eprob, enabled=True) -> None:
+    """Round 17: the head-based contrast evidence (pronunciada.contrast_heads; Korean / Mandarin
+    aspiration, Russian soft / hard) below the sensitivity's bar adds that feature's claim to the
+    sound's item, or a new item when the sound was not flagged."""
+    c = result._pronunciada  # noqa: SLF001
+    ev = c.get("contrast_ev")
+    if not enabled or not ev:
+        return
+    from . import attr_heads as AH
+    from .contrast_heads import entries
+
+    by_sound = {(it["word_index"], it["phone_index"]): it for it in items if it["kind"] == "substitution"}
+    for e in entries(lang):
+        z = ev.get(e["contrast"])
+        bar = (e.get("coach") or {}).get(sensitivity)
+        if z is None or bar is None:
+            continue
+        h = e["head"]
+        for i in np.flatnonzero(np.isfinite(z)):
+            p = 1.0 / (1.0 + math.exp(-float(z[i])))
+            if p >= bar:
+                continue
+            wi, k = int(X["word"][i]), int(X["k"][i])
+            if wi in omitted:
+                continue
+            exp = X["expected"][i]
+            ec = AH.labels(exp).get(h)
+            other = "no" if ec == "yes" else "yes"
+            claim = {"feature": h, "key": AH.HEADS[h][2], "expected": ec, "heard": other,
+                     "p": round(1.0 - p, 4), "source": "contrast"}
+            it = by_sound.get((wi, k))
+            if it is not None:
+                if it["heard"] and AH.labels(it["heard"]).get(h) != other:
+                    continue                          # would contradict the named sound
+                if not any(f["feature"] == h for f in it.get("features") or []):
+                    it["features"] = [claim] + list(it.get("features") or [])
+                    if it["heard"] is None:
+                        it["diff_keys"] = list(dict.fromkeys([claim["key"]] + it["diff_keys"]))
+                continue
+            w = result.words[wi]
+            ph = w.phones[k]
+            new = _item("substitution", w, wi, int(X["syl"][i]), k, _position(k, len(w.phones)), exp, None,
+                        [claim["key"]], 1.0 - p, ph.prob, None, ph.start, ph.end,
+                        {"contrast": e["contrast"], "evidence": round(p, 4), "bar": bar})
+            new["features"] = [claim]
+            items.append(new)
+            by_sound[(wi, k)] = new
 
 
 def attr_policy(mdl: dict, lang: str, sensitivity: str) -> tuple[dict, dict]:

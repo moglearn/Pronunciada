@@ -1,0 +1,266 @@
+{
+ "ko": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.995419322823224,
+   "native_word_accept": 0.976235484742101,
+   "planted_sound_auc": 0.9715615146772532,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.05,
+      "sound_auc": 0.5166461490501457,
+      "word_hit5": 0.10833333333333334
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.26666666666666666,
+      "sound_auc": 0.7985345014060135,
+      "word_hit5": 0.25833333333333336
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9933198457838683,
+   "native_word_accept": 0.976235484742101,
+   "planted_sound_auc": 0.9715244875367408,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.8583333333333333,
+      "sound_auc": 0.9688905218154751,
+      "word_hit5": 0.10833333333333334
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.975,
+      "sound_auc": 0.9919586848366861,
+      "word_hit5": 0.25833333333333336
+     }
+    }
+   }
+  },
+  "delta_ci_sound_hit5": {
+   "aspiration/A>B": [
+    0.6749031007751938,
+    0.8783483691880638
+   ],
+   "aspiration/B>A": [
+    0.5933512470717928,
+    0.7946441409058231
+   ]
+  }
+ },
+ "ru": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.9900834895212132,
+   "native_word_accept": 0.9661929371231697,
+   "planted_sound_auc": 0.9730558187084682,
+   "contrasts": {
+    "hard_soft": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.4666666666666667,
+      "sound_auc": 0.839883143068098,
+      "word_hit5": 0.1
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.24166666666666667,
+      "sound_auc": 0.8980710796842165,
+      "word_hit5": 0.275
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9857556653603681,
+   "native_word_accept": 0.9661929371231697,
+   "planted_sound_auc": 0.9738435167830977,
+   "contrasts": {
+    "hard_soft": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.5583333333333333,
+      "sound_auc": 0.929927585619356,
+      "word_hit5": 0.1
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.9416666666666667,
+      "sound_auc": 0.9880002271823707,
+      "word_hit5": 0.275
+     }
+    }
+   }
+  },
+  "delta_ci_sound_hit5": {
+   "hard_soft/A>B": [
+    0.029086004443033976,
+    0.14159198113207547
+   ],
+   "hard_soft/B>A": [
+    0.5928571428571429,
+    0.8264462809917356
+   ]
+  }
+ },
+ "zh": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.9967984409799554,
+   "native_word_accept": 0.9742904154668861,
+   "planted_sound_auc": 0.9841057906458798,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.9,
+      "sound_auc": 0.9615395322939866,
+      "word_hit5": 0.35
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.675,
+      "sound_auc": 0.9442961596758228,
+      "word_hit5": 0.26666666666666666
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9958704528582034,
+   "native_word_accept": 0.9742904154668861,
+   "planted_sound_auc": 0.983131867112101,
+   "contrasts": {
+    "aspiration": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 1.0,
+      "sound_auc": 0.9962099418460777,
+      "word_hit5": 0.35
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.9916666666666667,
+      "sound_auc": 0.9966832157881712,
+      "word_hit5": 0.26666666666666666
+     }
+    }
+   }
+  },
+  "delta_ci_sound_hit5": {
+   "aspiration/A>B": [
+    0.05074066122799489,
+    0.15153623949579834
+   ],
+   "aspiration/B>A": [
+    0.22363300970873787,
+    0.42399999999999993
+   ]
+  }
+ },
+ "ja": {
+  "clips": 250,
+  "before": {
+   "native_sound_accept": 0.9937918764431994,
+   "native_word_accept": 0.9770260747004933,
+   "planted_sound_auc": 0.973746678275353,
+   "contrasts": {
+    "vowel_length": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.025,
+      "sound_auc": 0.5272149562781542,
+      "word_hit5": 0.725,
+      "length_hit5": 0.9405940594059405
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.35,
+      "sound_auc": 0.8927013539261335,
+      "word_hit5": 0.6333333333333333,
+      "length_hit5": 0.8504672897196262
+     }
+    },
+    "gemination": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.058333333333333334,
+      "sound_auc": 0.5364337673972568,
+      "word_hit5": 0.18333333333333332,
+      "length_hit5": 0.9166666666666666
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.6333333333333333,
+      "sound_auc": 0.9381014119695651,
+      "word_hit5": 0.4583333333333333,
+      "length_hit5": 0.7868852459016393
+     }
+    }
+   }
+  },
+  "after": {
+   "native_sound_accept": 0.9937918764431994,
+   "native_word_accept": 0.9761804087385483,
+   "planted_sound_auc": 0.973746678275353,
+   "contrasts": {
+    "vowel_length": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.025,
+      "sound_auc": 0.5272149562781542,
+      "word_hit5": 0.6916666666666667,
+      "length_hit5": 0.9405940594059405
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.35,
+      "sound_auc": 0.8927013539261335,
+      "word_hit5": 0.8333333333333334,
+      "length_hit5": 0.9626168224299065
+     }
+    },
+    "gemination": {
+     "A>B": {
+      "n": 120,
+      "sound_hit5": 0.058333333333333334,
+      "sound_auc": 0.5364337673972568,
+      "word_hit5": 0.08333333333333333,
+      "length_hit5": 0.8958333333333334
+     },
+     "B>A": {
+      "n": 120,
+      "sound_hit5": 0.6333333333333333,
+      "sound_auc": 0.9381014119695651,
+      "word_hit5": 0.5833333333333334,
+      "length_hit5": 1.0
+     }
+    }
+   }
+  },
+  "delta_ci_length_hit5": {
+   "vowel_length/A>B": [
+    -0.033480392156862736,
+    0.037924528301886765
+   ],
+   "vowel_length/B>A": [
+    0.04999999999999993,
+    0.1717974238875878
+   ],
+   "gemination/A>B": [
+    -0.09501201923076923,
+    0.05431203931203931
+   ],
+   "gemination/B>A": [
+    0.11111111111111116,
+    0.32799150797735455
+   ]
+  }
+ }
+}

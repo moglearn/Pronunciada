@@ -239,6 +239,18 @@ class Scorer:
 
             if _CZ.params() is not None:
                 phone_vec = _pv(emb, ev, len(ref.phones))
+        contrast_ev = None
+        if emb:                                  # round 17: head-based contrast evidence (ko / ru / zh)
+            from . import contrast_heads as _CH
+
+            if _CH.entries(self.lang):
+                from .sound_emb import phone_vectors as _pv
+
+                V17 = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
+                contrast_ev = _CH.evidence(self.lang, [p.ipa for p in ref.phones], V17)
+                capz = _CH.cap_column(self.lang, contrast_ev)
+                if capz is not None:
+                    tab["head_cap_z"] = capz
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:
@@ -265,6 +277,7 @@ class Scorer:
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
+        cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)
         cache.update(ref=ref, ev=ev, tab=tab, match_e=_match.evidence(lpa, ref, ev, tab))
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -297,7 +310,14 @@ class Scorer:
             from . import length as _L
 
             t = time.perf_counter()
-            lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal)
+            hs = None
+            if emb and self.length_cal.get("head"):        # round 17: attribute-head length evidence
+                from . import contrast_heads as _CH
+                from .sound_emb import phone_vectors as _pv
+
+                hs = _CH.length_evidence(self.lang, self.length_cal, [p.ipa for p in ref.phones],
+                                         _pv(emb, ev, len(ref.phones)))
+            lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal, head_s=hs)
             timing["length"] = (time.perf_counter() - t) * 1e3
         cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav,   # f0 / wav: coaching only
                      length=lres)
@@ -420,6 +440,14 @@ class Scorer:
             detail.setdefault("coach_zl", zl)   # coaching and word / sentence inputs unchanged
             detail.setdefault("coach_zs", np.minimum(zs, zl))
             zl, zs = C.apply_contrast_caps(caps, tab, zl, zs)
+        if "head_cap_z" in tab:         # round 17: head-based contrast caps, composed by the minimum
+            detail.setdefault("coach_zl", zl)
+            detail.setdefault("coach_zs", np.minimum(zs, zl))
+            hz = np.asarray(tab["head_cap_z"], np.float64)
+            fire = np.isfinite(hz)
+            zl, zs = np.array(zl, np.float64), np.array(zs, np.float64)
+            zl[fire] = np.minimum(zl[fire], hz[fire])
+            zs[fire] = np.minimum(zs[fire], hz[fire])
         W = F.word_table(tab, uzl, uzs, ureg)
         XW = np.column_stack([np.asarray(W[c], dtype=np.float64) for c in self.word.num])
         w = self.word.logits(X=XW)

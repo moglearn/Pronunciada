@@ -1,0 +1,82 @@
+{
+ "units": 10886,
+ "consonant_wrong": 202,
+ "auc_coaching_score": 0.9561257511000071,
+ "auc_with_aspiration": 0.9351853053145075,
+ "auc_aspiration_alone": 0.7025532766679887,
+ "auc_aspiration_alone_members": 0.8046440449567063,
+ "bars": [
+  {
+   "bar": 0.05,
+   "flagged": 12,
+   "precision": 0.6666666666666666,
+   "recall": 0.039603960396039604
+  },
+  {
+   "bar": 0.1,
+   "flagged": 30,
+   "precision": 0.4,
+   "recall": 0.0594059405940594
+  },
+  {
+   "bar": 0.2,
+   "flagged": 71,
+   "precision": 0.2676056338028169,
+   "recall": 0.09405940594059406
+  },
+  {
+   "bar": 0.3,
+   "flagged": 106,
+   "precision": 0.2358490566037736,
+   "recall": 0.12376237623762376
+  },
+  {
+   "bar": 0.4,
+   "flagged": 148,
+   "precision": 0.22972972972972974,
+   "recall": 0.16831683168316833
+  },
+  {
+   "bar": 0.5,
+   "flagged": 195,
+   "precision": 0.22564102564102564,
+   "recall": 0.21782178217821782
+  }
+ ],
+ "careful": {
+  "coach_only": {
+   "flagged": 51,
+   "precision": 0.9019607843137255,
+   "recall": 0.22772277227722773
+  },
+  "with_aspiration": {
+   "flagged": 119,
+   "precision": 0.5126050420168067,
+   "recall": 0.30198019801980197
+  }
+ },
+ "balanced": {
+  "coach_only": {
+   "flagged": 59,
+   "precision": 0.8305084745762712,
+   "recall": 0.24257425742574257
+  },
+  "with_aspiration": {
+   "flagged": 274,
+   "precision": 0.31386861313868614,
+   "recall": 0.42574257425742573
+  }
+ },
+ "eager": {
+  "coach_only": {
+   "flagged": 84,
+   "precision": 0.6785714285714286,
+   "recall": 0.28217821782178215
+  },
+  "with_aspiration": {
+   "flagged": 413,
+   "precision": 0.2566585956416465,
+   "recall": 0.5247524752475248
+  }
+ }
+}

@@ -242,9 +242,15 @@ calibration error is 1–2 % for sounds, 3–4 % for words and 2–4 % for sente
   vowels are not judged by duration. Italian missed the development bars (33 % of swaps caught).
   German passed them but cost a little on real Common Voice recordings, so it stays off
   ([results/round15_length.md](results/round15_length.md)). Japanese length is verified only on
-  planted errors in native recordings, not on learners. Other contrasts the scorer cannot hear,
-  such as Korean aspiration and Russian soft consonants, are listed in
-  [results/contrast_audit.md](results/contrast_audit.md).
+  planted errors in native recordings, not on learners. Since round 17, Korean and Mandarin
+  aspiration and Russian soft / hard consonants are heard through small heads on the acoustic
+  model's internal layers (swaps caught 56–100 % on FLEURS test, from 5–90 %); they move the shown
+  sound probability and Korean / Russian coaching tips but **not word probabilities**, so a word
+  with only an aspiration error still scores well. Korean lax / tense stops (달 / 딸) are separable
+  by those activations among natives (probe AUC 0.98) but the references cannot express them yet.
+  Mandarin aspiration does not reach coaching (no gain on OMPAL learners). Remaining blind spots
+  (Italian doubling, Portuguese nasal vowels, Italian mid vowels) are listed in
+  [results/contrast_audit.md](results/contrast_audit.md) and [results/round17_heads.md](results/round17_heads.md).
 - **Mobile**: everything is ONNX plus numpy, so it is portable, but no iOS / Android bindings have
   been built and nothing has been timed on a phone.
 - Text front-ends handle ordinary prose; numbers, abbreviations and names outside the dictionaries

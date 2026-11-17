@@ -1,0 +1,10 @@
+{
+ "n_train": 3087,
+ "n_tense_train": 107,
+ "n_dev": 3662,
+ "n_tense_dev": 142,
+ "probe_auc_own": 0.9821362836107554,
+ "probe_auc_own+ctx": 0.9831726152368758,
+ "probe_auc_enc1 only": 0.9772107074263764,
+ "aspiration_head_auc": 0.43936059539052497
+}

@@ -26,7 +26,7 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2, `schema_minor` 5)
+## 1. Item schema (`schema_version` 2, `schema_minor` 6)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
@@ -34,12 +34,12 @@ Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) ad
 `schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
 Minor version 2 (round 13) added an experimental Japanese pitch-accent kind; minor version 3
 (round 15) removed it again (Japanese pitch accent is not scored). Minor version 4 (round 15)
-added the kind `length` (section 3c). Consumers should ignore kinds they do not know. Minor version 5 (coaching round 4) added the key `features` (section 3d) to every item.
+added the kind `length` (section 3c). Consumers should ignore kinds they do not know. Minor version 5 (coaching round 4) added the key `features` (section 3d) to every item. Minor version 6 (round 17) added contrast-evidence claims (`features[].source = "contrast"`) and substitution items they create (`gate.contrast`, section 3e).
 
 | key | type | meaning |
 |---|---|---|
 | `schema_version` | int | 2. Renamed / removed keys bump it. |
-| `schema_minor` | int | 5. Added or removed kinds / keys bump it. |
+| `schema_minor` | int | 6. Added or removed kinds / keys bump it. |
 | `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; timing: `length` (Japanese); words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
@@ -338,6 +338,11 @@ before a pause. Italian double consonants and German vowel length were tried and
 ```
 → tip `length.vowel_long`: "Hold the vowel /o/ in “その後” for two beats; it sounded short."
 
+Round 17: the length channel also reads the attribute head `long` (a logistic on the timing
+model's log-odds and the head's evidence, mapped back onto the timing model's native distribution
+by quantiles, so its native thresholds keep their rates; `data/length/ja.json` "head"). FLEURS
+test: "short for long" vowels caught 85 % → 96 %, "single for geminate" 79 % → 100 %.
+
 ## 3d. Feature-level claims (coaching round 4)
 
 When a sound is flagged but no replacement sound is named, the item can still say *which feature*
@@ -379,6 +384,25 @@ Example (speechocean762 test, balanced; experts: /l/ in “COLLEGE” pronounced
 Tip `feature.lateral.add`: Let the air pass along the sides of the tongue for /l/ in “COLLEGE”.
 
 Example 2 (experts: /u/ in “STUDENT” pronounced AH): tip `feature.rounded.add`: Round your lips for /u/ in “STUDENT”; they sounded spread.
+
+## 3e. Contrast evidence: Korean aspiration, Russian soft / hard (round 17)
+
+For contrasts the scorer was blind to, the attribute heads' probability of the expected value
+(aspiration: head `aspirated`; Russian soft / hard: head `palatalised`) is turned into a
+calibrated "realised as expected" probability `sigmoid(z)`, `z = 0.5 (logit P − s0)` with `s0`
+the 1 % quantile of natives (`pronunciada/contrast_heads.py`, `data/coach/contrast_heads.json`,
+FLEURS validation; `PRONUNCIADA_HEAD_CAPS=0` switches it off). It caps the shown sound
+probability (ko, ru, zh) and, in Korean and Russian, feeds coaching: a member sound with
+`sigmoid(z)` below the sensitivity's bar gets the claim `{feature: "aspirated" | "palatalised",
+expected, heard, p, source: "contrast"}` (feature tips `feature.aspirated.*` /
+`feature.palatalised.*`), and a new substitution item when it was not flagged (`gate.contrast`,
+`gate.evidence`). Bars: at most 0.05 / 0.1 / 0.2 such items per native FLEURS clip
+(careful / balanced / eager). On the audit's planted swaps (FLEURS validation) "balanced" catches
+Korean "plain for aspirated" 55 %, "aspirated for plain" 21 %; Russian "hard for soft" 54 %,
+"soft for hard" 1 %. Mandarin aspiration items stay **off**: on OMPAL dev (French learners) no
+bar reaches 0.7 precision for the teachers' consonant marks (best 0.67 on 12 characters), and
+adding the evidence to the Mandarin coaching score lowers its consonant AUC (0.956 → 0.935).
+These coaching items are unverified on learners (no labelled Korean or Russian learner data).
 
 ## 4. Default tips (`pronunciada/tips.py`)
 

@@ -284,8 +284,29 @@ def word_factor(cal: dict, probs, s: float) -> float:
     return 1.0 - (1.0 - W["floor"]) * t
 
 
-def score(ref, inp: dict, par: dict) -> dict:
-    """{"expected": [...], "prob": [...]} per reference sound (None where not judged)."""
+def head_combine(par: dict, cls: str, p: float, s: float) -> float:
+    """Round 17: combine the timing model's probability p with the attribute head's long-evidence s
+    (logit P(head "long" = the expected value)): a logistic on [logit p, s] fitted on FLEURS
+    validation natives vs planted length swaps, mapped back onto the timing model's own native
+    distribution by quantiles, so native thresholds (word knee, coaching bars) keep their rates."""
+    H = par.get("head", {}).get(cls)
+    if H is None or not np.isfinite(s):
+        return p
+    q = min(max(p, 1e-6), 1 - 1e-6)
+    z = H["coef"][0] * math.log(q / (1 - q)) + H["coef"][1] * s + H["b"]
+    qn, qo = H["q_new"], H["q_orig"]
+    if z <= qn[0]:
+        zo = qo[0] + (z - qn[0])
+    elif z >= qn[-1]:
+        zo = qo[-1] + (z - qn[-1])
+    else:
+        zo = float(np.interp(z, qn, qo))
+    return float(1.0 / (1.0 + math.exp(-min(max(zo, -30.0), 30.0))))
+
+
+def score(ref, inp: dict, par: dict, head_s=None) -> dict:
+    """{"expected": [...], "prob": [...]} per reference sound (None where not judged). head_s:
+    optional per-sound attribute-head evidence (round 17, pronunciada.contrast_heads)."""
     lab = labels(ref)
     n = len(ref.phones)
     prob: list[float | None] = [None] * n
@@ -300,4 +321,6 @@ def score(ref, inp: dict, par: dict) -> dict:
             i = idx[k]
             expected[i] = lab[i]
             prob[i] = float(p if lab[i] == "long" else 1.0 - p)
+            if head_s is not None and par.get("head"):
+                prob[i] = head_combine(par, c, prob[i], float(head_s[i]))
     return {"expected": expected, "prob": prob}
