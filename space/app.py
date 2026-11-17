@@ -124,7 +124,7 @@ with gr.Blocks(title="Pronunciada") as demo:
         "# Pronunciada\n"
         "Pronunciation assessment for ten languages. Record or upload a sentence, enter the text that was read, "
         "and the demo returns the probability that each word and phoneme would be accepted by a human rater. "
-        "[Source](https://github.com/moglearn/pronunciada) · "
+        "[Website](https://pronunciada.dev) · [Source](https://github.com/moglearn/pronunciada) · "
         "[Benchmarks](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)"
     )
     with gr.Row():

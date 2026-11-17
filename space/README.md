@@ -8,7 +8,7 @@ sdk_version: "6.32.0"
 app_file: app.py
 pinned: true
 license: apache-2.0
-short_description: Pronunciation assessment for ten languages
+short_description: On-device pronunciation assessment, ten languages
 tags:
   - pronunciation
   - speech
