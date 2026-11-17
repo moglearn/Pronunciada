@@ -1,4 +1,4 @@
-"""Render the overview film (docs/assets/demo.mp4, about 51 s, 1920x1080, 60 frames per second).
+"""Render the overview film (docs/assets/demo.mp4, about 45 s, 1920x1080, 60 frames per second).
 
     pip install playwright          # drives the installed Google Chrome
     python scripts/graphics/make_video.py [--sheet out.jpg]
@@ -7,12 +7,11 @@ The film is one HTML page whose whole state is a function of time: every motion 
 Web Animation, and `seek(t)` moves all of them to second t. Each frame is seeked and
 screenshotted, so the motion is exact however slow the machine is.
 
-Three recordings from site/samples are heard in full, one for each thing that is scored:
-sounds (en-learner-1, followed from the sentence down to the sounds of one word), tones
-(zh-learner-1) and word stress (en-learner-2). Then the ten languages, the speed, the results
-against Azure and ZIPA alone, and the logo. Numbers are read from results/SCOREBOARD.md. The
-three voices are the only sound. A copy of the film and one frame of it (the cover image) go
-to site/assets/. --sheet writes a contact sheet of still frames instead of the film.
+It follows one recording (site/samples/en-learner-1) from the sentence to its word scores and
+the sounds of the word that was flagged, then shows the ten languages, a Mandarin phrase with
+its tones, the speed, the results against Azure and ZIPA alone, and the logo. Numbers are read
+from results/SCOREBOARD.md. The recording is the only sound. A copy of the film and one frame
+of it (the cover image) go to site/assets/. --sheet writes a contact sheet of still frames.
 """
 from __future__ import annotations
 
@@ -35,8 +34,8 @@ from make_logo import SHAPE, wordmark
 OUT = ROOT / "docs/assets/demo.mp4"
 SITE = ROOT / "site/assets"
 SAMPLES = ROOT / "site/samples"
-LENGTH, FPS = 51.5, 60
-VOICES = {"en-learner-1": 0.6, "zh-learner-1": 13.6, "en-learner-2": 19.4}     # second at which each recording starts
+LENGTH, FPS = 44.8, 60
+VOICES = {"en-learner-1": 0.6}        # second at which each recording starts
 COVER_AT = 5.55                      # frame used as the cover image on the site
 
 
@@ -50,7 +49,7 @@ def clip(key: str) -> dict:
 
 
 def data() -> dict:
-    one, zh, two = clip("en-learner-1"), clip("zh-learner-1"), clip("en-learner-2")
+    one, zh = clip("en-learner-1"), clip("zh-learner-1")
     audio, sr = sf.read(str(SAMPLES / "en-learner-1.mp3"), dtype="float32", always_2d=True)
     mono = audio.mean(axis=1)
     n = 147
@@ -70,7 +69,6 @@ def data() -> dict:
         "zh": {"a0": zh["a0"], "dur": zh["dur"],
                "syl": [{"text": s["text"], "start": s["start"], "exp": s["tone_expected"], "heard": s["tone_heard"], "low": s["tone_prob"] < 0.5}
                        for w in zh["result"]["words"] for s in w["syllables"]]},
-        "two": {"a0": two["a0"], "dur": two["dur"], "words": two["words"], "tip": two["result"]["tips"][0]["text"]},
         "tally": {"n": sum(c[0] for c in counts), "better": sum(c[1] for c in counts),
                   "same": sum(c[2] + c[3] + c[4] for c in counts), "behind": sum(c[5] for c in counts)},
         "bars": {"ours": ph["ours"][0], "azure": ph["azure"][0], "zipa": zipa()[0]["azure"][0]},
@@ -115,8 +113,8 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#fdfcfc;color:#0b
 .px{position:absolute;width:200px;text-align:center;font-size:22px;color:#6b6661;opacity:0}
 #dot{position:absolute;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#0ea5a0);opacity:0}
 /* tones and stress */
-#zh{top:238px;font-size:120px;font-weight:300;white-space:nowrap}
-#zh span{display:inline-block;position:relative;width:150px;color:#cfcac4}
+#zh{top:286px;font-size:120px;font-weight:300;white-space:nowrap}
+#zh span{display:inline-block;position:relative;width:150px}
 #zh span .g{position:absolute;left:0;right:0;top:0;opacity:0}
 .fw{position:relative;display:inline-block;margin:0 8px;color:#cfcac4}
 .fw .g{position:absolute;left:0;top:0;opacity:0}
@@ -153,12 +151,8 @@ html,body{width:1280px;height:720px;overflow:hidden;background:#fdfcfc;color:#0b
   <div class="c label" id="tipl" style="top:538px;opacity:0">COACHING TIP</div><div class="c tip" id="tip" style="top:572px;opacity:0"></div>
   <div class="c cap" id="capB" style="top:132px;opacity:0">Each sound gets one too.</div></div>
 
-<div class="sc" id="T"><div class="c" id="zh"></div><div class="c cap" id="zhn" style="top:446px;opacity:0"></div>
-  <div class="c cap" id="capT" style="top:636px;opacity:0">In Mandarin, every tone is scored.</div></div>
-
-<div class="sc" id="S"><div class="c line" id="st" style="top:262px"></div>
-  <div class="c label" id="stl" style="top:404px;opacity:0">COACHING TIP</div><div class="c tip" id="stt" style="top:438px;opacity:0"></div>
-  <div class="c cap" id="capS" style="top:636px;opacity:0">So is word stress.</div></div>
+<div class="sc" id="T"><div class="c h" style="top:150px">Tones, stress and length.</div><div class="c" id="zh"></div>
+  <div class="c cap" id="zhn" style="top:478px;opacity:0"></div></div>
 
 <div class="sc" id="L"><div class="c h" style="top:200px">Ten languages.</div><div id="langs"></div></div>
 <div class="sc" id="M"><div class="c" id="ms"><span>0</span><small>ms</small></div>
@@ -241,47 +235,32 @@ life($('#capB'),8.3,12.3,.5,.35);
 fade($('#tipl'),10.2,.45,5);$('#tip').textContent=D.tip;
 A($('#tip'),[{opacity:0,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0% 0 0)'}],10.35,1.0,'cubic-bezier(.4,0,.2,1)');
 
-/* T: tones, with a second speaker */
-const V2=D.at['zh-learner-1'];
-life($('#T'),13.15,18.4);
-D.zh.syl.forEach(s=>{const e=el('span','',s.text+(s.low?`<span class="g grad">${s.text}</span>`:''));$('#zh').appendChild(e);
-  A(e,[{color:'#cfcac4'},{color:'#0b0b0c'}],V2+(s.start-D.zh.a0)-.03,.28);
-  if(s.low) A(e.querySelector('.g'),[{opacity:0},{opacity:1}],16.4,.5);});
-$('#zhn').innerHTML=D.zh.syl.filter(s=>s.low).map(s=>`${s.text}  tone ${s.exp} expected, tone ${s.heard} heard`).join('   ·   ');fade($('#zhn'),16.7,.5,6);
-life($('#capT'),13.5,17.9,.5,.35);
-
-/* S: word stress, with a third speaker */
-const V3=D.at['en-learner-2'];
-life($('#S'),18.8,24.4);
-D.two.words.forEach(w=>{const low=w.prob<.5, e=el('span','fw',w.text+(low?`<span class="g grad">${w.text}</span>`:''));$('#st').appendChild(e);
-  A(e,[{color:'#cfcac4'},{color:'#0b0b0c'}],V3+(w.start-D.two.a0)-.03,.28);
-  if(low) A(e.querySelector('.g'),[{opacity:0},{opacity:1}],22.5,.5);});
-fade($('#stl'),22.75,.45,5);$('#stt').textContent=D.two.tip;
-A($('#stt'),[{opacity:0,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0% 0 0)'}],22.9,1.0,'cubic-bezier(.4,0,.2,1)');
-life($('#capS'),19.2,23.9,.5,.35);
-
-/* L, M: languages and speed */
-life($('#L'),24.8,28.2);life($('#M'),28.6,31.7);
+/* L, T, M: languages, tones, speed */
+life($('#L'),13.2,16.9);life($('#T'),17.3,21.4);life($('#M'),21.8,25.0);
 ['English','中文','日本語','Español','Français','Deutsch','Italiano','Português','Русский','한국어'].forEach((t,i)=>{const e=el('span','',t+'<b>'+t+'</b>');
-  $('#langs').appendChild(e);A(e.querySelector('b'),[{opacity:0},{opacity:1}],25.3+i*.2,.4);});
-count($('#ms span'),28.8,1.0,50,0);
+  $('#langs').appendChild(e);A(e.querySelector('b'),[{opacity:0},{opacity:1}],13.7+i*.2,.4);});
+D.zh.syl.forEach(s=>{const e=el('span','',s.text+(s.low?`<span class="g grad">${s.text}</span>`:''));$('#zh').appendChild(e);
+  if(s.low) A(e.querySelector('.g'),[{opacity:0},{opacity:1}],18.3,.5);});
+$('#zhn').innerHTML=D.zh.syl.filter(s=>s.low).map(s=>`${s.text}  tone ${s.exp} expected, tone ${s.heard} heard`).join('   ·   ');fade($('#zhn'),18.7,.5,6);
+count($('#ms span'),22.0,1.0,50,0);
 
 /* R: results */
-life($('#R1'),32.1,38.1);life($('#R2'),38.5,44.2);
+const R0=25.4;
+life($('#R1'),R0,R0+6.0);life($('#R2'),R0+6.4,R0+12.1);
 const T=D.tally, dots=$('#dots');
 for(let i=0;i<T.n;i++){const e=el('i'), col=i%14,row=Math.floor(i/14);e.style.cssText=`left:${col*41}px;top:${row*42.4}px`;dots.appendChild(e);
-  A(e,[{transform:'scale(0)'},{transform:'scale(1)'}],32.3+(col+row)*.035,.4);
-  if(i<T.better) A(e,[{backgroundColor:'#e9e5e1'},{backgroundColor:mix(col/13)}],33.3+i*.022,.4);
-  else if(i>=T.n-T.behind) A(e,[{backgroundColor:'#e9e5e1'},{backgroundColor:'#8c8782'}],35.2+(i-(T.n-T.behind))*.04,.4);}
+  A(e,[{transform:'scale(0)'},{transform:'scale(1)'}],R0+.2+(col+row)*.035,.4);
+  if(i<T.better) A(e,[{backgroundColor:'#e9e5e1'},{backgroundColor:mix(col/13)}],R0+1.2+i*.022,.4);
+  else if(i>=T.n-T.behind) A(e,[{backgroundColor:'#e9e5e1'},{backgroundColor:'#8c8782'}],R0+3.1+(i-(T.n-T.behind))*.04,.4);}
 $('#legend').innerHTML=`<span><b>${T.better}</b> significantly better</span><span><b>${T.same}</b> no significant difference</span><span><b>${T.behind}</b> behind</span>`;
-[...$('#legend').children].forEach((e,i)=>fade(e,[33.5,34.5,35.3][i],.45,5));
-$('#r1h').innerHTML=`Level with or ahead in <span class="grad">${T.better+T.same} of ${T.n}</span>.`;fade($('#r1h'),35.9,.6);
-[['ours',38.9],['azure',39.6],['zipa',40.6]].forEach(([k,t],i)=>{const r=document.querySelectorAll('.row')[i], v=D.bars[k];
+[...$('#legend').children].forEach((e,i)=>fade(e,R0+[1.4,2.4,3.2][i],.45,5));
+$('#r1h').innerHTML=`Level with or ahead in <span class="grad">${T.better+T.same} of ${T.n}</span>.`;fade($('#r1h'),R0+3.8,.6);
+[['ours',R0+6.8],['azure',R0+7.5],['zipa',R0+8.5]].forEach(([k,t],i)=>{const r=document.querySelectorAll('.row')[i], v=D.bars[k];
   A(r,[{opacity:0},{opacity:1}],t-.25,.45);A(r.querySelector('.bar'),[{width:'0px'},{width:(v*640)+'px'}],t,.9);count(r.querySelector('.num'),t,.9,v,2);});
-$('#r2h').innerHTML=`Significantly better than ZIPA alone on <span class="grad">${D.zipa.ahead} of ${D.zipa.n}</span> tests.`;fade($('#r2h'),41.7,.6);
+$('#r2h').innerHTML=`Significantly better than ZIPA alone on <span class="grad">${D.zipa.ahead} of ${D.zipa.n}</span> tests.`;fade($('#r2h'),R0+9.6,.6);
 
 /* Z: the waveform becomes the logo */
-const Z0=44.6;
+const Z0=R0+12.5;
 life($('#Z'),Z0,LEN,.4,.1);
 const w2=bars($('#wave2'));
 A(w2,[{opacity:0,offset:0},{opacity:1,offset:.35},{opacity:1,offset:.55},{opacity:0,offset:1}],Z0,1.5,'linear');
@@ -334,11 +313,11 @@ def main(sheet: str | None) -> None:
         page.goto((tmp / "film.html").as_uri())
         page.wait_for_function("typeof window.seek === 'function'")
         if sheet:
-            times = [1.7, 3.6, 5.5, 5.8, 5.95, 6.4, 7.3, 7.8, 8.0, 8.15, 9.3, 11.9, 15.0, 17.6, 21.0, 23.8, 26.6, 30.0, 35.0, 37.4, 41.0, 43.6, 45.7, 46.4, 47.2, 49.6]
+            times = [1.7, 3.6, 5.5, 5.95, 6.4, 7.3, 7.8, 8.15, 9.3, 11.9, 15.4, 20.0, 23.6, 28.4, 30.8, 34.4, 36.9, 39.0, 39.8, 42.8]
             for i, t in enumerate(times):
                 page.evaluate(f"seek({t})")
                 page.screenshot(path=str(tmp / f"s{i:02d}.png"))
-            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp / "s%02d.png"), "-vf", "scale=480:-1,tile=4x7", sheet], check=True)
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp / "s%02d.png"), "-vf", "scale=480:-1,tile=4x5", sheet], check=True)
             browser.close()
             return
         sound(tmp / "sound.wav")
