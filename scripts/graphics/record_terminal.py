@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-COLS, ROWS = 104, 16
+COLS, ROWS = 96, 12
 COMMAND = 'pronunciada check en-learner-1.mp3 "It was a beautiful day for a float" --lang en'
 
 
@@ -48,7 +48,7 @@ def main(out: str) -> None:
     pump(0.8)
     for ch in COMMAND:
         os.write(fd, ch.encode())
-        pump(0.045)
+        pump(0.032)
     pump(0.5)
     os.write(fd, b"\n")
     pump(7.0)                      # stop recording here; the shell is closed off the record

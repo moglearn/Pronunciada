@@ -10,9 +10,13 @@
 
 Pronunciada is a Python library for pronunciation assessment. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
-It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean. Inference runs on CPU with ONNX Runtime and has no PyTorch dependency. The acoustic model is [ZIPA](https://github.com/lingjzhu/zipa), a multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro.
+It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
-On the public learner corpora with expert annotation (English and Mandarin), its scores agree with the annotators more closely than Microsoft Azure Pronunciation Assessment for phonemes, sentence accuracy, Mandarin tones and mispronunciation detection, and less closely for English sentence prosody. The numbers are under [Benchmarks](#benchmarks).
+- Across 84 comparisons on public test sets, it is ahead of Microsoft Azure Pronunciation Assessment in 60 (40 of them statistically significant) and significantly behind in 7.
+- It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine.
+- It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). It is significantly more accurate than ZIPA alone on 45 of 60 tests and significantly less accurate on none.
+
+The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
 
 ## Quick start
 
@@ -68,7 +72,7 @@ for phone in result.words[7].phones:
 
 The model is downloaded to `~/.cache/pronunciada` on first use.
 
-A one-minute video with sound shows this recording being scored, the demo app scoring a Mandarin learner, and the benchmark charts: [docs/assets/demo.mp4](docs/assets/demo.mp4).
+A one-minute video with sound shows this recording being scored, recordings in Spanish, Japanese, Korean and Mandarin, the command-line tool, and the main comparisons with Azure and with ZIPA alone: [docs/assets/demo.mp4](docs/assets/demo.mp4).
 
 ## Benchmarks
 
@@ -78,7 +82,33 @@ All comparisons are with the Azure Pronunciation Assessment REST API (region `we
 
 ![Head-to-head comparisons with Azure by language. Significantly ahead, no significant difference, significantly behind: English 11, 5, 3. Mandarin 5, 11, 0. Japanese 3, 1, 2. Spanish 3, 2, 1. French 5, 1, 0. German 3, 4, 0. Italian 3, 3, 0. Portuguese 3, 2, 1. Russian 3, 3, 0. Korean 1, 5, 0.](docs/assets/chart-tally.png)
 
-The scoreboard has 84 comparisons with Azure, each one metric on one held-out test set. Pronunciada is significantly ahead in 40, not significantly different in 37 (ahead in 20 of those) and significantly behind in 7. The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips). The sections below show the main tests.
+The scoreboard has 84 comparisons with Azure, each one metric on one held-out test set. Pronunciada is significantly ahead in 40, not significantly different in 37 (ahead in 20 of those) and significantly behind in 7. The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips). The sections below show the main tests, starting with the one that covers all ten languages.
+
+### All ten languages
+
+Learner recordings with expert annotation are public for English and Mandarin only, so the test that covers all ten languages uses native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
+
+![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.975 and 0.966, Japanese 0.968 and 0.919, Spanish 0.990 and 0.942, French 0.986 and 0.937, German 0.960 and 0.887, Italian 0.979 and 0.970, Portuguese 0.963 and 0.938, Russian 0.900 and 0.909, Korean 0.944 and 0.937.](docs/assets/chart-languages.png)
+
+This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.
+
+<details>
+<summary>Table</summary>
+
+| Language | Pronunciada | Azure |
+| --- | --- | --- |
+| English | **0.981** | 0.963 |
+| Mandarin | 0.975 | 0.966 |
+| Japanese | **0.968** | 0.919 |
+| Spanish | **0.990** | 0.942 |
+| French | **0.986** | 0.937 |
+| German | **0.960** | 0.887 |
+| Italian | 0.979 | 0.970 |
+| Portuguese | **0.963** | 0.938 |
+| Russian | 0.900 | 0.909 |
+| Korean | 0.944 | 0.937 |
+
+</details>
 
 ### English learners
 
@@ -126,43 +156,9 @@ On speechocean762 test (47,041 phonemes, 18.6% marked as errors), with both syst
 
 </details>
 
-### Compared with ZIPA alone
-
-![Pronunciada and the unmodified ZIPA model on the learner tests. English phonemes 0.685 and 0.434, words 0.609 and 0.394, sentences 0.748 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, EpaDB 0.721 and 0.638, Mandarin any error 0.792 and 0.602, Mandarin tone errors 0.778 and 0.552 (AUC).](docs/assets/chart-zipa.png)
-
-To measure what this project adds to the open model, the same held-out tests were run on the unmodified ZIPA model scored with the standard goodness-of-pronunciation method: the mean log-posterior of each expected phoneme over its force-aligned frames, with no adapters, calibration, or tone and stress models. Over 60 test rows, Pronunciada is significantly ahead in 45 and not significantly different in 15. ZIPA alone is not significantly ahead in any. Repeating the correlation rows with a rank-based measure (Spearman) leaves every one of them significantly ahead, with smaller gaps at the phoneme and word level (0.469 against 0.309 for phonemes).
-
-The difference is smallest where the task is easy for both, such as detecting a clearly different word in the prompt (AUC 0.99 for both), and largest for Mandarin tones, which ZIPA does not output. For reference, ZIPA alone scores 0.659 and 0.638 at detecting marked errors on L2-ARCTIC and EpaDB, where Azure scores 0.631 and 0.587, and 0.434 in phoneme-level agreement with expert scores, where Azure scores 0.538. The differences between ZIPA alone and Azure were not tested for significance. All rows are in [results/zipa_baseline.md](results/zipa_baseline.md).
-
-### All ten languages
-
-We found no public learner corpus with expert annotation for the other eight languages. The chart below is a proxy test on native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
-
-![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.975 and 0.966, Japanese 0.968 and 0.919, Spanish 0.990 and 0.942, French 0.986 and 0.937, German 0.960 and 0.887, Italian 0.979 and 0.970, Portuguese 0.963 and 0.938, Russian 0.900 and 0.909, Korean 0.944 and 0.937.](docs/assets/chart-languages.png)
-
-This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.
-
-<details>
-<summary>Table</summary>
-
-| Language | Pronunciada | Azure |
-| --- | --- | --- |
-| English | **0.981** | 0.963 |
-| Mandarin | 0.975 | 0.966 |
-| Japanese | **0.968** | 0.919 |
-| Spanish | **0.990** | 0.942 |
-| French | **0.986** | 0.937 |
-| German | **0.960** | 0.887 |
-| Italian | 0.979 | 0.970 |
-| Portuguese | **0.963** | 0.938 |
-| Russian | 0.900 | 0.909 |
-| Korean | 0.944 | 0.937 |
-
-</details>
-
 Azure was not tuned on any of this data. Pronunciada's calibration models were fitted on speechocean762 train, FLEURS train and validation, and the OMPAL development speakers. Every figure above is from a held-out split.
 
-### Latency
+### On-device latency
 
 Median time for one `Scorer.score` call on 100 speechocean762 recordings (mean length 3.5 s), Apple M3 Pro, CPU only.
 
@@ -170,6 +166,16 @@ Median time for one `Scorer.score` call on 100 speechocean762 recordings (mean l
 | --- | --- | --- |
 | fp32 (248 MB) | 50 ms | 100 ms |
 | int8 (67 MB) | 40 ms | 65 ms |
+
+For recordings of about ten seconds (FLEURS test), the median is 0.30 s to 0.44 s on one thread, depending on the language. A request to Azure's REST API for recordings of similar length took 1.8 s to 3.0 s from the same laptop, upload included. This is not a controlled comparison: the two sets of recordings differ. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
+
+### Compared with ZIPA alone
+
+![Pronunciada and the unmodified ZIPA model on the learner tests. English phonemes 0.685 and 0.434, words 0.609 and 0.394, sentences 0.748 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, EpaDB 0.721 and 0.638, Mandarin any error 0.792 and 0.602, Mandarin tone errors 0.778 and 0.552 (AUC).](docs/assets/chart-zipa.png)
+
+To measure what this project adds to the open model, the same held-out tests were run on the unmodified ZIPA model scored with the standard goodness-of-pronunciation method: the mean log-posterior of each expected phoneme over its force-aligned frames, with no adapters, calibration, or tone and stress models. Over 60 test rows, Pronunciada is significantly ahead in 45 and not significantly different in 15. ZIPA alone is not significantly ahead in any. Repeating the correlation rows with a rank-based measure (Spearman) leaves every one of them significantly ahead, with smaller gaps at the phoneme and word level (0.469 against 0.309 for phonemes).
+
+The difference is smallest where the task is easy for both, such as detecting a clearly different word in the prompt (AUC 0.99 for both), and largest for Mandarin tones, which ZIPA does not output. For reference, ZIPA alone scores 0.659 and 0.638 at detecting marked errors on L2-ARCTIC and EpaDB, where Azure scores 0.631 and 0.587, and 0.434 in phoneme-level agreement with expert scores, where Azure scores 0.538. The differences between ZIPA alone and Azure were not tested for significance. All rows are in [results/zipa_baseline.md](results/zipa_baseline.md).
 
 ## Supported languages
 

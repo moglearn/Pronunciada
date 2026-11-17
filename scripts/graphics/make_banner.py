@@ -4,8 +4,8 @@
 
 The diagram is real output: the waveform of site/samples/en-learner-1.mp3 cut at the word
 boundaries in site/samples/en-learner-1.json, with each word's acceptance probability. Words
-below 0.5 are boxed. Outputs docs/assets/banner.jpg (1200x400), docs/assets/social.jpg
-(1280x640) and site/assets/hero.jpg (808x440), all at 2x.
+below 0.5 are boxed. Outputs docs/assets/banner.jpg (1200x400) and docs/assets/social.jpg
+(1280x640) at 2x, and the plain gradient site/assets/gradient.jpg.
 """
 from __future__ import annotations
 
@@ -105,17 +105,6 @@ def banner() -> str:
 """)
 
 
-def hero() -> str:
-    """Site hero, 808x440: shown at its natural size in the article column."""
-    return page(f"""
-<div class="mark" style="left:32px;top:30px;height:20px">{wordmark('#ffffff')}</div>
-<div style="position:absolute;left:32px;top:84px">
-  <h1 style="font-size:34px">Pronunciation assessment<span>for ten languages, on CPU</span></h1>
-</div>
-<div style="position:absolute;left:32px;top:232px">{diagram(744, 130)}</div>
-""")
-
-
 def social() -> str:
     """Link preview, 1280x640."""
     return page(f"""
@@ -124,17 +113,6 @@ def social() -> str:
   <h1 style="font-size:58px">Pronunciation assessment<span>for ten languages, on CPU</span></h1>
 </div>
 <div style="position:absolute;left:50%;transform:translateX(-50%);top:352px">{diagram(900, 170)}</div>
-""")
-
-
-def video_title() -> str:
-    """Opening frame of the demo video, 1280x720; the recording it shows plays over it."""
-    return page(f"""
-<div class="mark" style="left:64px;top:56px;height:28px">{wordmark('#ffffff')}</div>
-<div style="position:absolute;left:64px;top:150px">
-  <h1 style="font-size:54px">Pronunciation assessment<span>for ten languages, on CPU</span></h1>
-</div>
-<div style="position:absolute;left:64px;top:400px">{diagram(1152, 190)}</div>
 """)
 
 
@@ -147,6 +125,5 @@ if __name__ == "__main__":
     render(backdrop(), ROOT / "site/assets/gradient.jpg", 1536, 520, scale=1)
 
     render(banner(), ROOT / "docs/assets/banner.jpg", 1200, 400)
-    render(hero(), ROOT / "site/assets/hero.jpg", 808, 440)
     render(social(), ROOT / "docs/assets/social.jpg", 1280, 640)
     print("wrote docs/assets/banner.jpg and docs/assets/social.jpg")
