@@ -185,7 +185,7 @@ def sound_inputs(result, heard: bool | list = False) -> dict:
          "peak_post": f("peak_post"), "blank_mean": f("blank_mean"), "n_frames": f("n_frames"),
          "slot_heard": [s.heard for s in ev.slots],
          "start_frame": np.array([s.start_frame for s in ev.slots]),
-         "end_frame": np.array([s.end_frame for s in ev.slots])}
+         "end_frame": np.array([s.end_frame for s in ev.slots]), "phone_vec": c.get("phone_vec")}
     X["log_frames"] = np.log1p(X["n_frames"])
     # syllable-initial consonant (Mandarin "initial"; medial glides belong to the final)
     X["initial"] = first & (X["nucleus"] == 0) & np.array([e not in GLIDES for e in X["expected"]])
@@ -222,11 +222,17 @@ def _logistic(M: dict, F: np.ndarray) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-z))
 
 
-def error_prob(X: dict, mdl: dict | None = None) -> np.ndarray:
-    """Coaching score per sound: P(an expert marks it as an error)."""
+def error_prob(X: dict, mdl: dict | None = None, lang: str | None = None) -> np.ndarray:
+    """Coaching score per sound: P(an expert marks it as an error). A language may carry its own
+    logistic (by_lang[lang]["sound_model"]; round 12b: English, fitted on sound_E inputs)."""
     mdl = mdl or model()
-    M = mdl["sound"]
-    return _logistic(M, feature_matrix(X, M["features"]))
+    M = mdl.get("by_lang", {}).get(lang, {}).get("sound_model", mdl["sound"])
+    ep = _logistic(M, feature_matrix(X, M["features"]))
+    if lang == "zh" and mdl.get("by_lang", {}).get("zh", {}).get("emb"):
+        from .coach_zh import error_prob as _zh   # round 12b: per-sound activations (OMPAL dev)
+
+        ep = _zh(X, ep)
+    return ep
 
 
 def missing_prob(X: dict, mdl: dict | None = None) -> np.ndarray | None:
@@ -264,7 +270,7 @@ def decide(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict | None =
     kind ("missing" / "substitution" / None) and heard (None = not named). X must carry the
     heard candidate for the flagged sounds (sound_inputs(..., heard=...))."""
     mdl = mdl or model()
-    ep = error_prob(X, mdl)
+    ep = error_prob(X, mdl, lang)
     ti = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, True)
     tf = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, False)
     flag = np.where(X["initial"], ep >= ti, ep >= tf)
@@ -285,7 +291,7 @@ def decide(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict | None =
 def flagged_indices(X: dict, lang: str, sensitivity: str = "balanced", mdl: dict | None = None,
                     threshold: float | None = None) -> np.ndarray:
     mdl = mdl or model()
-    ep = error_prob(X, mdl)
+    ep = error_prob(X, mdl, lang)
     ti = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, True)
     tf = threshold if threshold is not None else sound_threshold(mdl, lang, sensitivity, False)
     return np.flatnonzero(np.where(X["initial"], ep >= ti, ep >= tf))

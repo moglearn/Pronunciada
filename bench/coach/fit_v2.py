@@ -88,12 +88,16 @@ def so762_rows(name, split):
         from pronunciada import calibrate as C
 
         name_, bias = C.sound_model_for("en")
-        assert name_ == "sound_B", name_
+        # round 12b: the coaching inputs come from the "detail" sound model when one is configured
+        # (sound_E: its out-of-fold logits are the E_* columns, bench/calib/train_sound_emb.py)
+        det = C.config().get("sound_detail_model", {}).get("en")
+        pre = {"sound_B": "B", "sound_E": "E"}[det or name_]
+        bias = 0.0 if det else bias
         pq = os.path.join(os.environ.get("PRONUNCIADA_CACHE", os.path.expanduser("~/.cache/pronunciada")),
                           "calib", "sound_oof.parquet")
-        df = pd.read_parquet(pq, columns=["utt", "phone_index", "B_z_len", "B_z_str"])
+        df = pd.read_parquet(pq, columns=["utt", "phone_index", f"{pre}_z_len", f"{pre}_z_str"])
         oofz = {(u, int(i)): (a + bias, b + bias) for u, i, a, b in
-                zip(df.utt.values, df.phone_index.values, df.B_z_len.values, df.B_z_str.values)}
+                zip(df.utt.values, df.phone_index.values, df[f"{pre}_z_len"].values, df[f"{pre}_z_str"].values)}
     for rec in load("speechocean762", split=split):
         o = D.get(rec["id"])
         if o is None or "error" in o:
@@ -127,6 +131,8 @@ def so762_rows(name, split):
         cols["tj"].extend(tj)
         cols["tk"].extend(tk)
         for k, v in X.items():
+            if v is None or k == "phone_vec":      # round 12b: per-sound vectors stay per utterance
+                continue
             cols[k].extend(list(v))
         cols["acc"].extend(acc)
         cols["pron"].extend(pron)
@@ -236,7 +242,7 @@ def ompal_units(name, split, mdl):
         if o is None or "error" in o:
             continue
         X = add_initial(dict(o["sounds"]))
-        ep = Co.error_prob(X, mdl)
+        ep = Co.error_prob(X, mdl, "zh")
         spans = word_char_spans(rec["text"], [w["text"] for w in o["words"]])
         syl_span = {}
         for wi, w in enumerate(o["words"]):

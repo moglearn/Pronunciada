@@ -46,15 +46,18 @@ python -m pronunciada score clip.wav "FIRST PLACE IN THE DIVISION" --lang en --c
 ```
 
 The sound operating point is fitted on English learners (speechocean762 train). On held-out
-speechocean762 test, "balanced" flags sounds that experts also marked as errors 65 % of the time
-and finds 33 % of all marked errors ("careful": 75 % / 20 %; round 1 found 18 %). When it names
-the sound it heard on a real substitution, the name is right within one articulatory feature
-77 % of the time. For example, on the test utterance “FIRST PLACE IN THE DIVISION”, the experts marked the /v/ of “division” as pronounced /f/; Pronunciada flags /v/ → /f/ (and
+speechocean762 test, "balanced" flags sounds that experts also marked as errors 66 % of the time
+and finds 36 % of all marked errors ("careful": 77 % / 24 %; round 1 found 18 %). Since round 12b
+the English coaching score reads a sound model that also sees the acoustic model's internal layers
+around each sound; at the same recall its precision rose 0.74 / 0.64 / 0.55 → 0.80 / 0.68 / 0.58
+(recall 0.20 / 0.33 / 0.47). When it names the sound it heard on a real substitution, the name is
+right within one articulatory feature 79 % of the time. For example, on the test utterance “FIRST PLACE IN THE DIVISION”, the experts marked the /v/ of “division” as pronounced /f/; Pronunciada flags /v/ → /f/ (and
 /t/ in “first” without naming it). Mandarin tones are calibrated on OMPAL learners but only the
-most certain few percent reach 55 % precision on test; Mandarin consonants / vowels, missing
-sounds and all other languages are not verified on learners. Against the same expert labels,
-Azure's phoneme accuracy scores reach 0.46 precision at the "balanced" recall (ours 0.65;
-precision–recall AUC 0.38 vs 0.55).
+most certain few percent reach 55 % precision on test. Mandarin consonants / vowels (round 12b,
+fitted on OMPAL dev) reach 0.71 / 0.67 precision at 25 % / 18 % recall on OMPAL test at
+"balanced". Missing sounds and the other languages are not verified on learners. Against the same expert labels,
+Azure's phoneme accuracy scores reach 0.44 precision at the "balanced" recall (ours 0.66;
+precision–recall AUC 0.38 vs 0.57).
 
 The same call also tags reading miscues at word level (`missing_word`, `mispronounced_word`,
 `extra_speech` with its time span and decoded sounds) and delivery problems (`long_pause`,
@@ -92,7 +95,7 @@ Correlation with the human scores, higher is better.
 
 | level | Pronunciada | Azure | |
 |---|---|---|---|
-| individual sounds | **0.660** | 0.538 | ahead (p = 0.002) |
+| individual sounds | **0.685** | 0.538 | ahead (p = 0.002) |
 | words | **0.609** | 0.589 | ahead, not significant (p = 0.33) |
 | sentence accuracy | **0.761** | 0.673 | ahead (p = 0.002) |
 | sentence fluency | **0.792** | 0.708 | ahead, borderline (p = 0.05) |

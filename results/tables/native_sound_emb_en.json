@@ -1,0 +1,31 @@
+{
+ "clips": 393,
+ "before": {
+  "native_sounds": 0.9932795312903875,
+  "native_words": 0.9700480709971651,
+  "coach_flags_per_clip": {
+   "careful": 1.450381679389313,
+   "balanced": 2.9974554707379135,
+   "eager": 5.905852417302799
+  },
+  "coach_named_per_clip": {
+   "careful": 0.16793893129770993,
+   "balanced": 0.2697201017811705,
+   "eager": 0.3816793893129771
+  }
+ },
+ "after": {
+  "native_sounds": 0.9932795312903875,
+  "native_words": 0.9700480709971651,
+  "coach_flags_per_clip": {
+   "careful": 2.0203562340966923,
+   "balanced": 4.1704834605597965,
+   "eager": 8.111959287531807
+  },
+  "coach_named_per_clip": {
+   "careful": 0.19592875318066158,
+   "balanced": 0.30025445292620867,
+   "eager": 0.40966921119592875
+  }
+ }
+}

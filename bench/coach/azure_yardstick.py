@@ -117,7 +117,7 @@ def main():
     AZP = azure_phones(root)
     R = so762_rows("so762-test", "test")
     mdl = Co.model()
-    ep = Co.error_prob(R, mdl)
+    ep = Co.error_prob(R, mdl, "en")
     keep = [i for i in range(len(ep)) if np.isfinite(R["acc"][i]) and (R["utt"][i], R["tj"][i], R["tk"][i]) in AZP]
     y = (R["acc"][keep] < 2).astype(float)
     ours = ep[keep]
@@ -125,7 +125,7 @@ def main():
     spk = np.asarray(R["spk"])[keep]
     recalls = {s: None for s in ("careful", "balanced", "eager")}
     for s in recalls:
-        f = ours >= mdl["thresholds"][s]
+        f = ours >= Co.sound_threshold(mdl, "en", s, False)
         recalls[s] = float(y[f].sum() / y.sum())
     rng = np.random.default_rng(0)
     us = np.unique(spk)
@@ -135,7 +135,7 @@ def main():
         b = np.concatenate([idx[u] for u in rng.choice(us, len(us))])
         row = {"ap_ours": average_precision_score(y[b], ours[b]), "ap_azure": average_precision_score(y[b], az[b])}
         for s, r in recalls.items():
-            f = ours[b] >= mdl["thresholds"][s]
+            f = ours[b] >= Co.sound_threshold(mdl, "en", s, False)
             row[f"p_ours_{s}"] = float(y[b][f].mean())
             row[f"p_azure_{s}"] = prec_at_recall(az[b], y[b], float(y[b][f].sum() / y[b].sum()))[0]
         boots.append(row)
@@ -150,7 +150,7 @@ def main():
            "diff_ap_ci": [float(np.quantile([b["ap_ours"] - b["ap_azure"] for b in boots], q)) for q in (0.025, 0.975)],
            "at_recall": {}}
     for s, r in recalls.items():
-        f = ours >= mdl["thresholds"][s]
+        f = ours >= Co.sound_threshold(mdl, "en", s, False)
         pa, ra = prec_at_recall(az, y, r)
         rep["at_recall"][s] = {"recall": r, "precision_ours": float(y[f].mean()), "ours_ci": ci(f"p_ours_{s}"),
                                "precision_azure": pa, "azure_recall_reached": ra, "azure_ci": ci(f"p_azure_{s}"),

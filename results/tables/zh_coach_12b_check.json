@@ -1,0 +1,16 @@
+{
+ "parity_max_abs_score": 3.119079227656418e-05,
+ "fleurs_zh_clips": 250,
+ "native_flags_per_clip": {
+  "before": {
+   "careful": 0.0,
+   "balanced": 0.024,
+   "eager": 0.108
+  },
+  "after": {
+   "careful": 0.072,
+   "balanced": 0.144,
+   "eager": 0.188
+  }
+ }
+}

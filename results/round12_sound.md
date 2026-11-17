@@ -203,3 +203,85 @@ Reproduce:
     python -m bench.calib.sound2_eval diagnose
     python -m bench.calib.sound2_eval candidates
     python -m bench.calib.sound2_eval so762
+
+## 12b: candidate d(i) shipped for English (option A), and a Mandarin consonant / vowel model
+
+### Dev (speechocean762 train CV, FLEURS validation, OMPAL dev)
+
+**d(i) heads** (`bench/calib/train_sound_emb.py`): feature set B plus `emb_proj` (an in-fold ridge
+projection of the pooled enc1/enc3/enc5 activations) and four prototype features. Same
+hyper-parameters and the same 5-fold speaker-grouped folds as `train_sound.py`. Paired speaker
+bootstrap, 1,000 resamples:
+
+| speechocean762 train CV | sound_B | sound_E | Δ [95 % CI] |
+|---|---|---|---|
+| phone Pearson (0–2 head) | 0.684 | 0.714 | +0.030 [+0.023, +0.039] |
+| AUC, expert score < 2 | 0.837 | 0.847 | +0.009 [+0.006, +0.013] |
+| AUC, strict head | 0.880 | 0.889 | +0.009 [+0.006, +0.011] |
+| precision at recall 0.20 / 0.33 / 0.47 (strict head) | 0.817 / 0.714 / 0.614 | 0.863 / 0.760 / 0.644 | +0.045 / +0.047 / +0.030 (all CIs > 0) |
+
+**Option A vs B.** FLEURS-en validation natives, shown sound P ≥ 0.5 at default strictness:
+* sound_B: 0.9933;
+* sound_E: 0.9876, a drop of 0.57 points, against the 0.3-point limit for option B.
+
+So **option A** was taken:
+* sound_E gives the reported 0–2 phone score and the coaching inputs;
+* `PhoneResult.prob` and every word / sentence input stay on sound_B / sound_U;
+* the word / sentence calibrators were not retrained;
+* config: `sound_detail_model: {en: sound_E}`.
+
+**Runtime path.**
+* `pronunciada/sound_emb.py` (numpy only) plus about 20 additive lines in `scorer.py`. The scorer
+  already computes the activations for the round-6 word score.
+* Training-vs-runtime parity on 200 train clips (3,891 sounds): max |ΔP| 0.096, 99th percentile
+  0.0044, max |Δ 0–2| 0.155.
+  * The shipped sound_B shows the same pattern on the same clips (max 0.083, p99 0.0008). That
+    comes from the bench feature table vs the runtime table crossing tree splits.
+  * The vectors themselves agree to 0.002 (float16 storage).
+* Latency on a 3.5 s clip: 67.8 → 68.1 ms (median of 15).
+* Files: `sound_E.npz` 317 KB, `sound_E_emb.npz` 95 KB.
+
+**Coaching.** `bench/coach/fit_v2.py` reads the detail model's out-of-fold logits; the English
+logistic is stored as `by_lang.en` and the other languages keep the global model. Train OOF
+precision at recall 0.20 / 0.33 / 0.47 went from 0.811 / 0.711 / 0.613 to **0.850 / 0.756 / 0.648**.
+* Native cost (FLEURS-en): flags per clip at balanced 3.0 → 4.2; named sounds per clip
+  0.27 → 0.30, at the cap.
+* `coach.py` edits: `error_prob(..., lang)`, the per-language logistic, and the zh hook.
+
+**Mandarin** (`bench/calib/ompal_sound_emb.py`, OMPAL dev, 28 speakers, 5-fold speaker-grouped):
+
+| CV AUC on OMPAL dev | today | + prototype margin | + activations | + both |
+|---|---|---|---|---|
+| initials (consonant wrong; 202 of 10,886) | 0.816 | 0.921 | 0.824 | **0.925** (+0.109 [+0.062, +0.168]) |
+| finals (vowel wrong; 205 of 12,518) | 0.890 | 0.896 | 0.900 | **0.904** (+0.013 [+0.003, +0.025]) |
+
+**Adopted**, since both parts clear the +0.01 bar.
+* In runtime form (per-sound logistic, maximum over the unit) the OOF AUC is 0.931 / 0.915.
+* Thresholds were fitted for OOF precision 0.8 / 0.7 / 0.6.
+* Native acceptance (probabilities) is unchanged; FLEURS-zh native coaching flags per clip at
+  balanced rose 0.02 → 0.14.
+* Size: `data/coach/zh_sound.npz` 113 KB. Runtime parity with the training arrays: max 3e-5.
+
+### Held-out, run once
+
+English round-11 caches were moved to `calib/api_round11_en/`. Azure answers are cached; no
+requests were made.
+
+| speechocean762 test | round 11 | round 12b | Azure |
+|---|---|---|---|
+| phone Pearson (0–2 score) | 0.660 [0.581, 0.712] | **0.685 [0.613, 0.731]** | 0.538 |
+| word, sentence rows; L2-ARCTIC / EpaDB detection | – | unchanged (they read sound_B / U) | – |
+| coaching precision at recall 0.20 / 0.33 / 0.47 | 0.743 / 0.643 / 0.551 | **0.799 / 0.684 / 0.577** (paired Δ CIs all > 0) | 0.559 / 0.464 / 0.384 |
+| coaching PR-AUC | 0.546 | **0.570** | 0.382 |
+| balanced: precision / recall; named right within one feature | 0.65 / 0.33; 0.77 | 0.66 / 0.36; 0.79 | 0.44 at our recall |
+
+| OMPAL test (balanced) | round 11 | round 12b |
+|---|---|---|
+| consonant precision / recall | 0.27 / 0.06 | **0.71 / 0.25** |
+| vowel precision / recall | not flagged | **0.67 / 0.18** |
+
+* The en rows of the swap benchmark were not re-run: under option A word probabilities do not
+  change.
+* OMPAL word / sentence AUCs were not re-run: the Mandarin change touches coaching only.
+* One wiring bug was fixed during the held-out run: OMPAL units were first scored with the general
+  coaching score. It was re-run with the Mandarin score; no threshold changed.

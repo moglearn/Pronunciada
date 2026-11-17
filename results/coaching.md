@@ -2,7 +2,79 @@
 
 Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md).
 
-## Yardstick: Azure Pronunciation Assessment, speechocean762 test
+## Round 12b: coaching scores that read the acoustic model's internal layers
+
+Full write-up: `results/round12_sound.md` §12b.
+
+**English.** The coaching score's sound inputs now come from `sound_E`: the English sound heads,
+plus a projection of the ZIPA enc1/enc3/enc5 activations pooled over each sound, plus the margin
+to a native FLEURS-en prototype of the expected sound. The English coaching logistic was refitted
+by `bench/coach/fit_v2.py` on sound_E out-of-fold inputs (speechocean762 train) and is stored as
+`by_lang.en` in `pronunciada/data/coach/model.json`. Other languages keep the global model: refitting
+it on English-only inputs raised their native flags by 10–20 %.
+
+Thresholds (careful / balanced / eager): 0.628 / 0.489 / 0.363, formerly 0.653 / 0.514 / 0.390.
+
+Train out-of-fold (5-fold, speaker-grouped), precision at recall 0.20 / 0.33 / 0.47:
+
+| | precision at recall 0.20 / 0.33 / 0.47 | recall at precision 0.8 / 0.7 / 0.6 |
+|---|---|---|
+| round 11 | 0.811 / 0.711 / 0.613 | 0.22 / 0.35 / 0.49 |
+| round 12b | **0.850 / 0.756 / 0.648** | 0.27 / 0.40 / 0.53 |
+
+**Held-out, speechocean762 test, run once.** 47,041 phones; Azure is its cached phoneme accuracy.
+CIs are 1,000 speaker bootstraps.
+
+| | PR-AUC | precision at recall 0.20 | 0.33 | 0.47 |
+|---|---|---|---|---|
+| round 11 | 0.546 [0.485, 0.598] | 0.743 [0.656, 0.813] | 0.643 [0.562, 0.710] | 0.551 [0.483, 0.611] |
+| **round 12b** | **0.570 [0.510, 0.622]** | **0.799 [0.711, 0.856]** | **0.684 [0.608, 0.753]** | **0.577 [0.511, 0.646]** |
+| 12b − 11 (paired) | +0.024 [+0.019, +0.029] | +0.056 [+0.035, +0.075] | +0.041 [+0.026, +0.056] | +0.026 [+0.018, +0.043] |
+| Azure | 0.382 [0.324, 0.437] | 0.559 | 0.464 | 0.384 |
+
+**At the shipped operating points** (`bench/coach/eval_v2.py`, `azure_yardstick.py`):
+
+| | round 11 | round 12b | Azure at our recall |
+|---|---|---|---|
+| careful: precision / recall | 0.75 / 0.20 | **0.77 / 0.24** | 0.53 |
+| balanced: precision / recall | 0.65 / 0.33 | **0.66 / 0.36** | 0.44 |
+| eager: precision / recall | 0.55 / 0.47 | **0.56 / 0.50** | 0.37 |
+| named sound right within one feature (balanced) | 0.77 | 0.79 | |
+| share of substitutions named (balanced) | 7.7 % | 9.2 % | |
+
+**Costs on English natives** (FLEURS-en validation, 393 clips): flags per clip at balanced rose
+from 3.0 to 4.2. Named sounds per clip rose from 0.27 to 0.30, at the 0.3 cap. Word and sound
+probabilities are unchanged.
+
+**Mandarin consonants / vowels** (`pronunciada/coach_zh.py`, `bench/calib/ompal_sound_emb.py`).
+The model is a per-sound logistic on [logit of the coaching score, margin to the native FLEURS-zh
+prototype, ridge projection of the pooled activations], separate for initials and finals. It is
+fitted on OMPAL **dev**, 5-fold speaker-grouped.
+
+CV AUC, OMPAL dev:
+
+| | before | after | gain [95 % CI] |
+|---|---|---|---|
+| initials | 0.816 | 0.925 | +0.109 [+0.062, +0.168] |
+| finals | 0.890 | 0.904 | +0.013 [+0.003, +0.025] |
+
+Held-out, OMPAL **test**, run once:
+
+| | round 11 | round 12b |
+|---|---|---|
+| consonant, careful | – | **0.71 / 0.21** |
+| consonant, balanced | 0.27 / 0.06 | **0.71 / 0.25** |
+| consonant, eager | 0.33 / 0.09 | **0.59 / 0.28** |
+| vowel, balanced | – | **0.67 / 0.18** |
+| vowel, eager | 0.46 / 0.12 | **0.60 / 0.23** |
+
+Cost on FLEURS-zh natives: flags per clip at balanced rose from 0.02 to 0.14.
+
+The first evaluation call scored OMPAL units with the general score instead of the Mandarin one.
+`fit_v2.ompal_units` did not pass `lang`, which gave 0.26 precision. That was a wiring bug, fixed
+and re-run; no thresholds were changed.
+
+## Yardstick: Azure Pronunciation Assessment, speechocean762 test (round 11 model; round 12b numbers above)
 
 Which sounds to flag, on the same 47,041 expert-scored phones (error = expert score < 2, 18.6 % of phones). Ours = the coaching score; Azure = 100 − its phoneme accuracy from the cached responses (no new requests), aligned to the corpus phones as in `bench/eval_azure_so762.py`. Azure is thresholded to reach our recall. 95 % CIs: 1,000 speaker bootstraps (`bench/coach/azure_yardstick.py`). This is a third, report-only look at speechocean762 test; nothing was changed after it.
 

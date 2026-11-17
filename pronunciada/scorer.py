@@ -232,6 +232,13 @@ class Scorer:
         tab = F.phone_table(lpa, ref, ev, self.native, dur)
         if self.sound_aux is not None:
             self.sound_aux.augment(tab, ref, ev, emb)
+        phone_vec = None
+        if self.lang == "zh" and emb:            # round 12b: Mandarin consonant / vowel coaching
+            from . import coach_zh as _CZ
+            from .sound_emb import phone_vectors as _pv
+
+            if _CZ.params() is not None:
+                phone_vec = _pv(emb, ev, len(ref.phones))
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:
@@ -256,6 +263,7 @@ class Scorer:
         cache = self._calibrate(tab, ref, dur, dv, wpooled)
         cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
+        cache["phone_vec"] = phone_vec
         cache.update(ref=ref, ev=ev, tab=tab, match_e=_match.evidence(lpa, ref, ev, tab))
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -347,6 +355,9 @@ class Scorer:
             slots = [i for k in keep for i in range(*ref.words[k].phones)]
             ev2 = score_reference(lpa, ref, wild_slots=slots)
             tab2 = F.phone_table(lpa, ref, ev2, self.native, dur)
+            for k in ("emb_proj", "proto_cos", "proto_other", "proto_margin", "proto_has"):
+                if k in c["tab"]:                 # round 12b inputs: kept from the first pass
+                    tab2[k] = c["tab"][k]
             c2 = self._calibrate(tab2, ref, dur, c.get("delivery"), c.get("word_pooled"))
             c2.update(ref=ref, ev=ev2, tab=tab2)
             passes.append(c2)
