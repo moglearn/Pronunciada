@@ -53,7 +53,7 @@ def dump(out, use_coach, per_lang, langs=None):
                 d["words"].append({"prob": _r(w.prob), "sounds": _r(w.sounds_prob), "stress": _r(w.stress_prob),
                                    "tone": _r(w.tone_prob), "present": _r(w.present_prob), "omitted": w.omitted,
                                    "phones": [[p.ipa, _r(p.prob), p.heard, p.start, p.end] for p in w.phones],
-                                   "syl": [[_r(s.tone_prob), s.tone_heard, _r(s.stress_prob), _r(s.pitch_prob)]
+                                   "syl": [[_r(s.tone_prob), s.tone_heard, _r(s.stress_prob)]
                                            for s in w.syllables]})
             rows[rec["id"]] = d
         print(lang, len(rows), flush=True)

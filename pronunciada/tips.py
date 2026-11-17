@@ -70,11 +70,6 @@ TEMPLATES = {
     "tone.unclear": "Check the tone of “{syllable}”: it should be {expected_tone} (tone {expected}).",
     "stress.position": "In “{word}”, stress the {expected_ord} syllable; it sounded stressed on the {heard_ord}.",
     "stress.unclear": "In “{word}”, put the stress on the {expected_ord} syllable.",
-    "pitch_accent.moved": "In “{word}”, let the pitch fall after “{expected_mora}”; it fell after “{heard_mora}”.",
-    "pitch_accent.fall_missing": "In “{word}”, let the pitch fall after “{expected_mora}”; it stayed level.",
-    "pitch_accent.no_fall_expected": "Keep “{word}” level (no fall in pitch); it fell after “{heard_mora}”.",
-    "pitch_accent.unclear": "Check the pitch accent of “{word}”: the pitch should fall after “{expected_mora}”.",
-    "pitch_accent.unclear_level": "Check the pitch accent of “{word}”: it should stay level.",
     "word.mispronounced": "Try “{word}” again; some of its sounds were off.",
     "speech.extra": "There was extra speech {where}; read only the words of the sentence.",
     "speech.restart": "You started “{next_word}” twice; try to say it in one go.",
@@ -181,18 +176,6 @@ def tip_for(item: dict, syllable_text: str | None = None, words: list[str] | Non
         else:
             key = "stress.position"
             P["heard_ord"] = _ord(item["heard"])
-    elif k == "pitch_accent":
-        G = item.get("gate") or {}
-        P["expected_mora"], P["heard_mora"] = G.get("expected_mora"), G.get("heard_mora")
-        e, h = item["expected"], item["heard"]
-        if h is None:
-            key = "pitch_accent.unclear_level" if e == "none" else "pitch_accent.unclear"
-        elif e == "none":
-            key = "pitch_accent.no_fall_expected"
-        elif h == "none":
-            key = "pitch_accent.fall_missing"
-        else:
-            key = "pitch_accent.moved"
     elif k == "mispronounced_word":
         key = "word.mispronounced"
     elif k == "extra_speech":

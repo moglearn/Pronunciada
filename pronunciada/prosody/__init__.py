@@ -1,4 +1,4 @@
-"""Tone / word stress / pitch accent scoring (DESIGN section 5).
+"""Tone and word stress scoring (DESIGN section 5).
 
     scorer = ProsodyScorer("zh")
     out = scorer.score(wav, ref, evidence)     # one dict per RefSyllable
@@ -11,7 +11,7 @@ Keys, as applicable:
       of its tone_alts was produced))
   en de es it pt ru: stress_prob on the syllable with primary stress of every word with >= 2
       syllables (calibrated P(the word's primary stress is where expected)); None elsewhere
-  ja: pitch_prob (calibrated P(mora has the expected high/low pitch)), pitch_high_prob
+  fr ja ko: nothing (no word stress / tone is scored)
 Models: ONNX files + JSON metadata in pronunciada/data/prosody/ (run with onnxruntime).
 """
 from __future__ import annotations
@@ -34,19 +34,17 @@ DATA = Path(__file__).resolve().parent.parent / "data" / "prosody"
 # encoder activations per syllable (default since round 7: results/tone_v3.md, results/round7.md).
 # PRONUNCIADA_TONE_MODEL overrides it; a non-default model uses calib/prosody/zh.<model>.json.
 TONE_MODEL = "tone_zh_v3z"
-# Word stress (en de es it pt ru) and Japanese pitch accent: shipped models and the environment
-# variables that select an alternative (round 8: stress_v3 / pitch_ja_v3, results/round8_prosody.md).
+# Word stress (en de es it pt ru): shipped model and the environment variable that selects an
+# alternative (round 8 / 11: results/round8_prosody.md, results/round11_stress.md).
 STRESS_MODEL = "stress_v3"
-PITCH_MODEL = "pitch_ja"
 # per-language exceptions to STRESS_MODEL (round 11 keep / revert rule, results/round11_stress.md)
 STRESS_MODEL_BY_LANG: dict[str, str] = {}
 STRESS_LANGS = ("en", "de", "es", "it", "pt", "ru")
-_KIND_ENV = {"tone": ("PRONUNCIADA_TONE_MODEL", "TONE_MODEL"), "stress": ("PRONUNCIADA_STRESS_MODEL", "STRESS_MODEL"),
-             "pitch": ("PRONUNCIADA_PITCH_MODEL", "PITCH_MODEL")}
+_KIND_ENV = {"tone": ("PRONUNCIADA_TONE_MODEL", "TONE_MODEL"), "stress": ("PRONUNCIADA_STRESS_MODEL", "STRESS_MODEL")}
 
 
 def kind_of(lang: str) -> str | None:
-    return "tone" if lang == "zh" else "pitch" if lang == "ja" else "stress" if lang in STRESS_LANGS else None
+    return "tone" if lang == "zh" else "stress" if lang in STRESS_LANGS else None
 
 
 def default_model(lang: str) -> str | None:
@@ -127,12 +125,10 @@ class ProsodyScorer:
         self.meta: dict = {}
         if self.lang == "zh":
             self.kind, stem = "tone", os.environ.get("PRONUNCIADA_TONE_MODEL", TONE_MODEL)
-        elif self.lang == "ja":
-            self.kind, stem = "pitch", os.environ.get("PRONUNCIADA_PITCH_MODEL", PITCH_MODEL)
         elif self.lang in STRESS_LANGS:
             self.kind, stem = "stress", os.environ.get("PRONUNCIADA_STRESS_MODEL", default_model(self.lang))
         else:
-            return                                    # fr, ko: nothing to score
+            return                                    # fr, ja, ko: nothing to score
         if os.sep in stem:     # a path stem outside the package (experiments, retired models)
             d, stem = Path(stem).parent, Path(stem).name
         self.meta = json.load(open(d / f"{stem}.json"))
@@ -202,8 +198,6 @@ class ProsodyScorer:
         out = out if out is not None else [dict() for _ in ref.syllables]
         if self.kind == "tone":
             return self._tone(feats, wins, ref, out)
-        if self.kind == "pitch":
-            return self._pitch(feats, wins, ref, out)
         return self._stress(feats, wins, ref, out)
 
     # ------------------------------------------------------------------ kinds
@@ -232,29 +226,6 @@ class ProsodyScorer:
             p_acc = float(sum(P[k, t - 1] for t in acc if 1 <= t <= 5))
             out[i].update(tone_probs=[float(v) for v in P[k]], tone_heard=int(P[k].argmax()) + 1,
                           tone_prob=float(_platt(p_acc, self.meta["platt"])))
-        return out
-
-    def _pitch(self, feats, wins, ref, out):
-        idx = [i for i, s in enumerate(ref.syllables) if s.pitch_high is not None]
-        if not idx:
-            return out
-        if self.meta.get("sequence"):     # utterance-level model: every mora, in order
-            z = self.sess.run(None, {"x": self._ctx(feats, wins, range(len(ref.syllables)))})[0][idx, 0]
-        else:
-            z = self.sess.run(None, {"x": self._ctx(feats, wins, idx)})[0][:, 0]
-        ph = 1 / (1 + np.exp(-z))
-        for k, i in enumerate(idx):
-            p = ph[k] if ref.syllables[i].pitch_high else 1 - ph[k]
-            out[i].update(pitch_high_prob=float(ph[k]), pitch_prob=float(_platt(p, self.meta["platt"])))
-        if self.meta.get("judge"):        # round 13: word-level judgement on dependable words
-            from .pitch_judge import judge
-
-            full = [None] * len(ref.syllables)
-            for k, i in enumerate(idx):
-                full[i] = float(ph[k])
-            for wi, j in judge(full, ref, self.meta["judge"]).items():
-                for i in range(*ref.words[wi].syllables):
-                    out[i]["pitch_word"] = j
         return out
 
     def _stress(self, feats, wins, ref, out):

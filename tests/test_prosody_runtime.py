@@ -74,9 +74,10 @@ def test_model_files_small():
 def test_unscored_languages():
     from pronunciada.text import get_g2p
 
-    ref = get_g2p("fr")("Bonjour tout le monde")
-    out = ProsodyScorer("fr").score(np.zeros(16000, np.float32), ref, [(0, 0)] * len(ref.phones))
-    assert out == [{} for _ in ref.syllables]
+    for lang, text in (("fr", "Bonjour tout le monde"), ("ja", "今日は良い天気です。")):
+        ref = get_g2p(lang)(text)
+        out = ProsodyScorer(lang).score(np.zeros(16000, np.float32), ref, [(0, 0)] * len(ref.phones))
+        assert out == [{} for _ in ref.syllables]
 
 
 def test_tone_end_to_end(acoustic, tmp_path):
@@ -103,17 +104,6 @@ def test_tone_end_to_end(acoustic, tmp_path):
         s.tone_alts = []
     out_bad = sc.score(wav, bad, ev)
     assert np.mean([o["tone_prob"] for o in out]) > np.mean([o["tone_prob"] for o in out_bad]) + 0.2
-
-
-def test_pitch_end_to_end(acoustic, tmp_path):
-    from pronunciada.text import get_g2p
-
-    text = "今日はとても良い天気です。"
-    wav = _say(text, "Kyoko", tmp_path)
-    ref = get_g2p("ja")(text)
-    out = ProsodyScorer("ja").score(wav, ref, _evidence(acoustic, wav, ref))
-    marked = [o for o, s in zip(out, ref.syllables) if s.pitch_high is not None]
-    assert marked and all(0 <= o["pitch_prob"] <= 1 for o in marked)
 
 
 @pytest.mark.skipif(not (DATA / "stress.onnx").exists(), reason="stress model not exported")

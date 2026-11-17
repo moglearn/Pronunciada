@@ -1,7 +1,6 @@
 """Export trained prosody models to ONNX + JSON metadata under pronunciada/data/prosody/.
 
     .venv/bin/python -m bench.prosody.export tone tone_ctx            # -> tone_zh.onnx / .json
-    .venv/bin/python -m bench.prosody.export pitch pitch_ja
     .venv/bin/python -m bench.prosody.export stress stress_multi
 """
 from __future__ import annotations
@@ -104,8 +103,8 @@ def export_tone_v3(name: str, out: str = "tone_zh_v3", out_dir: str | None = Non
 
 
 def export_prosody3(task: str, name: str, out: str):
-    """Round 8 (bench.prosody.prosody3): stress_v3 (x, extra, lang -> per-syllable logit) or
-    pitch_ja_v3 (utterance-level x [S, 160, C] -> [S, 1]); meta "inputs" + .zemb.npz PCA."""
+    """Round 8 (bench.prosody.prosody3): stress_v3 (x, extra, lang -> per-syllable logit);
+    meta "inputs" + .zemb.npz PCA."""
     from bench.prosody.prosody3 import load_any, n_in, pca
     from bench.prosody.zipa_emb_cache import LAYERS
 
@@ -114,43 +113,19 @@ def export_prosody3(task: str, name: str, out: str):
     res = json.load(open(OUT / "results" / f"r8_{name}.json"))
     meta = {"model": name, "platt": res["platt"], "ctx_len": CTX_LEN, "inputs": {k: bool(v) for k, v in cfg.items()},
             "zemb_layers": list(LAYERS), "round": 8}
-    if task == "stress":
-        from pronunciada.prosody.features import N_STRESS_EXTRA
+    from pronunciada.prosody.features import N_STRESS_EXTRA
 
-        inputs = {"x": torch.zeros(2, CTX_LEN, C), "extra": torch.zeros(2, N_STRESS_EXTRA),
-                  "lang": torch.zeros(2, dtype=torch.int64)}
-        _export(net, DATA / f"{out}.onnx", inputs, {"x": {0: "n"}, "extra": {0: "n"}, "lang": {0: "n"}, "logits": {0: "n"}})
-        meta.update(langs=list(res.get("langs", ["en", "de", "es", "it", "pt", "ru"])), n_lang=6)
-        feeds = {"x": np.random.default_rng(0).normal(size=(7, CTX_LEN, C)).astype(np.float32),
-                 "extra": np.random.default_rng(1).normal(size=(7, N_STRESS_EXTRA)).astype(np.float32),
-                 "lang": np.arange(7, dtype=np.int64) % 6}
-        print("onnx vs torch max |dlogit|", parity(DATA / f"{out}.onnx", net, feeds))
-    else:
-        class Utt(torch.nn.Module):
-            def __init__(self, m):
-                super().__init__()
-                self.m = m
-
-            def forward(self, x):
-                return self.m.forward_utt(x)
-
-        net = Utt(net)
-        _export(net, DATA / f"{out}.onnx", {"x": torch.zeros(5, CTX_LEN, C)}, {"x": {0: "n"}, "logits": {0: "n"}})
-        meta["sequence"] = True
-        print("onnx vs torch max |dlogit|", parity(DATA / f"{out}.onnx", net,
-                                                   {"x": np.random.default_rng(0).normal(size=(9, CTX_LEN, C)).astype(np.float32)}))
+    inputs = {"x": torch.zeros(2, CTX_LEN, C), "extra": torch.zeros(2, N_STRESS_EXTRA),
+              "lang": torch.zeros(2, dtype=torch.int64)}
+    _export(net, DATA / f"{out}.onnx", inputs, {"x": {0: "n"}, "extra": {0: "n"}, "lang": {0: "n"}, "logits": {0: "n"}})
+    meta.update(langs=list(res.get("langs", ["en", "de", "es", "it", "pt", "ru"])), n_lang=6)
+    feeds = {"x": np.random.default_rng(0).normal(size=(7, CTX_LEN, C)).astype(np.float32),
+             "extra": np.random.default_rng(1).normal(size=(7, N_STRESS_EXTRA)).astype(np.float32),
+             "lang": np.arange(7, dtype=np.int64) % 6}
+    print("onnx vs torch max |dlogit|", parity(DATA / f"{out}.onnx", net, feeds))
     mu, W = pca(task)
     np.savez(DATA / f"{out}.zemb.npz", mu=mu.astype(np.float32), W=W.astype(np.float32))
     json.dump(meta, open(DATA / f"{out}.json", "w"), indent=1)
-
-
-def export_pitch(name: str):
-    from bench.prosody.tone_eval import load_model
-
-    net, ck = load_model(name)
-    _export(net, DATA / "pitch_ja.onnx", {"x": torch.zeros(2, CTX_LEN, N_IN)}, {"x": {0: "n"}, "logits": {0: "n"}})
-    res = json.load(open(OUT / "results" / f"{name}.json"))
-    json.dump({"model": name, "platt": res["platt"], "ctx_len": CTX_LEN}, open(DATA / "pitch_ja.json", "w"), indent=1)
 
 
 def export_stress(name: str):
@@ -184,11 +159,11 @@ def parity(onnx_path: Path, net, feeds: dict) -> float:
 
 if __name__ == "__main__":
     what, name = sys.argv[1], sys.argv[2]
-    if what in ("stress3", "pitch3"):     # stress3|pitch3 <ckpt> <out_stem>
+    if what == "stress3":     # stress3 <ckpt> <out_stem>
         export_prosody3(what[:-1], name, sys.argv[3])
     elif what == "tone_v3":     # tone_v3 <ckpt> [out_stem] [out_dir] [leniency rules]
         a = sys.argv[3:] + [None] * 3
         export_tone_v3(name, a[0] or "tone_zh_v3", a[1] or None, a[2] or "")
     else:
-        {"tone": export_tone, "tone_v2": export_tone_v2, "pitch": export_pitch, "stress": export_stress}[what](name)
+        {"tone": export_tone, "tone_v2": export_tone_v2, "stress": export_stress}[what](name)
     print("exported", what, name)

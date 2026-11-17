@@ -1,6 +1,6 @@
 """Round 3: the prosody channel — one idempotent command per language.
 
-    python -m bench.calib.fit_prosody --lang zh            # or ja, en, de, es, it, pt, ru, all
+    python -m bench.calib.fit_prosody --lang zh            # or en, de, es, it, pt, ru, all
                                       [--n 200] [--workers 5]
 
 Re-run it whenever pronunciada.prosody.ProsodyScorer's model for the language changes (e.g. when
@@ -9,12 +9,12 @@ pronunciada/data/calib/prosody/<lang>.json (and results/tables/prosody_<lang>.js
 
 FLEURS VALIDATION only. For n random clips: the public Scorer (prosody on, prosody channel and
 explain-away off) on the correct reference, on a controlled-PROSODIC-error reference (bench.corrupt
-kind tone (zh) / pitch (ja) / stress (en de es it pt ru), 2 errors, fixed seed) and, for the
+kind tone (zh) / stress (en de es it pt ru), 2 errors, fixed seed) and, for the
 before/after report only, on the five controlled sound-error kinds.
 Word-level prosody calibrator P_pros(word): logistic regression on [lowest prosody logit over the
 word's scored syllables, second lowest (= lowest for one syllable), number of scored syllables],
 fitted on words of the correct and the prosodic-error references (native and untouched words -> ok,
-the word carrying the tone / stress / pitch error -> not ok), sample weights so that errors are
+the word carrying the tone / stress error -> not ok), sample weights so that errors are
 10 % of the weight. Monotone: the coefficients of both logits must be >= 0 (else the second
 minimum is dropped). Operating points: lenient = logit shifted so 1 - Q_LEN of native dev words
 have P_pros >= 0.5, strict = shifted so 1 - Q_STR do (pair chosen per language by the rule next
@@ -30,9 +30,9 @@ import json
 
 import numpy as np
 
-KIND = {"zh": "tone", "ja": "pitch", "en": "stress", "de": "stress", "es": "stress",
+KIND = {"zh": "tone", "en": "stress", "de": "stress", "es": "stress",
         "it": "stress", "pt": "stress", "ru": "stress"}
-FIELD = {"tone": "tone_prob", "stress": "stress_prob", "pitch": "pitch_prob"}
+FIELD = {"tone": "tone_prob", "stress": "stress_prob"}
 SOUND_KINDS = ("phone_sub_near", "phone_sub_far", "phone_ins", "phone_del", "word_swap")
 ERR_PRIOR = 0.10
 # Share of native dev words the channel alone may put below 0.5 at the lenient / strict end.
@@ -42,7 +42,6 @@ ERR_PRIOR = 0.10
 Q_GRID = ((0.01, 0.05), (0.005, 0.02), (0.0025, 0.01), (0.001, 0.005))
 MAX_NATIVE_DROP = 0.010
 Q_LEN, Q_STR = Q_GRID[0]
-EXPERIMENTAL = {"ja": "pitch-accent labels agree with native speech on ~71 % of morae"}
 
 
 def _words(res, field, wrong):
@@ -129,7 +128,7 @@ def cached_collect(lang, n):
                   if os.environ.get(v))
     from pronunciada.prosody import default_model, selected_model
 
-    if lang != "zh" and selected_model(lang) != default_model(lang):    # round 8: stress / pitch candidates
+    if lang != "zh" and selected_model(lang) != default_model(lang):    # round 8: stress candidates
         env += "_" + selected_model(lang)
     if lang == "zh":                           # the model in use and the default leniency rules
         from pronunciada.prosody import selected_tone_model
@@ -321,7 +320,7 @@ def run(lang, n):
            "err_prior": ERR_PRIOR, "native_quantiles": [Q_LEN, Q_STR], "fit_on": f"FLEURS validation, {n} clips",
            "prosody_model_meta": meta,
            "prosody_model_files": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()[:12] for p in files},
-           "experimental": EXPERIMENTAL.get(lang), "dev_cv": ev}
+           "dev_cv": ev}
     if DRY_RUN:
         return lang, out
     d = ship_dir() / "prosody"
@@ -345,7 +344,7 @@ def main():
     from concurrent.futures import ProcessPoolExecutor
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("--lang", required=True, help="one of zh ja en de es it pt ru, or all")
+    ap.add_argument("--lang", required=True, help="one of zh en de es it pt ru, or all")
     ap.add_argument("--n", type=int, default=200)
     ap.add_argument("--workers", type=int, default=5)
     ap.add_argument("--sweep", action="store_true", help="print the native-quantile trade-off and exit")

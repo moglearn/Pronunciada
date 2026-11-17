@@ -180,8 +180,7 @@ On FLEURS test, a word whose stress is moved to another syllable is detected wit
 patch and the acoustic model's per-syllable activations; on real learner stress marks
 (speechocean762 train) it detects misplaced stress at AUC 0.81 vs 0.78 for the previous model
 ([results/round11_stress.md](results/round11_stress.md)); `PRONUNCIADA_STRESS_MODEL=stress`
-selects the previous one. French and Korean have no word stress and nothing is scored there. Japanese pitch
-accent is reported per syllable but is experimental and does not affect the word score.
+selects the previous one. French, Japanese and Korean have no scored word stress or tone.
 
 ### Native speakers are not punished
 
@@ -209,7 +208,7 @@ calibration error is 1–2 % for sounds, 3–4 % for words and 2–4 % for sente
 - **Real learner mistakes outside English are untested**: the ten-language comparison uses native
   recordings with altered prompts. Detection of real mistakes is much harder (0.71–0.72 in English
   against 0.98–0.99 on the controlled test) and the same drop should be expected elsewhere.
-- **Japanese pitch accent** is not reliable enough to grade.
+- **Japanese pitch accent** is not scored; see [results/round13_pitch_ja.md](results/round13_pitch_ja.md) for what was tried.
 - **Mobile**: everything is ONNX plus numpy, so it is portable, but no iOS / Android bindings have
   been built and nothing has been timed on a phone.
 - Text front-ends handle ordinary prose; numbers, abbreviations and names outside the dictionaries

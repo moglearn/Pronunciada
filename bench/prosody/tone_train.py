@@ -47,8 +47,6 @@ def subsample(utts, frac):
 
 
 def load_train(task="tone"):
-    if task == "pitch":
-        return load_prepped("fleurs", "ja", "train")
     a = load_prepped("aishell3", "zh", "train")
     try:
         f = load_prepped("fleurs", "zh", "train")
@@ -75,7 +73,7 @@ def main():
     ap.add_argument("--ch", type=int, default=96)
     ap.add_argument("--hid", type=int, default=64)
     ap.add_argument("--workers", type=int, default=3)
-    ap.add_argument("--task", default="tone", choices=["tone", "pitch"])
+    ap.add_argument("--task", default="tone", choices=["tone"])
     ap.add_argument("--stride", type=int, default=1)
     ap.add_argument("--arch", default="gru")
     ap.add_argument("--extra", default="")
@@ -90,12 +88,11 @@ def main():
 
     opts = {"extra": a.extra, "target": a.target}
     set_opts(**opts)
-    pitch = a.task == "pitch"
-    dev_u = load_prepped("fleurs_val", "ja" if pitch else "zh", "dev")
+    dev_u = load_prepped("fleurs_val", "zh", "dev")
     Xd, yd, _ = build_arrays(dev_u, a.kind, task=a.task)
     n_train = len(subsample(load_train(a.task), a.frac))
     dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    n_out = 1 if pitch else 5
+    n_out = 5
     net = (ProsodyNet(n_in=10 + n_extra(), ch=a.ch, hid=a.hid, n_out=n_out, arch=a.arch, stride=a.stride) if a.kind == "ctx" else ContourMLP(n_out=n_out)).to(dev)
     print(f"{name}: {n_params(net)} params, dev {len(yd)} syllables, {n_train} train utts", flush=True)
     opt = torch.optim.AdamW(net.parameters(), lr=a.lr, weight_decay=1e-4)
@@ -126,10 +123,7 @@ def main():
             idx = perm[b * a.bs:(b + 1) * a.bs]
             xb = torch.tensor(X[idx], dtype=torch.float32, device=dev)
             yb = torch.tensor(y[idx], device=dev)
-            if pitch:
-                loss = torch.nn.functional.binary_cross_entropy_with_logits(net(xb)[:, 0], yb.float())
-            else:
-                loss = torch.nn.functional.cross_entropy(net(xb), yb, label_smoothing=0.05)
+            loss = torch.nn.functional.cross_entropy(net(xb), yb, label_smoothing=0.05)
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
@@ -142,12 +136,8 @@ def main():
         net.eval()
         with torch.no_grad():
             lo = torch.cat([net(Xd_t[i:i + 2048].to(dev)).cpu() for i in range(0, len(Xd_t), 2048)])
-        if pitch:
-            acc = float(((lo[:, 0].numpy() > 0) == (yd == 1)).mean())
-            nll = float(torch.nn.functional.binary_cross_entropy_with_logits(lo[:, 0], torch.tensor(yd).float()))
-        else:
-            acc = float((lo.argmax(1).numpy() == yd).mean())
-            nll = float(torch.nn.functional.cross_entropy(lo, torch.tensor(yd)))
+        acc = float((lo.argmax(1).numpy() == yd).mean())
+        nll = float(torch.nn.functional.cross_entropy(lo, torch.tensor(yd)))
         curve.append({"epoch": ep, "train_loss": tl / max(nb, 1), "dev_acc": acc, "dev_nll": nll,
                       "n_train": int(len(y)), "sec": time.time() - t0})
         print(json.dumps(curve[-1]), flush=True)

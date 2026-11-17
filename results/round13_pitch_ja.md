@@ -1,5 +1,7 @@
 # Round 13: Japanese pitch accent, an attempt to leave "experimental"
 
+> **Removed on 2026-11-16 (round 15):** all Japanese pitch-accent code, models and coaching items were taken out of the package by the owner's decision. Pitch accent judged against dictionary labels could not be separated from natives' own variation, and a reference-recording comparison could not say a learner was *wrong*. This file is kept as the record.
+
 **Outcome: it stays experimental.** No candidate meets the bars. The decisive failure is bar 2:
 on held-out wrong-accent words from unseen voices, the best model catches **15 %** at the
 default setting, against a **50 %** bar. The default (`pitch_ja`) and `ja.json` are unchanged.

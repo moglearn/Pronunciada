@@ -26,20 +26,21 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2, `schema_minor` 2)
+## 1. Item schema (`schema_version` 2, `schema_minor` 3)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
 Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) added the key
-`schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys;
-minor version 2 (round 13) added the Japanese `pitch_accent` kind (section 3c).
-Consumers should ignore kinds they do not know.
+`schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
+Minor version 2 (round 13) added an experimental Japanese pitch-accent kind; minor version 3
+(round 15) removed it again (Japanese pitch accent is not scored). Consumers should ignore kinds
+they do not know.
 
 | key | type | meaning |
 |---|---|---|
 | `schema_version` | int | 2. Renamed / removed keys bump it. |
-| `schema_minor` | int | 2. Added kinds / keys bump it. |
-| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`, `pitch_accent` (Japanese); words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
+| `schema_minor` | int | 3. Added or removed kinds / keys bump it. |
+| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
 | `phone_index` | int / null | sound inside the word (`result.words[i].phones[j]`); sounds only |
@@ -48,7 +49,7 @@ Consumers should ignore kinds they do not know.
 | `heard` | str / int / null | same type as `expected`; **null = "this sound was off", without naming a replacement** |
 | `expected_ipa`, `heard_ipa` | str / null | for sound items, equal to `expected` / `heard`; null otherwise |
 | `diff_keys` | list[str] | articulatory features that differ (section 2), `["tone"]`, `["stress_position"]`; empty when `heard` is null |
-| `error_prob` | float / null | coaching score: P(an expert marks this as an error). Sounds: the model of section 3 (speechocean762); tones: OMPAL; missing words: 1 − `present_prob`; null for stress |
+| `error_prob` | float / null | coaching score: P(an expert marks this as an error). Sounds: the model of section 3 (speechocean762; English and Mandarin have their own, section 3); tones: OMPAL; missing words: 1 − `present_prob`; null for stress |
 | `prob` | float | the calibrated "acceptable?" probability (`PhoneResult.prob`, `SyllableResult.tone_prob` / `stress_prob`, `WordResult.present_prob`), for reference |
 | `confidence` | float / null | estimated precision of `heard` (sounds: exact or within one feature, per sound class, speechocean762 train; tones / stress: exact, planted errors); null without `heard` |
 | `start`, `end` | float | seconds (the word span for stress / missing words) |
@@ -102,38 +103,58 @@ dependencies, deterministic; small enough to port to C++ / Rust as a table.
 calibrated lenient and strict sound log-odds, `llr_sub`, its native z-score, the competitor
 log-ratio, log duration, nucleus flag, `llr_del`, peak posterior and blank share. Target: expert
 phone score < 2 on speechocean762 **train** (English, Mandarin-L1 learners); 5-fold
-speaker-grouped out-of-fold predictions (the sound calibrator's own out-of-fold logits on that
-split, since it was fitted there). Thresholds:
+speaker-grouped out-of-fold predictions.
 
-| `sensitivity` | threshold | train precision / recall (OOF) | **speechocean762 test precision / recall** | round 1 (prob < 0.5) on test |
+**English** (round 12b, `by_lang.en` in `model.json`) uses its own refit of that logistic. Its
+sound inputs come from the English detail model `sound_E`, which adds a projection of the acoustic
+model's pooled internal layers and a native-prototype margin (`results/round12_sound.md` §12b).
+Every other language uses the global model (round 2). Thresholds:
+
+| `sensitivity` | English threshold (`by_lang.en`) | English train precision / recall (OOF) | **English, speechocean762 test precision / recall** | other languages' threshold (global model) |
 |---|---|---|---|---|
-| `careful` | 0.653 | 0.80 / 0.22 | 0.75 / 0.20 | 0.77 / 0.17 |
-| `balanced` (default) | 0.514 | 0.70 / 0.35 | 0.65 / 0.33 | |
-| `eager` | 0.390 | 0.60 / 0.49 | 0.55 / 0.47 | |
+| `careful` | 0.628 | 0.80 / 0.27 | 0.77 / 0.24 | 0.653 |
+| `balanced` (default) | 0.489 | 0.70 / 0.40 | 0.66 / 0.36 | 0.514 |
+| `eager` | 0.363 | 0.60 / 0.53 | 0.56 / 0.50 | 0.390 |
+
+(The global model's English numbers before round 12b: train 0.80 / 0.22, 0.70 / 0.35, 0.60 / 0.49;
+test 0.75 / 0.20, 0.65 / 0.33, 0.55 / 0.47.)
 
 **When to name the heard sound.** Candidate: the language's sound of the same type with the
-highest geometric-mean span posterior of its tokens. Named only when log(P heard / P expected) ≥
-3.0 and P heard ≥ 0.3 (per language: de 0.3, en 0.4, ja 0.375, es 0.375, fr 0.4, it 0.35, ru 0.35),
-and only for the sound classes that reached ≥ 0.75 exact-or-within-one-feature on the experts'
-pronounced phones: **approximant, fricative, stop, vowel**; never for affricate, click, flap, implosive, nasal, trill.
-On speechocean762 test a named sound on a real substitution is right within one feature
-0.77 of the time (exact 0.64; round 1: 0.50), but only
-8 % of the experts' substitutions get a name, and names also land on sounds the
-experts accepted.
+highest geometric-mean span posterior of its tokens. It is named only when all of these hold:
+* log(P heard / P expected) ≥ 3.0;
+* P heard ≥ 0.3 (per language: de 0.3, en 0.4, ja 0.375, es 0.375, fr 0.4, it 0.35, ru 0.35);
+* the sound class reached ≥ 0.75 exact-or-within-one-feature on the experts' pronounced phones:
+  **approximant, fricative, stop, vowel**. Never for affricate, click, flap, implosive, nasal,
+  trill.
 
-**Mandarin** (OMPAL dev): tone threshold on the syllable tone probability 0.0051 /
-0.0074 / 0.0131 (careful / balanced / eager); syllable-initial consonants use
-the English coaching score with threshold off / 0.849 / 0.827, finals off / off / 0.836.
-On OMPAL test the tone type is right 0.55 of the time at "balanced" with recall
-0.025 (eager: 0.55 / 0.10); Mandarin consonant / vowel items are **not
-reliable** (0.27–0.46 precision on test).
+On speechocean762 test at "balanced", a named sound on a real substitution is right within one
+feature 0.79 of the time (round 2: 0.77; round 1: 0.50). Only 9.2 % of the experts' substitutions
+get a name, and names also land on sounds the experts accepted.
+
+**Mandarin** (OMPAL dev):
+* **Tones.** Threshold on the syllable tone probability: 0.0051 / 0.0074 / 0.0131 (careful /
+  balanced / eager). On OMPAL test the tone type is right 0.55 of the time at "balanced" with
+  recall 0.025 (eager: 0.55 / 0.10).
+* **Consonants and vowels** (round 12b, `pronunciada/coach_zh.py`, `data/coach/zh_sound.npz`).
+  A per-sound logistic on the coaching score's logit, the margin to a native FLEURS-zh prototype
+  and a projection of the pooled internal layers, separate for syllable-initial consonants and
+  finals.
+  * Thresholds: initials 0.562 / 0.483 / 0.407, finals off / 0.522 / 0.415 (careful / balanced /
+    eager; OOF precision 0.8 / 0.7 / 0.6 on OMPAL dev).
+  * On OMPAL test at "balanced": consonants precision 0.71, recall 0.25; vowels 0.67 / 0.18.
+  * FLEURS-zh natives get 0.14 flags per clip at "balanced".
 
 **Yardstick: Azure Pronunciation Assessment** on the same speechocean762 test phones (cached
-responses, nothing re-sent): thresholding Azure's phoneme accuracy at our recall points gives
-precision 0.56 / 0.46 / 0.39 against our 0.75 / 0.65 / 0.55; precision–recall AUC
-0.546 (95 % CI 0.485–0.598) vs Azure 0.382 (0.324–0.437). Azure's top n-best
-phoneme names another sound on 78 % of the experts' substitutions but matches the pronounced phone
-0.37 exactly / 0.49 within one feature (ours: 8 %, 0.64 / 0.77).
+responses, nothing re-sent), thresholding Azure's phoneme accuracy at our recall points:
+
+| | precision at recall 0.20 / 0.33 / 0.47 | precision–recall AUC [95 % CI] |
+|---|---|---|
+| ours (English, round 12b) | 0.80 / 0.68 / 0.58 | 0.570 [0.510, 0.622] |
+| Azure | 0.56 / 0.46 / 0.38 | 0.382 [0.324, 0.437] |
+
+Azure's top n-best phoneme names another sound on 78 % of the experts' substitutions, but it
+matches the pronounced phone only 0.37 exactly / 0.49 within one feature. Ours names 9 %, right
+0.79 within one feature.
 
 **The other eight languages have no learner labels.** They use the English thresholds through
 the calibrated probabilities (comparable across languages by construction). This is
@@ -216,7 +237,7 @@ unverified on learners; all thresholds are unverified on learners outside Englis
 **`mispronounced_word`** (en, `fleurs-en-validation-10010138729160973689`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "mispronounced_word", "word": "thousands", "word_index": 6, "syllable_index": null, "phone_index": null, "position": null, "expected": "thousands", "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": 0.5358, "prob": 0.9669, "confidence": null, "start": 2.59, "end": 3.03, "n_sounds_flagged": 1}
+{"schema_version": 2, "schema_minor": 3, "kind": "mispronounced_word", "word": "thousands", "word_index": 5, "syllable_index": null, "phone_index": null, "position": null, "expected": "thousands", "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": 0.4989, "prob": 0.9669, "confidence": null, "start": 2.59, "end": 3.03, "n_sounds_flagged": 1}
 ```
 
 Tip `word.mispronounced`: Try “thousands” again; some of its sounds were off.
@@ -224,7 +245,7 @@ Tip `word.mispronounced`: Try “thousands” again; some of its sounds were off
 **`extra_speech`** (en, `fleurs-en-validation-10010138729160973689`, prompt without “someone”):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "extra_speech", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": "səmwən", "expected_ipa": null, "heard_ipa": "səmwən", "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 1.73, "end": 2.15, "after_word": 2, "before_word": 3, "where": "between", "restart": false, "n_sounds": 6}
+{"schema_version": 2, "schema_minor": 3, "kind": "extra_speech", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": "səmwən", "expected_ipa": null, "heard_ipa": "səmwən", "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 1.73, "end": 2.15, "after_word": 2, "before_word": 3, "where": "between", "restart": false, "n_sounds": 6}
 ```
 
 Tip `speech.extra`: There was extra speech between “call” and “who”; read only the words of the sentence.
@@ -232,7 +253,7 @@ Tip `speech.extra`: There was extra speech between “call” and “who”; rea
 **`slow`** (en, `fleurs-en-validation-10098964113747380446`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "slow", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.41, "end": 3.71, "sounds_per_s": 10.3}
+{"schema_version": 2, "schema_minor": 3, "kind": "slow", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.41, "end": 3.71, "sounds_per_s": 10.3}
 ```
 
 Tip `rate.slow`: Try reading a little faster and more smoothly.
@@ -240,7 +261,7 @@ Tip `rate.slow`: Try reading a little faster and more smoothly.
 **`long_pause`** (en, `fleurs-en-validation-10312254140358477897`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "long_pause", "word": "somehow", "word_index": 7, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 3.51, "end": 4.51, "duration": 1.0, "after_word": 7, "before_word": 8, "at_punctuation": false}
+{"schema_version": 2, "schema_minor": 3, "kind": "long_pause", "word": "somehow", "word_index": 7, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 3.51, "end": 4.51, "duration": 1.0, "after_word": 7, "before_word": 8, "at_punctuation": false}
 ```
 
 Tip `pause.long`: Try not to stop for so long (1.0 s) after “somehow”.
@@ -248,7 +269,7 @@ Tip `pause.long`: Try not to stop for so long (1.0 s) after “somehow”.
 **`fast`** (en, `fleurs-en-validation-10408474834696432538`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "fast", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.99, "end": 6.95, "sounds_per_s": 16.61}
+{"schema_version": 2, "schema_minor": 3, "kind": "fast", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.99, "end": 6.95, "sounds_per_s": 16.61}
 ```
 
 Tip `rate.fast`: Slow down a little so that every sound is clear.
@@ -256,7 +277,7 @@ Tip `rate.fast`: Slow down a little so that every sound is clear.
 **`rushed_punctuation`** (en, `fleurs-en-validation-10630374883688952860`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "rushed_punctuation", "word": "injured", "word_index": 18, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.71, "end": 5.71, "punctuation": "stop", "gap": 0.02, "after_word": 18}
+{"schema_version": 2, "schema_minor": 3, "kind": "rushed_punctuation", "word": "injured", "word_index": 18, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.71, "end": 5.71, "punctuation": "stop", "gap": 0.02, "after_word": 18}
 ```
 
 Tip `punctuation.rushed`: Make a short pause at the full stop after “injured”.
@@ -264,7 +285,7 @@ Tip `punctuation.rushed`: Make a short pause at the full stop after “injured�
 **`flat_pitch`** (en, `fleurs-en-validation-1105184381995491301`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "flat_pitch", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.81, "end": 4.35, "pitch_range_st": 6.45}
+{"schema_version": 2, "schema_minor": 3, "kind": "flat_pitch", "word": null, "word_index": null, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 0.81, "end": 4.35, "pitch_range_st": 6.45}
 ```
 
 Tip `pitch.flat`: Let your voice rise and fall more; it sounded quite flat.
@@ -272,48 +293,10 @@ Tip `pitch.flat`: Let your voice rise and fall more; it sounded quite flat.
 **`pause_mid_phrase`** (en, `fleurs-en-validation-14225189458852066857`):
 
 ```json
-{"schema_version": 2, "schema_minor": 1, "kind": "pause_mid_phrase", "word": "mahayana", "word_index": 15, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.73, "end": 6.65, "duration": 0.92, "after_word": 15, "before_word": 16, "in_word": false}
+{"schema_version": 2, "schema_minor": 3, "kind": "pause_mid_phrase", "word": "mahayana", "word_index": 15, "syllable_index": null, "phone_index": null, "position": null, "expected": null, "heard": null, "expected_ipa": null, "heard_ipa": null, "diff_keys": [], "error_prob": null, "prob": null, "confidence": null, "start": 5.73, "end": 6.65, "duration": 0.92, "after_word": 15, "before_word": 16, "in_word": false}
 ```
 
 Tip `pause.mid_phrase`: Keep “mahayana” and “path” together; there was a 0.9 s pause between them.
-
-## 3c. Japanese pitch accent (`pitch_accent`, round 13)
-
-One item per **judged** word whose pitch does not match its dictionary accent clearly enough.
-A word is judged only if all of these hold:
-* it has ≥ 2 morae, each with a dictionary high / low label;
-* its accent class is on the pitch model's dependable list. The class is part of speech,
-  head / chained, single / compound accent phrase, and accent type, as in
-  `RefSyllable.pitch_class` / `pronunciada.prosody.pitch_judge.class_key`. The list is chosen
-  on FLEURS-ja validation natives: content-word classes natives do not systematically depart
-  from. Particles and auxiliaries are never judged.
-
-The word score is the mean over its morae of −log P(dictionary high / low) from the pitch model.
-An item is reported when the score exceeds the model's threshold for the sensitivity. The
-thresholds flag 1 % / 2.5 % / 5 % of natives' judged words (careful / balanced / eager) on
-FLEURS-ja validation. `res.coaching(pitch_threshold=…)` overrides them.
-
-Items appear only with a pitch model that carries a `"judge"` block in its JSON. **The shipped
-`pitch_ja` has none, so no `pitch_accent` items appear by default.** See
-`results/round13_pitch_ja.md` for why: the round-13 candidates do not meet the bars for
-leaving experimental.
-
-| key | value for `pitch_accent` |
-|---|---|
-| `expected` | mora index in the word after which the pitch should fall (a fall onto the next word's first mora counts), or `"none"` (no fall in or right after the word) |
-| `heard` | where the pitch fell, the same encoding; `null` when it fell in the expected place but the word was still flagged on degree |
-| `syllable_index` | the expected fall's mora (else the heard one) |
-| `diff_keys` | `["pitch_accent"]` when `heard` is named |
-| `error_prob` | `null` (no learner-calibrated model yet) |
-| `prob` | exp(−word score): geometric-mean P(dictionary label) over the word's morae |
-| `confidence` | `null` |
-| `gate` | `{"score", "expected_mora", "heard_mora"}` (mora kana) |
-
-Tips, `pronunciada/tips.py`:
-* `pitch_accent.moved`: "In “{word}”, let the pitch fall after “{expected_mora}”; it fell after “{heard_mora}”."
-* `pitch_accent.fall_missing`: "… it stayed level."
-* `pitch_accent.no_fall_expected`: "Keep “{word}” level (no fall in pitch); it fell after “{heard_mora}”."
-* `pitch_accent.unclear` / `pitch_accent.unclear_level` when `heard` is null.
 
 ## 4. Default tips (`pronunciada/tips.py`)
 
@@ -453,11 +436,12 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
   "retry_recommended": false
  },
  "coaching": {
-  "schema_version": 1,
+  "schema_version": 2,
+  "schema_minor": 3,
   "items": [
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "substitution",
     "word": "a",
     "word_index": 13,
@@ -473,7 +457,7 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
      "backness",
      "rounded"
     ],
-    "error_prob": 0.8003,
+    "error_prob": 0.9406,
     "prob": 0.3863,
     "confidence": 0.755,
     "start": 4.87,
@@ -481,7 +465,7 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "mispronounced_word",
     "word": "a",
     "word_index": 13,
@@ -493,52 +477,11 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
     "expected_ipa": null,
     "heard_ipa": null,
     "diff_keys": [],
-    "error_prob": 0.8003,
+    "error_prob": 0.9406,
     "prob": 0.2991,
     "confidence": null,
     "start": 4.87,
     "end": 4.89,
-    "n_sounds_flagged": 1
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 1,
-    "kind": "substitution",
-    "word": "thousands",
-    "word_index": 6,
-    "syllable_index": 1,
-    "phone_index": 6,
-    "position": "final",
-    "expected": "z",
-    "heard": null,
-    "expected_ipa": "z",
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.5354,
-    "prob": 0.9769,
-    "confidence": null,
-    "start": 3.01,
-    "end": 3.03
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 1,
-    "kind": "mispronounced_word",
-    "word": "thousands",
-    "word_index": 6,
-    "syllable_index": null,
-    "phone_index": null,
-    "position": null,
-    "expected": "thousands",
-    "heard": null,
-    "expected_ipa": null,
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.5354,
-    "prob": 0.9904,
-    "confidence": null,
-    "start": 2.59,
-    "end": 3.03,
     "n_sounds_flagged": 1
    }
   ]
@@ -549,7 +492,6 @@ FLEURS validation `fleurs-en-validation-10010138729160973689`, a native recordin
 Default tips:
 
 - `vowel.open`: Open your mouth a little more for /ɔ/ in “a”; it sounded like /ɪ/.
-- `sound.unclear`: Listen to /z/ in “thousands” and try it again; it did not sound quite right.
 
 ### Mandarin
 
@@ -575,11 +517,12 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
   "retry_recommended": false
  },
  "coaching": {
-  "schema_version": 1,
+  "schema_version": 2,
+  "schema_minor": 3,
   "items": [
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "missing_word",
     "word": "的",
     "word_index": 2,
@@ -599,7 +542,7 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "tone",
     "word": "后",
     "word_index": 6,
@@ -621,7 +564,7 @@ FLEURS validation `fleurs-zh-validation-1366745426988339540`, a native recording
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "missing_word",
     "word": "中",
     "word_index": 1,
@@ -674,11 +617,12 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
   "retry_recommended": false
  },
  "coaching": {
-  "schema_version": 1,
+  "schema_version": 2,
+  "schema_minor": 3,
   "items": [
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "substitution",
     "word": "religión",
     "word_index": 5,
@@ -703,7 +647,7 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "mispronounced_word",
     "word": "religión",
     "word_index": 5,
@@ -724,7 +668,7 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "substitution",
     "word": "mayoritaria",
     "word_index": 6,
@@ -744,7 +688,7 @@ FLEURS validation `fleurs-es-validation-10953383748233911445`, a native recordin
    },
    {
     "schema_version": 2,
-    "schema_minor": 1,
+    "schema_minor": 3,
     "kind": "mispronounced_word",
     "word": "mayoritaria",
     "word_index": 6,
@@ -774,6 +718,10 @@ Default tips:
 - `sound.unclear`: Listen to /ɾ/ in “mayoritaria” and try it again; it did not sound quite right.
 
 ### Real learners (speechocean762 test, "balanced")
+
+(Produced with the round-2 English coaching score; since round 12b the English score reads
+`sound_E`, so individual error_prob values differ. Not re-run here: it would mean another pass
+over the held-out test set. Current test numbers: `results/coaching.md`.)
 
 - “FIRST PLACE IN THE DIVISION”: ours FIRST /t/ → off, not named (error_prob 0.588); DIVISION /v/ → /f/ (error_prob 0.561). Experts: THE ['DH', 'AH0'] scores [1.2, 2.0]; DIVISION ['D', 'IH0', 'V', 'IH1', 'ZH', 'N'] scores [2.0, 2.0, 0.4, 1.6, 0.8, 2.0], pronounced [('V', 'F')].
 - “DO YOU REALLY AND TRULY SAY SO”: ours SAY /s/ → off, not named (error_prob 0.62); SAY /eɪ/ → off, not named (error_prob 0.946); SO /s/ → /n/ (error_prob 0.757). Experts: DO ['D', 'UH0'] scores [2.0, 1.8]; YOU ['Y', 'UW0'] scores [2.0, 1.8]; REALLY ['R', 'IH', 'AH1', 'L', 'IY0'] scores [2.0, 1.6, 1.6, 2.0, 2.0]; AND ['AE0', 'N', 'D'] scores [2.0, 2.0, 1.6]; TRULY ['T', 'R', 'UW1', 'L', 'IY0'] scores [2.0, 2.0, 2.0, 1.6, 2.0]; SO ['S', 'OW0'] scores [0.4, 2.0], pronounced [('S', 'N')].

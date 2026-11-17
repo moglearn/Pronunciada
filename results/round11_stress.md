@@ -1,7 +1,7 @@
 # Round 11: `stress_v3` becomes the word-stress default (en de es it pt ru)
 
 **Decision.** `stress_v3` is the default stress model for all six languages. The per-language
-keep / revert rule reverted none. Japanese pitch accent stays `pitch_ja` (experimental) and is
+keep / revert rule reverted none. Japanese pitch accent stays on its round-1 model (experimental; removed altogether in round 15) and is
 unchanged. `PRONUNCIADA_STRESS_MODEL=stress` selects the previous model with its own calibrator
 (`<lang>.stress.json`). Per-language exceptions would go in `pronunciada.prosody.STRESS_MODEL_BY_LANG`;
 it is empty.
@@ -118,8 +118,7 @@ These models were moved out of `pronunciada/data/prosody/` to
 `~/.cache/pronunciada/prosody/retired/`:
 * `tone_zh` (round-1 local tone model);
 * `tone_zh_v3`;
-* `pitch_ja_v3` (+ `.zemb.npz`);
-* `pitch_ja_v3r`.
+* the two round-8 Japanese pitch candidates.
 
 No default selects them. They stay selectable at no cost through a path stem, e.g.
 `PRONUNCIADA_TONE_MODEL=~/.cache/pronunciada/prosody/retired/tone_zh_v3` (now accepted for every
@@ -129,7 +128,7 @@ the same way and skip if they are absent.
 | | before | after |
 |---|---|---|
 | `pronunciada/data/prosody/` | 4.83 MB | **2.46 MB** (budget 5 MB) |
-| contents | 13 model files | `tone_zh_v3z` (+PCA), `tone_zh_v2`, `stress_v3` (+PCA), `stress`, `pitch_ja` |
+| contents | 13 model files | `tone_zh_v3z` (+PCA), `tone_zh_v2`, `stress_v3` (+PCA), `stress`, the Japanese pitch model |
 
 Latency: the stress step on the densest 10 s FLEURS English clip (2 threads) is 14.4 → 17.2 ms
 min. The ZIPA activations it reads are already computed on the default path, so there is no extra

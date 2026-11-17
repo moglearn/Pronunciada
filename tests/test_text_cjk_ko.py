@@ -28,7 +28,7 @@ KO_SENTS = [
 def test_ko_validate(text):
     ref = ko(text)
     ref.validate()
-    assert all(s.tone is None and s.pitch_high is None for s in ref.syllables)
+    assert all(s.tone is None for s in ref.syllables)
 
 
 @pytest.mark.parametrize("word,expected", [

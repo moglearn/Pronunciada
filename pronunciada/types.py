@@ -40,12 +40,6 @@ class RefSyllable:
     tone_alts: list[int] = field(default_factory=list)
     # Lexical stress: 1 primary, 2 secondary, 0 unstressed. None = language has no word stress.
     stress: int | None = None
-    # Japanese pitch accent: True = high mora, False = low. None elsewhere.
-    pitch_high: bool | None = None
-    # Japanese only (round 13): the word's accent class "<pos>/<pos detail>/<head|chain>/c<content
-    # words in its accent phrase>/<h|a|o|n>" (heiban / atamadaka / odaka / nakadaka); decides
-    # whether the dictionary accent is dependable enough to judge (pronunciada.prosody.pitch_judge).
-    pitch_class: str | None = None
 
 
 @dataclass
@@ -120,7 +114,6 @@ class SyllableResult:
     tone_prob: float | None = None         # calibrated 0-1 probability the tone is acceptable
     stress_expected: int | None = None
     stress_prob: float | None = None       # probability this syllable carries the right stress level
-    pitch_prob: float | None = None        # Japanese pitch accent
 
 
 @dataclass

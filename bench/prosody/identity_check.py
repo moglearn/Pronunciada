@@ -5,7 +5,7 @@
     .venv/bin/python -m bench.prosody.identity_check compare before after
 
 Scores the first n FLEURS validation clips per language through the public Scorer and stores a
-canonical view of every float (sentence prob / scores, word prob / sounds / tone / stress / pitch /
+canonical view of every float (sentence prob / scores, word prob / sounds / tone / stress /
 present, phone prob) as raw float64 bytes; compare reports the SHA-256 per language and whether
 the two dumps are byte-identical.
 """
@@ -22,7 +22,7 @@ def view(res):
     v = [res.prob] + [res.scores.get(k) for k in sorted(res.scores or {})]
     for w in res.words:
         v += [w.prob, w.sounds_prob, w.tone_prob, w.stress_prob, w.present_prob]
-        v += [s.tone_prob for s in w.syllables] + [s.stress_prob for s in w.syllables] + [s.pitch_prob for s in w.syllables]
+        v += [s.tone_prob for s in w.syllables] + [s.stress_prob for s in w.syllables]
         v += [p.prob for p in w.phones]
     return np.array([np.nan if x is None else float(x) for x in v], np.float64).tobytes()
 

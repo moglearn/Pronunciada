@@ -10,9 +10,7 @@ stress (en de es it pt ru; shipped `stress` vs `stress_v3`): words with >= 2 syl
   acc_orig / still_dictionary_mono = argmax of the word's stress distribution on the dictionary
   syllable; mono_auc = P(expected) original vs monotone (higher = the model hears the flattening;
   stress is also carried by loudness and duration, so a flat pitch does not remove it).
-pitch (ja; `pitch_ja` vs `pitch_ja_v3` [vs `pitch_ja_v3r`]): morae with a high/low label;
-  Japanese pitch accent is pitch only, so on monotone audio a model that listens should be near
-  the majority class: still_label_mono, mono_auc = P(expected) original vs monotone.
+(The round-8 Japanese pitch-accent part was removed in round 15.)
 """
 from __future__ import annotations
 
@@ -30,13 +28,11 @@ def run(n=60):
     from bench.prosody.leak_test import monotone
     from bench.prosody.prep import fleurs_validation
     from pronunciada.acoustic import AcousticModel
-    from pronunciada.prosody import DATA, ProsodyScorer
+    from pronunciada.prosody import ProsodyScorer
 
     am = AcousticModel(threads=2, embeddings=True)
     res = {}
     plan = [(lg, "PRONUNCIADA_STRESS_MODEL", ["stress", "stress_v3"]) for lg in ("en", "de", "es", "it", "pt", "ru")]
-    plan.append(("ja", "PRONUNCIADA_PITCH_MODEL", [m for m in ("pitch_ja", "pitch_ja_v3", "pitch_ja_v3r")
-                                                   if (DATA / f"{m}.onnx").exists()]))
     for lang, env, models in plan:
         utts = [u for u in load_prepped("fleurs_val", lang, "dev") if u["ref"].syllables]
         utts = utts[::max(1, len(utts) // n)][:n]
@@ -54,26 +50,16 @@ def run(n=60):
             for u in utts:
                 outs = {c: sc.score(x, u["ref"], u["spans"], embeddings=e) for c, (x, e) in inp[u["id"]].items()}
                 ref = u["ref"]
-                if sc.kind == "stress":
-                    for i, s in enumerate(ref.syllables):
-                        if outs["orig"][i].get("stress_dist") is None:
-                            continue
-                        w = ref.words[s.word]
-                        j = i - w.syllables[0]
-                        do, dm = np.array(outs["orig"][i]["stress_dist"]), np.array(outs["mono"][i]["stress_dist"])
-                        po.append(do[j])
-                        pm.append(dm[j])
-                        so.append(do.argmax() == j)
-                        sm.append(dm.argmax() == j)
-                else:
-                    for i, s in enumerate(ref.syllables):
-                        if s.pitch_high is None:
-                            continue
-                        ho, hm = outs["orig"][i]["pitch_high_prob"], outs["mono"][i]["pitch_high_prob"]
-                        po.append(ho if s.pitch_high else 1 - ho)
-                        pm.append(hm if s.pitch_high else 1 - hm)
-                        so.append(po[-1] > 0.5)
-                        sm.append(pm[-1] > 0.5)
+                for i, s in enumerate(ref.syllables):
+                    if outs["orig"][i].get("stress_dist") is None:
+                        continue
+                    w = ref.words[s.word]
+                    j = i - w.syllables[0]
+                    do, dm = np.array(outs["orig"][i]["stress_dist"]), np.array(outs["mono"][i]["stress_dist"])
+                    po.append(do[j])
+                    pm.append(dm[j])
+                    so.append(do.argmax() == j)
+                    sm.append(dm.argmax() == j)
             lab = np.r_[np.zeros(len(po)), np.ones(len(pm))]
             r = {"n": len(po), "acc_orig": float(np.mean(so)), "still_label_mono": float(np.mean(sm)),
                  "mono_auc": M.roc_auc(lab.astype(int), 1 - np.r_[po, pm]), "mean_p_orig": float(np.mean(po)),

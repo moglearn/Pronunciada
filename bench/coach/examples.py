@@ -11,6 +11,7 @@ import sys
 from bench.corrupt import NotApplicable, corrupt
 from bench.pipeline.common import fleurs_validation_records, iter_parquet_audio, stable_seed
 from bench.pipeline.evalctl import inventory
+from pronunciada import coach
 from pronunciada.scorer import Scorer
 from pronunciada.tips import tips
 
@@ -45,7 +46,7 @@ def main():
                 i.pop("gate")
             out[lang] = {"id": rec["id"], "text": rec["text"],
                          "planted": [{"kind": e.kind, "word": cor.ref.words[e.word].text, **e.detail} for e in cor.errors],
-                         "audio": res.audio, "coaching": {"schema_version": 1, "items": items},
+                         "audio": res.audio, "coaching": {"schema_version": coach.SCHEMA_VERSION, "schema_minor": coach.SCHEMA_MINOR, "items": items},
                          "tips": [{k: v for k, v in t.items() if k != "item"} for t in tips(items, 3, res)]}
             break
     json.dump(out, sys.stdout, ensure_ascii=False, indent=1)

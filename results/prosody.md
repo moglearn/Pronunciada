@@ -348,7 +348,7 @@ FLEURS ja test, 22 558 morae (52.9 % labelled high):
 
 Word-pattern test: 11 196 words, 18 015 alternative Tokyo patterns (bench.corrupt `pitch`
 replacement set). **Agreement with the dictionary-derived labels on native speech is 70.7 %,
-below 80 %, so pitch_prob is experimental.** The labels may be wrong (compounds, accent-phrase
+below 80 %, so the pitch probability is experimental.** (Japanese pitch accent was removed from the package in round 15.) The labels may be wrong (compounds, accent-phrase
 chaining, speaker variation), or the model may be; this data cannot tell which. Dev curve: 63.0 →
 71.0 %.
 
@@ -357,7 +357,7 @@ chaining, speaker variation), or the model may be; this data cannot tell which. 
 `ProsodyScorer(lang).score(wav, ref, evidence)` → one dict per syllable: zh `tone_probs`,
 `tone_heard`, `tone_prob` (temperature + Platt; P(tone or tone_alt)); en/de/es/it/pt/ru
 `stress_prob` on the primary-stressed syllable of every ≥ 2-syllable word (None elsewhere) +
-`stress_dist`; ja `pitch_prob`, `pitch_high_prob`; fr/ko empty dicts. numpy + scipy +
+`stress_dist`; ja per-mora pitch probabilities (removed in round 15); fr/ko empty dicts. numpy + scipy +
 onnxruntime only (checked: no torch / sklearn / parselmouth import under pronunciada/).
 
 | file | size |
@@ -365,7 +365,7 @@ onnxruntime only (checked: no torch / sklearn / parselmouth import under pronunc
 | tone_zh.onnx (69 k params, round 1, kept) | 276.6 KB |
 | tone_zh_v2.onnx (171 k params, **default**) | 626.3 KB |
 | stress.onnx (70 k params, 6 languages) | 280.4 KB |
-| pitch_ja.onnx (69 k params) | 275.6 KB |
+| Japanese pitch model (69 k params; removed in round 15) | 275.6 KB |
 | JSON metadata (3 files) | 0.7 KB |
 | **total** | **1.4 MB** (budget 5 MB) |
 

@@ -76,16 +76,12 @@ Conventions were tuned against ZIPA (`zipa-small-crctc-500k`) greedy output on F
 ## Japanese
 
 - pyopenjtalk-plus `run_frontend` + `make_label`; per-mora consonant/vowel, devoicing (capital
-  vowels), accent fields A:a1/a2 from the labels. `pitch_high` per mora = Tokyo rule within the
-  accent phrase: mora 1 high only for accent type 1; moras 2..nucleus high; after the nucleus low.
-  Verified on 箸/橋/端, 雨/飴, 日本, 学校, お父さん, ケーキ. Reliability = Open JTalk accent
-  dictionary + its accent-phrase chaining rules (compounds and numbers are the weak spot; not
-  measured against gold).
+  vowels) from the labels. (Until round 15 a per-mora high/low pitch label was also derived from
+  the accent fields; pitch accent is no longer scored and the label was removed.)
 - Units: mora, except ZIPA conventions force two merges: っ joins the **following** mora (doubled
   consonant kk / tt / ss / ʃʃ / ttʃ / tts; alt single consonant) - this can put the geminate into
   the next word (待っ|て -> て has "ッテ"); ー joins the **preceding** mora (nucleus Vː; alts short
-  V, spelling forms ou / ei). A merged unit is `pitch_high=True` if any of its moras is high
-  (a within-unit rise/fall is not represented). Phrase-final っ -> ʔ (may drop). ん is its own unit,
+  V, spelling forms ou / ei). Phrase-final っ -> ʔ (may drop). ん is its own unit,
   nucleus = place-assimilated nasal (m / n / ŋ; ŋ before vowels and at the end), alts n m ŋ ɴ.
 - ZIPA conventions found: し ʃ, ち tʃ, じ dʒ, つ ts, ひ **h** (ZIPA never writes ç), ふ **f**
   (never ɸ), ら-row r, long vowels Vː, いく after a vowel often j.

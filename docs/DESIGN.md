@@ -25,7 +25,7 @@ tone / stress results, with one `strictness` knob.
 
 ```
 text ──► text front-end (per language) ──► Reference: words › syllables › target sounds
-                                             (+ expected tone / stress / pitch, + allowed variants)
+                                             (+ expected tone / stress, + allowed variants)
 audio ─► fbank ─► ZIPA ONNX ─► frame log-posteriors lp[T,127]
                                    │
         Reference + lp ──► lattice aligner ──► per-sound evidence + timings
@@ -60,7 +60,7 @@ bench/                      datasets, corruption protocol, metrics, Azure runner
   is systematically different from the dictionary, the reference follows ZIPA.
 - Affricates and diphthongs are one `RefPhone` with several tokens when the language treats them
   as one sound.
-- Every syllable has exactly one nucleus. Stress / tone / pitch live on the syllable.
+- Every syllable has exactly one nucleus. Stress / tone live on the syllable.
 - Natural connected speech must never be punished. Front-ends add rule-based `alts` for the
   well-known optional processes of their language (weak forms, linking, liaison, elision,
   flapping, assimilation across word boundaries, vowel devoicing, sandhi …). A second, automatic
@@ -125,7 +125,7 @@ used to express a learner's evidence relative to natives.
   completeness, pacing → `P(sentence ok)`. Each level has its own calibrator, trained on the
   human word / sentence ratings of speechocean762 and checked with reliability curves (ECE).
 
-## 5. Tones, stress, pitch accent (`prosody/`)
+## 5. Tones and stress (`prosody/`)
 
 ZIPA has no tone or stress symbols, so these use a small separate model fed by the audio and the
 syllable timings from the aligner:
@@ -133,11 +133,14 @@ syllable timings from the aligner:
 - Frame features at 10 ms: log-F0 (speaker-normalised), voicing, log-energy, plus the fbank frames.
 - One small network family ("ProsodyNet", conv + GRU, well under 1 M params, exported to ONNX) that
   looks at a syllable with its neighbours and predicts the syllable's class:
-  Mandarin tone (1-4, neutral), stress level (en, de, ru, it, es, pt), Japanese high/low.
+  Mandarin tone (1-4, neutral), stress level (en, de, ru, it, es, pt).
 - Trained on native speech with labels from the text front-end; scored as
   `P(expected class | audio)` then calibrated like sounds. Mandarin tone sandhi is applied in the
   reference (`tone` = surface tone) so correct sandhi is never punished.
-- French and Korean have no word-level stress or tone: nothing is scored there.
+- French and Korean have no word-level stress or tone: nothing is scored there. Japanese pitch
+  accent is not scored either: it was tried (rounds 1, 8, 13; results/round13_pitch_ja.md) and
+  removed in round 15, because dictionary accent labels could not be separated from natives' own
+  variation.
 
 ## 6. Benchmarks
 
@@ -187,8 +190,7 @@ Sections 1–6 are the plan the code was built against. Measurements changed fou
     the word's syllables through a per-language word-level calibrator
     (`bench/calib/fit_prosody.py`). Its leniency is set by a fixed rule on development data: the
     strictest setting that costs at most one point of native word acceptance at the default
-    strictness. Japanese pitch accent is reported per syllable but only enters the product with
-    `Scorer(..., experimental=True)`.
+    strictness. (Japanese pitch accent is not scored; removed in round 15.)
   - `present_prob`: the word was said at all (`bench/calib/fit_omission.py`, one model for all
     languages, fitted on planted extra words). `omitted` is `present_prob < 0.5`. This replaced a
     hard threshold that flagged 3–6 % of native one-sound words ("é", "à", "を") as skipped.

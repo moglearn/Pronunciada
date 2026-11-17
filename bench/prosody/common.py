@@ -194,12 +194,6 @@ def agree_map(u_list: list[dict]):
     return out
 
 
-def pitch_targets(u: dict):
-    """Per mora: 1 high / 0 low / -1 unmarked."""
-    labs = np.array([-1 if s.pitch_high is None else int(s.pitch_high) for s in u["ref"].syllables])
-    return labs, labs >= 0, None
-
-
 def build_arrays(utts, kind: str = "ctx", rng=None, aug=False, jitter=0, tempo=None, agree=None,
                  train_only=False, task: str = "tone"):
     """Stack network inputs over every labelled syllable. Returns X, y, meta list."""
@@ -208,7 +202,7 @@ def build_arrays(utts, kind: str = "ctx", rng=None, aug=False, jitter=0, tempo=N
         if not u["ref"].syllables:
             continue
         feats, wins = utt_inputs(u, rng, aug, jitter, tempo)
-        labs, mask, acc = tone_targets(u, agree) if task == "tone" else pitch_targets(u)
+        labs, mask, acc = tone_targets(u, agree)
         for i in range(len(wins)):
             if labs[i] < 0 or (train_only and not mask[i]):
                 continue

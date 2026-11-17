@@ -58,7 +58,6 @@
   "n_lang": 6
  },
  "prosody_model_files": {
-  "pitch_ja.onnx": "b6a74615b22e",
   "stress.onnx": "a7ed773ec4e0",
   "tone_zh.onnx": "4e7428ce226a"
  },

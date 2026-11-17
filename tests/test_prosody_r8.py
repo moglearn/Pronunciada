@@ -1,5 +1,5 @@
-"""Round 8: selectable stress / pitch-accent candidates load through the public Scorer with their
-own channel calibrator and score a clip; defaults are unchanged."""
+"""Round 8 / 11: selectable word-stress models load through the public Scorer with their own
+channel calibrator and score a clip."""
 import os
 import shutil
 import subprocess
@@ -30,16 +30,14 @@ CASES = [  # env var, model stem, language, `say` voice, text
      "The government announced a remarkable economic recovery yesterday."),
     ("PRONUNCIADA_STRESS_MODEL", "stress", "en", "Samantha",
      "The government announced a remarkable economic recovery yesterday."),
-    ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3", "ja", "Kyoko", "今日はとても良い天気ですね。"),
-    ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3r", "ja", "Kyoko", "今日はとても良い天気ですね。"),
-    ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v5", "ja", "Kyoko", "東京の大学で日本語を勉強しています。"),  # round 13
 ]
 
 
 def test_defaults_unchanged():
     from pronunciada import prosody
 
-    assert prosody.STRESS_MODEL in ("stress", "stress_v3") and prosody.PITCH_MODEL == "pitch_ja"
+    assert prosody.STRESS_MODEL in ("stress", "stress_v3")
+    assert prosody.kind_of("ja") is None and prosody.selected_model("ja") is None   # no pitch accent
     assert (DATA / f"{prosody.STRESS_MODEL}.onnx").exists() and (DATA / "stress.onnx").exists()
 
 
@@ -55,7 +53,7 @@ def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang,
     monkeypatch.setenv(env, path_stem)
     from pronunciada.scorer import Scorer
 
-    sc = Scorer(lang, threads=2, experimental=True)
+    sc = Scorer(lang, threads=2)
     assert sc.prosody is not None and sc.prosody.meta["model"]
     if sc.prosody.inputs.get("zemb"):
         assert sc.am.embeddings
@@ -67,11 +65,6 @@ def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang,
         assert sc.pros_cal and "prosody_model" not in sc.pros_cal
     res = sc.score(str(out), text)
     assert not any("prosody failed" in w for w in res.warnings)
-    field = "stress_prob" if lang != "ja" else "pitch_prob"
-    vals = [getattr(s, field) for w in res.words for s in w.syllables if getattr(s, field) is not None]
+    vals = [s.stress_prob for w in res.words for s in w.syllables if s.stress_prob is not None]
     assert vals and all(0 <= v <= 1 for v in vals)
     assert all(0 <= w.prob <= 1 for w in res.words)
-    if sc.prosody.meta.get("judge"):        # round 13: word-level judgement + coaching items
-        pr = res._pronunciada["prosody"]
-        assert any(d.get("pitch_word") for d in pr)
-        assert all(it["kind"] != "pitch_accent" or it["schema_minor"] >= 2 for it in res.coaching(sensitivity="eager"))

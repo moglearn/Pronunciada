@@ -13,7 +13,6 @@ phone_del       a non-nucleus phone is removed                learner INSERTED a
 word_swap       a word's syllables/phones <- another word's   wrong word / misreading      word + differing phones
 tone            one syllable's tone -> another tone           wrong tone                   syllable (tone)
 stress          primary stress moved within a word            misplaced stress             2 syllables (stress)
-pitch           a Japanese word's accent pattern changed      wrong pitch accent           changed morae (pitch)
 
 Every flagged item also flags its word. The result always passes Reference.validate().
 Similarity of phones: panphon articulatory feature distance (bench-only dependency) between
@@ -38,7 +37,7 @@ from pronunciada.text.ipa import is_vowel
 from pronunciada.types import RefPhone, RefSyllable, RefWord, Reference
 
 KINDS = ("phone_sub_near", "phone_sub_far", "phone_del", "phone_ins", "word_swap", "tone",
-         "stress", "pitch")
+         "stress")
 
 
 class NotApplicable(ValueError):
@@ -220,7 +219,7 @@ class _P:
 class _S:
     obj: RefSyllable
     phones: list[_P]
-    flags: set = field(default_factory=set)       # "tone", "stress", "pitch", "phones"
+    flags: set = field(default_factory=set)       # "tone", "stress", "phones"
 
 
 @dataclass
@@ -277,7 +276,7 @@ class Error:
 class Corrupted:
     """ref: corrupted Reference.  Labels are aligned with ref's own indices:
     phone_wrong[i]   phone i of ref is not what the audio contains
-    syllable_flags[j] subset of {"phones", "tone", "stress", "pitch"} wrong in syllable j
+    syllable_flags[j] subset of {"phones", "tone", "stress"} wrong in syllable j
     word_wrong[k]    word k contains any error (incl. phone_del, which flags no phone)
     word_kinds[k]    kinds applied to word k
     errors           one entry per applied error (kind, word, detail)
@@ -457,30 +456,6 @@ def _stress(words, used, rng, inv):
     return wi, {"from_syllable_local": old, "to_syllable_local": new}
 
 
-def _tokyo_patterns(n: int) -> list[tuple[bool, ...]]:
-    pats = []
-    for k in range(n + 1):        # k = accent kernel position (0 = heiban)
-        pats.append(tuple((i == 0) if k == 1 else (i > 0 and (k == 0 or i < k)) for i in range(n)))
-    return sorted(set(pats))
-
-
-def _pitch(words, used, rng, inv):
-    sites = [wi for wi, w in enumerate(words) if wi not in used
-             and all(s.obj.pitch_high is not None for s in w.syls)]
-    if not sites:
-        raise NotApplicable("no word with pitch accent marks")
-    wi = sites[int(rng.integers(len(sites)))]
-    syls = words[wi].syls
-    cur = tuple(bool(s.obj.pitch_high) for s in syls)
-    cands = [p for p in _tokyo_patterns(len(syls)) if p != cur]
-    new = cands[int(rng.integers(len(cands)))]
-    for s, h in zip(syls, new):
-        if bool(s.obj.pitch_high) != h:
-            s.obj.pitch_high = h
-            s.flags.add("pitch")
-    return wi, {"from": "".join("H" if h else "L" for h in cur), "to": "".join("H" if h else "L" for h in new)}
-
-
 def applicable_kinds(ref: Reference) -> list[str]:
     out = ["phone_sub_near", "phone_sub_far", "phone_ins", "word_swap"]
     if any(len(range(*s.phones)) > 1 for s in ref.syllables):
@@ -492,8 +467,6 @@ def applicable_kinds(ref: Reference) -> list[str]:
         if len(syl) >= 2 and any(s.stress == 1 for s in syl):
             out.append("stress")
             break
-    if any(s.pitch_high is not None for s in ref.syllables):
-        out.append("pitch")
     return out
 
 
@@ -521,8 +494,7 @@ def corrupt(ref: Reference, kinds: str | Sequence[str], inventory: Inventory | N
            "phone_ins": lambda: _ins(words, used, rng, inventory),
            "word_swap": lambda: _swap(words, used, rng, inventory),
            "tone": lambda: _tone(words, used, rng, inventory),
-           "stress": lambda: _stress(words, used, rng, inventory),
-           "pitch": lambda: _pitch(words, used, rng, inventory)}
+           "stress": lambda: _stress(words, used, rng, inventory)}
     needs_inv = {"phone_sub_near", "phone_sub_far", "phone_ins", "word_swap"}
     for _ in range(n_errors):
         order = list(kinds)

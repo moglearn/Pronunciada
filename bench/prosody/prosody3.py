@@ -1,9 +1,8 @@
-"""Round 8: the tone-v3z recipe for word stress (en de es it pt ru) and Japanese pitch accent.
+"""Round 8: the tone-v3z recipe for word stress (en de es it pt ru). (A Japanese pitch-accent
+variant was tried in rounds 8 and 13 and removed in round 15; see the round-13 write-up.)
 
     .venv/bin/python -m bench.prosody.prosody3 train stress --name stress_v3 [--steps 6000]
-    .venv/bin/python -m bench.prosody.prosody3 train pitch  --name pitch_ja_v3
     .venv/bin/python -m bench.prosody.prosody3 eval stress stress_multi stress_v3     # dev only
-    .venv/bin/python -m bench.prosody.prosody3 eval pitch pitch_ja_s2 pitch_ja_v3
 
 Inputs per 10 ms frame (as tone_zh_v3z): the 5 pitch / energy features, local-register pitch (2),
 low-frequency log-mel (20), and the syllable's pooled ZIPA enc1+enc3 activations (PCA 32 + flag)
@@ -16,15 +15,11 @@ Counterfactual ("transplant") augmentation in feature space:
           primary-stressed syllable and of another syllable of the word are swapped (each time-
           warped to the other's window); the label moves to the other syllable. Durations, spectra
           and ZIPA activations stay -> segment cues alone no longer predict the label.
-  pitch   for a share of utterances, the pitch frames (lf0, d_lf0) of 1-3 pairs of morae with
-          opposite high/low labels are swapped (time-warped); both labels flip.
 Leak checks (dev, feature space, the same for old and new models):
   stress  swap: the cue swap above on every test word (fixed seed) -> share whose argmax follows
           the cues to the other syllable / stays on the dictionary syllable;
           flatten: pitch + energy of the word's syllables replaced by the word mean -> share still
           on the dictionary syllable (chance = mean 1 / n syllables).
-  pitch   flatten: lf0 := 0 (the utterance mean) everywhere -> share of morae still classified as
-          their label; swap: every opposite-label adjacent pair swapped -> share that flips.
 """
 from __future__ import annotations
 
@@ -50,7 +45,6 @@ MAX_SYL = 8
 BASE = {"reg": False, "lowmel": False, "zemb": False}
 V3 = {"reg": True, "lowmel": True, "zemb": True}
 STRESS_COLS = [0, 2, 3, 4]
-PITCH_COLS = [0, 3]
 _C = {}
 
 
@@ -66,7 +60,7 @@ def pca(task):
 
     p = EMB / f"pca_{task}.npz"
     if not p.exists():
-        langs = STRESS_LANGS if task == "stress" else ("ja",)
+        langs = STRESS_LANGS
         rng = np.random.default_rng(0)
         X = []
         for lg in langs:
@@ -222,78 +216,36 @@ def stress_words(u, lid, cfg, rng=None, aug=False, tp=0.0, mode=None, seed=0):
     return out
 
 
-# ----------------------------------------------------------------------------- pitch data
-
-def pitch_utt(u, cfg, rng=None, aug=False, tp=0.0, mode=None, seed=0):
-    """(X [S, L, C], labels [S] (1 high / 0 low / -1), original labels)."""
-    labs = np.array([-1 if s.pitch_high is None else int(s.pitch_high) for s in u["ref"].syllables])
-    orig = labs.copy()
-    pairs = []
-    if mode == "swap":
-        pairs = [(i, i + 1) for i in range(0, len(labs) - 1, 2) if labs[i] >= 0 and labs[i + 1] >= 0
-                 and labs[i] != labs[i + 1]]
-    elif aug and rng.random() < tp:
-        hi, lo = np.flatnonzero(labs == 1), np.flatnonzero(labs == 0)
-        k = min(int(rng.integers(1, 4)), len(hi), len(lo))
-        if k:
-            pairs = list(zip(rng.choice(hi, k, replace=False), rng.choice(lo, k, replace=False)))
-
-    def edit(feats, wins):
-        if mode == "flatten":
-            feats[:, PITCH_COLS] = 0.0
-        for i, j in pairs:
-            feats = swap_cues(feats, wins, int(i), int(j), PITCH_COLS)
-        return feats
-
-    feats, wins = utt_feats(u, cfg, "pitch", rng, aug, edit if (pairs or mode == "flatten") else None)
-    for i, j in pairs:
-        labs[i], labs[j] = labs[j], labs[i]
-    X = np.stack([context_input(feats, wins, i) for i in range(len(wins))])
-    return X, labs, orig
-
-
 # ----------------------------------------------------------------------------- models
 
 def make_net(task, cfg):
-    from bench.prosody.model import ProsodyNet, SeqToneNet
+    from bench.prosody.model import ProsodyNet
     from torch import nn
 
-    if task == "stress":
-        class StressNet3(nn.Module):
-            def __init__(self):
-                super().__init__()
-                self.net = ProsodyNet(n_in=n_in(cfg), n_out=1, ch=64, hid=48, n_lang=len(STRESS_LANGS),
-                                      n_extra=N_STRESS_EXTRA, stride=2)
+    assert task == "stress"
 
-            def forward(self, x, extra, lang=None):
-                return self.net(x, lang, extra)
+    class StressNet3(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.net = ProsodyNet(n_in=n_in(cfg), n_out=1, ch=64, hid=48, n_lang=len(STRESS_LANGS),
+                                  n_extra=N_STRESS_EXTRA, stride=2)
 
-        return StressNet3()
-    return SeqToneNet(n_in=n_in(cfg), n_out=1)
+        def forward(self, x, extra, lang=None):
+            return self.net(x, lang, extra)
+
+    return StressNet3()
 
 
 def load_train(task, data="natural"):
-    """pitch, round 13: data = natural (FLEURS-ja train) | synth (HTS pairs on FLEURS-ja train
-    texts, bench.prosody.synth_ja) | both."""
-    if task == "pitch" and data != "natural":
-        nat = [(u, 0) for u in load_prepped("fleurs", "ja", "train")]
-        if data == "psola":           # round 13b: natural train speakers re-pitched (no HTS)
-            return nat + [(u, 0) for u in load_prepped("synja_psola", "ja", "train")]
-        syn = [(u, 0) for u in load_prepped("synja_hts", "ja", "train")]
-        return syn if data == "synth" else syn + nat
-    if task == "stress":
-        out = []
-        for k, lg in enumerate(STRESS_LANGS):
-            out += [(u, k) for u in load_prepped("fleurs", lg, "train")]
-        return out
-    return [(u, 0) for u in load_prepped("fleurs", "ja", "train")]
+    out = []
+    for k, lg in enumerate(STRESS_LANGS):
+        out += [(u, k) for u in load_prepped("fleurs", lg, "train")]
+    return out
 
 
 def load_dev(task, lang=None):
-    if task == "stress":
-        langs = [lang] if lang else STRESS_LANGS
-        return [(u, STRESS_LANGS.index(lg)) for lg in langs for u in load_prepped("fleurs_val", lg, "dev")]
-    return [(u, 0) for u in load_prepped("fleurs_val", "ja", "dev")]
+    langs = [lang] if lang else STRESS_LANGS
+    return [(u, STRESS_LANGS.index(lg)) for lg in langs for u in load_prepped("fleurs_val", lg, "dev")]
 
 
 _W = {}
@@ -311,12 +263,7 @@ def _gen(args):
         u, lid = _W["data"][k]
         if not u["ref"].syllables:
             continue
-        if _W["task"] == "stress":
-            out += stress_words(u, lid, _W["cfg"], rng, True, _W["tp"])
-        else:
-            X, y, _ = pitch_utt(u, _W["cfg"], rng, True, _W["tp"])
-            if (y >= 0).any():
-                out.append((X.astype(np.float16), y))
+        out += stress_words(u, lid, _W["cfg"], rng, True, _W["tp"])
     return out
 
 
@@ -336,22 +283,8 @@ def stress_batch(net, items, dev):
     return z
 
 
-def pitch_batch(net, items, dev):
-    import torch
-
-    B = len(items)
-    S = max(len(x) for x, _ in items)
-    X = np.concatenate([x for x, _ in items])
-    index = np.concatenate([b * S + np.arange(len(x)) for b, (x, _) in enumerate(items)])
-    lengths = torch.tensor([len(x) for x, _ in items])
-    z = net(torch.tensor(X, dtype=torch.float32, device=dev), torch.tensor(index, device=dev), lengths, B, S)[:, 0]
-    y = np.concatenate([yy for _, yy in items])
-    return z, y
-
-
 def predict(task, net, data, cfg, mode=None):
-    """Dev predictions. stress: list of (P [n], label, dictionary label, lid, n); pitch: list of
-    (p_high [S], labels, original labels)."""
+    """Dev predictions: list of (P [n], label, dictionary label, lid, n)."""
     import torch
 
     out = []
@@ -360,22 +293,14 @@ def predict(task, net, data, cfg, mode=None):
             if not u["ref"].syllables:
                 continue
             seed = zlib.crc32(u["id"].encode())
-            if task == "stress":
-                ws = stress_words(u, lid, cfg, mode=mode, seed=seed)
-                if not ws:
-                    continue
-                z = stress_batch(net, ws, "cpu").numpy()
-                for it, zz in zip(ws, z):
-                    n = it[2]
-                    p = np.exp(zz[:n] - zz[:n].max())
-                    out.append((p / p.sum(), it[3], it[5], lid, n))
-            else:
-                X, y, orig = pitch_utt(u, cfg, mode=mode, seed=seed)
-                if getattr(net, "_local", False):
-                    z = net(torch.tensor(X, dtype=torch.float32))[:, 0].numpy()
-                else:
-                    z = net.forward_utt(torch.tensor(X, dtype=torch.float32))[:, 0].numpy()
-                out.append((1 / (1 + np.exp(-z)), y, orig))
+            ws = stress_words(u, lid, cfg, mode=mode, seed=seed)
+            if not ws:
+                continue
+            z = stress_batch(net, ws, "cpu").numpy()
+            for it, zz in zip(ws, z):
+                n = it[2]
+                p = np.exp(zz[:n] - zz[:n].max())
+                out.append((p / p.sum(), it[3], it[5], lid, n))
     return out
 
 
@@ -420,14 +345,8 @@ def train(a):
         net.train()
         for b in range(0, len(order) - bs + 1, bs):
             it = [items[i] for i in order[b:b + bs]]
-            if a.task == "stress":
-                z = stress_batch(net, it, dev)
-                loss = torch.nn.functional.cross_entropy(z, torch.tensor([x[3] for x in it], device=dev))
-            else:
-                z, y = pitch_batch(net, it, dev)
-                m = torch.tensor(y >= 0, device=dev)
-                loss = torch.nn.functional.binary_cross_entropy_with_logits(
-                    z[m], torch.tensor(y, dtype=torch.float32, device=dev)[m])
+            z = stress_batch(net, it, dev)
+            loss = torch.nn.functional.cross_entropy(z, torch.tensor([x[3] for x in it], device=dev))
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
@@ -453,21 +372,16 @@ def train(a):
     pool.terminate()
     torch.save({"state": best_state, "task": a.task, "cfg": cfg, "transplant": a.transplant, "steps": a.steps,
                 "data": a.data, "init": a.init,
-                "curve": curve, "best_dev_acc": best, "langs": list(STRESS_LANGS) if a.task == "stress" else ["ja"]},
+                "curve": curve, "best_dev_acc": best, "langs": list(STRESS_LANGS)},
                MODELS_DIR / f"{a.name}.pt")
     print("saved", a.name, best)
 
 
 def dev_acc(task, P):
-    if task == "stress":
-        ok = np.array([p.argmax() == lab for p, lab, *_ in P])
-        lid = np.array([x[3] for x in P])
-        return {"all": float(ok.mean()), **{lg: float(ok[lid == k].mean()) for k, lg in enumerate(STRESS_LANGS)
-                                            if (lid == k).any()}}
-    y = np.concatenate([yy for _, yy, _ in P])
-    p = np.concatenate([pp for pp, _, _ in P])
-    m = y >= 0
-    return {"all": float(((p[m] > 0.5) == (y[m] == 1)).mean())}
+    ok = np.array([p.argmax() == lab for p, lab, *_ in P])
+    lid = np.array([x[3] for x in P])
+    return {"all": float(ok.mean()), **{lg: float(ok[lid == k].mean()) for k, lg in enumerate(STRESS_LANGS)
+                                        if (lid == k).any()}}
 
 
 # ----------------------------------------------------------------------------- evaluation
@@ -481,16 +395,10 @@ def load_any(task, name):
         net = make_net(task, ck["cfg"])
         net.load_state_dict(ck["state"])
         return net.eval(), ck["cfg"]
-    if task == "stress":
-        from bench.prosody.stress_train import StressNet
+    from bench.prosody.stress_train import StressNet
 
-        net = StressNet(**ck["cfg"])
-        net.load_state_dict(ck["state"])
-        return net.eval(), dict(BASE)
-    from bench.prosody.tone_eval import load_model
-
-    net, _ = load_model(name)
-    net._local = True
+    net = StressNet(**ck["cfg"])
+    net.load_state_dict(ck["state"])
     return net.eval(), dict(BASE)
 
 
@@ -500,7 +408,7 @@ def evaluate(task, name):
 
     net, cfg = load_any(task, name)
     out = {"model": name, "task": task, "cfg": cfg}
-    if task == "stress":
+    if True:
         out["platt"], out["dev"] = {}, {}
         for k, lg in enumerate(STRESS_LANGS):
             data = load_dev(task, lg)
@@ -521,32 +429,6 @@ def evaluate(task, name):
                  "chance": float(np.mean([1 / n for *_, n in P])), "n_words": len(P)}
             out["dev"][lg] = r
             print(name, lg, {a: round(b, 4) if isinstance(b, float) else b for a, b in r.items()}, flush=True)
-    else:
-        data = load_dev(task)
-        P = predict(task, net, data, cfg)
-        y = np.concatenate([yy for _, yy, _ in P])
-        p = np.concatenate([pp for pp, _, _ in P])
-        m = y >= 0
-        pe = np.where(y[m] == 1, p[m], 1 - p[m])                 # P(expected high/low)
-        lab = np.r_[np.zeros(m.sum()), np.ones(m.sum())]
-        sc = np.r_[pe, 1 - pe]                                     # flipped label = positives
-        out["platt"] = platt_fit(sc, lab)
-        Pf = predict(task, net, data, cfg, mode="flatten")
-        Ps = predict(task, net, data, cfg, mode="swap")
-        yf = np.concatenate([o for _, _, o in Pf])
-        pf = np.concatenate([pp for pp, _, _ in Pf])
-        ys = np.concatenate([yy for _, yy, _ in Ps])
-        yo = np.concatenate([o for _, _, o in Ps])
-        ps = np.concatenate([pp for pp, _, _ in Ps])
-        sw = (ys != yo) & (yo >= 0)
-        mf = yf >= 0
-        out["dev"] = {"acc": float(((p[m] > 0.5) == (y[m] == 1)).mean()),
-                      "recall_high": float((p[m][y[m] == 1] > 0.5).mean()), "recall_low": float((p[m][y[m] == 0] <= 0.5).mean()),
-                      "flip_auc": M.roc_auc(lab.astype(int), 1 - sc),
-                      "flatten_still_label": float(((pf[mf] > 0.5) == (yf[mf] == 1)).mean()),
-                      "swap_follow": float(((ps[sw] > 0.5) == (ys[sw] == 1)).mean()), "n_swapped": int(sw.sum()),
-                      "n_morae": int(m.sum()), "share_high": float((y[m] == 1).mean())}
-        print(name, {a: round(b, 4) if isinstance(b, float) else b for a, b in out["dev"].items()}, flush=True)
     save_json(out, f"r8_{name}.json")
     return out
 
@@ -557,12 +439,12 @@ if __name__ == "__main__":
     if sys.argv[1] == "train":
         ap = argparse.ArgumentParser()
         ap.add_argument("cmd")
-        ap.add_argument("task", choices=["stress", "pitch"])
+        ap.add_argument("task", choices=["stress"])
         ap.add_argument("--name", required=True)
         ap.add_argument("--base", dest="v3", action="store_false", help="old inputs (ablation)")
         ap.add_argument("--transplant", type=float, default=0.4)
         ap.add_argument("--inputs", default=None, help="comma list of reg,lowmel,zemb (default: all three)")
-        ap.add_argument("--data", default="natural", choices=["natural", "synth", "both", "psola"])
+        ap.add_argument("--data", default="natural", choices=["natural"])
         ap.add_argument("--last", action="store_true", help="keep the final weights (no selection on dev)")
         ap.add_argument("--init", default=None, help="checkpoint to fine-tune from (same inputs)")
         ap.add_argument("--steps", type=int, default=6000)

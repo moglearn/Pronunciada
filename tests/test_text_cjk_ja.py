@@ -25,26 +25,13 @@ JA_SENTS = [
 ]
 
 
-def pitch(ref):
-    return ["H" if s.pitch_high else "L" for s in ref.syllables]
-
-
 @pytest.mark.parametrize("text", JA_SENTS)
 def test_ja_validate(text):
     ref = ja(text)
     ref.validate()
-    assert ref.syllables and all(s.pitch_high is not None for s in ref.syllables)
+    assert ref.syllables
     for w in ref.words:
         assert w.text == text[w.char_span[0]:w.char_span[1]]
-
-
-def test_ja_pitch_accent():
-    assert pitch(ja("箸が")) == ["H", "L", "L"]     # 1: hashi ga
-    assert pitch(ja("橋が")) == ["L", "H", "L"]     # 2
-    assert pitch(ja("端が")) == ["L", "H", "H"]     # 0
-    assert pitch(ja("雨が")) == ["H", "L", "L"]
-    assert pitch(ja("飴が")) == ["L", "H", "H"]
-    assert pitch(ja("日本が")) == ["L", "H", "L", "L"]
 
 
 def test_ja_mora_units():

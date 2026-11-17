@@ -209,10 +209,10 @@ def test_explain_away(fox):
 
 
 @pytest.mark.model
-def test_experimental_channel_off_by_default():
-    """Japanese pitch accent is reported per syllable but only enters word.prob on request."""
-    assert pronunciada.Scorer("ja", threads=2).pros_cal is None
-    assert pronunciada.Scorer("ja", threads=2, experimental=True).pros_cal is not None
+def test_no_prosody_channel_for_japanese():
+    """Japanese pitch accent is not scored (removed in round 15): no prosody model, no channel."""
+    sc = pronunciada.Scorer("ja", threads=2)
+    assert sc.prosody is None and sc.pros_cal is None
 
 
 @pytest.mark.model

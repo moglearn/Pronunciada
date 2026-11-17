@@ -24,7 +24,7 @@ Runtime text packages (installed separately, requirements-text-*.txt)
   num2words (LGPL-2.1+) is optional and only used to read out digits.
 
 Models trained for this project (pronunciada/data/adapters, calib, prosody)
-  Output adapters, stress and pitch models: trained on FLEURS (CC BY 4.0).
+  Output adapters and stress models: trained on FLEURS (CC BY 4.0).
   Calibrators: trained on speechocean762 train (CC BY 4.0).
   Mandarin tone model v2: trained on AISHELL-3 (Apache-2.0), AISHELL-1 (Apache-2.0; 200 of the 300
   speakers were fetched from a community mirror whose card states no licence) and Common Voice

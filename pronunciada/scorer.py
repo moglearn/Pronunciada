@@ -37,7 +37,7 @@ class Scorer:
                  strictness: float = 0.5, threads: int | None = None, *,
                  calib_dir: str | None = None, sound_model: str | None = None,
                  prosody: bool = True, cache_size: int = 4, explain_away: bool | None = None,
-                 experimental: bool = False, delivery: bool | None = None, match: bool = True,
+                 delivery: bool | None = None, match: bool = True,
                  audio_check: bool = True):
         from .acoustic import AcousticModel
         from .adapter import Adapter
@@ -107,8 +107,8 @@ class Scorer:
         _d = _P(calib_dir) if calib_dir else C.data_dir()
         # round 2: the word-accuracy regression is a separate model that also reads the word log-odds
         self.word_reg = C.load_level("word_reg", calib_dir) if (_d / "word_reg.npz").exists() else None
-        # prosody channel (round 3): per-language word-level calibrator of the tone / stress /
-        # pitch evidence, pronunciada/data/calib/prosody/<lang>.json (bench/calib/fit_prosody.py)
+        # prosody channel (round 3): per-language word-level calibrator of the tone / stress
+        # evidence, pronunciada/data/calib/prosody/<lang>.json (bench/calib/fit_prosody.py)
         pp = _d / "prosody" / f"{self.lang}.json"
         from .prosody import default_model, selected_model
 
@@ -116,11 +116,6 @@ class Scorer:
             pm = _d / "prosody" / f"{self.lang}.{selected_model(self.lang)}.json"
             pp = pm if pm.exists() else pp
         self.pros_cal = json.loads(pp.read_text()) if pp.exists() else None
-        # A channel marked experimental (Japanese pitch accent: it costs more on correct speech
-        # than it catches) only enters WordResult.prob with Scorer(..., experimental=True); the
-        # per-syllable pitch_prob is reported either way.
-        if self.pros_cal and self.pros_cal.get("experimental") and not experimental:
-            self.pros_cal = None
         # omission channel (round 4): P(word was said at all), pooled over languages
         # (bench/calib/fit_omission.py); replaces the hard llr_del rule for WordResult.omitted
         # round 7: Mandarin sentence accuracy / prosodic scores recalibrated on OMPAL DEV learners
@@ -291,8 +286,6 @@ class Scorer:
             except Exception as e:  # noqa: BLE001
                 warnings.append(f"prosody failed: {type(e).__name__}: {e}")
             timing["prosody"] = (time.perf_counter() - t) * 1e3
-        if self.pros_cal and self.pros_cal.get("experimental"):
-            warnings.append(f"{self.pros_cal['kind']} scoring is experimental: {self.pros_cal['experimental']}")
         cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav)   # f0 / wav: coaching only
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
         timing["total"] = (time.perf_counter() - t_all) * 1e3
@@ -458,7 +451,7 @@ class Scorer:
             st = min(a for a, _ in spans) if spans else (ph[0].start if ph else 0.0)
             en = max(b for _, b in spans) if spans else st
             syls = []
-            tone_p, stress_p, pitch_p = [], [], []
+            tone_p, stress_p = [], []
             for si in range(*w.syllables):
                 sy = ref.syllables[si]
                 d = pr[si] if si < len(pr) else {}
@@ -467,30 +460,26 @@ class Scorer:
                 syls.append(SyllableResult(
                     sy.text, min(x for x, _ in sp) if sp else st, max(y for _, y in sp) if sp else st,
                     tone_expected=sy.tone, tone_heard=d.get("tone_heard"), tone_prob=d.get("tone_prob"),
-                    stress_expected=sy.stress, stress_prob=d.get("stress_prob"),
-                    pitch_prob=d.get("pitch_prob")))
-                for lst, k in ((tone_p, "tone_prob"), (stress_p, "stress_prob"), (pitch_p, "pitch_prob")):
+                    stress_expected=sy.stress, stress_prob=d.get("stress_prob")))
+                for lst, k in ((tone_p, "tone_prob"), (stress_p, "stress_prob")):
                     if d.get(k) is not None:
                         lst.append(float(d[k]))
             sounds = float(pw[wi])
             # Prosody channel (round 3): P_pros(word) from a word-level calibrator of the lowest /
-            # second-lowest tone / stress / pitch logit over the word's scored syllables
+            # second-lowest tone / stress logit over the word's scored syllables
             # (bench/calib/fit_prosody.py, FLEURS validation); WordResult.prob = sounds x P_pros.
             # Without a fitted channel the raw syllable minimum is reported and prob = sounds.
-            raw = {"tone": tone_p, "stress": stress_p, "pitch": pitch_p}
+            raw = {"tone": tone_p, "stress": stress_p}
             p_pros = None
             if self.pros_cal and raw.get(self.pros_cal["kind"]):
                 p_pros = _pros_prob(self.pros_cal, raw[self.pros_cal["kind"]], s)
             tone = min(tone_p) if tone_p else None
             stress = min(stress_p) if stress_p else None
-            pitch = min(pitch_p) if pitch_p else None
             if p_pros is not None:
                 if self.pros_cal["kind"] == "stress":
                     stress = p_pros
-                elif self.pros_cal["kind"] == "tone":
-                    tone = p_pros
                 else:
-                    pitch = p_pros
+                    tone = p_pros
             prob = sounds * (p_pros if p_pros is not None else 1.0)
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
@@ -498,7 +487,7 @@ class Scorer:
             else:
                 present, om = None, bool(omitted[wi])
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
-                                    stress_prob=stress, tone_prob=tone if tone is not None else pitch,
+                                    stress_prob=stress, tone_prob=tone,
                                     present_prob=present, omitted=om))
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))

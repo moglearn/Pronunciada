@@ -1,5 +1,6 @@
-"""Japanese text front-end: kanji/kana -> readings + Tokyo accent (pyopenjtalk-plus / Open JTalk)
--> moras -> ZIPA-convention phones, with per-mora pitch (pitch_high).
+"""Japanese text front-end: kanji/kana -> readings (pyopenjtalk-plus / Open JTalk) -> moras ->
+ZIPA-convention phones. (Pitch accent is not scored; the full-context labels are read for the
+mora segmentation and devoicing only.)
 
 Unit structure: one RefSyllable per mora, except that ZIPA writes geminates as a doubled
 consonant and long vowels as V+ː, so a っ mora is merged into the following mora ("ッカ" ->
@@ -107,8 +108,6 @@ class JaG2P(G2P):
                 cur_c = ""
             else:
                 cur_c = ph
-        # --- accent class per analyser word (round 13; see RefSyllable.pitch_class)
-        cls = self._accent_classes(njd)
         # --- words
         wl, pause_before, brk = [], [], True
         for x in njd:
@@ -120,7 +119,7 @@ class JaG2P(G2P):
                 brk = True
         total = sum(len(kana_moras(x["pron"])) for x in wl)
         if total != len(lab_moras):
-            warnings.append("accent labels out of sync; pitch omitted for: " + seg.strip())
+            warnings.append("full-context labels out of sync; kana readings used for: " + seg.strip())
             lab_moras = []
         spans = self._spans([x["string"] for x in wl], seg, off)
         # --- build mora records over the whole segment
@@ -132,39 +131,9 @@ class JaG2P(G2P):
             for j, kana in enumerate(km):
                 lm = lab_moras[k] if lab_moras else None
                 k += 1
-                recs.append({"w": wi, "kana": kana, "lab": lm, "read": read, "pos": x["pos"], "cls": cls.get(id(x)),
+                recs.append({"w": wi, "kana": kana, "lab": lm, "read": read, "pos": x["pos"],
                              "first": j == 0, "string": x["string"], "pause": j == 0 and pause_before[wi]})
         return self._build(recs, wl, spans, text)
-
-    @staticmethod
-    def _accent_classes(njd) -> dict:
-        """id(NJD entry) -> "<pos>/<pos_group1>/<head|chain>/c<n content words in the accent
-        phrase>/<h|a|o|n>" (accent type of its phrase: heiban, atamadaka, odaka, nakadaka)."""
-        content = ("名詞", "動詞", "形容詞", "副詞")
-        out, phrase = {}, []
-
-        def flush():
-            if not phrase:
-                return
-            n = sum(x["mora_size"] for x in phrase)
-            acc = phrase[0]["acc"]
-            t = "h" if acc == 0 else "a" if acc == 1 else "o" if acc >= n else "n"
-            nc = sum(x["pos"] in content for x in phrase)
-            for k, x in enumerate(phrase):
-                out[id(x)] = f"{x['pos']}/{x.get('pos_group1', '*')}/{'head' if k == 0 else 'chain'}/c{nc}/{t}"
-
-        for x in njd:
-            if x["mora_size"] <= 0:
-                flush()
-                phrase = []
-                continue
-            if phrase and x["chain_flag"] == 1:
-                phrase.append(x)
-            else:
-                flush()
-                phrase = [x]
-        flush()
-        return out
 
     @staticmethod
     def _spans(strings: list[str], seg: str, off: int) -> list[tuple[int, int]]:
@@ -223,11 +192,6 @@ class JaG2P(G2P):
             lab = r["lab"]
             kana = r["kana"]
             cons, vow = (lab[0], lab[1]) if lab else self._kana_ph(kana)
-            high = None
-            if lab:
-                a1, a2 = lab[2], lab[3]
-                acc = a2 - a1
-                high = (a2 == 1 and acc == 1) or (a2 >= 2 and a2 <= acc)
             nxt = recs[i + 1] if i + 1 < n and not recs[i + 1]["pause"] else None
             nxt_cons = None
             if nxt is not None:
@@ -236,7 +200,7 @@ class JaG2P(G2P):
             # っ: merge into the following mora (doubled consonant) when it has a consonant
             if vow == "cl":
                 if nxt is not None and nxt_cons:
-                    pending_gem = {"kana": kana, "high": high}
+                    pending_gem = {"kana": kana}
                     i += 1
                     continue
                 # word/phrase-final っ (あっ): glottal stop closing the previous mora
@@ -259,8 +223,6 @@ class JaG2P(G2P):
                     if spelled:
                         nuc.alt(spelled, -1.0)           # spelling-pronunciation おう -> [ou], えい -> [ei]
                 last_syl.text += kana
-                if high:
-                    last_syl.attrs["pitch_high"] = True
                 i += 1
                 continue
             phones = self._mora_phones(cons, vow, r, nxt_cons, lab, i, recs)
@@ -273,10 +235,8 @@ class JaG2P(G2P):
                     c0.ipa = self._geminate(single)
                     c0.alts = [(self._geminate(a), p) for a, p in c0.alts if a]
                     c0.alt(single, -1.0)                 # weak / missing gemination
-                if pending_gem["high"]:
-                    high = True
                 pending_gem = None
-            syl = Syl(text=text_m, phones=phones, attrs={"pitch_high": high, "pitch_class": r["cls"]})
+            syl = Syl(text=text_m, phones=phones)
             wd.syls.append(syl)
             last_syl, last_rec = syl, r
             i += 1

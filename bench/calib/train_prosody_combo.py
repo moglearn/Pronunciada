@@ -25,7 +25,7 @@ import numpy as np
 
 from bench.calib.common import save_json, ship_dir
 
-PROS_KIND = {"zh": "tone", "ja": "pitch", "en": "stress", "de": "stress", "es": "stress",
+PROS_KIND = {"zh": "tone", "en": "stress", "de": "stress", "es": "stress",
              "it": "stress", "pt": "stress", "ru": "stress"}
 SOUND_KINDS = ("phone_sub_near", "phone_sub_far", "phone_ins", "phone_del", "word_swap")
 
@@ -55,7 +55,7 @@ def run_lang(args):
 
     sc = Scorer(lang, threads=1)
     sc.combo = None
-    field = {"tone": "tone_prob", "stress": "stress_prob", "pitch": "pitch_prob"}[PROS_KIND[lang]]
+    field = {"tone": "tone_prob", "stress": "stress_prob"}[PROS_KIND[lang]]
     if sc.prosody is None:
         return lang, {"error": f"no prosody model: {sc.prosody_error}"}
     recs = records("fleurs-validation", lang=lang)

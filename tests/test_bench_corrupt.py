@@ -2,7 +2,7 @@ import pytest
 
 pytest.importorskip("panphon")
 
-from bench.corrupt import (KINDS, Inventory, NotApplicable, PhoneDistance, _tokyo_patterns,
+from bench.corrupt import (KINDS, Inventory, NotApplicable, PhoneDistance,
                            applicable_kinds, corrupt)
 from pronunciada.text.ipa import is_vowel
 from pronunciada.types import RefPhone, RefSyllable, RefWord, Reference
@@ -51,8 +51,7 @@ def zh_ref():
 
 
 def ja_ref():
-    return build("ja", [("さくら", [(["s", "a"], 1, {"pitch_high": False}), (["k", "u"], 1, {"pitch_high": True}),
-                                    (["ɾ", "a"], 1, {"pitch_high": True})])])
+    return build("ja", [("さくら", [(["s", "a"], 1, {}), (["k", "u"], 1, {}), (["ɾ", "a"], 1, {})])])
 
 
 @pytest.fixture(scope="module")
@@ -168,19 +167,9 @@ def test_tone():
         corrupt(en_refs()[0], "tone")
 
 
-def test_pitch():
-    assert _tokyo_patterns(3) == sorted({(False, True, True), (True, False, False), (False, True, False)})
-    ref = ja_ref()
-    c = corrupt(ref, "pitch", seed=1)
-    c.ref.validate()
-    pat = tuple(s.pitch_high for s in c.ref.syllables)
-    assert pat != (False, True, True) and pat in _tokyo_patterns(3)
-    assert any("pitch" in f for f in c.syllable_flags)
-
-
 def test_applicable_kinds():
     assert "tone" in applicable_kinds(zh_ref()) and "stress" not in applicable_kinds(zh_ref())
-    assert "pitch" in applicable_kinds(ja_ref())
+    assert not {"tone", "stress"} & set(applicable_kinds(ja_ref()))     # no prosodic kind for Japanese
     assert "stress" in applicable_kinds(en_refs()[0])
 
 

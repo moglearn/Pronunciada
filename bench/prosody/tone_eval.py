@@ -35,7 +35,7 @@ def load_model(name):
 
     ck = torch.load(MODELS_DIR / f"{name}.pt", weights_only=False)
     set_opts(**ck.get("opts", {"extra": "", "target": "syllable"}))
-    n_out = 1 if ck.get("task") == "pitch" else 5
+    n_out = 5
     net = ProsodyNet(n_in=10 + n_extra(), ch=ck["ch"], hid=ck["hid"], n_out=n_out, arch=ck.get("arch", "gru"),
                                       stride=ck.get("stride", 1)) if ck["kind"] == "ctx" else ContourMLP(n_out=n_out)
     net.load_state_dict(ck["state"])
