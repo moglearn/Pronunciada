@@ -1,5 +1,9 @@
 """Round 9: the prompt-match channel — P(the recording is a reading of this prompt at all).
 
+NOT ADOPTED (results/round9_match.md): no coefficients were shipped, so this module was moved out
+of the runtime package (formerly pronunciada/match.py) and lives here for bench/calib/fit_match.py
+only. The text below describes the design as it was tried.
+
 The sentence acceptance heads were trained on speechocean762 only, where every speaker reads
 the right sentence, so they barely react when the audio is not the prompt (another sentence,
 silence, a truncated take). P_match is a small monotone logistic model on recogniser-side
@@ -28,8 +32,8 @@ def evidence(lpa, ref, ev, tab) -> dict:
     """Greedy decode vs reference edit rates (the round-5 disfluency definition of
     pronunciada.delivery), share of sounds with strong evidence against them, and how many
     recognised tokens there are per reference token."""
-    from .delivery import edit_ops
-    from .text.ipa import to_ids
+    from pronunciada.delivery import edit_ops
+    from pronunciada.text.ipa import to_ids
 
     lpa = np.asarray(lpa)
     T = len(lpa)

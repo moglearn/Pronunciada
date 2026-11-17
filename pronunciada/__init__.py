@@ -11,9 +11,18 @@ from .types import (PhoneResult, Reference, SentenceResult, SyllableResult,  # n
                     WordResult)
 
 
+def score(audio, text, lang: str = "en", strictness: float = 0.5, **kw) -> SentenceResult:
+    """One call: score `audio` (path | bytes | (array, rate) | 16 kHz array) against `text`.
+    A Scorer is built once per (language, options) and reused; `kw` goes to Scorer()."""
+    from .scorer import score as _score
+    from .text import normalize_lang
+
+    return _score(audio, text, normalize_lang(lang), strictness=strictness, **kw)
+
+
 def __getattr__(name):
     # lazy: importing pronunciada stays cheap (no onnxruntime / model load until a Scorer is built)
-    if name in ("Scorer", "score"):
+    if name == "Scorer":
         from . import scorer
 
         return getattr(scorer, name)

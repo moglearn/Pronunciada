@@ -1,0 +1,677 @@
+{
+ "meta": {
+  "lang": "en",
+  "text": "The ball is in their court now",
+  "source": "speechocean762 (CC BY 4.0), test split",
+  "speaker": "adult learner of English",
+  "experts": {
+   "sentence": {
+    "accuracy": 4,
+    "fluency": 7,
+    "prosodic": 6,
+    "completeness": 10.0,
+    "total": 4
+   },
+   "marked": [
+    {
+     "word": "BALL",
+     "said": "EH",
+     "expected": "AO"
+    },
+    {
+     "word": "COURT",
+     "said": "<unk>",
+     "expected": "AO"
+    }
+   ]
+  }
+ },
+ "result": {
+  "lang": "en",
+  "text": "THE BALL IS IN THEIR COURT NOW",
+  "prob": 0.5496,
+  "strictness": 0.5,
+  "words": [
+   {
+    "text": "THE",
+    "prob": 0.9325,
+    "start": 0.59,
+    "end": 0.67,
+    "phones": [
+     {
+      "ipa": "ð",
+      "prob": 0.9555,
+      "start": 0.59,
+      "end": 0.61,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ə",
+      "prob": 0.8167,
+      "start": 0.65,
+      "end": 0.67,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.59,
+      "end": 0.67,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9515,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.98,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "BALL",
+    "prob": 0.2976,
+    "start": 0.83,
+    "end": 1.15,
+    "phones": [
+     {
+      "ipa": "b",
+      "prob": 0.8461,
+      "start": 0.83,
+      "end": 0.85,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɔ",
+      "prob": 0.3756,
+      "start": 1.03,
+      "end": 1.05,
+      "heard": "ɑ",
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "l̴",
+      "prob": 0.3221,
+      "start": 1.13,
+      "end": 1.15,
+      "heard": "",
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.83,
+      "end": 1.15,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.3466,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.8586,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "IS",
+    "prob": 0.9406,
+    "start": 1.29,
+    "end": 1.43,
+    "phones": [
+     {
+      "ipa": "ɪ",
+      "prob": 0.9266,
+      "start": 1.29,
+      "end": 1.31,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "z",
+      "prob": 0.9153,
+      "start": 1.41,
+      "end": 1.43,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.29,
+      "end": 1.43,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9515,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9885,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "IN",
+    "prob": 0.9713,
+    "start": 1.63,
+    "end": 1.75,
+    "phones": [
+     {
+      "ipa": "ɪ",
+      "prob": 0.9429,
+      "start": 1.63,
+      "end": 1.65,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "n",
+      "prob": 0.973,
+      "start": 1.73,
+      "end": 1.75,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.63,
+      "end": 1.75,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9725,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9988,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "THEIR",
+    "prob": 0.9234,
+    "start": 1.93,
+    "end": 2.29,
+    "phones": [
+     {
+      "ipa": "ð",
+      "prob": 0.9418,
+      "start": 1.93,
+      "end": 1.95,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɛ",
+      "prob": 0.8979,
+      "start": 1.99,
+      "end": 2.01,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɹ",
+      "prob": 0.9493,
+      "start": 2.27,
+      "end": 2.29,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.93,
+      "end": 2.29,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9457,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9765,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "COURT",
+    "prob": 0.2231,
+    "start": 2.41,
+    "end": 2.73,
+    "phones": [
+     {
+      "ipa": "k",
+      "prob": 0.9628,
+      "start": 2.41,
+      "end": 2.43,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɔ",
+      "prob": 0.6413,
+      "start": 2.57,
+      "end": 2.59,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɹ",
+      "prob": 0.3496,
+      "start": 2.63,
+      "end": 2.65,
+      "heard": "ŋ",
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "t",
+      "prob": 0.3567,
+      "start": 2.71,
+      "end": 2.73,
+      "heard": "t",
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 2.41,
+      "end": 2.73,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.2253,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9902,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "NOW",
+    "prob": 0.4361,
+    "start": 2.89,
+    "end": 3.11,
+    "phones": [
+     {
+      "ipa": "n",
+      "prob": 0.2872,
+      "start": 2.89,
+      "end": 2.91,
+      "heard": "l",
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "aʊ",
+      "prob": 0.7156,
+      "start": 2.95,
+      "end": 3.11,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 2.89,
+      "end": 3.11,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.4364,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9994,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   }
+  ],
+  "fluency": 0.6883,
+  "completeness": 1.0,
+  "timing_ms": {
+   "g2p": 0.223,
+   "load": 1.717,
+   "audio_check": 0.508,
+   "fbank": 4.685,
+   "model": 48.003,
+   "adapter": 0.25,
+   "align": 4.907,
+   "delivery": 5.252,
+   "calibrate": 3.566,
+   "prosody": 1.061,
+   "total": 71.683
+  },
+  "warnings": [],
+  "scores": {
+   "accuracy": 0.6365,
+   "fluency": 0.6883,
+   "prosodic": 0.6546,
+   "total": 0.5805
+  },
+  "audio": {
+   "schema_version": 1,
+   "duration_s": 3.7,
+   "clipped_share": 0.0,
+   "peak_dbfs": -6.2402,
+   "noise_db": -71.653,
+   "speech_db": -22.0215,
+   "snr_db": 56.0207,
+   "speech_s": 2.64,
+   "speech_share": 0.7135,
+   "lead_sil_s": 0.56,
+   "trail_sil_s": 0.5,
+   "expected_s": 1.344,
+   "speech_ratio": 1.9643,
+   "issues": [],
+   "retry_recommended": false
+  },
+  "coaching": [
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "substitution",
+    "word": "NOW",
+    "word_index": 6,
+    "syllable_index": 0,
+    "phone_index": 0,
+    "position": "initial",
+    "expected": "n",
+    "heard": null,
+    "expected_ipa": "n",
+    "heard_ipa": null,
+    "diff_keys": [
+     "lateral"
+    ],
+    "error_prob": 0.9252,
+    "prob": 0.2872,
+    "confidence": 0.868,
+    "start": 2.89,
+    "end": 2.91,
+    "features": [
+     {
+      "feature": "lateral",
+      "key": "lateral",
+      "expected": "no",
+      "heard": "yes",
+      "p": 0.9981
+     }
+    ]
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "substitution",
+    "word": "COURT",
+    "word_index": 5,
+    "syllable_index": 0,
+    "phone_index": 2,
+    "position": "medial",
+    "expected": "ɹ",
+    "heard": "ŋ",
+    "expected_ipa": "ɹ",
+    "heard_ipa": "ŋ",
+    "diff_keys": [
+     "place",
+     "manner"
+    ],
+    "error_prob": 0.8091,
+    "prob": 0.3496,
+    "confidence": 0.818,
+    "start": 2.63,
+    "end": 2.65,
+    "features": []
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "mispronounced_word",
+    "word": "NOW",
+    "word_index": 6,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "NOW",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.9252,
+    "prob": 0.4361,
+    "confidence": null,
+    "start": 2.89,
+    "end": 3.11,
+    "n_sounds_flagged": 1,
+    "features": []
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "mispronounced_word",
+    "word": "COURT",
+    "word_index": 5,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "COURT",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.8091,
+    "prob": 0.2231,
+    "confidence": null,
+    "start": 2.41,
+    "end": 2.73,
+    "n_sounds_flagged": 3,
+    "features": []
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "substitution",
+    "word": "BALL",
+    "word_index": 1,
+    "syllable_index": 0,
+    "phone_index": 2,
+    "position": "final",
+    "expected": "l̴",
+    "heard": null,
+    "expected_ipa": "l̴",
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.7922,
+    "prob": 0.3221,
+    "confidence": null,
+    "start": 1.13,
+    "end": 1.15,
+    "features": []
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "mispronounced_word",
+    "word": "BALL",
+    "word_index": 1,
+    "syllable_index": null,
+    "phone_index": null,
+    "position": null,
+    "expected": "BALL",
+    "heard": null,
+    "expected_ipa": null,
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.7922,
+    "prob": 0.2976,
+    "confidence": null,
+    "start": 0.83,
+    "end": 1.15,
+    "n_sounds_flagged": 2,
+    "features": []
+   }
+  ],
+  "tips": [
+   {
+    "tip_key": "feature.lateral.remove",
+    "text": "Don't let the air flow around the sides of the tongue for /n/ in “NOW”; it sounded like an l.",
+    "params": {
+     "expected": "n",
+     "word": "NOW",
+     "feature": "lateral",
+     "heard_class": "yes"
+    },
+    "item": {
+     "schema_version": 2,
+     "schema_minor": 6,
+     "kind": "substitution",
+     "word": "NOW",
+     "word_index": 6,
+     "syllable_index": 0,
+     "phone_index": 0,
+     "position": "initial",
+     "expected": "n",
+     "heard": null,
+     "expected_ipa": "n",
+     "heard_ipa": null,
+     "diff_keys": [
+      "lateral"
+     ],
+     "error_prob": 0.9252,
+     "prob": 0.2872,
+     "confidence": 0.868,
+     "start": 2.89,
+     "end": 2.91,
+     "features": [
+      {
+       "feature": "lateral",
+       "key": "lateral",
+       "expected": "no",
+       "heard": "yes",
+       "p": 0.9981
+      }
+     ]
+    }
+   },
+   {
+    "tip_key": "manner.oral",
+    "text": "Keep the air out of your nose for /ɹ/ in “COURT”; it sounded like /ŋ/.",
+    "params": {
+     "word": "COURT",
+     "expected": "ɹ",
+     "heard": "ŋ"
+    },
+    "item": {
+     "schema_version": 2,
+     "schema_minor": 6,
+     "kind": "substitution",
+     "word": "COURT",
+     "word_index": 5,
+     "syllable_index": 0,
+     "phone_index": 2,
+     "position": "medial",
+     "expected": "ɹ",
+     "heard": "ŋ",
+     "expected_ipa": "ɹ",
+     "heard_ipa": "ŋ",
+     "diff_keys": [
+      "place",
+      "manner"
+     ],
+     "error_prob": 0.8091,
+     "prob": 0.3496,
+     "confidence": 0.818,
+     "start": 2.63,
+     "end": 2.65,
+     "features": []
+    }
+   },
+   {
+    "tip_key": "sound.unclear",
+    "text": "Listen to /l̴/ in “BALL” and try it again; it did not sound quite right.",
+    "params": {
+     "word": "BALL",
+     "expected": "l̴",
+     "heard": null
+    },
+    "item": {
+     "schema_version": 2,
+     "schema_minor": 6,
+     "kind": "substitution",
+     "word": "BALL",
+     "word_index": 1,
+     "syllable_index": 0,
+     "phone_index": 2,
+     "position": "final",
+     "expected": "l̴",
+     "heard": null,
+     "expected_ipa": "l̴",
+     "heard_ipa": null,
+     "diff_keys": [],
+     "error_prob": 0.7922,
+     "prob": 0.3221,
+     "confidence": null,
+     "start": 1.13,
+     "end": 1.15,
+     "features": []
+    }
+   }
+  ]
+ }
+}

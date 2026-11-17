@@ -1,0 +1,34 @@
+Licences of the files in this folder (pronunciada/data/lex)
+==========================================================
+
+The Apache License 2.0 of the Pronunciada code does NOT apply to the files marked CC BY-SA
+below. Each file keeps the licence of the source it was derived from. Provenance and build
+commands: SOURCES-eu.txt (this folder) and docs/text_eu_notes.md.
+
+file                     source                                            licence
+-----------------------  ------------------------------------------------  ------------------------
+en.tsv.gz, en_lts.tsv.gz CMUdict, (C) 1993-2015 Carnegie Mellon University BSD-2-Clause-style
+de.tsv.gz, de_lts.tsv.gz ipa-dict "de" (open-dict-data/ipa-dict)           MIT
+fr.tsv.gz, fr_lts.tsv.gz ipa-dict "fr_FR"                                  MIT
+es_words.txt.gz          ipa-dict "es_MX" word list                        MIT
+it.tsv.gz, it_lts.tsv.gz WikiPron "ita_latn_broad" (English Wiktionary)    CC BY-SA 4.0 (*)
+pt.tsv.gz                WikiPron "por_latn_bz_broad" (Wiktionary)         CC BY-SA 4.0 (*)
+ru.tsv.gz                WikiPron "rus_cyrl_narrow" (Wiktionary)           CC BY-SA 4.0 (*)
+ru_stress.tsv.gz         suffix stress table learned from ru.tsv.gz        CC BY-SA 4.0 (*)
+                         (an adaptation of the WikiPron data)
+ru_stress_extra.tsv.gz   stress marks for 14 040 word forms, predicted     Apache-2.0 (project);
+                         offline by silero-stress 1.5 (MIT) on FLEURS-ru   inputs: FLEURS text CC BY 4.0,
+                         train/validation and Common Voice ru sentence     Common Voice text CC0
+                         text (bench/calib/ru_stress_lex.py)
+ru_vowels.json           Russian vowel-reduction targets measured on       Apache-2.0 (project);
+                         native FLEURS-ru audio with the acoustic model    data: FLEURS CC BY 4.0
+
+(*) Share-alike. Attribution: "Wiktionary contributors" (https://en.wiktionary.org), extracted
+with WikiPron (Lee et al., LREC 2020, https://github.com/CUNY-CL/wikipron). Wiktionary text is
+available under CC BY-SA 4.0 (older revisions CC BY-SA 3.0); licence text:
+https://creativecommons.org/licenses/by-sa/4.0/legalcode. If you redistribute these files, or
+adaptations of them, you must keep this licence and the attribution. Using them unmodified as
+data read by the Apache-2.0 code does not change the licence of the code.
+
+What the front-ends would fall back to without the share-alike files (and that the scores would
+change) is described in docs/text_eu_notes.md; see docs/LICENSING.md for packaging options.

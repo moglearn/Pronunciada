@@ -3,8 +3,13 @@
     python -m bench.audit.contrast_audit run [--lang all] [--clips 250] [--workers 2]
     python -m bench.audit.contrast_audit asp --lang zh,ko   # revised aspiration measures (natives)
     python -m bench.audit.contrast_audit report      # -> results/tables/contrast_audit.json
+    python -m bench.audit.contrast_audit run --split test [--lang all]   # held-out rows, FLEURS TEST
+    python -m bench.audit.contrast_audit report --split test   # -> results/tables/contrast_audit_test.json
 
-FLEURS VALIDATION only, native audio, ten languages. For every contrast of
+FLEURS VALIDATION (default; all selection used it), native audio, ten languages. `--split test`
+runs the identical protocol once on FLEURS TEST (250 clips: numpy default_rng(0) over the test
+records sorted by id, the clip choice of bench/calib/contrast_fix.collect_test) as a held-out
+benchmark; its cache is $PRONUNCIADA_CACHE/audit/contrast_v1_test/ and nothing is fitted on it. For every contrast of
 bench/audit/contrasts.py, eligible positions of each clip's reference are collected, a fixed-seed
 sample is drawn (TARGET edits per (language, contrast), split over the two directions, at most
 PER_CLIP per clip and direction), the reference is edited at that one position (the native audio
@@ -40,13 +45,14 @@ TARGET = 240          # edited items per (language, contrast)
 PER_CLIP = 2          # at most per (clip, contrast, direction)
 CHUNK = 25
 VERSION = "contrast_v1"
+SPLIT = "validation"  # or "test" (held-out rows; set by run_lang / main)
 HF_LO, HF_HI = 2500.0, 8000.0
 
 
 def cache_dir(lang: str) -> Path:
     from bench.data.common import cache_root
 
-    p = cache_root() / "audit" / VERSION / lang
+    p = cache_root() / "audit" / (VERSION if SPLIT == "validation" else f"{VERSION}_{SPLIT}") / lang
     p.mkdir(parents=True, exist_ok=True)
     return p
 
@@ -54,7 +60,12 @@ def cache_dir(lang: str) -> Path:
 def choose(lang: str, n: int) -> list[dict]:
     from bench.pipeline.common import records
 
-    recs = records("fleurs-validation", lang=lang)
+    if SPLIT == "test":
+        from bench.data import load as load_ds
+
+        recs = sorted(load_ds("fleurs", split="test", lang=lang), key=lambda r: r["id"])
+    else:
+        recs = records("fleurs-validation", lang=lang)
     rng = np.random.default_rng(0)
     return [recs[i] for i in sorted(rng.choice(len(recs), min(n, len(recs)), replace=False))]
 
@@ -275,13 +286,30 @@ def edited_row(res, e, nat: dict) -> dict:
     return row
 
 
-def run_lang(lang: str, n_clips: int, threads: int = 2) -> None:
+def _clip_audio(chunk: list[dict]):
+    """(record, 16 kHz waveform) for a chunk: validation clips live in parquet files, test clips in
+    audio files."""
+    if SPLIT == "test":
+        from pronunciada.audio import load_audio
+
+        for rec in chunk:
+            yield rec, load_audio(rec["audio"])
+        return
+    from bench.pipeline.common import iter_parquet_audio
+
+    by = {int(r["audio"].split(":")[2]): r for r in chunk}
+    for i, wav in iter_parquet_audio(chunk[0]["audio"].split(":")[1], set(by)):
+        yield by[i], wav
+
+
+def run_lang(lang: str, n_clips: int, threads: int = 2, split: str = "validation") -> None:
+    global SPLIT
+    SPLIT = split
     for v in ("OMP_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS"):
         os.environ[v] = str(threads)
     import warnings
 
     warnings.simplefilter("ignore")
-    from bench.pipeline.common import iter_parquet_audio
     from pronunciada.scorer import Scorer
     from pronunciada.text import get_g2p
 
@@ -304,11 +332,8 @@ def run_lang(lang: str, n_clips: int, threads: int = 2) -> None:
         if sc is None:
             sc = Scorer(lang, threads=threads)
         chunk = recs[k0:k0 + CHUNK]
-        by = {int(r["audio"].split(":")[2]): r for r in chunk}
-        path = chunk[0]["audio"].split(":")[1]
         rows = {"clips": [], "edits": [], "asp": []}
-        for i, wav in iter_parquet_audio(path, set(by)):
-            rec = by[i]
+        for rec, wav in _clip_audio(chunk):
             try:
                 ref = g2p(rec["text"])
                 res = sc.score((wav, 16000), ref)
@@ -736,10 +761,17 @@ def main():
     ap.add_argument("--clips", type=int, default=250)
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--threads", type=int, default=2)
-    ap.add_argument("--out", default="results/tables/contrast_audit.json")
+    ap.add_argument("--out", default=None, help="default results/tables/contrast_audit[_test].json")
+    ap.add_argument("--split", default="validation", choices=("validation", "test"))
     a = ap.parse_args()
+    global SPLIT
+    SPLIT = a.split
+    a.out = a.out or ("results/tables/contrast_audit.json" if a.split == "validation"
+                      else f"results/tables/contrast_audit_{a.split}.json")
     langs = list(LANGS) if a.lang == "all" else a.lang.split(",")
     if a.cmd == "asp":
+        if a.split != "validation":
+            raise SystemExit("asp: validation only")
         for lg in langs:
             run_asp(lg, a.clips, a.threads)
         return
@@ -747,18 +779,19 @@ def main():
         workers = min(a.workers, 2, len(langs))          # hard limit: 2 processes
         if workers <= 1:
             for lg in langs:
-                run_lang(lg, a.clips, a.threads)
+                run_lang(lg, a.clips, a.threads, a.split)
         else:
             from concurrent.futures import ProcessPoolExecutor
 
             with ProcessPoolExecutor(workers) as ex:
-                for lg in ex.map(_job, [(lg, a.clips, a.threads) for lg in langs]):
+                for lg in ex.map(_job, [(lg, a.clips, a.threads, a.split) for lg in langs]):
                     print("done", lg, flush=True)
         return
     import warnings
 
     warnings.simplefilter("ignore")
-    out = {"protocol": {"data": "FLEURS validation (dev), native audio", "target_per_contrast": TARGET,
+    out = {"protocol": {"data": "FLEURS validation (dev), native audio" if a.split == "validation" else
+                        "FLEURS TEST (held-out, run once), native audio", "target_per_contrast": TARGET,
                         "per_clip_direction_cap": PER_CLIP, "clips_per_language": a.clips,
                         "scorer": "pronunciada.Scorer(lang) defaults", "seeds": "numpy default_rng(0) clip "
                         "choice; crc32(lang/contrast) site sampling"},

@@ -1,0 +1,20 @@
+name: Scoring quality
+description: A sound, word or sentence that is scored too harshly or too leniently
+labels: [scoring]
+body:
+  - type: input
+    id: lang
+    attributes: {label: Language}
+    validations: {required: true}
+  - type: textarea
+    id: case
+    attributes:
+      label: The case
+      description: Expected text, what the speaker actually said (native or learner, and their first language if known), and what Pronunciada reported. One reproducible example is useful; several of the same kind are better.
+    validations: {required: true}
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Direction
+      options: ["Correct speech was marked down", "A mistake was not caught", "The coaching tip was wrong", "Other"]
+    validations: {required: true}

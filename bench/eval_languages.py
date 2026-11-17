@@ -316,7 +316,12 @@ def swap_tables(outs) -> tuple[str, dict]:
     for lang in ours:
         o, a_ = ours[lang], az.get(lang, {"metrics": {}})
         L.append(f"| {lang} | {g(o, 'native:fa<60')} | {g(a_, 'native:fa<60')} | {g(o, 'native:fa<80')} | {g(a_, 'native:fa<80')} |")
-    return "\n".join(L) + "\n", {"ours": ours, "ours_no_explain": ours_off, "azure": az}
+    from bench.eval_swap import paired
+
+    az_out = azure_outputs(recs)
+    pr = paired(recs, {k: v["on"] for k, v in outs.items()}, az_out)   # ours minus Azure, same items
+    return "\n".join(L) + "\n", {"ours": ours, "ours_no_explain": ours_off, "azure": az,
+                                  "paired_ours_minus_azure": pr}
 
 
 # ----------------------------------------------------------------------------- report

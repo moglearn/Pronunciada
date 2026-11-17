@@ -160,9 +160,6 @@ class SentenceResult:
     # regression-style 0-1 sentence scores (accuracy, fluency, prosodic, total = the
     # speechocean762 0-10 scales / 10); empty when the scorer does not provide them
     scores: dict = field(default_factory=dict)
-    # round 9: P(the recording is a reading of this prompt at all); already multiplied into
-    # prob. None when the channel is not shipped / disabled
-    match_prob: float | None = None
     # audio-quality gate (pronunciada.quality.check): measured values, "issues" and
     # "retry_recommended"; scores are returned either way. None when the check is disabled
     audio: dict | None = None
@@ -172,3 +169,33 @@ class SentenceResult:
         from .coach import coaching
 
         return coaching(self, max_items=max_items, **gate)
+
+    def to_dict(self) -> dict:
+        """Plain JSON-serialisable dict of every field (same as dataclasses.asdict)."""
+        from dataclasses import asdict
+
+        return asdict(self)
+
+    def to_json(self, **kw) -> str:
+        """JSON text of to_dict(); keyword arguments go to json.dumps (default ensure_ascii=False)."""
+        import json
+
+        kw.setdefault("ensure_ascii", False)
+        return json.dumps(self.to_dict(), **kw)
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "SentenceResult":
+        """Rebuild a result from to_dict() output (for display / conversion; it carries no cached
+        model evidence, so rescore() and coaching() need the original result). Unknown keys
+        (e.g. "coaching") are ignored."""
+        def make(klass, x):
+            names = {f.name for f in klass.__dataclass_fields__.values()}
+            return klass(**{k: v for k, v in x.items() if k in names})
+
+        words = []
+        for w in d.get("words") or []:
+            w = dict(w)
+            w["phones"] = [make(PhoneResult, p) for p in w.get("phones") or []]
+            w["syllables"] = [make(SyllableResult, s) for s in w.get("syllables") or []]
+            words.append(make(WordResult, w))
+        return make(cls, {**d, "words": words})

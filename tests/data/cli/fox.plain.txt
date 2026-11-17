@@ -1,0 +1,8 @@
+✓ Good  sentence 99% · accuracy 8.9/10 · fluency 9.3/10   en · strictness 0.5
+
+  The quick brown fox jumps over the lazy dog
+  ~~~
+
+  The  59%  [ð 87%]  [ə 80%]
+
+  → Listen to /ə/ in “The” and try it again; it did not sound quite right.

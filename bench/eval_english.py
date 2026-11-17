@@ -405,6 +405,14 @@ def eval_errdet(api_by_ds):
         for m in names:
             res["all"][f"ours_{m}"] = det_block(y, [r[f"ours_{m}"] for r in rows], spk, thr.get(m))
         res["all"]["azure"] = det_block(y, [r["azure"] for r in rows], spk)
+        # paired speaker bootstrap of the AUC, shipped model (B) vs Azure, same items and resamples
+        from bench.metrics import paired_bootstrap, roc_auc
+
+        pb = paired_bootstrap(roc_auc, y, np.array([r["ours_B"] for r in rows], float),
+                              np.array([r["azure"] for r in rows], float), clusters=spk, n_boot=N_BOOT)
+        res["all"]["ours_B"]["minus_azure"] = {
+            "delta": pb["delta"], "lo": pb["lo"], "hi": pb["hi"], "p_value_one_sided": pb["p_value"],
+            "p_value_two_sided": min(1.0, 2 * min(pb["p_value"], 1 - pb["p_value"] + 1 / (N_BOOT + 1)))}
         for et in ("sub", "del"):
             msk = np.array([r["label"] in ("correct", et) for r in rows])
             res["by_type"][et] = {k: det_block(y[msk], np.array([r[k] for r in rows])[msk], spk[msk])

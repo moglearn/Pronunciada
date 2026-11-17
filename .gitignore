@@ -6,3 +6,5 @@ __pycache__/
 results/cache/
 .ruff_cache/
 .DS_Store
+.claude/
+LAUNCH_CHECKLIST.md

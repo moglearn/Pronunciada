@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Pronunciada: on-device multilingual pronunciation scoring"
+message: "If you use this software, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: Sun
+    given-names: Bill
+    affiliation: Moglearn
+repository-code: "https://github.com/moglearn/pronunciada"
+license: Apache-2.0
+version: 1.0.0
+keywords:
+  - pronunciation assessment
+  - computer-assisted language learning
+  - speech
+  - on-device

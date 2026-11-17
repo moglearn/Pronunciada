@@ -1,0 +1,176 @@
+[
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "individual sounds",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "words",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "sentence accuracy",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "sentence fluency",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "sentence prosodic (intonation)",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "speechocean762",
+  "lang": "en",
+  "measure": "sentence total",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "coaching",
+  "lang": "en",
+  "measure": "precision at 'careful' recall",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "coaching",
+  "lang": "en",
+  "measure": "precision at 'balanced' recall",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "coaching",
+  "lang": "en",
+  "measure": "precision at 'eager' recall",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "coaching",
+  "lang": "en",
+  "measure": "precision-recall AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "word: any error",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "word: tone-only error",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "word: consonant / vowel error",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "sentence accuracy",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "sentence fluency",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "OMPAL",
+  "lang": "zh",
+  "measure": "sentence prosody",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "en",
+  "measure": "en/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test B",
+  "lang": "en",
+  "measure": "en/B",
+  "cat": "behind (significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "zh-CN",
+  "measure": "zh-CN/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "zh-TW",
+  "measure": "zh-TW/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "ja",
+  "measure": "ja/A",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "es",
+  "measure": "es/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "fr",
+  "measure": "fr/A",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "de",
+  "measure": "de/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test B",
+  "lang": "de",
+  "measure": "de/B",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "it",
+  "measure": "it/A",
+  "cat": "ahead (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "pt",
+  "measure": "pt/A",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "ru",
+  "measure": "ru/A",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "cv-real test A",
+  "lang": "ko",
+  "measure": "ko/A",
+  "cat": "behind (not significant)"
+ }
+]

@@ -165,57 +165,60 @@ numbers and say so. Controlled errors are a proxy for real learner errors and ar
 - Large data and model files go under `~/.cache/pronunciada/` (override with `PRONUNCIADA_CACHE`), never in the repo.
 - Tests under `tests/`, runnable offline except those marked `@pytest.mark.network`.
 
-## 7. What shipped, where it differs from the plan above
+## 7. What ships (round 18), where it differs from the plan above
 
-Sections 1–6 are the plan the code was built against. Measurements changed four things:
+Sections 1–6 are the plan the code was built against. What a `Scorer(lang).score(audio, text)`
+call actually does today:
 
-- **Per-language output adapter (`adapter.py`), added.** A tiny correction on top of the frozen
-  model's frame scores (`lp' = log_softmax(lp + f(lp))`, linear or small convolution, trained with
-  CTC on native FLEURS train, run in numpy). It closes most of the gap between the model's habits
-  and each language's dictionary conventions and raised controlled-error detection in every
-  language (e.g. Japanese 0.956 → 0.986, German 0.946 → 0.987).
-- **Learned native variants (§3), off.** With the adapter in place they made detection slightly
-  worse, so only the rule-based alternatives from the text front-ends are used. The per-sound
-  native statistics are still shipped and used as features.
-- **Calibration (§4) uses small boosted trees**, exported to `.npz` and walked in numpy (no
-  sklearn at runtime). Trained on speechocean762 train only; a wider training mix did not win
-  leave-one-corpus-out. English uses sound identity as a feature, the other languages a
-  universal model plus a per-language bias.
-- **The word probability is a product of three separately calibrated channels:**
+- **Per-language output adapter** (`adapter.py`, `data/adapters/`): a small correction on the
+  frozen model's frame scores (`lp' = log_softmax(lp + f(lp))`), trained with CTC on FLEURS train.
+- **Native variants (§3): off.** Only the front-ends' rule-based alternatives are used; the
+  per-sound native statistics (`data/native/`) are features.
+- **Sound probability**: boosted trees walked in numpy (`calibrate.py`). English: `sound_B`
+  (evidence + sound identity); the reported 0–2 score and the coaching inputs come from
+  `sound_E` (adds pooled ZIPA activations). Other languages: universal `sound_U` + a
+  per-language bias. The *shown* sound log-odds are then capped by contrast evidence: per-contrast
+  caps on the evidence (`data/calib/contrast_caps.json`: zh, en, ru, ja, de) and attribute-head
+  caps (`contrast_heads.py`: ko aspiration and lax / tense, ru soft / hard, zh aspiration).
+- **Word probability** = `sounds_prob × P_prosody × present_prob` × (ja) length factor ×
+  (zh, ja) contrast factor:
+  - `sounds_prob`: the word model of §4 (`data/calib/word.npz`; see docs/LICENSING.md §3 about its
+    training data); it reads the uncapped sound outputs.
+  - `P_prosody`: tone (zh) or stress (en de es it pt ru) through a word-level calibrator whose
+    leniency costs at most one point of native word acceptance on FLEURS validation.
+  - `present_prob`: the word was said at all (`data/calib/omission.json`).
+  - length factor (`length.py`, `data/length/ja.json`): Japanese long / short vowels and っ,
+    from alignment timing plus the length head.
+  - contrast factor (`contrast_word.py`): lowers a word whose lowest contrast evidence is below a
+    native quantile; adopted for zh (aspiration) and ja (voicing) only.
+- **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
+- **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
+  probability. en and pt use the round-5 heads with delivery inputs (`delivery.py`); the others
+  keep the round-4 heads (config `sentence_model`). Mandarin accuracy / prosodic are recalibrated
+  on OMPAL dev (`data/calib/sentence_zh_recal.json`).
+- **Tones and stress** (`prosody/`): the default tone model `tone_zh_v3z` reads the pitch contour,
+  a low-frequency spectrum patch and per-syllable ZIPA activations (`tone_zh_v2` = pitch only,
+  selectable); the stress model `stress_v3` likewise (`stress` = the previous one, selectable).
+  French, Japanese and Korean have no scored stress or tone; Japanese pitch accent was tried
+  (rounds 1, 8, 13) and removed in round 15.
+- **Coaching** (`coach.py`, `coach_zh.py`, `coach_attr.py`, `delivery_coach.py`, `tips.py`) and the
+  **audio-quality gate** (`quality.py`) read only what the score call cached; no score depends on
+  them. Schema and thresholds: docs/COACHING.md.
 
-      WordResult.prob = sounds_prob × P_prosody × present_prob
+Selectable but off by default: `Scorer(..., explain_away=True)` (round 3 second pass; it lowered
+held-out English correlations); `coaching(..., delivery="all")` adds the `slow` / `flat_pitch`
+flags. Environment switches exist for paired before / after benchmarks and keep the shipped
+behaviour when unset: `PRONUNCIADA_TONE_MODEL`, `PRONUNCIADA_STRESS_MODEL`,
+`PRONUNCIADA_TONE_LENIENCY`, `PRONUNCIADA_CONTRAST_CAPS=0`, `PRONUNCIADA_HEAD_CAPS=0`,
+`PRONUNCIADA_WORD_CONTRAST=0`, `PRONUNCIADA_PT_NASAL=0`.
 
-  - `sounds_prob`: every sound of the word acceptable (the word model of §4).
-  - `P_prosody` (`stress_prob` / `tone_prob`): tone (zh) or stress (en de es it pt ru) evidence of
-    the word's syllables through a per-language word-level calibrator
-    (`bench/calib/fit_prosody.py`). Its leniency is set by a fixed rule on development data: the
-    strictest setting that costs at most one point of native word acceptance at the default
-    strictness. (Japanese pitch accent is not scored; removed in round 15.)
-  - `present_prob`: the word was said at all (`bench/calib/fit_omission.py`, one model for all
-    languages, fitted on planted extra words). `omitted` is `present_prob < 0.5`. This replaced a
-    hard threshold that flagged 3–6 % of native one-sound words ("é", "à", "を") as skipped.
-- **Tones use pitch only.** A model that also sees the spectrum or the phone posteriors scores
-  higher on native speech but guesses the tone from the syllable's sounds (it keeps "hearing" the
-  dictionary tone when the pitch is flattened), which is useless for grading learners.
-- **Sentence delivery inputs (round 5, `delivery.py`).** The four sentence regression heads
-  (accuracy / fluency / prosodic / total) also read recogniser disfluency evidence (greedy decode
-  vs the reference: insertion / substitution / deletion rates, extra sounds in pauses, mean max
-  posterior, frame entropy, blank share) and a ridge projection of the mean / std of the
-  encoder's stack-1 activations over speech frames (exposed as extra ONNX outputs by editing the
-  model's protobuf, `acoustic.add_graph_outputs`; log-probs unchanged), blended 0.7 / 0.3 with a
-  clipped ridge model. Rhythm, pause, pitch and loudness features are computed but were not
-  adopted by speaker-grouped CV on speechocean762 train. The acceptance heads (`len`, `str`) are
-  the round-4 trees. Languages whose native medians dropped by > 0.3 keep the round-4 heads
-  (config `sentence_model`).
-- **Word 0-10 score (round 6).** The reported word accuracy (`details()["word_accuracy"]`) adds a
-  ridge projection of the ZIPA stack-1 activations pooled over the word's frames
-  (`word_reg_r6.npz`, config `word_score_model`); the sentence level still reads the round-2 word
-  regression and word probabilities are unchanged. Outside encoders (Whisper tiny/base,
-  wav2vec 2.0, HuBERT) were tried for the sentence heads and not adopted (round 6).
-- An "explain-away" second pass (re-scoring neighbours of a badly wrong word) is implemented
-  (`Scorer(..., explain_away=True)`) but off: it did not help on held-out data.
+Tried and not shipped (write-ups in `results/`): the prompt-match channel (round 9; its code now
+lives in `bench/calib/match_channel.py`), outside encoders for the sentence heads (round 6),
+Italian and German length channels (round 15), Korean aspiration and Italian mid-vowel caps
+(round 16), word-level contrast factors for en / ru / de / ko (round 18), a wider training mix for
+the universal sound model (round 2).
 
 Held-out discipline: nothing is fitted or selected on speechocean762 test, L2-ARCTIC test, EpaDB
-test or FLEURS test. The word redesign (round 2), the prosody channel (round 3) and the omission
-channel and prosody leniency rule (round 4) and the sentence delivery inputs (round 5) were each designed after looking at an earlier
-held-out evaluation and then fitted on train / validation data only; the results files say so.
+test, FLEURS test, OMPAL test or the cv-real test half. Rounds 2–18 were each designed after an
+earlier held-out evaluation had been seen and then fitted / selected on train, validation or dev
+data only; every results file says so. The current numbers are in results/SCOREBOARD.md.

@@ -1,0 +1,319 @@
+{
+ "meta": {
+  "lang": "en",
+  "text": "It was good for me",
+  "source": "speechocean762 (CC BY 4.0), test split",
+  "speaker": "adult learner of English",
+  "experts": {
+   "sentence": {
+    "accuracy": 9,
+    "fluency": 10,
+    "prosodic": 9,
+    "completeness": 10.0,
+    "total": 9
+   },
+   "marked": []
+  }
+ },
+ "result": {
+  "lang": "en",
+  "text": "IT WAS GOOD FOR ME",
+  "prob": 0.9938,
+  "strictness": 0.5,
+  "words": [
+   {
+    "text": "IT",
+    "prob": 0.9987,
+    "start": 0.61,
+    "end": 0.71,
+    "phones": [
+     {
+      "ipa": "ɪ",
+      "prob": 0.9985,
+      "start": 0.61,
+      "end": 0.63,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "t",
+      "prob": 0.994,
+      "start": 0.67,
+      "end": 0.71,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.61,
+      "end": 0.71,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.999,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9997,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "WAS",
+    "prob": 0.9728,
+    "start": 0.75,
+    "end": 0.91,
+    "phones": [
+     {
+      "ipa": "w",
+      "prob": 0.9986,
+      "start": 0.75,
+      "end": 0.79,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɑ",
+      "prob": 0.9962,
+      "start": 0.79,
+      "end": 0.81,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "z",
+      "prob": 0.9952,
+      "start": 0.89,
+      "end": 0.91,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.75,
+      "end": 0.91,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9778,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9949,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "GOOD",
+    "prob": 0.9826,
+    "start": 0.99,
+    "end": 1.19,
+    "phones": [
+     {
+      "ipa": "g",
+      "prob": 0.9993,
+      "start": 0.99,
+      "end": 1.01,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ʊ",
+      "prob": 0.9837,
+      "start": 1.05,
+      "end": 1.07,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "d",
+      "prob": 0.9979,
+      "start": 1.17,
+      "end": 1.19,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.99,
+      "end": 1.19,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.986,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9966,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "FOR",
+    "prob": 0.9744,
+    "start": 1.25,
+    "end": 1.39,
+    "phones": [
+     {
+      "ipa": "f",
+      "prob": 0.9984,
+      "start": 1.25,
+      "end": 1.27,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɔ",
+      "prob": 0.978,
+      "start": 1.33,
+      "end": 1.39,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɹ",
+      "prob": 0.9696,
+      "start": 1.45,
+      "end": 1.45,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.25,
+      "end": 1.39,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9769,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9974,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "ME",
+    "prob": 0.9976,
+    "start": 1.45,
+    "end": 1.53,
+    "phones": [
+     {
+      "ipa": "m",
+      "prob": 0.9992,
+      "start": 1.45,
+      "end": 1.47,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "i",
+      "prob": 0.998,
+      "start": 1.51,
+      "end": 1.53,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.45,
+      "end": 1.53,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9979,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9996,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   }
+  ],
+  "fluency": 0.9593,
+  "completeness": 1.0,
+  "timing_ms": {
+   "g2p": 0.236,
+   "load": 1.169,
+   "audio_check": 0.352,
+   "fbank": 2.152,
+   "model": 36.597,
+   "adapter": 0.115,
+   "align": 2.289,
+   "delivery": 3.879,
+   "calibrate": 3.972,
+   "prosody": 0.89,
+   "total": 52.919
+  },
+  "warnings": [],
+  "scores": {
+   "accuracy": 0.9127,
+   "fluency": 0.9593,
+   "prosodic": 0.921,
+   "total": 0.88
+  },
+  "audio": {
+   "schema_version": 1,
+   "duration_s": 2.211,
+   "clipped_share": 0.0,
+   "peak_dbfs": -6.9108,
+   "noise_db": -67.8424,
+   "speech_db": -29.635,
+   "snr_db": 50.8427,
+   "speech_s": 1.08,
+   "speech_share": 0.4909,
+   "lead_sil_s": 0.58,
+   "trail_sil_s": 0.551,
+   "expected_s": 0.96,
+   "speech_ratio": 1.125,
+   "issues": [],
+   "retry_recommended": false
+  },
+  "coaching": [],
+  "tips": []
+ }
+}

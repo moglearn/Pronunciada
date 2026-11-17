@@ -25,7 +25,6 @@ import numpy as np
 
 from . import calibrate as C
 from . import features as F
-from . import match as _match
 from .types import PhoneResult, Reference, SentenceResult, SyllableResult, WordResult
 
 MIN_AUDIO_S = 0.25
@@ -37,7 +36,7 @@ class Scorer:
                  strictness: float = 0.5, threads: int | None = None, *,
                  calib_dir: str | None = None, sound_model: str | None = None,
                  prosody: bool = True, cache_size: int = 4, explain_away: bool | None = None,
-                 delivery: bool | None = None, match: bool = True,
+                 delivery: bool | None = None,
                  audio_check: bool = True, length: bool = True):
         from .acoustic import AcousticModel
         from .adapter import Adapter
@@ -129,10 +128,6 @@ class Scorer:
                 self.sent_recal = None        # fitted on another tone model's outputs
         po = _d / "omission.json"
         self.omit_cal = json.loads(po.read_text()) if po.exists() else None
-        # prompt-match channel (round 9): P(the audio is a reading of this prompt at all),
-        # pooled over languages (bench/calib/fit_match.py); multiplies SentenceResult.prob
-        pm = _d / "match.json"
-        self.match_cal = json.loads(pm.read_text()) if (match and pm.exists()) else None
         # explain-away second pass (round 3): config "explain_away" {threshold, max_passes, enabled}
         ea = {"threshold": 0.3, "max_passes": 2, **cfg.get("explain_away", {})}
         if explain_away is not None:
@@ -282,7 +277,7 @@ class Scorer:
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)
-        cache.update(ref=ref, ev=ev, tab=tab, match_e=_match.evidence(lpa, ref, ev, tab))
+        cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             # the expected sounds cannot all fit into the audio: nothing was said in a scorable
@@ -568,10 +563,6 @@ class Scorer:
                                     present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))
-        pm = None
-        if self.match_cal is not None and c.get("match_e") is not None:
-            pm = _match.prob(self.match_cal, _match.inputs(c["match_e"], [w.present_prob for w in words]))
-            sp *= pm
         flu = float(np.clip(c["sent"]["reg_fluency"][0] / 10.0, 0.0, 1.0))
         comp = (1.0 - float(np.mean([w.omitted for w in words]))) if (self.omit_cal and words) \
             else float(c["S"]["completeness"][0])
@@ -580,7 +571,7 @@ class Scorer:
         if self.sent_recal:
             scores = _sentence_recal(self.sent_recal, scores, [sy.tone_prob for w in words for sy in w.syllables])
         res = SentenceResult(self.lang, ref.text, sp, s, words, fluency=flu, completeness=comp,
-                             warnings=list(c["warnings"]), scores=scores, match_prob=pm)
+                             warnings=list(c["warnings"]), scores=scores)
         res.audio = c.get("audio")
         res._pronunciada = c  # noqa: SLF001  (cached evidence for rescore / details)
         return res

@@ -47,7 +47,7 @@ def dump(out, use_coach, per_lang, langs=None):
                     tips(items)
                 lat.append((time.perf_counter() - t) / 5 * 1e3 / (len(wav) / 16000 / 10))
             d = {"prob": _r(res.prob), "fluency": _r(res.fluency), "completeness": _r(res.completeness),
-                 "match": _r(res.match_prob), "scores": {k: _r(v) for k, v in res.scores.items()},
+                 "scores": {k: _r(v) for k, v in res.scores.items()},
                  "words": []}
             for w in res.words:
                 d["words"].append({"prob": _r(w.prob), "sounds": _r(w.sounds_prob), "stress": _r(w.stress_prob),

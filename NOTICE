@@ -1,38 +1,46 @@
 Pronunciada
-Code: Apache License 2.0 (see LICENSE).
+Code: Apache License 2.0 (see LICENSE). Full licensing audit, including open questions:
+docs/LICENSING.md.
 
 Third-party material this project uses or ships
 
 Acoustic model (downloaded at first use, not in this repository)
   anyspeech/zipa-small-crctc-500k, CC BY 4.0. Zhu et al., "ZIPA: A family of efficient models for
-  multilingual phone recognition". The "-ns-" ZIPA variants are CC BY-NC-SA and are not used.
+  multilingual phone recognition", github.com/lingjzhu/zipa. The "-ns-" ZIPA variants are
+  CC BY-NC-SA and are not used.
 
-Shipped data files with their own licences (pronunciada/data/lex, see SOURCES-eu.txt there)
+Shipped data files with their own licences (pronunciada/data/lex; per-file list in LICENSE.txt there)
   en        CMUdict, BSD-2-Clause-style, (C) Carnegie Mellon University
   de, fr    ipa-dict, MIT;  es: word list from ipa-dict (MIT), pronunciations by rule
-  it, pt, ru  derived from WikiPron / Wiktionary: CC BY-SA 3.0/4.0, attribution "Wiktionary
-            contributors". These files stay under CC BY-SA when redistributed; the Apache licence
-            of the code does not apply to them.
+  it, pt, ru  derived from WikiPron / Wiktionary: CC BY-SA, attribution "Wiktionary
+            contributors". These files (it.tsv.gz, it_lts.tsv.gz, pt.tsv.gz, ru.tsv.gz,
+            ru_stress.tsv.gz) stay under CC BY-SA when redistributed; the Apache licence of the
+            code does not apply to them.
   ru_stress_extra.tsv.gz  stress marks (and restored ё) for 14 040 Russian word forms missing from
             ru.tsv.gz, derived offline with silero-stress 1.5 (MIT, github.com/snakers4/silero-stress)
             from FLEURS-ru train/validation and Common Voice ru (CC0) sentence text
             (bench/calib/ru_stress_lex.py). silero-stress is not a runtime dependency.
 
-Runtime text packages (installed separately, requirements-text-*.txt)
+Runtime text packages (optional extras, installed separately)
   pypinyin (MIT), jieba (MIT), opencc-python-reimplemented (Apache-2.0), pyopenjtalk-plus (MIT,
   bundles Open JTalk / NAIST-jdic under BSD licences), sudachipy + sudachidict-core (Apache-2.0).
   num2words (LGPL-2.1+) is optional and only used to read out digits.
 
-Models trained for this project (pronunciada/data/adapters, calib, prosody)
-  Output adapters and stress models: trained on FLEURS (CC BY 4.0).
-  Calibrators: trained on speechocean762 train (CC BY 4.0).
-  Mandarin tone model v2: trained on AISHELL-3 (Apache-2.0), AISHELL-1 (Apache-2.0; 200 of the 300
-  speakers were fetched from a community mirror whose card states no licence) and Common Voice
-  zh-TW (CC0).
+Models trained for this project (pronunciada/data; details per file in docs/LICENSING.md)
+  Output adapters, stress models, attribute heads, length model: FLEURS (Google, CC BY 4.0).
+  Sound / word / sentence calibrators: speechocean762 train (CC BY 4.0 on OpenSLR).
+  The round-2 word model (pronunciada/data/calib/word.npz) was ALSO trained on L2-ARCTIC train
+  (CC BY-NC 4.0) and EpaDB train; see docs/LICENSING.md section 3 (unresolved).
+  Mandarin defaults, coaching models: OMPAL dev (CC BY 4.0), Common Voice (CC0).
+  Mandarin tone models: AISHELL-3 and AISHELL-1 (Apache-2.0 per their distribution pages; 200 of
+  the 300 AISHELL-1 speakers were fetched from a community mirror whose card states no licence),
+  Common Voice zh-TW (CC0), FLEURS zh train.
 
-Benchmark-only data (never shipped, never trained on for shipped models)
-  L2-ARCTIC (CC BY-NC 4.0), EpaDB, Microsoft Azure Pronunciation Assessment responses.
+Benchmark-only data (not shipped)
+  L2-ARCTIC test (CC BY-NC 4.0), EpaDB test, Microsoft Azure Pronunciation Assessment responses
+  (cached outside the repository; only aggregate statistics are in results/).
   OMPAL corpus (CC BY 4.0), github.com/phantomhsieh/OMPAL-corpus: Hsieh et al., "OMPAL: Bridging
   Speech and Learning with an Open-Source Mandarin Pronunciation Assessment Corpus for Global
-  Learners", Interspeech 2025, doi:10.21437/Interspeech.2025-983.
+  Learners", Interspeech 2025, doi:10.21437/Interspeech.2025-983 (test half: benchmark; dev half:
+  tuning, see above).
   praat-parselmouth (GPL-3.0) is used offline to cross-check the pitch tracker only.

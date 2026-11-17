@@ -1,8 +1,8 @@
-"""Round 9 prompt-match channel (pronunciada/match.py) and its use in the Scorer."""
+"""Round 9 prompt-match channel (not adopted; bench/calib/match_channel.py, used by bench/calib/fit_match.py)."""
 import numpy as np
 import pytest
 
-from pronunciada import match as M
+from bench.calib import match_channel as M
 from pronunciada.text.ipa import to_ids
 
 
@@ -59,34 +59,13 @@ def test_inputs_clipped_and_prob_monotone():
         assert M.prob(cal, xi) < p0
 
 
-def test_shipped_coefficients_are_monotone():
-    import json
+def test_runtime_has_no_match_channel():
+    """Not adopted in round 9: the runtime neither computes nor applies it."""
+    import importlib.util
 
     from pronunciada.calibrate import data_dir
+    from pronunciada.types import SentenceResult
 
-    p = data_dir() / "match.json"
-    if not p.exists():
-        pytest.skip("match channel not shipped")
-    cal = json.loads(p.read_text())
-    assert cal["inputs"] == list(M.INPUTS)
-    assert all(c <= 0 for c in cal["coef"][1:])
-
-
-@pytest.mark.model
-def test_scorer_multiplies_match_and_leaves_words_alone(tts):
-    import pronunciada
-
-    text = "The quick brown fox jumps over the lazy dog"
-    wav = tts(text)
-    on = pronunciada.Scorer("en", threads=2)
-    off = pronunciada.Scorer("en", threads=2, match=False)
-    a, b = on.score((wav, 16000), text), off.score((wav, 16000), text)
-    assert b.match_prob is None
-    assert [(w.prob, [p.prob for p in w.phones]) for w in a.words] == \
-        [(w.prob, [p.prob for p in w.phones]) for w in b.words]
-    if on.match_cal is None:
-        assert a.prob == b.prob and a.match_prob is None
-    else:
-        assert 0 < a.match_prob <= 1
-        assert a.prob == pytest.approx(b.prob * a.match_prob)
-        assert on.rescore(a, 0.5).prob == pytest.approx(a.prob)
+    assert importlib.util.find_spec("pronunciada.match") is None
+    assert not (data_dir() / "match.json").exists()
+    assert "match_prob" not in SentenceResult.__dataclass_fields__

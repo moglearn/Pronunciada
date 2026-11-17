@@ -1,4 +1,4 @@
-"""Round 9: the prompt-match channel P_match (pronunciada/match.py), pooled over ten languages.
+"""Round 9: the prompt-match channel P_match (bench/calib/match_channel.py, formerly pronunciada/match.py; not adopted), pooled over ten languages.
 
     python -m bench.calib.fit_match collect [--n 150] [--workers 3]   # FLEURS validation rows
     python -m bench.calib.fit_match dev [--workers 3]                 # cv-real DEV halves (selection)
@@ -13,7 +13,7 @@ on:
   noise  low-level white noise of the clip's duration, own sentence
   trunc  the first third of the clip, own sentence
 (heavy / other / noise / trunc = no match, label 0). "slip" is a positive on purpose: one changed
-word is the word level's job, P_match must stay ~1 there. Inputs: pronunciada.match.INPUTS.
+word is the word level's job, P_match must stay ~1 there. Inputs: match_channel.INPUTS.
 Logistic regression, the negatives down-weighted to NEG_WEIGHT of the positives' total weight,
 monotone (every input may only lower P_match; inputs with the wrong sign are dropped and the
 model refitted). Evaluation: leave-one-language-out. Selection of NEG_WEIGHT: cv-real DEV halves
@@ -45,8 +45,10 @@ def work_dir():
 
 
 def _row(res, **kw) -> dict:
+    from bench.calib import match_channel as M_
+
     c = res._pronunciada  # noqa: SLF001
-    return {**kw, "base": float(res.prob), "e": dict(c["match_e"]),
+    return {**kw, "base": float(res.prob), "e": dict(M_.evidence(c["lpa"], c["ref"], c["ev"], c["tab"])),
             "present": [None if w.present_prob is None else float(w.present_prob) for w in res.words],
             "warnings": list(res.warnings)}
 
@@ -77,7 +79,7 @@ def collect(lang: str, n: int) -> list[dict]:
     cache = work_dir() / f"rows_{lang}_{n}.pkl"
     if cache.exists():
         return pickle.loads(cache.read_bytes())
-    sc = Scorer(lang, threads=1, prosody=False, explain_away=False, match=False)
+    sc = Scorer(lang, threads=1, prosody=False, explain_away=False)
     allrecs = records("fleurs-validation", lang=lang)
     rng = np.random.default_rng(0)
     recs = [allrecs[i] for i in sorted(rng.choice(len(allrecs), min(n, len(allrecs)), replace=False))]
@@ -144,7 +146,7 @@ def _dev_one(rec):
 
     if rec["lang"] not in _SC:
         _SC.clear()
-        _SC[rec["lang"]] = Scorer(rec["lang"], threads=1, match=False)
+        _SC[rec["lang"]] = Scorer(rec["lang"], threads=1)
     try:
         res = _SC[rec["lang"]].score(rec["audio"], rec["sentence"])
     except ValueError:
@@ -181,7 +183,7 @@ def _so_one(rec):
     from pronunciada.scorer import Scorer
 
     if "en" not in _SC:
-        _SC["en"] = Scorer("en", threads=1, match=False)
+        _SC["en"] = Scorer("en", threads=1)
     try:
         res = _SC["en"].score(rec["audio"], rec["text"])
     except ValueError:
@@ -223,7 +225,7 @@ def so762_guard(rows, coef) -> dict:
 # ----------------------------------------------------------------------------- fit
 
 def X_of(rows) -> np.ndarray:
-    from pronunciada import match as M
+    from bench.calib import match_channel as M
 
     return np.array([M.inputs(r["e"], r["present"]) for r in rows])
 
@@ -331,7 +333,7 @@ def main():
         return
     rows = load_rows(a.n)
     coef = fit(rows, a.neg_weight)
-    from pronunciada import match as M
+    from bench.calib import match_channel as M
 
     lo = lolo(rows, a.neg_weight)
     dev = dev_table(dev_rows(a.workers), coef) if (work_dir() / "dev_rows.pkl").exists() else {}

@@ -1,0 +1,7 @@
+[32;1m✓ Good[0m  sentence 99% · accuracy 8.9/10 · fluency 9.3/10   [2men · strictness 0.5[0m
+
+  [33mThe[0m [32mquick[0m [32mbrown[0m [32mfox[0m [32mjumps[0m [32mover[0m [32mthe[0m [32mlazy[0m [32mdog[0m
+
+  [33;1mThe[0m [33m 59%[0m  [33;1mð 87%[0m  [33;1mə 80%[0m
+
+  [36;1m→[0m Listen to /ə/ in “The” and try it again; it did not sound quite right.

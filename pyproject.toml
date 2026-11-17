@@ -1,17 +1,40 @@
 [project]
 name = "pronunciada"
 version = "0.1.0"
-description = "On-device multilingual pronunciation scoring built on ZIPA phone-recognition models"
+description = "On-device pronunciation checking for ten languages (sounds, words, sentences, tones, stress, coaching) on the ZIPA phone recogniser"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
-dependencies = ["numpy", "onnxruntime", "kaldi-native-fbank", "soundfile", "scipy"]
+# Code: Apache-2.0. Bundled data: the it / pt / ru lexicons under pronunciada/data/lex are
+# CC BY-SA (Wiktionary via WikiPron), en is CMUdict (BSD-2-Clause), de / fr / es ipa-dict (MIT).
+# The acoustic model is downloaded at first use (CC BY 4.0). Details: docs/LICENSING.md.
+license = "Apache-2.0 AND CC-BY-SA-4.0 AND BSD-2-Clause AND MIT"
+license-files = ["LICENSE", "NOTICE", "pronunciada/data/lex/LICENSE.txt"]
+keywords = ["pronunciation", "speech", "language learning", "phone recognition", "onnx"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Education",
+]
+# Runtime core: every language's acoustic scoring, English and the European front-ends.
+dependencies = ["numpy>=1.24", "onnxruntime>=1.16", "kaldi-native-fbank>=1.18", "soundfile>=0.12", "scipy>=1.10"]
 
 [project.optional-dependencies]
-dev = ["pytest", "huggingface_hub"]
+# Text front-ends that need third-party packages (pinned versions: requirements-text-*.txt).
+zh = ["pypinyin>=0.55", "jieba>=0.42", "opencc-python-reimplemented>=0.1.7"]
+ja = ["pyopenjtalk-plus>=0.4.1"]
+numbers = ["num2words>=0.5.14"]        # LGPL-2.1+, optional: digits read out as words
+all = ["pronunciada[zh,ja,numbers]"]
+dev = ["pytest"]
+# Benchmarks and training only (bench/); never imported by pronunciada/ (see requirements-*.txt).
+bench = ["pyarrow>=15", "fsspec>=2024.2", "aiohttp>=3.9", "requests>=2.31", "panphon>=0.20",
+         "scikit-learn>=1.3", "pandas>=2", "huggingface_hub"]
+
+[project.scripts]
+pronunciada = "pronunciada.__main__:main"
 
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]

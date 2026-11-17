@@ -1,0 +1,11 @@
+✓ Good  sentence 91% · accuracy 8.2/10 · fluency 8.9/10 · completeness 89%   en · strictness 0.5
+
+  The quick brown cat jumps over the lazy dog
+  ~~~             ___
+
+  The  56%  [ð 71%]  [ə 76%]
+  cat   4%  not heard
+
+  → The word “cat” seemed to be missing; try saying every word.
+  → Listen to /ə/ in “The” and try it again; it did not sound quite right.
+  → Slow down a little so that every sound is clear.

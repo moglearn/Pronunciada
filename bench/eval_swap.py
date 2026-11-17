@@ -449,6 +449,53 @@ def evaluate(records: list[dict], outputs: dict, n_boot: int = 1000, seed: int =
     return res
 
 
+PAIRED_KEYS = {"auc": True, "hit@5%FA": True, "right_word": True}   # key -> higher is better
+
+
+def paired(records: list[dict], outputs_a: dict, outputs_b: dict, n_boot: int = 1000, seed: int = 0) -> dict:
+    """System A minus system B on the SAME items: per language, only source clips and variants that
+    both systems scored (and neither rewrote) are kept; both are resampled with the same
+    utterance-clustered indices. Returns {lang: {metric: {a, b, delta, lo, hi, p_two_sided}}} for
+    <variant>:auc / hit@5%FA / right_word and native:fa<60 (lower is better; delta is a - b as
+    measured, p tests delta != 0)."""
+    A, B = collect(records, outputs_a), collect(records, outputs_b)
+    res = {}
+    for lang in sorted(set(A) & set(B)):
+        ca, cb = A[lang]["clusters"], B[lang]["clusters"]
+        keys = sorted(set(ca) & set(cb))
+        pa, pb = [], []
+        for k in keys:
+            vs = set(ca[k]) & set(cb[k])
+            if "orig" not in vs:
+                continue
+            pa.append({v: ca[k][v] for v in vs})
+            pb.append({v: cb[k][v] for v in vs})
+        variants = [v for v in VARIANTS if v != "orig" and any(v in c for c in pa)]
+        names = [f"{v}:{m}" for v in variants for m in PAIRED_KEYS] + ["native:fa<60"]
+        ma, mb = _metrics(pa, variants), _metrics(pb, variants)
+        rng = np.random.default_rng(seed)
+        D = defaultdict(list)
+        for _ in range(n_boot):
+            idx = rng.integers(0, len(pa), len(pa))
+            xa, xb = _metrics([pa[i] for i in idx], variants), _metrics([pb[i] for i in idx], variants)
+            for n in names:
+                d = xa.get(n, float("nan")) - xb.get(n, float("nan"))
+                if np.isfinite(d):
+                    D[n].append(d)
+        out = {"n_clusters": len(pa)}
+        for n in names:
+            if n not in ma or n not in mb or not D[n]:
+                continue
+            d = np.asarray(D[n])
+            lo, hi = np.quantile(d, [0.025, 0.975])
+            p = 2 * min((np.sum(d <= 0) + 1) / (len(d) + 1), (np.sum(d >= 0) + 1) / (len(d) + 1))
+            out[n] = {"a": float(ma[n]), "b": float(mb[n]), "delta": float(ma[n] - mb[n]), "lo": float(lo),
+                      "hi": float(hi), "p_two_sided": float(min(1.0, p)),
+                      "higher_is_better": n != "native:fa<60"}
+        res[lang] = out
+    return res
+
+
 def latency_summary(outputs: dict) -> dict:
     by = defaultdict(list)
     for o in outputs.values():

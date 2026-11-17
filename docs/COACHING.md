@@ -26,6 +26,25 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
+Shipped files (`pronunciada/data/coach/`, all read at runtime; what each was fitted on:
+[docs/LICENSING.md](LICENSING.md) §2):
+
+| file | read by | content |
+|---|---|---|
+| `model.json` | `coach.py`, `delivery_coach.py` | coaching logistic (global + `by_lang.en`), sensitivity thresholds, tone / length / feature-claim policies, miscue and delivery thresholds |
+| `gate.json` | `coach.py` | "what it sounded like" reliability gate (heard-sound posterior bars) |
+| `inventory.json` | `coach.py` | per-language reference sound inventory for naming heard sounds |
+| `zh_sound.npz` | `coach_zh.py` | Mandarin consonant / vowel coaching model (section 3) |
+| `attr_heads.npz` | `attr_heads.py` | articulatory attribute heads (section 3d) |
+| `contrast_heads.json` | `contrast_heads.py` | contrast-evidence settings for ko / zh aspiration, ru soft / hard, ja length (section 3e) |
+| `ko_tense.npz` | `contrast_heads.py` | Korean lax / tense head (section 3e) |
+
+The audio-quality thresholds live in `pronunciada/quality.py` (fitted values from
+`bench/coach/audio_gate.py`). Current output carries `schema_version` 2, `schema_minor` 6
+(`pronunciada.coach.SCHEMA_VERSION` / `SCHEMA_MINOR`). The example items further down were recorded
+when they were introduced and show the minor version of that time (3–5); the same kinds today
+carry `"schema_minor": 6` and the `features` key.
+
 ## 1. Item schema (`schema_version` 2, `schema_minor` 6)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
