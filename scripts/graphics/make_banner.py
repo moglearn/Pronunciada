@@ -116,6 +116,14 @@ def social() -> str:
 """)
 
 
+def cover() -> str:
+    """Poster of the video on the site, 808x455 (16:9): the scored waveform on the gradient."""
+    return page(f"""
+<div class="note" style="position:absolute;left:44px;top:40px;font-size:13px;color:rgba(255,255,255,.62)">a learner recording · the probability that each word is accepted</div>
+<div style="position:absolute;left:44px;top:140px">{diagram(720, 150)}</div>
+""")
+
+
 def backdrop() -> str:
     """The gradient alone, used behind the install card on the site."""
     return page("")
@@ -126,4 +134,5 @@ if __name__ == "__main__":
 
     render(banner(), ROOT / "docs/assets/banner.jpg", 1200, 400)
     render(social(), ROOT / "docs/assets/social.jpg", 1280, 640)
+    render(cover(), ROOT / "site/assets/cover.jpg", 808, 455)
     print("wrote docs/assets/banner.jpg and docs/assets/social.jpg")

@@ -7,7 +7,7 @@ Six scenes in one visual style, each making one point: a learner recording being
 (site/samples/en-learner-1); recordings in Spanish, Japanese, Korean and Mandarin; one bar
 chart against Azure; a real shell session (record_terminal.py, replayed with asciinema-player);
 one bar chart against the unmodified ZIPA model; the project's name and address. The sample
-recordings are the only sound. A copy and a poster frame go to site/assets/.
+recordings are the only sound. A copy goes to site/assets/.
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ import video_scenes as scenes
 from common import ROOT, render
 
 OUT = ROOT / "docs/assets/demo.mp4"
-SITE = ROOT / "site/assets"                 # gets a copy of the video and a poster frame
+SITE = ROOT / "site/assets"                 # gets a copy of the video
 SIZE = {"width": 1920, "height": 1080}      # pages are laid out for 1280x720 and zoomed 1.5x
 PLAYER = "https://cdn.jsdelivr.net/npm/asciinema-player@3.8.0/dist/bundle/asciinema-player"
 FADE = 0.35
@@ -141,8 +141,6 @@ def main() -> None:
         print("  " + ", ".join(f"{n} {p['length']:.1f} s" for n, p in zip(names, parts)))
         assemble(parts)
     shutil.copy2(OUT, SITE / "demo.mp4")
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{parts[0]['length'] - 1.0:.2f}", "-i", str(OUT), "-frames:v", "1",
-                    "-vf", "scale=1616:-2", "-q:v", "3", str(SITE / "poster.jpg")], check=True)
 
 
 if __name__ == "__main__":
