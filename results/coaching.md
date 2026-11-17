@@ -2,6 +2,120 @@
 
 Design, schema and app guidance: [docs/COACHING.md](../docs/COACHING.md).
 
+## Coaching round 4: feature-level claims from attribute heads
+
+**Question.** Most flagged sounds are reported as "this sound was off" because naming the exact replacement is fragile (round 2: 8 % of real English substitutions named). Can small heads on the acoustic model's internal layers say *which feature* was wrong instead?
+
+**Short answer.** The heads hear the audio, not the reference (no leak: on planted swaps they report the audio's sound 68–95 % of the time, length weakest). On real learners they double the share of substitutions that get a correct feature-level diagnosis at "balanced" (7.6 % → 15.7 % on speechocean762 test, claims right 84 %), but the 40 % target is reached only at "eager" (40.5 % with a claim, 72 % right, 30 % with a right claim), where native speakers get 0.2–2.5 wrong claims per clip. The native cap (≤ 0.3 per clip at "balanced") is what limits coverage. Used as stand-alone detectors, the heads hear contrasts the scorer is blind to: Korean aspiration AUC 0.97 (scorer 0.64), Russian soft / hard 0.95 (0.72), Japanese vowel length 0.95 (0.75).
+
+### Heads (`pronunciada/attr_heads.py`, `data/coach/attr_heads.npz`, 167 KB)
+
+Per feature, a multinomial logistic regression on the round-12b pooled vector of the sound (enc1 | enc3 | enc5 mean over its aligned frames ± 1) and optionally the mean of its two neighbours' vectors. Trained on FLEURS **train** natives, all ten languages pooled (207,341 sounds, ≤ 2,500 per language and head), labels from the reference sounds (`articulatory.py`, grouped: place in 5 classes, vowel height in 3). Six variants per head (layers × context); the kept one has the best honest accuracy on the leak check. Numpy at runtime.
+
+### Leak check first (FLEURS validation, contrast-audit swaps)
+
+The audio has sound X, the reference demands Y; the vector is pooled under the *edited* reference's alignment. Honest = the head reports X's class; follows = it reports Y's. Natives = unedited sounds of the same clips.
+
+| head | kept variant | natives | swaps | honest | follows reference | honest by language |
+|---|---|---|---|---|---|---|
+| voicing | e135+ctx | 0.968 | 2235 | 0.916 | 0.084 | de 0.85, en 0.92, es 0.99, fr 0.95, it 0.98, ja 0.90, pt 0.95, ru 0.86 |
+| aspirated | e13+ctx | 0.994 | 480 | 0.838 | 0.163 | ko 0.81, zh 0.86 |
+| manner | e135+ctx | 0.956 | 1230 | 0.894 | 0.066 | en 0.92, ja 0.93, pt 0.85, zh 0.86 |
+| place | e135 | 0.957 | 6000 | 0.948 | 0.042 | de 0.96, en 0.96, es 0.99, fr 0.95, it 0.99, ja 0.93, ko 0.92, pt 0.90, ru 0.96, zh 0.94 |
+| palatalised | e135+ctx | 0.994 | 240 | 0.758 | 0.242 | ru 0.76 |
+| lateral | e135+ctx | 0.992 | 480 | 0.944 | 0.056 | en 0.94, zh 0.95 |
+| height | e135 | 0.923 | 480 | 0.890 | 0.085 | en 0.92, ru 0.86 |
+| backness | e135 | 0.941 | 1104 | 0.896 | 0.092 | de 0.91, fr 0.93, ru 0.79, zh 0.90 |
+| rounded | e135 | 0.967 | 675 | 0.944 | 0.056 | de 0.95, fr 0.95, ru 0.93 |
+| nasal | e135+ctx | 0.999 | 240 | 0.942 | 0.058 | fr 0.94 |
+| long | e13+ctx | 0.989 | 720 | 0.678 | 0.322 | de 0.78, ja 0.63 |
+
+Earlier layers alone were *less* honest (enc1: voicing 0.88, aspiration 0.59, palatalisation 0.55, length 0.52), so the leak, where present, is mostly the head not hearing the difference rather than reading the word: the activations do not see the reference, only the pooling span does. All heads were kept; length (0.68 honest; Japanese 0.63) and palatalisation (0.76) are the weakest.
+
+### Claim policy (speechocean762 train) and the native cap
+
+A head claims "feature f differs, heard class c" on a flagged sound when 1 − P(expected class) ≥ q_f, the sound's coaching score ≥ t_f, the language's best competing sound (round-1 heard candidate) also has class c, no accepted alternative changes f, and a named heard sound (if any) agrees. Per sensitivity, a greedy choice of (q_f, t_f) per head maximises right coverage of real substitutions (train, out-of-fold flags) with claim precision ≥ 0.8 / 0.75 / 0.75 and at most 0.15 / 0.3 / – wrong claims per English FLEURS native clip; other languages get a coaching-score floor where their natives exceed the cap. Rules fixed before the held-out run.
+
+| sensitivity | policy (head: q, t) | train: with claim / with right claim / precision |
+|---|---|---|
+| careful | voicing 0.999, 0.7; lateral 0.9, 0.0; backness 0.99, 0.8; rounded 0.999, 0.0 | 12.0 % / 10.5 % / 0.860 |
+| balanced | voicing 0.999, 0.8; place 0.999, 0.6; lateral 0.5, 0.0; backness 0.99, 0.8; rounded 0.999, 0.0 | 17.9 % / 15.7 % / 0.868 |
+| eager | voicing 0.5, 0.4; manner 0.5, 0.6; place 0.5, 0.0; lateral 0.5, 0.0; backness 0.5, 0.0; rounded 0.99, 0.0 | 41.8 % / 33.6 % / 0.761 |
+
+Heads never enabled for claims: aspiration, palatalisation, nasality and length (English learners give no labelled examples, so no gate can be fitted) and vowel height (best train precision 0.65).
+
+Wrong feature claims per FLEURS validation native clip (~10 s; every claim on a native is wrong):
+
+| lang | flags per clip (balanced) | claims per clip careful / balanced / eager | balanced floor |
+|---|---|---|---|
+| en | 3.96 | 0.15 / 0.30 / 2.46 | 0.0 |
+| zh | 0.14 | 0.02 / 0.04 / 0.22 | 0.0 |
+| ja | 2.48 | 0.02 / 0.10 / 1.76 | 0.0 |
+| es | 3.97 | 0.12 / 0.18 / 1.34 | 0.0 |
+| fr | 4.01 | 0.12 / 0.26 / 2.31 | 0.6 |
+| de | 1.67 | 0.04 / 0.10 / 1.36 | 0.0 |
+| it | 2.37 | 0.01 / 0.06 / 0.89 | 0.0 |
+| pt | 1.32 | 0.01 / 0.05 / 0.93 | 0.0 |
+| ru | 4.43 | 0.06 / 0.16 / 2.21 | 0.0 |
+| ko | 0.92 | 0.01 / 0.13 / 1.49 | 0.0 |
+
+### Held-out, once (speechocean762 test, 568 real substitutions with the pronounced phone)
+
+| sensitivity | substitutions with a feature claim | with a right claim | claim precision | with any right feature (claims or the named sound) | today (named sound only) | claims on sounds the experts scored 2 |
+|---|---|---|---|---|---|---|
+| careful | 8.8 % | 7.7 % | 0.873 | 13.2 % | 7.0 % | 76 |
+| balanced | 13.6 % | 11.6 % | 0.843 | 15.7 % | 7.6 % | 156 |
+| eager | 40.5 % | 29.9 % | 0.716 | 31.5 % | 8.3 % | 1051 |
+
+Per head at "balanced" (test): backness 0.821 (n 28), lateral 0.875 (n 16), place 0.800 (n 25), rounded 0.875 (n 8), voicing 1.000 (n 6). At "eager": backness 0.680 (n 97), lateral 0.875 (n 16), manner 0.712 (n 59), place 0.762 (n 63), rounded 0.818 (n 22), voicing 0.619 (n 42).
+
+Curve without the native cap (balanced flags, every head at the same q, t; test):
+
+| q | t | with claim | precision |
+|---|---|---|---|
+| 0.5 | 0.0 | 56.0 % | 0.691 |
+| 0.5 | 0.6 | 47.4 % | 0.683 |
+| 0.5 | 0.8 | 28.2 % | 0.703 |
+| 0.9 | 0.0 | 50.5 % | 0.697 |
+| 0.9 | 0.6 | 43.3 % | 0.698 |
+| 0.9 | 0.8 | 25.9 % | 0.726 |
+| 0.99 | 0.0 | 37.0 % | 0.727 |
+| 0.99 | 0.6 | 32.2 % | 0.721 |
+| 0.99 | 0.8 | 20.6 % | 0.765 |
+| 0.999 | 0.0 | 20.1 % | 0.778 |
+| 0.999 | 0.6 | 18.3 % | 0.782 |
+| 0.999 | 0.8 | 12.7 % | 0.824 |
+
+**Where it falls short.** ≥ 40 % coverage at ≥ 0.75 precision is not reached on test: the closest points are 40.5 % at 0.72 (eager) and 20 % at 0.78 (q 0.999). At "balanced" the native cap keeps it to 13.6 %. The offline evaluation does not drop sounds of words the omission channel marks missing (the runtime does), a small difference.
+
+L2-ARCTIC / EpaDB test (report only, balanced): l2arctic 2.1 % of annotated substitutions get a claim, precision 0.800, any right feature 2.9 %; epadb 0.6 % of annotated substitutions get a claim, precision 0.682, any right feature 1.7 %. These corpora's annotated substitutions are mostly not flagged at all (round 2), so the heads add little there.
+
+OMPAL (Mandarin learners, balanced; teachers mark the type only, a claim on an initial counts right when the consonant is marked wrong): dev: initials 15 characters with a claim, precision 0.800; finals 9, 1.000; test: initials 4 characters with a claim, precision 1.000; finals 4, 0.750. Coverage is tiny: Mandarin flags are rare and the aspiration and retroflex heads are not enabled for claims (no learner labels to gate them).
+
+### Side result: the heads as stand-alone detectors on blind / weak contrasts
+
+Score = 1 − P(the reference sound's class) of the matching head; positives = the audit's swaps, negatives = native sounds of the same members (the audit used all native sounds). Report only.
+
+| contrast | head | swaps | heads AUC | heads hit@5 % | audit AUC | audit hit@5 % | heads AUC per direction (A>B / B>A) |
+|---|---|---|---|---|---|---|---|
+| ko/aspiration | aspirated | 240 | 0.971 | 84.6 % | 0.640 | 12.5 % | 0.962 / 0.979 |
+| zh/aspiration | aspirated | 240 | 0.988 | 96.2 % | 0.886 | 45.0 % | 0.980 / 0.996 |
+| ru/hard_soft | palatalised | 240 | 0.954 | 74.6 % | 0.717 | 20.0 % | 0.922 / 0.986 |
+| pt/nasal | nasal | 240 | 0.554 | 10.0 % | 0.863 | 53.3 % | 0.615 / 0.492 |
+| it/gemination | long | 240 | 0.633 | 12.1 % | 0.743 | 50.0 % | 0.814 / 0.451 |
+| de/vowel_length | long | 240 | 0.864 | 46.7 % | 0.898 | 61.3 % | 0.806 / 0.923 |
+| ja/vowel_length | long | 240 | 0.954 | 73.8 % | 0.755 | 20.8 % | 0.914 / 0.994 |
+| ja/gemination | long | 240 | 0.881 | 53.8 % | 0.699 | 33.3 % | 0.771 / 0.992 |
+
+A>B = the audio has the contrast's first member (e.g. aspirated, soft, long, geminate, nasal) and the reference demands the second. Korean lax / tense cannot be written in the reference, so it is not testable. The heads separate Korean and Mandarin aspiration, Russian soft / hard and Japanese length well in both directions, where the shipped scorer is blind in at least one; separate detectors are still needed for Italian doubling and Portuguese nasal vowels (the front-ends write those as two sounds, so the per-sound heads do not see them: AUC 0.63 / 0.55).
+
+### Examples (speechocean762 test, balanced; a feature tip without a named sound)
+
+- “IN COLLEGE YOU COULD GET AWAY WITH THINGS”, /l/ in “COLLEGE”: claim lateral yes → no (p 0.9341); tip: “Let the air pass along the sides of the tongue for /l/ in “COLLEGE”.” Experts: COLLEGE ['K', 'AH1', 'L', 'IH0', 'JH'] scores [2.0, 2.0, 0.0, 1.2, 1.6], pronounced L→R.
+- “TIM IS NOT A REAL STUDENT”, /u/ in “STUDENT”: claim rounded yes → no (p 0.9998); tip: “Round your lips for /u/ in “STUDENT”; they sounded spread.” Experts: STUDENT ['S', 'T', 'UW1', 'D', 'N', 'T'] scores [1.6, 1.2, 0.0, 0.0, 0.0, 0.0], pronounced UW→AH, D→D*, N→<DEL>, T→<unk>.
+
+No score changed: 50 clips (5 per language, `PYTHONHASHSEED=0`) identical to the previous commit (the scorer keeps the activations it already computes in the result's cache). coaching() with the heads: median 1.1 ms, 90th percentile 1.7 ms per 10 s.
+
 ## Round 12b: coaching scores that read the acoustic model's internal layers
 
 Full write-up: `results/round12_sound.md` §12b.

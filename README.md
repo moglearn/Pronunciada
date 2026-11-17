@@ -61,6 +61,8 @@ fitted on OMPAL dev) reach 0.71 / 0.67 precision at 25 % / 18 % recall on OMPAL 
 Azure's phoneme accuracy scores reach 0.44 precision at the "balanced" recall (ours 0.66;
 precision–recall AUC 0.38 vs 0.57).
 
+When it cannot name the replacement sound, coaching can still say which feature was wrong ("no voice", "lips not rounded", "tongue too far forward"): small heads on the acoustic model's internal layers, trained on native speech in all ten languages, double the share of real English substitutions that get a correct feature-level tip at "balanced" (7.6 % → 15.7 % on speechocean762 test, claims right 84 %); "eager" reaches 40 % of substitutions at 72 % precision.
+
 The same call also tags reading miscues at word level (`missing_word`, `mispronounced_word`,
 `extra_speech` with its time span and decoded sounds) and delivery problems (`long_pause`,
 `pause_mid_phrase`, `rushed_punctuation`, `fast`; `slow` and `flat_pitch` on request), each with a

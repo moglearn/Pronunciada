@@ -45,7 +45,8 @@ from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
 SCHEMA_VERSION = 2
-SCHEMA_MINOR = 4      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
+SCHEMA_MINOR = 5      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor";
+#                       2.5 (coaching round 4): key "features" (attribute-head claims)
 #                       2.2 (round 13): an experimental Japanese pitch-accent kind
 #                       2.3 (round 15): that kind removed again (Japanese pitch accent is not scored)
 #                       2.4 (round 15): kind "length" (long / short sounds, pronunciada.length)
@@ -347,6 +348,7 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
     D = decide(X, lang, sensitivity, mdl, gate.get("threshold"), omitted)
     hconf = mdl.get("heard", {}).get("confidence", {})
     items: list[dict] = []
+    attr_rows: list[tuple[int, int]] = []          # (item index, sound index) for the attribute heads
     for wi in sorted(omitted):
         w = result.words[wi]
         items.append(_item("missing_word", w, wi, None, None, None, w.text, None, [], 1.0 - w.present_prob,
@@ -369,6 +371,8 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
         conf = hconf.get(sound_class(e), hconf.get("all")) if h else None
         items.append(_item("substitution", w, wi, int(X["syl"][i]), k, _position(k, len(w.phones)), e, h, d,
                            D["error_prob"][i], p.prob, conf, p.start, p.end, gin))
+        attr_rows.append((len(items) - 1, i))
+    _attach_features(result, items, attr_rows, X, lang, mdl, sensitivity, D["error_prob"], gate.get("features", True))
     T = mdl.get("tone", {})
     for wi, w in enumerate(result.words):
         if wi in omitted:
@@ -410,6 +414,8 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
         if delivery:
             kinds = DELIVERY_KINDS if delivery == "all" else DC.DEFAULT_DELIVERY
             items += DC.delivery_items(result, mdl, kinds)
+    for it in items:
+        it.setdefault("features", [])
     items.sort(key=_rank, reverse=True)
     return items[:max_items] if max_items else items
 
@@ -444,6 +450,42 @@ def length_items(result, sensitivity: str, omitted=()) -> list[dict]:
             it["expected_ipa"] = p.ipa
             out.append(it)
     return out
+
+
+def attr_policy(mdl: dict, lang: str, sensitivity: str) -> tuple[dict, dict]:
+    """(bars, min_ep) of the feature-claim policy (model.json "attr", bench/coach/fit_r4.py)."""
+    A_ = mdl.get("attr") or {}
+    pol = (A_.get("by_sens") or {}).get(sensitivity) or {}
+    floor = ((A_.get("by_lang") or {}).get(lang) or {}).get(sensitivity, 0.0) or 0.0
+    bars = {h: (v["q"] if v else None) for h, v in pol.items()}
+    return bars, {h: max(v["t"], floor) for h, v in pol.items() if v}
+
+
+def _attach_features(result, items, rows, X, lang, mdl, sensitivity, eprob, enabled=True) -> None:
+    """Round 4: feature-level claims of the attribute heads on flagged substitutions; with no
+    named sound they also fill diff_keys (pronunciada.coach_attr)."""
+    A_ = mdl.get("attr")
+    if not enabled or not rows or not A_:
+        return
+    from . import attr_heads as AH
+    from .coach_attr import claims_for, sound_vectors
+
+    heads = AH.shipped()
+    vc = sound_vectors(result) if heads is not None else None
+    if vc is None:
+        return
+    bars, min_ep = attr_policy(mdl, lang, sensitivity)
+    agree = bool(A_.get("agree_with_candidate"))
+    P = heads.predict(vc[0], [i for _, i in rows], vc[1])
+    prec = (A_.get("precision") or {}).get(sensitivity)
+    for (j, i), p in zip(rows, P):
+        it = items[j]
+        cl = claims_for(p, X["expected"][i], X["alts"][i], it["heard"], bars, cand=X["cand"][i],
+                        eprob=float(eprob[i]), min_ep=min_ep, agree=agree)
+        it["features"] = cl
+        if it["heard"] is None and cl:
+            it["diff_keys"] = list(dict.fromkeys(c["key"] for c in cl))
+            it["confidence"] = None if prec is None else round(float(prec), 3)
 
 
 def tone_error_prob(T: dict, tone_prob: float) -> float:

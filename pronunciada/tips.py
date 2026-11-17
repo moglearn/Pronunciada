@@ -29,6 +29,80 @@ TONE_WORDS = {1: "high and level", 2: "rising", 3: "low (dipping)", 4: "falling"
 ORDINAL = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh"]
 
 # tip_key -> default English template (the documented, stable list)
+# round 4: feature-level tips (attribute heads), used when no heard sound is named
+FEATURE_TEMPLATES = {
+    "feature.voicing.add": "Let your voice buzz on /{expected}/ in “{word}”; it sounded voiceless.",
+    "feature.voicing.remove": "Say /{expected}/ in “{word}” without voice (no buzz); it sounded voiced.",
+    "feature.aspirated.add": "Add a small puff of air after /{expected}/ in “{word}”; it sounded unaspirated.",
+    "feature.aspirated.remove": "Say /{expected}/ in “{word}” without a puff of air; it sounded aspirated.",
+    "feature.manner.stop": "Close completely and release for /{expected}/ in “{word}”; the air kept flowing.",
+    "feature.manner.continuant": "Keep the air flowing through /{expected}/ in “{word}”; it sounded stopped.",
+    "feature.manner.affricate": "Start /{expected}/ in “{word}” with a short closure, then let the air hiss.",
+    "feature.manner.nasal": "Let the air go through your nose for /{expected}/ in “{word}”; it did not sound nasal.",
+    "feature.manner.oral": "Keep the air out of your nose for /{expected}/ in “{word}”; it sounded nasal.",
+    "feature.manner.rhotic": "Make /{expected}/ in “{word}” a quick tap or roll of the tongue tip.",
+    "feature.manner.other": "Check how you make /{expected}/ in “{word}”: the airflow sounded different.",
+    "feature.place": "Make /{expected}/ in “{word}” with {expected_place}; it sounded {heard_place}.",
+    "feature.palatalised.add": "Raise the middle of your tongue (a slight “y” colour) on /{expected}/ in “{word}”.",
+    "feature.palatalised.remove": "Say /{expected}/ in “{word}” without the “y” colour.",
+    "feature.lateral.add": "Let the air pass along the sides of the tongue for /{expected}/ in “{word}”.",
+    "feature.lateral.remove": "Don't let the air flow around the sides of the tongue for /{expected}/ in “{word}”; it sounded like an l.",
+    "feature.height.close": "Raise your tongue a little (mouth less open) for /{expected}/ in “{word}”; it sounded too open.",
+    "feature.height.open": "Open your mouth a little more for /{expected}/ in “{word}”; it sounded too closed.",
+    "feature.backness.front": "Move your tongue forward for /{expected}/ in “{word}”; it sounded too far back.",
+    "feature.backness.back": "Pull your tongue back for /{expected}/ in “{word}”; it sounded too far forward.",
+    "feature.rounded.add": "Round your lips for /{expected}/ in “{word}”; they sounded spread.",
+    "feature.rounded.remove": "Spread your lips (no rounding) for /{expected}/ in “{word}”; they sounded rounded.",
+    "feature.nasal.add": "Let some air through your nose on /{expected}/ in “{word}”; it sounded oral.",
+    "feature.nasal.remove": "Keep /{expected}/ in “{word}” oral (no air through the nose); it sounded nasal.",
+    "feature.long.add": "Hold /{expected}/ in “{word}” a little longer; it sounded short.",
+    "feature.long.remove": "Make /{expected}/ in “{word}” shorter; it sounded long.",
+}
+PLACE_CLASS = {"labial": "with the lips", "front": "with the tongue tip behind the teeth",
+               "post": "with the tongue further back, behind the gum ridge", "dorsal": "with the back of the tongue",
+               "laryngeal": "in the throat"}
+PLACE_HEARD = {"labial": "made with the lips", "front": "made with the tongue tip", "post": "made further back",
+               "dorsal": "made with the back of the tongue", "laryngeal": "made in the throat"}
+
+
+def feature_tip_key(claim: dict) -> tuple[str, dict]:
+    """tip_key and extra params for one attribute-head claim (feature, expected class, heard class)."""
+    h, e, x = claim["feature"], claim["expected"], claim["heard"]
+    if h == "voicing":
+        return ("feature.voicing.add" if e == "voiced" else "feature.voicing.remove"), {}
+    if h in ("aspirated", "palatalised", "lateral", "rounded", "nasal", "long"):
+        return (f"feature.{h}.add" if e == "yes" else f"feature.{h}.remove"), {}
+    if h == "manner":
+        if e == "nasal":
+            return "feature.manner.nasal", {}
+        if x == "nasal":
+            return "feature.manner.oral", {}
+        if e == "affricate":
+            return "feature.manner.affricate", {}
+        if e == "rhotic":
+            return "feature.manner.rhotic", {}
+        if e == "stop":
+            return "feature.manner.stop", {}
+        if e in ("fricative", "approximant") and x in ("stop", "affricate"):
+            return "feature.manner.continuant", {}
+        return "feature.manner.other", {}
+    if h == "place":
+        return "feature.place", {"expected_place": PLACE_CLASS.get(e, e), "heard_place": PLACE_HEARD.get(x, x)}
+    if h in ("height", "backness"):
+        order = {"height": ("close", "mid", "open"), "backness": ("front", "central", "back")}[h]
+        closer = order.index(e) < order.index(x)          # expected is closer / fronter than heard
+        if h == "height":
+            return ("feature.height.close" if closer else "feature.height.open"), {}
+        return ("feature.backness.front" if closer else "feature.backness.back"), {}
+    return "sound.unclear", {}
+
+
+def feature_tip(claim: dict, expected: str, word: str) -> dict:
+    key, extra = feature_tip_key(claim)
+    P = {"expected": expected, "word": word, "feature": claim["feature"], "heard_class": claim["heard"], **extra}
+    return {"tip_key": key, "text": {**TEMPLATES, **FEATURE_TEMPLATES}[key].format(**P), "params": P}
+
+
 TEMPLATES = {
     "voicing.add": "Let your voice buzz on /{expected}/ in “{word}”; it sounded like /{heard}/, without voice.",
     "voicing.remove": "Say /{expected}/ in “{word}” without voice (no buzz); it sounded like /{heard}/.",
@@ -215,6 +289,8 @@ def tip_for(item: dict, syllable_text: str | None = None, words: list[str] | Non
         key = "pitch.flat"
     elif k in ("slow", "fast"):
         key = f"rate.{k}"
+    elif item["heard"] is None and item.get("features"):
+        return feature_tip(item["features"][0], item["expected"], item["word"])
     elif item["heard"] is None:
         key = "sound.unclear"
     else:
@@ -230,7 +306,8 @@ def tips(items: list[dict], max_tips: int = 3, result=None) -> list[dict]:
         return (it["word_index"], it["kind"] if it["word_index"] is None else it["kind"] in ("tone", "stress"),
                 it["syllable_index"], it["phone_index"])
 
-    diagnosed = [it for it in items if it["heard"] is not None or it["kind"] in ("missing", "missing_word", "extra")]
+    diagnosed = [it for it in items if it["heard"] is not None or it.get("features")
+                 or it["kind"] in ("missing", "missing_word", "extra")]
     diagnosed = [it for it in diagnosed if it["kind"] != "mispronounced_word"]
     rest = [it for it in items if it not in diagnosed]
     out, seen, words_done, kinds_done = [], set(), set(), set()

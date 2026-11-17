@@ -251,3 +251,63 @@ def test_tips_for_word_and_delivery_kinds():
     assert [t["tip_key"] for t in out] == ["speech.extra", "pause.long", "punctuation.rushed", "rate.fast", "pitch.flat"]
     assert "between “cat” and “sat”" in out[0]["text"] and "1.4 s" in out[1]["text"] and "full stop" in out[2]["text"]
     assert len(tips.tips(items, max_tips=5)) == 5
+
+
+# ----------------------------------------------------------------------------- round 4 (attribute heads)
+
+def test_attr_labels():
+    from pronunciada.attr_heads import HEADS, labels
+
+    assert labels("b")["voicing"] == "voiced" and labels("pʰ")["aspirated"] == "yes" and "aspirated" not in labels("s")
+    assert labels("tʃ")["manner"] == "affricate" and labels("ʂ")["place"] == "post" and labels("k")["place"] == "dorsal"
+    assert labels("i")["height"] == "close" and labels("u")["rounded"] == "yes" and labels("ɔ̃")["nasal"] == "yes"
+    assert labels("aː")["long"] == "yes" and labels("tʲ")["palatalised"] == "yes" and labels("l")["lateral"] == "yes"
+    for p in coach.inventory("en") + coach.inventory("ko") + coach.inventory("ru"):
+        lb = labels(p)
+        assert lb and all(lb[h] in HEADS[h][1] for h in lb), p
+
+
+def test_feature_claims_agree_with_named_sound():
+    from pronunciada.coach_attr import claims_for
+
+    P = {"voicing": {"voiced": 0.1, "voiceless": 0.9}, "place": {"labial": 0.05, "front": 0.9, "post": 0.03,
+                                                                  "dorsal": 0.01, "laryngeal": 0.01}}
+    bars = {"voicing": 0.6, "place": 0.6}
+    cl = claims_for(P, "z", [], None, bars)
+    assert [c["feature"] for c in cl] == ["voicing"] and cl[0]["heard"] == "voiceless"     # z is already "front"
+    assert claims_for(P, "z", [], "s", bars)[0]["heard"] == "voiceless"                    # agrees with /s/
+    assert claims_for(P, "z", [], "ʒ", bars) == []                                          # /ʒ/ is voiced: dropped
+    assert claims_for(P, "z", ["s"], None, bars) == []                                      # /s/ is accepted here
+    assert claims_for(P, "z", [], None, {"voicing": 0.95, "place": None}) == []
+
+
+def test_feature_tips():
+    from pronunciada.tips import FEATURE_TEMPLATES, feature_tip, tip_for
+
+    t = feature_tip({"feature": "voicing", "expected": "voiced", "heard": "voiceless"}, "z", "zoo")
+    assert t["tip_key"] == "feature.voicing.add" and "/z/" in t["text"] and "voiceless" in t["text"]
+    t = feature_tip({"feature": "height", "expected": "close", "heard": "mid"}, "i", "see")
+    assert t["tip_key"] == "feature.height.close"
+    t = feature_tip({"feature": "place", "expected": "front", "heard": "post"}, "s", "see")
+    assert "tongue tip" in t["text"]
+    item = {"kind": "substitution", "word": "zoo", "expected": "z", "heard": None, "diff_keys": ["voicing"],
+            "features": [{"feature": "voicing", "key": "voicing", "expected": "voiced", "heard": "voiceless", "p": 0.9}]}
+    assert tip_for(item)["tip_key"] == "feature.voicing.add"
+    for k, v in FEATURE_TEMPLATES.items():
+        assert v.endswith(".") and "{expected}" in v, k
+
+
+def test_attr_heads_shipped_and_small():
+    import os
+
+    from pronunciada.attr_heads import HEADS, shipped
+
+    h = shipped()
+    assert h is not None and set(h.heads) <= set(HEADS) and {"voicing", "place", "rounded"} <= set(h.heads)
+    p = os.path.join(os.path.dirname(coach.__file__), "data", "coach", "attr_heads.npz")
+    assert os.path.getsize(p) < 400_000
+    V = np.random.default_rng(0).standard_normal((5, 1024)).astype(np.float32)
+    out = h.predict(V, [0, 3])
+    assert len(out) == 2 and all(abs(sum(d.values()) - 1) < 1e-5 for d in out[0].values())
+    bars, min_ep = coach.attr_policy(coach.model(), "en", "balanced")
+    assert any(v is not None for v in bars.values())

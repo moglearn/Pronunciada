@@ -148,7 +148,7 @@ def test_length_coaching_items_and_tips():
     res = SimpleNamespace(lang="ja", words=[w])
     items = length_items(res, "balanced")
     assert len(items) == 1 and items[0]["kind"] == "length" and items[0]["expected"] == "long"
-    assert items[0]["heard"] == "short" and items[0]["expected_ipa"] == "oː" and SCHEMA_MINOR == 4
+    assert items[0]["heard"] == "short" and items[0]["expected_ipa"] == "oː" and SCHEMA_MINOR >= 4
     assert "two beats" in tip_for(items[0])["text"]
     it2 = dict(items[0], expected="long", expected_ipa="tt")
     assert "Pause briefly before /t/" in tip_for(it2)["text"]

@@ -312,5 +312,151 @@
    "slow_rate": 13.18,
    "fast_rate": 17.581
   }
+ },
+ "attr": {
+  "agree_with_candidate": true,
+  "by_sens": {
+   "careful": {
+    "voicing": {
+     "q": 0.999,
+     "t": 0.7
+    },
+    "aspirated": null,
+    "manner": null,
+    "place": null,
+    "palatalised": null,
+    "lateral": {
+     "q": 0.9,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.99,
+     "t": 0.8
+    },
+    "rounded": {
+     "q": 0.999,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   },
+   "balanced": {
+    "voicing": {
+     "q": 0.999,
+     "t": 0.8
+    },
+    "aspirated": null,
+    "manner": null,
+    "place": {
+     "q": 0.999,
+     "t": 0.6
+    },
+    "palatalised": null,
+    "lateral": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.99,
+     "t": 0.8
+    },
+    "rounded": {
+     "q": 0.999,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   },
+   "eager": {
+    "voicing": {
+     "q": 0.5,
+     "t": 0.4
+    },
+    "aspirated": null,
+    "manner": {
+     "q": 0.5,
+     "t": 0.6
+    },
+    "place": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "palatalised": null,
+    "lateral": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "rounded": {
+     "q": 0.99,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   }
+  },
+  "by_lang": {
+   "en": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "zh": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "ja": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "es": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "fr": {
+    "careful": 0.0,
+    "balanced": 0.6,
+    "eager": 0.0
+   },
+   "de": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "it": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "pt": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "ru": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   },
+   "ko": {
+    "careful": 0.0,
+    "balanced": 0.0,
+    "eager": 0.0
+   }
+  },
+  "precision": {
+   "careful": 0.8596491228070176,
+   "balanced": 0.8682634730538922,
+   "eager": 0.7613168724279835
+  }
  }
 }

@@ -264,6 +264,7 @@ class Scorer:
         cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
         cache["phone_vec"] = phone_vec
+        cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache.update(ref=ref, ev=ev, tab=tab, match_e=_match.evidence(lpa, ref, ev, tab))
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:

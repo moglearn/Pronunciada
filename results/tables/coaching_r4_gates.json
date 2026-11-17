@@ -1,0 +1,528 @@
+{
+ "n_substitutions": 864,
+ "by_sens": {
+  "careful": {
+   "policy": {
+    "voicing": {
+     "q": 0.999,
+     "t": 0.7
+    },
+    "aspirated": null,
+    "manner": null,
+    "place": null,
+    "palatalised": null,
+    "lateral": {
+     "q": 0.9,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.99,
+     "t": 0.8
+    },
+    "rounded": {
+     "q": 0.999,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   },
+   "train": {
+    "with_claim": 0.12037037037037036,
+    "with_right_claim": 0.10532407407407407,
+    "claims": 114,
+    "precision": 0.8596491228070176
+   },
+   "native_en": 0.148
+  },
+  "balanced": {
+   "policy": {
+    "voicing": {
+     "q": 0.999,
+     "t": 0.8
+    },
+    "aspirated": null,
+    "manner": null,
+    "place": {
+     "q": 0.999,
+     "t": 0.6
+    },
+    "palatalised": null,
+    "lateral": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.99,
+     "t": 0.8
+    },
+    "rounded": {
+     "q": 0.999,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   },
+   "train": {
+    "with_claim": 0.17939814814814814,
+    "with_right_claim": 0.1574074074074074,
+    "claims": 167,
+    "precision": 0.8682634730538922
+   },
+   "native_en": 0.3
+  },
+  "eager": {
+   "policy": {
+    "voicing": {
+     "q": 0.5,
+     "t": 0.4
+    },
+    "aspirated": null,
+    "manner": {
+     "q": 0.5,
+     "t": 0.6
+    },
+    "place": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "palatalised": null,
+    "lateral": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "height": null,
+    "backness": {
+     "q": 0.5,
+     "t": 0.0
+    },
+    "rounded": {
+     "q": 0.99,
+     "t": 0.0
+    },
+    "nasal": null,
+    "long": null
+   },
+   "train": {
+    "with_claim": 0.41782407407407407,
+    "with_right_claim": 0.33564814814814814,
+    "claims": 486,
+    "precision": 0.7613168724279835
+   },
+   "native_en": 2.464
+  }
+ },
+ "curve": {
+  "balanced": [
+   {
+    "q": 0.5,
+    "t": 0.0,
+    "with_claim": 0.5555555555555556,
+    "with_right_claim": 0.4386574074074074,
+    "claims": 706,
+    "precision": 0.7337110481586402,
+    "native_en": 2.508
+   },
+   {
+    "q": 0.5,
+    "t": 0.4,
+    "with_claim": 0.5555555555555556,
+    "with_right_claim": 0.4386574074074074,
+    "claims": 706,
+    "precision": 0.7337110481586402,
+    "native_en": 2.508
+   },
+   {
+    "q": 0.5,
+    "t": 0.5,
+    "with_claim": 0.5509259259259259,
+    "with_right_claim": 0.4340277777777778,
+    "claims": 699,
+    "precision": 0.7310443490701002,
+    "native_en": 2.444
+   },
+   {
+    "q": 0.5,
+    "t": 0.6,
+    "with_claim": 0.5023148148148148,
+    "with_right_claim": 0.39814814814814814,
+    "claims": 637,
+    "precision": 0.7362637362637363,
+    "native_en": 1.756
+   },
+   {
+    "q": 0.5,
+    "t": 0.7,
+    "with_claim": 0.4039351851851852,
+    "with_right_claim": 0.32060185185185186,
+    "claims": 520,
+    "precision": 0.7326923076923076,
+    "native_en": 1.32
+   },
+   {
+    "q": 0.5,
+    "t": 0.8,
+    "with_claim": 0.28935185185185186,
+    "with_right_claim": 0.23032407407407407,
+    "claims": 377,
+    "precision": 0.7320954907161804,
+    "native_en": 0.88
+   },
+   {
+    "q": 0.5,
+    "t": 0.9,
+    "with_claim": 0.10185185185185185,
+    "with_right_claim": 0.08217592592592593,
+    "claims": 142,
+    "precision": 0.7323943661971831,
+    "native_en": 0.432
+   },
+   {
+    "q": 0.9,
+    "t": 0.0,
+    "with_claim": 0.4895833333333333,
+    "with_right_claim": 0.39467592592592593,
+    "claims": 604,
+    "precision": 0.7549668874172185,
+    "native_en": 1.748
+   },
+   {
+    "q": 0.9,
+    "t": 0.4,
+    "with_claim": 0.4895833333333333,
+    "with_right_claim": 0.39467592592592593,
+    "claims": 604,
+    "precision": 0.7549668874172185,
+    "native_en": 1.748
+   },
+   {
+    "q": 0.9,
+    "t": 0.5,
+    "with_claim": 0.4849537037037037,
+    "with_right_claim": 0.3900462962962963,
+    "claims": 598,
+    "precision": 0.7525083612040134,
+    "native_en": 1.72
+   },
+   {
+    "q": 0.9,
+    "t": 0.6,
+    "with_claim": 0.4398148148148148,
+    "with_right_claim": 0.35648148148148145,
+    "claims": 548,
+    "precision": 0.7536496350364964,
+    "native_en": 1.284
+   },
+   {
+    "q": 0.9,
+    "t": 0.7,
+    "with_claim": 0.36226851851851855,
+    "with_right_claim": 0.29398148148148145,
+    "claims": 454,
+    "precision": 0.748898678414097,
+    "native_en": 1.012
+   },
+   {
+    "q": 0.9,
+    "t": 0.8,
+    "with_claim": 0.26273148148148145,
+    "with_right_claim": 0.2152777777777778,
+    "claims": 334,
+    "precision": 0.7544910179640718,
+    "native_en": 0.712
+   },
+   {
+    "q": 0.9,
+    "t": 0.9,
+    "with_claim": 0.09606481481481481,
+    "with_right_claim": 0.0798611111111111,
+    "claims": 130,
+    "precision": 0.7538461538461538,
+    "native_en": 0.376
+   },
+   {
+    "q": 0.99,
+    "t": 0.0,
+    "with_claim": 0.38078703703703703,
+    "with_right_claim": 0.3113425925925926,
+    "claims": 438,
+    "precision": 0.7808219178082192,
+    "native_en": 1.068
+   },
+   {
+    "q": 0.99,
+    "t": 0.4,
+    "with_claim": 0.38078703703703703,
+    "with_right_claim": 0.3113425925925926,
+    "claims": 438,
+    "precision": 0.7808219178082192,
+    "native_en": 1.068
+   },
+   {
+    "q": 0.99,
+    "t": 0.5,
+    "with_claim": 0.3784722222222222,
+    "with_right_claim": 0.3090277777777778,
+    "claims": 435,
+    "precision": 0.7793103448275862,
+    "native_en": 1.052
+   },
+   {
+    "q": 0.99,
+    "t": 0.6,
+    "with_claim": 0.3472222222222222,
+    "with_right_claim": 0.28587962962962965,
+    "claims": 402,
+    "precision": 0.7810945273631841,
+    "native_en": 0.82
+   },
+   {
+    "q": 0.99,
+    "t": 0.7,
+    "with_claim": 0.29282407407407407,
+    "with_right_claim": 0.24074074074074073,
+    "claims": 335,
+    "precision": 0.7791044776119403,
+    "native_en": 0.672
+   },
+   {
+    "q": 0.99,
+    "t": 0.8,
+    "with_claim": 0.2199074074074074,
+    "with_right_claim": 0.18287037037037038,
+    "claims": 256,
+    "precision": 0.7890625,
+    "native_en": 0.492
+   },
+   {
+    "q": 0.99,
+    "t": 0.9,
+    "with_claim": 0.08101851851851852,
+    "with_right_claim": 0.06828703703703703,
+    "claims": 100,
+    "precision": 0.81,
+    "native_en": 0.284
+   },
+   {
+    "q": 0.999,
+    "t": 0.0,
+    "with_claim": 0.23842592592592593,
+    "with_right_claim": 0.19791666666666666,
+    "claims": 253,
+    "precision": 0.8142292490118577,
+    "native_en": 0.58
+   },
+   {
+    "q": 0.999,
+    "t": 0.4,
+    "with_claim": 0.23842592592592593,
+    "with_right_claim": 0.19791666666666666,
+    "claims": 253,
+    "precision": 0.8142292490118577,
+    "native_en": 0.58
+   },
+   {
+    "q": 0.999,
+    "t": 0.5,
+    "with_claim": 0.23726851851851852,
+    "with_right_claim": 0.19675925925925927,
+    "claims": 251,
+    "precision": 0.8127490039840638,
+    "native_en": 0.572
+   },
+   {
+    "q": 0.999,
+    "t": 0.6,
+    "with_claim": 0.2199074074074074,
+    "with_right_claim": 0.18287037037037038,
+    "claims": 235,
+    "precision": 0.8127659574468085,
+    "native_en": 0.464
+   },
+   {
+    "q": 0.999,
+    "t": 0.7,
+    "with_claim": 0.1840277777777778,
+    "with_right_claim": 0.15162037037037038,
+    "claims": 198,
+    "precision": 0.797979797979798,
+    "native_en": 0.38
+   },
+   {
+    "q": 0.999,
+    "t": 0.8,
+    "with_claim": 0.14583333333333334,
+    "with_right_claim": 0.12037037037037036,
+    "claims": 156,
+    "precision": 0.8076923076923077,
+    "native_en": 0.284
+   },
+   {
+    "q": 0.999,
+    "t": 0.9,
+    "with_claim": 0.059027777777777776,
+    "with_right_claim": 0.04976851851851852,
+    "claims": 67,
+    "precision": 0.8208955223880597,
+    "native_en": 0.164
+   }
+  ]
+ },
+ "by_lang_floor": {
+  "en": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "zh": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "ja": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "es": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "fr": {
+   "careful": 0.0,
+   "balanced": 0.6,
+   "eager": 0.0
+  },
+  "de": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "it": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "pt": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "ru": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  },
+  "ko": {
+   "careful": 0.0,
+   "balanced": 0.0,
+   "eager": 0.0
+  }
+ },
+ "native": {
+  "en": {
+   "careful": 0.148,
+   "balanced": 0.3,
+   "eager": 2.464
+  },
+  "zh": {
+   "careful": 0.02,
+   "balanced": 0.044,
+   "eager": 0.22
+  },
+  "ja": {
+   "careful": 0.02,
+   "balanced": 0.096,
+   "eager": 1.764
+  },
+  "es": {
+   "careful": 0.124,
+   "balanced": 0.18,
+   "eager": 1.34
+  },
+  "fr": {
+   "careful": 0.12,
+   "balanced": 0.26,
+   "eager": 2.312
+  },
+  "de": {
+   "careful": 0.036,
+   "balanced": 0.104,
+   "eager": 1.356
+  },
+  "it": {
+   "careful": 0.008,
+   "balanced": 0.064,
+   "eager": 0.888
+  },
+  "pt": {
+   "careful": 0.008,
+   "balanced": 0.048,
+   "eager": 0.928
+  },
+  "ru": {
+   "careful": 0.06,
+   "balanced": 0.156,
+   "eager": 2.208
+  },
+  "ko": {
+   "careful": 0.01327433628318584,
+   "balanced": 0.13274336283185842,
+   "eager": 1.491150442477876
+  }
+ },
+ "native_flags": {
+  "en": {
+   "careful": 1.92,
+   "balanced": 3.96,
+   "eager": 7.776
+  },
+  "zh": {
+   "careful": 0.072,
+   "balanced": 0.144,
+   "eager": 0.188
+  },
+  "ja": {
+   "careful": 0.868,
+   "balanced": 2.476,
+   "eager": 5.304
+  },
+  "es": {
+   "careful": 1.944,
+   "balanced": 3.972,
+   "eager": 6.928
+  },
+  "fr": {
+   "careful": 1.784,
+   "balanced": 4.008,
+   "eager": 8.328
+  },
+  "de": {
+   "careful": 0.756,
+   "balanced": 1.668,
+   "eager": 4.02
+  },
+  "it": {
+   "careful": 0.376,
+   "balanced": 2.368,
+   "eager": 6.256
+  },
+  "pt": {
+   "careful": 0.488,
+   "balanced": 1.32,
+   "eager": 3.2
+  },
+  "ru": {
+   "careful": 1.26,
+   "balanced": 4.428,
+   "eager": 11.764
+  },
+  "ko": {
+   "careful": 0.2345132743362832,
+   "balanced": 0.915929203539823,
+   "eager": 2.84070796460177
+  }
+ }
+}

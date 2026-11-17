@@ -26,7 +26,7 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2, `schema_minor` 4)
+## 1. Item schema (`schema_version` 2, `schema_minor` 5)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
@@ -34,12 +34,12 @@ Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) ad
 `schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
 Minor version 2 (round 13) added an experimental Japanese pitch-accent kind; minor version 3
 (round 15) removed it again (Japanese pitch accent is not scored). Minor version 4 (round 15)
-added the kind `length` (section 3c). Consumers should ignore kinds they do not know.
+added the kind `length` (section 3c). Consumers should ignore kinds they do not know. Minor version 5 (coaching round 4) added the key `features` (section 3d) to every item.
 
 | key | type | meaning |
 |---|---|---|
 | `schema_version` | int | 2. Renamed / removed keys bump it. |
-| `schema_minor` | int | 4. Added or removed kinds / keys bump it. |
+| `schema_minor` | int | 5. Added or removed kinds / keys bump it. |
 | `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; timing: `length` (Japanese); words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
@@ -48,11 +48,12 @@ added the kind `length` (section 3c). Consumers should ignore kinds they do not 
 | `expected` | str / int | sounds: IPA; `tone`: tone 1–5; `stress`: index of the syllable that should be stressed; `missing_word`: the word |
 | `heard` | str / int / null | same type as `expected`; **null = "this sound was off", without naming a replacement** |
 | `expected_ipa`, `heard_ipa` | str / null | for sound items, equal to `expected` / `heard`; null otherwise |
-| `diff_keys` | list[str] | articulatory features that differ (section 2), `["tone"]`, `["stress_position"]`; empty when `heard` is null |
+| `diff_keys` | list[str] | articulatory features that differ (section 2), `["tone"]`, `["stress_position"]`; when `heard` is null, the features the attribute heads claim (section 3d), else empty |
 | `error_prob` | float / null | coaching score: P(an expert marks this as an error). Sounds: the model of section 3 (speechocean762; English and Mandarin have their own, section 3); tones: OMPAL; missing words: 1 − `present_prob`; null for stress |
 | `prob` | float | the calibrated "acceptable?" probability (`PhoneResult.prob`, `SyllableResult.tone_prob` / `stress_prob`, `WordResult.present_prob`), for reference |
 | `confidence` | float / null | estimated precision of `heard` (sounds: exact or within one feature, per sound class, speechocean762 train; tones / stress: exact, planted errors); null without `heard` |
 | `start`, `end` | float | seconds (the word span for stress / missing words) |
+| `features` | list | coaching round 4: feature-level claims of the attribute heads on a flagged sound, strongest first: `{feature, key (articulatory diff key), expected, heard (classes), p}`; empty for other kinds and when no head is confident (section 3d) |
 | `gate` | dict / null | gate inputs, for logging only |
 
 Order: by `error_prob × (0.5 + 0.5 × confidence)` (confidence 0.5 when null); `extra_speech` ranks at
@@ -337,6 +338,48 @@ before a pause. Italian double consonants and German vowel length were tried and
 ```
 → tip `length.vowel_long`: "Hold the vowel /o/ in “その後” for two beats; it sounded short."
 
+## 3d. Feature-level claims (coaching round 4)
+
+When a sound is flagged but no replacement sound is named, the item can still say *which feature*
+was wrong ("no voice", "lips not rounded", "tongue too far forward"). Small linear heads
+(`pronunciada/attr_heads.py`, 167 KB) read the acoustic model's pooled internal activations of
+the sound and predict, for the sound actually produced: voicing, aspiration, manner (stop,
+affricate, fricative, nasal, approximant, tap/trill), place (lips, tongue tip, behind the gum
+ridge, back of the tongue, throat), palatalisation, laterality; vowel height (close / mid /
+open), backness, rounding, nasality and length. Trained on native FLEURS train speech of all ten
+languages; on planted swaps they report the audio's sound, not the reference's (68–95 % honest,
+section "Leak check" of results/coaching.md).
+
+A claim `{feature, key, expected, heard, p}` is made when the head is confident the expected
+class is wrong (1 − P ≥ q), the coaching score is high enough (≥ t), the language's best
+competing sound has the claimed class too, no accepted alternative changes that feature, and a
+named `heard` sound (if any) agrees. q and t per head and sensitivity were chosen on
+speechocean762 train for claim precision ≥ 0.8 / 0.75 / 0.75 and at most 0.15 / 0.3 / – wrong
+claims per native FLEURS clip ("careful" / "balanced" / "eager"; `model.json` "attr"). Heads
+used for claims: voicing, place, laterality, backness, rounding (and manner at "eager").
+Aspiration, palatalisation, nasality and length are trained but not used for claims yet (no
+learner labels to gate them; as detectors they hear Korean / Mandarin aspiration, Russian soft /
+hard and Japanese length well, results/coaching.md); vowel height is off (too imprecise on
+learners).
+
+With no named sound, `diff_keys` lists the claimed features, `confidence` is the claim policy's
+train precision, and the default tip is a feature tip (`feature.*` keys, section 4).
+
+speechocean762 test (568 real substitutions): at "balanced" 13.6 % get a claim, right
+0.84 of the time; with the named sounds, 15.7 % of substitutions get a right
+feature (named sound alone: 7.6 %). "eager": 40.5 % get a claim at 0.72 precision, but
+natives then get 0.2–2.5 wrong claims per clip. English only is verified on learners.
+
+Example (speechocean762 test, balanced; experts: /l/ in “COLLEGE” pronounced R):
+
+```json
+{"schema_version": 2, "schema_minor": 5, "kind": "substitution", "word": "COLLEGE", "word_index": 1, "syllable_index": 1, "phone_index": 2, "position": "medial", "expected": "l", "heard": null, "expected_ipa": "l", "heard_ipa": null, "diff_keys": ["lateral"], "error_prob": 0.8257, "prob": 0.3719, "confidence": 0.868, "start": 1.17, "end": 1.19, "features": [{"feature": "lateral", "key": "lateral", "expected": "yes", "heard": "no", "p": 0.9341}]}
+```
+
+Tip `feature.lateral.add`: Let the air pass along the sides of the tongue for /l/ in “COLLEGE”.
+
+Example 2 (experts: /u/ in “STUDENT” pronounced AH): tip `feature.rounded.add`: Round your lips for /u/ in “STUDENT”; they sounded spread.
+
 ## 4. Default tips (`pronunciada/tips.py`)
 
 Separate from the data. `tips(items, max_tips=3, result=None)` returns at most `max_tips`
@@ -407,6 +450,32 @@ own or localised copy from `tip_key`.
 | `length.vowel_short` | Keep the vowel /{sound}/ in “{word}” short (one beat); it sounded long. |
 | `length.consonant_long` | Pause briefly before /{sound}/ in “{word}” (a double consonant); it sounded single. |
 | `length.consonant_short` | No pause before /{sound}/ in “{word}”; it sounded doubled. |
+| `feature.voicing.add` | Let your voice buzz on /{expected}/ in “{word}”; it sounded voiceless. |
+| `feature.voicing.remove` | Say /{expected}/ in “{word}” without voice (no buzz); it sounded voiced. |
+| `feature.aspirated.add` | Add a small puff of air after /{expected}/ in “{word}”; it sounded unaspirated. |
+| `feature.aspirated.remove` | Say /{expected}/ in “{word}” without a puff of air; it sounded aspirated. |
+| `feature.manner.stop` | Close completely and release for /{expected}/ in “{word}”; the air kept flowing. |
+| `feature.manner.continuant` | Keep the air flowing through /{expected}/ in “{word}”; it sounded stopped. |
+| `feature.manner.affricate` | Start /{expected}/ in “{word}” with a short closure, then let the air hiss. |
+| `feature.manner.nasal` | Let the air go through your nose for /{expected}/ in “{word}”; it did not sound nasal. |
+| `feature.manner.oral` | Keep the air out of your nose for /{expected}/ in “{word}”; it sounded nasal. |
+| `feature.manner.rhotic` | Make /{expected}/ in “{word}” a quick tap or roll of the tongue tip. |
+| `feature.manner.other` | Check how you make /{expected}/ in “{word}”: the airflow sounded different. |
+| `feature.place` | Make /{expected}/ in “{word}” with {expected_place}; it sounded {heard_place}. |
+| `feature.palatalised.add` | Raise the middle of your tongue (a slight “y” colour) on /{expected}/ in “{word}”. |
+| `feature.palatalised.remove` | Say /{expected}/ in “{word}” without the “y” colour. |
+| `feature.lateral.add` | Let the air pass along the sides of the tongue for /{expected}/ in “{word}”. |
+| `feature.lateral.remove` | Don't let the air flow around the sides of the tongue for /{expected}/ in “{word}”; it sounded like an l. |
+| `feature.height.close` | Raise your tongue a little (mouth less open) for /{expected}/ in “{word}”; it sounded too open. |
+| `feature.height.open` | Open your mouth a little more for /{expected}/ in “{word}”; it sounded too closed. |
+| `feature.backness.front` | Move your tongue forward for /{expected}/ in “{word}”; it sounded too far back. |
+| `feature.backness.back` | Pull your tongue back for /{expected}/ in “{word}”; it sounded too far forward. |
+| `feature.rounded.add` | Round your lips for /{expected}/ in “{word}”; they sounded spread. |
+| `feature.rounded.remove` | Spread your lips (no rounding) for /{expected}/ in “{word}”; they sounded rounded. |
+| `feature.nasal.add` | Let some air through your nose on /{expected}/ in “{word}”; it sounded oral. |
+| `feature.nasal.remove` | Keep /{expected}/ in “{word}” oral (no air through the nose); it sounded nasal. |
+| `feature.long.add` | Hold /{expected}/ in “{word}” a little longer; it sounded short. |
+| `feature.long.remove` | Make /{expected}/ in “{word}” shorter; it sounded long. |
 
 ## 5. Audio-quality gate (`pronunciada/quality.py`, `result.audio`)
 

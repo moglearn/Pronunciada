@@ -1,0 +1,561 @@
+{
+ "n_substitutions": 568,
+ "test": {
+  "careful": {
+   "with_claim": 0.0880281690140845,
+   "with_right_claim": 0.07746478873239436,
+   "claims": 55,
+   "precision": 0.8727272727272727,
+   "any_right_feature": 0.13204225352112675,
+   "claims_on_expert_correct": 76,
+   "per_head": {
+    "backness": {
+     "n": 28,
+     "precision": 0.8214285714285714
+    },
+    "lateral": {
+     "n": 12,
+     "precision": 0.9166666666666666
+    },
+    "rounded": {
+     "n": 6,
+     "precision": 1.0
+    },
+    "voicing": {
+     "n": 9,
+     "precision": 0.8888888888888888
+    }
+   }
+  },
+  "balanced": {
+   "with_claim": 0.13556338028169015,
+   "with_right_claim": 0.11619718309859155,
+   "claims": 83,
+   "precision": 0.8433734939759037,
+   "any_right_feature": 0.15669014084507044,
+   "claims_on_expert_correct": 156,
+   "per_head": {
+    "backness": {
+     "n": 28,
+     "precision": 0.8214285714285714
+    },
+    "lateral": {
+     "n": 16,
+     "precision": 0.875
+    },
+    "place": {
+     "n": 25,
+     "precision": 0.8
+    },
+    "rounded": {
+     "n": 8,
+     "precision": 0.875
+    },
+    "voicing": {
+     "n": 6,
+     "precision": 1.0
+    }
+   }
+  },
+  "eager": {
+   "with_claim": 0.40492957746478875,
+   "with_right_claim": 0.2992957746478873,
+   "claims": 299,
+   "precision": 0.7157190635451505,
+   "any_right_feature": 0.31514084507042256,
+   "claims_on_expert_correct": 1051,
+   "per_head": {
+    "backness": {
+     "n": 97,
+     "precision": 0.6804123711340206
+    },
+    "lateral": {
+     "n": 16,
+     "precision": 0.875
+    },
+    "manner": {
+     "n": 59,
+     "precision": 0.711864406779661
+    },
+    "place": {
+     "n": 63,
+     "precision": 0.7619047619047619
+    },
+    "rounded": {
+     "n": 22,
+     "precision": 0.8181818181818182
+    },
+    "voicing": {
+     "n": 42,
+     "precision": 0.6190476190476191
+    }
+   }
+  }
+ },
+ "today": {
+  "careful": {
+   "with_claim": 0.0,
+   "with_right_claim": 0.0,
+   "claims": 0,
+   "precision": 0.0,
+   "any_right_feature": 0.07042253521126761,
+   "claims_on_expert_correct": 0
+  },
+  "balanced": {
+   "with_claim": 0.0,
+   "with_right_claim": 0.0,
+   "claims": 0,
+   "precision": 0.0,
+   "any_right_feature": 0.07570422535211267,
+   "claims_on_expert_correct": 0
+  },
+  "eager": {
+   "with_claim": 0.0,
+   "with_right_claim": 0.0,
+   "claims": 0,
+   "precision": 0.0,
+   "any_right_feature": 0.08274647887323944,
+   "claims_on_expert_correct": 0
+  }
+ },
+ "curve": [
+  {
+   "q": 0.5,
+   "t": 0.0,
+   "with_claim": 0.5598591549295775,
+   "with_right_claim": 0.4084507042253521,
+   "claims": 446,
+   "precision": 0.6905829596412556
+  },
+  {
+   "q": 0.5,
+   "t": 0.4,
+   "with_claim": 0.5598591549295775,
+   "with_right_claim": 0.4084507042253521,
+   "claims": 446,
+   "precision": 0.6905829596412556
+  },
+  {
+   "q": 0.5,
+   "t": 0.5,
+   "with_claim": 0.5563380281690141,
+   "with_right_claim": 0.40669014084507044,
+   "claims": 444,
+   "precision": 0.6914414414414415
+  },
+  {
+   "q": 0.5,
+   "t": 0.6,
+   "with_claim": 0.4735915492957746,
+   "with_right_claim": 0.3415492957746479,
+   "claims": 378,
+   "precision": 0.6825396825396826
+  },
+  {
+   "q": 0.5,
+   "t": 0.7,
+   "with_claim": 0.3996478873239437,
+   "with_right_claim": 0.2904929577464789,
+   "claims": 321,
+   "precision": 0.6915887850467289
+  },
+  {
+   "q": 0.5,
+   "t": 0.8,
+   "with_claim": 0.28169014084507044,
+   "with_right_claim": 0.2112676056338028,
+   "claims": 229,
+   "precision": 0.7030567685589519
+  },
+  {
+   "q": 0.5,
+   "t": 0.9,
+   "with_claim": 0.17781690140845072,
+   "with_right_claim": 0.13556338028169015,
+   "claims": 146,
+   "precision": 0.7328767123287672
+  },
+  {
+   "q": 0.9,
+   "t": 0.0,
+   "with_claim": 0.5052816901408451,
+   "with_right_claim": 0.36619718309859156,
+   "claims": 386,
+   "precision": 0.6968911917098446
+  },
+  {
+   "q": 0.9,
+   "t": 0.4,
+   "with_claim": 0.5052816901408451,
+   "with_right_claim": 0.36619718309859156,
+   "claims": 386,
+   "precision": 0.6968911917098446
+  },
+  {
+   "q": 0.9,
+   "t": 0.5,
+   "with_claim": 0.5017605633802817,
+   "with_right_claim": 0.3644366197183099,
+   "claims": 384,
+   "precision": 0.6979166666666666
+  },
+  {
+   "q": 0.9,
+   "t": 0.6,
+   "with_claim": 0.43309859154929575,
+   "with_right_claim": 0.31161971830985913,
+   "claims": 334,
+   "precision": 0.6976047904191617
+  },
+  {
+   "q": 0.9,
+   "t": 0.7,
+   "with_claim": 0.3626760563380282,
+   "with_right_claim": 0.2640845070422535,
+   "claims": 286,
+   "precision": 0.7062937062937062
+  },
+  {
+   "q": 0.9,
+   "t": 0.8,
+   "with_claim": 0.25880281690140844,
+   "with_right_claim": 0.1954225352112676,
+   "claims": 208,
+   "precision": 0.7259615384615384
+  },
+  {
+   "q": 0.9,
+   "t": 0.9,
+   "with_claim": 0.16549295774647887,
+   "with_right_claim": 0.1267605633802817,
+   "claims": 136,
+   "precision": 0.75
+  },
+  {
+   "q": 0.99,
+   "t": 0.0,
+   "with_claim": 0.36971830985915494,
+   "with_right_claim": 0.2764084507042254,
+   "claims": 256,
+   "precision": 0.7265625
+  },
+  {
+   "q": 0.99,
+   "t": 0.4,
+   "with_claim": 0.36971830985915494,
+   "with_right_claim": 0.2764084507042254,
+   "claims": 256,
+   "precision": 0.7265625
+  },
+  {
+   "q": 0.99,
+   "t": 0.5,
+   "with_claim": 0.36795774647887325,
+   "with_right_claim": 0.2746478873239437,
+   "claims": 255,
+   "precision": 0.7254901960784313
+  },
+  {
+   "q": 0.99,
+   "t": 0.6,
+   "with_claim": 0.3221830985915493,
+   "with_right_claim": 0.23591549295774647,
+   "claims": 226,
+   "precision": 0.7212389380530974
+  },
+  {
+   "q": 0.99,
+   "t": 0.7,
+   "with_claim": 0.28169014084507044,
+   "with_right_claim": 0.2130281690140845,
+   "claims": 203,
+   "precision": 0.7389162561576355
+  },
+  {
+   "q": 0.99,
+   "t": 0.8,
+   "with_claim": 0.20598591549295775,
+   "with_right_claim": 0.1619718309859155,
+   "claims": 153,
+   "precision": 0.7647058823529411
+  },
+  {
+   "q": 0.99,
+   "t": 0.9,
+   "with_claim": 0.13380281690140844,
+   "with_right_claim": 0.1073943661971831,
+   "claims": 99,
+   "precision": 0.8080808080808081
+  },
+  {
+   "q": 0.999,
+   "t": 0.0,
+   "with_claim": 0.2007042253521127,
+   "with_right_claim": 0.15669014084507044,
+   "claims": 135,
+   "precision": 0.7777777777777778
+  },
+  {
+   "q": 0.999,
+   "t": 0.4,
+   "with_claim": 0.2007042253521127,
+   "with_right_claim": 0.15669014084507044,
+   "claims": 135,
+   "precision": 0.7777777777777778
+  },
+  {
+   "q": 0.999,
+   "t": 0.5,
+   "with_claim": 0.2007042253521127,
+   "with_right_claim": 0.15669014084507044,
+   "claims": 135,
+   "precision": 0.7777777777777778
+  },
+  {
+   "q": 0.999,
+   "t": 0.6,
+   "with_claim": 0.18309859154929578,
+   "with_right_claim": 0.1426056338028169,
+   "claims": 124,
+   "precision": 0.782258064516129
+  },
+  {
+   "q": 0.999,
+   "t": 0.7,
+   "with_claim": 0.16549295774647887,
+   "with_right_claim": 0.13380281690140844,
+   "claims": 114,
+   "precision": 0.8070175438596491
+  },
+  {
+   "q": 0.999,
+   "t": 0.8,
+   "with_claim": 0.1267605633802817,
+   "with_right_claim": 0.10387323943661972,
+   "claims": 91,
+   "precision": 0.8241758241758241
+  },
+  {
+   "q": 0.999,
+   "t": 0.9,
+   "with_claim": 0.0897887323943662,
+   "with_right_claim": 0.07570422535211267,
+   "claims": 65,
+   "precision": 0.8461538461538461
+  }
+ ],
+ "examples": [
+  {
+   "id": "so762-001120130",
+   "text": "ANDY LOVES PEA",
+   "word": "LOVES",
+   "expected": "l",
+   "claims": [
+    {
+     "feature": "lateral",
+     "key": "lateral",
+     "expected": "yes",
+     "heard": "no",
+     "p": 0.9732
+    }
+   ],
+   "tip": {
+    "tip_key": "feature.lateral.add",
+    "text": "Let the air pass along the sides of the tongue for /l/ in “LOVES”.",
+    "params": {
+     "expected": "l",
+     "word": "LOVES",
+     "feature": "lateral",
+     "heard_class": "no"
+    }
+   },
+   "experts": {
+    "phones": [
+     "L",
+     "AH0",
+     "V",
+     "Z"
+    ],
+    "scores": [
+     0.4,
+     1.2,
+     1.6,
+     1.4
+    ],
+    "mispronunciations": [
+     {
+      "index": 0,
+      "canonical_phone": "L",
+      "pronounced_phone": "Y"
+     }
+    ]
+   }
+  },
+  {
+   "id": "so762-011350064",
+   "text": "IN COLLEGE YOU COULD GET AWAY WITH THINGS",
+   "word": "COLLEGE",
+   "expected": "l",
+   "claims": [
+    {
+     "feature": "lateral",
+     "key": "lateral",
+     "expected": "yes",
+     "heard": "no",
+     "p": 0.9342
+    }
+   ],
+   "tip": {
+    "tip_key": "feature.lateral.add",
+    "text": "Let the air pass along the sides of the tongue for /l/ in “COLLEGE”.",
+    "params": {
+     "expected": "l",
+     "word": "COLLEGE",
+     "feature": "lateral",
+     "heard_class": "no"
+    }
+   },
+   "experts": {
+    "phones": [
+     "K",
+     "AH1",
+     "L",
+     "IH0",
+     "JH"
+    ],
+    "scores": [
+     2.0,
+     2.0,
+     0.0,
+     1.2,
+     1.6
+    ],
+    "mispronunciations": [
+     {
+      "index": 2,
+      "canonical_phone": "L",
+      "pronounced_phone": "R"
+     }
+    ]
+   }
+  }
+ ],
+ "learners": {
+  "l2arctic": {
+   "n_substitutions": 2954,
+   "with_claim": 0.02132701421800948,
+   "with_right_claim": 0.017264725795531483,
+   "any_right_feature": 0.02911306702775897,
+   "claims": 65,
+   "precision": 0.8
+  },
+  "epadb": {
+   "n_substitutions": 3330,
+   "with_claim": 0.006306306306306306,
+   "with_right_claim": 0.0045045045045045045,
+   "any_right_feature": 0.017117117117117116,
+   "claims": 22,
+   "precision": 0.6818181818181818
+  }
+ },
+ "ompal": {
+  "dev": {
+   "units": 12518,
+   "initial": {
+    "flagged": 59,
+    "flag_precision": 0.8305084745762712,
+    "with_claim": 15,
+    "claim_precision": 0.8,
+    "share_of_marked_with_claim": 0.05286343612334802,
+    "by_feature": {
+     "lateral": {
+      "n": 6,
+      "precision": 0.8333333333333334
+     },
+     "place": {
+      "n": 8,
+      "precision": 1.0
+     },
+     "rounded": {
+      "n": 1,
+      "precision": 0.0
+     },
+     "voicing": {
+      "n": 2,
+      "precision": 0.5
+     }
+    }
+   },
+   "final": {
+    "flagged": 52,
+    "flag_precision": 0.8269230769230769,
+    "with_claim": 9,
+    "claim_precision": 1.0,
+    "share_of_marked_with_claim": 0.04390243902439024,
+    "by_feature": {
+     "backness": {
+      "n": 2,
+      "precision": 1.0
+     },
+     "lateral": {
+      "n": 1,
+      "precision": 1.0
+     },
+     "place": {
+      "n": 4,
+      "precision": 1.0
+     },
+     "rounded": {
+      "n": 2,
+      "precision": 1.0
+     },
+     "voicing": {
+      "n": 1,
+      "precision": 1.0
+     }
+    }
+   }
+  },
+  "test": {
+   "units": 7257,
+   "initial": {
+    "flagged": 51,
+    "flag_precision": 0.7058823529411765,
+    "with_claim": 4,
+    "claim_precision": 1.0,
+    "share_of_marked_with_claim": 0.027972027972027972,
+    "by_feature": {
+     "lateral": {
+      "n": 2,
+      "precision": 1.0
+     },
+     "place": {
+      "n": 2,
+      "precision": 1.0
+     }
+    }
+   },
+   "final": {
+    "flagged": 39,
+    "flag_precision": 0.6666666666666666,
+    "with_claim": 4,
+    "claim_precision": 0.75,
+    "share_of_marked_with_claim": 0.02112676056338028,
+    "by_feature": {
+     "backness": {
+      "n": 1,
+      "precision": 1.0
+     },
+     "place": {
+      "n": 3,
+      "precision": 0.6666666666666666
+     },
+     "rounded": {
+      "n": 1,
+      "precision": 1.0
+     }
+    }
+   }
+  }
+ }
+}
