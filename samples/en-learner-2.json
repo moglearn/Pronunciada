@@ -1,356 +1,376 @@
 {
  "meta": {
   "lang": "en",
-  "text": "End of the road for some players",
+  "text": "Follow the link below to register",
   "source": "speechocean762 (CC BY 4.0), test split",
   "speaker": "adult learner of English",
   "experts": {
    "sentence": {
-    "accuracy": 5,
-    "fluency": 6,
-    "prosodic": 6,
+    "accuracy": 8,
+    "fluency": 8,
+    "prosodic": 8,
     "completeness": 10.0,
-    "total": 5
+    "total": 8
    },
    "marked": [
     {
-     "word": "ROAD",
-     "said": "L",
-     "expected": "R"
+     "word": "REGISTER",
+     "said": "IH",
+     "expected": "EH"
     }
    ]
   }
  },
  "result": {
   "lang": "en",
-  "text": "End of the road for some players",
-  "prob": 0.6133,
+  "text": "Follow the link below to register",
+  "prob": 0.9849,
   "strictness": 0.5,
   "words": [
    {
-    "text": "End",
-    "prob": 0.8677,
-    "start": 0.61,
-    "end": 0.73,
-    "phones": [
-     {
-      "ipa": "ɛ",
-      "prob": 0.7494,
-      "start": 0.61,
-      "end": 0.63,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "n",
-      "prob": 0.9603,
-      "start": 0.69,
-      "end": 0.71,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "d",
-      "prob": 0.4759,
-      "start": 0.71,
-      "end": 0.73,
-      "heard": "d",
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 0.61,
-      "end": 0.73,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 1,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.8807,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9853,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "of",
-    "prob": 0.4188,
-    "start": 0.83,
-    "end": 0.85,
-    "phones": [
-     {
-      "ipa": "ə",
-      "prob": 0.6914,
-      "start": 0.83,
-      "end": 0.85,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "v",
-      "prob": 0.5678,
-      "start": 1.07,
-      "end": 1.07,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 0.83,
-      "end": 0.85,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 0,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.4881,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.8578,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "the",
-    "prob": 0.7594,
-    "start": 1.07,
-    "end": 1.17,
-    "phones": [
-     {
-      "ipa": "ð",
-      "prob": 0.938,
-      "start": 1.07,
-      "end": 1.09,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "ə",
-      "prob": 0.7613,
-      "start": 1.15,
-      "end": 1.17,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 1.07,
-      "end": 1.17,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 0,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.7636,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9945,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "road",
-    "prob": 0.4026,
-    "start": 1.29,
-    "end": 1.55,
-    "phones": [
-     {
-      "ipa": "ɹ",
-      "prob": 0.4913,
-      "start": 1.29,
-      "end": 1.31,
-      "heard": "l",
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "oʊ",
-      "prob": 0.6602,
-      "start": 1.35,
-      "end": 1.47,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "d",
-      "prob": 0.8674,
-      "start": 1.53,
-      "end": 1.55,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 1.29,
-      "end": 1.55,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 1,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.4056,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9926,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "for",
-    "prob": 0.9647,
-    "start": 1.73,
-    "end": 1.99,
+    "text": "Follow",
+    "prob": 0.9762,
+    "start": 0.57,
+    "end": 0.91,
     "phones": [
      {
       "ipa": "f",
-      "prob": 0.9915,
-      "start": 1.73,
-      "end": 1.75,
+      "prob": 0.999,
+      "start": 0.57,
+      "end": 0.59,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "ɔ",
-      "prob": 0.8957,
-      "start": 1.81,
-      "end": 1.83,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "ɹ",
-      "prob": 0.912,
-      "start": 1.95,
-      "end": 1.99,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 1.73,
-      "end": 1.99,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 0,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.9673,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9973,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "some",
-    "prob": 0.9736,
-    "start": 2.11,
-    "end": 2.35,
-    "phones": [
-     {
-      "ipa": "s",
-      "prob": 0.9965,
-      "start": 2.11,
-      "end": 2.13,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "ə",
-      "prob": 0.9608,
-      "start": 2.19,
-      "end": 2.21,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "m",
-      "prob": 0.9837,
-      "start": 2.31,
-      "end": 2.35,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 2.11,
-      "end": 2.35,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 0,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.9757,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9978,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "players",
-    "prob": 0.937,
-    "start": 2.67,
-    "end": 3.55,
-    "phones": [
-     {
-      "ipa": "p",
-      "prob": 0.98,
-      "start": 2.67,
-      "end": 2.71,
+      "ipa": "ɑ",
+      "prob": 0.9806,
+      "start": 0.65,
+      "end": 0.67,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "l",
-      "prob": 0.9902,
+      "prob": 0.9983,
+      "start": 0.77,
+      "end": 0.79,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "oʊ",
+      "prob": 0.9957,
+      "start": 0.83,
+      "end": 0.91,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.57,
+      "end": 0.67,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": 0.9217
+     },
+     {
+      "text": "",
+      "start": 0.77,
+      "end": 0.91,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9801,
+    "stress_prob": 0.9962,
+    "tone_prob": null,
+    "present_prob": 0.9999,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "the",
+    "prob": 0.984,
+    "start": 0.93,
+    "end": 1.01,
+    "phones": [
+     {
+      "ipa": "ð",
+      "prob": 0.9919,
+      "start": 0.93,
+      "end": 0.97,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ə",
+      "prob": 0.9793,
+      "start": 0.99,
+      "end": 1.01,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 0.93,
+      "end": 1.01,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9853,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9987,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "link",
+    "prob": 0.9529,
+    "start": 1.11,
+    "end": 1.43,
+    "phones": [
+     {
+      "ipa": "l",
+      "prob": 0.9983,
+      "start": 1.11,
+      "end": 1.15,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɪ",
+      "prob": 0.9909,
+      "start": 1.19,
+      "end": 1.21,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ŋ",
+      "prob": 0.9984,
+      "start": 1.33,
+      "end": 1.35,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "k",
+      "prob": 0.9936,
+      "start": 1.41,
+      "end": 1.43,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.11,
+      "end": 1.43,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9559,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9968,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "below",
+    "prob": 0.9389,
+    "start": 1.61,
+    "end": 1.95,
+    "phones": [
+     {
+      "ipa": "b",
+      "prob": 0.9986,
+      "start": 1.61,
+      "end": 1.63,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɪ",
+      "prob": 0.9985,
+      "start": 1.67,
+      "end": 1.69,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "l",
+      "prob": 0.9986,
+      "start": 1.73,
+      "end": 1.77,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "oʊ",
+      "prob": 0.9992,
+      "start": 1.81,
+      "end": 1.95,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.61,
+      "end": 1.69,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     },
+     {
+      "text": "",
+      "start": 1.73,
+      "end": 1.95,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": 0.3659
+     }
+    ],
+    "sounds_prob": 0.9939,
+    "stress_prob": 0.9446,
+    "tone_prob": null,
+    "present_prob": 1.0,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "to",
+    "prob": 0.998,
+    "start": 2.07,
+    "end": 2.21,
+    "phones": [
+     {
+      "ipa": "t",
+      "prob": 0.9986,
+      "start": 2.07,
+      "end": 2.11,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "u",
+      "prob": 0.9967,
+      "start": 2.17,
+      "end": 2.21,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 2.07,
+      "end": 2.21,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9985,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9996,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "register",
+    "prob": 0.4091,
+    "start": 2.37,
+    "end": 3.09,
+    "phones": [
+     {
+      "ipa": "ɹ",
+      "prob": 0.9977,
+      "start": 2.37,
+      "end": 2.39,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɛ",
+      "prob": 0.8743,
+      "start": 2.43,
+      "end": 2.45,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "dʒ",
+      "prob": 0.9968,
+      "start": 2.57,
+      "end": 2.61,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ɪ",
+      "prob": 0.998,
+      "start": 2.65,
+      "end": 2.67,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "s",
+      "prob": 0.9978,
       "start": 2.77,
       "end": 2.81,
       "heard": null,
@@ -358,28 +378,19 @@
       "length_prob": null
      },
      {
-      "ipa": "eɪ",
-      "prob": 0.9698,
-      "start": 2.83,
-      "end": 2.95,
+      "ipa": "t",
+      "prob": 0.9923,
+      "start": 2.87,
+      "end": 2.91,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ɜ˞",
-      "prob": 0.9214,
-      "start": 3.05,
-      "end": 3.19,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "z",
-      "prob": 0.9294,
-      "start": 3.53,
-      "end": 3.55,
+      "prob": 0.9878,
+      "start": 2.99,
+      "end": 3.09,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -388,18 +399,28 @@
     "syllables": [
      {
       "text": "",
-      "start": 2.67,
-      "end": 2.95,
+      "start": 2.37,
+      "end": 2.45,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
       "stress_expected": 1,
-      "stress_prob": 0.6762
+      "stress_prob": 0.0203
      },
      {
       "text": "",
-      "start": 3.05,
-      "end": 3.55,
+      "start": 2.57,
+      "end": 2.67,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     },
+     {
+      "text": "",
+      "start": 2.77,
+      "end": 3.09,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
@@ -407,51 +428,51 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9561,
-    "stress_prob": 0.9819,
+    "sounds_prob": 0.8906,
+    "stress_prob": 0.4594,
     "tone_prob": null,
-    "present_prob": 0.998,
+    "present_prob": 0.9999,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    }
   ],
-  "fluency": 0.7168,
+  "fluency": 0.8692,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.187,
-   "load": 1.293,
-   "audio_check": 0.289,
-   "fbank": 3.238,
-   "model": 29.307,
-   "adapter": 0.126,
-   "align": 3.794,
-   "delivery": 5.104,
-   "calibrate": 3.483,
-   "prosody": 1.492,
-   "total": 49.859
+   "g2p": 0.193,
+   "load": 0.737,
+   "audio_check": 0.287,
+   "fbank": 3.229,
+   "model": 31.413,
+   "adapter": 0.135,
+   "align": 3.69,
+   "delivery": 5.309,
+   "calibrate": 3.599,
+   "prosody": 2.212,
+   "total": 52.492
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.6392,
-   "fluency": 0.7168,
-   "prosodic": 0.68,
-   "total": 0.5929
+   "accuracy": 0.859,
+   "fluency": 0.8692,
+   "prosodic": 0.8172,
+   "total": 0.8027
   },
   "audio": {
    "schema_version": 1,
-   "duration_s": 3.79,
+   "duration_s": 3.999,
    "clipped_share": 0.0,
-   "peak_dbfs": -7.1645,
-   "noise_db": -63.3194,
-   "speech_db": -28.4818,
-   "snr_db": 45.3882,
-   "speech_s": 3.2,
-   "speech_share": 0.8466,
-   "lead_sil_s": 0.4,
-   "trail_sil_s": 0.19,
-   "expected_s": 1.536,
-   "speech_ratio": 2.0833,
+   "peak_dbfs": -4.5166,
+   "noise_db": -57.8352,
+   "speech_db": -25.0957,
+   "snr_db": 41.7232,
+   "speech_s": 2.76,
+   "speech_share": 0.6935,
+   "lead_sil_s": 0.56,
+   "trail_sil_s": 0.6789,
+   "expected_s": 1.92,
+   "speech_ratio": 1.4375,
    "issues": [],
    "retry_recommended": false
   },
@@ -459,217 +480,102 @@
    {
     "schema_version": 2,
     "schema_minor": 6,
-    "kind": "substitution",
-    "word": "road",
-    "word_index": 3,
+    "kind": "stress",
+    "word": "register",
+    "word_index": 5,
     "syllable_index": 0,
-    "phone_index": 0,
-    "position": "initial",
-    "expected": "ɹ",
-    "heard": "l",
-    "expected_ipa": "ɹ",
-    "heard_ipa": "l",
+    "phone_index": null,
+    "position": null,
+    "expected": 0,
+    "heard": 1,
+    "expected_ipa": null,
+    "heard_ipa": null,
     "diff_keys": [
-     "lateral"
+     "stress_position"
     ],
-    "error_prob": 0.723,
-    "prob": 0.4913,
-    "confidence": 0.818,
-    "start": 1.29,
-    "end": 1.31,
-    "features": [
-     {
-      "feature": "lateral",
-      "key": "lateral",
-      "expected": "no",
-      "heard": "yes",
-      "p": 0.9949
-     }
-    ]
+    "error_prob": null,
+    "prob": 0.0203,
+    "confidence": 0.942,
+    "start": 2.37,
+    "end": 3.09,
+    "features": []
    },
    {
     "schema_version": 2,
     "schema_minor": 6,
     "kind": "substitution",
-    "word": "of",
-    "word_index": 1,
+    "word": "register",
+    "word_index": 5,
     "syllable_index": 0,
     "phone_index": 1,
-    "position": "final",
-    "expected": "v",
-    "heard": "ð",
-    "expected_ipa": "v",
-    "heard_ipa": "ð",
-    "diff_keys": [
-     "place"
-    ],
-    "error_prob": 0.6315,
-    "prob": 0.5678,
-    "confidence": 0.84,
-    "start": 1.07,
-    "end": 1.07,
+    "position": "medial",
+    "expected": "ɛ",
+    "heard": null,
+    "expected_ipa": "ɛ",
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.6178,
+    "prob": 0.8743,
+    "confidence": null,
+    "start": 2.43,
+    "end": 2.45,
     "features": []
    },
    {
     "schema_version": 2,
     "schema_minor": 6,
     "kind": "mispronounced_word",
-    "word": "road",
-    "word_index": 3,
+    "word": "register",
+    "word_index": 5,
     "syllable_index": null,
     "phone_index": null,
     "position": null,
-    "expected": "road",
+    "expected": "register",
     "heard": null,
     "expected_ipa": null,
     "heard_ipa": null,
     "diff_keys": [],
-    "error_prob": 0.723,
-    "prob": 0.4026,
+    "error_prob": 0.6178,
+    "prob": 0.4091,
     "confidence": null,
-    "start": 1.29,
-    "end": 1.55,
-    "n_sounds_flagged": 2,
-    "features": []
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 6,
-    "kind": "substitution",
-    "word": "players",
-    "word_index": 6,
-    "syllable_index": 1,
-    "phone_index": 4,
-    "position": "final",
-    "expected": "z",
-    "heard": null,
-    "expected_ipa": "z",
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.6609,
-    "prob": 0.9294,
-    "confidence": null,
-    "start": 3.53,
-    "end": 3.55,
-    "features": []
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 6,
-    "kind": "mispronounced_word",
-    "word": "players",
-    "word_index": 6,
-    "syllable_index": null,
-    "phone_index": null,
-    "position": null,
-    "expected": "players",
-    "heard": null,
-    "expected_ipa": null,
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.6609,
-    "prob": 0.937,
-    "confidence": null,
-    "start": 2.67,
-    "end": 3.55,
-    "n_sounds_flagged": 1,
-    "features": []
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 6,
-    "kind": "mispronounced_word",
-    "word": "of",
-    "word_index": 1,
-    "syllable_index": null,
-    "phone_index": null,
-    "position": null,
-    "expected": "of",
-    "heard": null,
-    "expected_ipa": null,
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.6315,
-    "prob": 0.4188,
-    "confidence": null,
-    "start": 0.83,
-    "end": 0.85,
+    "start": 2.37,
+    "end": 3.09,
     "n_sounds_flagged": 1,
     "features": []
    }
   ],
   "tips": [
    {
-    "tip_key": "lateral.remove",
-    "text": "Don't let the air flow around the sides of the tongue for /ɹ/ in “road”; it sounded like /l/.",
+    "tip_key": "stress.position",
+    "text": "In “register”, stress the first syllable; it sounded stressed on the second.",
     "params": {
-     "word": "road",
-     "expected": "ɹ",
-     "heard": "l"
+     "word": "register",
+     "expected": 0,
+     "heard": 1,
+     "expected_ord": "first",
+     "heard_ord": "second"
     },
     "item": {
      "schema_version": 2,
      "schema_minor": 6,
-     "kind": "substitution",
-     "word": "road",
-     "word_index": 3,
+     "kind": "stress",
+     "word": "register",
+     "word_index": 5,
      "syllable_index": 0,
-     "phone_index": 0,
-     "position": "initial",
-     "expected": "ɹ",
-     "heard": "l",
-     "expected_ipa": "ɹ",
-     "heard_ipa": "l",
+     "phone_index": null,
+     "position": null,
+     "expected": 0,
+     "heard": 1,
+     "expected_ipa": null,
+     "heard_ipa": null,
      "diff_keys": [
-      "lateral"
+      "stress_position"
      ],
-     "error_prob": 0.723,
-     "prob": 0.4913,
-     "confidence": 0.818,
-     "start": 1.29,
-     "end": 1.31,
-     "features": [
-      {
-       "feature": "lateral",
-       "key": "lateral",
-       "expected": "no",
-       "heard": "yes",
-       "p": 0.9949
-      }
-     ]
-    }
-   },
-   {
-    "tip_key": "place",
-    "text": "Make /v/ in “of” with the lower lip against the upper teeth; it sounded like /ð/, made with the tongue tip at the teeth.",
-    "params": {
-     "word": "of",
-     "expected": "v",
-     "heard": "ð",
-     "expected_place": "the lower lip against the upper teeth",
-     "heard_place": "the tongue tip at the teeth"
-    },
-    "item": {
-     "schema_version": 2,
-     "schema_minor": 6,
-     "kind": "substitution",
-     "word": "of",
-     "word_index": 1,
-     "syllable_index": 0,
-     "phone_index": 1,
-     "position": "final",
-     "expected": "v",
-     "heard": "ð",
-     "expected_ipa": "v",
-     "heard_ipa": "ð",
-     "diff_keys": [
-      "place"
-     ],
-     "error_prob": 0.6315,
-     "prob": 0.5678,
-     "confidence": 0.84,
-     "start": 1.07,
-     "end": 1.07,
+     "error_prob": null,
+     "prob": 0.0203,
+     "confidence": 0.942,
+     "start": 2.37,
+     "end": 3.09,
      "features": []
     }
    }

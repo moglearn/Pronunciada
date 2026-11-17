@@ -1,57 +1,52 @@
 {
  "meta": {
   "lang": "en",
-  "text": "The ball is in their court now",
+  "text": "It was a beautiful day for a float",
   "source": "speechocean762 (CC BY 4.0), test split",
   "speaker": "adult learner of English",
   "experts": {
    "sentence": {
-    "accuracy": 4,
-    "fluency": 7,
-    "prosodic": 6,
+    "accuracy": 8,
+    "fluency": 9,
+    "prosodic": 9,
     "completeness": 10.0,
-    "total": 4
+    "total": 8
    },
    "marked": [
     {
-     "word": "BALL",
-     "said": "EH",
-     "expected": "AO"
-    },
-    {
-     "word": "COURT",
-     "said": "<unk>",
-     "expected": "AO"
+     "word": "FLOAT",
+     "said": "<DEL>",
+     "expected": "L"
     }
    ]
   }
  },
  "result": {
   "lang": "en",
-  "text": "The ball is in their court now",
-  "prob": 0.4785,
+  "text": "It was a beautiful day for a float",
+  "prob": 0.7494,
   "strictness": 0.5,
   "words": [
    {
-    "text": "The",
-    "prob": 0.8829,
-    "start": 0.59,
-    "end": 0.67,
+    "text": "It",
+    "prob": 0.8714,
+    "start": 0.79,
+    "end": 0.85,
     "phones": [
      {
-      "ipa": "ð",
-      "prob": 0.9577,
-      "start": 0.59,
-      "end": 0.61,
+      "ipa": "ɪ",
+      "prob": 0.872,
+      "start": 0.79,
+      "end": 0.81,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "ə",
-      "prob": 0.8097,
-      "start": 0.65,
-      "end": 0.67,
+      "ipa": "t",
+      "prob": 0.7214,
+      "start": 0.83,
+      "end": 0.85,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -60,8 +55,8 @@
     "syllables": [
      {
       "text": "",
-      "start": 0.59,
-      "end": 0.67,
+      "start": 0.79,
+      "end": 0.85,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
@@ -69,44 +64,44 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9071,
+    "sounds_prob": 0.8758,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9734,
+    "present_prob": 0.995,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "ball",
-    "prob": 0.3509,
-    "start": 0.83,
-    "end": 1.15,
+    "text": "was",
+    "prob": 0.9626,
+    "start": 0.93,
+    "end": 1.05,
     "phones": [
      {
-      "ipa": "b",
-      "prob": 0.8374,
-      "start": 0.83,
-      "end": 0.85,
+      "ipa": "w",
+      "prob": 0.9864,
+      "start": 0.93,
+      "end": 0.95,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "ɔ",
-      "prob": 0.3763,
-      "start": 1.03,
-      "end": 1.05,
-      "heard": "ɑ",
+      "ipa": "ɑ",
+      "prob": 0.9774,
+      "start": 0.97,
+      "end": 0.99,
+      "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "l̴",
-      "prob": 0.3606,
-      "start": 1.13,
-      "end": 1.15,
-      "heard": "",
+      "ipa": "z",
+      "prob": 0.984,
+      "start": 1.01,
+      "end": 1.05,
+      "heard": null,
       "length_expected": null,
       "length_prob": null
      }
@@ -114,41 +109,131 @@
     "syllables": [
      {
       "text": "",
-      "start": 0.83,
-      "end": 1.15,
+      "start": 0.93,
+      "end": 1.05,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
-      "stress_expected": 1,
+      "stress_expected": 0,
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.3912,
+    "sounds_prob": 0.9689,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.897,
+    "present_prob": 0.9936,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "is",
-    "prob": 0.9169,
-    "start": 1.29,
-    "end": 1.43,
+    "text": "a",
+    "prob": 0.9747,
+    "start": 1.07,
+    "end": 1.09,
     "phones": [
      {
       "ipa": "ɪ",
-      "prob": 0.9309,
-      "start": 1.29,
-      "end": 1.31,
+      "prob": 0.9833,
+      "start": 1.07,
+      "end": 1.09,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 1.07,
+      "end": 1.09,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.9757,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.999,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "beautiful",
+    "prob": 0.6251,
+    "start": 1.13,
+    "end": 1.43,
+    "phones": [
+     {
+      "ipa": "b",
+      "prob": 0.9216,
+      "start": 1.13,
+      "end": 1.15,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "z",
-      "prob": 0.9372,
+      "ipa": "j",
+      "prob": 0.6702,
+      "start": 1.15,
+      "end": 1.17,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "u",
+      "prob": 0.6553,
+      "start": 1.19,
+      "end": 1.21,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "t",
+      "prob": 0.5831,
+      "start": 1.25,
+      "end": 1.27,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ə",
+      "prob": 0.5744,
+      "start": 1.27,
+      "end": 1.29,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "f",
+      "prob": 0.8364,
+      "start": 1.33,
+      "end": 1.35,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "ə",
+      "prob": 0.6371,
+      "start": 1.37,
+      "end": 1.41,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "l̴",
+      "prob": 0.648,
       "start": 1.41,
       "end": 1.43,
       "heard": null,
@@ -159,7 +244,27 @@
     "syllables": [
      {
       "text": "",
-      "start": 1.29,
+      "start": 1.13,
+      "end": 1.21,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 1,
+      "stress_prob": 0.9783
+     },
+     {
+      "text": "",
+      "start": 1.25,
+      "end": 1.29,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     },
+     {
+      "text": "",
+      "start": 1.33,
       "end": 1.43,
       "tone_expected": null,
       "tone_heard": null,
@@ -168,34 +273,34 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.926,
-    "stress_prob": null,
+    "sounds_prob": 0.6313,
+    "stress_prob": 0.9988,
     "tone_prob": null,
-    "present_prob": 0.9901,
+    "present_prob": 0.9912,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "in",
-    "prob": 0.965,
-    "start": 1.63,
-    "end": 1.75,
+    "text": "day",
+    "prob": 0.9446,
+    "start": 1.47,
+    "end": 1.63,
     "phones": [
      {
-      "ipa": "ɪ",
-      "prob": 0.9395,
-      "start": 1.63,
-      "end": 1.65,
+      "ipa": "d",
+      "prob": 0.991,
+      "start": 1.47,
+      "end": 1.49,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
-      "ipa": "n",
-      "prob": 0.9771,
-      "start": 1.73,
-      "end": 1.75,
+      "ipa": "eɪ",
+      "prob": 0.8879,
+      "start": 1.53,
+      "end": 1.63,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -204,160 +309,52 @@
     "syllables": [
      {
       "text": "",
-      "start": 1.63,
-      "end": 1.75,
+      "start": 1.47,
+      "end": 1.63,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
-      "stress_expected": 0,
+      "stress_expected": 1,
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.9661,
+    "sounds_prob": 0.9456,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9988,
+    "present_prob": 0.999,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    },
    {
-    "text": "their",
-    "prob": 0.9323,
-    "start": 1.93,
-    "end": 2.29,
+    "text": "for",
+    "prob": 0.9292,
+    "start": 1.83,
+    "end": 2.01,
     "phones": [
      {
-      "ipa": "ð",
-      "prob": 0.9512,
-      "start": 1.93,
-      "end": 1.95,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "ɛ",
-      "prob": 0.9032,
-      "start": 1.99,
-      "end": 2.01,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "ɹ",
-      "prob": 0.9532,
-      "start": 2.27,
-      "end": 2.29,
-      "heard": null,
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 1.93,
-      "end": 2.29,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 0,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.9559,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9753,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "court",
-    "prob": 0.1669,
-    "start": 2.41,
-    "end": 2.73,
-    "phones": [
-     {
-      "ipa": "k",
-      "prob": 0.9002,
-      "start": 2.41,
-      "end": 2.43,
+      "ipa": "f",
+      "prob": 0.9666,
+      "start": 1.83,
+      "end": 1.85,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ɔ",
-      "prob": 0.6002,
-      "start": 2.57,
-      "end": 2.59,
+      "prob": 0.9415,
+      "start": 1.91,
+      "end": 1.93,
       "heard": null,
       "length_expected": null,
       "length_prob": null
      },
      {
       "ipa": "ɹ",
-      "prob": 0.4028,
-      "start": 2.63,
-      "end": 2.65,
-      "heard": "ŋ",
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "t",
-      "prob": 0.2648,
-      "start": 2.71,
-      "end": 2.73,
-      "heard": "t",
-      "length_expected": null,
-      "length_prob": null
-     }
-    ],
-    "syllables": [
-     {
-      "text": "",
-      "start": 2.41,
-      "end": 2.73,
-      "tone_expected": null,
-      "tone_heard": null,
-      "tone_prob": null,
-      "stress_expected": 1,
-      "stress_prob": null
-     }
-    ],
-    "sounds_prob": 0.1688,
-    "stress_prob": null,
-    "tone_prob": null,
-    "present_prob": 0.9891,
-    "omitted": false,
-    "length_prob": null,
-    "contrast_prob": null
-   },
-   {
-    "text": "now",
-    "prob": 0.3499,
-    "start": 2.89,
-    "end": 3.11,
-    "phones": [
-     {
-      "ipa": "n",
-      "prob": 0.2624,
-      "start": 2.89,
-      "end": 2.91,
-      "heard": "l",
-      "length_expected": null,
-      "length_prob": null
-     },
-     {
-      "ipa": "aʊ",
-      "prob": 0.6602,
-      "start": 2.95,
-      "end": 3.11,
+      "prob": 0.8969,
+      "start": 1.99,
+      "end": 2.01,
       "heard": null,
       "length_expected": null,
       "length_prob": null
@@ -366,8 +363,107 @@
     "syllables": [
      {
       "text": "",
-      "start": 2.89,
-      "end": 3.11,
+      "start": 1.83,
+      "end": 2.01,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.956,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.972,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "a",
+    "prob": 0.789,
+    "start": 2.03,
+    "end": 2.05,
+    "phones": [
+     {
+      "ipa": "ɪ",
+      "prob": 0.636,
+      "start": 2.03,
+      "end": 2.05,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 2.03,
+      "end": 2.05,
+      "tone_expected": null,
+      "tone_heard": null,
+      "tone_prob": null,
+      "stress_expected": 0,
+      "stress_prob": null
+     }
+    ],
+    "sounds_prob": 0.8617,
+    "stress_prob": null,
+    "tone_prob": null,
+    "present_prob": 0.9156,
+    "omitted": false,
+    "length_prob": null,
+    "contrast_prob": null
+   },
+   {
+    "text": "float",
+    "prob": 0.0953,
+    "start": 2.09,
+    "end": 2.45,
+    "phones": [
+     {
+      "ipa": "f",
+      "prob": 0.8342,
+      "start": 2.09,
+      "end": 2.11,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "l",
+      "prob": 0.2711,
+      "start": 2.11,
+      "end": 2.13,
+      "heard": "",
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "oʊ",
+      "prob": 0.3538,
+      "start": 2.15,
+      "end": 2.23,
+      "heard": "ɔ",
+      "length_expected": null,
+      "length_prob": null
+     },
+     {
+      "ipa": "t",
+      "prob": 0.5646,
+      "start": 2.43,
+      "end": 2.45,
+      "heard": null,
+      "length_expected": null,
+      "length_prob": null
+     }
+    ],
+    "syllables": [
+     {
+      "text": "",
+      "start": 2.09,
+      "end": 2.45,
       "tone_expected": null,
       "tone_heard": null,
       "tone_prob": null,
@@ -375,51 +471,51 @@
       "stress_prob": null
      }
     ],
-    "sounds_prob": 0.3501,
+    "sounds_prob": 0.1064,
     "stress_prob": null,
     "tone_prob": null,
-    "present_prob": 0.9995,
+    "present_prob": 0.8955,
     "omitted": false,
     "length_prob": null,
     "contrast_prob": null
    }
   ],
-  "fluency": 0.7405,
+  "fluency": 0.8056,
   "completeness": 1.0,
   "timing_ms": {
-   "g2p": 0.15,
-   "load": 1.586,
-   "audio_check": 0.283,
-   "fbank": 3.021,
-   "model": 29.744,
-   "adapter": 0.127,
-   "align": 3.227,
-   "delivery": 5.079,
-   "calibrate": 3.133,
-   "prosody": 0.88,
-   "total": 48.653
+   "g2p": 0.228,
+   "load": 0.576,
+   "audio_check": 0.263,
+   "fbank": 2.516,
+   "model": 26.086,
+   "adapter": 0.118,
+   "align": 3.69,
+   "delivery": 4.375,
+   "calibrate": 3.779,
+   "prosody": 1.497,
+   "total": 44.792
   },
   "warnings": [],
   "scores": {
-   "accuracy": 0.6679,
-   "fluency": 0.7405,
-   "prosodic": 0.6967,
-   "total": 0.6186
+   "accuracy": 0.7657,
+   "fluency": 0.8056,
+   "prosodic": 0.7826,
+   "total": 0.7155
   },
   "audio": {
    "schema_version": 1,
-   "duration_s": 3.7,
+   "duration_s": 3.07,
    "clipped_share": 0.0,
-   "peak_dbfs": -6.5285,
-   "noise_db": -72.1539,
-   "speech_db": -22.4678,
-   "snr_db": 56.0276,
-   "speech_s": 2.64,
-   "speech_share": 0.7135,
-   "lead_sil_s": 0.56,
-   "trail_sil_s": 0.5,
-   "expected_s": 1.344,
-   "speech_ratio": 1.9643,
+   "peak_dbfs": -9.0012,
+   "noise_db": -61.2365,
+   "speech_db": -32.603,
+   "snr_db": 39.0059,
+   "speech_s": 1.78,
+   "speech_share": 0.5817,
+   "lead_sil_s": 0.76,
+   "trail_sil_s": 0.53,
+   "expected_s": 1.92,
+   "speech_ratio": 0.9271,
    "issues": [],
    "retry_recommended": false
   },
@@ -428,30 +524,30 @@
     "schema_version": 2,
     "schema_minor": 6,
     "kind": "substitution",
-    "word": "now",
-    "word_index": 6,
+    "word": "float",
+    "word_index": 7,
     "syllable_index": 0,
-    "phone_index": 0,
-    "position": "initial",
-    "expected": "n",
+    "phone_index": 1,
+    "position": "medial",
+    "expected": "l",
     "heard": null,
-    "expected_ipa": "n",
+    "expected_ipa": "l",
     "heard_ipa": null,
     "diff_keys": [
      "lateral"
     ],
-    "error_prob": 0.9273,
-    "prob": 0.2624,
+    "error_prob": 0.7794,
+    "prob": 0.2711,
     "confidence": 0.868,
-    "start": 2.89,
-    "end": 2.91,
+    "start": 2.11,
+    "end": 2.13,
     "features": [
      {
       "feature": "lateral",
       "key": "lateral",
-      "expected": "no",
-      "heard": "yes",
-      "p": 0.9977
+      "expected": "yes",
+      "heard": "no",
+      "p": 0.9998
      }
     ]
    },
@@ -459,217 +555,160 @@
     "schema_version": 2,
     "schema_minor": 6,
     "kind": "substitution",
-    "word": "court",
-    "word_index": 5,
-    "syllable_index": 0,
-    "phone_index": 2,
-    "position": "medial",
-    "expected": "ɹ",
-    "heard": "ŋ",
-    "expected_ipa": "ɹ",
-    "heard_ipa": "ŋ",
-    "diff_keys": [
-     "place",
-     "manner"
-    ],
-    "error_prob": 0.7701,
-    "prob": 0.4028,
-    "confidence": 0.818,
-    "start": 2.63,
-    "end": 2.65,
-    "features": []
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 6,
-    "kind": "mispronounced_word",
-    "word": "now",
-    "word_index": 6,
-    "syllable_index": null,
-    "phone_index": null,
-    "position": null,
-    "expected": "now",
-    "heard": null,
-    "expected_ipa": null,
-    "heard_ipa": null,
-    "diff_keys": [],
-    "error_prob": 0.9273,
-    "prob": 0.3499,
-    "confidence": null,
-    "start": 2.89,
-    "end": 3.11,
-    "n_sounds_flagged": 1,
-    "features": []
-   },
-   {
-    "schema_version": 2,
-    "schema_minor": 6,
-    "kind": "substitution",
-    "word": "ball",
-    "word_index": 1,
-    "syllable_index": 0,
-    "phone_index": 2,
+    "word": "beautiful",
+    "word_index": 3,
+    "syllable_index": 2,
+    "phone_index": 7,
     "position": "final",
     "expected": "l̴",
     "heard": null,
     "expected_ipa": "l̴",
     "heard_ipa": null,
+    "diff_keys": [
+     "lateral"
+    ],
+    "error_prob": 0.6974,
+    "prob": 0.648,
+    "confidence": 0.868,
+    "start": 1.41,
+    "end": 1.43,
+    "features": [
+     {
+      "feature": "lateral",
+      "key": "lateral",
+      "expected": "yes",
+      "heard": "no",
+      "p": 0.9999
+     }
+    ]
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
+    "kind": "substitution",
+    "word": "float",
+    "word_index": 7,
+    "syllable_index": 0,
+    "phone_index": 2,
+    "position": "medial",
+    "expected": "oʊ",
+    "heard": null,
+    "expected_ipa": "oʊ",
+    "heard_ipa": null,
     "diff_keys": [],
-    "error_prob": 0.7853,
-    "prob": 0.3606,
+    "error_prob": 0.8322,
+    "prob": 0.3538,
     "confidence": null,
-    "start": 1.13,
-    "end": 1.15,
+    "start": 2.15,
+    "end": 2.23,
     "features": []
    },
    {
     "schema_version": 2,
     "schema_minor": 6,
     "kind": "mispronounced_word",
-    "word": "ball",
-    "word_index": 1,
+    "word": "float",
+    "word_index": 7,
     "syllable_index": null,
     "phone_index": null,
     "position": null,
-    "expected": "ball",
+    "expected": "float",
     "heard": null,
     "expected_ipa": null,
     "heard_ipa": null,
     "diff_keys": [],
-    "error_prob": 0.7853,
-    "prob": 0.3509,
+    "error_prob": 0.8322,
+    "prob": 0.0953,
     "confidence": null,
-    "start": 0.83,
-    "end": 1.15,
+    "start": 2.09,
+    "end": 2.45,
     "n_sounds_flagged": 2,
     "features": []
    },
    {
     "schema_version": 2,
     "schema_minor": 6,
+    "kind": "substitution",
+    "word": "beautiful",
+    "word_index": 3,
+    "syllable_index": 1,
+    "phone_index": 4,
+    "position": "medial",
+    "expected": "ə",
+    "heard": null,
+    "expected_ipa": "ə",
+    "heard_ipa": null,
+    "diff_keys": [],
+    "error_prob": 0.712,
+    "prob": 0.5744,
+    "confidence": null,
+    "start": 1.27,
+    "end": 1.29,
+    "features": []
+   },
+   {
+    "schema_version": 2,
+    "schema_minor": 6,
     "kind": "mispronounced_word",
-    "word": "court",
-    "word_index": 5,
+    "word": "beautiful",
+    "word_index": 3,
     "syllable_index": null,
     "phone_index": null,
     "position": null,
-    "expected": "court",
+    "expected": "beautiful",
     "heard": null,
     "expected_ipa": null,
     "heard_ipa": null,
     "diff_keys": [],
-    "error_prob": 0.7701,
-    "prob": 0.1669,
+    "error_prob": 0.712,
+    "prob": 0.6251,
     "confidence": null,
-    "start": 2.41,
-    "end": 2.73,
+    "start": 1.13,
+    "end": 1.43,
     "n_sounds_flagged": 3,
     "features": []
    }
   ],
   "tips": [
    {
-    "tip_key": "feature.lateral.remove",
-    "text": "Don't let the air flow around the sides of the tongue for /n/ in “now”; it sounded like an l.",
+    "tip_key": "feature.lateral.add",
+    "text": "Let the air pass along the sides of the tongue for /l/ in “float”.",
     "params": {
-     "expected": "n",
-     "word": "now",
+     "expected": "l",
+     "word": "float",
      "feature": "lateral",
-     "heard_class": "yes"
+     "heard_class": "no"
     },
     "item": {
      "schema_version": 2,
      "schema_minor": 6,
      "kind": "substitution",
-     "word": "now",
-     "word_index": 6,
+     "word": "float",
+     "word_index": 7,
      "syllable_index": 0,
-     "phone_index": 0,
-     "position": "initial",
-     "expected": "n",
+     "phone_index": 1,
+     "position": "medial",
+     "expected": "l",
      "heard": null,
-     "expected_ipa": "n",
+     "expected_ipa": "l",
      "heard_ipa": null,
      "diff_keys": [
       "lateral"
      ],
-     "error_prob": 0.9273,
-     "prob": 0.2624,
+     "error_prob": 0.7794,
+     "prob": 0.2711,
      "confidence": 0.868,
-     "start": 2.89,
-     "end": 2.91,
+     "start": 2.11,
+     "end": 2.13,
      "features": [
       {
        "feature": "lateral",
        "key": "lateral",
-       "expected": "no",
-       "heard": "yes",
-       "p": 0.9977
+       "expected": "yes",
+       "heard": "no",
+       "p": 0.9998
       }
      ]
-    }
-   },
-   {
-    "tip_key": "manner.oral",
-    "text": "Keep the air out of your nose for /ɹ/ in “court”; it sounded like /ŋ/.",
-    "params": {
-     "word": "court",
-     "expected": "ɹ",
-     "heard": "ŋ"
-    },
-    "item": {
-     "schema_version": 2,
-     "schema_minor": 6,
-     "kind": "substitution",
-     "word": "court",
-     "word_index": 5,
-     "syllable_index": 0,
-     "phone_index": 2,
-     "position": "medial",
-     "expected": "ɹ",
-     "heard": "ŋ",
-     "expected_ipa": "ɹ",
-     "heard_ipa": "ŋ",
-     "diff_keys": [
-      "place",
-      "manner"
-     ],
-     "error_prob": 0.7701,
-     "prob": 0.4028,
-     "confidence": 0.818,
-     "start": 2.63,
-     "end": 2.65,
-     "features": []
-    }
-   },
-   {
-    "tip_key": "sound.unclear",
-    "text": "Listen to /l̴/ in “ball” and try it again; it did not sound quite right.",
-    "params": {
-     "word": "ball",
-     "expected": "l̴",
-     "heard": null
-    },
-    "item": {
-     "schema_version": 2,
-     "schema_minor": 6,
-     "kind": "substitution",
-     "word": "ball",
-     "word_index": 1,
-     "syllable_index": 0,
-     "phone_index": 2,
-     "position": "final",
-     "expected": "l̴",
-     "heard": null,
-     "expected_ipa": "l̴",
-     "heard_ipa": null,
-     "diff_keys": [],
-     "error_prob": 0.7853,
-     "prob": 0.3606,
-     "confidence": null,
-     "start": 1.13,
-     "end": 1.15,
-     "features": []
     }
    }
   ]

@@ -9,8 +9,8 @@ redistribution with attribution; the clips are unmodified apart from the re-enco
 | file | corpus, split | prompt | corpus item |
 |---|---|---|---|
 | `en-clean.mp3` | speechocean762, test | It was good for me | `000240010` |
-| `en-learner-1.mp3` | speechocean762, test | The ball is in their court now | `003060107` |
-| `en-learner-2.mp3` | speechocean762, test | End of the road for some players | `003060259` |
+| `en-learner-1.mp3` | speechocean762, test | It was a beautiful day for a float | `014200206` |
+| `en-learner-2.mp3` | speechocean762, test | Follow the link below to register | `021160249` |
 | `de-native.mp3` | FLEURS `de_de`, test | Parisern sagt man nach, egozentrisch, unhöflich und arrogant zu sein. | test row id `12628233572987997427` |
 | `es-native.mp3` | FLEURS `es_419`, test | Los luchadores compañeros de Luna también le rindieron homenaje. | one of the test recordings of this sentence |
 | `fr-native.mp3` | FLEURS `fr_fr`, test | Les porcs sont porteurs de la maladie, qui est ensuite transmise à l'homme par les moustiques. | test row id `10991225759022624703` |
