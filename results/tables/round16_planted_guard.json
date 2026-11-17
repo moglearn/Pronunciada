@@ -1,0 +1,62 @@
+{
+ "zh": {
+  "before": {
+   "native_sounds": 0.997868799813155,
+   "planted_sound_auc": 0.9891934833644044
+  },
+  "after": {
+   "native_sounds": 0.9972265203047909,
+   "planted_sound_auc": 0.9885366835547809
+  }
+ },
+ "ko": {
+  "before": {
+   "native_sounds": 0.9995800260383856,
+   "planted_sound_auc": 0.9839747968802948
+  },
+  "after": {
+   "native_sounds": 0.9934064088026542,
+   "planted_sound_auc": 0.9614996409474951
+  }
+ },
+ "en": {
+  "before": {
+   "native_sounds": 0.9932795312903875,
+   "planted_sound_auc": 0.9822563233282932
+  },
+  "after": {
+   "native_sounds": 0.993193371435136,
+   "planted_sound_auc": 0.9825348387307341
+  }
+ },
+ "ru": {
+  "before": {
+   "native_sounds": 0.9965917349572714,
+   "planted_sound_auc": 0.9823151789442992
+  },
+  "after": {
+   "native_sounds": 0.9920807959301305,
+   "planted_sound_auc": 0.9766086636726511
+  }
+ },
+ "ja": {
+  "before": {
+   "native_sounds": 0.9979391486810552,
+   "planted_sound_auc": 0.9786594250438646
+  },
+  "after": {
+   "native_sounds": 0.994716726618705,
+   "planted_sound_auc": 0.9736301336939629
+  }
+ },
+ "de": {
+  "before": {
+   "native_sounds": 0.9976722039995768,
+   "planted_sound_auc": 0.9798072583082805
+  },
+  "after": {
+   "native_sounds": 0.9934398476351709,
+   "planted_sound_auc": 0.9728620794429657
+  }
+ }
+}

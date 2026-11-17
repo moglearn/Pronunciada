@@ -1,0 +1,88 @@
+{
+ "ko": {
+  "aspirated->plain | all": {
+   "n": 876,
+   "partner_share": 0.4691780821917808
+  },
+  "aspirated->plain | initial": {
+   "n": 318,
+   "partner_share": 0.3522012578616352
+  },
+  "aspirated->plain | medial": {
+   "n": 558,
+   "partner_share": 0.53584229390681
+  }
+ },
+ "ru": {
+  "soft->hard | all": {
+   "n": 2645,
+   "partner_share": 0.2899810964083176
+  },
+  "soft->hard | before_cons": {
+   "n": 5,
+   "partner_share": 0.6
+  },
+  "soft->hard | before_vowel": {
+   "n": 2640,
+   "partner_share": 0.28939393939393937
+  }
+ },
+ "pt": {
+  "nasal coda->dropped | all": {
+   "n": 2587,
+   "partner_share": 0.10784692694240433
+  },
+  "nasal coda->dropped | final": {
+   "n": 997,
+   "partner_share": 0.160481444332999
+  },
+  "nasal coda->dropped | medial": {
+   "n": 1590,
+   "partner_share": 0.07484276729559748
+  }
+ },
+ "it": {
+  "e->ɛ | all": {
+   "n": 3981,
+   "partner_share": 0.07987942727957799
+  },
+  "e->ɛ | stressed": {
+   "n": 691,
+   "partner_share": 0.2633863965267728
+  },
+  "e->ɛ | unstressed": {
+   "n": 3290,
+   "partner_share": 0.04133738601823708
+  },
+  "o->ɔ | all": {
+   "n": 1206,
+   "partner_share": 0.12686567164179105
+  },
+  "o->ɔ | stressed": {
+   "n": 1206,
+   "partner_share": 0.12686567164179105
+  },
+  "ɛ->e | all": {
+   "n": 1512,
+   "partner_share": 0.3439153439153439
+  },
+  "ɛ->e | stressed": {
+   "n": 1062,
+   "partner_share": 0.32015065913371
+  },
+  "ɛ->e | unstressed": {
+   "n": 450,
+   "partner_share": 0.4
+  }
+ },
+ "de": {
+  "final devoiced->voiced | all": {
+   "n": 257,
+   "partner_share": 0.28793774319066145
+  },
+  "final devoiced->voiced | word-final": {
+   "n": 257,
+   "partner_share": 0.28793774319066145
+  }
+ }
+}

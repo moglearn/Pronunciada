@@ -8,7 +8,7 @@ Every item is a plain JSON-serialisable dict with the same keys (SCHEMA_VERSION 
 
   schema_version  2
   kind            "substitution" | "missing" | "extra" | "tone" | "stress" | "missing_word"
-                  | word-level miscue and delivery kinds (2.1)
+                  | word-level miscue and delivery kinds (2.1) | "length" (2.4, Japanese)
   word, word_index        the prompt word and its index in result.words
   syllable_index          index into that word's syllables (None for missing_word)
   phone_index             index into that word's phones (sounds only, else None)
@@ -45,11 +45,12 @@ from . import articulatory as A
 from .text.ipa import MODIFIERS, token_ids
 
 SCHEMA_VERSION = 2
-SCHEMA_MINOR = 3      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
+SCHEMA_MINOR = 4      # 2.1 (round 3): word-level miscue and delivery kinds, key "schema_minor"
 #                       2.2 (round 13): an experimental Japanese pitch-accent kind
 #                       2.3 (round 15): that kind removed again (Japanese pitch accent is not scored)
+#                       2.4 (round 15): kind "length" (long / short sounds, pronunciada.length)
 SENSITIVITIES = ("careful", "balanced", "eager")
-KINDS = ("substitution", "missing", "extra", "tone", "stress", "missing_word", "mispronounced_word",
+KINDS = ("substitution", "missing", "extra", "tone", "stress", "length", "missing_word", "mispronounced_word",
          "extra_speech", "long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
 WORD_KINDS = ("mispronounced_word", "extra_speech")
 DELIVERY_KINDS = ("long_pause", "pause_mid_phrase", "rushed_punctuation", "flat_pitch", "slow", "fast")
@@ -400,6 +401,7 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
                                    g["stress_confidence"] if ok else None, w.start, w.end,
                                    {"heard_post": round(float(P[hs]), 4), "n_syllables": len(P)},
                                    ipa=False))
+    items += length_items(result, sensitivity, omitted)
     if miscues or delivery:
         from . import delivery_coach as DC
 
@@ -410,6 +412,38 @@ def coaching(result, max_items: int | None = None, sensitivity: str = "balanced"
             items += DC.delivery_items(result, mdl, kinds)
     items.sort(key=_rank, reverse=True)
     return items[:max_items] if max_items else items
+
+
+def length_items(result, sensitivity: str, omitted=()) -> list[dict]:
+    """Round 15: kind "length" for sounds the length channel judges (PhoneResult.length_prob).
+    A sound is reported when length_prob <= the language's coaching threshold for the
+    sensitivity (pronunciada/data/length/<lang>.json "coach": the loosest native quantile whose
+    estimated precision on FLEURS dev reaches 0.8 / 0.7 / 0.6; threshold 0 = off). expected /
+    heard are "long" / "short" (the heard length is the other one); expected_ipa is the sound."""
+    from . import length as L
+
+    par = L.params(result.lang)
+    co = (par or {}).get("coach")
+    if not co:
+        return []
+    thr = co["thresholds"][sensitivity]
+    if thr <= 0:                    # no operating point reaches this sensitivity's precision
+        return []
+    out = []
+    for wi, w in enumerate(result.words):
+        if wi in omitted:
+            continue
+        for k, p in enumerate(w.phones):
+            if p.length_prob is None or p.length_prob > thr:
+                continue
+            heard = "short" if p.length_expected == "long" else "long"
+            it = _item("length", w, wi, None, k, _position(k, len(w.phones)), p.length_expected, heard,
+                       ["length"], 1.0 - p.length_prob, p.length_prob, co["precision"][sensitivity],
+                       p.start, p.end, {"length_prob": round(float(p.length_prob), 4), "threshold": thr},
+                       ipa=False)
+            it["expected_ipa"] = p.ipa
+            out.append(it)
+    return out
 
 
 def tone_error_prob(T: dict, tone_prob: float) -> float:

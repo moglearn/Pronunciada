@@ -7,6 +7,7 @@ is used for the "oov:" warning. Stress: orthographic rules (reliable for Portugu
 """
 from __future__ import annotations
 
+import os
 import gzip
 import unicodedata
 
@@ -262,6 +263,7 @@ WEAK = {
 
 class Portuguese(EuG2P):
     lang = "pt"
+    measured_nasal = True          # round 16 (adopted): see the nasal coda in build_word
     lex_name = ""
     use_lts = False
     decimal_comma = True
@@ -358,8 +360,12 @@ class Portuguese(EuG2P):
             elif p.ipa == "l" and coda and k > 0:
                 p.add_alt("w", C.P_COMMON)             # l vocalisation
             elif p.ipa in ("n", "m") and coda and k > 0 and ph[k - 1].nucleus:
-                # nasal coda: ZIPA writes V+n; a nasal vowel without consonant is the same sound
-                p.add_alt("", C.P_MED)
+                # nasal coda: ZIPA writes V+n; a nasal vowel without consonant is the same sound.
+                # Round 16: natives drop the coda in 7.5 % of word-medial and 16 % of word-final
+                # cases (bench/calib/alt_audit.py, FLEURS validation): with MEASURED_NASAL the
+                # deletion stays accepted word-finally only.
+                if not (self.measured_nasal and k < n - 1 and os.environ.get("PRONUNCIADA_PT_NASAL", "1") != "0"):
+                    p.add_alt("", C.P_MED)
                 p.add_alt("ŋ", C.P_LOW)
                 v = ph[k - 1]
                 base = v.ipa

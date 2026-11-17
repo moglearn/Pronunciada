@@ -82,6 +82,10 @@ TEMPLATES = {
     "rate.slow": "Try reading a little faster and more smoothly.",
     "rate.fast": "Slow down a little so that every sound is clear.",
     "word.missing": "The word “{word}” seemed to be missing; try saying every word.",
+    "length.vowel_long": "Hold the vowel /{sound}/ in “{word}” for two beats; it sounded short.",
+    "length.vowel_short": "Keep the vowel /{sound}/ in “{word}” short (one beat); it sounded long.",
+    "length.consonant_long": "Pause briefly before /{sound}/ in “{word}” (a double consonant); it sounded single.",
+    "length.consonant_short": "No pause before /{sound}/ in “{word}”; it sounded doubled.",
 }
 
 
@@ -200,6 +204,13 @@ def tip_for(item: dict, syllable_text: str | None = None, words: list[str] | Non
     elif k == "rushed_punctuation":
         key = "punctuation.rushed"
         P["mark"] = "full stop" if item["punctuation"] == "stop" else "comma"
+    elif k == "length":                  # round 15: expected / heard are "long" / "short"
+        from .text.ipa import is_vowel
+
+        ipa = item.get("expected_ipa") or ""
+        vowel = is_vowel(ipa)
+        P["sound"] = ipa.replace("ː", "") if vowel else (ipa[1:] if len(ipa) > 1 and ipa[0] == ipa[1] else ipa)
+        key = f"length.{'vowel' if vowel else 'consonant'}_{item['expected']}"
     elif k == "flat_pitch":
         key = "pitch.flat"
     elif k in ("slow", "fast"):

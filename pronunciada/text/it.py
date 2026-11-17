@@ -91,6 +91,7 @@ for _k, _v in list(FUNC_PRON.items()):
 
 class Italian(EuG2P):
     lang = "it"
+    measured_mid = False           # round 16: see the open / close mid vowels in build_word
     lex_name = "it"
     decimal_comma = True
     thousand_space = True
@@ -170,8 +171,12 @@ class Italian(EuG2P):
                 stressed.update(range(a, b))
         for k, p in enumerate(ph):
             # open/closed e o vary regionally in stressed syllables
+            # Round 16 (MEASURED_MID): natives use the partner for stressed e 26 %, ɛ 32-40 %,
+            # unstressed e 4 %, stressed o 13 % (bench/calib/alt_audit.py, FLEURS validation);
+            # alternatives under 15 % (the round-8 bar) are dropped.
             if p.nucleus and p.ipa[0] in OPEN and (k in stressed or p.ipa[0] in "eɛ"):
-                p.add_alt(OPEN[p.ipa[0]] + p.ipa[1:], C.P_COMMON if k in stressed else C.P_MED)
+                if not (self.measured_mid and ((p.ipa[0] == "e" and k not in stressed) or p.ipa[0] == "o")):
+                    p.add_alt(OPEN[p.ipa[0]] + p.ipa[1:], C.P_COMMON if k in stressed else C.P_MED)
             # intervocalic s voicing varies (north z, centre-south s)
             if p.ipa in ("s", "z") and 0 < k < len(ph) - 1 and ph[k - 1].nucleus and ph[k + 1].nucleus:
                 p.add_alt("z" if p.ipa == "s" else "s", C.P_COMMON)

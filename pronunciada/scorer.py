@@ -38,7 +38,7 @@ class Scorer:
                  calib_dir: str | None = None, sound_model: str | None = None,
                  prosody: bool = True, cache_size: int = 4, explain_away: bool | None = None,
                  delivery: bool | None = None, match: bool = True,
-                 audio_check: bool = True):
+                 audio_check: bool = True, length: bool = True):
         from .acoustic import AcousticModel
         from .adapter import Adapter
         from .text import get_g2p, normalize_lang
@@ -139,6 +139,11 @@ class Scorer:
             ea["enabled"] = bool(explain_away)
         self.ea = ea if ea.get("enabled") else None
         self._calib_dir = calib_dir
+        # length channel (round 15): long / short sounds judged from alignment timing
+        # (pronunciada/length.py, pronunciada/data/length/<lang>.json); None = not shipped / off
+        from . import length as _L
+
+        self.length_cal = _L.params(self.lang) if length else None
         self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
@@ -286,7 +291,15 @@ class Scorer:
             except Exception as e:  # noqa: BLE001
                 warnings.append(f"prosody failed: {type(e).__name__}: {e}")
             timing["prosody"] = (time.perf_counter() - t) * 1e3
-        cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav)   # f0 / wav: coaching only
+        lres = None
+        if self.length_cal is not None and np.isfinite(ev.L_can) and ev.L_can > -1e5:
+            from . import length as _L
+
+            t = time.perf_counter()
+            lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal)
+            timing["length"] = (time.perf_counter() - t) * 1e3
+        cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav,   # f0 / wav: coaching only
+                     length=lres)
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
         timing["total"] = (time.perf_counter() - t_all) * 1e3
         res.timing_ms = {k: round(v, 3) for k, v in timing.items()}
@@ -401,6 +414,11 @@ class Scorer:
             d = self.sound_detail.logits(tab)
             sreg = d["reg"]
             detail = {"coach_zl": d["z_len"], "coach_zs": np.minimum(d["z_str"], d["z_len"])}
+        caps = C.contrast_caps(self.lang, self._calib_dir) if hasattr(self, "_calib_dir") else []
+        if caps:                       # round 16: contrast caps on the SHOWN sound log-odds only;
+            detail.setdefault("coach_zl", zl)   # coaching and word / sentence inputs unchanged
+            detail.setdefault("coach_zs", np.minimum(zs, zl))
+            zl, zs = C.apply_contrast_caps(caps, tab, zl, zs)
         W = F.word_table(tab, uzl, uzs, ureg)
         XW = np.column_stack([np.asarray(W[c], dtype=np.float64) for c in self.word.num])
         w = self.word.logits(X=XW)
@@ -433,6 +451,7 @@ class Scorer:
         ps = C.sigmoid(C.blend_logit(c["s_zl"], c["s_zs"], s))
         pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), s))
         pr = c.get("prosody") or [dict() for _ in ref.syllables]
+        lres = c.get("length")
         f2t = self.am.frame_to_time
         phones = []
         for i, p in enumerate(ref.phones):
@@ -443,6 +462,9 @@ class Scorer:
             feats = {k: _num(tab[k][i]) for k in ("llr_sub", "llr_del", "z_llr_sub", "n_frames", "peak_post")}
             feats.update(p_lenient=float(C.sigmoid(c["s_zl"][i])), p_strict=float(C.sigmoid(c["s_zs"][i])))
             phones.append(PhoneResult(p.ipa, float(ps[i]), round(st, 3), round(en, 3), heard, feats))
+            if lres is not None and lres["prob"][i] is not None:
+                phones[-1].length_expected = lres["expected"][i]
+                phones[-1].length_prob = float(lres["prob"][i])
         words = []
         omitted = c["W"]["omitted_f"].astype(bool)
         for wi, w in enumerate(ref.words):
@@ -481,6 +503,17 @@ class Scorer:
                 else:
                     tone = p_pros
             prob = sounds * (p_pros if p_pros is not None else 1.0)
+            # length channel (round 15): a factor that stays 1 unless the word's lowest length
+            # logit is below a low native quantile (pronunciada.length.word_factor,
+            # bench/length/fit_length.py)
+            p_len = None
+            if lres is not None:
+                lv = [x.length_prob for x in ph if x.length_prob is not None]
+                if lv:
+                    from . import length as _L
+
+                    p_len = _L.word_factor(self.length_cal, lv, s)
+                    prob *= p_len
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5
@@ -488,7 +521,7 @@ class Scorer:
                 present, om = None, bool(omitted[wi])
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
-                                    present_prob=present, omitted=om))
+                                    present_prob=present, omitted=om, length_prob=p_len))
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))
         pm = None

@@ -26,21 +26,21 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2, `schema_minor` 3)
+## 1. Item schema (`schema_version` 2, `schema_minor` 4)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
 Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) added the key
 `schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
 Minor version 2 (round 13) added an experimental Japanese pitch-accent kind; minor version 3
-(round 15) removed it again (Japanese pitch accent is not scored). Consumers should ignore kinds
-they do not know.
+(round 15) removed it again (Japanese pitch accent is not scored). Minor version 4 (round 15)
+added the kind `length` (section 3c). Consumers should ignore kinds they do not know.
 
 | key | type | meaning |
 |---|---|---|
 | `schema_version` | int | 2. Renamed / removed keys bump it. |
-| `schema_minor` | int | 3. Added or removed kinds / keys bump it. |
-| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
+| `schema_minor` | int | 4. Added or removed kinds / keys bump it. |
+| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; timing: `length` (Japanese); words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
 | `phone_index` | int / null | sound inside the word (`result.words[i].phones[j]`); sounds only |
@@ -68,6 +68,8 @@ Order: by `error_prob × (0.5 + 0.5 × confidence)` (confidence 0.5 when null); 
 - **Stress** (en de es it pt ru): unchanged from round 1 (syllable and word stress probability
   < 0.5); `heard` = most probable stressed syllable if its share ≥ 0.3
   (re-fitted for the `stress_v3` stress model).
+- **Length** (Japanese, section 3c): `PhoneResult.length_prob` ≤ the sensitivity's threshold;
+  `expected` / `heard` are `"long"` / `"short"`.
 - **Missing words**: `present_prob < 0.5`; the word's sounds are not listed separately.
 - **Word-level miscues and delivery**: section 3b; switch off with `coaching(miscues=False, delivery=False)`.
 
@@ -298,6 +300,43 @@ Tip `pitch.flat`: Let your voice rise and fall more; it sounded quite flat.
 
 Tip `pause.mid_phrase`: Keep “mahayana” and “path” together; there was a 0.9 s pause between them.
 
+## 3c. Length (round 15, Japanese)
+
+`pronunciada/length.py` judges the length of Japanese vowels (long `aː` vs short `a`, including ー
+and おう) and of consonants between two vowels (っ `tt` vs single `t`) from timing. The inputs are
+the alignment's onset-to-onset intervals relative to the utterance, pauses, closure silence and
+the acoustic model's length token. Per sound it reports `PhoneResult.length_expected`
+(`"long"` / `"short"`) and `length_prob` (P(held for the right time)); `WordResult.length_prob`
+is the factor multiplied into the word probability.
+
+Item `length`:
+* `expected` / `heard` are `"long"` / `"short"`; the heard value is always the other one.
+* `expected_ipa` is the sound; `heard_ipa` is null.
+* `diff_keys` is `["length"]`.
+* `error_prob` = 1 − `length_prob`; `prob` = `length_prob`.
+* `confidence` = the estimated precision of the operating point.
+* `syllable_index` is null; `phone_index` is set.
+
+The operating point per sensitivity is the loosest native quantile whose estimated precision reaches
+0.8 / 0.7 / 0.6. Precision is estimated for a 5 % share of wrong-length sounds; planted swaps on
+FLEURS validation stand in for learner errors, because no learner data with length labels exists.
+
+| sensitivity | `length_prob` ≤ | est. precision | planted swaps caught | native judged sounds flagged |
+|---|---|---|---|---|
+| careful | 0.014 | 0.82 | 45 % | 0.5 % |
+| balanced | 0.069 | 0.71 | 70 % | 1.5 % |
+| eager | 0.113 | 0.66 | 75 % | 2.0 % |
+
+The following are not judged: particles and other one-mora words, a short vowel next to another
+vowel of its word (えい, いう), a single voiceless consonant before i / u (devoicing), and a vowel
+before a pause. Italian double consonants and German vowel length were tried and are not shipped
+([results/round15_length.md](../results/round15_length.md)).
+
+```json
+{"schema_version": 2, "schema_minor": 4, "kind": "length", "word": "その後", "word_index": 0, "syllable_index": null, "phone_index": 1, "position": "medial", "expected": "long", "heard": "short", "expected_ipa": "oː", "heard_ipa": null, "diff_keys": ["length"], "error_prob": 0.9893, "prob": 0.0107, "confidence": 0.71, "start": 1.97, "end": 2.01, "gate": {"length_prob": 0.0107, "threshold": 0.0692}}
+```
+→ tip `length.vowel_long`: "Hold the vowel /o/ in “その後” for two beats; it sounded short."
+
 ## 4. Default tips (`pronunciada/tips.py`)
 
 Separate from the data. `tips(items, max_tips=3, result=None)` returns at most `max_tips`
@@ -364,6 +403,10 @@ own or localised copy from `tip_key`.
 | `rate.slow` | Try reading a little faster and more smoothly. |
 | `rate.fast` | Slow down a little so that every sound is clear. |
 | `word.missing` | The word “{word}” seemed to be missing; try saying every word. |
+| `length.vowel_long` | Hold the vowel /{sound}/ in “{word}” for two beats; it sounded short. |
+| `length.vowel_short` | Keep the vowel /{sound}/ in “{word}” short (one beat); it sounded long. |
+| `length.consonant_long` | Pause briefly before /{sound}/ in “{word}” (a double consonant); it sounded single. |
+| `length.consonant_short` | No pause before /{sound}/ in “{word}”; it sounded doubled. |
 
 ## 5. Audio-quality gate (`pronunciada/quality.py`, `result.audio`)
 

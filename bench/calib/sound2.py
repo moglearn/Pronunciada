@@ -29,7 +29,7 @@ PHONE_KINDS = ("phone_sub_near", "phone_sub_far", "phone_ins", "word_swap")
 TAB_COLS = ("word_index", "llr_sub", "llr_del", "word_mean_llr_sub", "word_min_llr_sub", "word_mean_llr_del",
             "word_min_llr_del", "word_share_del", "word_frames", "z_llr_sub", "z_llr_del", "peak_post",
             "n_frames", "llr_sub_per_frame", "log_ratio_comp", "is_nucleus_f", "llr_sub_rel_word",
-            "word_n_phones", "alt_nonzero", "utt_median_llr_sub")
+            "word_n_phones", "alt_nonzero", "utt_median_llr_sub", "comp_mean", "can_mean")
 POS = {"initial": 0, "medial": 1, "final": 2, "only": 3}
 
 
@@ -55,6 +55,13 @@ def _init(lang):
     from bench.calib.sound_emb import Protos, proto_path
 
     _PROTO = Protos(lang) if (proto_path(lang).exists() and _SC.am.embeddings) else None
+    import os as _os
+
+    if _os.environ.get("R16_A"):                 # round 16 dev: measured pt nasal / it mid vowels
+        for attr in ("measured_nasal", "measured_mid"):
+            if hasattr(_SC.g2p, attr):
+                setattr(_SC.g2p, attr, True)
+        _SC.g2p._cache.cache_clear()
 
 
 def _item(res, phone_wrong=None, word_wrong=None, extra=None):
@@ -66,6 +73,7 @@ def _item(res, phone_wrong=None, word_wrong=None, extra=None):
     ref, ev, tab = c["ref"], c["ev"], c["tab"]
     u = sc.universal.logits(X=sc.universal.matrix(tab))
     P = {k: np.asarray(tab[k], np.float32) for k in TAB_COLS if k in tab}
+    P["comp_tok"] = list(tab.get("comp_tok", [None] * len(ref.phones)))   # round 16 (contrast caps)
     P["uzl"] = (u["z_len"] + sc.universal_bias).astype(np.float32)
     P["uzs"] = (u["z_str"] + sc.universal_bias).astype(np.float32)
     P["ureg"] = np.asarray(u["reg"], np.float32)
@@ -170,12 +178,15 @@ def run(lang, workers):
             uid, out = f.result()
             if out is not None:
                 data[uid] = out
-    (work_dir() / f"run_{lang}.pkl").write_bytes(pickle.dumps(data))
+    import os as _os
+
+    tag = _os.environ.get("SOUND2_TAG", "")
+    (work_dir() / f"run_{lang}{tag}.pkl").write_bytes(pickle.dumps(data))
     print(f"{lang}: {len(data)} clips ({time.time() - t0:.0f}s)", flush=True)
 
 
-def load(lang):
-    return pickle.loads((work_dir() / f"run_{lang}.pkl").read_bytes())
+def load(lang, tag=""):
+    return pickle.loads((work_dir() / f"run_{lang}{tag}.pkl").read_bytes())
 
 
 def main():

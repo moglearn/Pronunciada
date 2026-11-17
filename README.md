@@ -2,8 +2,8 @@
 
 On-device pronunciation checking for ten languages. Give it a recording and the text the speaker
 was meant to say; it returns a 0–1 probability that each **sound**, **word** and the whole
-**sentence** was pronounced acceptably, plus tones (Mandarin), word stress, fluency and which
-words were skipped. One `strictness` knob moves every probability between "understandable" and
+**sentence** was pronounced acceptably, plus tones (Mandarin), word stress, Japanese vowel length
+and っ, fluency and which words were skipped. One `strictness` knob moves every probability between "understandable" and
 "native-like".
 
 It runs locally on a laptop CPU: about 50 ms for a 3.5 s recording, 0.3–0.5 s for a 10–14 s one.
@@ -22,8 +22,10 @@ res.prob                      # whole sentence, 0–1
 for w in res.words:
     w.text, w.prob            # word: sounds × stress/tone × "was it said at all"
     w.sounds_prob, w.stress_prob, w.tone_prob, w.present_prob, w.omitted
+    w.length_prob                                      # Japanese: long / short sounds held right
     for p in w.phones:
         p.ipa, p.prob, p.heard, p.start, p.end        # each sound, and what it sounded like instead
+        p.length_expected, p.length_prob              # Japanese: "long" / "short", P(held right)
 
 strict = scorer.rescore(res, strictness=0.9)          # re-grade without re-running the model
 ```
@@ -182,6 +184,19 @@ patch and the acoustic model's per-syllable activations; on real learner stress 
 ([results/round11_stress.md](results/round11_stress.md)); `PRONUNCIADA_STRESS_MODEL=stress`
 selects the previous one. French, Japanese and Korean have no scored word stress or tone.
 
+### Japanese vowel length and っ
+
+The acoustic model barely hears length: 20 ms frames, and repeated sounds collapse. Before round
+15, a vowel said long where it should be short (or a doubled consonant said single) was caught
+5–6 % of the time; short-for-long was not even representable, because the front-end accepts the
+short form as an alternative. A length channel now judges each long / short vowel and each
+consonant between vowels. It reads the alignment's own timing, normalised by speaking rate, plus
+pauses, closure silence and the model's length-token evidence. On held-out FLEURS test it catches
+85 % of planted length swaps at 5 % native false alarms, and 49 % of the swapped words (24 %
+before). Native word acceptance drops 0.1 point, and the other benchmarks move by ≤ 0.002. Coaching
+items of kind `length` come with tips such as "hold the vowel for two beats" or "pause briefly
+before this consonant" ([results/round15_length.md](results/round15_length.md)).
+
 ### Native speakers are not punished
 
 On native FLEURS test recordings at the default strictness, 99.3–99.9 % of sounds, 96.8–98.4 % of
@@ -209,6 +224,13 @@ calibration error is 1–2 % for sounds, 3–4 % for words and 2–4 % for sente
   recordings with altered prompts. Detection of real mistakes is much harder (0.71–0.72 in English
   against 0.98–0.99 on the controlled test) and the same drop should be expected elsewhere.
 - **Japanese pitch accent** is not scored; see [results/round13_pitch_ja.md](results/round13_pitch_ja.md) for what was tried.
+- **Length outside Japanese**: Italian double consonants (fato / fatto) and German long / short
+  vowels are not judged by duration. Italian missed the development bars (33 % of swaps caught).
+  German passed them but cost a little on real Common Voice recordings, so it stays off
+  ([results/round15_length.md](results/round15_length.md)). Japanese length is verified only on
+  planted errors in native recordings, not on learners. Other contrasts the scorer cannot hear,
+  such as Korean aspiration and Russian soft consonants, are listed in
+  [results/contrast_audit.md](results/contrast_audit.md).
 - **Mobile**: everything is ONNX plus numpy, so it is portable, but no iOS / Android bindings have
   been built and nothing has been timed on a phone.
 - Text front-ends handle ordinary prose; numbers, abbreviations and names outside the dictionaries

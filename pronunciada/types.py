@@ -26,6 +26,11 @@ class RefPhone:
     # G2P modules fill rule-based ones (weak forms, liaison, flapping ...); pronunciada.variants
     # appends the ones learned from native speech.
     alts: list[tuple[str, float]] = field(default_factory=list)
+    # Round 15: "long" / "short" when the prompt fixes this sound's length (Japanese long vowels
+    # and っ, Italian doubled consonants, German stressed vowels). None = derive it from the
+    # canonical symbol (pronunciada.length.labels) or not applicable. Alternatives do not change
+    # it: "aː{a}" still expects a long vowel; the length channel judges the duration.
+    length: str | None = None
 
 
 @dataclass
@@ -102,6 +107,10 @@ class PhoneResult:
     end: float
     heard: str | None = None       # what it sounded like instead, when prob is low ("" = missing)
     features: dict = field(default_factory=dict)        # raw evidence, for debugging/benchmarks
+    # round 15 length channel (languages that ship one): "long" / "short" and the probability
+    # the sound was held for the right time; None where the channel does not judge the sound
+    length_expected: str | None = None
+    length_prob: float | None = None
 
 
 @dataclass
@@ -129,6 +138,7 @@ class WordResult:
     tone_prob: float | None = None         # tones (None if not applicable)
     present_prob: float | None = None      # probability the word was said at all
     omitted: bool = False                  # present_prob < 0.5
+    length_prob: float | None = None       # round 15: long / short sounds held right (None if not judged)
 
 
 @dataclass

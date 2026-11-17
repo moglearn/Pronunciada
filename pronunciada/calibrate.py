@@ -413,3 +413,52 @@ def save_level(path: str | Path, num: list[str], cat: list[str], vocab: dict, he
         meta["heads"][name] = m
     arrays["meta"] = np.frombuffer(json.dumps(meta).encode("utf-8"), dtype=np.uint8)
     np.savez_compressed(path, **arrays)
+
+
+# ----------------------------------------------------------------------------- contrast caps (round 16)
+
+CAP_FEATS = ("llr_sub", "log_ratio_comp", "z_llr_sub", "peak_post", "comp_mean", "can_mean")
+
+
+@lru_cache(maxsize=None)
+def _caps_file(directory: str | None) -> dict:
+    p = (Path(directory) if directory else data_dir()) / "contrast_caps.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+def contrast_caps(lang: str, directory: str | None = None) -> list[dict]:
+    """[{members, gate, coef, b, offset}] for the contrast classes adopted in `lang` (round 16,
+    bench/calib/contrast_fix.py): a small logistic on the raw evidence of one sound, applied as a
+    cap on its shown log-odds only when the expected sound is a member of the class and the top
+    competing token is its contrast partner (e.g. expected p, competitor ʰ)."""
+    import os
+
+    if os.environ.get("PRONUNCIADA_CONTRAST_CAPS", "1") == "0":     # before / after comparisons
+        return []
+    c = _caps_file(directory)
+    out = []
+    for cls, off in c.get("langs", {}).get(lang, {}).items():
+        m = c["classes"][cls]
+        out.append({"class": cls, "members": set(m["members"][lang]), "gate": m["gate"],
+                    "coef": np.asarray(m["coef"], np.float64), "b": float(m["b"]), "offset": float(off)})
+    return out
+
+
+def apply_contrast_caps(caps: list[dict], tab: dict, zl: np.ndarray, zs: np.ndarray):
+    """Shown sound log-odds with the contrast caps applied (zl, zs; unchanged where no cap fires)."""
+    if not caps:
+        return zl, zs
+    n = len(zl)
+    X = np.column_stack([np.clip(np.nan_to_num(np.asarray(tab[k], np.float64), nan=0.0, posinf=30.0, neginf=-30.0),
+                                 -30.0, 30.0) for k in CAP_FEATS])
+    phone, comp = list(tab["phone"]), list(tab["comp_tok"])
+    zl, zs = np.array(zl, np.float64), np.array(zs, np.float64)
+    for c in caps:
+        g = c["gate"]
+        fire = np.array([phone[i] in c["members"] and comp[i] in g.get(phone[i], g.get("*", ()))
+                         for i in range(n)], bool)
+        if fire.any():
+            z2 = X[fire] @ c["coef"] + c["b"] + c["offset"]
+            zl[fire] = np.minimum(zl[fire], z2)
+            zs[fire] = np.minimum(zs[fire], z2)
+    return zl, zs

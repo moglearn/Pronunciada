@@ -1,0 +1,158 @@
+{
+ "pt_r16": {
+  "native_words": 0.9794184515974632,
+  "native_sounds": 0.9972073763782561,
+  "sound_auc": 0.9806767122959992,
+  "word_auc": 0.9417556483321607,
+  "pros_auc": 0.9520555129924521,
+  "swap_near:auc": [
+   0.9664070143412795,
+   null,
+   null
+  ],
+  "swap_near:hit@5%FA": [
+   0.825136612021858,
+   null,
+   null
+  ],
+  "swap_near:right_word": [
+   0.7377049180327869,
+   null,
+   null
+  ],
+  "swap_far:auc": [
+   0.9976455935635123,
+   null,
+   null
+  ],
+  "swap_far:hit@5%FA": [
+   0.9972826086956522,
+   null,
+   null
+  ],
+  "swap_far:right_word": [
+   0.9646739130434783,
+   null,
+   null
+  ],
+  "near_gt09": 0.09562841530054644,
+  "near_gt08": 0.18032786885245902
+ },
+ "pt_r16A": {
+  "native_words": 0.9791791312672011,
+  "native_sounds": 0.9956906928595503,
+  "sound_auc": 0.9800042723883176,
+  "word_auc": 0.9415436691949147,
+  "pros_auc": 0.9517495248559027,
+  "swap_near:auc": [
+   0.9664271482091298,
+   null,
+   null
+  ],
+  "swap_near:hit@5%FA": [
+   0.8224043715846995,
+   null,
+   null
+  ],
+  "swap_near:right_word": [
+   0.7349726775956285,
+   null,
+   null
+  ],
+  "swap_far:auc": [
+   0.997650403760538,
+   null,
+   null
+  ],
+  "swap_far:hit@5%FA": [
+   0.9972826086956522,
+   null,
+   null
+  ],
+  "swap_far:right_word": [
+   0.9619565217391305,
+   null,
+   null
+  ],
+  "near_gt09": 0.09836065573770492,
+  "near_gt08": 0.17759562841530055
+ },
+ "it_r16": {
+  "native_words": 0.9852698562337968,
+  "native_sounds": 0.9996010373030122,
+  "sound_auc": 0.9920432548064009,
+  "word_auc": 0.9581798960500361,
+  "pros_auc": 0.9537531641114012,
+  "swap_near:auc": [
+   0.9643993345922129,
+   null,
+   null
+  ],
+  "swap_near:hit@5%FA": [
+   0.827893175074184,
+   null,
+   null
+  ],
+  "swap_near:right_word": [
+   0.712166172106825,
+   null,
+   null
+  ],
+  "swap_far:auc": [
+   0.998591853250607,
+   null,
+   null
+  ],
+  "swap_far:hit@5%FA": [
+   1.0,
+   null,
+   null
+  ],
+  "swap_far:right_word": [
+   0.9554896142433235,
+   null,
+   null
+  ],
+  "near_gt09": 0.12166172106824925,
+  "near_gt08": 0.21364985163204747
+ },
+ "it_r16A": {
+  "native_words": 0.9852698562337968,
+  "native_sounds": 0.9996010373030122,
+  "sound_auc": 0.9919481445349586,
+  "word_auc": 0.9576636235718662,
+  "pros_auc": 0.953761275255501,
+  "swap_near:auc": [
+   0.9647118064922219,
+   null,
+   null
+  ],
+  "swap_near:hit@5%FA": [
+   0.8367952522255193,
+   null,
+   null
+  ],
+  "swap_near:right_word": [
+   0.712166172106825,
+   null,
+   null
+  ],
+  "swap_far:auc": [
+   0.998574318856218,
+   null,
+   null
+  ],
+  "swap_far:hit@5%FA": [
+   1.0,
+   null,
+   null
+  ],
+  "swap_far:right_word": [
+   0.9584569732937686,
+   null,
+   null
+  ],
+  "near_gt09": 0.12166172106824925,
+  "near_gt08": 0.20474777448071216
+ }
+}
