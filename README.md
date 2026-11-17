@@ -8,6 +8,8 @@
 [![CI](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml/badge.svg)](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
+[Website](https://moglearn.github.io/pronunciada/) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
+
 Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
