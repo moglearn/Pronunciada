@@ -15,7 +15,7 @@ Manifest record: `{"id", "audio" (absolute path), "lang" (en zh ja es fr de it p
 
 ## Datasets
 
-| dataset | lang | train n / h | test n / h | speakers (train/test) | disk | licence |
+| dataset | lang | train n / h | test n / h | speakers (train/test) | disk | license |
 |---|---|---|---|---|---|---|
 | speechocean762 | en | 2500 / 2.88 | 2500 / 2.69 | 125/125 | 365 MB | Apache-2.0 |
 | fleurs | 10 langs | 11500 / 36.09 | 3982 / 13.35 | -/- | 2547 MB | CC-BY-4.0 |
@@ -122,7 +122,7 @@ better than B, works for higher- or lower-is-better metrics). Tests: `tests/test
 `errors` (kind, word, detail). `Inventory.from_references(refs)` builds the per-language phone
 inventory and word pool.
 
-| kind | change in the reference | simulated learner error | labelled wrong |
+| kind | change in the reference | simulated learner error | labeled wrong |
 |---|---|---|---|
 | `phone_sub_near` | phone → one of the 3 closest same-class phones | subtle substitution | that phone |
 | `phone_sub_far` | phone → one from the farther half of same-class phones | gross substitution | that phone |

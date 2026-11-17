@@ -45,7 +45,7 @@ the only alternative, with equal weight. The Viterbi path through the raw ZIPA p
 (the round-8 protocol), on all FLEURS-validation clips. The bar from round 8 is reused: an
 alternative is kept when natives produce it in ≥ 15 % of cases.
 
-| class | n | natives realised as the partner |
+| class | n | natives realized as the partner |
 |---|---|---|
 | ko aspirated → plain | 876 | 47 % (initial 35 %, medial 54 %) |
 | ru soft → hard | 2 645 | 29 % |

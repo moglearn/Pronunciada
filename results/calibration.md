@@ -9,7 +9,7 @@ audio ─ fbank ─ ZIPA ─ adapter ─┐
 text ─ G2P ─ Reference ─────────┴─ score_reference ─ pronunciada.features ─ sound calibrator ─ word calibrator ─ sentence calibrator ─ SentenceResult
 ```
 
-- **One feature implementation**: `pronunciada/features.py` (numpy). `phone_rows` = the base per-phone columns of the feature tables (evidence, span posteriors of the canonical token and its best competitor, log-ratio, entropy, blank, articulatory distance from a shipped token × token panphon table, last-token features, neighbour / word / utterance llr statistics, native z-scores, class, position, nucleus, stress); `derive` = derived columns computed from base columns only; `word_table` / `sentence_table` = the word / sentence calibrator inputs. `bench/pipeline/features.py` now calls `phone_rows` (feature_version 3 adds start/end frames).
+- **One feature implementation**: `pronunciada/features.py` (numpy). `phone_rows` = the base per-phone columns of the feature tables (evidence, span posteriors of the canonical token and its best competitor, log-ratio, entropy, blank, articulatory distance from a shipped token × token panphon table, last-token features, neighbor / word / utterance llr statistics, native z-scores, class, position, nucleus, stress); `derive` = derived columns computed from base columns only; `word_table` / `sentence_table` = the word / sentence calibrator inputs. `bench/pipeline/features.py` now calls `phone_rows` (feature_version 3 adds start/end frames).
 - **Models**: scikit-learn HistGradientBoosting (training only), exported to `.npz` (children as int16 offsets, float64 thresholds — float32 thresholds flipped splits, max error 0.54 —, float32 leaves) and evaluated by `pronunciada.calibrate.TreeEnsemble`: complete-binary-tree layout, one vectorised step per depth level, NaN handled by per-split column copies (NaN→−inf / NaN→+inf), categorical splits by a 257-entry lookup per split. Small categoricals (class, position, competitor class) are one-hot, identity columns (phone, competitor token) native categorical ("mixed" encoding).
 - **Heads** per level: regression of the human score; P(lenient ok) and P(strict ok) = boosted log-odds + a 1-D map (Platt or isotonic, the one with the lower grouped-CV ECE on out-of-fold log-odds); P(strict) ≤ P(lenient) enforced; strictness rule logit P_s = (1−s)·logit P_len + s·logit P_str, s clipped to [−0.5, 1.5].
 - **Shipped**: English sounds = `sound_B` (feature set B), every other language = `sound_U` (feature set A, trained on: so762) + its logit bias; word and sentence calibrators are universal (no word identity) and always read the universal model's sound log-odds (English included), the inputs they were trained on.
@@ -30,7 +30,7 @@ English tables: bit-identical. FLEURS validation: llr values differ by ≤ 3e-13
 
 ## 3. Thresholds and class balance (speechocean762 train, our phones with a human score)
 
-46727 labelled phones of 47745 (125 speakers). Share with human phone score ≥ t: >=0.5 0.958, >=1.0 0.946, >=1.2 0.943, >=1.5 0.917, >=1.6 0.917, >=1.8 0.866, >=2.0 0.803.
+46727 labeled phones of 47745 (125 speakers). Share with human phone score ≥ t: >=0.5 0.958, >=1.0 0.946, >=1.2 0.943, >=1.5 0.917, >=1.6 0.917, >=1.8 0.866, >=2.0 0.803.
 
 Lenient = score ≥ 1.0 (94.6% positive), strict = score ≥ 1.8 (86.6%); both inside 2–98 %, thresholds kept as designed.
 Word (human word accuracy 0–10, 15849 words): ≥ 5 92.8%, ≥ 8 90.0% (kept; note ≥ 5 and ≥ 8 differ by only 2.8% of words because word scores are bimodal — 88 % are exactly 10). Sentence accuracy (2,500 utterances): ≥ 6 86.1%, ≥ 8 71.2% (kept).
@@ -135,7 +135,7 @@ Parity is measured on up to 20,000 training rows per head (`bench.calib.fitlib.f
 
 **Word acceptance** = "would a rater accept every sound of this word?". Labels: speechocean762 train lenient = every aligned phone ≥ 1.0 AND word accuracy ≥ 5, strict = every aligned phone ≥ 1.8 AND accuracy ≥ 8; l2arctic / epadb train: any annotated error → not strict-ok; FLEURS validation (120 utterances / language, all 5 kinds): word with a corrupted sound → not ok, untouched words and correct references → ok; synthetic weight 40% per head. Words: {"so762": 15849, "l2arctic": 25494, "epadb": 9866, "fleurs": 152634}. Positive rate lenient: {"so762": 0.908, "fleurs": 0.921}; strict: {"so762": 0.77, "l2arctic": 0.602, "epadb": 0.536, "fleurs": 0.921} (all within 2–98 %). Inputs: `pronunciada.features.WORD2_NUM` (min / second-min of both sound log-odds, mean, share below 0.5, count, llr sum / min, deletion statistics, and the same statistics of the previous / next word plus the differences — the spill-over discount).
 
-Selection (rule fixed before running: among configurations with FLEURS-val native word acceptance ≥ 0.97, maximise mean(FLEURS-val controlled word AUC, speechocean762 CV strict AUC)). so762 columns: 5-fold speaker CV, other corpora always in training, new strict label. FLEURS columns: utterance-grouped 5-fold CV (candidates without FLEURS: trained on everything else), s = 0.5.
+Selection (rule fixed before running: among configurations with FLEURS-val native word acceptance ≥ 0.97, maximize mean(FLEURS-val controlled word AUC, speechocean762 CV strict AUC)). so762 columns: 5-fold speaker CV, other corpora always in training, new strict label. FLEURS columns: utterance-grouped 5-fold CV (candidates without FLEURS: trained on everything else), s = 0.5.
 
 | config | so762 strict AUC | so762 strict ECE | so762 lenient AUC | FLEURS native accept | FLEURS word AUC | hit @ 5 % | lowest word | score |
 |---|---|---|---|---|---|---|---|---|
@@ -212,7 +212,7 @@ Command (idempotent, re-run when a prosody model changes, e.g. tone_zh_v2.onnx):
 
 ### 11c. Explain-away second pass (selected on FLEURS validation)
 
-`pronunciada.align.score_reference(lp, ref, wild_slots=...)` pre-wildcards slots in the base lattice; the scorer wildcards the lowest word while its sounds-based P (s = 0.5) is below the threshold, re-runs evidence / features / calibrators (not the acoustic model) and takes every other word from the last pass, at most max_passes times; calibrators not refitted. `python -m bench.calib.select_explain` (60 validation clips × 10 languages; correct, word_swap, phone_sub_near, phone_sub_far references; rule: maximise right-word rate with native acceptance and word AUC each ≥ no-pass − 0.002).
+`pronunciada.align.score_reference(lp, ref, wild_slots=...)` pre-wildcards slots in the base lattice; the scorer wildcards the lowest word while its sounds-based P (s = 0.5) is below the threshold, re-runs evidence / features / calibrators (not the acoustic model) and takes every other word from the last pass, at most max_passes times; calibrators not refitted. `python -m bench.calib.select_explain` (60 validation clips × 10 languages; correct, word_swap, phone_sub_near, phone_sub_far references; rule: maximize right-word rate with native acceptance and word AUC each ≥ no-pass − 0.002).
 
 | config (thr / max) | native accept | word AUC | right word | hit @ 5 % | added ms median / p95 (1 thread) |
 |---|---|---|---|---|---|
@@ -230,5 +230,5 @@ Command (idempotent, re-run when a prosody model changes, e.g. tone_zh_v2.onnx):
 | 0.5/2 **(chosen)** | 0.9874 | 0.9874 | 0.9517 | 0.9400 | 53 / 187 |
 | 0.5/3 | 0.9873 | 0.9870 | 0.9517 | 0.9403 | 55 / 210 |
 
-On these controlled references the pass changes almost nothing (right word 0.950 → 0.952): with 2 errors per utterance the first pass rarely blames a neighbour. **Not shipped:** on held-out data (english_vs_azure.md §8, languages.md §6b/6c) it lowered speechocean762 phone Pearson 0.660 → 0.644 and word-accuracy Pearson 0.585 → 0.560, left l2arctic / epadb AUC unchanged (±0.002) and did not raise the swap "right word" rate (far: −0.007 to +0.013 per language); so it is disabled in config.json and kept as an opt-in (`Scorer(..., explain_away=True)`), as the round-3 brief allowed.
+On these controlled references the pass changes almost nothing (right word 0.950 → 0.952): with 2 errors per utterance the first pass rarely blames a neighbor. **Not shipped:** on held-out data (english_vs_azure.md §8, languages.md §6b/6c) it lowered speechocean762 phone Pearson 0.660 → 0.644 and word-accuracy Pearson 0.585 → 0.560, left l2arctic / epadb AUC unchanged (±0.002) and did not raise the swap "right word" rate (far: −0.007 to +0.013 per language); so it is disabled in config.json and kept as an opt-in (`Scorer(..., explain_away=True)`), as the round-3 brief allowed.
 

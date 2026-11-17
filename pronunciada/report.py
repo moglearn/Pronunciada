@@ -14,7 +14,7 @@ import os
 import shutil
 import unicodedata
 
-# word / sound colour bands (probability the word / sound is acceptable)
+# word / sound color bands (probability the word / sound is acceptable)
 GOOD, OK = 0.8, 0.5
 MAX_WORD_ROWS = 8
 
@@ -67,7 +67,7 @@ def payload(result, coach: bool = False, sensitivity: str = "balanced", max_tips
 # ----------------------------------------------------------------------------- terminal
 
 def want_color(stream=None, no_color: bool = False) -> bool:
-    """Colour only on a TTY, never with --no-color or a non-empty NO_COLOR (no-color.org);
+    """Color only on a TTY, never with --no-color or a non-empty NO_COLOR (no-color.org);
     FORCE_COLOR (non-empty) turns it on for a non-TTY."""
     if no_color or os.environ.get("NO_COLOR"):
         return False
@@ -149,8 +149,8 @@ def _extra_after(items) -> dict:
 
 
 def _sentence_rows(words, items, st: _Style, width: int) -> list[str]:
-    """The prompt with every word coloured by its probability; skipped words underlined,
-    extra speech shown as '+'. Without colour a marker line underneath carries the same
+    """The prompt with every word colored by its probability; skipped words underlined,
+    extra speech shown as '+'. Without color a marker line underneath carries the same
     information (^ low, ~ middling, _ skipped, + extra speech)."""
     extra = _extra_after(items)
     toks = []                                  # (text, style names, marker char)

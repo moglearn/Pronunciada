@@ -102,7 +102,7 @@ Ours: `word_mean` / `word_min` = mean / lowest word probability, `accuracy`, `fl
 
 ## Data: source, cleaning and matching
 
-Source for every locale: **Common Voice Corpus 22.0**, licence **CC0-1.0** (stated on the mirror's dataset card), Hugging Face mirror `fsicoli/common_voice_22_0` at revision `ae911de250fe9375d08e2daa2105b671d659d446`. Only the TSV metadata and the tar shards named below were read; shards were streamed and only selected clips were stored (16 kHz FLAC, outside the repo). Manifests (clip ids, pseudonymous speaker labels, votes, derived native / non-native flag, source shard): `bench/data/cv_real/<locale>.jsonl`; build log with all counts: `bench/data/cv_real/build.json`.
+Source for every locale: **Common Voice Corpus 22.0**, license **CC0-1.0** (stated on the mirror's dataset card), Hugging Face mirror `fsicoli/common_voice_22_0` at revision `ae911de250fe9375d08e2daa2105b671d659d446`. Only the TSV metadata and the tar shards named below were read; shards were streamed and only selected clips were stored (16 kHz FLAC, outside the repo). Manifests (clip ids, pseudonymous speaker labels, votes, derived native / non-native flag, source shard): `bench/data/cv_real/<locale>.jsonl`; build log with all counts: `bench/data/cv_real/build.json`.
 
 Rules: rejected: invalidated, down_votes >= 2 and up_votes <= down_votes - 2; accepted: dev/test (validated), up_votes >= 2 and down_votes == 0; duration: 1.0 s <= clip_durations <= 15.0 s; text: non-Latin-script locales (zh-CN, zh-TW, ja, ru, ko): no digits / Latin letters; silence: near-silent if < 0.3 s of 25 ms frames above -45.0 dBFS; per_speaker: 2; target_per_side_per_half: 200; seed: 20261116; strata: 5 character-length x 4 duration quantile bins of the positives.
 

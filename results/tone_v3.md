@@ -98,7 +98,7 @@ Every candidate leaves the dictionary tone in place on flat audio more often tha
 candidate also recovers fewer transplanted FLEURS-validation contours, i.e. it listens to pitch
 less on the in-domain dev set. B has a slightly higher mono AUC but is worse on the other two
 measures. Under the adoption rule (no worse leak test) none is adopted. The spectral and ZIPA
-streams buy native accuracy partly by recognising the syllable. Heavier transplant (tp8) pulled
+streams buy native accuracy partly by recognizing the syllable. Heavier transplant (tp8) pulled
 the low-mel model back toward v2 but not past it.
 
 ## 4. Held-out test (once, frozen configuration), FLEURS zh
@@ -210,7 +210,7 @@ running it: it is numpy + onnxruntime and makes no network or file access beyond
 `F0Track` on our 10 ms grid:
 * the clip is peak-normalised to 0.9 (for quiet audio);
 * the search range is 50–600 Hz;
-* log-F0 and confidence are interpolated from the 16 ms frames (centre k·16 ms, the best offset
+* log-F0 and confidence are interpolated from the 16 ms frames (center k·16 ms, the best offset
   of −8 / 0 / +8 / +16 ms on VDE);
 * energy is computed as in `f0.py`.
 

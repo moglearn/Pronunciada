@@ -423,13 +423,13 @@ The Japanese per-vowel AUCs run from 0.835 (aː) to 0.891 (iː).
 ### Aspiration: burst and voicing measures at the aligned stop (natives only)
 
 The stop is the CTC-aligned syllable-initial consonant: every zh stop or affricate, and ko
-word-initial p / t / k labelled from the hangul (lax / tense / aspirated). Voicing comes from
+word-initial p / t / k labeled from the hangul (lax / tense / aspirated). Voicing comes from
 `pronunciada/prosody/f0.py`. Five measures were tried:
 * `gap`: the voiceless stretch around the stop, i.e. closure plus release;
 * `vot`: voicing onset minus the burst, where the burst is the steepest rise of 2.5–8 kHz energy
   inside the voiceless stretch;
 * `hf`: high-frequency energy, both at the burst and over the release;
-* the stop's onset-to-onset interval, normalised;
+* the stop's onset-to-onset interval, normalized;
 * f0 at the vowel onset, in semitones relative to the utterance median.
 
 | language: pair | n | gap | vot | HF burst | HF ratio | interval | f0 onset | combined (5-fold, grouped by clip) |

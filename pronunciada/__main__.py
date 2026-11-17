@@ -59,7 +59,7 @@ def _parser() -> argparse.ArgumentParser:
     _common(c)
     c.add_argument("--coach", action="store_true",
                    help="also list every coaching item (report) / include coaching in --json")
-    c.add_argument("--no-color", action="store_true", help="no ANSI colour (also: NO_COLOR, non-TTY)")
+    c.add_argument("--no-color", action="store_true", help="no ANSI color (also: NO_COLOR, non-TTY)")
     c.add_argument("--width", type=int, default=None, help="wrap width (default: terminal, max 100)")
 
     s = sub.add_parser("score", help="score one recording against its prompt text (detailed table)")

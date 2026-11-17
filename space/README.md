@@ -1,14 +1,14 @@
 ---
 title: Pronunciada
 emoji: 🗣️
-colorFrom: green
+colorFrom: gray
 colorTo: gray
 sdk: gradio
 sdk_version: "6.32.0"
 app_file: app.py
 pinned: true
 license: apache-2.0
-short_description: Pronunciation scoring for ten languages, open source
+short_description: Pronunciation assessment for ten languages
 tags:
   - pronunciation
   - speech
@@ -18,10 +18,10 @@ tags:
 
 # Pronunciada demo
 
-Read a sentence aloud and see how each sound, word and the whole sentence was pronounced.
+Scores a recording of a read sentence against its reference text and returns acceptance probabilities for each word and phoneme.
 
-- Code and results: https://github.com/moglearn/pronunciada
+- Source and benchmarks: https://github.com/moglearn/pronunciada
 - Install: `pip install pronunciada`
 
-Recordings are scored on this Space and are not stored. Sample clips come from speechocean762,
-OMPAL and FLEURS (all CC BY 4.0). The speech model is ZIPA (CC BY 4.0).
+Recordings are scored on this Space and are not stored. The sample clips come from speechocean762,
+OMPAL and FLEURS (CC BY 4.0). The acoustic model is ZIPA (CC BY 4.0).

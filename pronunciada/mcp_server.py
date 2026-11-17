@@ -2,7 +2,7 @@
 
 Tools
   assess_pronunciation(audio_path, reference_text, language="en", coach=True, strictness=0.5)
-      -> a short plain-text report (the `pronunciada check` report without colour) plus the
+      -> a short plain-text report (the `pronunciada check` report without color) plus the
          structured result (pronunciada.report.payload without the raw debug evidence)
   list_languages() -> supported languages and the extras each needs
 

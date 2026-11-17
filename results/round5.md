@@ -12,7 +12,7 @@ tables are kept in `results/tables/round4/`.
 1. **Delivery features**: `pronunciada/delivery.py`, numpy only. There is one function per
    utterance, computed from the waveform, the fbank, the adapted log-posteriors, the alignment and
    the shared F0 track. It covers 40 features in five groups (rhythm, pauses, pitch, loudness,
-   recogniser disfluency evidence), plus mean and std pooling of encoder activations over speech
+   recognizer disfluency evidence), plus mean and std pooling of encoder activations over speech
    frames.
 2. **Encoder activations**: four intermediate tensors (stacks 1, 3, 5 and the encoder output
    before the CTC layer) are added as extra outputs of the ZIPA ONNX graph. This is done by

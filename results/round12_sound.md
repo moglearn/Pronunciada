@@ -192,7 +192,7 @@ Limits of this result:
   halves were not run.
 * **d(i) is the lead for round 13**, as an English (sound_B) change: FLEURS-en native check, then
   OMPAL / cv-real dev guards, then held-out when allowed.
-* **Prototype features are the most transferable new signal**, and are licence-clean (FLEURS
+* **Prototype features are the most transferable new signal**, and are license-clean (FLEURS
   train): they gave the largest gain both in d(ii) and in d(i).
 
 Reproduce:

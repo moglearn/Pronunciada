@@ -51,7 +51,7 @@ What it shows:
 * Final -т is heard as ts 25 % of the time, and final -ть as plain t 13 %.
 
 The new rule (`pronunciada/text/ru.py`, `MEASURED_TARGETS = True`):
-* The primary symbol is the most frequent realisation in the slot's class.
+* The primary symbol is the most frequent realization in the slot's class.
 * An alternative is kept only if natives produce it in ≥ 15 % of cases (`VOWEL_MIN`, chosen on
   dev from 0.05 to 0.25). Its log prior is log(share / primary share).
 * It applies only to known-stress words: lexicon, accent mark, ё, one vowel, or an unstressed
@@ -275,7 +275,7 @@ The fix, `bench/calib/ru_stress_lex.py`:
   keeps both readings and the broad alternatives.
 * Result: `pronunciada/data/lex/ru_stress_extra.tsv.gz`, 14 040 forms (3 homographs), **70 KB**.
 * Runtime reads only that file: `ru.EXTRA_STRESS = True`, switchable with `set_extra_stress`.
-  Torch and silero are not imported (tested). Words still unknown fall back to today's behaviour.
+  Torch and silero are not imported (tested). Words still unknown fall back to today's behavior.
   Provenance is in NOTICE.
 
 Before trusting it, silero was checked against our lexicon on the words both know (digit stress,

@@ -16,13 +16,13 @@ requests were made this round.
 ## Design
 
 **Runtime.**
-* `pronunciada/match.py` computes recogniser-side evidence per utterance (`evidence`). From it,
+* `pronunciada/match.py` computes recognizer-side evidence per utterance (`evidence`). From it,
   `inputs` builds six clipped inputs:
   * insertion / substitution / deletion rates of the greedy decode against the reference (the
     round-5 disfluency definition);
   * share of words with `present_prob < 0.5`;
   * share of sounds with `llr_sub < −3`;
-  * a "too few recognised tokens" term, max(0, −log(tokens heard / tokens expected)).
+  * a "too few recognized tokens" term, max(0, −log(tokens heard / tokens expected)).
 * `prob` is a logistic model on those inputs.
 
 **Scorer change** (`pronunciada/scorer.py`, a few lines):
@@ -113,7 +113,7 @@ margin: 0.0104 against +0.015.
 The channel does what it was built for: 16–36 % of rejected clips are flagged against ≤ 10 % of
 accepted ones. But most rejected Common Voice clips that the sentence heads pass are not gross
 mismatches. They are one-word misreadings, insertions and accents. Accepted clips with noisy audio
-carry the same recogniser evidence, so pushing harder costs as much as it gains. This is the
+carry the same recognizer evidence, so pushing harder costs as much as it gains. This is the
 cross-language version of the round-8 Japanese finding.
 
 ## Guards
@@ -125,7 +125,7 @@ cross-language version of the round-8 Japanese finding.
 | OMPAL DEV sentence metrics | not run (the channel was already rejected) |
 
 The speechocean762 failure is the decisive one. Read-aloud L2 English has high substitution and
-"strong evidence against" rates while reading the right sentence. So the recogniser-side evidence
+"strong evidence against" rates while reading the right sentence. So the recognizer-side evidence
 calls ordinary accented speech a mismatch, which FLEURS natives never show. A version fitted with
 L2 positives (e.g. speechocean762 train as extra "match" rows) is the obvious next step. It would
 need its own selection.

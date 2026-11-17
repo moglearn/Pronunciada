@@ -88,7 +88,7 @@ Earlier layers alone were *less* honest (enc1: voicing 0.88, aspiration 0.59, pa
 
 ### Claim policy (speechocean762 train) and the native cap
 
-A head claims "feature f differs, heard class c" on a flagged sound when 1 − P(expected class) ≥ q_f, the sound's coaching score ≥ t_f, the language's best competing sound (round-1 heard candidate) also has class c, no accepted alternative changes f, and a named heard sound (if any) agrees. Per sensitivity, a greedy choice of (q_f, t_f) per head maximises right coverage of real substitutions (train, out-of-fold flags) with claim precision ≥ 0.8 / 0.75 / 0.75 and at most 0.15 / 0.3 / – wrong claims per English FLEURS native clip; other languages get a coaching-score floor where their natives exceed the cap. Rules fixed before the held-out run.
+A head claims "feature f differs, heard class c" on a flagged sound when 1 − P(expected class) ≥ q_f, the sound's coaching score ≥ t_f, the language's best competing sound (round-1 heard candidate) also has class c, no accepted alternative changes f, and a named heard sound (if any) agrees. Per sensitivity, a greedy choice of (q_f, t_f) per head maximizes right coverage of real substitutions (train, out-of-fold flags) with claim precision ≥ 0.8 / 0.75 / 0.75 and at most 0.15 / 0.3 / – wrong claims per English FLEURS native clip; other languages get a coaching-score floor where their natives exceed the cap. Rules fixed before the held-out run.
 
 | sensitivity | policy (head: q, t) | train: with claim / with right claim / precision |
 |---|---|---|
@@ -96,7 +96,7 @@ A head claims "feature f differs, heard class c" on a flagged sound when 1 − P
 | balanced | voicing 0.999, 0.8; place 0.999, 0.6; lateral 0.5, 0.0; backness 0.99, 0.8; rounded 0.999, 0.0 | 17.9 % / 15.7 % / 0.868 |
 | eager | voicing 0.5, 0.4; manner 0.5, 0.6; place 0.5, 0.0; lateral 0.5, 0.0; backness 0.5, 0.0; rounded 0.99, 0.0 | 41.8 % / 33.6 % / 0.761 |
 
-Heads never enabled for claims: aspiration, palatalisation, nasality and length (English learners give no labelled examples, so no gate can be fitted) and vowel height (best train precision 0.65).
+Heads never enabled for claims: aspiration, palatalisation, nasality and length (English learners give no labeled examples, so no gate can be fitted) and vowel height (best train precision 0.65).
 
 Wrong feature claims per FLEURS validation native clip (~10 s; every claim on a native is wrong):
 
@@ -305,13 +305,13 @@ Scores unchanged: the scorer now keeps the pitch track it computes for the proso
 
 ## Round 2: a coaching operating point fitted on learner data
 
-Data. Fitted on speechocean762 **train** (2,500 utterances of Mandarin-L1 children and adults reading English; per-phone expert scores 0–2; 864 phones with the pronounced phone, 443 marked deleted) and OMPAL **dev** (Mandarin learners, per-character tone / consonant / vowel marks). FLEURS validation (native) sets the per-language caps. Held out: speechocean762 test and OMPAL test; L2-ARCTIC test and EpaDB test are report-only (non-commercial licences). Scripts: `bench/coach/dump.py` (public Scorer outputs), `bench/coach/fit_v2.py`, `bench/coach/eval_v2.py`.
+Data. Fitted on speechocean762 **train** (2,500 utterances of Mandarin-L1 children and adults reading English; per-phone expert scores 0–2; 864 phones with the pronounced phone, 443 marked deleted) and OMPAL **dev** (Mandarin learners, per-character tone / consonant / vowel marks). FLEURS validation (native) sets the per-language caps. Held out: speechocean762 test and OMPAL test; L2-ARCTIC test and EpaDB test are report-only (non-commercial licenses). Scripts: `bench/coach/dump.py` (public Scorer outputs), `bench/coach/fit_v2.py`, `bench/coach/eval_v2.py`.
 
 **Held-out discipline, plainly.** The held-out sets were evaluated twice. The first fit used the English sound calibrator's logits on speechocean762 train, where that calibrator was itself fitted (in-sample), so the coaching model over-trusted them: out-of-fold precision 0.70 on train but 0.512 on test at "balanced". The fix (the calibrator's out-of-fold logits on train, `bench/calib/train_sound.py`) was found from that first test run; everything else (rules, targets, grid) is unchanged. Both runs are reported (`results/tables/coaching_v2_heldout_leaky.json`, `coaching_v2_heldout.json`).
 
 ### 1. Which sounds to flag (speechocean762)
 
-Coaching score = logistic regression (monotone in each input) on the calibrated lenient and strict log-odds, `llr_sub`, `z_llr_sub`, competitor log-ratio, log duration, nucleus, `llr_del`, peak posterior and blank share; target expert phone score < 2. Thresholds = lowest score with out-of-fold (5-fold, speaker-grouped) precision ≥ 0.8 / 0.7 / 0.6. OOF AUC 0.826 (the strict sound probability alone: 0.821). Coefficients (standardised): zl +0.38, zs -1.65, llr_sub -0.10, z_llr_sub -0.06, log_ratio_comp +0.00, log_frames -0.09, nucleus +0.14, llr_del -0.11, peak_post +0.12, blank_mean +0.04.
+Coaching score = logistic regression (monotone in each input) on the calibrated lenient and strict log-odds, `llr_sub`, `z_llr_sub`, competitor log-ratio, log duration, nucleus, `llr_del`, peak posterior and blank share; target expert phone score < 2. Thresholds = lowest score with out-of-fold (5-fold, speaker-grouped) precision ≥ 0.8 / 0.7 / 0.6. OOF AUC 0.826 (the strict sound probability alone: 0.821). Coefficients (standardized): zl +0.38, zs -1.65, llr_sub -0.10, z_llr_sub -0.06, log_ratio_comp +0.00, log_frames -0.09, nucleus +0.14, llr_del -0.11, peak_post +0.12, blank_mean +0.04.
 
 | setting | threshold | train OOF precision | train OOF recall | **test precision** | **test recall** | test precision / recall, error = score < 1.5 | flags per FLEURS native clip (en) |
 |---|---|---|---|---|---|---|---|
@@ -335,7 +335,7 @@ Candidate as in round 1. Gate fitted on the 642 "balanced"-flagged train sounds 
 
 By class at "balanced" (test, within one feature): approximant 0.800 (n 5), fricative 0.947 (n 19), stop 0.583 (n 12), vowel 0.625 (n 8). Train (OOF flags): affricate 0.667 (n 3), approximant 0.818 (n 22), fricative 0.840 (n 50), nasal 0.750 (n 12), stop 0.865 (n 37), vowel 0.755 (n 49).
 
-When a sound is named on a real substitution it is right within one feature 77 % of the time (round 1: 50 %), but only 8 % of the experts' substitutions get a name (round 1: 54 %, mostly wrong). Many named sounds still fall on phones the experts scored 2: the experts and the recogniser disagree about mild accents.
+When a sound is named on a real substitution it is right within one feature 77 % of the time (round 1: 50 %), but only 8 % of the experts' substitutions get a name (round 1: 54 %, mostly wrong). Many named sounds still fall on phones the experts scored 2: the experts and the recognizer disagree about mild accents.
 
 ### 3. Missing sounds
 

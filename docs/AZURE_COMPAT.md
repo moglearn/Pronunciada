@@ -1,16 +1,15 @@
 # Azure-format output
 
-Many apps already parse the JSON of Microsoft Azure Speech **Pronunciation Assessment**.
-`pronunciada.compat.azure` returns pronunciada's result **in the same shape**, and
-`pronunciada serve --azure-compat` answers the Azure short-audio REST path, so such a client
-only needs its base URL changed.
+`pronunciada.compat.azure` converts a Pronunciada result to the JSON layout returned by
+Microsoft Azure Speech Pronunciation Assessment. `pronunciada serve --azure-compat` accepts the
+Azure short-audio REST request and answers in that layout, so an existing client can be pointed
+at it by changing the base URL.
 
-**Only the shape is compatible.** Every number is pronunciada's own: calibrated
-probabilities and regression scores from a different model, trained on different data,
-rescaled to 0–100. It is not Azure's output, not identical to it, and not endorsed by or
-affiliated with Microsoft. Score distributions differ, so **re-choose every threshold** (for
-example "accuracy < 60 means mispronounced") on pronunciada output; do not copy thresholds tuned
-on Azure.
+Only the layout is compatible. The values are Pronunciada's calibrated probabilities and
+regression scores, rescaled to 0–100. They come from a different model trained on different
+data, and their distributions differ from Azure's. A threshold chosen on Azure output (for
+example "accuracy < 60 means mispronounced") has to be chosen again on Pronunciada output.
+This project is not affiliated with or endorsed by Microsoft.
 
 ## Python
 
@@ -55,7 +54,7 @@ times 100, rounded to 0.1.
 | `SNR` | approximated | `audio["snr_db"]` of the audio-quality gate (a different estimator) |
 | `NBest[0].Lexical` | approximated | the reference words, lower-cased, omitted words left out |
 | `NBest[0].Display` | approximated | the reference text |
-| `NBest[0].Confidence`, `ITN`, `MaskedITN` | not available | (no recogniser) |
+| `NBest[0].Confidence`, `ITN`, `MaskedITN` | not available | (no recognizer) |
 | `AccuracyScore` (sentence) | present | `scores["accuracy"]` x100 (the speechocean762-style 0–10 accuracy / 10); without it the mean word prob x100 |
 | `FluencyScore` | present | `scores["fluency"]` x100 (= `fluency`) |
 | `CompletenessScore` | present | `completeness` x100 (share of words said) |

@@ -57,7 +57,7 @@ the 1-point rule, and the sound-error cost shrinks. Each language has its own fi
 
 On paper `pitch_ja_v3` meets the bar for leaving the experimental flag: agreement ≥ 80 %, a
 product AUC gain, native drop 0.8 points. But it fails the leak checks below. Most of the gain
-comes from recognising the word, not from hearing its pitch. **I would not take it out of
+comes from recognizing the word, not from hearing its pitch. **I would not take it out of
 experimental.** The flag was not flipped. `pitch_ja_v3r` follows the pitch best but stays far
 below 80 %.
 
@@ -130,7 +130,7 @@ candidate. The full suite gives 464 passed, 1 skipped (not mine).
 
 ## What did not work
 
-* `pitch_ja_v3` reaches 80.6 % mostly by recognising words. Its pitch-following is worse than the
+* `pitch_ja_v3` reaches 80.6 % mostly by recognizing words. Its pitch-following is worse than the
   shipped model's on both leak checks, so the ZIPA stream leaks in Japanese despite transplant
   augmentation.
 * Without the spectral and ZIPA streams (`pitch_ja_v3r`), the gain shrinks to +2 points of

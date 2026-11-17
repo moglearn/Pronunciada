@@ -91,7 +91,7 @@ class English(EuG2P):
 
     def rewrite(self, phones, word):
         """ZIPA conventions measured on FLEURS en_us: stressed ʌ is heard as ə (62 %),
-        r-coloured schwa as ɜ˞ (54 %), coda l as velarised l̴ (~55 %)."""
+        r-colored schwa as ɜ˞ (54 %), coda l as velarised l̴ (~55 %)."""
         out = []
         n = len(phones)
         for i, t in enumerate(phones):

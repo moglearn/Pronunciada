@@ -145,11 +145,11 @@ word-error guard binds.
 * **Word factor for en, ru, de, ko.**
   * en: its contrasts were already caught at word level.
   * ru, ko: the planted word-error AUC guard binds at every setting that helps; the factor also
-    penalises native words with a low contrast z, enough to cost planted-error AUC.
+    penalizes native words with a low contrast z, enough to cost planted-error AUC.
   * de: +12 pt, under the 15-pt bar.
 * **Contrast hit, the opposite direction.** ja "voiceless for voiced" and ru "soft for hard" do
   not gain at word level.
 * **ja near-swap hit@5 %**: one record fewer on test.
 * **Coverage of the Korean tense marker.** It comes from spelling plus the front-end's
   tensification rule; other phonological tensification (for example after a ㄹ coda in Sino-Korean
-  words, or after the adnominal -ㄹ) is not modelled.
+  words, or after the adnominal -ㄹ) is not modeled.

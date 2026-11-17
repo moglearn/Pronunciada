@@ -1,14 +1,14 @@
 # European text front-ends (en de fr es it pt ru)
 
 Code: `pronunciada/text/{en,de,fr,es,it,pt,ru}.py` on top of shared helpers
-`_eu_common.py` (tokeniser, numbers, syllabifier, alternative alignment, `Reference` assembly),
+`_eu_common.py` (tokenizer, numbers, syllabifier, alternative alignment, `Reference` assembly),
 `_eu_base.py` (the common G2P driver), `_eu_lts.py` (learned letter-to-sound fallback and a
 suffix stress model) and `_eu_build.py` (offline lexicon builder, never imported at runtime).
 Tests: `tests/test_text_eu.py` (offline).
 
 ## Pipeline
 
-1. Tokenise (letters incl. apostrophes / inner hyphens / dotted acronyms, numbers with
+1. Tokenize (letters incl. apostrophes / inner hyphens / dotted acronyms, numbers with
    language-specific separators and ordinal suffixes, a few symbols). `RefWord.text` is the token
    exactly as written, `char_span` its offsets.
 2. Expand: abbreviations (small tables), acronyms (letter names), digits (`num2words`,
@@ -49,7 +49,7 @@ these are covered by alternatives but count as errors in this canonical-only met
 
 ## Convention decisions (measured, canonical <- what ZIPA writes for natives)
 
-* **en** stressed ʌ -> ə (62 %), r-coloured schwa -> ɜ˞ (54 %), coda l -> l̴ (55 %); weak forms
+* **en** stressed ʌ -> ə (62 %), r-colored schwa -> ɜ˞ (54 %), coda l -> l̴ (55 %); weak forms
   "a" [ɪ] (61 %), "an" [æn] (84 %), "was" [wɑz] (88 %), "with" [wɪθ], "on" [ɔn]. Flaps are
   written t by ZIPA (92 %), so flapping is an alternative only.
 * **es** the tap is written r (86 %) and the trill ɾ (71 %) - swapped labels, kept as ZIPA does
@@ -119,9 +119,9 @@ words: that is the job of the learned variant layer.
   held-out lexicon forms). Clitics unstressed.
 * fr: None everywhere.
 
-## Data sources and licences
+## Data sources and licenses
 
-| file (pronunciada/data/lex) | source | licence | shipped size |
+| file (pronunciada/data/lex) | source | license | shipped size |
 |---|---|---|---|
 | en.tsv.gz, en_lts.tsv.gz | CMUdict (github.com/cmusphinx/cmudict) | BSD-2-Clause style | 0.86 MB + 0.09 MB |
 | de.tsv.gz, de_lts.tsv.gz | ipa-dict `de` (github.com/open-dict-data/ipa-dict) | MIT | 4.2 MB + 0.04 MB |
@@ -135,11 +135,11 @@ All lexicons ship gzip-compressed in the package (each <= 5 MB, total 13 MB); no
 downloaded at runtime. Attribution text: `pronunciada/data/lex/SOURCES-eu.txt`.
 
 CharsiuG2P (MIT code) was inspected: its `dicts/*.tsv` are compilations of ipa-dict (MIT),
-WikiPron (CC BY-SA) and sources of unknown licence, so the underlying sources were used directly
+WikiPron (CC BY-SA) and sources of unknown license, so the underlying sources were used directly
 instead. No GPL data or code: espeak-ng was not used at all. `num2words` (LGPL-2.1) is an optional
 runtime import only (numbers are skipped with a warning without it).
 
-**Licence flag for the architect:** it / pt / ru lexicons are Wiktionary-derived CC BY-SA (not GPL,
+**License flag for the architect:** it / pt / ru lexicons are Wiktionary-derived CC BY-SA (not GPL,
 but share-alike). If the release must be permissive-only, these three files can be moved to a
 separately-licensed download; the code then still works with rules only (it: rules + LTS would
 need retraining on a permissive source; pt and ru fall back to rules / the suffix stress model).
@@ -168,7 +168,7 @@ por_latn_bz_broad,rus_cyrl_narrow}.tsv).
 * de: long compounds split by min-pieces DP can split wrongly (Staubecken); ZIPA's German output
   mixes two conventions (ʀ/ai/x/long vowels vs ʁ/aɪ/ç/short) per speaker, hence the high TER.
 * fr: liaison lists are hand-made and context-free (no syntax: plural noun + adjective liaison
-  is not modelled); h aspiré list is short; "est"/"un" follow ZIPA's label conventions; numbers
+  is not modeled); h aspiré list is short; "est"/"un" follow ZIPA's label conventions; numbers
   like "vingt et un" lack the liaison t.
 * All: abbreviations are small tables; only the symbols % & $ € £ + = @ ° § are verbalised; a
   Russian number is always nominative (num2words), so case agreement after prepositions is wrong.

@@ -21,7 +21,7 @@ as one sound:
 Feature names (all phones carry every key of their type; booleans default False):
   consonant: place, manner, voicing, aspirated, palatalised, labialised, velarised,
              pharyngealised, ejective, unreleased, syllabic, long, laminal_dental (dental
-             diacritic), apical, nasal_release, lateral, rhotic (r-coloured), glide, next
+             diacritic), apical, nasal_release, lateral, rhotic (r-colored), glide, next
   vowel:     height (close, near-close, close-mid, mid, open-mid, near-open, open),
              backness (front, central, back), rounded, nasal, long, rhotic, devoiced, glide, next
 Affricates keep the fricative's place (tʃ = postalveolar affricate); "lateral" is a separate

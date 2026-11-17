@@ -36,14 +36,14 @@ pronunciada check clip.wav "The quick brown cat jumps over the lazy dog" --lang 
 - **First line**: a verdict from the sentence probability (Good ≥ 80 %, Close ≥ 50 %, Try again
   below), the sentence probability, the accuracy and fluency scores (0–10), completeness when
   a word was missed, then the language and strictness.
-- **The sentence**: each word coloured by its probability: green ≥ 0.8, amber 0.5–0.8, red
+- **The sentence**: each word colored by its probability: green ≥ 0.8, amber 0.5–0.8, red
   < 0.5; skipped words are underlined; a magenta `+` marks extra speech between words.
-  Without colour, a marker line underneath carries the same information: `~` amber, `^` red,
+  Without color, a marker line underneath carries the same information: `~` amber, `^` red,
   `_` skipped, `+` extra speech. Wide (CJK) characters take two columns and the markers line
   up with them.
 - **Flagged words** (probability < 0.8, skipped, or with a coaching item): every sound in IPA
   with its probability; weak sounds (probability < 0.5 or flagged by coaching) are highlighted
-  (in brackets without colour), with `→x` for the sound heard instead when one is named. Tone,
+  (in brackets without color), with `→x` for the sound heard instead when one is named. Tone,
   stress, length and contrast notes appear on the next line when they are low.
 - **Tips** (`→`): up to three coaching tips (`--max-tips`), from `pronunciada.tips`.
 - **Audio warnings** (`⚠ audio:`): issues from the audio-quality gate, and scorer warnings.
@@ -75,7 +75,7 @@ Options:
 | `--width` | terminal (max 100) | wrap width |
 | `--precision`, `--threads` | fp32, auto | ONNX Runtime options |
 
-Colour is used only when stdout is a terminal, `--no-color` is not given and `NO_COLOR` is
+Color is used only when stdout is a terminal, `--no-color` is not given and `NO_COLOR` is
 unset or empty (see no-color.org); `FORCE_COLOR=1` forces it on. Piped output never contains
 escape codes.
 

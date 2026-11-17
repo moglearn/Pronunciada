@@ -1,9 +1,9 @@
-# pronunciada design
+# Design
 
-On-device pronunciation scoring for read-aloud prompts, built on the ZIPA universal phone
-recogniser (ONNX). Input: audio + the text the learner was asked to say + language. Output:
-calibrated 0–1 acceptance probabilities per sound, per word and for the whole sentence, plus
-tone / stress results, with one `strictness` knob.
+Pronunciation scoring for read-aloud prompts, built on the ZIPA universal phone recognizer
+(ONNX). Input: audio, the text the learner was asked to read, and the language. Output:
+calibrated 0–1 acceptance probabilities per phoneme, per word and for the sentence, plus tone
+and stress results, all controlled by one `strictness` parameter.
 
 ## Verified facts about the model (measured on this machine)
 
@@ -64,7 +64,7 @@ bench/                      datasets, corruption protocol, metrics, Azure runner
 - Natural connected speech must never be punished. Front-ends add rule-based `alts` for the
   well-known optional processes of their language (weak forms, linking, liaison, elision,
   flapping, assimilation across word boundaries, vowel devoicing, sandhi …). A second, automatic
-  layer (`pronunciada.variants`) adds every realisation that native speakers produce often enough.
+  layer (`pronunciada.variants`) adds every realization that native speakers produce often enough.
 - No GPL code or data in the runtime path (espeak-ng may be used as an offline dev cross-check only).
 
 ## 2. Acoustic evidence (`lattice.py`, `align.py`)
@@ -81,7 +81,7 @@ Per slot *i* we compute, with full-sum (forward) scores:
 |---|---|---|
 | `L_can` | log P(audio \| lattice) | — |
 | `L_wild_i` | same lattice, but slot *i*'s token states emit `log(1 − p_blank(t))` (any speech sound) and slot *i* may also be skipped | "anything or nothing was said here" |
-| `llr_sub_i` | `L_can − L_wild_i` (≤ 0) | main evidence: how much worse the allowed realisations explain the audio than "anything" |
+| `llr_sub_i` | `L_can − L_wild_i` (≤ 0) | main evidence: how much worse the allowed realizations explain the audio than "anything" |
 | `L_del_i` | lattice with slot *i* removed | — |
 | `llr_del_i` | `L_can − L_del_i` | > 0: the sound is present; < 0: it was probably skipped |
 
@@ -183,7 +183,7 @@ call actually does today:
 - **Word probability** = `sounds_prob × P_prosody × present_prob` × (ja) length factor ×
   (zh, ja) contrast factor:
   - `sounds_prob`: the word model of §4 (`data/calib/word.npz`, speechocean762 train + FLEURS
-    validation planted errors since the licence-clean refit of 2026-11-17); it reads the uncapped
+    validation planted errors since the license-clean refit of 2026-11-17); it reads the uncapped
     sound outputs.
   - `P_prosody`: tone (zh) or stress (en de es it pt ru) through a word-level calibrator whose
     leniency costs at most one point of native word acceptance on FLEURS validation.
@@ -195,7 +195,7 @@ call actually does today:
 - **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
 - **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
   probability, the round-2/4 heads (`sentence_r4.npz`) in every language. The round-5 heads with
-  delivery inputs (`sentence.npz`) were used for English and Portuguese until the licence-clean
+  delivery inputs (`sentence.npz`) were used for English and Portuguese until the license-clean
   refit; re-fitted on the clean word log-odds they fail their own native guard (median native
   prosodic score drops > 0.3) in every language, so config `sentence_model` now selects
   `sentence_r4` everywhere (results/licence_refit.md). Mandarin accuracy / prosodic are
@@ -212,7 +212,7 @@ call actually does today:
 Selectable but off by default: `Scorer(..., explain_away=True)` (round 3 second pass; it lowered
 held-out English correlations); `coaching(..., delivery="all")` adds the `slow` / `flat_pitch`
 flags. Environment switches exist for paired before / after benchmarks and keep the shipped
-behaviour when unset: `PRONUNCIADA_TONE_MODEL`, `PRONUNCIADA_STRESS_MODEL`,
+behavior when unset: `PRONUNCIADA_TONE_MODEL`, `PRONUNCIADA_STRESS_MODEL`,
 `PRONUNCIADA_TONE_LENIENCY`, `PRONUNCIADA_CONTRAST_CAPS=0`, `PRONUNCIADA_HEAD_CAPS=0`,
 `PRONUNCIADA_WORD_CONTRAST=0`, `PRONUNCIADA_PT_NASAL=0`.
 

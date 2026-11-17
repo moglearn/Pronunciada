@@ -8,7 +8,7 @@ default setting, against a **50 %** bar. The default (`pitch_ja`) and `ja.json` 
 Nothing held-out was run, as briefed.
 
 What did ship, all opt-in:
-* the round-13 machinery: accent classes in the Japanese reference, a word-level judgement on
+* the round-13 machinery: accent classes in the Japanese reference, a word-level judgment on
   dependable words, a `pitch_accent` coaching kind and tips;
 * one selectable candidate, `PRONUNCIADA_PITCH_MODEL=pitch_ja_v5`, with its own calibrator
   `ja.pitch_ja_v5.json` and a `judge` block, so the coaching items can be tried end to end.
@@ -16,9 +16,9 @@ What did ship, all opt-in:
 **Unverified on real learners.** No recordings with marked Japanese pitch-accent mistakes were
 available. Every "wrong accent" below is synthetic.
 
-## 1. Data and licences
+## 1. Data and licenses
 
-| source | used for | licence / terms |
+| source | used for | license / terms |
 |---|---|---|
 | FLEURS-ja (train / validation) | natural training (train); dev and "natives" (validation) | CC BY 4.0 |
 | Open JTalk front-end + HTS engine via `pyopenjtalk-plus` 0.4.1.post10 (installed) | system 1: accent-edited synthesis | MIT (pyopenjtalk-plus); Open JTalk / hts_engine BSD-3 |
@@ -27,15 +27,15 @@ available. Every "wrong accent" below is synthetic.
 
 Considered, **not installed** (no approval was asked for, and each is more than a small addition):
 
-| candidate | licence (from the model card) | why not now |
+| candidate | license (from the model card) | why not now |
 |---|---|---|
 | Kokoro-82M (hexgrad) | Apache-2.0 weights | its Japanese pitch-accent control via the misaki G2P is unverified; ~330 MB + deps |
 | MeloTTS-Japanese (myshell-ai) | MIT | needs a Japanese BERT + UniDic (>1 GB with dependencies); the card does not state accent control |
 
 Rejected outright:
-* VOICEVOX: per-character terms, not a clear licence for training on its output;
+* VOICEVOX: per-character terms, not a clear license for training on its output;
 * JSUT / JVS-based models: corpus terms restrict commercial use;
-* Coqui XTTS: non-commercial licence.
+* Coqui XTTS: non-commercial license.
 
 A second permissive HTS voice would give a cleaner held-out synthesis voice. The Open JTalk
 `nitech_jp_atr503_m001` voice (CC BY 3.0, ~2 MB) is the obvious one; it needs the owner's direct
@@ -62,7 +62,7 @@ The sets:
 
 ## 2. Models
 
-All are pitch-only (pitch + local register + neighbour context, the v3r recipe; no encoder
+All are pitch-only (pitch + local register + neighbor context, the v3r recipe; no encoder
 layers), with contour-transplant augmentation 0.6 and 4 000 steps. The final weights are kept,
 with no selection on validation.
 
@@ -118,7 +118,7 @@ for `pitch_ja`.
 **Which bars fail, by how much:**
 * **Bar 2 fails for every candidate.** On unseen natural voices the best is 14.6 % (`v5`, 35
   points short). On an unseen system it is 14.5 % (`v5`). `v4` reaches 70 % on held-out HTS
-  only because that is the same voice it was trained on: it learns that voice's realisation of
+  only because that is the same voice it was trained on: it learns that voice's realization of
   accent, not accent in general (8 % on PSOLA).
 * **Bar 1** holds only for `v4pt` (2.9 %), which is useless on natural voices (2.5 % caught).
   The other candidates flag 3.3–5.2 % of half-B natives at a threshold set to 2.5 % on half A.
@@ -135,19 +135,19 @@ transfer to real voices.
 ## 5. What would move it
 
 * More voices for the synthetic pairs: a second permissive HTS voice (nitech m001, CC BY 3.0,
-  ~2 MB) and a neural TTS whose accent can be set (Kokoro / MeloTTS: licences fine, sizes and
+  ~2 MB) and a neural TTS whose accent can be set (Kokoro / MeloTTS: licenses fine, sizes and
   accent control to verify). Hold one voice and one system out.
-* Accent-phrase-level rather than word-level judgement (the fall often lands on the particle),
+* Accent-phrase-level rather than word-level judgment (the fall often lands on the particle),
   and a contrastive score (P(dictionary pattern) vs P(the best alternative pattern)) instead of
   the mean NLL.
 * Real learner data with marked accent errors (none public). Even a few hundred teacher-marked
   words would replace the synthetic bar.
 
-## 6. What changed in the package (no default behaviour changed)
+## 6. What changed in the package (no default behavior changed)
 
 * `pronunciada/types.py`: `RefSyllable.pitch_class` (None outside Japanese).
 * `pronunciada/text/ja.py`: sets it per mora.
-* `pronunciada/prosody/pitch_judge.py` (new): class keys, dependable-word judgement, fall
+* `pronunciada/prosody/pitch_judge.py` (new): class keys, dependable-word judgment, fall
   positions.
 * `pronunciada/prosody/__init__.py`: a pitch model with a `"judge"` block adds `pitch_word`
   (score, per-sensitivity flags, expected / heard fall) to the morae of judged words.
@@ -158,7 +158,7 @@ transfer to real voices.
   (limit 5 MB).
 
 Latency: `pitch_ja_v5` takes 14.6 ms (min, densest 10 s FLEURS-ja clip, 2 threads) vs 14.5 ms for
-`pitch_ja`. The judgement adds no measurable time.
+`pitch_ja`. The judgment adds no measurable time.
 
 Checks:
 * Byte identity on 5 FLEURS validation clips each for zh, ja (default model), fr and ko: all

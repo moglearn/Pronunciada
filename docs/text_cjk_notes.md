@@ -4,13 +4,13 @@ Modules: `pronunciada/text/zh.py`, `ja.py`, `ko.py`, shared helpers `pronunciada
 hand-written tables in `pronunciada/data/cjk/`. Tests: `tests/test_text_cjk_{zh,ja,ko}.py` (offline).
 Runtime packages: `requirements-text-cjk.txt`.
 
-## Provenance and licences
+## Provenance and licenses
 
-| component | used for | licence |
+| component | used for | license |
 |---|---|---|
 | pypinyin 0.55.0 (code + bundled pinyin/phrase data) | phrase-aware readings, polyphones | MIT |
 | jieba 0.42.1 (code + `dict.txt`) | Mandarin word segmentation, word-frequency for 3-3-3 sandhi structure | MIT |
-| opencc-python-reimplemented 0.1.7 (+ OpenCC dictionaries) | Traditional -> Simplified normalisation | Apache-2.0 |
+| opencc-python-reimplemented 0.1.7 (+ OpenCC dictionaries) | Traditional -> Simplified normalization | Apache-2.0 |
 | pyopenjtalk-plus 0.4.1.post10 | Japanese readings, accent, devoicing (`run_frontend`, `make_label`) | MIT |
 | ├ Open JTalk (C library, bundled) | morphological analysis / NJD / accent phrases | Modified BSD |
 | ├ dictionary (NAIST-jdic + UniDic-derived entries) | lexicon + accent types | BSD-3 (NAIST); UniDic under its BSD-3 option |
@@ -19,7 +19,7 @@ Runtime packages: `requirements-text-cjk.txt`.
 | sudachipy 0.7.0 + sudachidict-core (dependency of pyopenjtalk-plus) | kanji reading disambiguation inside pyopenjtalk-plus | Apache-2.0 |
 | pydantic / pydantic-core / annotated-types / typing-inspection | dependencies of pyopenjtalk-plus | MIT |
 | `data/cjk/zh_neutral.txt`, `data/cjk/zh_tw_tones.txt` | neutral-tone words, Taiwan tone variants | written for pronunciada (Apache-2.0 with the project) |
-| Korean rules, number readings, all ZIPA mapping tables | in-house code | project licence |
+| Korean rules, number readings, all ZIPA mapping tables | in-house code | project license |
 
 No GPL code or data is imported at runtime. Original `pyopenjtalk` has no macOS-arm64/py3.12 wheel
 (source build needs a compiler; it failed here), so `pyopenjtalk-plus` (same API, prebuilt wheels,
@@ -85,7 +85,7 @@ Conventions were tuned against ZIPA (`zipa-small-crctc-500k`) greedy output on F
   nucleus = place-assimilated nasal (m / n / ŋ; ŋ before vowels and at the end), alts n m ŋ ɴ.
 - ZIPA conventions found: し ʃ, ち tʃ, じ dʒ, つ ts, ひ **h** (ZIPA never writes ç), ふ **f**
   (never ɸ), ら-row r, long vowels Vː, いく after a vowel often j.
-- Alternatives: devoiced i/u may be dropped (labelled -0.2, environment -0.7), g ~ ŋ word-medially,
+- Alternatives: devoiced i/u may be dropped (labeled -0.2, environment -0.7), g ~ ŋ word-medially,
   r ~ ɾ / l / d, z ~ dz, w ~ v (ZIPA hears は/わ as va 29 %), を ~ wo, ai/ae -> aj, ou/ei spelling.
 - Word `text` = original spans; numbers read by Open JTalk (7,000 -> ナナセン) keep the digit span
   as one word. Latin runs are cut out before analysis (warning).

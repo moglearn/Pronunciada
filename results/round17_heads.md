@@ -38,7 +38,7 @@ planted substitution per clip as the planted-error guard; `bench/round17/collect
   `palatalised` for ru, all of which follow the audio in the round-4 leak check (honest 0.84 /
   0.76).
 * z = slope · (s − s0), where s0 is the q-quantile of natives' s (FLEURS validation). sigmoid(z) is
-  "the feature was realised as expected".
+  "the feature was realized as expected".
 
 **Cap.** The shown sound log-odds are set to min(z_l, z) and min(z_s, z). This composes with
 round 16's caps by the minimum (no product), and coaching inputs, words and sentences do not
@@ -109,7 +109,7 @@ Cost: the Japanese "geminate for single" swapped word is caught less often at th
   * Korean, dev swaps caught at "balanced" by these items: plain for aspirated
     55 %, aspirated for plain 21 %.
   * Russian: hard for soft 54 %, soft for hard 1 %.
-  * Unverified on learners: there are no labelled Korean or Russian learner data.
+  * Unverified on learners: there are no labeled Korean or Russian learner data.
 * **Mandarin: not enabled** (OMPAL dev, learners; `bench/round17/ompal.py`):
   * the evidence alone has consonant-error AUC 0.80 on aspiration-member initials;
   * maxed into the round-12b coaching score it lowers the consonant AUC 0.956 → 0.935;

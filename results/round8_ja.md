@@ -13,7 +13,7 @@ disjoint from the test half. No test-half clip or output was inspected.
 
 * `python -m bench.eval_cv --half dev ...` scores the dev half and sends it to Azure. It uses its
   own caches (`cv-real-dev/ours/`, `azure/cv-real-dev/`) and writes only
-  `results/tables/cv_real_dev.json`, never `cv_real.md`. The default (test) behaviour, caches and
+  `results/tables/cv_real_dev.json`, never `cv_real.md`. The default (test) behavior, caches and
   `latest.json` are untouched. Tests: `tests/test_eval_cv_half.py`.
 * `python -m bench.ja_round8 dump | analyse | altread` keeps per-word evidence for every dev clip
   (phones, what was heard, greedy decode, probabilities). It also builds the cause breakdown
@@ -35,7 +35,7 @@ and 0.514.
 
 ## Cause breakdown (dev)
 
-**Clip level.** PER is the normalised edit distance between the greedy phone decode and the
+**Clip level.** PER is the normalized edit distance between the greedy phone decode and the
 reference.
 
 | | accepted (194) | rejected (194) |

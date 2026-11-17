@@ -62,7 +62,7 @@ No offset: the stated ZIPA frame timing (frame j starts at 0.02 j + 0.03 s) is u
 
 Labels: our surface tone (1–4, 5 = neutral). Train: aishell3 train (agree/sandhi syllables) +
 FLEURS zh train = 155 639 syllables per epoch (8 537 utts). Augmentation fresh every epoch: tempo
-0.85–1.15, normalised-contour range ×0.7–1.3, noisy pitch track (12–30 dB SNR) for 30 % of
+0.85–1.15, normalized-contour range ×0.7–1.3, noisy pitch track (12–30 dB SNR) for 30 % of
 utterances, boundary jitter ±20 ms. 20 epochs, AdamW + one-cycle, best dev epoch kept.
 
 * **baseline**: lf0 resampled to 10 points over previous / target / next syllable + their mean
@@ -191,7 +191,7 @@ Findings:
   Its learner-relevant AUC is 0.758 vs 0.883 for F0-only. Some pitch information is present in
   the posteriors (accuracy falls 84.8 → 54.1 % when the pitch is flattened), but the gain on
   native test sets does not carry over to detecting wrong tones. Not shipped. Fixing this would
-  need counterfactual training data (the same syllables resynthesised with other tones, labelled
+  need counterfactual training data (the same syllables resynthesised with other tones, labeled
   with the tone actually produced). Not done.
 * **Shipped: F0-only stride-2 ProsodyNet** (section 4 numbers). Its native ceiling is set by the
   pitch signal itself, by FLEURS' fast read speech (5.5 syl/s in the fastest third) and by data
@@ -203,9 +203,9 @@ save shared disk; `python -m bench.prosody.extra_feats` rebuilds it.)
 
 **Data added** (training only; labels from our front-end; `bench/prosody/fetch_zh_extra.py`):
 
-| source | licence | speakers | utterances | hours |
+| source | license | speakers | utterances | hours |
 |---|---|---|---|---|
-| AISHELL-1 train speakers S0002–S0715 (HF `AISHELL/AISHELL-1` per-speaker archives for S0002–S0101, then HF parquet mirror `carlot/AIShell` row groups for later speakers; ≤ 100 utts per speaker) | Apache-2.0 (corpus licence; the `carlot` mirror card states none) | 300 | 30 000 | 37.24 |
+| AISHELL-1 train speakers S0002–S0715 (HF `AISHELL/AISHELL-1` per-speaker archives for S0002–S0101, then HF parquet mirror `carlot/AIShell` row groups for later speakers; ≤ 100 utts per speaker) | Apache-2.0 (corpus license; the `carlot` mirror card states none) | 300 | 30 000 | 37.24 |
 | Common Voice 25.0 zh-TW official train split (HF `OpenFormosa/common_voice_25_zh-TW`), contributors in our zhtw test set excluded (0 overlapping sentences), ≤ 50 utts per contributor | CC0-1.0 | 183 | 4 994 | 4.67 |
 | **total new** | | **483** | 34 994 | **41.9** |
 
@@ -229,9 +229,9 @@ syllable) equals the target's. Label = donor tone; energy stays the target's.
   untouched syllables. Score = 1 − P(reference tone or alts). Also reported: hit rate at 5 %
   native false alarms, and donor-tone accuracy (argmax = the tone actually produced).
 * *Monotone*: section 5's flat-pitch resynthesis, 2 433 tone-2/3/4 syllables. Values are AUC
-  (original vs monotone audio) / share still labelled with the dictionary tone.
+  (original vs monotone audio) / share still labeled with the dictionary tone.
 
-All variants: the same 8 000 optimiser steps × 256 syllables (old data ≈ 13 passes, new ≈ 3
+All variants: the same 8 000 optimizer steps × 256 syllables (old data ≈ 13 passes, new ≈ 3
 passes), temperature + Platt on FLEURS-validation dev. Cells: 5-way acc % / wrong-tone AUC /
 EER % / 2↔3 AUC / transplant AUC / transplant hit @ 5 % FA % / donor-tone acc %.
 
@@ -339,7 +339,7 @@ With 80 positives the AUC has a wide uncertainty; the label is extremely skewed.
 
 Per mora (merged units as in the front-end) P(high) vs `pitch_high` (Open JTalk accent dictionary +
 Tokyo rule). Stride-2 ProsodyNet, binary output, train FLEURS ja train (1 000 utts), 15 epochs.
-FLEURS ja test, 22 558 morae (52.9 % labelled high):
+FLEURS ja test, 22 558 morae (52.9 % labeled high):
 
 | model | mora accuracy [95 % CI] | recall H / L | mora flip AUC / EER | word pattern AUC (all / ≥ 2 morae) | EER | ECE (cal.) |
 |---|---|---|---|---|---|---|
@@ -385,7 +385,7 @@ threads, 30 runs, load ≈ 3.7, alignment excluded:
 
 ONNX vs torch max |logit difference| on random inputs: tone 7e-7, pitch 2e-7, stress 2e-6.
 Tests (26 pass): `tests/test_prosody_f0.py` (synthetic pitch, glides, octave traps, silence,
-speed), `tests/test_prosody_features.py` (shapes, normalisation, windows, dropped syllables,
+speed), `tests/test_prosody_features.py` (shapes, normalization, windows, dropped syllables,
 cropping), `tests/test_prosody_runtime.py`. The runtime tests cover end-to-end runs on macOS
 `say` clips (Tingting zh, Kyoko ja, Samantha en): a TTS voice is mostly accepted, and the same
 audio scored against a wrong-tone reference gets a mean tone_prob lower by > 0.2. They also check
@@ -412,7 +412,7 @@ max probability difference < 0.02), size ≤ 5 MB, latency and fr returning noth
 * Tone probabilities were validated only with *synthetic* errors: the reference changed, or a
   monotone resynthesis. No real learner Mandarin was available (LATIC / OMPAL not obtained).
   Under monotone audio, 29.5 % of tone 2/3/4 syllables are still classified as their label tone.
-* Speaker normalisation is per utterance (log-F0 z-score over its voiced frames). Very short
+* Speaker normalization is per utterance (log-F0 z-score over its voiced frames). Very short
   prompts (1–3 syllables) give unstable statistics; this was not evaluated.
 * Stress: the speechocean762 agreement is weak (Pearson 0.19, AUC 0.74 on 80 positives). Russian
   is the weakest language (76 %). Long words (≥ 4 syllables) drop to 53–70 % in en/de. The labels

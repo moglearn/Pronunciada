@@ -1,7 +1,7 @@
 [project]
 name = "pronunciada"
 version = "1.0.0"
-description = "On-device pronunciation scoring for ten languages: sounds, words, sentences, tones, stress and coaching tips"
+description = "Pronunciation assessment for ten languages on CPU: phoneme, word and sentence scores, tones and stress"
 readme = "README.md"
 requires-python = ">=3.10"
 # Code: Apache-2.0. Bundled data: the it / pt / ru lexicons under pronunciada/data/lex are

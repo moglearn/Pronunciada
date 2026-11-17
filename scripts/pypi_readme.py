@@ -28,8 +28,6 @@ def rewrite(text: str, ref: str = "main") -> str:
     text = re.sub(r'href="([^"]+)"', lambda m: f'href="{blob}{m.group(1)}"' if is_relative(m.group(1)) else m.group(0), text)
     # Markdown links: [text](path)
     text = re.sub(r"\]\(([^)\s]+)\)", lambda m: f"]({blob}{m.group(1)})" if is_relative(m.group(1)) else m.group(0), text)
-    # PyPI does not draw mermaid diagrams; the numbered list under it says the same thing.
-    text = re.sub(r"```mermaid\n.*?```\n\n", "", text, flags=re.S)
     return text
 
 

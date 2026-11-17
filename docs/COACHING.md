@@ -1,8 +1,9 @@
 # Coaching feedback and audio-quality gate
 
-What an app needs to turn a score into advice: for each problem, what was expected, what it
-sounded like (only when that is reliable), how the two differ physically and how sure we are;
-plus a check that the recording itself is usable. Numbers behind every threshold:
+`SentenceResult.coaching()` returns the detected errors as a list of items. Each item gives the
+expected phoneme, the phoneme recognized (only when it can be named reliably), the articulatory
+features that differ and a confidence. `SentenceResult.audio` reports whether the recording is
+usable. The measurements behind each threshold are in
 [results/coaching.md](../results/coaching.md).
 
 ```python
@@ -211,7 +212,7 @@ FLEURS validation natives reading correctly (`bench/coach/fit_r3.py`).
 - **`missing_word`**: `present_prob` < 0.5 (unchanged).
 - **`mispronounced_word`**: a word with at least one flagged sound; `error_prob` = its highest
   sound `error_prob`; extra key `n_sounds_flagged`. A word-level summary of the sound items.
-- **`extra_speech`**: sounds the recogniser decoded (greedy decode) that fall outside every
+- **`extra_speech`**: sounds the recognizer decoded (greedy decode) that fall outside every
   expected word's aligned span, grouped into segments; reported when a segment has at least
   `min_sounds` sounds. Keys: `heard_ipa` (best-effort decoded string, no attempt to name a word),
   `start`, `end`, `after_word` / `before_word` (−1 / n at the ends), `where` (`start`, `between`,
@@ -424,7 +425,7 @@ Example 2 (experts: /u/ in “STUDENT” pronounced AH): tip `feature.rounded.ad
 
 For contrasts the scorer was blind to, the attribute heads' probability of the expected value
 (aspiration: head `aspirated`; Russian soft / hard: head `palatalised`) is turned into a
-calibrated "realised as expected" probability `sigmoid(z)`, `z = 0.5 (logit P − s0)` with `s0`
+calibrated "realized as expected" probability `sigmoid(z)`, `z = 0.5 (logit P − s0)` with `s0`
 the 1 % quantile of natives (`pronunciada/contrast_heads.py`, `data/coach/contrast_heads.json`,
 FLEURS validation; `PRONUNCIADA_HEAD_CAPS=0` switches it off). It caps the shown sound
 probability (ko, ru, zh) and, in Korean and Russian, feeds coaching: a member sound with
@@ -437,7 +438,7 @@ Korean "plain for aspirated" 55 %, "aspirated for plain" 21 %; Russian "hard for
 "soft for hard" 1 %. Mandarin aspiration items stay **off**: on OMPAL dev (French learners) no
 bar reaches 0.7 precision for the teachers' consonant marks (best 0.67 on 12 characters), and
 adding the evidence to the Mandarin coaching score lowers its consonant AUC (0.956 → 0.935).
-These coaching items are unverified on learners (no labelled Korean or Russian learner data).
+These coaching items are unverified on learners (no labeled Korean or Russian learner data).
 
 Round 18 adds **Korean lax / tense** (달 / 딸): the Korean reference marks each ㄱ/ㄲ ㄷ/ㄸ ㅂ/ㅃ ㅅ/ㅆ
 ㅈ/ㅉ obstruent `RefPhone.tense` (spelling plus the front-end's post-obstruent tensification; the
@@ -458,7 +459,7 @@ strictness, so `scorer.rescore(result, strictness=...)` moves the gate with it. 
 `max_tips` is then filled from the items that pass. `missing_word`, `extra_speech`, delivery,
 `tone`, `stress` and `length` items are never gated (they have their own calibrated bars).
 `include_accepted=True` turns the gate off; without `result` there is nothing to gate on and
-the behaviour is the old one. No free parameter: 0.5 is the scorer's own acceptance line. The
+the behavior is the old one. No free parameter: 0.5 is the scorer's own acceptance line. The
 items themselves (`res.coaching()`) are unchanged. Measured cost: section 3 and
 [results/coaching.md](../results/coaching.md) "Round 19".
 
@@ -470,7 +471,7 @@ voicing → aspiration → lateral → palatalisation → length; vowels glide (
 difference) → height → backness → rounding → nasality → length). `params` carries `expected`,
 `heard`, `word` and the template's extra fields (`expected_place`, `heard_place`, `glide`,
 `expected_tone`, `heard_tone`, `expected_ord`, `heard_ord`, `syllable`) so an app can render its
-own or localised copy from `tip_key`.
+own or localized copy from `tip_key`.
 
 | tip_key | default text |
 |---|---|
@@ -489,8 +490,8 @@ own or localised copy from `tip_key`.
 | `manner.other` | Say /{expected}/ in “{word}”; it sounded like /{heard}/. |
 | `lateral.add` | Let the air pass along the sides of the tongue for /{expected}/ in “{word}”; it sounded like /{heard}/. |
 | `lateral.remove` | Don't let the air flow around the sides of the tongue for /{expected}/ in “{word}”; it sounded like /{heard}/. |
-| `palatalisation.add` | Raise the middle of your tongue (a slight “y” colour) on /{expected}/ in “{word}”; it sounded like plain /{heard}/. |
-| `palatalisation.remove` | Say /{expected}/ in “{word}” without the “y” colour; it sounded like /{heard}/. |
+| `palatalisation.add` | Raise the middle of your tongue (a slight “y” color) on /{expected}/ in “{word}”; it sounded like plain /{heard}/. |
+| `palatalisation.remove` | Say /{expected}/ in “{word}” without the “y” color; it sounded like /{heard}/. |
 | `length.longer` | Hold /{expected}/ in “{word}” a little longer; it sounded short. |
 | `length.shorter` | Make /{expected}/ in “{word}” shorter; it sounded long. |
 | `vowel.open` | Open your mouth a little more for /{expected}/ in “{word}”; it sounded like /{heard}/. |
@@ -504,8 +505,8 @@ own or localised copy from `tip_key`.
 | `vowel.glide.change` | Glide towards /{glide}/ in /{expected}/ in “{word}”; it sounded like /{heard}/. |
 | `nasal.add` | Let some air through your nose on /{expected}/ in “{word}”; it sounded like /{heard}/. |
 | `nasal.remove` | Keep /{expected}/ in “{word}” oral (no air through the nose); it sounded like /{heard}/. |
-| `rhotic.add` | Add the r-colour to /{expected}/ in “{word}”; it sounded like /{heard}/. |
-| `rhotic.remove` | Say /{expected}/ in “{word}” without r-colour; it sounded like /{heard}/. |
+| `rhotic.add` | Add the r-color to /{expected}/ in “{word}”; it sounded like /{heard}/. |
+| `rhotic.remove` | Say /{expected}/ in “{word}” without r-color; it sounded like /{heard}/. |
 | `sound.substitution` | Say /{expected}/ in “{word}”; it sounded like /{heard}/. |
 | `sound.unclear` | Listen to /{expected}/ in “{word}” and try it again; it did not sound quite right. |
 | `sound.missing` | Don't skip /{expected}/ in “{word}”. |
@@ -542,8 +543,8 @@ own or localised copy from `tip_key`.
 | `feature.manner.rhotic` | Make /{expected}/ in “{word}” a quick tap or roll of the tongue tip. |
 | `feature.manner.other` | Check how you make /{expected}/ in “{word}”: the airflow sounded different. |
 | `feature.place` | Make /{expected}/ in “{word}” with {expected_place}; it sounded {heard_place}. |
-| `feature.palatalised.add` | Raise the middle of your tongue (a slight “y” colour) on /{expected}/ in “{word}”. |
-| `feature.palatalised.remove` | Say /{expected}/ in “{word}” without the “y” colour. |
+| `feature.palatalised.add` | Raise the middle of your tongue (a slight “y” color) on /{expected}/ in “{word}”. |
+| `feature.palatalised.remove` | Say /{expected}/ in “{word}” without the “y” color. |
 | `feature.lateral.add` | Let the air pass along the sides of the tongue for /{expected}/ in “{word}”. |
 | `feature.lateral.remove` | Don't let the air flow around the sides of the tongue for /{expected}/ in “{word}”; it sounded like an l. |
 | `feature.height.close` | Raise your tongue a little (mouth less open) for /{expected}/ in “{word}”; it sounded too open. |
@@ -596,7 +597,7 @@ was not added: the gate reports `lead_sil_s` / `trail_sil_s` instead.
    finds 2.4× more of the errors at 0.55.
 3. Show `heard` only when it is not null ("it sounded like /s/"); otherwise say "this sound was
    off, listen and try again". Do not invent a replacement sound.
-4. Use `tip_key` + `params` for localised tips, or `pronunciada.tips.tips(items, 3, result)` for
+4. Use `tip_key` + `params` for localized tips, or `pronunciada.tips.tips(items, 3, result)` for
    English; at most 3 per utterance. If you consume the items directly, apply the same gate as
    `tips()` so the advice never contradicts the scores:
 

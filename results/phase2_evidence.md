@@ -210,7 +210,7 @@ utt_dur 0.066±0.015 | phone 0.054±0.009 | llr_del 0.051±0.017 | comp_tok 0.02
 
 ### Annotated error detection: l2arctic train + epadb train
 
-Error = substituted or deleted (inserted sounds are only flagged on the neighbour, column `ins_flag`, not counted). AUC [95% CI, speaker-cluster bootstrap] / best F1.
+Error = substituted or deleted (inserted sounds are only flagged on the neighbor, column `ins_flag`, not counted). AUC [95% CI, speaker-cluster bootstrap] / best F1.
 
 **5-fold speaker-grouped CV (pooled fit)**
 
@@ -275,7 +275,7 @@ AUC of −llr_sub (2 errors/utt). phone_del: no reference phone is wrong; report
 
 ## 7. Worst native phones (FLEURS train, variants off, shipped adapter)
 
-Mean llr_sub per canonical phone (count ≥ 30), the 20 lowest; `heard` = top greedy realisations in the phone's span (∅ = llr_del < 0).
+Mean llr_sub per canonical phone (count ≥ 30), the 20 lowest; `heard` = top greedy realizations in the phone's span (∅ = llr_del < 0).
 
 **en**
 

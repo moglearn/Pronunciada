@@ -9,15 +9,15 @@ cached Azure responses, no new Azure requests). The round-5 test outputs are kep
 
 ## 1. Outside pre-trained encoders for the sentence heads: not adopted
 
-**Licences** (Hugging Face model cards, checked 2026-11-16):
+**Licenses** (Hugging Face model cards, checked 2026-11-16):
 
-| model | licence | used |
+| model | license | used |
 |---|---|---|
 | `openai/whisper-tiny` | Apache-2.0 | yes |
 | `openai/whisper-base` | Apache-2.0 | yes |
 | `facebook/wav2vec2-base` | Apache-2.0 | yes |
 | `facebook/hubert-base-ls960` | Apache-2.0 | yes |
-| `microsoft/wavlm-base`, `microsoft/wavlm-base-plus` | no licence on the card | skipped |
+| `microsoft/wavlm-base`, `microsoft/wavlm-base-plus` | no license on the card | skipped |
 
 **Extraction** (`bench/calib/ext_encoders.py`, torch on MPS, 1 process, about 1 min per model):
 
@@ -79,7 +79,7 @@ for the sentence level, since nothing changed there.
 
 **Bar:** word Pearson improves by ≥ 0.010.
 
-| variant | speaker CV, 3 seeds (Δ ± SE) | age-band split, s2 | age-band split, s3 (more regularised) |
+| variant | speaker CV, 3 seeds (Δ ± SE) | age-band split, s2 | age-band split, s3 (more regularized) |
 |---|---|---|---|
 | shipped inputs | 0.6491 | 0.4536 | 0.4407 |
 | + word-pooled projection | 0.6735 (+0.0245 ± 0.0017) | **0.4708** | 0.4542 |
@@ -90,7 +90,7 @@ table shows pooled out-of-fold Pearson. Two observations from it:
 
 - **The utterance context does not survive the harsh split.** It wins on speaker CV but loses
   on the age-band split.
-- **More regularised trees are worse.** s3 is below s2 in every row.
+- **More regularized trees are worse.** s3 is below s2 in every row.
 
 **Chosen:** the word-pooled projection only, with s2 trees, shipped as `word_reg_r6.npz`.
 

@@ -1,10 +1,10 @@
-# Licence-clean refit (2026-11-17)
+# License-clean refit (2026-11-17)
 
 ## What was contaminated, and how
 
 The licensing audit (docs/LICENSING.md) found that the shipped **word model**
 `pronunciada/data/calib/word.npz` was trained in round 2 on speechocean762 train + **L2-ARCTIC
-train (CC BY-NC 4.0)** + **EpaDB train (licence unverified)** + FLEURS validation planted errors
+train (CC BY-NC 4.0)** + **EpaDB train (license unverified)** + FLEURS validation planted errors
 (stored metadata `trained_on: so762+l2arctic+epadb+fleurs`; the round-2 rule had picked
 `full/s3`). The word model's log-odds feed `WordResult.sounds_prob` (so every word and sentence
 probability) and the sentence heads' inputs. L2-ARCTIC / EpaDB train had also been used to

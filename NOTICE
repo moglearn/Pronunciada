@@ -9,12 +9,12 @@ Acoustic model (downloaded at first use, not in this repository)
   multilingual phone recognition", github.com/lingjzhu/zipa. The "-ns-" ZIPA variants are
   CC BY-NC-SA and are not used.
 
-Shipped data files with their own licences (pronunciada/data/lex; per-file list in LICENSE.txt there)
+Shipped data files with their own licenses (pronunciada/data/lex; per-file list in LICENSE.txt there)
   en        CMUdict, BSD-2-Clause-style, (C) Carnegie Mellon University
   de, fr    ipa-dict, MIT;  es: word list from ipa-dict (MIT), pronunciations by rule
   it, pt, ru  derived from WikiPron / Wiktionary: CC BY-SA, attribution "Wiktionary
             contributors". These files (it.tsv.gz, it_lts.tsv.gz, pt.tsv.gz, ru.tsv.gz,
-            ru_stress.tsv.gz) stay under CC BY-SA when redistributed; the Apache licence of the
+            ru_stress.tsv.gz) stay under CC BY-SA when redistributed; the Apache license of the
             code does not apply to them. The output adapters pronunciada/data/adapters/it.npz,
             pt.npz and ru.npz, trained towards references built from these files, are treated as
             share-alike adaptations as well (CC BY-SA 4.0, same attribution).
@@ -25,7 +25,7 @@ Shipped data files with their own licences (pronunciada/data/lex; per-file list 
 
 Runtime text packages (optional extras, installed separately)
   pypinyin (MIT), jieba (MIT), opencc-python-reimplemented (Apache-2.0), pyopenjtalk-plus (MIT,
-  bundles Open JTalk / NAIST-jdic under BSD licences), sudachipy + sudachidict-core (Apache-2.0).
+  bundles Open JTalk / NAIST-jdic under BSD licenses), sudachipy + sudachidict-core (Apache-2.0).
   num2words (LGPL-2.1+) is optional and only used to read out digits.
 
 Models trained for this project (pronunciada/data; details per file in docs/LICENSING.md)

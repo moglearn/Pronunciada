@@ -76,7 +76,7 @@ integer scores are tied a lot, so ties at the threshold are split fractionally).
 is the share of swapped records where the replaced unit has the lowest score (a tie for the
 lowest shares the credit). "sent AUC" compares the swapped records with their own orig
 records using the sentence AccuracyScore or PronScore. "excluded" counts swapped records where
-Azure's text normaliser rewrote the planted word (so it was never scored) and records Azure
+Azure's text normalizer rewrote the planted word (so it was never scored) and records Azure
 failed to assess.
 
 ### azure: swap_far
@@ -151,7 +151,7 @@ include upload and network. Four requests ran in parallel. Each request is one w
 
 ## Caveats and observations
 
-* **Normaliser rewrites.** One swapped record was excluded: ja swap_far 吐き出す→国々. Azure never
+* **Normalizer rewrites.** One swapped record was excluded: ja swap_far 吐き出す→国々. Azure never
   returns 々, so the planted word could not be placed on the text. The same 々 issue leaves
   that character unmapped in 7 other ja sentences, and pt "Platô" is unmapped in one sentence.
   Unmapped units are below 0.03 % in every language. No other swap was rewritten. Far swaps

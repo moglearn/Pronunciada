@@ -1,4 +1,4 @@
-# Sample recordings: sources and licences
+# Sample recordings: sources and licenses
 
 The nine `.mp3` clips in this folder are the only benchmark recordings in the repository. Each is
 an item of a **held-out test split** used in the benchmarks (results/SCOREBOARD.md), re-encoded to

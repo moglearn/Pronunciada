@@ -1,4 +1,4 @@
-"""Pronunciada demo for Hugging Face Spaces: record or upload a sentence, get scores and tips."""
+"""Pronunciada demo for Hugging Face Spaces: score a recording against its reference text."""
 from __future__ import annotations
 
 import html
@@ -19,21 +19,20 @@ LANGS = {
     "Português (Portuguese)": "pt", "Русский (Russian)": "ru", "한국어 (Korean)": "ko",
 }
 NO_SPACES = {"zh", "ja"}
-SENSITIVITY = {"Careful (fewer, surer tips)": "careful", "Balanced": "balanced", "Eager (more tips)": "eager"}
+SENSITIVITY = {"Careful (fewer tips)": "careful", "Balanced": "balanced", "Eager (more tips)": "eager"}
 
 CSS = """
-.pr-wrap{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,'Noto Sans','Noto Sans CJK SC',sans-serif}
-.pr-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
-.pr-chip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--border-color-primary);background:var(--background-fill-secondary)}
-.pr-sent{font-size:28px;line-height:1.6;margin:0 0 16px}
-.pr-w{border-radius:7px;padding:1px 6px;margin:0 1px;display:inline-block}
-.pr-good{color:#1f8a4c}.pr-warn{color:#9a6412;background:#fbefd5}.pr-bad{color:#b3261e;background:#fbe1de}
-.dark .pr-good{color:#4fc57e}.dark .pr-warn{color:#e2b04f;background:#352a12}.dark .pr-bad{color:#f0776b;background:#3a1b18}
-.pr-word{margin:0 0 12px}.pr-word b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
-.pr-sounds{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.pr-s{font-family:ui-monospace,Menlo,Consolas,monospace;text-align:center;border:1px solid var(--border-color-primary);border-radius:8px;padding:5px 8px;min-width:44px}
-.pr-s i{font-style:normal;font-size:18px;display:block}.pr-s small{font-size:11px;opacity:.75}
-.pr-tips li{margin:4px 0}.pr-note{font-size:13px;opacity:.75}
+.pr-wrap{font-size:15px;line-height:22px}
+.pr-gloss{display:flex;flex-wrap:wrap;gap:10px 16px;margin:4px 0 14px}
+.pr-gloss span{display:flex;flex-direction:column}
+.pr-gloss b{font-weight:400;font-size:20px;line-height:26px}
+.pr-gloss i{font-style:normal;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:16px;opacity:.6}
+.pr-low b,.pr-low i,.pr-lowp{color:#b42318;opacity:1}
+.dark .pr-low b,.dark .pr-low i,.dark .pr-lowp{color:#f97066}
+.pr-dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:0 0 12px}
+.pr-dl dt{font-weight:500}.pr-dl dd{margin:0}
+.pr-ph{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.pr-note{font-size:13px;opacity:.7}
 """
 
 
@@ -42,60 +41,65 @@ def scorer(lang: str) -> Scorer:
     return Scorer(lang, precision=os.environ.get("PRONUNCIADA_PRECISION", "int8"))
 
 
-def _cls(p) -> str:
-    if p is None:
-        return "pr-good"
-    return "pr-good" if p >= 0.8 else ("pr-warn" if p >= 0.5 else "pr-bad")
-
-
 def _f(p) -> str:
-    return "–" if p is None else f"{p:.2f}"
+    return "" if p is None else f"{p:.2f}"
+
+
+def _low(p) -> bool:
+    return p is not None and p < 0.5
 
 
 def render(res, lang: str, tips: list[dict]) -> str:
+    """Words with their acceptance probability underneath; phonemes for words below 0.5."""
     e = html.escape
-    sep = "" if lang in NO_SPACES else " "
-    out = ['<div class="pr-wrap"><div class="pr-chips">',
-           f'<span class="pr-chip">sentence <b>{_f(res.prob)}</b></span>']
-    if getattr(res, "fluency", None) is not None:
-        out.append(f'<span class="pr-chip">fluency <b>{_f(res.fluency)}</b></span>')
-    if getattr(res, "completeness", None) is not None:
-        out.append(f'<span class="pr-chip">completeness <b>{_f(res.completeness)}</b></span>')
-    out.append('</div><p class="pr-sent">')
+    out = ['<div class="pr-wrap"><div class="pr-gloss">']
     for w in res.words:
-        text = w.text if lang in NO_SPACES else w.text.lower()
-        out.append(f'<span class="pr-w {_cls(w.prob)}" title="{_f(w.prob)}">{e(text)}</span>{sep}')
-    out.append("</p>")
-    weak = [w for w in res.words if w.prob is not None and w.prob < 0.8]
-    for w in weak[:6]:
-        out.append(f'<div class="pr-word"><b>{e(w.text)}</b> <span class="pr-note">word {_f(w.prob)}</span><div class="pr-sounds">')
+        cls = ' class="pr-low"' if _low(w.prob) else ""
+        out.append(f"<span{cls}><b>{e(w.text)}</b><i>{_f(w.prob)}</i></span>")
+    out.append('</div><dl class="pr-dl">')
+    sentence = _f(res.prob)
+    if getattr(res, "fluency", None) is not None:
+        sentence += f", fluency {_f(res.fluency)}"
+    out.append(f"<dt>Sentence</dt><dd>{sentence}</dd>")
+    for w in res.words:
+        if not _low(w.prob):
+            continue
+        parts = []
         for s in w.phones:
             heard = getattr(s, "heard", None)
-            note = f"heard {e(heard)}" if heard and heard != s.ipa else ("missing" if heard == "" else _f(s.prob))
-            out.append(f'<div class="pr-s {_cls(s.prob)}"><i>{e(s.ipa)}</i><small>{note}</small></div>')
+            t = f"{e(s.ipa)} {_f(s.prob)}" + (f" (recognized as {e(heard)})" if heard and heard != s.ipa else "")
+            parts.append(f'<span class="pr-lowp">{t}</span>' if _low(s.prob) else t)
+        out.append(f'<dt>{e(w.text)}</dt><dd class="pr-ph">{", ".join(parts)}</dd>')
+    tones = []
+    for w in res.words:
         for y in w.syllables:
-            if getattr(y, "tone_expected", None) is not None:
-                t = f"tone {y.tone_expected}"
-                if y.tone_heard is not None and y.tone_heard != y.tone_expected:
-                    t += f", heard {y.tone_heard}"
-                out.append(f'<div class="pr-s {_cls(y.tone_prob)}"><i>{e(y.text or "·")}</i><small>{t}</small></div>')
-        out.append("</div></div>")
-    if tips:
-        out.append('<ul class="pr-tips">' + "".join(f"<li>{e(t.get('text') or '')}</li>" for t in tips if t.get("text")) + "</ul>")
-    elif not weak:
-        out.append("<p>Nothing to correct at this setting.</p>")
-    issues = (getattr(res, "audio", None) or {}).get("issues") if isinstance(getattr(res, "audio", None), dict) else None
+            if getattr(y, "tone_expected", None) is None:
+                continue
+            t = f"{e(y.text or '')} tone {y.tone_expected}"
+            if y.tone_heard is not None and y.tone_heard != y.tone_expected:
+                t += f", recognized {y.tone_heard}"
+            t += f" {_f(y.tone_prob)}"
+            tones.append(f'<span class="pr-lowp">{t}</span>' if _low(y.tone_prob) else t)
+    if tones:
+        out.append(f'<dt>Tones</dt><dd class="pr-ph">{"; ".join(tones)}</dd>')
+    texts = [e(t["text"]) for t in tips if t.get("text")]
+    if texts:
+        out.append(f'<dt>Tips</dt><dd>{"<br>".join(texts)}</dd>')
+    audio = getattr(res, "audio", None)
+    issues = audio.get("issues") if isinstance(audio, dict) else None
     if issues:
-        out.append(f'<p class="pr-note">Recording check: {e(", ".join(issues))}. Try again in a quieter place or closer to the microphone.</p>')
-    out.append('<p class="pr-note">Green: likely accepted by a teacher. Amber: borderline. Red: likely not accepted.</p></div>')
+        out.append(f'<dt>Recording</dt><dd>{e(", ".join(issues))}</dd>')
+    out.append("</dl>")
+    out.append('<p class="pr-note">The number under each word is the probability that a human rater would accept it. '
+               "Words below 0.5 are in red.</p></div>")
     return "".join(out)
 
 
 def assess(audio, text, language, strictness, sensitivity):
     if audio is None:
-        raise gr.Error("Record or upload a sentence first.")
+        raise gr.Error("Record or upload audio first.")
     if not (text or "").strip():
-        raise gr.Error("Type the sentence that was read.")
+        raise gr.Error("Enter the reference text.")
     lang = LANGS[language]
     try:
         res = scorer(lang).score(audio, text.strip(), strictness=float(strictness))
@@ -127,34 +131,34 @@ def examples():
     return rows
 
 
-with gr.Blocks(css=CSS, title="Pronunciada") as demo:
+with gr.Blocks(title="Pronunciada") as demo:
     gr.Markdown(
         "# Pronunciada\n"
-        "Read a sentence aloud and see how each sound, word and the whole sentence was pronounced. "
-        "Ten languages, open source, built to run on the device. "
-        "[GitHub](https://github.com/moglearn/pronunciada) · [Results against Azure](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)"
+        "Pronunciation assessment for ten languages. Record or upload a sentence, enter the text that was read, "
+        "and the demo returns the probability that each word and phoneme would be accepted by a human rater. "
+        "[Source](https://github.com/moglearn/pronunciada) · "
+        "[Benchmarks](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)"
     )
     with gr.Row():
         with gr.Column(scale=5):
             language = gr.Dropdown(list(LANGS), value="English", label="Language")
-            text = gr.Textbox(label="Sentence to read", placeholder="Type the sentence, then read it aloud", lines=2)
-            audio = gr.Audio(sources=["microphone", "upload"], type="filepath", label="Your recording")
+            text = gr.Textbox(label="Reference text", placeholder="The sentence that is read in the recording", lines=2)
+            audio = gr.Audio(sources=["microphone", "upload"], type="filepath", label="Recording")
             with gr.Accordion("Settings", open=False):
                 strictness = gr.Slider(0, 1, value=0.5, step=0.05, label="Strictness (0 lenient, 1 strict)")
                 sensitivity = gr.Radio(list(SENSITIVITY), value="Balanced", label="Coaching tips")
-            go = gr.Button("Score it", variant="primary")
+            go = gr.Button("Score", variant="primary")
         with gr.Column(scale=6):
             report = gr.HTML(label="Result")
             with gr.Accordion("Full JSON output", open=False):
                 raw = gr.JSON()
     rows = examples()
     if rows:
-        gr.Examples(rows, inputs=[audio, text, language, strictness, sensitivity], label="Samples from public research datasets (CC BY 4.0)")
+        gr.Examples(rows, inputs=[audio, text, language, strictness, sensitivity], label="Samples from speechocean762, OMPAL and FLEURS (CC BY 4.0)")
     gr.Markdown(
-        "Recordings are scored on this Space's CPU and are not stored. "
-        "Sample clips: speechocean762, OMPAL and FLEURS (CC BY 4.0). Speech model: ZIPA (CC BY 4.0)."
+        "Recordings are scored on this Space's CPU and are not stored. The acoustic model is ZIPA (CC BY 4.0)."
     )
     go.click(assess, [audio, text, language, strictness, sensitivity], [report, raw])
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(css=CSS)

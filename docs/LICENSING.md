@@ -1,7 +1,7 @@
 # Licensing audit
 
 Status: audit of 2026-11-17, made by reading the fit scripts in `bench/` and the metadata stored in
-the shipped files, not from memory; updated the same day after the licence-clean refit
+the shipped files, not from memory; updated the same day after the license-clean refit
 ([results/licence_refit.md](../results/licence_refit.md)). It is not legal advice. Remaining items
 for the owner are in [Open questions](#open-questions).
 
@@ -10,7 +10,7 @@ Short version:
 - Code (`pronunciada/`, `bench/`, `scripts/`, `tests/`): Apache-2.0 ([LICENSE](../LICENSE)).
 - Acoustic model: downloaded at first use, not in the repository, CC BY 4.0.
 - Bundled data: everything in `pronunciada/data/` is project-made (Apache-2.0) **except** the
-  lexicons in `pronunciada/data/lex/`, which keep their source licences (BSD-2-Clause-style,
+  lexicons in `pronunciada/data/lex/`, which keep their source licenses (BSD-2-Clause-style,
   MIT, and CC BY-SA for it / pt / ru), and the it / pt / ru output adapters, treated as CC BY-SA
   adaptations of those lexicons; see `pronunciada/data/lex/LICENSE.txt`.
 - **Nothing shipped is fitted on, or selected with, non-commercial data.** The round-2 word model
@@ -22,9 +22,9 @@ Short version:
 
 ## 1. Models
 
-| model | where | licence | attribution | notes |
+| model | where | license | attribution | notes |
 |---|---|---|---|---|
-| ZIPA `anyspeech/zipa-small-crctc-500k` (64 M parameters; `model.onnx` 248 MB, `model.int8.onnx` 67 MB) | downloaded on first use from huggingface.co into `~/.cache/pronunciada/models/` | CC BY 4.0 (model card checked 2026-11-17) | Zhu et al., "ZIPA: A family of efficient models for multilingual phone recognition", github.com/lingjzhu/zipa | `pronunciada/data/zipa_tokens.txt` is the model's token list (same licence). `acoustic.add_graph_outputs` exposes internal layers as extra ONNX outputs in memory; the downloaded file is not redistributed. The `-ns-` ZIPA variants are CC BY-NC-SA and are never used. |
+| ZIPA `anyspeech/zipa-small-crctc-500k` (64 M parameters; `model.onnx` 248 MB, `model.int8.onnx` 67 MB) | downloaded on first use from huggingface.co into `~/.cache/pronunciada/models/` | CC BY 4.0 (model card checked 2026-11-17) | Zhu et al., "ZIPA: A family of efficient models for multilingual phone recognition", github.com/lingjzhu/zipa | `pronunciada/data/zipa_tokens.txt` is the model's token list (same license). `acoustic.add_graph_outputs` exposes internal layers as extra ONNX outputs in memory; the downloaded file is not redistributed. The `-ns-` ZIPA variants are CC BY-NC-SA and are never used. |
 | Models trained for this project (everything in `pronunciada/data/` outside `lex/`) | in the package | Apache-2.0 (project), subject to §2–§3 | — | trained on the data listed in §2 |
 
 ## 2. Shipped data files and what they were fitted on
@@ -75,7 +75,7 @@ in its `eval` step, which writes to `results/`).
 
 - **L2-ARCTIC v5.0** is CC BY-NC 4.0: benchmark / report-only.
 - **EpaDB**: earlier notes say ODC-By 1.0 (CONICET repository, handle 11336/150678); the downloaded
-  `readme.md` states no licence and the repository page could not be read automatically, so this
+  `readme.md` states no license and the repository page could not be read automatically, so this
   is **not verified** (open question 1). Treated as benchmark-only either way.
 
 What happened: `word.npz` (the word "every sound acceptable" model behind
@@ -93,21 +93,21 @@ benchmark tables.
 
 ## 4. Datasets
 
-| dataset | licence (as checked) | used for |
+| dataset | license (as checked) | used for |
 |---|---|---|
 | FLEURS (google/fleurs) | CC BY 4.0 | training (adapters, stress, tone, heads, length), calibration and thresholds (validation), benchmarks (test) |
 | speechocean762 | CC BY 4.0 on OpenSLR (SLR101); the HF card `mispeech/speechocean762` says Apache-2.0 (both checked 2026-11-17) | training / calibration (train), benchmark (test) |
 | OMPAL (Hsieh et al., Interspeech 2025, doi:10.21437/Interspeech.2025-983) | CC BY 4.0 (LICENSE in the corpus repository) | dev: calibration and selection of Mandarin defaults; test: benchmark |
 | Common Voice (cv-real 22.0 locales, zh-TW 25.0) | CC0-1.0 (as stated by the mirror cards) | dev half: guards and audio-gate thresholds; zh-TW train: tone training; test half: benchmark; ru sentence text: stress lexicon input |
 | AISHELL-3 | Apache License 2.0 (OpenSLR SLR93, https://www.openslr.org/93/, the primary source; also the HF card `AISHELL/AISHELL-3`) | tone model training |
-| AISHELL-1 | Apache License 2.0 (OpenSLR SLR33, https://www.openslr.org/33/, the primary source). 200 of the 300 speakers were fetched from a community mirror without a licence statement; it only re-hosts AISHELL-1, so the OpenSLR licence applies | tone model training |
+| AISHELL-1 | Apache License 2.0 (OpenSLR SLR33, https://www.openslr.org/33/, the primary source). 200 of the 300 speakers were fetched from a community mirror without a license statement; it only re-hosts AISHELL-1, so the OpenSLR license applies | tone model training |
 | L2-ARCTIC v5.0 | CC BY-NC 4.0 | benchmark only (since the refit; §3) |
 | EpaDB | ODC-By 1.0 per earlier notes, unverified | benchmark only (since the refit; §3) |
 | Azure Pronunciation Assessment responses | Microsoft service terms | benchmark only; cached outside the repository, never committed |
 
 ## 5. Lexicons and share-alike data
 
-| shipped file | source | licence |
+| shipped file | source | license |
 |---|---|---|
 | `lex/en.tsv.gz`, `en_lts.tsv.gz` | CMUdict | BSD-2-Clause-style, (C) Carnegie Mellon University |
 | `lex/de.tsv.gz`, `de_lts.tsv.gz`, `fr.tsv.gz`, `fr_lts.tsv.gz`, `es_words.txt.gz` | ipa-dict | MIT |
@@ -121,13 +121,13 @@ benchmark tables.
 
 What share-alike implies: these nine files (six lexicon files, three adapters) may be
 redistributed inside the Apache-2.0 repository, but they stay CC BY-SA. Anyone who redistributes
-them, or a modified version, must keep the CC BY-SA licence and the "Wiktionary contributors"
+them, or a modified version, must keep the CC BY-SA license and the "Wiktionary contributors"
 attribution. The share-alike clause does not reach the code that reads them (separate works).
 The other calibration files are fitted on scores, not on the lexicons, and stay Apache-2.0.
 
 Packaging done now (no code change, no path change): `pronunciada/data/lex/LICENSE.txt` lists
-each file's licence and attribution, including the three adapters, `pyproject.toml` declares the combined licence expression
-(`Apache-2.0 AND CC-BY-SA-4.0 AND BSD-2-Clause AND MIT`) and ships that file as a licence file,
+each file's license and attribution, including the three adapters, `pyproject.toml` declares the combined license expression
+(`Apache-2.0 AND CC-BY-SA-4.0 AND BSD-2-Clause AND MIT`) and ships that file as a license file,
 and `NOTICE` points to it.
 
 Cleaner option, not done because it changes load paths: move the share-alike files to
@@ -140,7 +140,7 @@ a re-run.
 
 Runtime (core, `pip install pronunciada`):
 
-| package | licence | note |
+| package | license | note |
 |---|---|---|
 | numpy | BSD-3-Clause | |
 | scipy | BSD-3-Clause | |
@@ -170,14 +170,14 @@ ffmpeg (system binary, offline decoding).
 
 ## Open questions
 
-1. **EpaDB licence**: confirm ODC-By 1.0 on the CONICET record; the downloaded files do not say.
+1. **EpaDB license**: confirm ODC-By 1.0 on the CONICET record; the downloaded files do not say.
    Nothing shipped depends on EpaDB since the refit.
 2. **speechocean762**: OpenSLR says CC BY 4.0, the HF card Apache-2.0; both permit commercial
    use, but cite it either way.
 3. **Azure output in results**: tables contain aggregate statistics of Azure responses, no raw
    responses. Check Microsoft's terms on publishing benchmark results of the service.
 
-Resolved on 2026-11-17: the non-commercial training data (§3); AISHELL-1 / -3 licences (OpenSLR,
+Resolved on 2026-11-17: the non-commercial training data (§3); AISHELL-1 / -3 licenses (OpenSLR,
 Apache 2.0; §4); the it / pt / ru adapters (treated as CC BY-SA; §5); the Common Voice manifests
 (`bench/data/cv_real/*.jsonl` now carry per-locale pseudonymous speaker labels `spk_0001` … and
 a derived `native` flag instead of contributor hashes and free-text accents; the mapping stays in

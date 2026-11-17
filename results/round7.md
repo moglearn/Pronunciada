@@ -21,7 +21,7 @@ Azure numbers are its cached responses; no new Azure requests were made.
 | Per-language shift of the sounds channel | same | **no**: +0.0045 at best, below the +0.01 bar |
 | Sentence `accuracy` and `prosodic` recalibrated on OMPAL DEV (`bench/calib/fit_sentence_zh.py`, `calib/sentence_zh_recal.json`) | speaker-grouped CV, gain ≥ 0.03, FLEURS native-median guard | **yes** (accuracy, prosodic); fluency kept (+0.005) |
 
-Default behaviour and latency for other languages are unchanged. `PRONUNCIADA_TONE_MODEL=tone_zh_v2`
+Default behavior and latency for other languages are unchanged. `PRONUNCIADA_TONE_MODEL=tone_zh_v2`
 or `tone_zh_v3` selects the other models, each with its own calibrator.
 
 The sentence recalibration is tied to v3z (its JSON names the tone model). With another tone model
@@ -72,7 +72,7 @@ The best variants sit 0.0005–0.001 below the bar anyway. **The product is kept
 Why the coordinator's "tone channel alone 0.826" cannot be reached by a word score: that number
 scores each character by its own syllable's tone. A word-level score gives every character of a
 two-character word the same value, and with that granularity the tone channel is at 0.801. The
-headroom is in character-level localisation, which the pre-specified unit metric does not give a
+headroom is in character-level localization, which the pre-specified unit metric does not give a
 word score.
 
 ## 3. Sentence scores recalibrated on OMPAL DEV: adopted for accuracy and prosody
