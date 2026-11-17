@@ -32,6 +32,7 @@ CASES = [  # env var, model stem, language, `say` voice, text
      "The government announced a remarkable economic recovery yesterday."),
     ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3", "ja", "Kyoko", "今日はとても良い天気ですね。"),
     ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v3r", "ja", "Kyoko", "今日はとても良い天気ですね。"),
+    ("PRONUNCIADA_PITCH_MODEL", "pitch_ja_v5", "ja", "Kyoko", "東京の大学で日本語を勉強しています。"),  # round 13
 ]
 
 
@@ -70,3 +71,7 @@ def test_round8_candidate_through_scorer(tmp_path, monkeypatch, env, stem, lang,
     vals = [getattr(s, field) for w in res.words for s in w.syllables if getattr(s, field) is not None]
     assert vals and all(0 <= v <= 1 for v in vals)
     assert all(0 <= w.prob <= 1 for w in res.words)
+    if sc.prosody.meta.get("judge"):        # round 13: word-level judgement + coaching items
+        pr = res._pronunciada["prosody"]
+        assert any(d.get("pitch_word") for d in pr)
+        assert all(it["kind"] != "pitch_accent" or it["schema_minor"] >= 2 for it in res.coaching(sensitivity="eager"))

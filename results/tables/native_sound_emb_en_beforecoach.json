@@ -1,0 +1,21 @@
+{
+ "clips": 393,
+ "sound_B": {
+  "native_sounds": 0.9932795312903875,
+  "native_words": 0.9700480709971651,
+  "coach_items_per_clip": {
+   "careful": 1.1628498727735368,
+   "balanced": 2.6361323155216283,
+   "eager": 5.5012722646310435
+  }
+ },
+ "sound_E": {
+  "native_sounds": 0.9876217007955427,
+  "native_words": 0.9700480709971651,
+  "coach_items_per_clip": {
+   "careful": 1.465648854961832,
+   "balanced": 3.267175572519084,
+   "eager": 6.5012722646310435
+  }
+ }
+}

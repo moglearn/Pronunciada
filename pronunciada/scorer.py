@@ -91,6 +91,15 @@ class Scorer:
         self.sound_name, self.sound_bias = name, bias
         self.universal_bias = float(cfg.get("bias", {}).get(self.lang, 0.0))
         self.sound = C.load_level(name, calib_dir)
+        # round 12b: a "detail" sound model (config "sound_detail_model", English: sound_E, which
+        # also reads per-sound ZIPA-layer inputs, pronunciada/sound_emb.py) gives the reported 0-2
+        # phone score and the coaching inputs; the probabilities that feed words / sentences and
+        # PhoneResult.prob stay on self.sound.
+        from . import sound_emb as _SE
+
+        dname = cfg.get("sound_detail_model", {}).get(self.lang) if sound_model is None else None
+        self.sound_detail = C.load_level(dname, calib_dir) if dname else None
+        self.sound_aux = _SE.load(dname or name, calib_dir)
         self.universal = C.load_level(self.universal_name, calib_dir)
         self.word = C.load_level("word", calib_dir)
         from pathlib import Path as _P
@@ -221,6 +230,8 @@ class Scorer:
             warnings.append("the text is too long for the audio (the expected sounds cannot all fit)")
         t = time.perf_counter()
         tab = F.phone_table(lpa, ref, ev, self.native, dur)
+        if self.sound_aux is not None:
+            self.sound_aux.augment(tab, ref, ev, emb)
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:
@@ -381,6 +392,11 @@ class Scorer:
             s = self.sound.logits(tab, heads=("len", "str"))
             zl, zs = s["z_len"] + self.sound_bias, s["z_str"] + self.sound_bias
             sreg = None
+        detail = {}
+        if self.sound_detail is not None:
+            d = self.sound_detail.logits(tab)
+            sreg = d["reg"]
+            detail = {"coach_zl": d["z_len"], "coach_zs": np.minimum(d["z_str"], d["z_len"])}
         W = F.word_table(tab, uzl, uzs, ureg)
         XW = np.column_stack([np.asarray(W[c], dtype=np.float64) for c in self.word.num])
         w = self.word.logits(X=XW)
@@ -402,7 +418,7 @@ class Scorer:
                 W[nm] = z[:, j]
             XR2 = np.column_stack([np.asarray(W[c], dtype=np.float64) for c in self.word_score.num])
             w_rep = self.word_score.predict(X=XR2)["reg"]
-        return {"s_zl": zl, "s_zs": np.minimum(zs, zl), "s_reg": sreg, "W": W, "w_zl": w["z_len"],
+        return {**detail, "s_zl": zl, "s_zs": np.minimum(zs, zl), "s_reg": sreg, "W": W, "w_zl": w["z_len"],
                 "w_zs": w["z_str"], "w_reg": w_rep, "w_reg_r2": w["reg"], "S": S, "sent": so,
                 "sent_zl": so["z_len"][0], "sent_zs": so["z_str"][0]}
 

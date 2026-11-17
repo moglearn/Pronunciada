@@ -26,19 +26,20 @@ worst case measured (a clip scored against the wrong sentence). Nothing is compu
 called. Since round 2 it does **not** depend on the result's strictness: strictness answers "would
 a teacher accept this?", coaching answers "which are this speaker's clearest real errors?".
 
-## 1. Item schema (`schema_version` 2, `schema_minor` 1)
+## 1. Item schema (`schema_version` 2, `schema_minor` 2)
 
 One flat JSON object per item; every item has every key. `coaching()` returns a list;
 `pronunciada.coach.to_json(items)` wraps it as `{"schema_version": 2, "items": [...]}`.
 Version 2 added `error_prob` (round 1 = version 1); minor version 1 (round 3) added the key
-`schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys.
+`schema_minor` and the word-level miscue and delivery kinds of section 3b, each with its own extra keys;
+minor version 2 (round 13) added the Japanese `pitch_accent` kind (section 3c).
 Consumers should ignore kinds they do not know.
 
 | key | type | meaning |
 |---|---|---|
 | `schema_version` | int | 2. Renamed / removed keys bump it. |
-| `schema_minor` | int | 1. Added kinds / keys bump it. |
-| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`; words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
+| `schema_minor` | int | 2. Added kinds / keys bump it. |
+| `kind` | str | sounds: `substitution`, `missing`, `extra`; prosody: `tone`, `stress`, `pitch_accent` (Japanese); words: `missing_word`, `mispronounced_word`, `extra_speech`; delivery: `long_pause`, `pause_mid_phrase`, `rushed_punctuation`, `fast` (and, with `delivery="all"`, `slow`, `flat_pitch`) |
 | `word`, `word_index` | str, int | the prompt word (as written) and its index in `result.words` |
 | `syllable_index` | int / null | syllable inside the word (null for `missing_word`) |
 | `phone_index` | int / null | sound inside the word (`result.words[i].phones[j]`); sounds only |
@@ -275,6 +276,44 @@ Tip `pitch.flat`: Let your voice rise and fall more; it sounded quite flat.
 ```
 
 Tip `pause.mid_phrase`: Keep “mahayana” and “path” together; there was a 0.9 s pause between them.
+
+## 3c. Japanese pitch accent (`pitch_accent`, round 13)
+
+One item per **judged** word whose pitch does not match its dictionary accent clearly enough.
+A word is judged only if all of these hold:
+* it has ≥ 2 morae, each with a dictionary high / low label;
+* its accent class is on the pitch model's dependable list. The class is part of speech,
+  head / chained, single / compound accent phrase, and accent type, as in
+  `RefSyllable.pitch_class` / `pronunciada.prosody.pitch_judge.class_key`. The list is chosen
+  on FLEURS-ja validation natives: content-word classes natives do not systematically depart
+  from. Particles and auxiliaries are never judged.
+
+The word score is the mean over its morae of −log P(dictionary high / low) from the pitch model.
+An item is reported when the score exceeds the model's threshold for the sensitivity. The
+thresholds flag 1 % / 2.5 % / 5 % of natives' judged words (careful / balanced / eager) on
+FLEURS-ja validation. `res.coaching(pitch_threshold=…)` overrides them.
+
+Items appear only with a pitch model that carries a `"judge"` block in its JSON. **The shipped
+`pitch_ja` has none, so no `pitch_accent` items appear by default.** See
+`results/round13_pitch_ja.md` for why: the round-13 candidates do not meet the bars for
+leaving experimental.
+
+| key | value for `pitch_accent` |
+|---|---|
+| `expected` | mora index in the word after which the pitch should fall (a fall onto the next word's first mora counts), or `"none"` (no fall in or right after the word) |
+| `heard` | where the pitch fell, the same encoding; `null` when it fell in the expected place but the word was still flagged on degree |
+| `syllable_index` | the expected fall's mora (else the heard one) |
+| `diff_keys` | `["pitch_accent"]` when `heard` is named |
+| `error_prob` | `null` (no learner-calibrated model yet) |
+| `prob` | exp(−word score): geometric-mean P(dictionary label) over the word's morae |
+| `confidence` | `null` |
+| `gate` | `{"score", "expected_mora", "heard_mora"}` (mora kana) |
+
+Tips, `pronunciada/tips.py`:
+* `pitch_accent.moved`: "In “{word}”, let the pitch fall after “{expected_mora}”; it fell after “{heard_mora}”."
+* `pitch_accent.fall_missing`: "… it stayed level."
+* `pitch_accent.no_fall_expected`: "Keep “{word}” level (no fall in pitch); it fell after “{heard_mora}”."
+* `pitch_accent.unclear` / `pitch_accent.unclear_level` when `heard` is null.
 
 ## 4. Default tips (`pronunciada/tips.py`)
 

@@ -1,0 +1,17 @@
+{
+ "n_sounds": 3891,
+ "max_abs_p_len": 0.09610157568299926,
+ "max_abs_p_str": 0.10841205716133123,
+ "p99_abs_p_len": 0.004430610147379968,
+ "max_abs_reg": 0.15534510359314124,
+ "latency_ms_median": {
+  "sound_B": 67.82866600042325,
+  "sound_E": 68.1071669987432
+ },
+ "clip_s": 3.52,
+ "kb": {
+  "sound_E.npz": 317.0,
+  "sound_E_emb.npz": 94.7,
+  "sound_B.npz": 314.4
+ }
+}

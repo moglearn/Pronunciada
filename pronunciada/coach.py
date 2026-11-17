@@ -178,7 +178,8 @@ def sound_inputs(result, heard: bool | list = False) -> dict:
          "k": np.array([i - ref.words[p.word].phones[0] for i, p in enumerate(ref.phones)]),
          "expected": [p.ipa for p in ref.phones], "alts": [[a for a, _ in p.alts] for p in ref.phones],
          "nucleus": np.array([float(p.is_nucleus) for p in ref.phones]), "first_in_syl": first,
-         "zl": np.asarray(c["s_zl"], np.float64), "zs": np.asarray(c["s_zs"], np.float64),
+         "zl": np.asarray(c.get("coach_zl", c["s_zl"]), np.float64),   # round 12b: detail model
+         "zs": np.asarray(c.get("coach_zs", c["s_zs"]), np.float64),
          "llr_sub": f("llr_sub"), "llr_del": f("llr_del"), "z_llr_sub": f("z_llr_sub"),
          "log_ratio_comp": f("log_ratio_comp"), "comp_mean": f("comp_mean"), "can_mean": f("can_mean"),
          "peak_post": f("peak_post"), "blank_mean": f("blank_mean"), "n_frames": f("n_frames"),
