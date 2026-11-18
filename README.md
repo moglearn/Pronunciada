@@ -8,7 +8,7 @@
 [![CI](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml/badge.svg)](https://github.com/moglearn/pronunciada/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-[Website](https://pronunciada.dev) · [PyPI](https://pypi.org/project/pronunciada/) · [Hugging Face](https://huggingface.co/spaces/kimitonatsu/pronunciada) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
+[Website](https://pronunciada.dev) · [PyPI](https://pypi.org/project/pronunciada/) · [Hugging Face](https://huggingface.co/kimitonatsu/pronunciada) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
 
 Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
@@ -19,6 +19,10 @@ It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portugu
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). It is significantly more accurate than ZIPA alone on 45 of 60 tests and significantly less accurate on none.
 
 The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
+
+A 45-second overview, with sound:
+
+https://github.com/user-attachments/assets/f5932a3a-322f-442c-852b-ef7416d50f58
 
 ## Quick start
 
@@ -80,8 +84,6 @@ for phone in result.words[7].phones:
 `heard` is set when a phoneme scores below 0.5. It is what the recognizer output in that span, or an empty string if it output nothing there.
 
 The model is downloaded to `~/.cache/pronunciada` on first use.
-
-A 45-second overview with sound follows this recording from the sentence to its words and sounds, then shows the main results: [docs/assets/demo.mp4](docs/assets/demo.mp4).
 
 ## Benchmarks
 
