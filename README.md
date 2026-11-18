@@ -316,9 +316,13 @@ python -m bench.scoreboard        # regenerates results/SCOREBOARD.md
 
 The corpora are public. Azure's responses are not redistributed, so the comparison needs an Azure Speech resource. `bench.azure_pa` sends each recording once and caches the response under `~/.cache/pronunciada/azure`. Download instructions, the remaining commands and run times are in [docs/benchmarks_data.md](docs/benchmarks_data.md).
 
-## Development
+## Background
 
-Pronunciada was written at [Moglearn](https://moglearn.com) for a language-learning application. No large model was trained. The system combines an existing phone recognizer with lattice-based scoring, per-language phonology and small calibration models.
+Pronunciation assessment is usually bought as a cloud service. The learner's recording is uploaded, the service bills by the amount of audio, and the application waits for the round trip. Pronunciada was written at [Moglearn](https://moglearn.com), a language-learning app, to do the same job on the learner's device.
+
+ZIPA, an open phone recognizer, already ran on a CPU in many languages. Used directly, it agrees with expert phoneme scores less well than Azure does (0.434 against 0.538 on speechocean762). This project tested whether established scoring methods and the sound rules of each language, added on top of ZIPA, could close that gap without training a large model. The system combines the recognizer with lattice-based scoring, per-language phonology and small calibration models.
+
+## Development
 
 Development ran in rounds. Each round set a target in advance, selected changes on development data and was evaluated once on held-out data. Most of the implementation was done by an AI coding agent under human direction. The write-ups for all rounds are in [results/](results/), including approaches that were tried and dropped: Japanese pitch accent, a second acoustic model, and training on synthetic speech.
 
