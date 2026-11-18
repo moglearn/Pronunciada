@@ -326,7 +326,7 @@ ZIPA, an open phone recognizer, already ran on a CPU in many languages. Used dir
 
 ## Development
 
-Development ran in rounds. Each round set a target in advance, selected changes on development data and was evaluated once on held-out data. Most of the implementation was done by an AI coding agent under human direction. The write-ups for all rounds are in [results/](results/), including approaches that were tried and dropped: Japanese pitch accent, a second acoustic model, and training on synthetic speech.
+Development ran in rounds. Each round set a target in advance, selected changes on development data and was evaluated once on held-out data. The write-ups for all rounds are in [results/](results/), including approaches that were tried and dropped: Japanese pitch accent, a second acoustic model, and training on synthetic speech.
 
 ## License
 
