@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-18",
+  "measured_on_commit": "01a9213f4a64c7a4f13f46b9acabcd7af6c79140",
+  "working_tree_changes_at_snapshot": true,
+  "versions": {
+    "python": "3.12.13",
+    "pronunciada": "1.0.1",
+    "onnxruntime": "1.32.0",
+    "numpy": "2.5.5"
+  },
+  "machine": "Apple M3 Pro",
+  "os": "Darwin 27.0.0",
+  "zipa_model_files": {
+    "anyspeech/zipa-small-crctc-500k/model.onnx": {
+      "bytes": 260267872,
+      "sha256": "ec62e6f583cc3658c6a28a8841c65a6343e8c4b8b350ce1fd5bd8c717c280d96"
+    },
+    "anyspeech/zipa-small-crctc-500k/model.int8.onnx": {
+      "bytes": 70677672,
+      "sha256": "d0e28b68164e8b1fbd6105100c01798828aa0855000ce9bbbd1a2cec233adf13"
+    }
+  },
+  "azure": {
+    "service": "Azure Pronunciation Assessment, REST API",
+    "region": "westus",
+    "requests_made": "2026-11-15 to 2026-11-17",
+    "cached_responses": 15587,
+    "note": "responses are cached locally and not redistributed; nothing was sent to Azure for this snapshot"
+  },
+  "tag": "benchmark-azure-2026-11-18",
+  "scope": "Pronunciada 1.0.1 against Azure Pronunciation Assessment and against ZIPA alone",
+  "speed_figures": "scoreboard speed and memory: measured 2026-11-17",
+  "files": {
+    "README.md": "f6b05942612b1524f18cf78846e9e5dd40c4c6e99d5925059efb18e1c2eac1f0",
+    "SCOREBOARD.md": "ee2392c4e808ed667903dfd8c96c8947044bae97b9a1d31ccaa7c8102f5b2ef9",
+    "cv_real.md": "fe97e1b5fbaf0d7f5a89011298b20ad3baa461427464b38a6171d8932adbc0f6",
+    "languages.md": "51ad59b1274b21d7e52f6d1a743ad956f9b499e07518fd4ba8f914e627adbbf8",
+    "ompal.md": "8dbec680c6ca751d0c92338d542b7812c53c84961c822d94f15dd79c8e17a38a",
+    "refreeze_2026-11-18.md": "1e80d7f7fcf1f35c50fba13c57d965b31bc3ee8b145c757db5ddc30b57695c45",
+    "tables/contrast_audit_test.json": "6c6b703f3aa0ece2ff4a90a566587ccee7331660087e3a0a515878e32625f250",
+    "tables/cv_real.json": "4c642135821aa6eab348f81a21a7654d39d580eee033cd14c24ebd996c7f3afc",
+    "tables/languages.json": "dc5f549e7c40a98a7d610b596ad1ea44027f8d5855fbdc6c6603b7a2d5a62919",
+    "tables/ompal.json": "68b09c9cc061db7c20aa97a8ba3a5c3e3b8df9d1fd1ae3ced553d273113f88d1",
+    "tables/ompal_tone_zh_v3z.json": "68b09c9cc061db7c20aa97a8ba3a5c3e3b8df9d1fd1ae3ced553d273113f88d1",
+    "tables/refreeze_2026-11-18_diff.json": "5894e8f81107c1047077aa313cc0f2006180b7a036aa915dd329c5f73728680a",
+    "tables/snapshot_drift_check.json": "946e1b02b96c02c9a3aa6dd5741f60918b9903a055ebe022f07afd0378e4f335",
+    "tables/swap_ours_vs_azure.json": "afe14c1dd5818f91b2f1f43fcc9aab2ec77c2bb4100527810f2be22e0917d9b7",
+    "tables/zipa_baseline.json": "3394d2a0c4703f8b63521dfbda94714f23229e670cac4694ee1101efd8a20778",
+    "zipa_baseline.md": "48936ba5ebc7346f92d8e8874662e909bc43eb1fd1894d63e974b3e5daafbea4"
+  }
+}

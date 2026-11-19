@@ -1,0 +1,74 @@
+{
+ "speechocean762-test-fp32": {
+  "records": 300,
+  "same_reference_phones": true,
+  "max_abs_diff": {
+   "sound": 0.0,
+   "word": 0.0,
+   "word_prob": 0.0,
+   "sentence": 0.0
+  }
+ },
+ "fleurs-swap-en": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-zh": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-ja": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-es": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-fr": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-de": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-it": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-pt": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-ru": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "fleurs-swap-ko": {
+  "records": 30,
+  "max_abs_diff": {
+   "all_outputs": 0.0
+  }
+ },
+ "_worst": 0.0,
+ "_identical_to_1e-6": true
+}

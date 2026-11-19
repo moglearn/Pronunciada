@@ -1,0 +1,2776 @@
+{
+ "run": {
+  "records": 14454,
+  "unique_audio": 11304,
+  "audio_hours": 17.1451275,
+  "worker_modules": [
+   "pronunciada",
+   "pronunciada.acoustic",
+   "pronunciada.align",
+   "pronunciada.audio",
+   "pronunciada.lattice",
+   "pronunciada.text",
+   "pronunciada.text._cjk_common",
+   "pronunciada.text._eu_base",
+   "pronunciada.text._eu_common",
+   "pronunciada.text._eu_lts",
+   "pronunciada.text.base",
+   "pronunciada.text.de",
+   "pronunciada.text.en",
+   "pronunciada.text.es",
+   "pronunciada.text.fr",
+   "pronunciada.text.ipa",
+   "pronunciada.text.it",
+   "pronunciada.text.ja",
+   "pronunciada.text.ko",
+   "pronunciada.text.pt",
+   "pronunciada.text.ru",
+   "pronunciada.text.zh",
+   "pronunciada.types"
+  ]
+ },
+ "verify": {
+  "n_utts": 20,
+  "worker_pronunciada_modules": [
+   "pronunciada",
+   "pronunciada.acoustic",
+   "pronunciada.align",
+   "pronunciada.audio",
+   "pronunciada.lattice",
+   "pronunciada.text",
+   "pronunciada.text._eu_base",
+   "pronunciada.text._eu_common",
+   "pronunciada.text._eu_lts",
+   "pronunciada.text.base",
+   "pronunciada.text.en",
+   "pronunciada.text.ipa",
+   "pronunciada.types"
+  ],
+  "forbidden_modules_loaded": [],
+  "max_abs_diff_vs_raw_posterior_cache": 0.01563262939453125,
+  "n_compared_with_cache": 20,
+  "max_abs_change_by_en_adapter": {
+   "min": 26.167516708374023,
+   "max": 26.174652099609375
+  },
+  "mean_abs_gop_change_if_adapter_were_used": 0.2506155169058009,
+  "lattice_alt_weights_all_zero": true,
+  "lattice_alt_indices": [
+   0
+  ],
+  "lattice_finite_init_states": 2
+ },
+ "rows": [
+  {
+   "group": "speechocean762",
+   "test": "individual sounds",
+   "n": 47369,
+   "pronunciada": {
+    "value": 0.6849252300777547,
+    "ci": [
+     0.6133092586160852,
+     0.7310212207363598
+    ]
+   },
+   "gop": {
+    "value": 0.43445965254700397,
+    "ci": [
+     0.3889934779679476,
+     0.48110677687774334
+    ]
+   },
+   "match": {
+    "value": 0.3468449800424128,
+    "ci": [
+     0.3141688240801662,
+     0.37752445432774623
+    ]
+   },
+   "delta": 0.25046557753075077,
+   "p": 0.001998001998001998,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.21681900766801013,
+    0.27378296276358394
+   ],
+   "delta_vs_match": {
+    "value": 0.3380802500353419,
+    "ci": [
+     0.2987658919186987,
+     0.3603831503808174
+    ],
+    "p": 0.001998001998001998
+   },
+   "pronunciada_table": 0.6849252300777547,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "words",
+   "n": 15967,
+   "pronunciada": {
+    "value": 0.6087504969953936,
+    "ci": [
+     0.5329530199670872,
+     0.6630592460238761
+    ]
+   },
+   "gop": {
+    "value": 0.39384246750400026,
+    "ci": [
+     0.3353424827691764,
+     0.449714033372019
+    ]
+   },
+   "match": {
+    "value": 0.3375467073250045,
+    "ci": [
+     0.2908304361447377,
+     0.38035769204135605
+    ]
+   },
+   "delta": 0.21490802949139337,
+   "p": 0.001998001998001998,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.17727490984561045,
+    0.24396216600498952
+   ],
+   "delta_vs_match": {
+    "value": 0.2712037896703891,
+    "ci": [
+     0.2305090548381784,
+     0.29865101487056533
+    ],
+    "p": 0.001998001998001998
+   },
+   "pronunciada_table": 0.6087504969953936,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence accuracy",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7477510045547617,
+    "ci": [
+     0.6852045538102981,
+     0.7938265435779978
+    ]
+   },
+   "gop": {
+    "value": 0.582549383132348,
+    "ci": [
+     0.5083384120826931,
+     0.6403129119971048
+    ]
+   },
+   "match": {
+    "value": 0.6008359883651719,
+    "ci": [
+     0.5304542948061711,
+     0.6551479792510374
+    ]
+   },
+   "delta": 0.16520162142241368,
+   "p": 0.001998001998001998,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.10112101570402499,
+    0.212132216942865
+   ],
+   "delta_vs_match": {
+    "value": 0.1469150161895898,
+    "ci": [
+     0.0994533279156655,
+     0.19888710079683886
+    ],
+    "p": 0.001998001998001998
+   },
+   "note": "baseline: the one sentence score (mean phone GOP / 1 - token error rate) against every expert sentence score",
+   "pronunciada_table": 0.7477510045547617,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence fluency",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7788048943749604,
+    "ci": [
+     0.6954398599884782,
+     0.8358145961093947
+    ]
+   },
+   "gop": {
+    "value": 0.5616343445853146,
+    "ci": [
+     0.47324203338845056,
+     0.6381607551519963
+    ]
+   },
+   "match": {
+    "value": 0.5835866344982898,
+    "ci": [
+     0.5041302788708545,
+     0.6401387919546199
+    ]
+   },
+   "delta": 0.21717054978964578,
+   "p": 0.003996003996003996,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.08988608364064873,
+    0.3171467971225164
+   ],
+   "delta_vs_match": {
+    "value": 0.19521825987667052,
+    "ci": [
+     0.11617607213113816,
+     0.2689135380516746
+    ],
+    "p": 0.001998001998001998
+   },
+   "note": "baseline: the one sentence score (mean phone GOP / 1 - token error rate) against every expert sentence score",
+   "pronunciada_table": 0.7788048943749604,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence prosodic",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7718905933017663,
+    "ci": [
+     0.6931002974930757,
+     0.8297295167250244
+    ]
+   },
+   "gop": {
+    "value": 0.5880420869957267,
+    "ci": [
+     0.5084811842861318,
+     0.6569630979330514
+    ]
+   },
+   "match": {
+    "value": 0.6130036809048671,
+    "ci": [
+     0.5399077633988864,
+     0.6621547072205822
+    ]
+   },
+   "delta": 0.18384850630603966,
+   "p": 0.005994005994005994,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.0659073884000642,
+    0.27403081176696203
+   ],
+   "delta_vs_match": {
+    "value": 0.15888691239689923,
+    "ci": [
+     0.08333621894305045,
+     0.22741478924806208
+    ],
+    "p": 0.001998001998001998
+   },
+   "note": "baseline: the one sentence score (mean phone GOP / 1 - token error rate) against every expert sentence score",
+   "pronunciada_table": 0.7718905933017663,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence total",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7622342319884238,
+    "ci": [
+     0.6996129168675176,
+     0.8112815186341847
+    ]
+   },
+   "gop": {
+    "value": 0.6143018018343823,
+    "ci": [
+     0.5377098380947087,
+     0.6816835646856905
+    ]
+   },
+   "match": {
+    "value": 0.6191150967350015,
+    "ci": [
+     0.5523826556735577,
+     0.6700842550581271
+    ]
+   },
+   "delta": 0.14793243015404145,
+   "p": 0.001998001998001998,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.05972363595799924,
+    0.21440785326120676
+   ],
+   "delta_vs_match": {
+    "value": 0.14311913525342224,
+    "ci": [
+     0.0891414612718519,
+     0.20171743577983683
+    ],
+    "p": 0.001998001998001998
+   },
+   "note": "baseline: the one sentence score (mean phone GOP / 1 - token error rate) against every expert sentence score",
+   "pronunciada_table": 0.7622342319884238,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "learner errors",
+   "test": "L2-ARCTIC test",
+   "n": 29760,
+   "pronunciada": {
+    "value": 0.7122868841616822,
+    "ci": [
+     0.6473234403384088,
+     0.7591366948836177
+    ]
+   },
+   "gop": {
+    "value": 0.6587663686244383,
+    "ci": [
+     0.5856649261756056,
+     0.7256051416392724
+    ]
+   },
+   "match": {
+    "value": 0.6199394282749788,
+    "ci": [
+     0.561634696506674,
+     0.6762150722101806
+    ]
+   },
+   "delta": 0.05352051553724391,
+   "p": 0.001998001998001998,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.025347696685686465,
+    0.08379953115694992
+   ],
+   "delta_vs_match": {
+    "value": 0.09234745588670334,
+    "ci": [
+     0.07057293500712836,
+     0.11423353997892612
+    ],
+    "p": 0.001998001998001998
+   },
+   "n_errors": 4114,
+   "pronunciada_table": 0.7122868841616822,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "learner errors",
+   "test": "EpaDB test",
+   "n": 20665,
+   "pronunciada": {
+    "value": 0.7212187150604799,
+    "ci": [
+     0.7066676545730932,
+     0.7350437540448864
+    ]
+   },
+   "gop": {
+    "value": 0.6383333044908203,
+    "ci": [
+     0.614476491317268,
+     0.6597836704991444
+    ]
+   },
+   "match": {
+    "value": 0.5986659986330699,
+    "ci": [
+     0.5780255527184591,
+     0.6146678275693978
+    ]
+   },
+   "delta": 0.08288541056965959,
+   "p": 0.001998001998001998,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.0655794189790522,
+    0.10305560618734419
+   ],
+   "delta_vs_match": {
+    "value": 0.12255271642740995,
+    "ci": [
+     0.10531184104674454,
+     0.14159162121699026
+    ],
+    "p": 0.001998001998001998
+   },
+   "n_errors": 4131,
+   "pronunciada_table": 0.7212187150604799,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "coaching",
+   "test": "precision at 'careful' recall (0.236)",
+   "n": 47041,
+   "pronunciada": {
+    "value": 0.7698056801195815,
+    "ci": [
+     0.7214514881658843,
+     0.8110288987132388
+    ]
+   },
+   "gop": {
+    "value": 0.5235069885641678,
+    "ci": [
+     0.4679570503992568,
+     0.5683299521744998
+    ],
+    "recall_reached": 0.23556317895940537
+   },
+   "match": {
+    "value": 0.3751296990980924,
+    "ci": [
+     0.33972204259804134,
+     0.40959998781681994
+    ],
+    "recall_reached": 0.5374499714122356
+   },
+   "delta": 0.24629869155541373,
+   "p": 0.001998001998001998,
+   "unit": "precision",
+   "delta_ci": [
+    0.2210435619482111,
+    0.27722060190367737
+   ],
+   "recall": 0.23556317895940537,
+   "pronunciada_table": 0.7698056801195815,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "coaching",
+   "test": "precision at 'balanced' recall (0.362)",
+   "n": 47041,
+   "pronunciada": {
+    "value": 0.6588308716455169,
+    "ci": [
+     0.6122423109716371,
+     0.7024162549725633
+    ]
+   },
+   "gop": {
+    "value": 0.46607799852832965,
+    "ci": [
+     0.4251160792859238,
+     0.5062248068862284
+    ],
+    "recall_reached": 0.36214979988564894
+   },
+   "match": {
+    "value": 0.3751296990980924,
+    "ci": [
+     0.33972204259804134,
+     0.40959998781681994
+    ],
+    "recall_reached": 0.5374499714122356
+   },
+   "delta": 0.19275287311718725,
+   "p": 0.001998001998001998,
+   "unit": "precision",
+   "delta_ci": [
+    0.1711004065629806,
+    0.2141488305626211
+   ],
+   "recall": 0.36214979988564894,
+   "pronunciada_table": 0.6588308716455169,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "coaching",
+   "test": "precision at 'eager' recall (0.499)",
+   "n": 47041,
+   "pronunciada": {
+    "value": 0.5595024365221851,
+    "ci": [
+     0.5183112101794111,
+     0.5985582368270735
+    ]
+   },
+   "gop": {
+    "value": 0.4034584797484742,
+    "ci": [
+     0.3681007420091324,
+     0.4337650824368109
+    ],
+    "recall_reached": 0.4989136649514008
+   },
+   "match": {
+    "value": 0.3751296990980924,
+    "ci": [
+     0.33972204259804134,
+     0.40959998781681994
+    ],
+    "recall_reached": 0.5374499714122356
+   },
+   "delta": 0.1560439567737109,
+   "p": 0.001998001998001998,
+   "unit": "precision",
+   "delta_ci": [
+    0.13754054479305183,
+    0.17613668246485203
+   ],
+   "recall": 0.4989136649514008,
+   "pronunciada_table": 0.5595024365221851,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "coaching",
+   "test": "precision-recall AUC",
+   "n": 47041,
+   "pronunciada": {
+    "value": 0.569984939956019,
+    "ci": [
+     0.5099248018475142,
+     0.6223394703403186
+    ]
+   },
+   "gop": {
+    "value": 0.3927249081747039,
+    "ci": [
+     0.34655411263658087,
+     0.4359982780485908
+    ]
+   },
+   "match": {
+    "value": 0.28760226432106817,
+    "ci": [
+     0.25447892151767376,
+     0.32055078770321155
+    ]
+   },
+   "delta": 0.17726003178131505,
+   "p": 0.001998001998001998,
+   "unit": "average precision",
+   "delta_ci": [
+    0.1553721733364166,
+    0.19698563900859167
+   ],
+   "pronunciada_table": 0.569984939956019,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "OMPAL",
+   "test": "word: any error",
+   "n": 8156,
+   "pronunciada": {
+    "value": 0.7919780026282451,
+    "ci": [
+     0.7503754481508076,
+     0.8379261445087921
+    ]
+   },
+   "gop": {
+    "value": 0.6023447988163443,
+    "ci": [
+     0.5597852716811803,
+     0.6444218863918508
+    ]
+   },
+   "match": {
+    "value": 0.590280929150831,
+    "ci": [
+     0.5557048180196364,
+     0.6295760683384211
+    ]
+   },
+   "delta": 0.18963320381190085,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.15710820838773012,
+    0.24124098252267878
+   ],
+   "n_pos": 1220,
+   "n_neg": 6936,
+   "pronunciada_table": 0.7919780026282451,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "OMPAL",
+   "test": "word: tone-only error",
+   "n": 8156,
+   "pronunciada": {
+    "value": 0.7784079011506564,
+    "ci": [
+     0.7319881492744401,
+     0.8289884342450156
+    ]
+   },
+   "gop": {
+    "value": 0.5524891839905897,
+    "ci": [
+     0.5061273686549075,
+     0.5917819498571769
+    ]
+   },
+   "match": {
+    "value": 0.5413504249739112,
+    "ci": [
+     0.5094870138437401,
+     0.5687007653101581
+    ]
+   },
+   "delta": 0.22591871716006673,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.18918046159593066,
+    0.29191344552068776
+   ],
+   "n_pos": 1008,
+   "n_neg": 6936,
+   "pronunciada_table": 0.7784079011506564,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "OMPAL",
+   "test": "word: consonant / vowel error",
+   "n": 8156,
+   "pronunciada": {
+    "value": 0.8564999945594219,
+    "ci": [
+     0.8064085307477835,
+     0.8954049209197069
+    ]
+   },
+   "gop": {
+    "value": 0.8393941372331396,
+    "ci": [
+     0.7873785068720164,
+     0.8818417332366545
+    ]
+   },
+   "match": {
+    "value": 0.8229316282561859,
+    "ci": [
+     0.7699421785546767,
+     0.8633211950396164
+    ]
+   },
+   "delta": 0.017105857326282337,
+   "p": 0.22088955522238882,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.009258848447214372,
+    0.04805419261344221
+   ],
+   "n_pos": 212,
+   "n_neg": 6936,
+   "pronunciada_table": 0.8564999945594219,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "OMPAL",
+   "test": "sentence accuracy",
+   "n": 663,
+   "pronunciada": {
+    "value": 0.6343920834564605,
+    "ci": [
+     0.4674983111391095,
+     0.7419480571578421
+    ]
+   },
+   "gop": {
+    "value": 0.30164007719308933,
+    "ci": [
+     0.08612778995531557,
+     0.4259736602079703
+    ]
+   },
+   "match": {
+    "value": 0.27035767789757076,
+    "ci": [
+     0.09068816753365146,
+     0.3564114962922433
+    ]
+   },
+   "delta": 0.33275200626337115,
+   "p": 0.0009995002498750624,
+   "unit": "Pearson",
+   "delta_ci": [
+    0.2125492889894039,
+    0.46185488209975367
+   ],
+   "n_speakers": 18,
+   "pronunciada_table": 0.6343920834564605,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9947841807909604,
+    "ci": [
+     0.9919988868248995,
+     0.9968950326863348
+    ]
+   },
+   "gop": {
+    "value": 0.9950802259887006,
+    "ci": [
+     0.9923344792319762,
+     0.9972438667071128
+    ]
+   },
+   "match": {
+    "value": 0.9836892655367232,
+    "ci": [
+     0.9793020462563989,
+     0.9880297113003694
+    ]
+   },
+   "delta": -0.0002960451977401801,
+   "p": 0.6733266733266733,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0018600627910698774,
+    0.0013661634579947568
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.9947841807909604,
+   "pronunciada_matches_table": true,
+   "verdict": "level"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9807209039548023,
+    "ci": [
+     0.9734545653985363,
+     0.9867531548124017
+    ]
+   },
+   "gop": {
+    "value": 0.9621468926553672,
+    "ci": [
+     0.9523267714507028,
+     0.9708059094829584
+    ]
+   },
+   "match": {
+    "value": 0.8839887005649717,
+    "ci": [
+     0.8672858349702578,
+     0.9001660594126845
+    ]
+   },
+   "delta": 0.018574011299435034,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.01196773108806306,
+    0.025194061816116737
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.9807209039548023,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8933333333333333,
+    "ci": [
+     0.84,
+     0.94
+    ]
+   },
+   "gop": {
+    "value": 0.84,
+    "ci": [
+     0.7533333333333333,
+     0.9001666666666666
+    ]
+   },
+   "match": {
+    "value": 0.08220289855072464,
+    "ci": [
+     0.0429574204749104,
+     0.12860144927536232
+    ]
+   },
+   "delta": 0.053333333333333344,
+   "p": 0.16383616383616384,
+   "unit": "%",
+   "delta_ci": [
+    -0.00666666666666671,
+    0.1333333333333333
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.8933333333333333,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "zh far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9919729483677981,
+    "ci": [
+     0.9889876999238386,
+     0.9944804488232075
+    ]
+   },
+   "gop": {
+    "value": 0.9923995317986735,
+    "ci": [
+     0.9895367646258726,
+     0.9949839757012876
+    ]
+   },
+   "match": {
+    "value": 0.9768812589413448,
+    "ci": [
+     0.9707607851487304,
+     0.9824828420624712
+    ]
+   },
+   "delta": -0.0004265834308753158,
+   "p": 0.7352647352647352,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0028441646526084193,
+    0.0023659727582776456
+   ],
+   "lang": "zh",
+   "pronunciada_table": 0.9919729483677981,
+   "pronunciada_matches_table": true,
+   "verdict": "level"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "zh near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9748757965925348,
+    "ci": [
+     0.9646492659352461,
+     0.9840133769739928
+    ]
+   },
+   "gop": {
+    "value": 0.9597320847964624,
+    "ci": [
+     0.9421948564842764,
+     0.9720501928905851
+    ]
+   },
+   "match": {
+    "value": 0.9096917674600078,
+    "ci": [
+     0.8888362390126922,
+     0.9277298054321562
+    ]
+   },
+   "delta": 0.015143711796072323,
+   "p": 0.017982017982017984,
+   "unit": "AUC",
+   "delta_ci": [
+    0.0024797514858796305,
+    0.02988891552763947
+   ],
+   "lang": "zh",
+   "pronunciada_table": 0.9748757965925348,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "zh near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9,
+    "ci": [
+     0.84,
+     0.9466666666666667
+    ]
+   },
+   "gop": {
+    "value": 0.8266666666666667,
+    "ci": [
+     0.76,
+     0.8868333333333333
+    ]
+   },
+   "match": {
+    "value": 0.3377333333333334,
+    "ci": [
+     0.2559442982456141,
+     0.42368055555555556
+    ]
+   },
+   "delta": 0.07333333333333336,
+   "p": 0.07792207792207792,
+   "unit": "%",
+   "delta_ci": [
+    -0.006666666666666599,
+    0.13349999999999992
+   ],
+   "lang": "zh",
+   "pronunciada_table": 0.9,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "tone swaps",
+   "test": "zh tone AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8339628040057224,
+    "ci": [
+     0.8010821196768477,
+     0.8638562976321622
+    ]
+   },
+   "gop": {
+    "value": 0.5,
+    "ci": null,
+    "by_construction": true
+   },
+   "match": {
+    "value": 0.5,
+    "ci": null,
+    "by_construction": true
+   },
+   "delta": 0.3339628040057224,
+   "p": 0.001998001998001998,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.3010821196768478,
+    0.36385629763216215
+   ],
+   "lang": "zh",
+   "note": "150 of 150 tone-swapped prompts map to the same ZIPA token sequence as the original prompt (ZIPA has no tone tokens), so the baseline cannot see the change; its AUC is 0.5 by construction and was not computed. Δ = Pronunciada − 0.5, CI and p from Pronunciada's utterance bootstrap.",
+   "pronunciada_table": 0.8339628040057224,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ja far AUC",
+   "n": 149,
+   "pronunciada": {
+    "value": 0.9910673768181709,
+    "ci": [
+     0.9826128005254215,
+     0.9968665859643809
+    ]
+   },
+   "gop": {
+    "value": 0.9858331021482757,
+    "ci": [
+     0.9727766304508223,
+     0.9953062282318025
+    ]
+   },
+   "match": {
+    "value": 0.9487752091229604,
+    "ci": [
+     0.9335964469356728,
+     0.9597543638558856
+    ]
+   },
+   "delta": 0.005234274669895234,
+   "p": 0.03396603396603397,
+   "unit": "AUC",
+   "delta_ci": [
+    0.0005824965727737387,
+    0.012103060532065536
+   ],
+   "lang": "ja",
+   "pronunciada_table": 0.9910673768181709,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ja near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.968136854524004,
+    "ci": [
+     0.9570277054404491,
+     0.9781160732590976
+    ]
+   },
+   "gop": {
+    "value": 0.8960540883927761,
+    "ci": [
+     0.8741908877053055,
+     0.9155038935705369
+    ]
+   },
+   "match": {
+    "value": 0.7264225428804791,
+    "ci": [
+     0.6975772149439667,
+     0.7548209586707487
+    ]
+   },
+   "delta": 0.07208276613122788,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.05398793976791304,
+    0.09097948441340288
+   ],
+   "lang": "ja",
+   "pronunciada_table": 0.968136854524004,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ja near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.84,
+    "ci": [
+     0.76,
+     0.9
+    ]
+   },
+   "gop": {
+    "value": 0.35333333333333333,
+    "ci": [
+     0.26,
+     0.48
+    ]
+   },
+   "match": {
+    "value": 0.032348484848484876,
+    "ci": [
+     0.003843589743589749,
+     0.08370221088435376
+    ]
+   },
+   "delta": 0.48666666666666664,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.3533333333333333,
+    0.5733333333333333
+   ],
+   "lang": "ja",
+   "pronunciada_table": 0.84,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9976949854172547,
+    "ci": [
+     0.9958280803054239,
+     0.9989509520174232
+    ]
+   },
+   "gop": {
+    "value": 0.9974052121554239,
+    "ci": [
+     0.9956492371291408,
+     0.9987136052141982
+    ]
+   },
+   "match": {
+    "value": 0.9888738357324302,
+    "ci": [
+     0.9848341730716678,
+     0.992549595290346
+    ]
+   },
+   "delta": 0.00028977326183077246,
+   "p": 0.7052947052947053,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0008926356678032987,
+    0.0014345346849923835
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.9976949854172547,
+   "pronunciada_matches_table": true,
+   "verdict": "level"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9895286480383856,
+    "ci": [
+     0.9854562958229719,
+     0.9929355404550759
+    ]
+   },
+   "gop": {
+    "value": 0.9156063599586038,
+    "ci": [
+     0.8958305883904044,
+     0.9328028268319385
+    ]
+   },
+   "match": {
+    "value": 0.811017028883244,
+    "ci": [
+     0.7857720881525925,
+     0.8334993449916132
+    ]
+   },
+   "delta": 0.07392228807978174,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.05730115870135537,
+    0.09249840189994642
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.9895286480383856,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9666666666666667,
+    "ci": [
+     0.9333333333333333,
+     0.9933333333333333
+    ]
+   },
+   "gop": {
+    "value": 0.38,
+    "ci": [
+     0.24666666666666667,
+     0.4801666666666665
+    ]
+   },
+   "match": {
+    "value": 0.09133417508417509,
+    "ci": [
+     0.05153883515669553,
+     0.13666870809386972
+    ]
+   },
+   "delta": 0.5866666666666667,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.47333333333333333,
+    0.72
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.9666666666666667,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9968788046485888,
+    "ci": [
+     0.9953778515574702,
+     0.9981218345927443
+    ]
+   },
+   "gop": {
+    "value": 0.9947057738424645,
+    "ci": [
+     0.992523483436609,
+     0.9965619527962833
+    ]
+   },
+   "match": {
+    "value": 0.968901494189264,
+    "ci": [
+     0.9627678789704578,
+     0.9747959581050845
+    ]
+   },
+   "delta": 0.0021730308061242987,
+   "p": 0.00999000999000999,
+   "unit": "AUC",
+   "delta_ci": [
+    0.00043646037989321373,
+    0.004048546524294161
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9968788046485888,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9863309352517986,
+    "ci": [
+     0.9806912020797851,
+     0.9908054887798754
+    ]
+   },
+   "gop": {
+    "value": 0.92475373547316,
+    "ci": [
+     0.9104247552698578,
+     0.9391931170387958
+    ]
+   },
+   "match": {
+    "value": 0.8092473713337023,
+    "ci": [
+     0.7895972024055317,
+     0.8303424321476652
+    ]
+   },
+   "delta": 0.061577199778638625,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.048184388704976926,
+    0.07491228501856678
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9863309352517986,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9266666666666666,
+    "ci": [
+     0.8866666666666667,
+     0.9733333333333334
+    ]
+   },
+   "gop": {
+    "value": 0.44,
+    "ci": [
+     0.3466666666666667,
+     0.5534999999999999
+    ]
+   },
+   "match": {
+    "value": 0.18237681159420288,
+    "ci": [
+     0.08466613636363636,
+     0.24666666666666667
+    ]
+   },
+   "delta": 0.48666666666666664,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.3733333333333334,
+    0.5866666666666667
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9266666666666666,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9956011204481793,
+    "ci": [
+     0.9935590488166759,
+     0.9973357974223397
+    ]
+   },
+   "gop": {
+    "value": 0.9886072829131652,
+    "ci": [
+     0.9843530057351196,
+     0.992181077110979
+    ]
+   },
+   "match": {
+    "value": 0.9787966386554622,
+    "ci": [
+     0.9727185539140116,
+     0.984135376265891
+    ]
+   },
+   "delta": 0.006993837535014036,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.0030372539857626197,
+    0.01152620416704688
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.9956011204481793,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9599619047619048,
+    "ci": [
+     0.9429959413826083,
+     0.9752005971697315
+    ]
+   },
+   "gop": {
+    "value": 0.8519126050420168,
+    "ci": [
+     0.8278965649270063,
+     0.8741380074545816
+    ]
+   },
+   "match": {
+    "value": 0.7237243697478991,
+    "ci": [
+     0.6934891850136136,
+     0.751708875140092
+    ]
+   },
+   "delta": 0.10804929971988797,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.08435173460310519,
+    0.13270687957120883
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.9599619047619048,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.7666666666666667,
+    "ci": [
+     0.7,
+     0.86
+    ]
+   },
+   "gop": {
+    "value": 0.24,
+    "ci": [
+     0.15333333333333332,
+     0.3333333333333333
+    ]
+   },
+   "match": {
+    "value": 0.18666666666666668,
+    "ci": [
+     0.12666527777777778,
+     0.25145229079008885
+    ]
+   },
+   "delta": 0.5266666666666667,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.43316666666666664,
+    0.6599999999999999
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.7666666666666667,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9979528041679436,
+    "ci": [
+     0.9967959007526834,
+     0.9988985800805228
+    ]
+   },
+   "gop": {
+    "value": 0.9973766472571254,
+    "ci": [
+     0.9954725909455007,
+     0.9989567290358952
+    ]
+   },
+   "match": {
+    "value": 0.9762079885585861,
+    "ci": [
+     0.9715323017850145,
+     0.9806566861686411
+    ]
+   },
+   "delta": 0.0005761569108182485,
+   "p": 0.5674325674325674,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0012635715679587183,
+    0.0025481095400332076
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.9979528041679436,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9786147716825008,
+    "ci": [
+     0.9714111135129471,
+     0.9845108615078315
+    ]
+   },
+   "gop": {
+    "value": 0.9489100010215548,
+    "ci": [
+     0.9332301915152084,
+     0.9627707825178536
+    ]
+   },
+   "match": {
+    "value": 0.834188374706303,
+    "ci": [
+     0.8159381756718033,
+     0.851191302549308
+    ]
+   },
+   "delta": 0.02970477066094601,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.017039481449215965,
+    0.0459467113540801
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.9786147716825008,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8866666666666667,
+    "ci": [
+     0.8265,
+     0.9333333333333333
+    ]
+   },
+   "gop": {
+    "value": 0.7,
+    "ci": [
+     0.5666666666666667,
+     0.8
+    ]
+   },
+   "match": {
+    "value": 0.06510541310541311,
+    "ci": [
+     0.032946390243394186,
+     0.10302808409913672
+    ]
+   },
+   "delta": 0.18666666666666676,
+   "p": 0.003996003996003996,
+   "unit": "%",
+   "delta_ci": [
+    0.07999999999999996,
+    0.30666666666666664
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.8866666666666667,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9970567595459237,
+    "ci": [
+     0.9955687289101843,
+     0.998375991869039
+    ]
+   },
+   "gop": {
+    "value": 0.9955479876160991,
+    "ci": [
+     0.9936344307991642,
+     0.9974390216240568
+    ]
+   },
+   "match": {
+    "value": 0.9665851393188855,
+    "ci": [
+     0.9602378935228921,
+     0.9724489721334083
+    ]
+   },
+   "delta": 0.0015087719298245705,
+   "p": 0.11788211788211789,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0003211978295101586,
+    0.0034411835224855717
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.9970567595459237,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9628998968008255,
+    "ci": [
+     0.9446372745972548,
+     0.9785150841367791
+    ]
+   },
+   "gop": {
+    "value": 0.9193704850361197,
+    "ci": [
+     0.8951327190800685,
+     0.9404344043423293
+    ]
+   },
+   "match": {
+    "value": 0.7805098039215687,
+    "ci": [
+     0.7535494802171844,
+     0.8055282525731446
+    ]
+   },
+   "delta": 0.043529411764705817,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.028278227297995513,
+    0.06005642654533921
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.9628998968008255,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8533333333333334,
+    "ci": [
+     0.8,
+     0.9066666666666666
+    ]
+   },
+   "gop": {
+    "value": 0.5466666666666666,
+    "ci": [
+     0.4533333333333333,
+     0.6668333333333332
+    ]
+   },
+   "match": {
+    "value": 0.1874074074074074,
+    "ci": [
+     0.10749641719745225,
+     0.2542609545614653
+    ]
+   },
+   "delta": 0.30666666666666675,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.18666666666666665,
+    0.4133333333333333
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.8533333333333334,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ru far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.990231962065872,
+    "ci": [
+     0.985388094748394,
+     0.9943800662565807
+    ]
+   },
+   "gop": {
+    "value": 0.987676534666154,
+    "ci": [
+     0.9828367947328841,
+     0.9920852417889604
+    ]
+   },
+   "match": {
+    "value": 0.9566205305651673,
+    "ci": [
+     0.948252640826663,
+     0.9655030572877247
+    ]
+   },
+   "delta": 0.0025554273997180355,
+   "p": 0.04795204795204795,
+   "unit": "AUC",
+   "delta_ci": [
+    2.9847067443314365e-05,
+    0.00523590388274
+   ],
+   "lang": "ru",
+   "pronunciada_table": 0.990231962065872,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ru near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8995027553505062,
+    "ci": [
+     0.8718749282668904,
+     0.9239192305375097
+    ]
+   },
+   "gop": {
+    "value": 0.8472049211841599,
+    "ci": [
+     0.8188498668318117,
+     0.8755208061891063
+    ]
+   },
+   "match": {
+    "value": 0.7086518005895168,
+    "ci": [
+     0.6724655153030065,
+     0.7414832217860977
+    ]
+   },
+   "delta": 0.05229783416634626,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.02935430733501161,
+    0.07548917242202706
+   ],
+   "lang": "ru",
+   "pronunciada_table": 0.8995027553505062,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ru near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.62,
+    "ci": [
+     0.5333333333333333,
+     0.7
+    ]
+   },
+   "gop": {
+    "value": 0.34,
+    "ci": [
+     0.22666666666666666,
+     0.4266666666666667
+    ]
+   },
+   "match": {
+    "value": 0.08566666666666668,
+    "ci": [
+     0.032891976763416854,
+     0.14601666666666668
+    ]
+   },
+   "delta": 0.27999999999999997,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.18,
+    0.3999999999999999
+   ],
+   "lang": "ru",
+   "pronunciada_table": 0.62,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ko far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9942350877192982,
+    "ci": [
+     0.9880452966545966,
+     0.9983354629364093
+    ]
+   },
+   "gop": {
+    "value": 0.9932842105263158,
+    "ci": [
+     0.9877151503319016,
+     0.9974753223623155
+    ]
+   },
+   "match": {
+    "value": 0.9723070175438596,
+    "ci": [
+     0.9613200133863363,
+     0.9811244146195223
+    ]
+   },
+   "delta": 0.00095087719298248,
+   "p": 0.5134865134865135,
+   "unit": "AUC",
+   "delta_ci": [
+    -0.0017059418516702813,
+    0.003789292706736519
+   ],
+   "lang": "ko",
+   "pronunciada_table": 0.9942350877192982,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ko near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9435438596491228,
+    "ci": [
+     0.9184012486098474,
+     0.9634417321454365
+    ]
+   },
+   "gop": {
+    "value": 0.8376456140350877,
+    "ci": [
+     0.8053456435016568,
+     0.8691374146300644
+    ]
+   },
+   "match": {
+    "value": 0.6945543859649123,
+    "ci": [
+     0.6570326156278264,
+     0.7312411941163683
+    ]
+   },
+   "delta": 0.10589824561403505,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.08045412554219553,
+    0.13305568154556158
+   ],
+   "lang": "ko",
+   "pronunciada_table": 0.9435438596491228,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "swap benchmark",
+   "test": "ko near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.7533333333333333,
+    "ci": [
+     0.6733333333333333,
+     0.8333333333333334
+    ]
+   },
+   "gop": {
+    "value": 0.3,
+    "ci": [
+     0.22,
+     0.43333333333333335
+    ]
+   },
+   "match": {
+    "value": 0.14212962962962963,
+    "ci": [
+     0.09529559403153154,
+     0.20057882882882883
+    ]
+   },
+   "delta": 0.4533333333333333,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.33316666666666667,
+    0.54
+   ],
+   "lang": "ko",
+   "pronunciada_table": 0.7533333333333333,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "en/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.74815,
+    "ci": [
+     0.6983788336016502,
+     0.7987458080374322
+    ]
+   },
+   "gop": {
+    "value": 0.7193,
+    "ci": [
+     0.6678632733581237,
+     0.7694965891384574
+    ]
+   },
+   "match": {
+    "value": 0.6885375,
+    "ci": [
+     0.6372816723222706,
+     0.7414594095434686
+    ]
+   },
+   "delta": 0.02884999999999993,
+   "p": 0.04897551224387806,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.00034687069357929045,
+    0.057347173840079806
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.74815,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test B",
+   "test": "en/B",
+   "n": 260,
+   "pronunciada": {
+    "value": 0.5166272189349113,
+    "ci": [
+     0.4448942319828348,
+     0.5881420388144911
+    ]
+   },
+   "gop": {
+    "value": 0.5372781065088758,
+    "ci": [
+     0.46311562279886104,
+     0.608821028471526
+    ]
+   },
+   "match": {
+    "value": 0.5196153846153846,
+    "ci": [
+     0.44741965894465896,
+     0.5957225468312325
+    ]
+   },
+   "delta": -0.020650887573964494,
+   "p": 0.4057971014492754,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.06795619324455658,
+    0.02746430093776642
+   ],
+   "n_pos": 130,
+   "n_neg": 130,
+   "pronunciada_table": 0.5166272189349113,
+   "pronunciada_matches_table": true,
+   "verdict": "behind (not significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "zh-CN/A",
+   "n": 386,
+   "pronunciada": {
+    "value": 0.7708126392654836,
+    "ci": [
+     0.720450180570035,
+     0.8194863747586771
+    ]
+   },
+   "gop": {
+    "value": 0.7174152326236946,
+    "ci": [
+     0.665351181785279,
+     0.7692344276947273
+    ]
+   },
+   "match": {
+    "value": 0.7380332357915649,
+    "ci": [
+     0.684561013900023,
+     0.7904441213586714
+    ]
+   },
+   "delta": 0.05339740664178905,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.02384144572646834,
+    0.08299090371921872
+   ],
+   "n_pos": 193,
+   "n_neg": 193,
+   "pronunciada_table": 0.7708126392654836,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "zh-TW/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.884975,
+    "ci": [
+     0.8492641026796459,
+     0.9161228958917397
+    ]
+   },
+   "gop": {
+    "value": 0.84425,
+    "ci": [
+     0.8018529341833008,
+     0.884288947205872
+    ]
+   },
+   "match": {
+    "value": 0.8409125,
+    "ci": [
+     0.8007207228443438,
+     0.8796005079877585
+    ]
+   },
+   "delta": 0.04072500000000001,
+   "p": 0.0029985007496251873,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.011765218498317598,
+    0.0708961164445965
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.884975,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "ja/A",
+   "n": 390,
+   "pronunciada": {
+    "value": 0.7983826429980276,
+    "ci": [
+     0.747401356639344,
+     0.8450333169324507
+    ]
+   },
+   "gop": {
+    "value": 0.7346614069690993,
+    "ci": [
+     0.6776335681330398,
+     0.7886233978575249
+    ]
+   },
+   "match": {
+    "value": 0.7562130177514793,
+    "ci": [
+     0.7054910968660969,
+     0.8030350750431974
+    ]
+   },
+   "delta": 0.06372123602892832,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.03195628039269658,
+    0.09477005103757187
+   ],
+   "n_pos": 195,
+   "n_neg": 195,
+   "pronunciada_table": 0.7983826429980276,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "es/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.765559636771758,
+    "ci": [
+     0.7180174742023804,
+     0.8106997951883934
+    ]
+   },
+   "gop": {
+    "value": 0.6768697071727374,
+    "ci": [
+     0.6244088160553882,
+     0.7282077398855179
+    ]
+   },
+   "match": {
+    "value": 0.7035251504948474,
+    "ci": [
+     0.6529199294403711,
+     0.7543514995583592
+    ]
+   },
+   "delta": 0.08868992959902056,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.034206023901354014,
+    0.14617596565141205
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.765559636771758,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "fr/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.7885930007142128,
+    "ci": [
+     0.7428775170773153,
+     0.8319297535033152
+    ]
+   },
+   "gop": {
+    "value": 0.7588511376390165,
+    "ci": [
+     0.7096749537071065,
+     0.807023350785724
+    ]
+   },
+   "match": {
+    "value": 0.7785940210182635,
+    "ci": [
+     0.732566393125412,
+     0.8231455147060791
+    ]
+   },
+   "delta": 0.02974186307519633,
+   "p": 0.05297351324337831,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.00025765774159165446,
+    0.06218016183374645
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.7885930007142128,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "de/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.8233088460361188,
+    "ci": [
+     0.7822886439596901,
+     0.8626715954675723
+    ]
+   },
+   "gop": {
+    "value": 0.6299612284460769,
+    "ci": [
+     0.5734329360185083,
+     0.68640949998411
+    ]
+   },
+   "match": {
+    "value": 0.7003877155392307,
+    "ci": [
+     0.6480428699881314,
+     0.7499929779673495
+    ]
+   },
+   "delta": 0.19334761759004182,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.1429002977564644,
+    0.24712301935616388
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.8233088460361188,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test B",
+   "test": "de/B",
+   "n": 102,
+   "pronunciada": {
+    "value": 0.540561322568243,
+    "ci": [
+     0.42346900298580975,
+     0.6490638369350592
+    ]
+   },
+   "gop": {
+    "value": 0.5397923875432526,
+    "ci": [
+     0.41009873178198486,
+     0.6628611232517482
+    ]
+   },
+   "match": {
+    "value": 0.5995770857362552,
+    "ci": [
+     0.49186214715771365,
+     0.7097473532391163
+    ]
+   },
+   "delta": 0.0007689350249903137,
+   "p": 0.975512243878061,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.13677980665950593,
+    0.14363506551848873
+   ],
+   "n_pos": 51,
+   "n_neg": 51,
+   "pronunciada_table": 0.540561322568243,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "it/A",
+   "n": 398,
+   "pronunciada": {
+    "value": 0.7668998257619757,
+    "ci": [
+     0.7175666067788502,
+     0.8138364793690137
+    ]
+   },
+   "gop": {
+    "value": 0.7168000808060403,
+    "ci": [
+     0.6633919741535992,
+     0.7681015516881038
+    ]
+   },
+   "match": {
+    "value": 0.7140602510037626,
+    "ci": [
+     0.6646195503177639,
+     0.764495373933399
+    ]
+   },
+   "delta": 0.05009974495593539,
+   "p": 0.0029985007496251873,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.017086776791424833,
+    0.08375868509797087
+   ],
+   "n_pos": 199,
+   "n_neg": 199,
+   "pronunciada_table": 0.7668998257619757,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "pt/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.72925,
+    "ci": [
+     0.6773768249990055,
+     0.7786930565309587
+    ]
+   },
+   "gop": {
+    "value": 0.6878,
+    "ci": [
+     0.6346760992608608,
+     0.7386891814706328
+    ]
+   },
+   "match": {
+    "value": 0.720825,
+    "ci": [
+     0.6697621990949446,
+     0.7696704476846249
+    ]
+   },
+   "delta": 0.04144999999999999,
+   "p": 0.06296851574212893,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.0016879404877587238,
+    0.08386700320775413
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.72925,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "ru/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.787575,
+    "ci": [
+     0.7431033259540971,
+     0.8291408212738235
+    ]
+   },
+   "gop": {
+    "value": 0.7543,
+    "ci": [
+     0.7037018295425602,
+     0.8013651330715624
+    ]
+   },
+   "match": {
+    "value": 0.72465,
+    "ci": [
+     0.6736584477698819,
+     0.7733730618418765
+    ]
+   },
+   "delta": 0.033275000000000055,
+   "p": 0.10594702648675662,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.007167217468839573,
+    0.0750999198641386
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.787575,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)"
+  },
+  {
+   "group": "cv-real test A",
+   "test": "ko/A",
+   "n": 22,
+   "pronunciada": {
+    "value": 0.8016528925619835,
+    "ci": [
+     0.5808035714285715,
+     0.9848596256684492
+    ]
+   },
+   "gop": {
+    "value": 0.8264462809917356,
+    "ci": [
+     0.6153846153846154,
+     0.9848484848484849
+    ]
+   },
+   "match": {
+    "value": 0.859504132231405,
+    "ci": [
+     0.6666071428571428,
+     1.0
+    ]
+   },
+   "delta": -0.024793388429752095,
+   "p": 0.9025487256371814,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.22224358974358974,
+    0.1272727272727272
+   ],
+   "n_pos": 11,
+   "n_neg": 11,
+   "pronunciada_table": 0.8016528925619835,
+   "pronunciada_matches_table": true,
+   "verdict": "behind (not significant)"
+  }
+ ],
+ "counts": {
+  "speechocean762": {
+   "baseline_not_aligned_utts": 0,
+   "phones": 47369,
+   "phones_fallback": 328,
+   "words": 15967,
+   "words_fallback": 0,
+   "utts": 2500
+  },
+  "learner errors": {
+   "l2arctic": {
+    "baseline_not_aligned_utts": 0,
+    "phones": 29760,
+    "phones_unmatched": 113,
+    "errors": 4114
+   },
+   "epadb": {
+    "baseline_not_aligned_utts": 0,
+    "phones": 20665,
+    "phones_unmatched": 243,
+    "errors": 4131
+   }
+  },
+  "coaching": {
+   "phones": 47041,
+   "errors": 8745
+  },
+  "OMPAL": {
+   "baseline_words_unplaced": 0,
+   "units": 8156,
+   "ours_cache": "tone_zh_v3z-c0168a11__dbbe3ccbd4bcf31e"
+  },
+  "swap benchmark": {
+   "tone_records": 150,
+   "tone_records_same_tokens_as_orig": 150,
+   "en": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "zh": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "ja": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "es": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "fr": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "de": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "it": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "pt": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "ru": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "ko": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   }
+  },
+  "cv-real": {
+   "ours_fingerprint": "dbbe3ccbd4bcf31e",
+   "en/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "en/B": {
+    "n": 260,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "zh-CN/A": {
+    "n": 386,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 3
+   },
+   "zh-TW/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "ja/A": {
+    "n": 390,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 6
+   },
+   "es/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "fr/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "de/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "de/B": {
+    "n": 102,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "it/A": {
+    "n": 398,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "pt/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "ru/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "ko/A": {
+    "n": 22,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   }
+  }
+ },
+ "baseline": {
+  "model": "zipa-small-crctc-500k",
+  "precision": "fp32",
+  "version": "zipa-small-crctc-500k-fp32-v1",
+  "gop_floor": -60.0
+ },
+ "tally_vs_gop": {
+  "ahead (significant)": 45,
+  "not different": 15,
+  "behind (significant)": 0,
+  "n": 60
+ },
+ "rank_check": [
+  {
+   "group": "speechocean762",
+   "test": "individual sounds",
+   "n": 47369,
+   "pronunciada": {
+    "value": 0.46898280184027324,
+    "ci": [
+     0.4386574482515204,
+     0.5014804644749419
+    ]
+   },
+   "gop": {
+    "value": 0.3085165625304045,
+    "ci": [
+     0.2760178420059144,
+     0.33901876885165205
+    ]
+   },
+   "match": {
+    "value": 0.31668211981457023,
+    "ci": [
+     0.28595717440205964,
+     0.34569035100245044
+    ]
+   },
+   "delta": 0.16046623930986875,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.14719601507137012,
+    0.17442602904993249
+   ],
+   "pronunciada_table": 0.46898280184027324,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "words",
+   "n": 15967,
+   "pronunciada": {
+    "value": 0.41490251474698586,
+    "ci": [
+     0.3631431357799757,
+     0.4629075773556908
+    ]
+   },
+   "gop": {
+    "value": 0.350244899596992,
+    "ci": [
+     0.30750027936362756,
+     0.3902209979500536
+    ]
+   },
+   "match": {
+    "value": 0.33899263045459027,
+    "ci": [
+     0.2984279269645343,
+     0.37573106901174974
+    ]
+   },
+   "delta": 0.06465761514999385,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.05119546329611152,
+    0.08033471142286107
+   ],
+   "pronunciada_table": 0.41490251474698586,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence accuracy",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7092055197892003,
+    "ci": [
+     0.6479294811277575,
+     0.7576159510085453
+    ]
+   },
+   "gop": {
+    "value": 0.6062735798504519,
+    "ci": [
+     0.5434468433735836,
+     0.657882345206007
+    ]
+   },
+   "match": {
+    "value": 0.6144493088477683,
+    "ci": [
+     0.5468978508087166,
+     0.6661817574393455
+    ]
+   },
+   "delta": 0.10293193993874838,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.08002267157809366,
+    0.1289157071506193
+   ],
+   "pronunciada_table": 0.7092055197892003,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence fluency",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7637158112139828,
+    "ci": [
+     0.7079453100339074,
+     0.8062734490520803
+    ]
+   },
+   "gop": {
+    "value": 0.5412577322333897,
+    "ci": [
+     0.4551792038317067,
+     0.6086631366551879
+    ]
+   },
+   "match": {
+    "value": 0.574168066520797,
+    "ci": [
+     0.4883638813878175,
+     0.6377821502500471
+    ]
+   },
+   "delta": 0.2224580789805931,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.17958260812817514,
+    0.2689264400101406
+   ],
+   "pronunciada_table": 0.7637158112139828,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence prosodic",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7518269831042516,
+    "ci": [
+     0.6937273740665915,
+     0.795275056408181
+    ]
+   },
+   "gop": {
+    "value": 0.568233281910648,
+    "ci": [
+     0.4862904906959338,
+     0.630571500940238
+    ]
+   },
+   "match": {
+    "value": 0.6029983371608799,
+    "ci": [
+     0.5235409037224307,
+     0.6601919024092348
+    ]
+   },
+   "delta": 0.18359370119360352,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.14536292684168953,
+    0.22673136821453796
+   ],
+   "pronunciada_table": 0.7518269831042516,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "speechocean762",
+   "test": "sentence total",
+   "n": 2500,
+   "pronunciada": {
+    "value": 0.7335835031629938,
+    "ci": [
+     0.676877181918249,
+     0.7780317926222066
+    ]
+   },
+   "gop": {
+    "value": 0.6193026463984976,
+    "ci": [
+     0.5533189563439078,
+     0.6705559100657793
+    ]
+   },
+   "match": {
+    "value": 0.6267090958697688,
+    "ci": [
+     0.5576004502118137,
+     0.6765166627980815
+    ]
+   },
+   "delta": 0.11428085676449617,
+   "p": 0.001998001998001998,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.08846577291369587,
+    0.14061939144585558
+   ],
+   "pronunciada_table": 0.7335835031629938,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  },
+  {
+   "group": "OMPAL",
+   "test": "sentence accuracy",
+   "n": 663,
+   "pronunciada": {
+    "value": 0.638219087620672,
+    "ci": [
+     0.4541332171899598,
+     0.7640982433441671
+    ]
+   },
+   "gop": {
+    "value": 0.3081495183588862,
+    "ci": [
+     0.0681318687262864,
+     0.46771371172891385
+    ]
+   },
+   "match": {
+    "value": 0.29531204801605676,
+    "ci": [
+     0.09420204627220904,
+     0.42627369351768585
+    ]
+   },
+   "delta": 0.3300695692617858,
+   "p": 0.0009995002498750624,
+   "unit": "Spearman",
+   "delta_ci": [
+    0.2173744573472724,
+    0.4356319234960532
+   ],
+   "pronunciada_table": 0.638219087620672,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)"
+  }
+ ]
+}

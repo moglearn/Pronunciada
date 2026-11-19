@@ -1,0 +1,657 @@
+{
+ "generated": "2026-11-18",
+ "old": "git HEAD 01a9213 (frozen run 2026-11-17, code 1.0.0 outputs)",
+ "new": "working tree after the 2026-11-18 re-measurement (code 1.0.1)",
+ "json_tables": {
+  "english_vs_azure": {
+   "azure_leaves": 350,
+   "azure_moved": [],
+   "numeric_leaves": 2629,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "languages": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 1241,
+   "numeric_leaves_changed": 68,
+   "max_abs_change": 0.0012499999999999734,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "swap_ours_vs_azure": {
+   "azure_leaves": 1062,
+   "azure_moved": [],
+   "numeric_leaves": 3380,
+   "numeric_leaves_changed": 192,
+   "max_abs_change": 0.007992007992007999,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "cv_real": {
+   "azure_leaves": 225,
+   "azure_moved": [],
+   "numeric_leaves": 749,
+   "numeric_leaves_changed": 43,
+   "max_abs_change": 0.0005474452554744547,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "ompal": {
+   "azure_leaves": 256,
+   "azure_moved": [],
+   "numeric_leaves": 1127,
+   "numeric_leaves_changed": 323,
+   "max_abs_change": 0.003998000999500206,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "ompal_tone_zh_v3z": {
+   "azure_leaves": 256,
+   "azure_moved": [],
+   "numeric_leaves": 1127,
+   "numeric_leaves_changed": 323,
+   "max_abs_change": 0.003998000999500206,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "coaching_azure_yardstick": {
+   "azure_leaves": 26,
+   "azure_moved": [],
+   "numeric_leaves": 56,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "coaching_12b_heldout": {
+   "azure_leaves": 12,
+   "azure_moved": [],
+   "numeric_leaves": 50,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "coaching_r4_heldout": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 310,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "contrast_audit_test": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 4469,
+   "numeric_leaves_changed": 314,
+   "max_abs_change": 0.008333333333333415,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "length_runtime_ja": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 25,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "zipa_baseline": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 1172,
+   "numeric_leaves_changed": 63,
+   "max_abs_change": 0.0004318380233460095,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  },
+  "scoreboard_tally": {
+   "azure_leaves": 0,
+   "azure_moved": [],
+   "numeric_leaves": 0,
+   "numeric_leaves_changed": 0,
+   "max_abs_change": 0.0,
+   "keys_only_old": 0,
+   "keys_only_new": 0
+  }
+ },
+ "azure_moved_total": 0,
+ "scoreboard": {
+  "numbers_old": 1929,
+  "numbers_new": 1936,
+  "changed": [
+   {
+    "line": 88,
+    "section": "Pronunciada scoreboard > Against ZIPA alone > speechocean762 test, Pearson with the expert scores (speaker bootstrap). > OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker bootstrap.",
+    "row": "sentence accuracy",
+    "column": "Pronunciada [95 % CI]",
+    "token_in_cell": 1,
+    "old": "0.468",
+    "new": "0.467",
+    "old_cell": "0.634 [0.468, 0.742]",
+    "new_cell": "0.634 [0.467, 0.742]"
+   },
+   {
+    "line": 198,
+    "section": "Pronunciada scoreboard > Mandarin > Real learners: OMPAL test (French-L1 learners of Taiwan Mandarin; 21 speakers, teachers mark every character)",
+    "row": "sentence accuracy",
+    "column": "current [95 % CI]",
+    "token_in_cell": 1,
+    "old": "0.468",
+    "new": "0.467",
+    "old_cell": "0.634 [0.468, 0.742]",
+    "new_cell": "0.634 [0.467, 0.742]"
+   },
+   {
+    "line": 226,
+    "section": "Pronunciada scoreboard > All ten languages > Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordings per language)",
+    "row": "ru",
+    "column": "near AUC",
+    "token_in_cell": 2,
+    "old": "0.37",
+    "new": "0.36",
+    "old_cell": "0.900 / 0.909 behind, n.s. (0.37)",
+    "new_cell": "0.900 / 0.909 behind, n.s. (0.36)"
+   },
+   {
+    "line": 378,
+    "section": "Pronunciada scoreboard > All ten languages > Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+    "row": "ru",
+    "column": "word hit@5 %",
+    "token_in_cell": 0,
+    "old": "67",
+    "new": "68",
+    "old_cell": "67 %",
+    "new_cell": "68 %"
+   }
+  ],
+  "structural_changes": [
+   {
+    "old_lines": [
+     "Every held-out number in one place, measured with the same code in one frozen run (2026-11-17, after the license-clean refit), next to Microsoft Azure Pronunciation Assessment where a comparison exists. Generated by `python -m bench.scoreboard` from `results/tables/*.json`; do not edit by hand. Commands to regenerate each table: README \"Reproducing the benchmarks\"."
+    ],
+    "new_lines": [
+     "Every held-out number in one place, measured with the same code in one frozen run (2026-11-17, after the license-clean refit; scores re-measured on 2026-11-18 with version 1.0.1, speed figures from 2026-11-17), next to Microsoft Azure Pronunciation Assessment where a comparison exists. Generated by `python -m bench.scoreboard` from `results/tables/*.json`; do not edit by hand. Commands to regenerate each table: README \"Reproducing the benchmarks\"."
+    ]
+   }
+  ]
+ },
+ "tally": {
+  "n_old": 84,
+  "n_new": 84,
+  "old": {
+   "significantly ahead": 40,
+   "not different": 37,
+   "significantly behind": 7
+  },
+  "new": {
+   "significantly ahead": 40,
+   "not different": 37,
+   "significantly behind": 7
+  },
+  "old_detail": {
+   "ahead (significant)": 40,
+   "ahead (not significant)": 20,
+   "behind (significant)": 7,
+   "behind (not significant)": 17
+  },
+  "new_detail": {
+   "ahead (significant)": 40,
+   "ahead (not significant)": 20,
+   "behind (significant)": 7,
+   "behind (not significant)": 17
+  },
+  "verdict_flips": [],
+  "ahead_behind_within_not_different": []
+ },
+ "zipa_baseline": {
+  "old": {
+   "ahead (significant)": 45,
+   "not different": 15,
+   "behind (significant)": 0,
+   "n": 60
+  },
+  "new": {
+   "ahead (significant)": 45,
+   "not different": 15,
+   "behind (significant)": 0,
+   "n": 60
+  },
+  "verdict_flips": [],
+  "gop_values_moved": [],
+  "rows_not_matching_table": [],
+  "verify_old": {
+   "n_utts": 20,
+   "worker_pronunciada_modules": [
+    "pronunciada",
+    "pronunciada.acoustic",
+    "pronunciada.align",
+    "pronunciada.audio",
+    "pronunciada.lattice",
+    "pronunciada.text",
+    "pronunciada.text._eu_base",
+    "pronunciada.text._eu_common",
+    "pronunciada.text._eu_lts",
+    "pronunciada.text.base",
+    "pronunciada.text.en",
+    "pronunciada.text.ipa",
+    "pronunciada.types"
+   ],
+   "forbidden_modules_loaded": [],
+   "max_abs_diff_vs_raw_posterior_cache": 0.01563262939453125,
+   "n_compared_with_cache": 20,
+   "max_abs_change_by_en_adapter": {
+    "min": 26.167516708374023,
+    "max": 26.174652099609375
+   },
+   "mean_abs_gop_change_if_adapter_were_used": 0.2506155169058009,
+   "lattice_alt_weights_all_zero": true,
+   "lattice_alt_indices": [
+    0
+   ],
+   "lattice_finite_init_states": 2
+  },
+  "verify_new": {
+   "n_utts": 20,
+   "worker_pronunciada_modules": [
+    "pronunciada",
+    "pronunciada.acoustic",
+    "pronunciada.align",
+    "pronunciada.audio",
+    "pronunciada.lattice",
+    "pronunciada.text",
+    "pronunciada.text._eu_base",
+    "pronunciada.text._eu_common",
+    "pronunciada.text._eu_lts",
+    "pronunciada.text.base",
+    "pronunciada.text.en",
+    "pronunciada.text.ipa",
+    "pronunciada.types"
+   ],
+   "forbidden_modules_loaded": [],
+   "max_abs_diff_vs_raw_posterior_cache": 0.01563262939453125,
+   "n_compared_with_cache": 20,
+   "max_abs_change_by_en_adapter": {
+    "min": 26.167516708374023,
+    "max": 26.174652099609375
+   },
+   "mean_abs_gop_change_if_adapter_were_used": 0.2506155169058009,
+   "lattice_alt_weights_all_zero": true,
+   "lattice_alt_indices": [
+    0
+   ],
+   "lattice_finite_init_states": 2
+  }
+ },
+ "readme_site_candidate_hits": [
+  {
+   "file": "README.md",
+   "token": "67",
+   "scoreboard_change": {
+    "line": 378,
+    "section": "Pronunciada scoreboard > All ten languages > Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+    "row": "ru",
+    "column": "word hit@5 %",
+    "token_in_cell": 0,
+    "old": "67",
+    "new": "68",
+    "old_cell": "67 %",
+    "new_cell": "68 %"
+   },
+   "text": "| int8 (67 MB) | 40 ms | 65 ms |"
+  },
+  {
+   "file": "README.md",
+   "token": "67",
+   "scoreboard_change": {
+    "line": 378,
+    "section": "Pronunciada scoreboard > All ten languages > Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+    "row": "ru",
+    "column": "word hit@5 %",
+    "token_in_cell": 0,
+    "old": "67",
+    "new": "68",
+    "old_cell": "67 %",
+    "new_cell": "68 %"
+   },
+   "text": "Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 480 MB and 294 MB measured). The int8 model is optimized for edge devices: a 67 MB file on one CPU "
+  },
+  {
+   "file": "site/index.html",
+   "token": "67",
+   "scoreboard_change": {
+    "line": 378,
+    "section": "Pronunciada scoreboard > All ten languages > Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+    "row": "ru",
+    "column": "word hit@5 %",
+    "token_in_cell": 0,
+    "old": "67",
+    "new": "68",
+    "old_cell": "67 %",
+    "new_cell": "68 %"
+   },
+   "text": "The quantized model is optimized for edge devices. It is a 67 MB file, runs on a single CPU thread and uses about 0.3 GB of memory. The full model is 248 MB and uses about 0.5 GB. Packaged iOS and Android builds are not available yet."
+  }
+ ],
+ "readme_site_candidate_hits_note": "All 3 candidate hits are false positives (the token 67 matched '67 MB', not the contrast-audit '67 %'). No Pronunciada or Azure figure in README.md (Benchmarks .. Compared with ZIPA alone) or site/index.html changed at its printed precision.",
+ "carried_over_from_2026-11-17": {
+  "english_vs_azure.json": "speed block (fp32/int8 x 4/1 threads median_ms, p95_ms, rtf, stages_median_ms, mean_audio_s, calibrators_ms, model_mb, calib_kb): eval_english was run without its speed step",
+  "languages.json": "by_lang.*.latency and by_lang_no_explain.*.latency: median_ms, p95_ms, rtf, explain_away_median_ms restored to the git HEAD values after eval_languages recomputed them under load",
+  "SCOREBOARD.md": "section 'Speed, size, and what runs where' (built from the two items above and from azure_swap_*.json, which was not regenerated)",
+  "results/logs/frozen_2026-11-17_latency.log": "not re-run"
+ },
+ "discarded_timings": {
+  "note": "Timings recomputed as a side effect by bench.eval_languages on 2026-11-18 under load from other jobs; NOT used. languages.json carries the 2026-11-17 values.",
+  "languages.json": {
+   "by_lang": {
+    "en": {
+     "median_ms": 368.9546459936537,
+     "p95_ms": 723.1561194072128,
+     "rtf": 0.041357943729475696,
+     "explain_away_median_ms": 0.0
+    },
+    "zh": {
+     "median_ms": 371.30922949290834,
+     "p95_ms": 708.0618521053094,
+     "rtf": 0.03555240534816266,
+     "explain_away_median_ms": 0.0
+    },
+    "es": {
+     "median_ms": 487.2280205017887,
+     "p95_ms": 961.5250173155799,
+     "rtf": 0.04386655589468751,
+     "explain_away_median_ms": 0.0
+    },
+    "it": {
+     "median_ms": 539.638833492063,
+     "p95_ms": 1152.3666687513469,
+     "rtf": 0.04186162922455109,
+     "explain_away_median_ms": 0.0
+    },
+    "ja": {
+     "median_ms": 498.0983749992447,
+     "p95_ms": 1062.1095524082168,
+     "rtf": 0.04327642084471823,
+     "explain_away_median_ms": 0.0
+    },
+    "ko": {
+     "median_ms": 523.3572915021796,
+     "p95_ms": 1089.8340910003753,
+     "rtf": 0.04687198694230889,
+     "explain_away_median_ms": 0.0
+    },
+    "fr": {
+     "median_ms": 406.47683350834996,
+     "p95_ms": 897.5637829993501,
+     "rtf": 0.0429935768160615,
+     "explain_away_median_ms": 0.0
+    },
+    "de": {
+     "median_ms": 620.8675420057261,
+     "p95_ms": 1668.184352701064,
+     "rtf": 0.05954296556972429,
+     "explain_away_median_ms": 0.0
+    },
+    "pt": {
+     "median_ms": 567.9610000224784,
+     "p95_ms": 1187.782543094363,
+     "rtf": 0.05072772974486644,
+     "explain_away_median_ms": 0.0
+    },
+    "ru": {
+     "median_ms": 513.4161665046122,
+     "p95_ms": 968.1106878022545,
+     "rtf": 0.04824478041289232,
+     "explain_away_median_ms": 0.0
+    }
+   },
+   "by_lang_no_explain": {
+    "en": {
+     "median_ms": 368.9546459936537,
+     "p95_ms": 723.1561194072128,
+     "rtf": 0.041357943729475696,
+     "explain_away_median_ms": 0.0
+    },
+    "zh": {
+     "median_ms": 371.30922949290834,
+     "p95_ms": 708.0618521053094,
+     "rtf": 0.03555240534816266,
+     "explain_away_median_ms": 0.0
+    },
+    "es": {
+     "median_ms": 487.2280205017887,
+     "p95_ms": 961.5250173155799,
+     "rtf": 0.04386655589468751,
+     "explain_away_median_ms": 0.0
+    },
+    "it": {
+     "median_ms": 539.638833492063,
+     "p95_ms": 1152.3666687513469,
+     "rtf": 0.04186162922455109,
+     "explain_away_median_ms": 0.0
+    },
+    "ja": {
+     "median_ms": 498.0983749992447,
+     "p95_ms": 1062.1095524082168,
+     "rtf": 0.04327642084471823,
+     "explain_away_median_ms": 0.0
+    },
+    "ko": {
+     "median_ms": 523.3572915021796,
+     "p95_ms": 1089.8340910003753,
+     "rtf": 0.04687198694230889,
+     "explain_away_median_ms": 0.0
+    },
+    "fr": {
+     "median_ms": 406.47683350834996,
+     "p95_ms": 897.5637829993501,
+     "rtf": 0.0429935768160615,
+     "explain_away_median_ms": 0.0
+    },
+    "de": {
+     "median_ms": 620.8675420057261,
+     "p95_ms": 1668.184352701064,
+     "rtf": 0.05954296556972429,
+     "explain_away_median_ms": 0.0
+    },
+    "pt": {
+     "median_ms": 567.9610000224784,
+     "p95_ms": 1187.782543094363,
+     "rtf": 0.05072772974486644,
+     "explain_away_median_ms": 0.0
+    },
+    "ru": {
+     "median_ms": 513.4161665046122,
+     "p95_ms": 968.1106878022545,
+     "rtf": 0.04824478041289232,
+     "explain_away_median_ms": 0.0
+    }
+   }
+  }
+ },
+ "commands": [
+  {
+   "step": "1",
+   "command": "bench.eval_english --steps run,so762,calib,errdet,int8,report --workers 4",
+   "rc": "0",
+   "seconds": "513"
+  },
+  {
+   "step": "2",
+   "command": "bench.eval_languages --steps run,eval,swap,report --workers 4",
+   "rc": "killed (out of memory, other jobs)",
+   "seconds": "-"
+  },
+  {
+   "step": "2",
+   "command": "bench.eval_languages --steps swap,report --workers 3",
+   "rc": "0",
+   "seconds": "317"
+  },
+  {
+   "step": "3",
+   "command": "bench.eval_cv --steps ours,report --workers 3",
+   "rc": "0",
+   "seconds": "326"
+  },
+  {
+   "step": "4",
+   "command": "bench.eval_ompal --steps ours,report --workers 3",
+   "rc": "0",
+   "seconds": "251"
+  },
+  {
+   "step": "5",
+   "command": "bench.coach.dump --sets so762-test --workers 2",
+   "rc": "0",
+   "seconds": "115"
+  },
+  {
+   "step": "6",
+   "command": "bench.coach.dump_r4 --sets so762-test,l2arctic-test,epadb-test,ompal-test --workers 3",
+   "rc": "0",
+   "seconds": "241"
+  },
+  {
+   "step": "7",
+   "command": "bench.coach.azure_yardstick",
+   "rc": "0",
+   "seconds": "22"
+  },
+  {
+   "step": "8",
+   "command": "bench.coach.heldout_12b",
+   "rc": "0",
+   "seconds": "47"
+  },
+  {
+   "step": "9",
+   "command": "bench.coach.fit_r4 eval",
+   "rc": "0",
+   "seconds": "8"
+  },
+  {
+   "step": "10",
+   "command": "bench.audit.contrast_audit run --split test --workers 2",
+   "rc": "0",
+   "seconds": "913"
+  },
+  {
+   "step": "11",
+   "command": "bench.audit.contrast_audit report --split test",
+   "rc": "0",
+   "seconds": "7"
+  },
+  {
+   "step": "12",
+   "command": "bench.length.heldout_runtime --workers 2",
+   "rc": "0",
+   "seconds": "149"
+  },
+  {
+   "step": "13",
+   "command": "bench.eval_languages --steps report",
+   "rc": "0",
+   "seconds": "0"
+  },
+  {
+   "step": "14",
+   "command": "bench.eval_english --steps report",
+   "rc": "0",
+   "seconds": "0"
+  },
+  {
+   "step": "15",
+   "command": "bench.eval_zipa_baseline --steps eval,report --workers 2",
+   "rc": "0",
+   "seconds": "167"
+  },
+  {
+   "step": "16",
+   "command": "bench.scoreboard",
+   "rc": "0",
+   "seconds": "0"
+  }
+ ],
+ "snapshot_check": {
+  "speechocean762-test-fp32": {
+   "records": 300,
+   "same_reference_phones": true,
+   "max_abs_diff": {
+    "sound": 0.0,
+    "word": 0.0,
+    "word_prob": 0.0,
+    "sentence": 0.0
+   }
+  },
+  "fleurs-swap-en": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-zh": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-ja": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-es": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-fr": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-de": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-it": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-pt": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-ru": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "fleurs-swap-ko": {
+   "records": 30,
+   "max_abs_diff": {
+    "all_outputs": 0.0
+   }
+  },
+  "_worst": 0.0,
+  "_identical_to_1e-6": true
+ },
+ "pytest": "578 passed, 1 warning (58 s)"
+}
