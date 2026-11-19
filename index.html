@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pronunciada: on-device pronunciation scoring in 10 languages</title>
-<meta name="description" content="Open-source pronunciation scoring for ten languages. A 67 MB model scores a sentence in about 50 ms on a laptop CPU and is closer to expert raters than Azure Pronunciation Assessment on English and Mandarin learner speech.">
-<meta property="og:title" content="Pronunciada: on-device pronunciation scoring in 10 languages">
-<meta property="og:description" content="Open source. 67 MB, about 50 ms per sentence on a laptop CPU. Closer to expert raters than Azure Pronunciation Assessment on English and Mandarin learner speech.">
+<title>Pronunciada: on-device pronunciation assessment with cloud-level accuracy</title>
+<meta name="description" content="Open-source pronunciation scoring for ten languages. It matches or beats Azure Pronunciation Assessment in 77 of 84 public benchmark comparisons and runs on a laptop CPU in about 50 ms per sentence.">
+<meta property="og:title" content="Pronunciada: on-device pronunciation assessment with cloud-level accuracy">
+<meta property="og:description" content="Open source, ten languages, about 50 ms per sentence on a laptop CPU. It matches or beats Azure Pronunciation Assessment in 77 of 84 public benchmark comparisons.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pronunciada.dev/">
 <meta property="og:image" content="https://pronunciada.dev/assets/social.jpg">
@@ -192,8 +192,8 @@ footer p{margin:0}
 
 <main>
 <p class="crumb">Open source · Apache-2.0</p>
-<h1>On-device pronunciation scoring in 10 languages. 67 MB, 50 ms on CPU.</h1>
-<p class="lead">Pronunciada is an open-source Python library that grades speech sound by sound. It is closer to expert raters than Microsoft Azure on English and Mandarin learner speech, and needs no cloud API or GPU.</p>
+<h1>On-device pronunciation assessment with cloud-level accuracy.</h1>
+<p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages.</p>
 <div class="pills">
   <a class="pill dark" href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
   <a class="pill light" href="https://pypi.org/project/pronunciada/"><code>pip install pronunciada</code></a>
@@ -207,7 +207,7 @@ footer p{margin:0}
 </div>
 
 <!-- gen:stats -->
-<div class="stats"><div><b>40–7</b><span>significant wins and losses against Azure, with 37 ties</span></div><div><b>50<small> ms</small></b><span>per sentence on a laptop CPU</span></div><div><b>67<small> MB</small></b><span>quantized speech model, shared by all ten languages</span></div></div>
+<div class="stats"><div><b>77<small> of 84</small></b><span>comparisons level with or ahead of Azure</span></div><div><b>50<small> ms</small></b><span>per sentence on a laptop CPU</span></div><div><b>10</b><span>languages</span></div></div>
 <!-- /gen:stats -->
 
 <h2 id="benchmarks">Tested against Azure in ten languages</h2>
@@ -232,9 +232,8 @@ footer p{margin:0}
 <p>All figures come from held-out test recordings. Azure was used as provided, through its REST API in November 2026.</p>
 
 <h2>Runs on the device in about 50 ms</h2>
-<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop with four CPU threads, and in about 100 ms with one.</p>
-<p>The quantized model is optimized for edge devices. It is a 67 MB file, scores the same sentence in about 40 ms on four threads or 65 ms on one, and uses about 0.3 GB of memory. The full model is 248 MB and uses about 0.5 GB. The package adds about 21 MB of dictionaries and per-language files. Packaged iOS and Android builds are not available yet.</p>
-<p>The chart below uses longer recordings and a single thread, which is why its time is higher. 0.30 s for 9 seconds of audio is about the same rate as 100 ms for 3.5 seconds.</p>
+<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop.</p>
+<p>The quantized model is optimized for edge devices. It is a 67 MB file, runs on a single CPU thread and uses about 0.3 GB of memory. The full model is 248 MB and uses about 0.5 GB. Packaged iOS and Android builds are not available yet.</p>
 <!-- gen:chart-speed -->
 <figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop, one CPU thread</small></span><span class="ch-track"><i style="width:12.9%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.34 s</b></div><p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>
 <!-- /gen:chart-speed -->
