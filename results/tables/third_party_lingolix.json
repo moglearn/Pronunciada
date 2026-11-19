@@ -1,0 +1,818 @@
+{
+  "benchmark": {
+    "repo": "https://github.com/lingolix/pronunciation-benchmark",
+    "rules": "report.py at tag v2026.10 (e021b08)",
+    "variant_main": "report.py at main f8750aa: tier 1 words in `unverified` dropped as negatives",
+    "system": "pronunciada (Scorer(lang) defaults: fp32, strictness 0.5) via to_azure, reduced with the benchmark's Azure adapter",
+    "pronunciada_version": "1.0.1"
+  },
+  "published_not_rerun_here": {
+    "source": "https://lingolix.com/en/blog/best-pronunciation-assessment-api-2026",
+    "date": "2026-10-11 (TonePerfect note added 2026-10-17)",
+    "tested": "October 2026, each API in its 'documented best configuration'; no API versions given",
+    "tier1_auc": {
+      "lingolix": {
+        "en": 0.97,
+        "fr": 0.96,
+        "es": 0.97,
+        "de": 0.95,
+        "ja": 0.95,
+        "ko": 0.95
+      },
+      "azure": {
+        "en": 0.94,
+        "fr": 0.91,
+        "es": 0.91,
+        "de": 0.87,
+        "ja": 0.93,
+        "ko": 0.94
+      },
+      "toneperfect": {
+        "en": 0.84,
+        "fr": 0.8,
+        "es": 0.79,
+        "de": 0.79,
+        "ja": 0.55,
+        "ko": 0.67
+      }
+    },
+    "tier1_fa_at_80": {
+      "lingolix": {
+        "en": 0.01,
+        "fr": 0.01,
+        "es": 0.02,
+        "de": 0.02,
+        "ja": 0.05,
+        "ko": 0.03
+      },
+      "azure": {
+        "en": 0.06,
+        "fr": 0.13,
+        "es": 0.14,
+        "de": 0.22,
+        "ja": 0.03,
+        "ko": 0.07
+      },
+      "toneperfect": {
+        "en": 0.26,
+        "fr": 0.26,
+        "es": 0.32,
+        "de": 0.42,
+        "ja": 0.74,
+        "ko": 0.56
+      }
+    },
+    "ja_length_caught_of_40": {
+      "lingolix": 37,
+      "azure": 36,
+      "toneperfect": 0
+    },
+    "tier2_pcc": {
+      "lingolix": {
+        "utterance": 0.74,
+        "word": 0.51
+      },
+      "azure": {
+        "utterance": 0.76,
+        "word": 0.61
+      },
+      "toneperfect": {
+        "utterance": 0.59,
+        "word": 0.29
+      }
+    },
+    "latency_s": {
+      "lingolix": 0.8,
+      "azure": 1.0,
+      "toneperfect": 2.5
+    }
+  },
+  "tier1": {
+    "en": {
+      "n_utterances": 190,
+      "n_words": 1707,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9768,
+      "roc_auc_ci": [
+        0.9634,
+        0.9882
+      ],
+      "pr_auc": 0.7457,
+      "fpr_at_recall_50": 0.0068,
+      "fpr_at_recall_80": 0.0247,
+      "fpr_at_recall_80_ci": [
+        0.0103,
+        0.0387
+      ],
+      "localisation_top1": 0.8667,
+      "latency_p50_ms": 181.6,
+      "latency_p95_ms": 894.2,
+      "by_bucket": {
+        "indel": 0.9564,
+        "sub_gross": 0.9918,
+        "sub_moderate": 0.9861,
+        "sub_subtle": 0.9627,
+        "word_omission": 0.9976
+      },
+      "verdicts": {
+        "recall": 0.7667,
+        "precision": 0.371,
+        "f1": 0.5,
+        "fa": 0.0724,
+        "recall_by_bucket": {
+          "indel": [
+            12,
+            20
+          ],
+          "sub_gross": [
+            18,
+            20
+          ],
+          "sub_moderate": [
+            18,
+            20
+          ],
+          "sub_subtle": [
+            11,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "fr": {
+      "n_utterances": 190,
+      "n_words": 1790,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.96,
+      "roc_auc_ci": [
+        0.9239,
+        0.987
+      ],
+      "pr_auc": 0.7018,
+      "fpr_at_recall_50": 0.0088,
+      "fpr_at_recall_80": 0.0165,
+      "fpr_at_recall_80_ci": [
+        0.0093,
+        0.031
+      ],
+      "localisation_top1": 0.8778,
+      "latency_p50_ms": 256.0,
+      "latency_p95_ms": 1123.6,
+      "by_bucket": {
+        "indel": 0.8615,
+        "sub_gross": 0.9897,
+        "sub_moderate": 0.9896,
+        "sub_subtle": 0.9813,
+        "word_omission": 0.9954
+      },
+      "verdicts": {
+        "recall": 0.8667,
+        "precision": 0.4105,
+        "f1": 0.5571,
+        "fa": 0.0659,
+        "recall_by_bucket": {
+          "indel": [
+            12,
+            20
+          ],
+          "sub_gross": [
+            19,
+            20
+          ],
+          "sub_moderate": [
+            19,
+            20
+          ],
+          "sub_subtle": [
+            18,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "es": {
+      "n_utterances": 190,
+      "n_words": 1740,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9795,
+      "roc_auc_ci": [
+        0.9698,
+        0.9875
+      ],
+      "pr_auc": 0.6379,
+      "fpr_at_recall_50": 0.0097,
+      "fpr_at_recall_80": 0.0242,
+      "fpr_at_recall_80_ci": [
+        0.0142,
+        0.0386
+      ],
+      "localisation_top1": 0.8667,
+      "latency_p50_ms": 158.2,
+      "latency_p95_ms": 443.8,
+      "by_bucket": {
+        "indel": 0.9704,
+        "sub_gross": 0.9875,
+        "sub_moderate": 0.9891,
+        "sub_subtle": 0.9706,
+        "word_omission": 0.9802
+      },
+      "verdicts": {
+        "recall": 0.8333,
+        "precision": 0.3606,
+        "f1": 0.5034,
+        "fa": 0.0806,
+        "recall_by_bucket": {
+          "indel": [
+            17,
+            20
+          ],
+          "sub_gross": [
+            19,
+            20
+          ],
+          "sub_moderate": [
+            17,
+            20
+          ],
+          "sub_subtle": [
+            13,
+            20
+          ],
+          "word_omission": [
+            9,
+            10
+          ]
+        }
+      }
+    },
+    "de": {
+      "n_utterances": 190,
+      "n_words": 1648,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9405,
+      "roc_auc_ci": [
+        0.911,
+        0.9651
+      ],
+      "pr_auc": 0.66,
+      "fpr_at_recall_50": 0.0083,
+      "fpr_at_recall_80": 0.0668,
+      "fpr_at_recall_80_ci": [
+        0.0285,
+        0.131
+      ],
+      "localisation_top1": 0.7333,
+      "latency_p50_ms": 244.6,
+      "latency_p95_ms": 937.3,
+      "by_bucket": {
+        "indel": 0.9092,
+        "sub_gross": 0.9851,
+        "sub_moderate": 0.9662,
+        "sub_subtle": 0.8721,
+        "word_omission": 0.9991
+      },
+      "verdicts": {
+        "recall": 0.4222,
+        "precision": 0.6667,
+        "f1": 0.517,
+        "fa": 0.0122,
+        "recall_by_bucket": {
+          "indel": [
+            8,
+            20
+          ],
+          "sub_gross": [
+            10,
+            20
+          ],
+          "sub_moderate": [
+            6,
+            20
+          ],
+          "sub_subtle": [
+            4,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "ja": {
+      "n_utterances": 200,
+      "n_words": 1040,
+      "n_positive": 100,
+      "n_failed": 0,
+      "roc_auc": 0.846,
+      "roc_auc_ci": [
+        0.7977,
+        0.8912
+      ],
+      "pr_auc": 0.4691,
+      "fpr_at_recall_50": 0.0351,
+      "fpr_at_recall_80": 0.2011,
+      "fpr_at_recall_80_ci": [
+        0.1269,
+        0.3743
+      ],
+      "localisation_top1": 0.68,
+      "latency_p50_ms": 258.6,
+      "latency_p95_ms": 1146.5,
+      "by_bucket": {
+        "indel": 0.909,
+        "length": 0.7317,
+        "sub_gross": 0.9597,
+        "sub_moderate": 0.926,
+        "sub_subtle": 0.9104
+      },
+      "verdicts": {
+        "recall": 0.38,
+        "precision": 0.3619,
+        "f1": 0.3707,
+        "fa": 0.0713,
+        "recall_by_bucket": {
+          "indel": [
+            8,
+            15
+          ],
+          "length": [
+            1,
+            40
+          ],
+          "sub_gross": [
+            9,
+            10
+          ],
+          "sub_moderate": [
+            12,
+            15
+          ],
+          "sub_subtle": [
+            8,
+            20
+          ]
+        }
+      }
+    },
+    "ko": {
+      "n_utterances": 190,
+      "n_words": 1485,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9122,
+      "roc_auc_ci": [
+        0.8742,
+        0.9459
+      ],
+      "pr_auc": 0.5934,
+      "fpr_at_recall_50": 0.0108,
+      "fpr_at_recall_80": 0.0839,
+      "fpr_at_recall_80_ci": [
+        0.0449,
+        0.1929
+      ],
+      "localisation_top1": 0.7111,
+      "latency_p50_ms": 172.2,
+      "latency_p95_ms": 720.8,
+      "by_bucket": {
+        "indel": 0.9267,
+        "sub_gross": 0.9817,
+        "sub_moderate": 0.9455,
+        "sub_subtle": 0.7528,
+        "word_omission": 0.9963
+      },
+      "verdicts": {
+        "recall": 0.4889,
+        "precision": 0.2953,
+        "f1": 0.3682,
+        "fa": 0.0753,
+        "recall_by_bucket": {
+          "indel": [
+            10,
+            20
+          ],
+          "sub_gross": [
+            8,
+            20
+          ],
+          "sub_moderate": [
+            9,
+            20
+          ],
+          "sub_subtle": [
+            7,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    }
+  },
+  "tier1_main_rules": {
+    "en": {
+      "n_utterances": 190,
+      "n_words": 1644,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9809,
+      "roc_auc_ci": [
+        0.9682,
+        0.9912
+      ],
+      "pr_auc": 0.8255,
+      "fpr_at_recall_50": 0.0039,
+      "fpr_at_recall_80": 0.0193,
+      "fpr_at_recall_80_ci": [
+        0.0063,
+        0.0322
+      ],
+      "localisation_top1": 0.9111,
+      "latency_p50_ms": 181.6,
+      "latency_p95_ms": 894.2,
+      "by_bucket": {
+        "indel": 0.9617,
+        "sub_gross": 0.9946,
+        "sub_moderate": 0.99,
+        "sub_subtle": 0.9683,
+        "word_omission": 0.9989
+      },
+      "verdicts": {
+        "recall": 0.7667,
+        "precision": 0.4107,
+        "f1": 0.5349,
+        "fa": 0.0637,
+        "recall_by_bucket": {
+          "indel": [
+            12,
+            20
+          ],
+          "sub_gross": [
+            18,
+            20
+          ],
+          "sub_moderate": [
+            18,
+            20
+          ],
+          "sub_subtle": [
+            11,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "fr": {
+      "n_utterances": 190,
+      "n_words": 1652,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9626,
+      "roc_auc_ci": [
+        0.9265,
+        0.9892
+      ],
+      "pr_auc": 0.742,
+      "fpr_at_recall_50": 0.0077,
+      "fpr_at_recall_80": 0.0115,
+      "fpr_at_recall_80_ci": [
+        0.0059,
+        0.0225
+      ],
+      "localisation_top1": 0.9,
+      "latency_p50_ms": 256.0,
+      "latency_p95_ms": 1123.6,
+      "by_bucket": {
+        "indel": 0.8653,
+        "sub_gross": 0.9913,
+        "sub_moderate": 0.991,
+        "sub_subtle": 0.9862,
+        "word_omission": 0.9953
+      },
+      "verdicts": {
+        "recall": 0.8667,
+        "precision": 0.4671,
+        "f1": 0.607,
+        "fa": 0.057,
+        "recall_by_bucket": {
+          "indel": [
+            12,
+            20
+          ],
+          "sub_gross": [
+            19,
+            20
+          ],
+          "sub_moderate": [
+            19,
+            20
+          ],
+          "sub_subtle": [
+            18,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "es": {
+      "n_utterances": 190,
+      "n_words": 1658,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9825,
+      "roc_auc_ci": [
+        0.9732,
+        0.9901
+      ],
+      "pr_auc": 0.6728,
+      "fpr_at_recall_50": 0.0089,
+      "fpr_at_recall_80": 0.0191,
+      "fpr_at_recall_80_ci": [
+        0.0096,
+        0.0338
+      ],
+      "localisation_top1": 0.9,
+      "latency_p50_ms": 158.2,
+      "latency_p95_ms": 443.8,
+      "by_bucket": {
+        "indel": 0.9739,
+        "sub_gross": 0.9897,
+        "sub_moderate": 0.9909,
+        "sub_subtle": 0.9759,
+        "word_omission": 0.9821
+      },
+      "verdicts": {
+        "recall": 0.8333,
+        "precision": 0.3989,
+        "f1": 0.5396,
+        "fa": 0.0721,
+        "recall_by_bucket": {
+          "indel": [
+            17,
+            20
+          ],
+          "sub_gross": [
+            19,
+            20
+          ],
+          "sub_moderate": [
+            17,
+            20
+          ],
+          "sub_subtle": [
+            13,
+            20
+          ],
+          "word_omission": [
+            9,
+            10
+          ]
+        }
+      }
+    },
+    "de": {
+      "n_utterances": 190,
+      "n_words": 1567,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9437,
+      "roc_auc_ci": [
+        0.9155,
+        0.9676
+      ],
+      "pr_auc": 0.6791,
+      "fpr_at_recall_50": 0.0081,
+      "fpr_at_recall_80": 0.0603,
+      "fpr_at_recall_80_ci": [
+        0.0255,
+        0.12
+      ],
+      "localisation_top1": 0.7556,
+      "latency_p50_ms": 244.6,
+      "latency_p95_ms": 937.3,
+      "by_bucket": {
+        "indel": 0.9124,
+        "sub_gross": 0.9864,
+        "sub_moderate": 0.9691,
+        "sub_subtle": 0.8791,
+        "word_omission": 0.9991
+      },
+      "verdicts": {
+        "recall": 0.4222,
+        "precision": 0.7037,
+        "f1": 0.5278,
+        "fa": 0.0108,
+        "recall_by_bucket": {
+          "indel": [
+            8,
+            20
+          ],
+          "sub_gross": [
+            10,
+            20
+          ],
+          "sub_moderate": [
+            6,
+            20
+          ],
+          "sub_subtle": [
+            4,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    },
+    "ja": {
+      "n_utterances": 200,
+      "n_words": 955,
+      "n_positive": 100,
+      "n_failed": 0,
+      "roc_auc": 0.8551,
+      "roc_auc_ci": [
+        0.8074,
+        0.9005
+      ],
+      "pr_auc": 0.5357,
+      "fpr_at_recall_50": 0.0257,
+      "fpr_at_recall_80": 0.1848,
+      "fpr_at_recall_80_ci": [
+        0.1142,
+        0.3522
+      ],
+      "localisation_top1": 0.72,
+      "latency_p50_ms": 258.6,
+      "latency_p95_ms": 1146.5,
+      "by_bucket": {
+        "indel": 0.9174,
+        "length": 0.7431,
+        "sub_gross": 0.965,
+        "sub_moderate": 0.9313,
+        "sub_subtle": 0.9203
+      },
+      "verdicts": {
+        "recall": 0.38,
+        "precision": 0.4222,
+        "f1": 0.4,
+        "fa": 0.0608,
+        "recall_by_bucket": {
+          "indel": [
+            8,
+            15
+          ],
+          "length": [
+            1,
+            40
+          ],
+          "sub_gross": [
+            9,
+            10
+          ],
+          "sub_moderate": [
+            12,
+            15
+          ],
+          "sub_subtle": [
+            8,
+            20
+          ]
+        }
+      }
+    },
+    "ko": {
+      "n_utterances": 190,
+      "n_words": 1404,
+      "n_positive": 90,
+      "n_failed": 0,
+      "roc_auc": 0.9152,
+      "roc_auc_ci": [
+        0.8783,
+        0.9488
+      ],
+      "pr_auc": 0.6261,
+      "fpr_at_recall_50": 0.0091,
+      "fpr_at_recall_80": 0.0769,
+      "fpr_at_recall_80_ci": [
+        0.0398,
+        0.1834
+      ],
+      "localisation_top1": 0.7333,
+      "latency_p50_ms": 172.2,
+      "latency_p95_ms": 720.8,
+      "by_bucket": {
+        "indel": 0.9299,
+        "sub_gross": 0.984,
+        "sub_moderate": 0.9487,
+        "sub_subtle": 0.7574,
+        "word_omission": 0.9968
+      },
+      "verdicts": {
+        "recall": 0.4889,
+        "precision": 0.3411,
+        "f1": 0.4018,
+        "fa": 0.0647,
+        "recall_by_bucket": {
+          "indel": [
+            10,
+            20
+          ],
+          "sub_gross": [
+            8,
+            20
+          ],
+          "sub_moderate": [
+            9,
+            20
+          ],
+          "sub_subtle": [
+            7,
+            20
+          ],
+          "word_omission": [
+            10,
+            10
+          ]
+        }
+      }
+    }
+  },
+  "tier2": {
+    "n_utterances": 500,
+    "n_words": 3210,
+    "n_positive": 264,
+    "n_failed": 0,
+    "roc_auc": 0.9108,
+    "roc_auc_ci": [
+      0.8934,
+      0.9283
+    ],
+    "pr_auc": 0.5211,
+    "fpr_at_recall_50": 0.0326,
+    "fpr_at_recall_80": 0.1531,
+    "fpr_at_recall_80_ci": [
+      0.1215,
+      0.1883
+    ],
+    "localisation_top1": null,
+    "latency_p50_ms": 115.3,
+    "latency_p95_ms": 255.7,
+    "by_bucket": {},
+    "verdicts": {
+      "recall": 0.7955,
+      "precision": 0.3307,
+      "f1": 0.4672,
+      "fa": 0.1443,
+      "recall_by_bucket": {
+        "human": [
+          210,
+          264
+        ]
+      }
+    },
+    "pcc_word": 0.5805,
+    "srcc_word": 0.4195,
+    "pcc_utterance": 0.7628,
+    "srcc_utterance": 0.7574,
+    "word_coverage": 1.0,
+    "pcc_word_ci_speakers": [
+      0.4889,
+      0.644
+    ],
+    "pcc_utterance_ci_speakers": [
+      0.6577,
+      0.8316
+    ],
+    "side_note_sentence_prob": {
+      "pcc_utterance": 0.7471,
+      "srcc_utterance": 0.7325
+    },
+    "split": "speechocean762 test (all 500 clips; build_tier2.py --split test --seed 42)"
+  }
+}

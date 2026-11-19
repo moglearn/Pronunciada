@@ -95,6 +95,8 @@ All comparisons are with the Azure Pronunciation Assessment REST API (region `we
 
 The scoreboard has 84 comparisons with Azure, each one metric on one held-out test set. Pronunciada is significantly ahead in 40, not significantly different in 37 (ahead in 20 of those) and significantly behind in 7. The seven are English sentence prosody, the native false-alarm rate in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings (English native versus non-native speakers, Japanese accepted versus rejected clips). The sections below show the main tests, starting with the one that covers all ten languages.
 
+For the other pronunciation systems on the market, commercial and open source, see [results/industry_snapshot.md](results/industry_snapshot.md).
+
 ### All ten languages
 
 Learner recordings with expert annotation are public for English and Mandarin only, so the test that covers all ten languages uses native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
