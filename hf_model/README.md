@@ -46,7 +46,7 @@ Pronunciada uses [ZIPA](https://huggingface.co/anyspeech/zipa-small-crctc-500k) 
 | `coach/` | Small classifiers on ZIPA's intermediate layers for consonant contrasts, such as Korean tense consonants. They feed the coaching tips. |
 | `native/` | Accepted native variants per language. |
 
-The same files ship inside the pip package, so there is nothing to download from here. This copy matches version 1.0.1. ZIPA itself is downloaded from the anyspeech repository at first use.
+The same files ship inside the pip package, so there is nothing to download from here. This copy matches version 1.0.2. ZIPA itself is downloaded from the anyspeech repository at first use.
 
 ## Use
 
