@@ -13,7 +13,7 @@ import json
 import re
 
 from common import ROOT
-from make_charts import detection, english, table, tally, zipa
+from make_charts import BOARD, detection, english, table, tally, zipa
 
 PAGE = ROOT / "site/index.html"
 esc = html.escape
@@ -21,14 +21,15 @@ NUMBER = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven"}
 
 
 def stats() -> str:
-    """The four figures under the headline, read from the scoreboard."""
+    """The three figures under the headline, read from the scoreboard."""
     rows = tally()
-    total, better, same = (sum(r[k] for r in rows) for k in (1, 2, 3))
+    better, same, behind = (sum(r[k] for r in rows) for k in (2, 3, 4))
+    mb = re.search(r"(\d+)\.\d MB \(int8", "\n".join(BOARD)).group(1)
     ms = re.match(r"(\d+) ms", next(r for r in table("End-to-end `Scorer.score`") if r[0] == "fp32")[1]).group(1)
     cells = [
-        (f"{better + same}<small> of {total}</small>", "comparisons level with or ahead of Azure"),
+        (f"{better}–{behind}", f"significant wins and losses against Azure, with {same} ties"),
         (f"{ms}<small> ms</small>", "per sentence on a laptop CPU"),
-        (f"{len(rows)}", "languages"),
+        (f"{mb}<small> MB</small>", "quantized speech model, shared by all ten languages"),
     ]
     return '<div class="stats">' + "".join(f"<div><b>{n}</b><span>{label}</span></div>" for n, label in cells) + "</div>"
 

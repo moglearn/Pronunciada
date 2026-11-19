@@ -10,12 +10,13 @@
 
 [Website](https://pronunciada.dev) · [PyPI](https://pypi.org/project/pronunciada/) · [Hugging Face](https://huggingface.co/kimitonatsu/pronunciada) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
 
-Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
+Pronunciada is an open-source Python library for on-device pronunciation scoring in ten languages: a 67 MB model that scores a sentence in about 50 ms on a laptop CPU. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
-- It matches or beats Microsoft Azure Pronunciation Assessment in 77 of 84 comparisons on public test sets: significantly better in 40, not significantly different in 37 and significantly worse in 7.
-- It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is edge-optimized: 67 MB on disk and about 0.3 GB of memory.
+- On English and Mandarin learner speech graded by experts, it is closer to the experts than Microsoft Azure Pronunciation Assessment on sounds, sentences and Mandarin tones. Azure is closer on English intonation.
+- Across 84 comparisons with Azure on public test sets in all ten languages, it is significantly better in 40, significantly worse in 7 and not significantly different in 37.
+- It runs on the device. Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro (four CPU threads), with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is edge-optimized: 67 MB on disk and about 0.3 GB of memory.
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (248 MB, or 67 MB quantized). It is significantly more accurate than ZIPA alone on 45 of 60 tests and significantly less accurate on none.
 
 The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
@@ -180,7 +181,7 @@ Median time for one `Scorer.score` call on 100 speechocean762 recordings (mean l
 
 Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 480 MB and 294 MB measured). The int8 model is optimized for edge devices: a 67 MB file on one CPU thread. There are no packaged iOS or Android builds yet.
 
-For recordings of about ten seconds (FLEURS test), the median is 0.30 s to 0.44 s on one thread, depending on the language. A request to Azure's REST API for recordings of similar length took 1.8 s to 3.0 s from the same laptop, upload included. This is not a controlled comparison: the two sets of recordings differ. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
+For recordings of about ten seconds (FLEURS test), the median is 0.30 s to 0.44 s on one thread, depending on the language. That is about the same rate as the one-thread figure above: 100 ms for 3.5 seconds of audio. A request to Azure's REST API for recordings of similar length took 1.8 s to 3.0 s from the same laptop, upload included. This is not a controlled comparison: the two sets of recordings differ. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
 
 ### Compared with ZIPA alone
 
