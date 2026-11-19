@@ -65,7 +65,7 @@ Test 2: 500 English learner recordings (speechocean762 test), Pearson correlatio
 | sentence | **0.763** [0.658, 0.832] | 0.74 | 0.76 | 0.59 |
 | word | 0.581 [0.489, 0.644] | 0.51 | **0.61** | 0.29 |
 
-Pronunciada is ahead of TonePerfect on every figure. Against Lingolix it is level in English, French and Spanish, ahead on English learner words, and behind in German false alarms, Japanese and Korean. In Japanese it caught 1 of 40 vowel- and consonant-length errors with its own error flag; Lingolix caught 37 and Azure 36.
+Pronunciada is ahead of TonePerfect on every figure. Against Lingolix it is level in English, French and Spanish, ahead on English learner words, and behind in German false alarms, Japanese and Korean. In Japanese its own error flag caught 19 of 40 vowel- and consonant-length errors (1 of 40 in release 1.0.1; the fix is on the main branch, not yet released); Lingolix caught 37 and Azure 36.
 
 ## Open-source systems
 

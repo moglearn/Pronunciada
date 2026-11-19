@@ -274,8 +274,8 @@
         0.131
       ],
       "localisation_top1": 0.7333,
-      "latency_p50_ms": 244.6,
-      "latency_p95_ms": 937.3,
+      "latency_p50_ms": 99.0,
+      "latency_p95_ms": 146.2,
       "by_bucket": {
         "indel": 0.9092,
         "sub_gross": 0.9851,
@@ -330,8 +330,8 @@
         0.3743
       ],
       "localisation_top1": 0.68,
-      "latency_p50_ms": 258.6,
-      "latency_p95_ms": 1146.5,
+      "latency_p50_ms": 79.6,
+      "latency_p95_ms": 136.0,
       "by_bucket": {
         "indel": 0.909,
         "length": 0.7317,
@@ -340,17 +340,17 @@
         "sub_subtle": 0.9104
       },
       "verdicts": {
-        "recall": 0.38,
-        "precision": 0.3619,
-        "f1": 0.3707,
-        "fa": 0.0713,
+        "recall": 0.56,
+        "precision": 0.4148,
+        "f1": 0.4766,
+        "fa": 0.084,
         "recall_by_bucket": {
           "indel": [
             8,
             15
           ],
           "length": [
-            1,
+            19,
             40
           ],
           "sub_gross": [
@@ -612,8 +612,8 @@
         0.12
       ],
       "localisation_top1": 0.7556,
-      "latency_p50_ms": 244.6,
-      "latency_p95_ms": 937.3,
+      "latency_p50_ms": 99.0,
+      "latency_p95_ms": 146.2,
       "by_bucket": {
         "indel": 0.9124,
         "sub_gross": 0.9864,
@@ -668,8 +668,8 @@
         0.3522
       ],
       "localisation_top1": 0.72,
-      "latency_p50_ms": 258.6,
-      "latency_p95_ms": 1146.5,
+      "latency_p50_ms": 79.6,
+      "latency_p95_ms": 136.0,
       "by_bucket": {
         "indel": 0.9174,
         "length": 0.7431,
@@ -678,17 +678,17 @@
         "sub_subtle": 0.9203
       },
       "verdicts": {
-        "recall": 0.38,
-        "precision": 0.4222,
-        "f1": 0.4,
-        "fa": 0.0608,
+        "recall": 0.56,
+        "precision": 0.4706,
+        "f1": 0.5114,
+        "fa": 0.0737,
         "recall_by_bucket": {
           "indel": [
             8,
             15
           ],
           "length": [
-            1,
+            19,
             40
           ],
           "sub_gross": [

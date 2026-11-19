@@ -157,12 +157,20 @@ def _it(kind, words, wi, start, end, eprob=None, extra=None, heard=None, expecte
 
 
 def miscue_items(result, sound_items: list[dict], cfg: dict) -> list[dict]:
-    """mispronounced_word (a word with flagged sounds) and extra_speech items."""
+    """mispronounced_word (a word with flagged sounds, long/short sounds included) and extra_speech items."""
     c = result._pronunciada  # noqa: SLF001
     out = []
     by_word: dict[int, list] = {}
+    # long / short sounds count only at the "careful" length threshold, so natives are rarely flagged
+    from .length import params as _length_params
+    co = (_length_params(c["ref"].lang) or {}).get("coach")
+    len_thr = co["thresholds"]["careful"] if co else -1.0
+
+    def confident_length(it) -> bool:
+        return any(p.length_prob is not None and p.length_prob <= len_thr for p in result.words[it["word_index"]].phones)
+
     for it in sound_items:
-        if it["kind"] in ("substitution", "missing"):
+        if it["kind"] in ("substitution", "missing") or (it["kind"] == "length" and confident_length(it)):
             by_word.setdefault(it["word_index"], []).append(it)
     for wi, its in sorted(by_word.items()):
         w = result.words[wi]

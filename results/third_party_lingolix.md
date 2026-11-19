@@ -46,7 +46,7 @@ Test 1, FA@80 (lower is better):
 | ja | 20.1% [12.7, 37.4] | 5% | 3% | 74% |
 | ko | 8.4% [4.5, 19.3] | 3% | 7% | 56% |
 
-Japanese length errors flagged by the system's own flag: Pronunciada 1 of 40, Lingolix 37, Azure 36, TonePerfect 0. The post does not say how "caught" was counted. For Pronunciada we used its own ErrorType flag. On the length items alone, Pronunciada's AUC is 0.73.
+Japanese length errors flagged by the system's own flag: Pronunciada 19 of 40, Lingolix 37, Azure 36, TonePerfect 0. Pronunciada 1.0.1 flagged 1 of 40: its long/short check lowered the word score but did not set the word's error flag. On the main branch after 1.0.1 (not yet on PyPI), a confident long/short error sets the flag. On the Japanese clips this raised the flag's recall from 0.38 to 0.56 and its precision from 0.36 to 0.41; false alarms on correct words went from 7.1% to 8.4%. Word scores, and so AUC and FA@80, are unchanged. German was rerun and is unchanged. The post does not say how "caught" was counted. For Pronunciada we used its own ErrorType flag. On the length items alone, Pronunciada's AUC is 0.73.
 
 Test 2, Pearson correlation with human judges (speakers bootstrapped for Pronunciada):
 
