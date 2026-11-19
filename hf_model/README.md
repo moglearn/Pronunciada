@@ -27,7 +27,7 @@ tags:
 
 # Pronunciada
 
-On-device pronunciation scoring in 10 languages. 67 MB, 50 ms on CPU.
+On-device pronunciation assessment with cloud-level accuracy.
 
 Pronunciada is an open-source Python library. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole. It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
