@@ -1,0 +1,108 @@
+{
+ "what": "Pronunciada timed on the same recordings and text Azure was timed on (fleurs-swap, unchanged sentences)",
+ "date": "2026-11-18",
+ "pronunciada": "1.0.1, fp32, one process, one thread, Apple M3 Pro, posterior cache cleared per clip",
+ "azure": "wall-clock time of the cached REST requests (westus, upload included), 2026-11-15 to 2026-11-17",
+ "by_language": {
+  "en": {
+   "n": 150,
+   "ours_median_ms": 296.6717295057606,
+   "ours_p95_ms": 486.1036184534895,
+   "azure_median_s": 2.380035187499857,
+   "azure_p95_s": 3.9400060538000723,
+   "azure_retried": 0,
+   "median_audio_s": 9.39,
+   "mean_audio_s": 9.435866666666668
+  },
+  "zh": {
+   "n": 150,
+   "ours_median_ms": 325.6583335023606,
+   "ours_p95_ms": 534.7915810954872,
+   "azure_median_s": 1.8399215000001732,
+   "azure_p95_s": 3.0404947479499915,
+   "azure_retried": 0,
+   "median_audio_s": 10.26,
+   "mean_audio_s": 10.648133333333334
+  },
+  "ja": {
+   "n": 150,
+   "ours_median_ms": 360.09785399073735,
+   "ours_p95_ms": 528.8773024585678,
+   "azure_median_s": 2.2303286040000785,
+   "azure_p95_s": 3.1617986565500584,
+   "azure_retried": 0,
+   "median_audio_s": 11.76,
+   "mean_audio_s": 11.976400000000002
+  },
+  "es": {
+   "n": 150,
+   "ours_median_ms": 357.2542504989542,
+   "ours_p95_ms": 589.6030456337029,
+   "azure_median_s": 1.935451020500068,
+   "azure_p95_s": 3.3298957521500805,
+   "azure_retried": 0,
+   "median_audio_s": 11.129999999999999,
+   "mean_audio_s": 11.6128
+  },
+  "fr": {
+   "n": 150,
+   "ours_median_ms": 309.0799159981543,
+   "ours_p95_ms": 464.65018330636667,
+   "azure_median_s": 2.249251187500022,
+   "azure_p95_s": 3.403916468750115,
+   "azure_retried": 0,
+   "median_audio_s": 10.53,
+   "mean_audio_s": 10.3516
+  },
+  "de": {
+   "n": 150,
+   "ours_median_ms": 371.61493800522294,
+   "ours_p95_ms": 612.7506480945158,
+   "azure_median_s": 2.4486774584997875,
+   "azure_p95_s": 3.8908781750000316,
+   "azure_retried": 0,
+   "median_audio_s": 11.16,
+   "mean_audio_s": 11.962000000000002
+  },
+  "it": {
+   "n": 150,
+   "ours_median_ms": 441.2659374938812,
+   "ours_p95_ms": 622.825256260694,
+   "azure_median_s": 2.9527107289998185,
+   "azure_p95_s": 4.367126500000062,
+   "azure_retried": 0,
+   "median_audio_s": 13.68,
+   "mean_audio_s": 13.2656
+  },
+  "pt": {
+   "n": 150,
+   "ours_median_ms": 390.1769790099934,
+   "ours_p95_ms": 611.8020751528092,
+   "azure_median_s": 2.1538235210000494,
+   "azure_p95_s": 3.454539973249846,
+   "azure_retried": 0,
+   "median_audio_s": 11.940000000000001,
+   "mean_audio_s": 12.167599999999998
+  },
+  "ru": {
+   "n": 150,
+   "ours_median_ms": 373.26274999941234,
+   "ours_p95_ms": 613.9239232463297,
+   "azure_median_s": 2.257727666500159,
+   "azure_p95_s": 3.6523817725499605,
+   "azure_retried": 0,
+   "median_audio_s": 11.07,
+   "mean_audio_s": 10.898400000000002
+  },
+  "ko": {
+   "n": 150,
+   "ours_median_ms": 358.0438959907042,
+   "ours_p95_ms": 580.0350207937298,
+   "azure_median_s": 1.8337280830000964,
+   "azure_p95_s": 3.114801462649938,
+   "azure_retried": 0,
+   "median_audio_s": 11.67,
+   "mean_audio_s": 11.723199999999997
+  }
+ }
+}

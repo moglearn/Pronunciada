@@ -434,20 +434,20 @@ End-to-end `Scorer.score` on 100 speechocean762 clips (mean 3.5 s of audio), lap
 
 Acoustic model download on first use: 248.2 MB (fp32) or 67.4 MB (int8, `Scorer(lang, precision="int8")`).
 
-Longer clips next to Azure (not a controlled comparison: different clip sets of similar length; ours = FLEURS test, 3 processes with 1 thread each in parallel; Azure = REST round trip to westus incl. upload, fleurs-swap clips):
+Longer clips next to Azure (the same recordings and text for both systems: the 150 unchanged FLEURS test sentences per language of the swap benchmark; Pronunciada = one process, one thread, fp32, posterior cache cleared per clip, 1.0.1 on 2026-11-18, `bench/speed_same_clips.py`; Azure = REST round trip to westus incl. upload, as timed when the benchmark was run):
 
-| lang | Pronunciada median (median audio) | Azure median (mean audio) |
-|---|---|---|
-| en | 301 ms (9.4 s) | 2.34 s (9.4 s) |
-| zh | 339 ms (10.7 s) | 1.82 s (10.6 s) |
-| ja | 378 ms (12.4 s) | 2.22 s (12.0 s) |
-| es | 372 ms (11.6 s) | 1.94 s (11.6 s) |
-| fr | 301 ms (10.2 s) | 2.18 s (10.4 s) |
-| de | 373 ms (11.4 s) | 2.49 s (12.0 s) |
-| it | 440 ms (13.9 s) | 2.95 s (13.3 s) |
-| pt | 390 ms (12.1 s) | 2.17 s (12.2 s) |
-| ru | 367 ms (11.1 s) | 2.25 s (10.9 s) |
-| ko | 372 ms (12.3 s) | 1.82 s (11.7 s) |
+| lang | clips | median audio | Pronunciada median (p95) | Azure median (p95) |
+|---|---|---|---|---|
+| en | 150 | 9.4 s | 297 ms (486) | 2.38 s (3.94) |
+| zh | 150 | 10.3 s | 326 ms (535) | 1.84 s (3.04) |
+| ja | 150 | 11.8 s | 360 ms (529) | 2.23 s (3.16) |
+| es | 150 | 11.1 s | 357 ms (590) | 1.94 s (3.33) |
+| fr | 150 | 10.5 s | 309 ms (465) | 2.25 s (3.40) |
+| de | 150 | 11.2 s | 372 ms (613) | 2.45 s (3.89) |
+| it | 150 | 13.7 s | 441 ms (623) | 2.95 s (4.37) |
+| pt | 150 | 11.9 s | 390 ms (612) | 2.15 s (3.45) |
+| ru | 150 | 11.1 s | 373 ms (614) | 2.26 s (3.65) |
+| ko | 150 | 11.7 s | 358 ms (580) | 1.83 s (3.11) |
 
 What runs where: everything runs on the device (numpy + ONNX Runtime, no network after the first model download, no audio leaves the device). Shipped package data ≈ 21 MB (adapters, calibrators, tone / stress / attribute models ≈ 10 MB; pronunciation dictionaries ≈ 10 MB). No phone build exists yet; nothing has been timed on a phone.
 

@@ -46,6 +46,12 @@ a:hover{text-decoration-color:#000}
 .pill.light{background:#fff;color:#000;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06)}
 .pill.light:hover{box-shadow:0 0 0 1px rgba(0,0,0,.16),0 1px 2px rgba(0,0,0,.06)}
 .pill code{font-family:var(--mono);font-size:14px}
+button.pill{border:0;font-family:inherit;cursor:pointer;gap:10px}
+.copy svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
+.copy:hover svg{opacity:.9}
+.copy .i-done,.copy.done .i-copy{display:none}
+.copy.done .i-done{display:block;opacity:.9}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* column and type */
 main{max-width:808px;margin:0 auto;padding:96px 20px 112px}
@@ -196,7 +202,7 @@ footer p{margin:0}
 <p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages.</p>
 <div class="pills">
   <a class="pill dark" href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
-  <a class="pill light" href="https://pypi.org/project/pronunciada/"><code>pip install pronunciada</code></a>
+  <button class="pill light copy" type="button" data-copy="pip install pronunciada" aria-label="Copy the install command: pip install pronunciada"><code>pip install pronunciada</code><svg class="i-copy" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.8"/><path d="M10.5 3.2V3a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.2"/></svg><svg class="i-done" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg><span class="sr" aria-live="polite"></span></button>
 </div>
 
 <div class="cover">
@@ -211,7 +217,7 @@ footer p{margin:0}
 <!-- /gen:stats -->
 
 <h2 id="benchmarks">Tested against Azure in ten languages</h2>
-<p>Most language-learning apps get their pronunciation scores from a cloud service, and the most widely used one is Microsoft Azure Pronunciation Assessment. Pronunciada was compared with it in every language it supports: English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean. There are 84 comparisons. Each is one measure on one public test set, with the same recordings and text given to both systems.</p>
+<p>Most language-learning apps get their pronunciation scores from a cloud service, and the most widely used one is Microsoft Azure Pronunciation Assessment. The two were compared in all ten languages Pronunciada supports: English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean. There are 84 comparisons. Each is one measure on one public test set, with the same recordings and text given to both systems.</p>
 <div class="langs">
   <ul>
     <li lang="en">English</li><li lang="zh">中文</li><li lang="ja">日本語</li><li lang="es">Español</li><li lang="fr">Français</li>
@@ -223,19 +229,21 @@ footer p{margin:0}
 <figure class="chart"><div class="ch-head stack"><figcaption>Comparisons with Azure, by language</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada significantly better</span><span><i class="same"></i>No significant difference</span><span><i class="behind"></i>Azure significantly better</span></div></div><div class="tl"><div class="tl-row"><span class="tl-name">English</span><span class="tl-bar"><i class="own" style="width:57.89%">11</i><i class="same" style="width:26.32%">5</i><i class="behind" style="width:15.79%">3</i></span><span class="tl-n">of 19</span></div><div class="tl-row"><span class="tl-name">Mandarin</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:57.89%">11</i></span><span class="tl-n">of 16</span></div><div class="tl-row"><span class="tl-name">Japanese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:5.26%">1</i><i class="behind" style="width:10.53%">2</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Spanish</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">French</span><span class="tl-bar"><i class="own" style="width:26.32%">5</i><i class="same" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">German</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:21.05%">4</i></span><span class="tl-n">of 7</span></div><div class="tl-row"><span class="tl-name">Italian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Portuguese</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:10.53%">2</i><i class="behind" style="width:5.26%">1</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Russian</span><span class="tl-bar"><i class="own" style="width:15.79%">3</i><i class="same" style="width:15.79%">3</i></span><span class="tl-n">of 6</span></div><div class="tl-row"><span class="tl-name">Korean</span><span class="tl-bar"><i class="own" style="width:5.26%">1</i><i class="same" style="width:26.32%">5</i></span><span class="tl-n">of 6</span></div></div><p class="ch-foot">84 comparisons on held-out public test sets. Significance is from paired tests at p &lt; 0.05.</p></figure>
 <!-- /gen:chart-tally -->
 <p>Pronunciada is significantly better in 40 comparisons and Azure in 7. The other 37 show no significant difference. Azure's seven are English intonation, how often a native speaker's words are marked down in English, Japanese, Spanish and Portuguese, and two tests on Common Voice recordings. Every comparison is listed in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md">scoreboard</a>.</p>
+<p>The English and Mandarin counts include learner speech graded by experts. No such recordings are public for the other eight languages, so their tests use native recordings in which one word of the text was changed, and Common Voice recordings rated by volunteers.</p>
 
 <h2>Closer to expert raters on learner speech</h2>
 <p>The most direct test uses recordings of learners that experts have scored by hand. Such recordings are public for English and Mandarin. On them, Pronunciada agrees with the experts more closely than Azure on individual sounds, on whole sentences and on Mandarin tones. Azure is closer on English intonation.</p>
 <!-- gen:chart-azure -->
-<figure class="chart"><div class="ch-head"><figcaption>Learner speech scored by experts</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>Azure</span></div></div><div class="ch-g"><div class="ch-name">English sounds<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:53.8%"></i></span><b>0.54</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.3%"></i></span><b>0.67</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>finding the sounds experts marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:63.1%"></i></span><b>0.63</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>finding the tones teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.9%"></i></span><b>0.68</b></div></div></div><div class="ch-g"><div class="ch-name">English intonation<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.2%"></i></span><b>0.77</b></div><div class="ch-row"><span class="ch-track"><i style="width:82.7%"></i></span><b>0.83</b></div></div></div><p class="ch-foot">Higher is better. Agreement is the correlation with expert scores, and finding errors is the area under the ROC curve. Test sets: speechocean762, L2-ARCTIC and OMPAL. All five differences are statistically significant.</p></figure>
+<figure class="chart"><div class="ch-head"><figcaption>Learner speech scored by experts</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>Azure</span></div></div><div class="ch-g"><div class="ch-name">English sounds<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:68.5%"></i></span><b>0.69</b></div><div class="ch-row"><span class="ch-track"><i style="width:53.8%"></i></span><b>0.54</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:74.8%"></i></span><b>0.75</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.3%"></i></span><b>0.67</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>finding the sounds experts marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:63.1%"></i></span><b>0.63</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>finding the tones teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:67.9%"></i></span><b>0.68</b></div></div></div><div class="ch-g"><div class="ch-name">English intonation<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.2%"></i></span><b>0.77</b></div><div class="ch-row"><span class="ch-track"><i style="width:82.7%"></i></span><b>0.83</b></div></div></div><p class="ch-foot">Higher is better. Agreement is the Pearson correlation with expert scores, and finding errors is the area under the ROC curve. Test sets: speechocean762, L2-ARCTIC and OMPAL. All five differences are statistically significant.</p></figure>
 <!-- /gen:chart-azure -->
 <p>All figures come from held-out test recordings. Azure was used as provided, through its REST API in November 2026.</p>
 
 <h2>Runs on the device in about 50 ms</h2>
-<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop.</p>
+<p>Scoring needs no network connection and no GPU, and the audio does not leave the machine. A sentence of 3.5 seconds is scored in about 50 ms on an Apple M3 Pro laptop with four CPU threads, and in about 100 ms with one.</p>
 <p>The quantized model is optimized for edge devices. It is a 67 MB file, runs on a single CPU thread and uses about 0.3 GB of memory. The full model is 248 MB and uses about 0.5 GB. Packaged iOS and Android builds are not available yet.</p>
+<p>The chart shows longer recordings on a single thread, which is why its time is higher. 0.30 s for 9 seconds of audio is about the same rate as 100 ms for 3.5 seconds.</p>
 <!-- gen:chart-speed -->
-<figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop, one CPU thread</small></span><span class="ch-track"><i style="width:12.9%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.34 s</b></div><p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>
+<figure class="chart"><div class="ch-head"><figcaption>Time to score a 9-second recording</figcaption></div><div class="sp-row own"><span class="sp-who">Pronunciada<small>on the laptop, one CPU thread</small></span><span class="ch-track"><i style="width:12.5%"></i></span><b>0.30 s</b></div><div class="sp-row "><span class="sp-who">Azure<small>request to the cloud and back</small></span><span class="ch-track"><i style="width:100.0%"></i></span><b>2.38 s</b></div><p class="ch-foot">Lower is better. Median over the same 150 English recordings and text for both systems. The Azure time is the whole request from the same laptop, upload included.</p></figure>
 <!-- /gen:chart-speed -->
 
 <h2>Built on ZIPA, and far more accurate than ZIPA alone</h2>
@@ -246,7 +254,7 @@ footer p{margin:0}
 <p>Across 60 tests, Pronunciada is significantly better in 45 and significantly worse in none. The gap is widest for Mandarin tones, which ZIPA does not output. The full comparison is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">baseline write-up</a>.</p>
 
 <h2 id="how">How it works</h2>
-<p>Pronunciada compares the sounds a sentence should contain with the sounds a speech model hears in the recording. The figure follows one word from the learner recording in the film above.</p>
+<p>Pronunciada compares the sounds a sentence should contain with the sounds a speech model hears in the recording. The figure follows one word from the learner recording in the video above.</p>
 <!-- gen:figure-word -->
 <figure class="chart wf"><div class="ch-head"><figcaption>How one word is scored</figcaption><div class="ch-key">“float”, said without its “l”</div></div><div class="wf-grid"><span class="l">Expected sound</span><span class="s">f</span><span class="s">l</span><span class="s">oʊ</span><span class="s">t</span><span class="l">Recognized instead</span><span class="h">–</span><span class="h sub">nothing</span><span class="h sub">ɔ</span><span class="h">–</span><span class="l">Probability a rater accepts it</span><span><span class="n">0.83</span></span><span><span class="n low">0.27</span></span><span><span class="n low">0.35</span></span><span><span class="n">0.56</span></span></div><p class="ch-foot">The speech model heard no “l” and a different vowel, so those two sounds score low and the word as a whole gets 0.10.</p></figure>
 <!-- /gen:figure-word -->
@@ -281,7 +289,15 @@ result.prob                <span class="c"># 0.75, the sentence</span>
 result.words[7].prob       <span class="c"># 0.10, the word "float"</span>
 result.words[7].phones     <span class="c"># f 0.83, l 0.27, oʊ 0.35, t 0.56</span>
 result.coaching()          <span class="c"># detected errors, most severe first</span></pre>
-<p class="note">The values are for the learner recording in the film above, in which the “l” of “float” is dropped. The model is downloaded on first use. A command-line tool, a local HTTP server, output in Azure's JSON layout and an MCP server are documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
+<p class="note">The values are for the learner recording in the video above, in which the “l” of “float” is dropped. The model is downloaded on first use.</p>
+<p>The package also includes:</p>
+<ul>
+<li>a command-line tool, <code>pronunciada check</code></li>
+<li>a local HTTP server</li>
+<li>output in the JSON layout of Azure Pronunciation Assessment, for code that already reads Azure's results</li>
+<li>an MCP server</li>
+</ul>
+<p>Each is documented in the <a href="https://github.com/moglearn/pronunciada#usage">README</a>.</p>
 
 <h2 id="project">Project</h2>
 <dl class="facts">
@@ -319,6 +335,16 @@ result.coaching()          <span class="c"># detected errors, most severe first<
 </main>
 <script>
 (function(){
+  var copy=document.querySelector('.copy');
+  if(copy&&navigator.clipboard){
+    var said=copy.querySelector('.sr'), back;
+    copy.addEventListener('click',function(){
+      navigator.clipboard.writeText(copy.getAttribute('data-copy')).then(function(){
+        copy.classList.add('done');said.textContent='Copied';clearTimeout(back);
+        back=setTimeout(function(){copy.classList.remove('done');said.textContent='';},1600);
+      });
+    });
+  }
   var film=document.querySelector('.cover');
   if(film){
     var v=film.querySelector('video'), go=film.querySelector('.c-play'), len=go.querySelector('span');

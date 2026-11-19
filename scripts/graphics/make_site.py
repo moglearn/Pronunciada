@@ -70,7 +70,7 @@ def chart_azure() -> str:
         pick(e, "Sentence prosody", "English intonation", "agreement with expert scores"),
     ]
     return pairs("Learner speech scored by experts", rows, "Azure",
-                 "Higher is better. Agreement is the correlation with expert scores, and finding errors is the area under the ROC curve. "
+                 "Higher is better. Agreement is the Pearson correlation with expert scores, and finding errors is the area under the ROC curve. "
                  "Test sets: speechocean762, L2-ARCTIC and OMPAL.")
 
 
@@ -102,23 +102,23 @@ def chart_tally() -> str:
             'Significance is from paired tests at p &lt; 0.05.</p></figure>')
 
 
-def speed() -> tuple[float, float, float]:
-    """English row of the long-clip table: (Pronunciada seconds, Azure seconds, clip length in seconds)."""
+def speed() -> tuple[float, float, float, int]:
+    """English row of the long-clip table: (Pronunciada seconds, Azure seconds, clip length in seconds, number of clips)."""
     row = next(r for r in table("Longer clips next to Azure") if r[0] == "en")
-    ours = re.match(r"(\d+) ms \((\d+\.\d+) s\)", row[1])
-    azure = re.match(r"(\d+\.\d+) s", row[2])
-    return int(ours.group(1)) / 1000, float(azure.group(1)), float(ours.group(2))
+    ours = re.match(r"(\d+) ms", row[3])
+    azure = re.match(r"(\d+\.\d+) s", row[4])
+    return int(ours.group(1)) / 1000, float(azure.group(1)), float(row[2].split()[0]), int(row[1])
 
 
 def chart_speed() -> str:
-    ours, azure, clip = speed()
+    ours, azure, clip, n = speed()
     top = max(ours, azure)
     row = lambda cls, who, sub, v: (f'<div class="sp-row {cls}"><span class="sp-who">{who}<small>{sub}</small></span>'
                                     f'<span class="ch-track"><i style="width:{v / top * 100:.1f}%"></i></span><b>{v:.2f} s</b></div>')
     return (f'<figure class="chart"><div class="ch-head"><figcaption>Time to score a {clip:.0f}-second recording</figcaption></div>'
             f'{row("own", "Pronunciada", "on the laptop, one CPU thread", ours)}{row("", "Azure", "request to the cloud and back", azure)}'
-            '<p class="ch-foot">Lower is better. Median over English recordings. This is not a controlled comparison: the two sets of '
-            'recordings differ, and the Azure time is the whole request from the same laptop, upload included.</p></figure>')
+            f'<p class="ch-foot">Lower is better. Median over the same {n} English recordings and text for both systems. '
+            'The Azure time is the whole request from the same laptop, upload included.</p></figure>')
 
 
 def figure_word() -> str:
