@@ -41,6 +41,29 @@ def test_identity_classes_and_factor():
     assert abs(DI.word_factor(cal, [-50.0], 0.5) - cal["floor"]) < 1e-9
 
 
+def test_stress_rel_factor():
+    import json
+    from importlib import resources
+
+    from pronunciada import stress_rel as SR
+
+    cal = SR.params("de")
+    assert cal is not None and SR.params("en") is None
+    pros = json.loads(resources.files("pronunciada").joinpath("data/calib/prosody/de.json").read_text())
+    rel = [0.8, 0.7, -10.0, 0.69, 25.0, 4.0]
+    hi = SR.factor(cal, pros, [0.95, 0.9], rel, 0.5)
+    lo = SR.factor(cal, pros, [0.02, 0.9], rel, 0.5)
+    assert 0.0 < lo < hi <= 1.0
+
+
+def test_loan_word_readings():
+    from pronunciada.text import get_g2p
+
+    r = get_g2p("de")("Job")                 # German entry with dʒ: letter-rule and English readings
+    alts = {a for p in r.phones for a, _ in p.alts}
+    assert "j" in alts
+
+
 def test_switch_off(monkeypatch):
     monkeypatch.setenv("PRONUNCIADA_DE_R19", "0")
     assert WL.params("de") is None

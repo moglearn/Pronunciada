@@ -157,6 +157,9 @@ class Scorer:
         from . import word_lang as _WL                     # round 19: per-language word recalibration
 
         self.word_lang = _WL.params(self.lang)
+        from . import stress_rel as _SR                   # round 19: reliability-weighted stress factor
+
+        self.stress_rel = _SR.params(self.lang)
         self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
@@ -535,6 +538,17 @@ class Scorer:
                 phones[-1].length_prob = float(lres["prob"][i])
         words = []
         omitted = c["W"]["omitted_f"].astype(bool)
+        srel = getattr(self, "stress_rel", None)
+        if srel is not None and self.pros_cal and self.pros_cal["kind"] == "stress":
+            from . import stress_rel as _SR
+
+            wsp = []
+            for w in ref.words:
+                sp_ = [(x.start, x.end) for x in phones[w.phones[0]:w.phones[1]] if x.end > x.start]
+                wsp.append((min(a for a, _ in sp_), max(b for _, b in sp_)) if sp_ else (0.0, 0.0))
+            sr_ctx = _SR.utterance_context(wsp, len(ref.syllables), c.get("f0"), c.get("audio"))
+        else:
+            srel = None
         for wi, w in enumerate(ref.words):
             ph = phones[w.phones[0]:w.phones[1]]
             spans = [(x.start, x.end) for x in ph if x.end > x.start]
@@ -570,7 +584,13 @@ class Scorer:
                     stress = p_pros
                 else:
                     tone = p_pros
-            prob = sounds * (p_pros if p_pros is not None else 1.0)
+            f_pros = p_pros
+            if srel is not None and p_pros is not None and stress_p:
+                # round 19 (de): reliability-weighted stress factor in the word probability only;
+                # stress_prob (word and syllable) keeps the shipped channel
+                f_pros = _SR.factor(srel, self.pros_cal, stress_p,
+                                    _SR.reliability(sr_ctx, st, en, len(range(*w.syllables))), s)
+            prob = sounds * (f_pros if f_pros is not None else 1.0)
             # length channel (round 15): a factor that stays 1 unless the word's lowest length
             # logit is below a low native quantile (pronunciada.length.word_factor,
             # bench/length/fit_length.py)

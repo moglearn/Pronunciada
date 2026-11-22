@@ -13,6 +13,10 @@ from ._eu_base import EuG2P
 
 # Round 19 text handling (hyphen pieces, English readings of unknown words); 0 = round-18 front-end
 TEXT_R19 = os.environ.get("PRONUNCIADA_DE_TEXT", "1") != "0" and os.environ.get("PRONUNCIADA_DE_R19", "1") != "0"
+# Round 19 part 3: foreign-entry lexicon words (see German.loan_variants); "0" = off,
+# "lts" / "lts_en" / "lts_en_nasal" = which readings are added
+LOAN_DEFAULT = "lts_en"          # chosen on dev (results/round19_german.md section 9)
+FOREIGN_SOUNDS = {"ʒ", "dʒ", "æ", "ɹ", "w", "θ", "ð", "ɜ", "ɜ˞", "ʌ"}
 
 FUNC = {"der", "die", "das", "den", "dem", "des", "ein", "eine", "einen", "einem", "einer", "eines", "und",
         "oder", "aber", "in", "im", "an", "am", "auf", "aus", "bei", "mit", "nach", "von", "vom", "zu", "zum",
@@ -158,6 +162,35 @@ class German(EuG2P):
             out.extend(C.parse_phone(x)[0] for x in prons[0])
         return out or None
 
+    def loan_variants(self, tok_text, items, w):
+        """Round 19 (option, PRONUNCIADA_DE_LOAN): a lexicon word whose German entry is a foreign
+        reading (it uses sounds German words do not have: nasal vowels, ʒ, dʒ, æ, ɹ, w, θ, ð) also
+        accepts the German letter-rule reading, its English reading when the English lexicon has
+        it, and nasal vowels said as vowel + ŋ (the usual German nativisation)."""
+        mode = os.environ.get("PRONUNCIADA_DE_LOAN", LOAN_DEFAULT)
+        if not TEXT_R19 or mode == "0" or len(items) != 1:
+            return []
+        canon = [p.ipa for p in w.phones]
+        if not any("̃" in x or x in FOREIGN_SOUNDS for x in canon):
+            return []
+        if self._cache(items[0])[2] != "lex":
+            return []
+        out = []
+        if self.lts is not None:
+            ph = [x for x in self.oov(items[0]) if x and C.is_valid(C.parse_phone(x)[0])]
+            if ph:
+                out.append([C.parse_phone(x)[0] for x in self.rewrite(self.fix_stress(ph, items[0]), items[0])])
+        if "en" in mode:
+            en = self._english()
+            prons, oov, how = en._cache(en.normalise_word(tok_text.strip(".,;:!?\"'„“”»«()")))
+            if prons and not oov and how == "lex":
+                out.append([C.parse_phone(x)[0] for x in prons[0]])
+        if "nasal" in mode:
+            for p in w.phones:
+                if "̃" in p.ipa:
+                    p.add_alt(p.ipa.replace("̃", "").replace("ː", "") + "ŋ", C.P_MED)
+        return out
+
     def build_word(self, tok, items, warnings):
         w = super().build_word(tok, items, warnings)
         if not w.phones:
@@ -165,6 +198,8 @@ class German(EuG2P):
         ev = self.english_variant(tok.text, items)
         if ev:
             C.add_word_variant(w, ev, C.P_MED)
+        for lv in self.loan_variants(tok.text, items, w):
+            C.add_word_variant(w, lv, C.P_MED)
         single = len(items) == 1
         if single and items[0] in FUNC:
             if len(w.syls) == 1:
