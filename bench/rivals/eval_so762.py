@@ -121,7 +121,7 @@ def compare(metric, y, a, b, spk) -> dict:
 
 
 def evaluate(system: str, with_sound: bool = True) -> dict:
-    from bench.metrics import pearson, roc_auc
+    from bench.metrics import pearson, roc_auc, spearman
 
     C = collect(system)
     S, W, P = C["S"], C["W"], C["P"]
@@ -134,6 +134,17 @@ def evaluate(system: str, with_sound: bool = True) -> dict:
             continue
         for k in DIMS:
             g[f"sentence {k}"] = compare(pr, S[f"y_{k}"][m], S[f"pa_{k}"][m], S[f"op_{k}"][m], S["spk"][m])
+        g["sentence total, Spearman"] = compare(lambda y, s: spearman(s, y), S["y_total"][m], S["pa_total"][m],
+                                                S["op_total"][m], S["spk"][m])
+        # sensitivity: the same Pearson with each speaker left out in turn (range of the difference)
+        spk_m = S["spk"][m]
+        loo = []
+        for s_out in sorted(set(spk_m.tolist())):
+            k_ = spk_m != s_out
+            loo.append((pearson(S["pa_total"][m][k_], S["y_total"][m][k_])
+                        - pearson(S["op_total"][m][k_], S["y_total"][m][k_]), s_out))
+        g["sentence total"]["leave_one_speaker_out_delta"] = {"min": min(loo)[0], "min_speaker": min(loo)[1],
+                                                              "max": max(loo)[0], "max_speaker": max(loo)[1]}
         mw = (W["age"] >= lo) & (W["age"] <= hi)
         g["word Pearson"] = compare(pr, W["y"][mw], W["pa"][mw], W["op"][mw], W["spk"][mw])
         for tag, bad in (("word AUC, accuracy <= 6", W["y"] <= 6), ("word AUC, accuracy < 5", W["y"] < 5)):
