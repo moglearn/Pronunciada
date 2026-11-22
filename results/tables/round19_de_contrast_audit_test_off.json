@@ -1,0 +1,1118 @@
+{
+ "protocol": {
+  "data": "FLEURS TEST (held-out, run once), native audio",
+  "target_per_contrast": 240,
+  "per_clip_direction_cap": 2,
+  "clips_per_language": 250,
+  "scorer": "pronunciada.Scorer(lang) defaults",
+  "seeds": "numpy default_rng(0) clip choice; crc32(lang/contrast) site sampling"
+ },
+ "languages": {
+  "de": {
+   "n_clips": 250,
+   "n_native_sounds": 28009,
+   "n_native_words": 5348,
+   "thresholds": {
+    "sound": {
+     "5": 0.9221410751342773,
+     "10": 0.9607197642326355
+    },
+    "word": {
+     "5": 0.6244857311248779,
+     "10": 0.8247817158699036
+    },
+    "tone": {}
+   },
+   "n_edit_errors": 0,
+   "contrasts": {
+    "vowel_length": {
+     "label": "long / short vowel, stressed (iː/ɪ yː/ʏ uː/ʊ eː/ɛ øː/œ oː/ɔ ɑː/a)",
+     "members": [
+      "long",
+      "short"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "B>A": 1475,
+      "A>B": 1178
+     },
+     "n": 240,
+     "sound_hit5": 0.4375,
+     "sound_hit10": 0.6958333333333333,
+     "word_hit5": 0.175,
+     "word_hit10": 0.4,
+     "auc": 0.8823013733680841,
+     "auc_paired": 0.8598784722222222,
+     "raw_auc": 0.9036848274959239,
+     "raw_auc_paired": 0.8613541666666666,
+     "share_above_0.9": 0.6791666666666667,
+     "median_prob": 0.9289926841953355,
+     "median_llr_sub": -5.284267389803883,
+     "native_heard_as_partner": 0.09583333333333334,
+     "native_same_pos_below_t5": 0.075,
+     "directions": {
+      "said long, expected short": {
+       "n": 120,
+       "sound_hit5": 0.3416666666666667,
+       "sound_hit10": 0.5333333333333333,
+       "word_hit5": 0.1,
+       "word_hit10": 0.2833333333333333,
+       "auc": 0.8452985349947041,
+       "auc_paired": 0.7534722222222222,
+       "raw_auc": 0.8477290037725969,
+       "raw_auc_paired": 0.6971527777777777,
+       "share_above_0.9": 0.775,
+       "median_prob": 0.9530006654177796,
+       "median_llr_sub": -3.3044963363858955,
+       "native_heard_as_partner": 0.19166666666666668,
+       "native_same_pos_below_t5": 0.125,
+       "learner_error_accepted": 0.0,
+       "verdict": "weak",
+       "verdict_today": "weak"
+      },
+      "said short, expected long": {
+       "n": 120,
+       "sound_hit5": 0.5333333333333333,
+       "sound_hit10": 0.8583333333333333,
+       "word_hit5": 0.25,
+       "word_hit10": 0.5166666666666667,
+       "auc": 0.919304211741464,
+       "auc_paired": 0.9429861111111111,
+       "raw_auc": 0.9596406512192509,
+       "raw_auc_paired": 0.9647916666666667,
+       "share_above_0.9": 0.5833333333333334,
+       "median_prob": 0.9161040422793819,
+       "median_llr_sub": -7.14056947098743,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.025,
+       "learner_error_accepted": 0.025,
+       "verdict": "weak",
+       "verdict_today": "weak"
+      }
+     },
+     "learner_error_accepted": 0.0125,
+     "by_symbol": {
+      "iː>ɪ": {
+       "n": 31,
+       "sound_hit5": 0.3225806451612903,
+       "raw_auc": 0.899883562771874
+      },
+      "ɑː>a": {
+       "n": 29,
+       "sound_hit5": 0.13793103448275862,
+       "raw_auc": 0.7178665478214514
+      },
+      "a>ɑː": {
+       "n": 27,
+       "sound_hit5": 0.5185185185185185,
+       "raw_auc": 0.958875652402733
+      },
+      "ɪ>iː": {
+       "n": 26,
+       "sound_hit5": 0.38461538461538464,
+       "raw_auc": 0.9270110980811113
+      },
+      "ɛ>eː": {
+       "n": 24,
+       "sound_hit5": 0.7916666666666666,
+       "raw_auc": 0.9870473181239363
+      },
+      "oː>ɔ": {
+       "n": 24,
+       "sound_hit5": 0.4166666666666667,
+       "raw_auc": 0.918380401537601
+      },
+      "ɔ>oː": {
+       "n": 20,
+       "sound_hit5": 0.4,
+       "raw_auc": 0.950269556214074
+      },
+      "eː>ɛ": {
+       "n": 14,
+       "sound_hit5": 0.5714285714285714,
+       "raw_auc": 0.951895564180901
+      },
+      "ʊ>uː": {
+       "n": 14,
+       "sound_hit5": 0.35714285714285715,
+       "raw_auc": 0.9800905831288922
+      },
+      "øː>œ": {
+       "n": 9,
+       "sound_hit5": 0.6666666666666666,
+       "raw_auc": 0.8998298166065669
+      },
+      "uː>ʊ": {
+       "n": 8,
+       "sound_hit5": 0.25,
+       "raw_auc": 0.6973651326359385
+      },
+      "œ>øː": {
+       "n": 5,
+       "sound_hit5": 0.8,
+       "raw_auc": 0.9528508693634189
+      },
+      "yː>ʏ": {
+       "n": 5,
+       "sound_hit5": 0.2,
+       "raw_auc": 0.7935806347959584
+      },
+      "ʏ>yː": {
+       "n": 4,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9962244278624728
+      }
+     },
+     "verdict": "weak",
+     "verdict_today": "weak"
+    },
+    "round_front": {
+     "label": "front rounded / unrounded (yː/iː ʏ/ɪ øː/eː œ/ɛ)",
+     "members": [
+      "rounded",
+      "unrounded"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "B>A": 3743,
+      "A>B": 290
+     },
+     "n": 240,
+     "sound_hit5": 0.8916666666666667,
+     "sound_hit10": 0.95,
+     "word_hit5": 0.7166666666666667,
+     "word_hit10": 0.8333333333333334,
+     "auc": 0.9745269377700025,
+     "auc_paired": 0.9703125,
+     "raw_auc": 0.9825715246289883,
+     "raw_auc_paired": 0.9784722222222222,
+     "share_above_0.9": 0.14583333333333334,
+     "median_prob": 0.7129317445679555,
+     "median_llr_sub": -8.855888643559936,
+     "native_heard_as_partner": 0.008333333333333333,
+     "native_same_pos_below_t5": 0.0625,
+     "directions": {
+      "said rounded, expected unrounded": {
+       "n": 120,
+       "sound_hit5": 0.8,
+       "sound_hit10": 0.9083333333333333,
+       "word_hit5": 0.48333333333333334,
+       "word_hit10": 0.6916666666666667,
+       "auc": 0.9623246099468028,
+       "auc_paired": 0.9589583333333334,
+       "raw_auc": 0.9704398586168731,
+       "raw_auc_paired": 0.9520833333333333,
+       "share_above_0.9": 0.26666666666666666,
+       "median_prob": 0.8053691725485632,
+       "median_llr_sub": -6.669161173470533,
+       "native_heard_as_partner": 0.016666666666666666,
+       "native_same_pos_below_t5": 0.08333333333333333,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said unrounded, expected rounded": {
+       "n": 120,
+       "sound_hit5": 0.9833333333333333,
+       "sound_hit10": 0.9916666666666667,
+       "word_hit5": 0.95,
+       "word_hit10": 0.975,
+       "auc": 0.9867292655932022,
+       "auc_paired": 0.9795833333333334,
+       "raw_auc": 0.9947031906411035,
+       "raw_auc_paired": 0.9978472222222222,
+       "share_above_0.9": 0.025,
+       "median_prob": 0.660031428212962,
+       "median_llr_sub": -10.279798712211651,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.041666666666666664,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      }
+     },
+     "learner_error_accepted": 0.0,
+     "by_symbol": {
+      "yː>iː": {
+       "n": 44,
+       "sound_hit5": 0.8636363636363636,
+       "raw_auc": 0.9761789230085135
+      },
+      "eː>øː": {
+       "n": 42,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9974293976935985
+      },
+      "ʏ>ɪ": {
+       "n": 41,
+       "sound_hit5": 0.5853658536585366,
+       "raw_auc": 0.952202645665287
+      },
+      "iː>yː": {
+       "n": 29,
+       "sound_hit5": 0.9310344827586207,
+       "raw_auc": 0.9892768457429324
+      },
+      "ɛ>œ": {
+       "n": 25,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9962897640044271
+      },
+      "ɪ>ʏ": {
+       "n": 24,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.994836481131065
+      },
+      "øː>eː": {
+       "n": 24,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9915830625870256
+      },
+      "œ>ɛ": {
+       "n": 11,
+       "sound_hit5": 0.9090909090909091,
+       "raw_auc": 0.9693280406622546
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "front_back": {
+     "label": "front / back rounded (yː/uː ʏ/ʊ øː/oː œ/ɔ)",
+     "members": [
+      "front",
+      "back"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "B>A": 1629,
+      "A>B": 290
+     },
+     "n": 240,
+     "sound_hit5": 0.9833333333333333,
+     "sound_hit10": 0.9958333333333333,
+     "word_hit5": 0.7416666666666667,
+     "word_hit10": 0.9166666666666666,
+     "auc": 0.9820349411498684,
+     "auc_paired": 0.9902777777777778,
+     "raw_auc": 0.989812351982101,
+     "raw_auc_paired": 0.9835416666666666,
+     "share_above_0.9": 0.025,
+     "median_prob": 0.7404728184670974,
+     "median_llr_sub": -8.399384659321669,
+     "native_heard_as_partner": 0.0,
+     "native_same_pos_below_t5": 0.0625,
+     "directions": {
+      "said front, expected back": {
+       "n": 120,
+       "sound_hit5": 0.9666666666666667,
+       "sound_hit10": 0.9916666666666667,
+       "word_hit5": 0.5833333333333334,
+       "word_hit10": 0.8583333333333333,
+       "auc": 0.9788573910766777,
+       "auc_paired": 0.9838194444444445,
+       "raw_auc": 0.985538874409416,
+       "raw_auc_paired": 0.9665972222222222,
+       "share_above_0.9": 0.05,
+       "median_prob": 0.7667621161987791,
+       "median_llr_sub": -7.451168974637465,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.075,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said back, expected front": {
+       "n": 120,
+       "sound_hit5": 1.0,
+       "sound_hit10": 1.0,
+       "word_hit5": 0.9,
+       "word_hit10": 0.975,
+       "auc": 0.9852124912230592,
+       "auc_paired": 0.9959722222222223,
+       "raw_auc": 0.994085829554786,
+       "raw_auc_paired": 0.9966666666666667,
+       "share_above_0.9": 0.0,
+       "median_prob": 0.7215334469848796,
+       "median_llr_sub": -9.709536440178994,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.05,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      }
+     },
+     "learner_error_accepted": 0.0,
+     "by_symbol": {
+      "yː>uː": {
+       "n": 54,
+       "sound_hit5": 0.9814814814814815,
+       "raw_auc": 0.9916105008575286
+      },
+      "oː>øː": {
+       "n": 36,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9968799711203938
+      },
+      "ʊ>ʏ": {
+       "n": 36,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9900240398919395
+      },
+      "ʏ>ʊ": {
+       "n": 35,
+       "sound_hit5": 0.9142857142857143,
+       "raw_auc": 0.975750651576279
+      },
+      "uː>yː": {
+       "n": 26,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9955124314437392
+      },
+      "øː>oː": {
+       "n": 24,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9870383924214836
+      },
+      "ɔ>œ": {
+       "n": 22,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9944741787542316
+      },
+      "œ>ɔ": {
+       "n": 7,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9825005227911436
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "voicing": {
+     "label": "voicing, not word-final",
+     "members": [
+      "voiced",
+      "voiceless"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "B>A": 3792,
+      "A>B": 3591
+     },
+     "n": 240,
+     "sound_hit5": 0.8958333333333334,
+     "sound_hit10": 0.9291666666666667,
+     "word_hit5": 0.19166666666666668,
+     "word_hit10": 0.44583333333333336,
+     "auc": 0.9693638651861901,
+     "auc_paired": 0.9690625,
+     "raw_auc": 0.9386395146798053,
+     "raw_auc_paired": 0.9636284722222223,
+     "share_above_0.9": 0.12083333333333333,
+     "median_prob": 0.5294969995987078,
+     "median_llr_sub": -6.079446294360686,
+     "native_heard_as_partner": 0.075,
+     "native_same_pos_below_t5": 0.058333333333333334,
+     "directions": {
+      "said voiced, expected voiceless": {
+       "n": 120,
+       "sound_hit5": 0.8,
+       "sound_hit10": 0.8583333333333333,
+       "word_hit5": 0.13333333333333333,
+       "word_hit10": 0.39166666666666666,
+       "auc": 0.9479336998821807,
+       "auc_paired": 0.9470833333333334,
+       "raw_auc": 0.9070298832518119,
+       "raw_auc_paired": 0.9354861111111111,
+       "share_above_0.9": 0.23333333333333334,
+       "median_prob": 0.3993497735305555,
+       "median_llr_sub": -5.995533675002765,
+       "native_heard_as_partner": 0.15,
+       "native_same_pos_below_t5": 0.075,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said voiceless, expected voiced": {
+       "n": 120,
+       "sound_hit5": 0.9916666666666667,
+       "sound_hit10": 1.0,
+       "word_hit5": 0.25,
+       "word_hit10": 0.5,
+       "auc": 0.9907940304901995,
+       "auc_paired": 0.9883333333333333,
+       "raw_auc": 0.9702491461077987,
+       "raw_auc_paired": 0.9848611111111111,
+       "share_above_0.9": 0.008333333333333333,
+       "median_prob": 0.5712581321196187,
+       "median_llr_sub": -6.16350161188419,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.041666666666666664,
+       "learner_error_accepted": 0.18333333333333332,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      }
+     },
+     "learner_error_accepted": 0.09166666666666666,
+     "by_symbol": {
+      "d>t": {
+       "n": 45,
+       "sound_hit5": 0.9333333333333333,
+       "raw_auc": 0.9736909961480635
+      },
+      "t>d": {
+       "n": 41,
+       "sound_hit5": 0.975609756097561,
+       "raw_auc": 0.9711312304668621
+      },
+      "k>g": {
+       "n": 24,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9708858462160972
+      },
+      "b>p": {
+       "n": 22,
+       "sound_hit5": 0.9545454545454546,
+       "raw_auc": 0.9480718859846997
+      },
+      "z>s": {
+       "n": 22,
+       "sound_hit5": 0.2727272727272727,
+       "raw_auc": 0.6984508226251952
+      },
+      "f>v": {
+       "n": 20,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9912296047698954
+      },
+      "s>z": {
+       "n": 18,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9314882914618714
+      },
+      "v>f": {
+       "n": 16,
+       "sound_hit5": 0.875,
+       "raw_auc": 0.8912961012531686
+      },
+      "g>k": {
+       "n": 15,
+       "sound_hit5": 0.8666666666666667,
+       "raw_auc": 0.9695502636057458
+      },
+      "p>b": {
+       "n": 8,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9727498304116534
+      },
+      "ʃ>ʒ": {
+       "n": 8,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9923953015102288
+      },
+      "tʃ>dʒ": {
+       "n": 1,
+       "sound_hit5": 1.0,
+       "raw_auc": 0.9997143775215109
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "final_devoicing": {
+     "label": "final devoicing (Rad = [t])",
+     "members": [
+      "devoiced",
+      "voiced"
+     ],
+     "kind": "final_dev",
+     "n_sites": {
+      "A>B": 178
+     },
+     "n": 153,
+     "sound_hit5": 0.43790849673202614,
+     "sound_hit10": 0.5163398692810458,
+     "word_hit5": 0.013071895424836602,
+     "word_hit10": 0.06535947712418301,
+     "auc": 0.7550815249160109,
+     "auc_paired": 0.5371011149557863,
+     "raw_auc": 0.6833207440092202,
+     "raw_auc_paired": 0.5984450425050194,
+     "share_above_0.9": 0.5947712418300654,
+     "median_prob": 0.9560503371125112,
+     "median_llr_sub": -1.7887822826500255,
+     "native_heard_as_partner": 0.45098039215686275,
+     "native_same_pos_below_t5": 0.29411764705882354,
+     "directions": {
+      "said devoiced, expected voiced": {
+       "n": 153,
+       "sound_hit5": 0.43790849673202614,
+       "sound_hit10": 0.5163398692810458,
+       "word_hit5": 0.013071895424836602,
+       "word_hit10": 0.06535947712418301,
+       "auc": 0.7550815249160109,
+       "auc_paired": 0.5371011149557863,
+       "raw_auc": 0.6833207440092202,
+       "raw_auc_paired": 0.5984450425050194,
+       "share_above_0.9": 0.5947712418300654,
+       "median_prob": 0.9560503371125112,
+       "median_llr_sub": -1.7887822826500255,
+       "native_heard_as_partner": 0.45098039215686275,
+       "native_same_pos_below_t5": 0.29411764705882354,
+       "learner_error_accepted": 0.7516339869281046,
+       "verdict": "weak",
+       "verdict_today": "not representable (accepted as alternative)"
+      }
+     },
+     "learner_error_accepted": 0.7516339869281046,
+     "by_symbol": {
+      "t>d": {
+       "n": 124,
+       "sound_hit5": 0.41935483870967744,
+       "raw_auc": 0.6824733179081839
+      },
+      "k>g": {
+       "n": 19,
+       "sound_hit5": 0.6842105263157895,
+       "raw_auc": 0.7754894573360819
+      },
+      "p>b": {
+       "n": 10,
+       "sound_hit5": 0.2,
+       "raw_auc": 0.5187082723410332
+      }
+     },
+     "verdict": "weak",
+     "verdict_today": "not representable (accepted as alternative)"
+    },
+    "s_sh": {
+     "label": "s / ʃ",
+     "members": [
+      "s",
+      "ʃ"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "A>B": 957,
+      "B>A": 435
+     },
+     "n": 240,
+     "sound_hit5": 0.6833333333333333,
+     "sound_hit10": 0.8083333333333333,
+     "word_hit5": 0.3125,
+     "word_hit10": 0.5541666666666667,
+     "auc": 0.9237630464017518,
+     "auc_paired": 0.8874826388888889,
+     "raw_auc": 0.9026800909231556,
+     "raw_auc_paired": 0.9284895833333333,
+     "share_above_0.9": 0.4375,
+     "median_prob": 0.8911639988678988,
+     "median_llr_sub": -6.432027452414829,
+     "native_heard_as_partner": 0.15833333333333333,
+     "native_same_pos_below_t5": 0.07916666666666666,
+     "directions": {
+      "said s, expected ʃ": {
+       "n": 120,
+       "sound_hit5": 0.775,
+       "sound_hit10": 0.9666666666666667,
+       "word_hit5": 0.25,
+       "word_hit10": 0.5416666666666666,
+       "auc": 0.9600741428350411,
+       "auc_paired": 0.9457638888888888,
+       "raw_auc": 0.9799906577647661,
+       "raw_auc_paired": 0.9970833333333333,
+       "share_above_0.9": 0.38333333333333336,
+       "median_prob": 0.8836772285281809,
+       "median_llr_sub": -6.417115870946635,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.09166666666666666,
+       "learner_error_accepted": 0.325,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said ʃ, expected s": {
+       "n": 120,
+       "sound_hit5": 0.5916666666666667,
+       "sound_hit10": 0.65,
+       "word_hit5": 0.375,
+       "word_hit10": 0.5666666666666667,
+       "auc": 0.8874519499684626,
+       "auc_paired": 0.8509027777777778,
+       "raw_auc": 0.8253695240815452,
+       "raw_auc_paired": 0.8339583333333334,
+       "share_above_0.9": 0.49166666666666664,
+       "median_prob": 0.8968471186214877,
+       "median_llr_sub": -6.435935146460398,
+       "native_heard_as_partner": 0.31666666666666665,
+       "native_same_pos_below_t5": 0.06666666666666667,
+       "learner_error_accepted": 0.0,
+       "verdict": "weak",
+       "verdict_today": "weak"
+      }
+     },
+     "learner_error_accepted": 0.1625,
+     "by_symbol": {
+      "s>ʃ": {
+       "n": 120,
+       "sound_hit5": 0.775,
+       "raw_auc": 0.9799906577647661
+      },
+      "ʃ>s": {
+       "n": 120,
+       "sound_hit5": 0.5916666666666667,
+       "raw_auc": 0.8253695240815452
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "ich_isch": {
+     "label": "ç / ʃ (ich / isch)",
+     "members": [
+      "ç",
+      "ʃ"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "A>B": 346,
+      "B>A": 435
+     },
+     "n": 240,
+     "sound_hit5": 0.9666666666666667,
+     "sound_hit10": 0.9875,
+     "word_hit5": 0.8666666666666667,
+     "word_hit10": 0.975,
+     "auc": 0.9811871481785617,
+     "auc_paired": 0.99640625,
+     "raw_auc": 0.9906289049948231,
+     "raw_auc_paired": 0.9975,
+     "share_above_0.9": 0.058333333333333334,
+     "median_prob": 0.7428761188873622,
+     "median_llr_sub": -8.537078627075019,
+     "native_heard_as_partner": 0.004166666666666667,
+     "native_same_pos_below_t5": 0.016666666666666666,
+     "directions": {
+      "said ç, expected ʃ": {
+       "n": 120,
+       "sound_hit5": 0.9833333333333333,
+       "sound_hit10": 0.9833333333333333,
+       "word_hit5": 0.9583333333333334,
+       "word_hit10": 0.9833333333333333,
+       "auc": 0.9839634879264998,
+       "auc_paired": 0.996875,
+       "raw_auc": 0.9919397931617219,
+       "raw_auc_paired": 0.9973611111111111,
+       "share_above_0.9": 0.03333333333333333,
+       "median_prob": 0.6961196898365041,
+       "median_llr_sub": -9.200304316594718,
+       "native_heard_as_partner": 0.008333333333333333,
+       "native_same_pos_below_t5": 0.025,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said ʃ, expected ç": {
+       "n": 120,
+       "sound_hit5": 0.95,
+       "sound_hit10": 0.9916666666666667,
+       "word_hit5": 0.775,
+       "word_hit10": 0.9666666666666667,
+       "auc": 0.9784108084306234,
+       "auc_paired": 0.9966666666666667,
+       "raw_auc": 0.9893180168279243,
+       "raw_auc_paired": 0.9996527777777777,
+       "share_above_0.9": 0.08333333333333333,
+       "median_prob": 0.7752927282700222,
+       "median_llr_sub": -7.9350460074197855,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.008333333333333333,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      }
+     },
+     "learner_error_accepted": 0.0,
+     "by_symbol": {
+      "ç>ʃ": {
+       "n": 120,
+       "sound_hit5": 0.9833333333333333,
+       "raw_auc": 0.9919397931617219
+      },
+      "ʃ>ç": {
+       "n": 120,
+       "sound_hit5": 0.95,
+       "raw_auc": 0.9893180168279243
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "m_n": {
+     "label": "nasal place m / n (before a vowel)",
+     "members": [
+      "m",
+      "n"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "B>A": 615,
+      "A>B": 422
+     },
+     "n": 240,
+     "sound_hit5": 0.9,
+     "sound_hit10": 0.9666666666666667,
+     "word_hit5": 0.6291666666666667,
+     "word_hit10": 0.9125,
+     "auc": 0.9697768276863389,
+     "auc_paired": 0.9875868055555556,
+     "raw_auc": 0.9876422161924143,
+     "raw_auc_paired": 0.9942881944444445,
+     "share_above_0.9": 0.1375,
+     "median_prob": 0.7942524617824536,
+     "median_llr_sub": -7.695760172800366,
+     "native_heard_as_partner": 0.0,
+     "native_same_pos_below_t5": 0.016666666666666666,
+     "directions": {
+      "said m, expected n": {
+       "n": 120,
+       "sound_hit5": 0.825,
+       "sound_hit10": 0.9333333333333333,
+       "word_hit5": 0.575,
+       "word_hit10": 0.875,
+       "auc": 0.9593901365037428,
+       "auc_paired": 0.9758333333333333,
+       "raw_auc": 0.9837724778940102,
+       "raw_auc_paired": 0.9860416666666667,
+       "share_above_0.9": 0.23333333333333334,
+       "median_prob": 0.8221211698858577,
+       "median_llr_sub": -7.152422603801966,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.025,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said n, expected m": {
+       "n": 120,
+       "sound_hit5": 0.975,
+       "sound_hit10": 1.0,
+       "word_hit5": 0.6833333333333333,
+       "word_hit10": 0.95,
+       "auc": 0.9801635188689349,
+       "auc_paired": 0.9994444444444445,
+       "raw_auc": 0.9915119544908184,
+       "raw_auc_paired": 1.0,
+       "share_above_0.9": 0.041666666666666664,
+       "median_prob": 0.7768863965834212,
+       "median_llr_sub": -8.144997191639892,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.008333333333333333,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      }
+     },
+     "learner_error_accepted": 0.0,
+     "by_symbol": {
+      "m>n": {
+       "n": 120,
+       "sound_hit5": 0.825,
+       "raw_auc": 0.9837724778940102
+      },
+      "n>m": {
+       "n": 120,
+       "sound_hit5": 0.975,
+       "raw_auc": 0.9915119544908184
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    },
+    "n_ng": {
+     "label": "final n / ŋ",
+     "members": [
+      "n",
+      "ŋ"
+     ],
+     "kind": "sub",
+     "n_sites": {
+      "A>B": 2388,
+      "B>A": 159
+     },
+     "n": 240,
+     "sound_hit5": 0.6708333333333333,
+     "sound_hit10": 0.85,
+     "word_hit5": 0.5666666666666667,
+     "word_hit10": 0.6583333333333333,
+     "auc": 0.9461173194330393,
+     "auc_paired": 0.9724652777777778,
+     "raw_auc": 0.9701795256286669,
+     "raw_auc_paired": 0.9777951388888889,
+     "share_above_0.9": 0.39166666666666666,
+     "median_prob": 0.8384362157573245,
+     "median_llr_sub": -8.51427388327312,
+     "native_heard_as_partner": 0.029166666666666667,
+     "native_same_pos_below_t5": 0.020833333333333332,
+     "directions": {
+      "said n, expected ŋ": {
+       "n": 120,
+       "sound_hit5": 0.9916666666666667,
+       "sound_hit10": 1.0,
+       "word_hit5": 0.9833333333333333,
+       "word_hit10": 0.9916666666666667,
+       "auc": 0.9850735477882109,
+       "auc_paired": 0.9982638888888888,
+       "raw_auc": 0.9975365061230319,
+       "raw_auc_paired": 0.9997222222222222,
+       "share_above_0.9": 0.008333333333333333,
+       "median_prob": 0.715098903113198,
+       "median_llr_sub": -11.827117807099494,
+       "native_heard_as_partner": 0.0,
+       "native_same_pos_below_t5": 0.016666666666666666,
+       "learner_error_accepted": 0.0,
+       "verdict": "seen",
+       "verdict_today": "seen"
+      },
+      "said ŋ, expected n": {
+       "n": 120,
+       "sound_hit5": 0.35,
+       "sound_hit10": 0.7,
+       "word_hit5": 0.15,
+       "word_hit10": 0.325,
+       "auc": 0.9071610910778678,
+       "auc_paired": 0.9238194444444444,
+       "raw_auc": 0.9428225451343021,
+       "raw_auc_paired": 0.9399305555555556,
+       "share_above_0.9": 0.775,
+       "median_prob": 0.9364758713434066,
+       "median_llr_sub": -5.19178355215535,
+       "native_heard_as_partner": 0.058333333333333334,
+       "native_same_pos_below_t5": 0.025,
+       "learner_error_accepted": 0.0,
+       "verdict": "weak",
+       "verdict_today": "weak"
+      }
+     },
+     "learner_error_accepted": 0.0,
+     "by_symbol": {
+      "ŋ>n": {
+       "n": 120,
+       "sound_hit5": 0.35,
+       "raw_auc": 0.9428225451343021
+      },
+      "n>ŋ": {
+       "n": 120,
+       "sound_hit5": 0.9916666666666667,
+       "raw_auc": 0.9975365061230319
+      }
+     },
+     "verdict": "seen",
+     "verdict_today": "seen"
+    }
+   },
+   "not_representable": [],
+   "duration_feasibility": {
+    "vowel_length": {
+     "n_long": 1177,
+     "n_short": 1475,
+     "auc_normalised": 0.7440873810175251,
+     "auc_raw_frames": 0.7340313638523681,
+     "median_norm_long": 1.3333333333333333,
+     "median_norm_short": 1.0,
+     "per_pair": {
+      "eː": {
+       "n_long": 228,
+       "n_short": 338,
+       "auc": 0.6998468805148967
+      },
+      "oː": {
+       "n_long": 203,
+       "n_short": 180,
+       "auc": 0.8047071702244116
+      },
+      "iː": {
+       "n_long": 318,
+       "n_short": 280,
+       "auc": 0.685062893081761
+      },
+      "ɑː": {
+       "n_long": 231,
+       "n_short": 432,
+       "auc": 0.8032206990540324
+      },
+      "yː": {
+       "n_long": 71,
+       "n_short": 56,
+       "auc": 0.7195674044265593
+      },
+      "uː": {
+       "n_long": 71,
+       "n_short": 159,
+       "auc": 0.8743910000885818
+      },
+      "øː": {
+       "n_long": 55,
+       "n_short": 30,
+       "auc": 0.8403030303030303
+      }
+     },
+     "short_caught_at_5pct_FA_on_long": 0.18169491525423728,
+     "long_caught_at_5pct_FA_on_short": 0.23704333050127444,
+     "short_caught_at_10pct_FA_on_long": 0.3220338983050847,
+     "long_caught_at_10pct_FA_on_short": 0.3874256584536958
+    }
+   },
+   "native_alt_usage": {
+    "vowel_length": {
+     "iː (alt ɪ)": {
+      "n": 37,
+      "native_chose_alt": 0.5135135135135135
+     },
+     "ɪ (alt iː)": {
+      "n": 128,
+      "native_chose_alt": 0.4453125
+     },
+     "uː (alt ʊ)": {
+      "n": 22,
+      "native_chose_alt": 0.6363636363636364
+     },
+     "eː (alt ɛ)": {
+      "n": 74,
+      "native_chose_alt": 0.013513513513513514
+     },
+     "oː (alt ɔ)": {
+      "n": 94,
+      "native_chose_alt": 0.09574468085106383
+     },
+     "ɑː (alt a)": {
+      "n": 48,
+      "native_chose_alt": 0.3541666666666667
+     },
+     "a (alt ɑː)": {
+      "n": 118,
+      "native_chose_alt": 0.4576271186440678
+     }
+    },
+    "voicing": {
+     "d (alt t)": {
+      "n": 158,
+      "native_chose_alt": 0.2721518987341772
+     },
+     "t (alt d)": {
+      "n": 241,
+      "native_chose_alt": 0.25311203319502074
+     },
+     "k (alt g)": {
+      "n": 1,
+      "native_chose_alt": 0.0
+     },
+     "f (alt v)": {
+      "n": 1,
+      "native_chose_alt": 0.0
+     },
+     "z (alt s)": {
+      "n": 563,
+      "native_chose_alt": 0.26287744227353466
+     },
+     "s (alt z)": {
+      "n": 3,
+      "native_chose_alt": 0.0
+     }
+    },
+    "s_sh": {
+     "s (alt ʃ)": {
+      "n": 4,
+      "native_chose_alt": 0.0
+     },
+     "ʃ (alt s)": {
+      "n": 143,
+      "native_chose_alt": 0.34265734265734266
+     }
+    },
+    "m_n": {
+     "m (alt n)": {
+      "n": 25,
+      "native_chose_alt": 0.96
+     }
+    }
+   },
+   "aspiration_feasibility": {}
+  }
+ },
+ "front_end_probe": {
+  "en": {
+   "pin": "p ɪ n",
+   "spin": "s p ɪ n",
+   "sheep": "ʃ i p",
+   "ship": "ʃ ɪ p"
+  },
+  "zh": {
+   "怕": "pʰ a",
+   "爸": "p a",
+   "山": "ʂ a n{∅}",
+   "三": "s a n{∅}"
+  },
+  "ja": {
+   "ら": "r{ɾ,l,d} a",
+   "おばさん": "o b a s a ŋ{n,m,ɴ}",
+   "おばあさん": "o b aː{a} s a ŋ{n,m,ɴ}",
+   "きて": "k i{∅} t e",
+   "きって": "k i tt{t} e"
+  },
+  "es": {
+   "baca": "b a k a",
+   "vaca": "b a k a",
+   "pero": "p e{ɛ} r o",
+   "perro": "p e{ɛ} ɾ o"
+  },
+  "fr": {
+   "vu": "v y",
+   "vous": "v u",
+   "bon": "b ɔ̃",
+   "beau": "b o{ɔ}"
+  },
+  "de": {
+   "Miete": "m iː t eː{e,ə}",
+   "Mitte": "m ɪ t eː{e,ə}",
+   "Rad": "ʀ{ʁ,ɾ,r} a{ɑː} t",
+   "Rat": "ʀ{ʁ,ɾ,r} ɑː{aː} t"
+  },
+  "it": {
+   "fato": "f a t o",
+   "fatto": "f a t{∅} t o"
+  },
+  "pt": {
+   "lã": "l a{ɐ̃} n{∅,ŋ}",
+   "lá": "l a",
+   "avô": "a v o",
+   "avó": "a v ɔ",
+   "caro": "k a ɾ{r} o{u}",
+   "carro": "k a ʁ{x,h,r,ɾ} o{u}"
+  },
+  "ru": {
+   "брат": "b r ɑ{a} t{ts}",
+   "брать": "b r ɑ{a} ts",
+   "мат": "m{mm} ɑ{a} t̪",
+   "мать": "m ɑ{a} ts",
+   "рад": "r ɑ{a} t{ts}",
+   "ряд": "rʲ{r} a{ɪ} t{ts}",
+   "мол": "m o{ʌ} ɭ{l}",
+   "мёл": "mʲ{m} ɛ{o,u} ɭ{l}",
+   "лук": "ɭ{l} u k",
+   "люк": "ɭʲ{lʲ,ɭ,l} u k"
+  },
+  "ko": {
+   "달": "t{d} a l",
+   "딸": "t a l",
+   "굴": "k{g} u l",
+   "꿀": "k u l",
+   "살": "s a l",
+   "쌀": "s a l",
+   "개": "k{g} e{ɛ}",
+   "게": "k{g} e{ɛ}",
+   "라면": "r{ɾ,l} a m j ɔ{ʌ,o} n",
+   "말": "m{b} a l",
+   "탈": "tʰ{t} a l"
+  }
+ }
+}

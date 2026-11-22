@@ -1,0 +1,29 @@
+{
+ "features": [
+  "z_word",
+  "wl_min",
+  "ws_min",
+  "wl_mean",
+  "ws_mean",
+  "log_n"
+ ],
+ "coef": [
+  0.8849367185990406,
+  0.1563156773570175,
+  0.16429895504793995,
+  -0.07077604695729531,
+  -0.03703260386343427,
+  0.8685133824777146
+ ],
+ "b0": -1.6554858557852565,
+ "clip": 12.0,
+ "oov_shift": 3.25,
+ "C": 0.1,
+ "fit_on": "dev-text1 fit fold",
+ "native_accept_fit": 0.9869555604687155,
+ "native_flag_rate_lexicon": 0.010236578707916288,
+ "native_flag_rate_oov_before": 0.11023622047244094,
+ "n_oov_native": 127,
+ "controlled_errors": "devcor-noea",
+ "controlled_error_weight": 3.0
+}

@@ -40,7 +40,9 @@
   "enabled": false,
   "threshold": 0.5,
   "max_passes": 2,
-  "note": "selected on FLEURS validation (0.5 / 2) but DISABLED by default: on held-out data it lowered speechocean762 phone Pearson 0.660 -> 0.644 and word 0.585 -> 0.560 and did not improve the swap right-word rate; available as Scorer(..., explain_away=True)"
+  "note": "selected on FLEURS validation (0.5 / 2) but DISABLED by default: on held-out data it lowered speechocean762 phone Pearson 0.660 -> 0.644 and word 0.585 -> 0.560 and did not improve the swap right-word rate; available as Scorer(..., explain_away=True)",
+  "langs": [],
+  "langs_note": "round 19: languages listed here get the second pass by default. Tried for German: on dev it lowered false alarms next to a changed word (FA@80 -0.5 pt) but adds ~20 ms on clips with a wrong word (over the latency budget), so the list is empty; PRONUNCIADA_EXPLAIN_LANGS=0 ignores it"
  },
  "sentence_model": {
   "de": "sentence_r4",

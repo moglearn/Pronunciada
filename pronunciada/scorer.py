@@ -155,6 +155,17 @@ class Scorer:
         self.omit_cal = json.loads(po.read_text()) if po.exists() else None
         # explain-away second pass (round 3): config "explain_away" {threshold, max_passes, enabled}
         ea = {"threshold": 0.3, "max_passes": 2, **cfg.get("explain_away", {})}
+        # round 19: on by default for the languages listed in config "explain_away.langs" (de)
+        if self.lang in ea.get("langs", ()) and os.environ.get("PRONUNCIADA_EXPLAIN_LANGS", "1") != "0" \
+                and not (self.lang == "de" and os.environ.get("PRONUNCIADA_DE_R19", "1") == "0"):
+            ea["enabled"] = True
+            # bounded form: the pass runs only when the clip's lowest word (sounds-based P, s = 0.5)
+            # lies in an uncertain band [lo, hi), with at most max_passes passes
+            ea.update(ea.get("lang", {}).get(self.lang, {}))
+        if os.environ.get("PRONUNCIADA_EA_BAND"):               # selection runs only
+            ea["band"] = [float(x) for x in os.environ["PRONUNCIADA_EA_BAND"].split(",")]
+        if os.environ.get("PRONUNCIADA_EA_PASSES"):
+            ea["max_passes"] = int(os.environ["PRONUNCIADA_EA_PASSES"])
         if explain_away is not None:
             ea["enabled"] = bool(explain_away)
         self.ea = ea if ea.get("enabled") else None
@@ -167,6 +178,12 @@ class Scorer:
         from . import contrast_word as _CW                 # round 18: word-level contrast factor
 
         self.contrast_word = _CW.params(self.lang)
+        from . import word_lang as _WL                     # round 19: per-language word recalibration
+
+        self.word_lang = _WL.params(self.lang)
+        from . import stress_rel as _SR                   # round 19: reliability-weighted stress factor
+
+        self.stress_rel = _SR.params(self.lang)
         self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
@@ -353,6 +370,13 @@ class Scorer:
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)
         cache["ko_identity_s"] = ko_id      # round 19: per-sound Korean identity evidence (word factor)
+        if emb and self.lang == "de":            # round 19b: German sound-identity evidence (word factor)
+            from . import de_identity as _DI
+
+            if _DI.enabled():
+                from .sound_emb import phone_vectors as _pv
+
+                cache["de_identity_s"] = _DI.evidence(ref, _pv(emb, ev, len(ref.phones)))
         cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -364,7 +388,7 @@ class Scorer:
                 cache[k] = np.full_like(np.asarray(cache[k], dtype=np.float64), lo)
             cache["sent_zl"] = cache["sent_zs"] = lo
             cache["S"] = dict(cache["S"], completeness=np.zeros(1))
-        elif self.ea is not None:
+        elif self.ea is not None and self._ea_in_band(cache):
             t = time.perf_counter()
             cache = self.explain_away(lpa, cache, dur, self.ea["threshold"], self.ea["max_passes"])
             timing["explain_away"] = (time.perf_counter() - t) * 1e3
@@ -432,6 +456,14 @@ class Scorer:
         return m.predict(result._pronunciada["tab"])  # noqa: SLF001
 
     # ------------------------------------------------------------------ explain-away pass
+    def _ea_in_band(self, c: dict) -> bool:
+        band = self.ea.get("band")
+        if not band:
+            return True
+        pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), 0.5))
+        lo = float(np.min(pw)) if len(pw) else 1.0
+        return band[0] <= lo < band[1]
+
     def explain_away(self, lpa, c: dict, dur: float, threshold: float, max_passes: int) -> dict:
         """Second pass(es): while the lowest not-yet-wildcarded word has sounds-based P < threshold
         (s = 0.5), wildcard its sounds in the base lattice (pronunciada.align wild_slots), re-run the
@@ -557,7 +589,13 @@ class Scorer:
         s = C.clip_strictness(strictness)
         ref, ev, tab = c["ref"], c["ev"], c["tab"]
         ps = C.sigmoid(C.blend_logit(c["s_zl"], c["s_zs"], s))
-        pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), s))
+        if getattr(self, "word_lang", None) is not None:      # round 19 (de): shown word P only
+            from . import word_lang as _WL
+
+            wzl, wzs = _WL.transform(self.word_lang, c["W"], c["w_zl"], c["w_zs"], _WL.oov_words(ref))
+            pw = C.sigmoid(C.blend_logit(wzl, np.minimum(wzs, wzl), s))
+        else:
+            pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), s))
         pr = c.get("prosody") or [dict() for _ in ref.syllables]
         lres = c.get("length")
         f2t = self.am.frame_to_time
@@ -575,6 +613,17 @@ class Scorer:
                 phones[-1].length_prob = float(lres["prob"][i])
         words = []
         omitted = c["W"]["omitted_f"].astype(bool)
+        srel = getattr(self, "stress_rel", None)
+        if srel is not None and self.pros_cal and self.pros_cal["kind"] == "stress":
+            from . import stress_rel as _SR
+
+            wsp = []
+            for w in ref.words:
+                sp_ = [(x.start, x.end) for x in phones[w.phones[0]:w.phones[1]] if x.end > x.start]
+                wsp.append((min(a for a, _ in sp_), max(b for _, b in sp_)) if sp_ else (0.0, 0.0))
+            sr_ctx = _SR.utterance_context(wsp, len(ref.syllables), c.get("f0"), c.get("audio"))
+        else:
+            srel = None
         for wi, w in enumerate(ref.words):
             ph = phones[w.phones[0]:w.phones[1]]
             spans = [(x.start, x.end) for x in ph if x.end > x.start]
@@ -610,7 +659,13 @@ class Scorer:
                     stress = p_pros
                 else:
                     tone = p_pros
-            prob = sounds * (p_pros if p_pros is not None else 1.0)
+            f_pros = p_pros
+            if srel is not None and p_pros is not None and stress_p:
+                # round 19 (de): reliability-weighted stress factor in the word probability only;
+                # stress_prob (word and syllable) keeps the shipped channel
+                f_pros = _SR.factor(srel, self.pros_cal, stress_p,
+                                    _SR.reliability(sr_ctx, st, en, len(range(*w.syllables))), s)
+            prob = sounds * (f_pros if f_pros is not None else 1.0)
             # length channel (round 15): a factor that stays 1 unless the word's lowest length
             # logit is below a low native quantile (pronunciada.length.word_factor,
             # bench/length/fit_length.py)
@@ -629,6 +684,12 @@ class Scorer:
                 p_con = _CW.word_factor(self.contrast_word, c["contrast_z"][w.phones[0]:w.phones[1]], s)
                 if p_con is not None:
                     prob *= p_con
+            if c.get("de_identity_s") is not None:      # round 19b: German sound-identity factor
+                from . import de_identity as _DI
+
+                p_id = _DI.word_factor(_DI._word_params(), c["de_identity_s"][w.phones[0]:w.phones[1]], s)
+                if p_id is not None:
+                    prob *= p_id
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5
