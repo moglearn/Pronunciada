@@ -302,6 +302,14 @@ class Scorer:
                 from .sound_emb import phone_vectors as _pv
 
                 cache["de_identity_s"] = _DI.evidence(ref, _pv(emb, ev, len(ref.phones)))
+        if emb and self.lang != "de":            # round 19 rollout: generic sound-identity evidence
+            from . import identity as _ID
+
+            if _ID.enabled(self.lang):
+                from .sound_emb import phone_vectors as _pv
+
+                pv = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
+                cache["identity_s"] = _ID.evidence(self.lang, ref, pv)
         cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -615,6 +623,10 @@ class Scorer:
                 p_id = _DI.word_factor(_DI._word_params(), c["de_identity_s"][w.phones[0]:w.phones[1]], s)
                 if p_id is not None:
                     prob *= p_id
+            if c.get("identity_s") is not None:         # round 19 rollout: sound-identity evidence
+                from . import identity as _ID
+
+                prob = _ID.apply_word(_ID._cal(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s)
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5
