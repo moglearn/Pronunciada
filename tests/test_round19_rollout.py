@@ -35,7 +35,7 @@ def test_word_rules():
 
 
 def test_shipped_languages_and_switch(monkeypatch):
-    for lang in ("es", "ru", "pt", "it"):
+    for lang in ("es", "ru", "pt", "it", "zh"):
         assert ID.enabled(lang), lang
         H, cal = ID._head(lang), ID._cal(lang)
         assert cal["form"] == "step" and len(cal["coef"]) == 5
