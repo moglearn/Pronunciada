@@ -14,8 +14,8 @@
 
 **What this builds on.**
 
-* The German head of round 19: branch `worktree-agent-a2674ec67835464ea`, da9def0. This branch starts from it.
-* The Korean two-sided step: `worktree-agent-a72249a2162e58229`.
+* The German head of round 19: branch `round19-german`, da9def0. This branch starts from it.
+* The Korean two-sided step: `round19-korean`.
 * The Japanese dev-guard list.
 
 `pronunciada/de_identity.py` is untouched; the Korean and Japanese modules are not on this branch.
@@ -52,7 +52,7 @@ it to the word P (so did the unshipped Italian candidate). The German knee facto
 **What it changes.** Only `WordResult.prob`, and through it the Azure-layout word score. The sentence probability,
 the 0–10 scores, the phone probabilities and `sounds_prob` are identical with the head on or off: max |diff| = 0 on
 108 clips. English sentence scoring is untouched. The English sentence-head branch
-(`worktree-agent-a31e9bcfcc58e849b`) blends `w_reg` and the sentence scores and never reads `WordResult.prob`, so the
+(`round19-english`) blends `w_reg` and the sentence scores and never reads `WordResult.prob`, so the
 two changes are independent. English ships nothing here in any case.
 
 **Switches.**

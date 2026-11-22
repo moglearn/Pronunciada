@@ -42,7 +42,7 @@ got slightly worse:
 Both of their hit @ 5 % rows went up. The brief's rule "must not get worse" is therefore
 **not strictly met**, and section 6 asks the architect to decide.
 
-Branch `worktree-agent-a2674ec67835464ea`; the frozen candidate is commit 66a0af2.
+Branch `round19-german`; the frozen candidate is commit 66a0af2.
 `PRONUNCIADA_DE_R19=0` restores the round-18 behaviour exactly: 100 of 100 dev items gave
 identical benchmark word scores.
 

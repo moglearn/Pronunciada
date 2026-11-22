@@ -29,12 +29,12 @@ scoreboard. Nothing was tuned: no threshold, data file or parameter of any branc
 
 | order | source | commit | topic | write-up | switch (0 = old behaviour) |
 |---|---|---|---|---|---|
-| 1 | worktree-agent-a3633e76c1a06d754 | ac4bc76 | learner test suite (bench/learners; results only) | round19_learners.md | – |
-| 2 | worktree-agent-a31e9bcfcc58e849b | b7c2850 | English sentence heads, sound / word blends, all-layer encoder outputs | round19_english.md | `PRONUNCIADA_SENTENCE_HEAD` |
-| 3 | worktree-agent-a72249a2162e58229 | 1dc4f5b | Korean identity head, two-sided word step, no-raise rule, `llr_ins` | round19_korean.md | `PRONUNCIADA_KO_IDENTITY` |
-| 4 | worktree-agent-a2674ec67835464ea | da9def0 | German text fixes, word recalibration, identity head, stress reliability, loanwords | round19_german.md | `PRONUNCIADA_DE_R19` (+ `_DE_IDENTITY`, `_DE_STRESS_REL`, `_DE_LOAN`, `_DE_TEXT`, `PRONUNCIADA_WORD_LANG`) |
-| 5 | worktree-agent-a3e26ec0e6c91086b | 20d6260, then c5eb79c | Japanese candidate 2, then the final candidate (dfc8ab3 + write-up) | round19_japanese.md | `PRONUNCIADA_JA_ROUND19` |
-| 6 | worktree-agent-ac79aa17d0dc794f2 | 51ba321 (built on da9def0) | shared `identity.py`; word steps for es, ru, pt, zh (it, en, fr ship nothing) | that branch's rollout write-up | `PRONUNCIADA_IDENTITY` / `PRONUNCIADA_IDENTITY_<LANG>` |
+| 1 | round19-learners | ac4bc76 | learner test suite (bench/learners; results only) | round19_learners.md | – |
+| 2 | round19-english | b7c2850 | English sentence heads, sound / word blends, all-layer encoder outputs | round19_english.md | `PRONUNCIADA_SENTENCE_HEAD` |
+| 3 | round19-korean | 1dc4f5b | Korean identity head, two-sided word step, no-raise rule, `llr_ins` | round19_korean.md | `PRONUNCIADA_KO_IDENTITY` |
+| 4 | round19-german | da9def0 | German text fixes, word recalibration, identity head, stress reliability, loanwords | round19_german.md | `PRONUNCIADA_DE_R19` (+ `_DE_IDENTITY`, `_DE_STRESS_REL`, `_DE_LOAN`, `_DE_TEXT`, `PRONUNCIADA_WORD_LANG`) |
+| 5 | round19-japanese | 20d6260, then c5eb79c | Japanese candidate 2, then the final candidate (dfc8ab3 + write-up) | round19_japanese.md | `PRONUNCIADA_JA_ROUND19` |
+| 6 | round19-rollout | 51ba321 (built on da9def0) | shared `identity.py`; word steps for es, ru, pt, zh (it, en, fr ship nothing) | that branch's rollout write-up | `PRONUNCIADA_IDENTITY` / `PRONUNCIADA_IDENTITY_<LANG>` |
 | 7 | main | eaa4080 | rival re-test (bench/rivals, bench/ondevice.py), industry snapshot edit | round19_rivals.md | – |
 
 Merge commits:
