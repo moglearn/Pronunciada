@@ -192,6 +192,9 @@ call actually does today:
     from alignment timing plus the length head.
   - contrast factor (`contrast_word.py`): lowers a word whose lowest contrast evidence is below a
     native quantile; adopted for zh (aspiration) and ja (voicing) only.
+  - Korean identity factor (`ko_identity.py`, round 19): a small head on the pooled activations
+    names the Korean sound class that was said (7 vowels, glides, 18 onsets, 7 codas); a word whose
+    lowest "expected vs best other class" margin is below a native quantile is lowered (floor 0.5).
 - **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
 - **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
   probability, the round-2/4 heads (`sentence_r4.npz`) in every language. The round-5 heads with
@@ -214,7 +217,7 @@ held-out English correlations); `coaching(..., delivery="all")` adds the `slow` 
 flags. Environment switches exist for paired before / after benchmarks and keep the shipped
 behavior when unset: `PRONUNCIADA_TONE_MODEL`, `PRONUNCIADA_STRESS_MODEL`,
 `PRONUNCIADA_TONE_LENIENCY`, `PRONUNCIADA_CONTRAST_CAPS=0`, `PRONUNCIADA_HEAD_CAPS=0`,
-`PRONUNCIADA_WORD_CONTRAST=0`, `PRONUNCIADA_PT_NASAL=0`.
+`PRONUNCIADA_WORD_CONTRAST=0`, `PRONUNCIADA_PT_NASAL=0`, `PRONUNCIADA_KO_IDENTITY=0`.
 
 Tried and not shipped (write-ups in `results/`): the prompt-match channel (round 9; its code now
 lives in `bench/calib/match_channel.py`), outside encoders for the sentence heads (round 6),

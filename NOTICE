@@ -34,6 +34,8 @@ Models trained for this project (pronunciada/data; details per file in docs/LICE
   model also uses FLEURS validation planted errors. Nothing shipped is fitted on, or selected
   with, L2-ARCTIC or EpaDB (the word model was re-fitted without them on 2026-11-17;
   results/licence_refit.md).
+  Korean sound-identity head (data/coach/ko_identity.npz): FLEURS ko train and Zeroth-Korean
+  train (Zeroth project, openslr.org/40, CC BY 4.0; read via the Hugging Face copy kresnik/zeroth_korean).
   Mandarin defaults, coaching models: OMPAL dev (CC BY 4.0), Common Voice (CC0).
   Mandarin tone models: AISHELL-3 (OpenSLR SLR93) and AISHELL-1 (OpenSLR SLR33), both Apache
   License 2.0 (200 of the 300 AISHELL-1 speakers were fetched from a community mirror that
