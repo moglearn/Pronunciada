@@ -126,11 +126,35 @@ def dev_metrics(items, rows, probs_of=None, with_units=False):
     from bench.round19.evaluate import _metrics
     from bench.third_party import lingolix as L
 
-    resp = {r["id"]: bench_rec(r, probs_of(r) if probs_of else None) for r in rows}
-    its = [items[r["id"]] for r in rows]
-    us = L.collect(its, resp)["units"]
+    if rows and items[rows[0]["id"]].get("units"):
+        us = _span_units(items, rows, probs_of)          # Mandarin: units of the swap protocol
+    else:
+        resp = {r["id"]: bench_rec(r, probs_of(r) if probs_of else None) for r in rows}
+        its = [items[r["id"]] for r in rows]
+        us = L.collect(its, resp)["units"]
     m = _metrics(us)
     return (m, us) if with_units else m
+
+
+def _span_units(items, rows, probs_of):
+    """Lingolix-shaped units for items that carry their own evaluation units (char spans): per unit the
+    lowest reference-word P inside it; the changed unit is the positive, every other unit a negative."""
+    us = []
+    for r in rows:
+        it = items[r["id"]]
+        p = probs_of(r) if probs_of else r["prob"]
+        k = (it.get("label") or {}).get("word_index")
+        labs, sc, fl = [], [], []
+        for j, u in enumerate(it["units"]):
+            a, b = u["span"]
+            ps = [float(q) for (s0, e0), q in zip(r["spans"], p) if s0 < b and e0 > a]
+            if not ps:
+                continue
+            labs.append(int(it.get("label") is not None and j == k))
+            sc.append(1.0 - min(ps))
+            fl.append(min(ps) < 0.5)
+        us.append((labs, sc, it, fl))
+    return us
 
 
 # ----------------------------------------------------------------------------- guards
@@ -166,6 +190,9 @@ class Ctx:
         self.items = dev_items(lang)
         self.pool = load_ev(lang, "cvpool")
         self.dev = load_ev(lang, "dev")
+        for r in self.dev:
+            if self.items[r["id"]].get("units"):
+                r["units"] = self.items[r["id"]]["units"]
         self.cor = load_ev(lang, "devcor")
         self.val = load_ev(lang, "val")
         self.dev_fit = [r for r in self.dev if r["meta"]["fold"] == "fit"]
@@ -210,13 +237,15 @@ def guards_ok(m, b, lang):
         why.append("G2 natives")
     if m["controlled_auc"] < b["controlled_auc"] - 1e-4:
         why.append("G3 controlled")
-    for k in ("sub_gross", "word_omission"):
+    for k in ("sub_gross", "word_omission", "swap_far"):
         if k in b["fit_buckets"] and m["fit_buckets"][k] < b["fit_buckets"][k] - 1e-4:
             why.append(f"G4 {k}")
     if m["val"]["swap_far_auc"] < b["val"]["swap_far_auc"] - 1e-4:
         why.append("G4 val far")
     if lang in STRESS_LANGS and m["val"].get("n_stress") and m["val"]["stress_auc"] < b["val"]["stress_auc"] - 0.005:
         why.append("G5 stress")
+    if "tone" in b["fit_buckets"] and m["fit_buckets"]["tone"] < b["fit_buckets"]["tone"] - 0.005:
+        why.append("G5 tone")
     return why
 
 
@@ -300,7 +329,10 @@ def _ref_word_of_unit(r, k):
 
     if k is None:
         return None
-    toks = [m.span() for m in re.finditer(r"\S+", r["text"])]
+    if r.get("units"):
+        toks = [tuple(u["span"]) for u in r["units"]]
+    else:
+        toks = [m.span() for m in re.finditer(r"\S+", r["text"])]
     if k >= len(toks):
         return None
     a, b = toks[k]

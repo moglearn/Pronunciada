@@ -312,6 +312,46 @@ def cmd_build(lang: str) -> None:
     print(lang, "items", len(out))
 
 
+def cmd_build_zh() -> None:
+    """Mandarin: no word spaces, so the dev set uses the swap protocol of bench/textswap.py (FLEURS-swap):
+    per clip a control and up to three changed items, one hanzi replaced in a word: swap_near (a near
+    syllable, same tone), tone (same syllable, another lexical tone), swap_far (a far syllable; a guard).
+    Replacement inventory: hanzi of FLEURS train / validation and Common Voice dev transcripts (never test)."""
+    from bench import textswap as TS
+    from bench.data import load
+    from bench.pipeline.common import records
+    from bench.round19_rollout.sources import N_DEV_CV, N_DEV_FLEURS
+    from pronunciada.text import get_g2p
+
+    lang = "zh"
+    g2p = get_g2p(lang)
+    texts = [r["text"] for r in load("fleurs", "train", lang)] + [r["text"] for r in records("fleurs-validation", lang=lang)]
+    texts += [r["sentence"] for r in read_tsv(cv_meta(lang) / "dev.tsv")][:6000]
+    vocab = TS.Vocab(lang, texts, g2p)
+    srcs = [{"id": f"cv-{c['stem'].rsplit('_', 1)[-1]}", "source": "cv", "audio": c["audio"], "text": c["sentence"],
+             "speaker": c["spk"], "dur": c["dur"]} for c in cv_rows(lang, "dev")][:N_DEV_CV]
+    for r in fleurs_dev_sources(lang, N_DEV_FLEURS)[:N_DEV_FLEURS]:
+        srcs.append({"id": f"fl-{r['id'].rsplit('-', 1)[-1]}", "source": "fleurs", "audio": r["audio"],
+                     "text": r["text"], "speaker": "fl:" + r["id"], "dur": r["dur"]})
+    out, cov = [], Counter()
+    for s in srcs:
+        fold = "fit" if _h("fold", s["speaker"]) % 2 == 0 else "check"
+        base = {"audio": s["audio"], "source": s["source"], "speaker": s["speaker"], "fold": fold,
+                "prompt": s["text"], "dur": s["dur"], "lang": lang}
+        try:
+            vs = TS.make_variants(s["id"], lang, s["text"], g2p, vocab)
+        except Exception:  # noqa: BLE001
+            continue
+        for v, (nt, lab) in vs.items():
+            label = None if v == "orig" else {"bucket": v, "category": v, "word_index": lab["word_index"],
+                                              "word_level_scorable": True}
+            out.append({"id": f"{s['id']}__{v}", **base, "target": nt, "label": label, "units": lab["words"]})
+            cov[(s["source"], v)] += 1
+    (work(lang) / "dev_manifest.jsonl").write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in out))
+    print({f"{a}/{b}": n for (a, b), n in sorted(cov.items())})
+    print(lang, "items", len(out))
+
+
 def manifest(lang: str) -> list[dict]:
     p = work(lang) / "dev_manifest.jsonl"
     return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -322,6 +362,10 @@ def main(argv=None):
     ap.add_argument("cmd", choices=["vocab", "build"])
     ap.add_argument("--lang", required=True)
     a = ap.parse_args(argv)
+    if a.lang == "zh":
+        if a.cmd == "build":
+            cmd_build_zh()
+        return
     {"vocab": cmd_vocab, "build": cmd_build}[a.cmd](a.lang)
 
 

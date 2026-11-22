@@ -34,6 +34,18 @@ def test_word_rules():
     assert ID.apply_word(never, [5.0], 0.5, 0.5) == 0.5
 
 
+def test_shipped_languages_and_switch(monkeypatch):
+    for lang in ("es", "ru", "pt", "it"):
+        assert ID.enabled(lang), lang
+        H, cal = ID._head(lang), ID._cal(lang)
+        assert cal["form"] == "step" and len(cal["coef"]) == 5
+        assert all(c in H["index"] for c in cal["offset"])
+        monkeypatch.setenv(f"PRONUNCIADA_IDENTITY_{lang.upper()}", "0")
+        assert not ID.enabled(lang)
+    for lang in ("fr", "en", "de"):                   # not shipped here (de keeps its own module)
+        assert ID._cal(lang) is None
+
+
 def test_no_data_means_off(monkeypatch):
     assert not ID.enabled("xx")
     monkeypatch.setenv("PRONUNCIADA_IDENTITY", "0")
