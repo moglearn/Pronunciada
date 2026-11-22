@@ -58,7 +58,7 @@ stack-5 and final-encoder vectors recomputed from the cut tensors by the (traina
   epochs, against the same loop with the stack frozen
 
 Stage 2 uses length-bucketed batches (to bound GPU memory); the joint runs show this hurts the head
-on its own (joint_frozen 0.801 vs stage 1 0.830 with the same recipe), so every variant is compared with
+on its own (joint_frozen 0.805 vs stage 1 0.832 with the same recipe), so every variant is compared with
 the control trained in the same loop, not with stage 1. Feature-level augmentation was not added:
 the adapted stack barely moved even without it (see below), so there was no overfitting signal to fight.
 
@@ -72,10 +72,10 @@ the adapted stack barely moved even without it (see below), so there was no over
 | lora8_hi | .803 | .851 | .842 | **.824** | .494 | .871 | .668 | .659 |
 | full_e6 | .804 | .854 | .846 | **.825** | .496 | .872 | .668 | .659 |
 | soup3_lora8_e6 (seed 0) | .800 | .856 | .850 | **.825** | .494 | .875 | .669 | .662 |
-| joint_frozen (seed 0) | .781 | .826 | .825 | **.801** | .482 | .855 | .647 | .639 |
-| joint_lora8 (seed 0) | .777 | .820 | .809 | **.802** | .451 | .865 | .647 | .637 |
+| joint_frozen | .789 | .828 | .823 | **.805** | .476 | .857 | .646 | .637 |
+| joint_lora8 | .784 | .820 | .809 | **.807** | .468 | .863 | .643 | .636 |
 
-(Joint rows: JOINT_NOTE.) Per seed and all metrics: `results/tables/round19_encoder_cv.json`.
+(Joint rows: 3 seeds; the joint loop is weaker than stage 1 for both, see Design.) Per seed and all metrics: `results/tables/round19_encoder_cv.json`.
 
 Paired speaker bootstrap of the sentence total (2,000 speaker resamples; `round19_encoder_paired.json`):
 
@@ -85,10 +85,10 @@ Paired speaker bootstrap of the sentence total (2,000 speaker resamples; `round1
 | full_e6 - frozen_e6 | -.0020 [-.0046, .0005] p .13 | -.0015 [-.0037, .0006] p .14 | -.0010 [-.0022, .0000] p .04 |
 | lora8_hi - frozen_e6 | -.0028 [-.0066, .0006] p .12 | -.0006 [-.0041, .0027] p .66 | -.0034 [-.0068, -.0003] p .04 |
 | soup3 - frozen_e6 | -.0013 [-.0034, .0007] p .20 | | |
-| joint_lora8 - joint_frozen | +.0011 [-.0131, .0144] p .89 | JOINT_S1 | JOINT_S2 |
+| joint_lora8 - joint_frozen | +.0011 [-.0129, .0136] p .92 | +.0033 [-.0093, .0162] p .61 | -.0010 [-.0133, .0116] p .85 |
 
 Children vs adults: no variant helps children (lora8_e6 - control on children: -.0006, -.0004,
--.0022; joint_lora8 on children -.031 [-.078, .012] on seed 0, adults +.010 [-.001, .023]).
+-.0022; joint_lora8 - joint_frozen on children -.031 / +.003 / +.004, on adults +.010 / +.008 / -.000, all n.s.).
 
 Why nothing moves: with adapters the stack-5 weights change by a median 0.4 % (relative Frobenius
 norm; at most 12.6 % for one matrix), with full fine-tuning by 0.07 %; the head reaches its training
