@@ -25,5 +25,6 @@ for prec in fp32 int8; do
     run new new $lang $prec
   done
   run newoff new zh $prec PRONUNCIADA_IDENTITY_ZH_R20=0
+  run cand cand zh $prec          # the frozen candidate commit the held-out run started from (8d1952e)
 done
 echo "$(date +%H:%M:%S) all dumps done"
