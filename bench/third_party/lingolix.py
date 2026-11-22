@@ -417,9 +417,57 @@ def align_spans(text, units, vendor_words, pick=None):
     return out
 
 
-def vendor_flags(rec: dict) -> list[bool]:
-    """Azure-shaped records: the system's own flag is a non-empty ErrorType (report.vendor_flags)."""
-    return [w.get("error_type") not in (None, "None") for w in rec.get("words", [])]
+# report.vendor_flags for Lingolix-shaped records (raw["words"][k]["syllables"]): the phones the API
+# heard are compared with the phones it expected, after report.py's per-language canonical spelling.
+_MERGERS_FR = {"e": "ɛ", "o": "ɔ", "ø": "œ", "ɑ": "a", "œ̃": "ɛ̃", "ɥ": "y", "w": "u", "j": "i"}
+_MERGERS_ES = {"θ": "s", "ʎ": "i", "ʝ": "i", "j": "i", "w": "u", "β": "b", "ð": "d", "ɣ": "ɡ", "h": "x", "ŋ": "n"}
+_VOWELS = set("iyɨʉɯuɪʏʊeøɘɵɤoəɛœɜɝɞʌɔæɐaɶɑɒ")
+_FT = None
+
+
+def _segs(ipa: str) -> tuple[str, ...]:
+    global _FT
+    if _FT is None:
+        import panphon
+        _FT = panphon.FeatureTable()
+    return tuple(_FT.ipa_segs(ipa))
+
+
+def _merge(phones: tuple[str, ...], lang: str) -> tuple[str, ...]:
+    if lang == "fr":
+        return tuple(_MERGERS_FR.get(q, q) for q in (p.replace("ː", "") for p in phones) if q != "ə")
+    m = [_MERGERS_ES.get(q, q) for q in phones]
+    return tuple(q for i, q in enumerate(m) if not (q == "s" and (i == len(m) - 1 or m[i + 1] not in _VOWELS)))
+
+
+def _canon(ipa: str, lang: str) -> str:
+    if lang in ("fr", "es"):
+        return "".join(_merge(_segs(ipa), lang))
+    if lang != "ja":
+        return ipa
+    s = ipa.replace("̥", "").replace("ʲ", "j").replace("ɸ", "f").replace("ç", "h")
+    return re.sub("[ɴŋɲm]|n(?![aieoɯ])", "N", s)
+
+
+def vendor_flags(rec: dict, lang: str = "") -> list[bool] | None:
+    """report.vendor_flags. Azure-shaped records (Pronunciada's): a non-empty ErrorType. Lingolix-shaped
+    records: additionally, expected and detected syllable IPA differ (ja, fr, es); None (verdicts
+    undefined) for the other languages, as in report.py."""
+    words = rec.get("words", [])
+    raw_words = (rec.get("raw") or {}).get("words")
+    parallel = isinstance(raw_words, list) and len(raw_words) == len(words)
+    out = []
+    for k, w in enumerate(words):
+        flag = w.get("error_type") not in (None, "None")
+        syl = [x for x in (raw_words[k].get("syllables") or []) if x.get("is_scored", True)] if parallel else []
+        if syl and lang not in ("ja", "fr", "es"):
+            return None
+        if syl:
+            exp = _canon("".join(x.get("expected_ipa") or "" for x in syl), lang)
+            det = _canon("".join(x.get("detected_ipa") or "" for x in syl), lang)
+            flag = flag or exp != det
+        out.append(flag)
+    return out
 
 
 def error_signal(entry) -> float:
@@ -432,6 +480,13 @@ def utterance_score(rec: dict, which: str = "benchmark"):
     if which == "prob":
         return rec["pronunciada"]["prob"]
     raw = rec.get("raw") or {}
+    if isinstance(raw.get("overall"), (int, float)):      # Lingolix (report.utterance_score order)
+        return float(raw["overall"])
+    if isinstance(raw.get("accuracy"), (int, float)):
+        return float(raw["accuracy"])
+    tp = raw.get("scores") or {}
+    if isinstance(tp.get("overall"), (int, float)):       # TonePerfect
+        return float(tp["overall"]) / 100
     nbest = raw.get("NBest") or [{}]
     pa = nbest[0].get("PronunciationAssessment") or nbest[0]
     return float(pa["PronScore"]) if "PronScore" in pa else None
@@ -450,8 +505,8 @@ def collect(manifest, responses, exclude_unverified: dict | None = None, utt_whi
                 human_words += len(h["words"])
             continue
         latency.append(rec.get("latency_ms", math.nan))
-        vflags = vendor_flags(rec)
-        vwords = [{**w, "flag": f} for w, f in zip(rec.get("words", []), vflags)]
+        vflags = vendor_flags(rec, item.get("lang", ""))
+        vwords = [{**w, "flag": f} for w, f in zip(rec.get("words", []), vflags or [False] * len(rec.get("words", [])))]
         if "units" in item:
             target = [u["text"] for u in item["units"]]
             aligned = align_spans(item["target"], item["units"], vwords)
@@ -461,7 +516,7 @@ def collect(manifest, responses, exclude_unverified: dict | None = None, utt_whi
             target = item["target"].split()
             aligned = judged = align(target, vwords)
         scores = [error_signal(e) for e in aligned]
-        flags = [True if e is None else bool(e["flag"]) for e in judged]
+        flags = None if vflags is None else [True if e is None else bool(e["flag"]) for e in judged]
 
         human = item.get("human")
         if human:
@@ -492,7 +547,7 @@ def collect(manifest, responses, exclude_unverified: dict | None = None, utt_whi
             keep = [i for i in keep if i == pos or i not in unv]
         labels = [int(i == pos) for i in keep]
         scores = [scores[i] for i in keep]
-        flags = [flags[i] for i in keep]
+        flags = None if flags is None else [flags[i] for i in keep]
         units.append((labels, scores, item, flags))
         if pos is not None:
             loc_n += 1
@@ -505,6 +560,8 @@ def collect(manifest, responses, exclude_unverified: dict | None = None, utt_whi
 def verdict_metrics(units) -> dict:
     tp = fp = fn = tn = 0
     by_bucket = defaultdict(lambda: [0, 0])
+    if any(u[3] is None for u in units):                  # report.py: verdicts undefined
+        return {"recall": math.nan, "precision": math.nan, "f1": math.nan, "fa": math.nan, "recall_by_bucket": {}}
     for labels, _, item, flags in units:
         label = item.get("label") or {}
         b = label.get("bucket") or label.get("category") or "human"
