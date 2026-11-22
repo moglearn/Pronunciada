@@ -1,0 +1,1245 @@
+{
+ "system": "openpronounce-1.1.0-fast",
+ "mode": "fast",
+ "floor_for_unscored": 0.0,
+ "coverage": {
+  "speechocean762": {
+   "records": 2500,
+   "scored": 2500,
+   "error": 0,
+   "missing": 0,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  },
+  "l2arctic": {
+   "records": 900,
+   "scored": 900,
+   "error": 0,
+   "missing": 0,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  },
+  "epadb": {
+   "records": 1263,
+   "scored": 1263,
+   "error": 0,
+   "missing": 0,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  },
+  "fleurs-swap": {
+   "records": 4650,
+   "scored": 2700,
+   "error": 0,
+   "missing": 1950,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  },
+  "ompal": {
+   "records": 745,
+   "scored": 0,
+   "error": 0,
+   "missing": 745,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  },
+  "cv-real": {
+   "records": 4396,
+   "scored": 2745,
+   "error": 0,
+   "missing": 1651,
+   "not_aligned": 0,
+   "phone_from_word": 0
+  }
+ },
+ "rows": [
+  {
+   "group": "learner errors",
+   "test": "L2-ARCTIC test",
+   "n": 29760,
+   "pronunciada": {
+    "value": 0.7122868841616822,
+    "ci": [
+     0.6473234403384088,
+     0.7591366948836177
+    ]
+   },
+   "delta": -0.030889709754110317,
+   "p": 0.001998001998001998,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.05554576090082275,
+    -0.012484839754234756
+   ],
+   "n_errors": 4114,
+   "pronunciada_table": 0.7122868841616822,
+   "pronunciada_matches_table": true,
+   "verdict": "behind (significant)",
+   "openpronounce": {
+    "value": 0.7431765939157925,
+    "ci": [
+     0.6876042842022232,
+     0.7798748973695317
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5141848205803932,
+    "ci": [
+     0.5021486049501501,
+     0.5269066617003764
+    ]
+   }
+  },
+  {
+   "group": "learner errors",
+   "test": "EpaDB test",
+   "n": 20665,
+   "pronunciada": {
+    "value": 0.7212187150604799,
+    "ci": [
+     0.7066676545730932,
+     0.7350437540448864
+    ]
+   },
+   "delta": -0.01940263670933917,
+   "p": 0.005994005994006081,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.030802113581160796,
+    -0.008909102490768745
+   ],
+   "n_errors": 4131,
+   "pronunciada_table": 0.7212187150604799,
+   "pronunciada_matches_table": true,
+   "verdict": "behind (significant)",
+   "openpronounce": {
+    "value": 0.740621351769819,
+    "ci": [
+     0.7255691164175446,
+     0.7546339104926088
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5161634614435774,
+    "ci": [
+     0.5098714623287425,
+     0.5212493269549752
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9947841807909604,
+    "ci": [
+     0.9919988868248995,
+     0.9968950326863348
+    ]
+   },
+   "delta": 0.01850169491525422,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.012291680228422443,
+    0.024966388296191015
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.9947841807909604,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.9762824858757062,
+    "ci": [
+     0.9684090366590652,
+     0.9830859478234268
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.8000406779661017,
+    "ci": [
+     0.761030805057946,
+     0.8391310639519202
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9807209039548023,
+    "ci": [
+     0.9734545653985363,
+     0.9867531548124017
+    ]
+   },
+   "delta": 0.08076836158192091,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.06142401282012798,
+    0.10184655657369275
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.9807209039548023,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.8999525423728814,
+    "ci": [
+     0.8770894765065759,
+     0.9212048415893362
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5188881355932203,
+    "ci": [
+     0.5037286152302903,
+     0.5374577935298996
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "en near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8933333333333333,
+    "ci": [
+     0.84,
+     0.94
+    ]
+   },
+   "delta": 0.48,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.3461874999999999,
+    0.6200000000000001
+   ],
+   "lang": "en",
+   "pronunciada_table": 0.8933333333333333,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.41333333333333333,
+    "ci": [
+     0.28,
+     0.54
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.08592349726775957,
+    "ci": [
+     0.0571714097056247,
+     0.12212437036999349
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9984946843541255,
+    "ci": [
+     0.9966931272797396,
+     0.999578300149404
+    ]
+   },
+   "delta": 0.012019945432307777,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.008238861643074063,
+    0.01616273452213545
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.9984946843541255,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.9864747389218177,
+    "ci": [
+     0.9814687853954253,
+     0.990856192868199
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.7858707310189105,
+    "ci": [
+     0.7473460304574753,
+     0.824868597623093
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.993786809671653,
+    "ci": [
+     0.9902931942374565,
+     0.9965568297242366
+    ]
+   },
+   "delta": 0.0997572678521027,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.08024317861762222,
+    0.11956574654260063
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.993786809671653,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.8940295418195503,
+    "ci": [
+     0.8738961940798927,
+     0.913919234648011
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5499614262865745,
+    "ci": [
+     0.5278929710602546,
+     0.5764322487270125
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "es near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9933333333333333,
+    "ci": [
+     0.98,
+     1.0
+    ]
+   },
+   "delta": 0.5933333333333333,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.49002499999999993,
+    0.6733333333333333
+   ],
+   "lang": "es",
+   "pronunciada_table": 0.9933333333333333,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.4,
+    "ci": [
+     0.32162500000000005,
+     0.5
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.14671222433977676,
+    "ci": [
+     0.1038211603962176,
+     0.19668483795392425
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9968788046485888,
+    "ci": [
+     0.9953778515574702,
+     0.9981218345927443
+    ]
+   },
+   "delta": 0.01723667220070091,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.01248338639074576,
+    0.023098740123332625
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9968788046485888,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.9796421324478879,
+    "ci": [
+     0.9731209133441687,
+     0.9850440895539352
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.8567330750783988,
+    "ci": [
+     0.8215698811651414,
+     0.8924557222912436
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9863309352517986,
+    "ci": [
+     0.9806912020797851,
+     0.9908054887798754
+    ]
+   },
+   "delta": 0.0715707434052758,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.05655916308036028,
+    0.08671563651497644
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9863309352517986,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.9147601918465228,
+    "ci": [
+     0.8987963271055109,
+     0.9301574382279184
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5584670724958495,
+    "ci": [
+     0.5342913768637864,
+     0.5868060421893081
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "fr near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9266666666666666,
+    "ci": [
+     0.8866666666666667,
+     0.9733333333333334
+    ]
+   },
+   "delta": 0.4706666666666667,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.35988749999999997,
+    0.6000111111111112
+   ],
+   "lang": "fr",
+   "pronunciada_table": 0.9266666666666666,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.45599999999999996,
+    "ci": [
+     0.32656111111111114,
+     0.5712683333333334
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.16219879246643237,
+    "ci": [
+     0.11530968884505023,
+     0.21682181035974482
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9970980392156863,
+    "ci": [
+     0.9954608791703317,
+     0.998465488921189
+    ]
+   },
+   "delta": 0.009884593837535038,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.005739850390493887,
+    0.014538252271140164
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.9970980392156863,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.9872134453781513,
+    "ci": [
+     0.9825157644289162,
+     0.991382821075909
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.906890756302521,
+    "ci": [
+     0.8749890118071663,
+     0.9358254622295956
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9793053221288516,
+    "ci": [
+     0.9701650334672766,
+     0.9866109699688684
+    ]
+   },
+   "delta": 0.09402913165266114,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.07119113140871247,
+    0.11640431813263791
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.9793053221288516,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.8852761904761904,
+    "ci": [
+     0.8600280466605945,
+     0.9119622987227661
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5459742296918767,
+    "ci": [
+     0.5233839533665949,
+     0.5734883783000361
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "de near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9066666666666666,
+    "ci": [
+     0.8533333333333334,
+     0.9533333333333334
+    ]
+   },
+   "delta": 0.3953333333333333,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.28,
+    0.48000000000000004
+   ],
+   "lang": "de",
+   "pronunciada_table": 0.9066666666666666,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.5113333333333333,
+    "ci": [
+     0.42,
+     0.62
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.14060812270468784,
+    "ci": [
+     0.09590260224745617,
+     0.19396928402119354
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9979528041679436,
+    "ci": [
+     0.9967959007526834,
+     0.9988985800805228
+    ]
+   },
+   "delta": 0.02037286750434164,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.015073141885757674,
+    0.026280022914702637
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.9979528041679436,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.977579936663602,
+    "ci": [
+     0.9715350560985169,
+     0.9829553401524681
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.8281979773214833,
+    "ci": [
+     0.790296230328362,
+     0.8633773303397831
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9786147716825008,
+    "ci": [
+     0.9714111135129471,
+     0.9845108615078315
+    ]
+   },
+   "delta": 0.12420982735723773,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.10473054773962048,
+    0.14549905616866235
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.9786147716825008,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.854404944325263,
+    "ci": [
+     0.8335717057729409,
+     0.8744022676278171
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.5052528348145878,
+    "ci": [
+     0.49359763090424846,
+     0.5187612815071082
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "it near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8866666666666667,
+    "ci": [
+     0.8265,
+     0.9333333333333333
+    ]
+   },
+   "delta": 0.6133333333333334,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.5191833333333333,
+    0.6876715277777777
+   ],
+   "lang": "it",
+   "pronunciada_table": 0.8866666666666667,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.2733333333333333,
+    "ci": [
+     0.21333333333333335,
+     0.34825666666666666
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.06074781746031746,
+    "ci": [
+     0.03843419849159997,
+     0.08667899788166224
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt far AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9980454076367389,
+    "ci": [
+     0.9967997756977948,
+     0.9990795553365587
+    ]
+   },
+   "delta": 0.022059855521155858,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.016146719189950132,
+    0.02910076849162295
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.9980454076367389,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.975985552115583,
+    "ci": [
+     0.9686235474978993,
+     0.982416113068802
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.8231682146542828,
+    "ci": [
+     0.7833701435470514,
+     0.8613561958332658
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt near AUC",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.9668544891640867,
+    "ci": [
+     0.9478510509672443,
+     0.9828334722786429
+    ]
+   },
+   "delta": 0.14705469556243544,
+   "p": 0.001998001998001998,
+   "unit": "AUC",
+   "delta_ci": [
+    0.11859276684609839,
+    0.1775296889722404
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.9668544891640867,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.8197997936016512,
+    "ci": [
+     0.7881311093745387,
+     0.8522131093838766
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.504827657378741,
+    "ci": [
+     0.4943114385690217,
+     0.5196992679451371
+    ]
+   }
+  },
+  {
+   "group": "swap benchmark",
+   "test": "pt near hit@5 %",
+   "n": 150,
+   "pronunciada": {
+    "value": 0.8866666666666667,
+    "ci": [
+     0.8266666666666667,
+     0.9333333333333333
+    ]
+   },
+   "delta": 0.54,
+   "p": 0.001998001998001998,
+   "unit": "%",
+   "delta_ci": [
+    0.4401310416666667,
+    0.6266666666666666
+   ],
+   "lang": "pt",
+   "pronunciada_table": 0.8866666666666667,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.3466666666666667,
+    "ci": [
+     0.255704761904762,
+     0.44
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.0622942294229423,
+    "ci": [
+     0.042404519529666174,
+     0.09101977878783643
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "en/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.74815,
+    "ci": [
+     0.6983788336016502,
+     0.7987458080374322
+    ]
+   },
+   "delta": 0.049362499999999976,
+   "p": 0.044977511244377814,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.002860105267233629,
+    0.097677300981311
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.74815,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.6987875,
+    "ci": [
+     0.6458336329384387,
+     0.7520746019764732
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.6987875,
+    "ci": [
+     0.6478931888298786,
+     0.7514465615909524
+    ]
+   }
+  },
+  {
+   "group": "cv-real test B",
+   "test": "en/B",
+   "n": 260,
+   "pronunciada": {
+    "value": 0.5166272189349113,
+    "ci": [
+     0.4448942319828348,
+     0.5881420388144911
+    ]
+   },
+   "delta": 0.04423076923076924,
+   "p": 0.2478760619690155,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.03789282137805257,
+    0.12191393926138025
+   ],
+   "n_pos": 130,
+   "n_neg": 130,
+   "pronunciada_table": 0.5166272189349113,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)",
+   "openpronounce": {
+    "value": 0.472396449704142,
+    "ci": [
+     0.39752625641871797,
+     0.546927041793729
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.472396449704142,
+    "ci": [
+     0.39920674110128695,
+     0.5473209038368883
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "es/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.765559636771758,
+    "ci": [
+     0.7180174742023804,
+     0.8106997951883934
+    ]
+   },
+   "delta": 0.10954239363330276,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.04854640178721735,
+    0.1746460500063947
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.765559636771758,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.6560172431384552,
+    "ci": [
+     0.5986848093722253,
+     0.7119941087885777
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.6560172431384552,
+    "ci": [
+     0.5961050197949818,
+     0.7131912075218191
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "fr/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.7885930007142128,
+    "ci": [
+     0.7428775170773153,
+     0.8319297535033152
+    ]
+   },
+   "delta": 0.10959340883583302,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.05546799971821744,
+    0.16451273236603092
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.7885930007142128,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.6789995918783798,
+    "ci": [
+     0.6265522475428136,
+     0.7326773900723565
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.6789995918783798,
+    "ci": [
+     0.6263005786796879,
+     0.7298065229311362
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "de/A",
+   "n": 396,
+   "pronunciada": {
+    "value": 0.8286399347005408,
+    "ci": [
+     0.7875894305014802,
+     0.867368696229921
+    ]
+   },
+   "delta": 0.1524716865625957,
+   "p": 0.0009995002498750624,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.09792570845142093,
+    0.20316550498359057
+   ],
+   "n_pos": 198,
+   "n_neg": 198,
+   "pronunciada_table": 0.8286399347005408,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.6761682481379451,
+    "ci": [
+     0.623875153869507,
+     0.7264381744817461
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.6761682481379451,
+    "ci": [
+     0.6226846730542616,
+     0.7266714458243902
+    ]
+   }
+  },
+  {
+   "group": "cv-real test B",
+   "test": "de/B",
+   "n": 102,
+   "pronunciada": {
+    "value": 0.5344098423683199,
+    "ci": [
+     0.42009277839869946,
+     0.643520880574452
+    ]
+   },
+   "delta": 0.03248750480584395,
+   "p": 0.6326836581709145,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.11392924878876479,
+    0.16393319029353387
+   ],
+   "n_pos": 51,
+   "n_neg": 51,
+   "pronunciada_table": 0.5344098423683199,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)",
+   "openpronounce": {
+    "value": 0.501922337562476,
+    "ci": [
+     0.37715741511141027,
+     0.6257620324741321
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.501922337562476,
+    "ci": [
+     0.3778929898899792,
+     0.6287884456813028
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "it/A",
+   "n": 398,
+   "pronunciada": {
+    "value": 0.7668998257619757,
+    "ci": [
+     0.7175666067788502,
+     0.8138364793690137
+    ]
+   },
+   "delta": 0.07982121663594355,
+   "p": 0.004997501249375313,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    0.026052980980373213,
+    0.13490329303965537
+   ],
+   "n_pos": 199,
+   "n_neg": 199,
+   "pronunciada_table": 0.7668998257619757,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (significant)",
+   "openpronounce": {
+    "value": 0.6870786091260321,
+    "ci": [
+     0.6308241171745818,
+     0.7390751359176696
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.6870786091260321,
+    "ci": [
+     0.6348938284199326,
+     0.7409983467273332
+    ]
+   }
+  },
+  {
+   "group": "cv-real test A",
+   "test": "pt/A",
+   "n": 400,
+   "pronunciada": {
+    "value": 0.72925,
+    "ci": [
+     0.6773768249990055,
+     0.7786930565309587
+    ]
+   },
+   "delta": 0.05269999999999997,
+   "p": 0.09095452273863068,
+   "unit": "ROC AUC",
+   "delta_ci": [
+    -0.008533304572876396,
+    0.11690475657008258
+   ],
+   "n_pos": 200,
+   "n_neg": 200,
+   "pronunciada_table": 0.72925,
+   "pronunciada_matches_table": true,
+   "verdict": "ahead (not significant)",
+   "openpronounce": {
+    "value": 0.67655,
+    "ci": [
+     0.6206813557005603,
+     0.728730804170155
+    ]
+   },
+   "openpronounce_flags_or_secondary": {
+    "value": 0.67655,
+    "ci": [
+     0.6210610375737619,
+     0.7298049768285423
+    ]
+   }
+  }
+ ],
+ "counts": {
+  "learner errors": {
+   "l2arctic": {
+    "baseline_not_aligned_utts": 0,
+    "phones": 29760,
+    "phones_unmatched": 113,
+    "errors": 4114
+   },
+   "epadb": {
+    "baseline_not_aligned_utts": 0,
+    "phones": 20665,
+    "phones_unmatched": 243,
+    "errors": 4131
+   }
+  },
+  "swap benchmark": {
+   "tone_records": 0,
+   "tone_records_same_tokens_as_orig": 0,
+   "en": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "es": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "fr": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "de": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "it": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   },
+   "pt": {
+    "clusters": 150,
+    "clusters_dropped_baseline_missing": 0
+   }
+  },
+  "cv-real": {
+   "ours_fingerprint": "34a1bbdccdf25297",
+   "en/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "en/B": {
+    "n": 260,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "zh-CN/A": {
+    "n": 386,
+    "baseline_failed": 386,
+    "baseline_not_aligned": 0
+   },
+   "zh-TW/A": {
+    "n": 400,
+    "baseline_failed": 400,
+    "baseline_not_aligned": 0
+   },
+   "ja/A": {
+    "n": 390,
+    "baseline_failed": 390,
+    "baseline_not_aligned": 0
+   },
+   "es/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "fr/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "de/A": {
+    "n": 396,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "de/B": {
+    "n": 102,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "it/A": {
+    "n": 398,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "pt/A": {
+    "n": 400,
+    "baseline_failed": 0,
+    "baseline_not_aligned": 0
+   },
+   "ru/A": {
+    "n": 400,
+    "baseline_failed": 400,
+    "baseline_not_aligned": 0
+   },
+   "ko/A": {
+    "n": 22,
+    "baseline_failed": 22,
+    "baseline_not_aligned": 0
+   }
+  },
+  "cv-real_languages_in_corpus": [
+   "de",
+   "en",
+   "es",
+   "fr",
+   "it",
+   "ja",
+   "ko",
+   "pt",
+   "ru",
+   "zh"
+  ],
+  "cv-real_languages_scored": [
+   "de",
+   "en",
+   "es",
+   "fr",
+   "it",
+   "pt"
+  ]
+ },
+ "swap_languages": [
+  "en",
+  "fr",
+  "es",
+  "de",
+  "it",
+  "pt"
+ ],
+ "pronunciada_matches_scoreboard": true,
+ "seconds": 60,
+ "protocol": "    python -m bench.rivals.eval_shared --mode default [--tests errdet,swap,cv]\n\nRuns the test code of bench/eval_zipa_baseline.py unchanged (as bench/eval_external.py did for the\n2026-11-18 snapshot), with OpenPronounce's per-record files (bench.rivals.convert) in place of the\nZIPA baseline's: the same items, labels, fallback rules, resampling units, bootstrap sizes and seeds as\nresults/SCOREBOARD.md. A record OpenPronounce could not score gets its floor (0) and is counted.\nPronunciada's column is recomputed from its cached outputs and checked against results/tables/.\n\n  errdet  L2-ARCTIC and EpaDB test: ROC AUC of each system's per-sound error signal for the sounds the\n          annotators marked (OpenPronounce: 1 - its phone model's probability, see bench.rivals.convert).\n  swap    fleurs-swap (FLEURS test, 150 recordings per language, a word of the prompt changed for a\n          distant or a near word): far AUC, near AUC, near hit at 5 % false alarms, from word scores.\n          Only the languages OpenPronounce covers (en fr es de it pt); every record of those is required.\n  cv      cv-real test (Common Voice clips the community accepted vs rejected), ROC AUC of the sentence\n          score, for the locales OpenPronounce covers.\nWrites results/tables/rivals_shared_<mode>.json.\n",
+ "note": "round 19 merged code (frozen run 2, 2026-11-22); OpenPronounce 1.1.0 fast mode from its cached raw outputs (no OpenPronounce model was run again); the 1.0.2 table is rivals_shared_fast.json (L2-ARCTIC and EpaDB were only run in fast and student modes)"
+}
