@@ -2,9 +2,10 @@
 
     export LINGOLIX_API_KEY=...                                  # read from the environment only
     python -m bench.third_party.lingolix_live --plan-only        # what would be sent, and the cost
-    python -m bench.third_party.lingolix_live --yes              # send, cache, then write the table
+    python -m bench.third_party.lingolix_live --yes --quota-cap-min 175   # send, cache, write the table
     python -m bench.third_party.lingolix_live --report-only      # table from the cache, sends nothing
     python -m bench.third_party.lingolix_live --dry-run          # whole pipeline on a local fake
+    python -m bench.third_party.lingolix_live --so762-extend --quota-cap-min 175 [--plan-only | --yes]
 
 What is sent. Only public benchmark recordings and their prompt texts, nothing else:
   * test 1 of the Lingolix benchmark (lingolix/pronunciation-benchmark v2026.10): the 200 Common Voice
@@ -13,6 +14,11 @@ What is sent. Only public benchmark recordings and their prompt texts, nothing e
   * test 2: the 500 speechocean762 test clips (CC BY 4.0) with their `target` text, read from
     Pronunciada's local lossless copy and sent as 16 kHz mono 16-bit WAV (the format build_tier2.py
     makes);
+  * with --so762-extend ("tier2x"): more of the 2,500 speechocean762 test clips, as items built with
+    build_tier2.py's rules (lingolix.tier2x_items; the benchmark's 500 items are reproduced exactly, so
+    the request is the same and those 500 are cache hits). Whole speakers in ascending speaker-ID order,
+    each with all of its clips not yet answered, as many as fit in the audio-minute budget; the
+    selection stops at the first speaker that does not fit (a speaker is never split, none is skipped);
   * with --fleurs-swap: Pronunciada's fleurs-swap test records (FLEURS test, CC BY 4.0; the original
     prompt and prompts with one word changed) for the languages Lingolix lists, as 16 kHz WAV.
 One multipart POST per (recording, text): fields `sentence`, `language_code`, file `speechdata`, header
@@ -23,12 +29,24 @@ The key. Read only from LINGOLIX_API_KEY; never printed, logged or written (ever
 writes is checked for it and scrubbed). Without it the module refuses to send; --plan-only,
 --report-only and --dry-run need no key.
 
-Cost control. The plan (requests, audio hours, estimated cost from the public price list) is printed
-before anything is sent and nothing is sent without --yes. --max-requests N caps a run. Every raw JSON
-response is cached under $PRONUNCIADA_CACHE/third_party/lingolix_live/responses/, keyed by a hash of
-(audio bytes, text, language, API options) and written atomically as soon as it arrives, so an
-interrupted run resumes and nothing is paid for twice; cached items are never requested again unless
---refresh is given.
+Cost control. Paid plans do not stop at their included minutes: they bill the overage per minute, so
+the API's quota 429 does not protect the budget. The guard is this module's audio-minute ledger,
+$PRONUNCIADA_CACHE/third_party/lingolix_live/ledger.jsonl (the dry run keeps its own under
+DRYRUN_FAKE/). It has one line per request attempt, written and flushed BEFORE the request goes out
+(test, id, cache key, seconds of audio in the bytes sent, UTC time), and one line with its outcome (HTTP
+status or "network error") after it. Every attempt counts, failures and retries included, since it is
+not documented whether a failed attempt is billed. On first use the ledger is backfilled with one line
+per cached response, the seconds computed from the exact bytes that were sent (idempotent: a cache key
+already in the ledger is not added again). A live send refuses to start without --quota-cap-min; usage
+so far is the ledger total unless --quota-used-min overrides it. `plan` keeps only what fits
+(used + planned <= cap, stopping at the first item or speaker that does not fit) and `run_jobs`
+enforces the same rule under a lock before every attempt, retries included, so no attempt can take the
+total over the cap, whatever --concurrency is; the first refused attempt stops the run. The plan
+(requests, audio minutes, used, cap, what is left, estimated cost) is printed before anything is sent
+and nothing is sent without --yes. --max-requests N caps a run. Every raw JSON response is cached
+under $PRONUNCIADA_CACHE/third_party/lingolix_live/responses/, keyed by a hash of (audio bytes, text,
+language, API options) and written atomically as soon as it arrives, so an interrupted run resumes and
+nothing is paid for twice; cached items are never requested again unless --refresh is given.
 
 Rate limits. At most --rps requests per second (default 1), --concurrency requests in flight
 (default 1, at most 4). 429 (rate limit) and 5xx are retried with exponential backoff and jitter,
@@ -74,6 +92,13 @@ a message naming it (the response is already cached, so fixing the adapter costs
       or per month is not documented), so the cost estimate is a range.
   A9  Language codes are the benchmark's (en fr es de ja ko; fleurs-swap: also it pt ru), all in the
       documented list. Recordings over 60 s or 10 MiB are rejected by the API (docs) and are not sent.
+      Mandarin (zh) is not accepted: checked live on 2026-11-22 (HTTP 400, see MANDARIN).
+
+speechocean762, more speakers. The table adds three comparisons on speechocean762 test clips: the
+benchmark's 500, every clip Lingolix answered, and the speakers with all 20 clips answered. Pronunciada's
+answers for all 2,500 clips come from `python -m bench.third_party.lingolix score --only tier2x`
+(same scorer settings and response shape as test 2). Differences carry a 95% interval and a two-sided
+p from 10,000 paired speaker resamples (seed 0).
 """
 from __future__ import annotations
 
@@ -123,8 +148,24 @@ PRICES = {"source": "https://lingolix.com/en/pricing (read 2026-11-22)", "curren
           "plans_included_min": {"Free (non-commercial)": 15, "Starter": 180, "Learner": 720, "Pro": 3600,
                                  "Scale": 13200},
           "billing": "usage measured per second, whole minutes charged"}
+# The account's plan (Starter): the one rate used for the cost of finishing the speechocean762 split.
+STARTER_OVERAGE_EUR_PER_MIN = 0.05
+STARTER_PRICE_SOURCE = ("https://lingolix.com/en/pricing (read 2026-11-22): Starter plan, overage billed per full "
+                        "minute used; usage measured by the second, only full minutes charged")
 TESTS = tuple(f"tier1_{x}" for x in L.LANGS) + ("tier2",)
+TIER2X = "tier2x"                     # every speechocean762 test clip (2,500, 125 speakers x 20)
+SO762_CLIPS_PER_SPEAKER = 20
+SPEAKER_BOOTSTRAP = 10_000
+LEDGER = "ledger.jsonl"
+CAP_SLACK_S = 1e-6                    # plan stays this far under the cap so float sums can never cross it
 LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1", "0.0.0.0", ""}
+# Checked live on 2026-11-22 (one request, nothing billed); evidence in $PRONUNCIADA_CACHE/third_party/
+# lingolix_live/smoke_zh/. The table repeats it, and checks it against that file when the file is present.
+MANDARIN = {"date": "2026-11-22", "request_utc": "2026-11-22T20:33:46Z", "clip": "ompal-00100101", "clip_seconds": 2.5,
+            "language_code": "zh", "status": 400, "message": "Language 'zh' not supported",
+            "supported": ["bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "hu", "it", "ja", "ko", "nb", "nl",
+                          "pl", "pt", "ru", "sv", "tr", "uk"],
+            "billed": "nothing", "evidence": "$PRONUNCIADA_CACHE/third_party/lingolix_live/smoke_zh/ompal-00100101.json"}
 
 
 class Fatal(RuntimeError):
@@ -143,6 +184,10 @@ class NetworkBlocked(RuntimeError):
     pass
 
 
+class BudgetStop(Fatal):
+    """The next attempt would take the audio-minute total over --quota-cap-min."""
+
+
 # ── items ──────────────────────────────────────────────────────────────────────
 
 @dataclasses.dataclass
@@ -154,9 +199,11 @@ class Job:
     audio: Path
     text: str
     passthrough: bool  # True: send the file's bytes as they are (benchmark WAV); False: decode to 16 kHz WAV
+    group: str | None = None   # tier2x: the speechocean762 speaker
 
 
 _AUDIO_MEMO: dict = {}
+_KEY_MEMO: dict = {}
 _MEMO_LOCK = threading.Lock()
 
 
@@ -197,6 +244,20 @@ def cache_key(audio: bytes, text: str, lang: str, options: dict = OPTIONS) -> tu
     return hashlib.sha256(s.encode()).hexdigest(), inputs
 
 
+def key_seconds(job: Job) -> tuple[str, float, int]:
+    """(cache key, seconds of audio, bytes) of the exact request this job sends (memoised per file state)."""
+    st = Path(job.audio).stat()
+    m = (str(job.audio), st.st_mtime_ns, st.st_size, job.passthrough, job.text, job.api_lang)
+    with _MEMO_LOCK:
+        if m in _KEY_MEMO:
+            return _KEY_MEMO[m]
+    a = audio_bytes(job)
+    v = (cache_key(a, job.text, job.api_lang)[0], wav_seconds(a), len(a))
+    with _MEMO_LOCK:
+        _KEY_MEMO[m] = v
+    return v
+
+
 def benchmark_jobs(langs: list[str], tests: list[str]) -> list[Job]:
     T = L.tests()
     jobs = []
@@ -210,6 +271,15 @@ def benchmark_jobs(langs: list[str], tests: list[str]) -> list[Job]:
             for it in T["tier2"]:
                 jobs.append(Job("tier2", it["id"], "en", "en", paths[it["id"]], it["target"], False))
     return jobs
+
+
+def tier2x_jobs() -> list[Job]:
+    """All 2,500 speechocean762 test clips, ordered by speaker then id. Same request as test 2: the
+    item's `target` text and the clip decoded to 16 kHz mono 16-bit WAV, so the cache key of each of the
+    benchmark's 500 is the test 2 one."""
+    items, spk = L.tier2x_items()
+    paths = L.so762_paths([it["id"] for it in items])
+    return [Job(TIER2X, it["id"], "en", "en", paths[it["id"]], it["target"], False, spk[it["id"]]) for it in items]
 
 
 def fleurs_swap_jobs(langs: list[str]) -> list[Job]:
@@ -262,6 +332,140 @@ _KEEP_HEADERS = re.compile(r"version|model|request-id|ratelimit|retry-after|^dat
 
 def keep_headers(h: dict) -> dict:
     return {k: v for k, v in h.items() if _KEEP_HEADERS.search(k) and k.lower() not in ("authorization", "set-cookie")}
+
+
+# ── audio-minute ledger and budget ─────────────────────────────────────────────
+
+class Ledger:
+    """Append-only JSON lines under the live (or dry-run) cache root. Kinds:
+    backfill  a response cached before the ledger existed (seconds counted);
+    attempt   written before a request goes out (seconds counted, whatever happens next);
+    result    the outcome of an attempt (HTTP status or "network error"; no seconds).
+    A line that cannot be read stops everything (fail closed): the total would be unknown."""
+
+    def __init__(self, path: Path):
+        self.path = Path(path)
+        self.lock = threading.Lock()
+
+    def entries(self) -> list[dict]:
+        if not self.path.exists():
+            return []
+        out = []
+        for n, line in enumerate(self.path.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                out.append(json.loads(line))
+            except ValueError:
+                raise Fatal(f"ledger {self.path} line {n} cannot be read; fix it by hand before sending "
+                            "anything (the audio-minute total is unknown)") from None
+        return out
+
+    def total_s(self) -> float:
+        return sum(float(e.get("seconds") or 0.0) for e in self.entries() if e.get("kind") in ("backfill", "attempt"))
+
+    def keys(self) -> set:
+        return {e["key"] for e in self.entries() if e.get("key")}
+
+    def append(self, rec: dict) -> None:
+        line = json.dumps(rec, ensure_ascii=False, sort_keys=True) + "\n"
+        with self.lock:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.path, "a", encoding="utf-8") as f:
+                f.write(line)
+                f.flush()
+                os.fsync(f.fileno())
+
+
+def job_resolver(jobs: list[Job]):
+    """(test, id) -> Job for any test whose responses can be in the cache (built lazily)."""
+    idx = {(j.test, j.id): j for j in jobs}
+    built: set = set()
+
+    def resolve(test: str, item_id: str) -> Job | None:
+        if (test, item_id) not in idx and test not in built:
+            built.add(test)
+            if test.startswith("tier1_") or test == "tier2":
+                extra = benchmark_jobs([test[6:] if test.startswith("tier1_") else "en"], [test])
+            elif test == TIER2X:
+                extra = tier2x_jobs()
+            elif test == "fleurs-swap":
+                extra = fleurs_swap_jobs(list(SUPPORTED))
+            else:
+                extra = []
+            for j in extra:
+                idx.setdefault((j.test, j.id), j)
+        return idx.get((test, item_id))
+
+    return resolve
+
+
+def backfill_ledger(root: Path, ledger: Ledger, resolve) -> dict:
+    """One `backfill` line per cached response whose key is not in the ledger yet, with the seconds of
+    the exact bytes that were sent (the recording is re-read and its cache key checked)."""
+    known = ledger.keys()
+    added, secs = 0, 0.0
+    for p in sorted((Path(root) / "responses").glob("*/*.json")):
+        if p.stem in known:
+            continue
+        rec = json.loads(p.read_text(encoding="utf-8"))
+        job_ref = rec.get("job") or {}
+        job = resolve(job_ref.get("test"), job_ref.get("id"))
+        if job is None:
+            raise Fatal(f"ledger backfill: no recording known for cached response {p.name} "
+                        f"({job_ref.get('test')} {job_ref.get('id')}); the audio-minute total would be incomplete")
+        k, sec, _ = key_seconds(job)
+        if k != p.stem:
+            raise Fatal(f"ledger backfill: {job.test} {job.id} no longer hashes to its cached key {p.stem}; "
+                        "the seconds sent cannot be recomputed")
+        ledger.append({"kind": "backfill", "utc": rec.get("received_utc"), "test": job.test, "id": job.id,
+                       "key": p.stem, "seconds": sec, "status": rec.get("status")})
+        known.add(p.stem)
+        added += 1
+        secs += sec
+    return {"added": added, "seconds": secs}
+
+
+class Budget:
+    """The audio-minute cap, enforced before every attempt (retries included) under one lock. The
+    first refusal closes the budget: nothing more goes out in this run."""
+
+    def __init__(self, cap_s: float | None, used_s: float, ledger: Ledger | None = None):
+        self.cap_s, self.used_s, self.start_s = cap_s, float(used_s), float(used_s)
+        self.ledger = ledger
+        self.lock = threading.Lock()
+        self.closed: str | None = None
+        self.attempts = 0
+
+    def reserve(self, job: Job, seconds: float, key: str | None) -> str:
+        with self.lock:
+            if self.closed:
+                raise BudgetStop(self.closed)
+            if self.cap_s is not None and self.used_s + seconds > self.cap_s:
+                self.closed = (f"audio-minute cap reached: the next attempt ({job.test} {job.id}, {seconds:.2f} s) "
+                               f"would take usage from {self.used_s / 60:.2f} to {(self.used_s + seconds) / 60:.2f} "
+                               f"min, over the cap of {self.cap_s / 60:.2f} min; run stopped")
+                raise BudgetStop(self.closed)
+            aid = f"{utc_now()}-{os.getpid()}-{self.attempts:06d}"
+            if self.ledger is not None:
+                try:
+                    self.ledger.append({"kind": "attempt", "attempt": aid, "utc": utc_now(), "test": job.test,
+                                        "id": job.id, "key": key, "seconds": seconds, "status": "pending"})
+                except OSError as e:
+                    self.closed = f"the ledger cannot be written ({type(e).__name__}); run stopped"
+                    raise BudgetStop(self.closed) from None
+            self.used_s += seconds
+            self.attempts += 1
+            return aid
+
+    def result(self, aid: str, job: Job, status) -> None:
+        if self.ledger is not None:
+            self.ledger.append({"kind": "result", "attempt": aid, "utc": utc_now(), "test": job.test, "id": job.id,
+                                "status": status})
+
+    def close(self, why: str) -> None:
+        with self.lock:
+            self.closed = self.closed or why
 
 
 # ── the adapter (all API-format knowledge lives here) ──────────────────────────
@@ -546,12 +750,15 @@ _FATAL_HELP = {401: "the API key was rejected (401): check LINGOLIX_API_KEY",
 
 
 def send_one(job: Job, audio: bytes, *, transport, url: str, key: str, limiter: RateLimiter, policy: Policy,
-             sleep=time.sleep, rng: random.Random | None = None) -> tuple[dict | None, dict]:
-    """(raw JSON or None, meta). Raises Fatal to stop the run."""
+             sleep=time.sleep, rng: random.Random | None = None, budget: Budget | None = None,
+             seconds: float = 0.0, key_hash: str | None = None) -> tuple[dict | None, dict]:
+    """(raw JSON or None, meta). Raises Fatal to stop the run (BudgetStop when the next attempt, a retry
+    included, would cross the audio-minute cap)."""
     rng = rng or random.Random()
     meta = {"attempts": 0, "retries": []}
     for attempt in range(policy.max_attempts):
         limiter.wait()
+        aid = budget.reserve(job, seconds, key_hash) if budget is not None else None
         meta["attempts"] += 1
         t0 = time.perf_counter()
         try:
@@ -561,6 +768,8 @@ def send_one(job: Job, audio: bytes, *, transport, url: str, key: str, limiter: 
                                   timeout=policy.timeout_s)
         except TransientError as e:
             resp, why = None, str(e)
+        if budget is not None:
+            budget.result(aid, job, resp.status if resp is not None else "network error")
         meta["latency_ms"] = round((time.perf_counter() - t0) * 1000, 1)
         if resp is not None:
             kind = classify_status(resp)
@@ -616,48 +825,108 @@ def benchmark_version() -> dict:
             "adapter": ADAPTER}
 
 
-def plan(jobs: list[Job], root: Path, *, refresh: bool, max_requests: int | None) -> dict:
+def plan(jobs: list[Job], root: Path, *, refresh: bool, max_requests: int | None, used_s: float = 0.0,
+         cap_s: float | None = None) -> dict:
+    """What to send. Units: one per item, except tier2x, where a unit is all of one speaker's clips not
+    yet answered (speakers in ascending ID order, after the other items). Units are taken in order while
+    they fit (used + planned <= cap, at most --max-requests requests); the first unit that does not fit
+    ends the list, so a speaker is never split and none is skipped."""
     rows, todo = {}, []
     for j in jobs:
-        a = audio_bytes(j)
-        k, _ = cache_key(a, j.text, j.api_lang)
-        sec = wav_seconds(a)
+        k, sec, nbytes = key_seconds(j)
         r = rows.setdefault(j.test, {"items": 0, "cached": 0, "over_limit": 0, "to_send": 0, "send_s": 0.0,
-                                     "all_s": 0.0})
+                                     "all_s": 0.0, "held_back": 0})
         r["items"] += 1
         r["all_s"] += sec
         if not refresh and read_cached(root, k) is not None:
             r["cached"] += 1
-        elif sec > MAX_AUDIO_S or len(a) > MAX_AUDIO_BYTES:
+        elif sec > MAX_AUDIO_S or nbytes > MAX_AUDIO_BYTES:
             r["over_limit"] += 1
         else:
             todo.append((j, k, sec))
-    if max_requests is not None:
-        todo = todo[:max(0, max_requests)]
-    for j, _, sec in todo:
+    units, groups = [], {}
+    for item in todo:
+        if item[0].test == TIER2X:
+            groups.setdefault(item[0].group, []).append(item)
+        else:
+            units.append([item])
+    units += [groups[g] for g in sorted(groups)]
+    chosen, add_s, stopped_by, next_unit = [], 0.0, None, None
+    for u in units:
+        us = sum(s for _, _, s in u)
+        if max_requests is not None and len(chosen) + len(u) > max(0, max_requests):
+            stopped_by, next_unit = "--max-requests", u
+            break
+        if cap_s is not None and used_s + add_s + us > cap_s - CAP_SLACK_S:
+            stopped_by, next_unit = "--quota-cap-min", u
+            break
+        chosen += u
+        add_s += us
+    for j, _, sec in chosen:
         rows[j.test]["to_send"] += 1
         rows[j.test]["send_s"] += sec
-    send_s = sum(s for _, _, s in todo)
+    picked = {id(x) for x in chosen}
+    for j, _, _ in (x for x in todo if id(x) not in picked):
+        rows[j.test]["held_back"] += 1
+    spk = [j.group for j, _, _ in chosen if j.test == TIER2X]
+    selection = None
+    if groups:
+        names = list(dict.fromkeys(spk))
+        selection = {"speakers": names, "n_speakers": len(names), "clips": len(spk),
+                     "seconds": sum(s for j, _, s in chosen if j.test == TIER2X),
+                     "next_speaker": None if not next_unit or next_unit[0][0].test != TIER2X else
+                     {"speaker": next_unit[0][0].group, "clips": len(next_unit),
+                      "seconds": sum(s for _, _, s in next_unit)},
+                     "speakers_with_clips_to_send": len(groups)}
+    send_s = add_s
     minutes = send_s / 60
-    per_req_min = sum(math.ceil(s / 60) for _, _, s in todo)
+    per_req_min = sum(math.ceil(s / 60) for _, _, s in chosen)
     lo, hi = PRICES["overage_per_min"]
-    return {"rows": rows, "todo": todo, "n_send": len(todo), "send_hours": send_s / 3600,
+    return {"rows": rows, "todo": chosen, "n_send": len(chosen), "send_hours": send_s / 3600,
+            "budget": {"used_s": used_s, "cap_s": cap_s, "add_s": add_s,
+                       "left_s": None if cap_s is None else cap_s - used_s - add_s,
+                       "held_back": len(todo) - len(chosen), "stopped_by": stopped_by},
+            "selection": selection,
             "cost": {"minutes": round(minutes, 1), "minutes_if_each_request_rounded_up": per_req_min,
                      "eur_overage_if_billed_per_second_total": [round(minutes * lo, 2), round(minutes * hi, 2)],
                      "eur_overage_if_each_request_rounded_up": [round(per_req_min * lo, 2), round(per_req_min * hi, 2)],
+                     "eur_if_all_overage_starter": round(math.ceil(minutes - 1e-9) * STARTER_OVERAGE_EUR_PER_MIN, 2),
+                     "starter_overage_eur_per_min": STARTER_OVERAGE_EUR_PER_MIN, "starter_source": STARTER_PRICE_SOURCE,
                      "note": "a plan's included minutes are used first; Free (15 min) is non-commercial", **PRICES}}
 
 
-def print_plan(p: dict, *, url: str, dry: bool, rps: float, concurrency: int) -> None:
+def print_plan(p: dict, *, url: str, dry: bool, rps: float, concurrency: int, used_from: str = "") -> None:
     out = sys.stderr
     print(("DRY RUN, FAKE DATA: nothing leaves this machine; a local fake answers.\n" if dry else
            "LIVE: these requests are billed by Lingolix.\n") + f"endpoint  POST {url}", file=out)
-    print(f"{'test':<14}{'items':>7}{'cached':>8}{'>limit':>8}{'to send':>9}{'audio min':>11}", file=out)
+    print(f"{'test':<14}{'items':>7}{'cached':>8}{'>limit':>8}{'to send':>9}{'audio min':>11}{'held back':>11}",
+          file=out)
     for t, r in p["rows"].items():
-        print(f"{t:<14}{r['items']:>7}{r['cached']:>8}{r['over_limit']:>8}{r['to_send']:>9}{r['send_s'] / 60:>11.1f}",
-              file=out)
+        print(f"{t:<14}{r['items']:>7}{r['cached']:>8}{r['over_limit']:>8}{r['to_send']:>9}{r['send_s'] / 60:>11.2f}"
+              f"{r['held_back']:>11}", file=out)
+    b = p["budget"]
+    cap = "none" if b["cap_s"] is None else f"{b['cap_s'] / 60:.2f} min"
+    left = "" if b["left_s"] is None else f"; left under the cap after it: {b['left_s'] / 60:.2f} min"
+    print(f"audio minutes: used so far {b['used_s'] / 60:.2f} ({used_from or 'given'}); cap {cap}; this run adds "
+          f"{b['add_s'] / 60:.2f} if no attempt is retried{left}. Retries count too: the run stops before any "
+          "attempt that would cross the cap.", file=out)
+    if b["held_back"]:
+        print(f"held back by {b['stopped_by']}: {b['held_back']} requests", file=out)
+    s = p.get("selection")
+    if s:
+        print(f"speechocean762 extension: {s['n_speakers']} speakers, {s['clips']} clips, {s['seconds'] / 60:.2f} audio "
+              f"min (of {s['speakers_with_clips_to_send']} speakers with clips not yet answered)", file=out)
+        if s["speakers"]:
+            print("  speakers: " + " ".join(s["speakers"]), file=out)
+        if s["next_speaker"]:
+            n = s["next_speaker"]
+            print(f"  stops before speaker {n['speaker']} ({n['clips']} clips, {n['seconds'] / 60:.2f} min): it does not "
+                  "fit", file=out)
     c = p["cost"]
     print(f"requests to send: {p['n_send']}   audio: {p['send_hours']:.2f} h ({c['minutes']} min)", file=out)
+    if p["n_send"]:
+        print(f"if all of it is billed as overage on the Starter plan (EUR {STARTER_OVERAGE_EUR_PER_MIN}/min, full "
+              f"minutes): EUR {c['eur_if_all_overage_starter']:.2f}", file=out)
     if p["n_send"]:
         a, b = c["eur_overage_if_billed_per_second_total"], c["eur_overage_if_each_request_rounded_up"]
         print(f"estimated cost (exact billing unit not documented): {c['minutes']} audio min, i.e. EUR "
@@ -671,8 +940,10 @@ def print_plan(p: dict, *, url: str, dry: bool, rps: float, concurrency: int) ->
 
 
 def run_jobs(todo: list[tuple[Job, str, float]], *, transport, key: str, root: Path, url: str, rps: float,
-             concurrency: int, policy: Policy, sleep=time.sleep, clock=time.monotonic, progress=True) -> dict:
-    """Send every (job, cache key) in `todo`, caching each answer as it arrives. Returns run counters."""
+             concurrency: int, policy: Policy, sleep=time.sleep, clock=time.monotonic, progress=True,
+             budget: Budget | None = None) -> dict:
+    """Send every (job, cache key, seconds) in `todo`, caching each answer as it arrives. With a budget,
+    every attempt is reserved against the cap first (see Budget). Returns run counters."""
     limiter = RateLimiter(rps, clock=clock, sleep=sleep)
     stop = threading.Event()
     lock = threading.Lock()
@@ -681,16 +952,20 @@ def run_jobs(todo: list[tuple[Job, str, float]], *, transport, key: str, root: P
     done_by_test: dict = {}
 
     def one(item):
-        job, key_hash, _sec = item
+        job, key_hash, sec = item
         if stop.is_set():
             return
         audio = audio_bytes(job) if job.audio else b""
         _, inputs = cache_key(audio, job.text, job.api_lang)
+        if budget is not None:
+            sec = wav_seconds(audio)            # the bytes about to be sent, not the planned figure
         try:
             raw, meta = send_one(job, audio, transport=transport, url=url, key=key, limiter=limiter, policy=policy,
-                                 sleep=sleep)
+                                 sleep=sleep, budget=budget, seconds=sec, key_hash=key_hash)
         except Fatal as e:
             stop.set()
+            if budget is not None:
+                budget.close(scrub(str(e), key))
             with lock:
                 st["stopped"] = st["stopped"] or scrub(str(e), key)
             return
@@ -712,6 +987,8 @@ def run_jobs(todo: list[tuple[Job, str, float]], *, transport, key: str, root: P
             parse_response(raw, job.text, job.lang)
         except ResponseFormatError as e:
             stop.set()
+            if budget is not None:
+                budget.close("a response broke an adapter assumption")
             with lock:
                 st["stopped"] = f"{e} Raw response: {p}"
             return
@@ -738,6 +1015,8 @@ def run_jobs(todo: list[tuple[Job, str, float]], *, transport, key: str, root: P
                 list(ex.map(one, todo))
     except KeyboardInterrupt:
         stop.set()
+        if budget is not None:
+            budget.close("interrupted")
         st["stopped"] = "interrupted (Ctrl-C); rerun the same command to resume"
     st["not_sent"] = len(todo) - st["sent"]
     return st
@@ -760,9 +1039,9 @@ def lingolix_records(jobs: list[Job], root: Path) -> tuple[dict, dict]:
     """{test: {id: record}} from the cache, and provenance (model versions, test dates, counts)."""
     recs: dict = {}
     prov = {"model_versions": {}, "version_headers": {}, "first_utc": None, "last_utc": None, "responses": 0}
+    seen: set = set()                     # tier2 and tier2x share the 500 benchmark responses: count each once
     for j in jobs:
-        a = audio_bytes(j)
-        k, _ = cache_key(a, j.text, j.api_lang)
+        k = key_seconds(j)[0]
         c = read_cached(root, k)
         if c is None:
             continue
@@ -770,6 +1049,9 @@ def lingolix_records(jobs: list[Job], root: Path) -> tuple[dict, dict]:
             recs.setdefault(j.test, {})[j.id] = to_record(j.id, c, j.text, j.lang)
         except ResponseFormatError as e:
             raise ResponseFormatError(f"{e} Raw response: {resp_path(root, k)}") from None
+        if k in seen:
+            continue
+        seen.add(k)
         prov["responses"] += 1
         v = str(c["response"].get("model_version"))
         prov["model_versions"][v] = prov["model_versions"].get(v, 0) + 1
@@ -921,7 +1203,181 @@ def swap_table(jobs: list[Job], root: Path, pcache: Path) -> dict:
     return out
 
 
-def build_table(jobs: list[Job], root: Path, pcache: Path, *, dry: bool) -> dict:
+def _answered(R: dict, i: str) -> bool:
+    return bool(R.get(i)) and not R[i].get("error")
+
+
+def _pcc(man: list[dict], R: dict) -> dict:
+    """Word and sentence Pearson exactly as L.metrics computes them for test 2 (collect + pearsonr)."""
+    from scipy.stats import pearsonr
+
+    c = L.collect(man, R)
+    out = {"n_failed": c["n_failed"]}
+    for name, prs in (("word", c["word_pairs"]), ("utterance", c["utt_pairs"])):
+        out[f"pcc_{name}"] = float(pearsonr([p[0] for p in prs], [p[1] for p in prs]).statistic) \
+            if len(prs) >= 3 else None
+    return out
+
+
+def _pearson_rows(S):
+    """Pearson r from per-row sums [n, sx, sy, sxx, syy, sxy] (rows of a 2-D array)."""
+    import numpy as np
+
+    n, sx, sy, sxx, syy, sxy = (S[..., k] for k in range(6))
+    with np.errstate(invalid="ignore", divide="ignore"):
+        return (n * sxy - sx * sy) / np.sqrt((n * sxx - sx * sx) * (n * syy - sy * sy))
+
+
+def speaker_bootstrap(man: list[dict], ra: dict, rb: dict, which: str, speakers: dict, n: int = SPEAKER_BOOTSTRAP,
+                      seed: int = 0) -> dict:
+    """Pearson of `which` ("word" or "utt") pairs for both systems on the same resamples of speakers (with
+    replacement, numpy default_rng(seed), n resamples). Clips where either system has no answer are left
+    out; within a clip each system keeps all its own pairs, so with every speaker drawn once the values
+    are exactly those of L.metrics. Returns per-system and difference intervals and _p_two's p."""
+    import numpy as np
+
+    per: dict = {}
+    for it in man:
+        i = it["id"]
+        if not (_answered(ra, i) and _answered(rb, i)):
+            continue
+        s = per.setdefault(speakers[i], ([], []))
+        s[0].extend(L.collect([it], {i: ra[i]})[f"{which}_pairs"])
+        s[1].extend(L.collect([it], {i: rb[i]})[f"{which}_pairs"])
+    names = sorted(per)
+    if not names:
+        return {"n_speakers": 0, "resamples": n, "seed": seed}
+    allp = [[p for s in names for p in per[s][k]] for k in (0, 1)]
+    mx = [float(np.mean([p[0] for p in a])) if a else 0.0 for a in allp]
+    my = [float(np.mean([p[1] for p in a])) if a else 0.0 for a in allp]
+
+    def sums(k):
+        S = np.zeros((len(names), 6))
+        for g, s in enumerate(names):
+            if per[s][k]:
+                x = np.array([p[0] for p in per[s][k]], dtype=float) - mx[k]      # centred: no cancellation
+                y = np.array([p[1] for p in per[s][k]], dtype=float) - my[k]
+                S[g] = [len(x), x.sum(), y.sum(), (x * x).sum(), (y * y).sum(), (x * y).sum()]
+        return S
+
+    SA, SB = sums(0), sums(1)
+    G = len(names)
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, G, size=(n, G))
+    counts = np.zeros((n, G))
+    np.add.at(counts, (np.repeat(np.arange(n), G), idx.ravel()), 1.0)
+    va, vb = _pearson_rows(counts @ SA), _pearson_rows(counts @ SB)
+    ok = np.isfinite(va) & np.isfinite(vb)
+    d = (va - vb)[ok]
+    return {"n_speakers": G, "resamples": n, "seed": seed, "pronunciada_ci": _q(va[np.isfinite(va)]),
+            "lingolix_ci": _q(vb[np.isfinite(vb)]), "delta_ci": _q(d), "p": _p_two(d),
+            "full_sample": [float(_pearson_rows(SA.sum(0))), float(_pearson_rows(SB.sum(0)))]}
+
+
+def _compare_pronunciada(new: dict, old: dict, ids: list[str]) -> dict:
+    """Largest difference between two sets of Pronunciada answers on the same clips (word scores, error
+    types, sentence score)."""
+    word = sent = 0.0
+    other, compared, missing = 0, 0, 0
+    for i in ids:
+        a, b = new.get(i), old.get(i)
+        if not (a and b) or a.get("error") or b.get("error"):
+            missing += 1
+            continue
+        compared += 1
+        wa, wb = a.get("words", []), b.get("words", [])
+        if len(wa) != len(wb) or any(x["text"] != y["text"] or x.get("error_type") != y.get("error_type")
+                                     for x, y in zip(wa, wb)):
+            other += 1
+        word = max([word] + [abs(float(x["score"]) - float(y["score"])) for x, y in zip(wa, wb)])
+        ua, ub = L.utterance_score(a), L.utterance_score(b)
+        if (ua is None) != (ub is None):
+            other += 1
+        elif ua is not None:
+            sent = max(sent, abs(ua - ub))
+    return {"compared": compared, "missing": missing, "max_abs_diff_word_score": word,
+            "max_abs_diff_sentence_score": sent, "clips_with_other_differences": other,
+            "identical": compared == len(ids) and word == 0.0 and sent == 0.0 and other == 0}
+
+
+def so762_more_speakers(jobs: list[Job], recs: dict, PA: dict, PA_tier2: dict) -> dict:
+    """speechocean762, more speakers: Pronunciada (tier2x answers) against Lingolix on (a) the benchmark's
+    500 clips, (b) every clip Lingolix answered, (c) speakers with all 20 clips answered."""
+    T2 = L.tests()["tier2"]
+    items, spk = L.tier2x_items()
+    bad = L.tier2x_mismatches(items, T2)
+    if bad:
+        raise RuntimeError(f"tier2x items do not reproduce the benchmark's test 2 items: {bad[:5]}")
+    LX = recs.get(TIER2X, {})
+    xj = [j for j in jobs if j.test == TIER2X]
+    per_spk = {}
+    for it in items:
+        per_spk.setdefault(spk[it["id"]], []).append(it["id"])
+    complete = sorted(s for s, ids in per_spk.items() if all(i in LX for i in ids))
+    rows_def = (("a", "the benchmark's 500 clips", T2, True),
+                ("b", "every clip with a Lingolix answer", [it for it in items if it["id"] in LX], True),
+                ("c", "complete speakers only",
+                 [it for it in items if spk[it["id"]] in set(complete)], False))
+    rows = {}
+    for tag, name, man, prev in rows_def:
+        ids = [it["id"] for it in man]
+        row = {"name": name, "n_clips": len(man), "n_speakers": len({spk[i] for i in ids}),
+               "lingolix_answered": sum(i in LX for i in ids),
+               "pronunciada_answered": sum(_answered(PA, i) for i in ids)}
+        if tag == "c":
+            row["complete_speakers"] = len(complete)
+            row["speakers_total"] = len(per_spk)
+        if man and row["lingolix_answered"]:
+            mp, ml = _pcc(man, PA), _pcc(man, LX)
+            row["lingolix_failed_or_missing"] = ml["n_failed"]
+            row["pronunciada_failed_or_missing"] = mp["n_failed"]
+            for which, k in (("utt", "pcc_utterance"), ("word", "pcc_word")):
+                bs = speaker_bootstrap(man, PA, LX, which, spk)
+                x = {"pronunciada": {"value": mp[k], "ci": bs.get("pronunciada_ci")},
+                     "lingolix": {"value": ml[k], "ci": bs.get("lingolix_ci")},
+                     "delta": (mp[k] if mp[k] is not None else math.nan) - (ml[k] if ml[k] is not None else math.nan),
+                     "delta_ci": bs.get("delta_ci"), "p": bs.get("p"), "n_speakers_resampled": bs["n_speakers"]}
+                if prev:
+                    from bench.rivals.eval_lingolix import paired_t2
+
+                    pt = paired_t2(man, PA, LX, which)
+                    x["previous_method"] = {"p": pt["p"], "delta_ci": pt["delta_ci"], "n_common": pt["n_common"]}
+                row[k] = x
+        rows[tag] = row
+    sent = {j.id for j in xj if j.id in LX}
+    left = [key_seconds(j)[1] for j in xj if j.id not in sent]
+    left_min = sum(left) / 60
+    return {"items": {"n": len(items), "speakers": len(per_spk), "clips_per_speaker": sorted(set(map(len, per_spk.values()))),
+                      "benchmark_items_reproduced": len(T2) - len(bad), "benchmark_items": len(T2)},
+            "pronunciada_vs_test2_answers": _compare_pronunciada(PA, PA_tier2, [it["id"] for it in T2]),
+            "rows": rows,
+            "to_finish": {"clips": len(left), "of": len(items), "audio_minutes": left_min,
+                          "eur_if_all_overage": left_min * STARTER_OVERAGE_EUR_PER_MIN,
+                          "whole_minutes": math.ceil(left_min - 1e-9),
+                          "eur_if_all_overage_whole_minutes": math.ceil(left_min - 1e-9) * STARTER_OVERAGE_EUR_PER_MIN,
+                          "eur_per_min": STARTER_OVERAGE_EUR_PER_MIN, "price_source": STARTER_PRICE_SOURCE},
+            "method": "Pearson as in test 2 (L.metrics rules); 95% intervals and two-sided p from 10,000 resamples "
+                      "of speakers (corpus speaker ID), both systems on the same resample, numpy default_rng(0); "
+                      "previous_method = the test 2 rows' paired resampling (eval_lingolix.paired_t2: 1,000 "
+                      "resamples of groups formed by the first four digits of the utterance id)"}
+
+
+def mandarin_note(live_base: Path | None = None) -> dict:
+    """MANDARIN, checked against the evidence file when it is present (never when absent)."""
+    p = (Path(live_base) if live_base else LIVE) / "smoke_zh" / "ompal-00100101.json"
+    out = dict(MANDARIN, evidence_checked=False)
+    if p.exists():
+        e = json.loads(p.read_text(encoding="utf-8"))
+        msg = str(((e.get("body") or {}).get("error") or {}).get("message", ""))
+        codes = re.findall(r"\b[a-z]{2}\b", msg.split("Supported languages:", 1)[-1])
+        if e.get("status") != MANDARIN["status"] or MANDARIN["message"] not in msg or codes != MANDARIN["supported"] \
+                or e.get("received_utc") != MANDARIN["request_utc"]:
+            raise RuntimeError(f"the Mandarin note does not match its evidence file {p.name}")
+        out["evidence_checked"] = True
+    return out
+
+
+def build_table(jobs: list[Job], root: Path, pcache: Path, *, dry: bool, tier2x_responses: Path | None = None) -> dict:
     from bench.rivals.eval_lingolix import paired_t2
 
     recs, prov = lingolix_records(jobs, root)
@@ -968,6 +1424,18 @@ def build_table(jobs: list[Job], root: Path, pcache: Path, *, dry: bool) -> dict
                                       "lingolix_word_coverage": ml.get("word_coverage")}
     if any(j.test == "fleurs-swap" for j in jobs):
         res["fleurs_swap"] = swap_table(jobs, root, pcache)
+    if any(j.test == TIER2X for j in jobs):
+        tx = Path(tier2x_responses) if tier2x_responses else L.responses_path(TIER2X)
+        PA = {}
+        if tx.exists():
+            for line in tx.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    r = json.loads(line)
+                    PA[r["id"]] = r
+        if PA:
+            res["so762_more_speakers"] = {"pronunciada_outputs_from": _public_path(tx),
+                                          **so762_more_speakers(jobs, recs, PA, pronunciada_responses(pcache, "tier2"))}
+    res["mandarin"] = mandarin_note(None if dry else root)
     mv = prov["model_versions"]
     out = {"dry_run": dry, "banner": BANNER if dry else None,
            "lingolix": {"endpoint": f"POST {base_url()}{ENDPOINT_PATH}", "options": OPTIONS,
@@ -1026,7 +1494,61 @@ def _delta(r: dict, pct=False) -> str:
         return "n/a"
     f = (lambda v: f"{100 * v:+.1f}") if pct else (lambda v: f"{v:+.3f}")
     c = f" [{f(ci[0])}, {f(ci[1])}]" if ci[0] is not None else ""
-    return f"{f(d)}{c}, p {p:.3f}" if p is not None else f"{f(d)}{c}"
+    if p is None:
+        return f"{f(d)}{c}"
+    return f"{f(d)}{c}, p < 0.001" if p < 0.0005 else f"{f(d)}{c}, p {p:.3f}"
+
+
+def _md_more_speakers(m: dict | None) -> list[str]:
+    if not m:
+        return []
+    it, cmp_, fin = m["items"], m["pronunciada_vs_test2_answers"], m["to_finish"]
+    same = ("equal those of test 2 above on all 500 clips" if cmp_["identical"] else
+            f"differ from those of test 2 above (largest word-score difference {cmp_['max_abs_diff_word_score']}, "
+            f"sentence {cmp_['max_abs_diff_sentence_score']}, {cmp_['clips_with_other_differences']} clips with "
+            f"other differences, {cmp_['missing']} not compared)")
+    out = ["## speechocean762, more speakers", "",
+           f"All {it['n']:,} speechocean762 test clips ({it['speakers']} speakers, {', '.join(map(str, it['clips_per_speaker']))} "
+           f"clips each) as test 2 items, built with build_tier2.py's rules; the builder reproduces "
+           f"{it['benchmark_items_reproduced']} of the benchmark's {it['benchmark_items']} items exactly. Lingolix gets "
+           "the same request as in test 2, so the benchmark's 500 clips were not sent again. Pronunciada's answers "
+           f"(read from {m['pronunciada_outputs_from']}) {same}.", "",
+           "| clips | metric | Pronunciada [95% CI] | Lingolix measured [95% CI] | Pronunciada − Lingolix [95% CI], p | p, test 2 resampling |",
+           "|---|---|---|---|---|---|"]
+    for tag, r in m["rows"].items():
+        size = f"{r['n_clips']:,} clips, {r['n_speakers']} speakers"
+        if tag == "c":
+            size = (f"{r['complete_speakers']} of {r['speakers_total']} speakers with all "
+                    f"{SO762_CLIPS_PER_SPEAKER} clips answered, {r['n_clips']:,} clips")
+        label = f"{tag}. {r['name']} ({size})"
+        for k, name in (("pcc_utterance", "sentence Pearson"), ("pcc_word", "word Pearson")):
+            x = r.get(k)
+            if not x:
+                out.append(f"| {label} | {name} | n/a | n/a | n/a | — |")
+                continue
+            prev = x.get("previous_method")
+            pp = "—" if not prev or prev.get("p") is None else f"{prev['p']:.3f}"
+            out.append(f"| {label} | {name} | {_cell(x['pronunciada'])} | {_cell(x['lingolix'])} | {_delta(x)} | {pp} |")
+    out += ["", "p: two-sided, from 10,000 resamples of speakers (with replacement; both systems on the same resample; "
+            "the intervals come from the same resamples). p, test 2 resampling: the method of the test 2 rows above "
+            "(1,000 resamples of groups formed by the first four digits of the utterance id), repeated for continuity.",
+            "",
+            f"To finish the split: {fin['clips']:,} of {fin['of']:,} clips not yet sent, {fin['audio_minutes']:.2f} audio "
+            f"minutes. If all of it is billed as overage at the Starter rate (EUR {fin['eur_per_min']:.2f} per minute): "
+            f"EUR {fin['eur_if_all_overage']:.2f}, or EUR {fin['eur_if_all_overage_whole_minutes']:.2f} for "
+            f"{fin['whole_minutes']} whole minutes. Source: {fin['price_source']}.", ""]
+    return out
+
+
+def _md_mandarin(z: dict | None) -> list[str]:
+    if not z:
+        return []
+    t = z["request_utc"][11:19]
+    return ["## Mandarin", "",
+            f"{z['date']}: Lingolix does not accept Mandarin. One OMPAL clip ({z['clip_seconds']:g} s) "
+            f"sent with `language_code={z['language_code']}` at {t} UTC was refused with HTTP {z['status']} and the "
+            f"message \"{z['message']}\", followed by the supported codes: {', '.join(z['supported'])}. Nothing was "
+            "billed. The OMPAL (Mandarin) comparison could therefore not be run.", ""]
 
 
 def markdown(t: dict) -> str:
@@ -1083,6 +1605,8 @@ def markdown(t: dict) -> str:
             "same resamples. Length errors caught: each system's own error flag on the 40 Japanese length "
             "items (Lingolix: report.py's flag, expected vs detected syllable IPA). Failed or unanswered "
             "requests: see the JSON.", ""]
+    out += _md_more_speakers(t.get("so762_more_speakers"))
+    out += _md_mandarin(t.get("mandarin"))
     if t.get("dry_run"):
         out += [f"**{BANNER}**", ""]
     return "\n".join(out)
@@ -1121,6 +1645,17 @@ def main(argv=None) -> int:
     ap.add_argument("--max-attempts", type=int, default=6)
     ap.add_argument("--pronunciada-cache", type=Path, default=CACHE,
                     help="cache root holding Pronunciada's outputs (third_party/lingolix/responses, calib/api)")
+    ap.add_argument("--so762-extend", action="store_true",
+                    help="also send more speechocean762 test clips: whole speakers in ascending ID order while they "
+                         "fit in the audio-minute budget (a live run needs --quota-cap-min)")
+    ap.add_argument("--quota-cap-min", type=float,
+                    help="audio-minute cap on the total ever sent (ledger total + this run, retries included); "
+                         "required for a live send")
+    ap.add_argument("--quota-used-min", type=float,
+                    help="audio minutes already used (default: the ledger total)")
+    ap.add_argument("--pronunciada-tier2x", type=Path,
+                    help="Pronunciada's answers on all 2,500 speechocean762 test clips (default: "
+                         "$PRONUNCIADA_CACHE/third_party/lingolix/responses/pronunciada/tier2x.jsonl)")
     ap.add_argument("--cache-dir", type=Path, help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
 
@@ -1133,21 +1668,50 @@ def main(argv=None) -> int:
     rps = a.rps if a.rps else (500.0 if dry else 1.0)
     root = live_root(dry, a.cache_dir)
 
+    for name in ("quota_cap_min", "quota_used_min"):
+        v = getattr(a, name)
+        if v is not None and not (math.isfinite(v) and v >= 0):
+            ap.error(f"--{name.replace('_', '-')} must be a finite number >= 0")
+    live_send = not dry and not a.plan_only and not a.report_only
     key = None
-    if not dry and not a.plan_only and not a.report_only:
+    if live_send:
         key = (os.environ.get(KEY_ENV) or "").strip()
         if not key:
             print(f"refusing to start: set {KEY_ENV} in the environment (or use --dry-run, --plan-only, "
                   "--report-only)", file=sys.stderr)
+            return 2
+        if a.quota_cap_min is None:
+            print("refusing to start: a live send needs --quota-cap-min (paid plans bill overage per minute, so "
+                  "the API's quota does not stop it; this cap is the only guard)", file=sys.stderr)
             return 2
     guard = no_network_guard() if dry else contextlib.nullcontext()
     with guard:
         jobs = [] if a.no_benchmark else benchmark_jobs(langs, [t for t in TESTS])
         if a.fleurs_swap:
             jobs += fleurs_swap_jobs(langs)
+        so762 = "en" in langs and L.SO762_LOCAL.exists()
+        if a.so762_extend:
+            if not so762:
+                ap.error("--so762-extend needs English and the local speechocean762 manifest")
+            jobs += tier2x_jobs()
+        report_jobs = jobs + (tier2x_jobs() if so762 and not a.so762_extend and not a.no_benchmark else [])
         url = f"{(DEFAULT_BASE if dry else base_url())}{ENDPOINT_PATH}"
-        p = plan(jobs, root, refresh=a.refresh, max_requests=a.max_requests)
-        print_plan(p, url=url, dry=dry, rps=rps, concurrency=concurrency)
+        ledger = Ledger(root / LEDGER)
+        try:
+            bf = backfill_ledger(root, ledger, job_resolver(jobs))
+            ledger_s = ledger.total_s()
+        except Fatal as e:
+            print(f"STOPPED: {e}", file=sys.stderr)
+            return 3
+        if bf["added"]:
+            print(f"ledger {ledger.path}: backfilled {bf['added']} cached responses ({bf['seconds'] / 60:.2f} min)",
+                  file=sys.stderr)
+        used_s = ledger_s if a.quota_used_min is None else 60 * a.quota_used_min
+        used_from = (f"ledger total {ledger_s / 60:.2f}" if a.quota_used_min is None else
+                     f"--quota-used-min; ledger total {ledger_s / 60:.2f}")
+        cap_s = None if a.quota_cap_min is None else 60 * a.quota_cap_min
+        p = plan(jobs, root, refresh=a.refresh, max_requests=a.max_requests, used_s=used_s, cap_s=cap_s)
+        print_plan(p, url=url, dry=dry, rps=rps, concurrency=concurrency, used_from=used_from)
         if a.plan_only:
             return 0
         st = None
@@ -1159,8 +1723,12 @@ def main(argv=None) -> int:
             policy = Policy(max_attempts=a.max_attempts, timeout_s=a.timeout,
                             **({"base_s": 0.01, "cap_s": 0.05} if dry else {}))
             started = utc_now()
+            budget = Budget(cap_s, used_s, ledger)
             st = run_jobs(p["todo"], transport=transport, key="dry-run-placeholder" if dry else key, root=root,
-                          url=url, rps=rps, concurrency=concurrency, policy=policy)
+                          url=url, rps=rps, concurrency=concurrency, policy=policy, budget=budget)
+            st["budget"] = {"ledger": _public_path(ledger.path), "used_before_min": used_s / 60,
+                            "cap_min": a.quota_cap_min, "attempts": budget.attempts,
+                            "added_min": (budget.used_s - budget.start_s) / 60, "used_after_min": budget.used_s / 60}
             log = {"banner": BANNER if dry else None, "dry_run": dry, "started_utc": started, "finished_utc": utc_now(),
                    "endpoint": f"POST {url}", "options": OPTIONS, "language_codes": sorted({j.api_lang for j in jobs}),
                    "rps": rps, "concurrency": concurrency, "policy": dataclasses.asdict(policy),
@@ -1172,17 +1740,23 @@ def main(argv=None) -> int:
                    "model_versions": st["model_versions"], "version_headers": st["version_headers"],
                    "failures": st["failures"], "stopped": st["stopped"], "git": git_state(),
                    "benchmark": benchmark_version(), "audio_hours_planned": round(p["send_hours"], 3),
-                   "cost_estimate": p["cost"], "python": sys.version.split()[0]}
+                   "cost_estimate": p["cost"], "budget": st["budget"], "selection": p["selection"],
+                   "python": sys.version.split()[0]}
             lp = root / "runs" / f"{started.replace(':', '')}.json"
             write_atomic(lp, json.dumps(log, indent=1, ensure_ascii=False), secret=key)
             print(f"run log {lp}: sent {st['sent']}, ok {st['succeeded']}, failed {st['failed']}, "
                   f"retries {st['retries']}, model_version {st['model_versions']}", file=sys.stderr)
+            b = st["budget"]
+            print(f"audio minutes: {b['attempts']} attempts added {b['added_min']:.2f}; used now "
+                  f"{b['used_after_min']:.2f} of the cap {b['cap_min'] if b['cap_min'] is not None else 'none'}",
+                  file=sys.stderr)
             if dry:
                 print(f"fake transport calls: {len(transport.calls)}", file=sys.stderr)
             if st["stopped"]:
                 print(f"STOPPED: {st['stopped']}", file=sys.stderr)
                 return 3
-        t = build_table(jobs, root, a.pronunciada_cache, dry=dry)
+        kw = {"tier2x_responses": a.pronunciada_tier2x} if a.pronunciada_tier2x else {}
+        t = build_table(report_jobs, root, a.pronunciada_cache, dry=dry, **kw)
         jp, mp = output_paths(dry, root)
         write_atomic(jp, json.dumps(t, indent=1, ensure_ascii=False) + "\n", secret=key)
         md = markdown(t)
