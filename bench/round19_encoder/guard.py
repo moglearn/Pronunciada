@@ -69,7 +69,9 @@ def main():
     ap.add_argument("--l2sp", type=float, default=0.0)
     ap.add_argument("--soup", type=int, default=1)
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--budget", type=int, default=6000)
     a = ap.parse_args()
+    TC.Model.budget = a.budget
     from bench.calib.common import load_json, save_json
 
     items, vocab = TC.load_items()

@@ -120,11 +120,12 @@ def cut_feeds(items, device):
 class Model:
     """stage-2 model: the head + the (adaptable) top graph."""
 
+    budget = 6000    # padded frames (50 Hz) per top-graph call (set from --budget)
+
     def __init__(self, head, top, lnorm, device):
         import torch
 
         self.head, self.top, self.device = head, top, device
-        self.budget = 8000    # padded frames (50 Hz) per top-graph call
         self.mu = {k: torch.tensor(lnorm[k][0], dtype=torch.float32, device=device) for k in ("enc5", "final")}
         self.sd = {k: torch.tensor(lnorm[k][1], dtype=torch.float32, device=device) for k in ("enc5", "final")}
 
@@ -160,7 +161,11 @@ class Model:
             f = cut_feeds(mb, self.device)
             P = pool_matrix(mb, f[names[0]].shape[0], self.device)
             feeds = [f[k] for k in names]
-            if torch.is_grad_enabled() and len(parts) > 1:
+            trainable = any(q.requires_grad for q in self.top.parameters())
+            if not trainable:
+                with torch.no_grad():
+                    e5, fi = run(P, *feeds)
+            elif torch.is_grad_enabled() and len(parts) > 1:
                 e5, fi = checkpoint(run, P, *feeds, use_reentrant=False)
             else:
                 e5, fi = run(P, *feeds)
@@ -361,10 +366,13 @@ def main():
     ap.add_argument("--lr-head", type=float, default=3e-4)
     ap.add_argument("--l2sp", type=float, default=0.0)
     ap.add_argument("--soup", type=int, default=1)
+    ap.add_argument("--scratch", action="store_true", help="fresh head, no stage-1 start (use --e2 25)")
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--budget", type=int, default=6000, help="padded frames per top-graph call")
     a = ap.parse_args()
     from bench.calib.common import load_json, save_json
 
+    Model.budget = a.budget
     t0 = time.time()
 
     def log(s):
@@ -388,6 +396,9 @@ def main():
                 continue
             tr, te = fl[fi]
             h1, tabn, uttn = stage1(items, tr, lnorm, vocab, seed, fi, cache)
+            if a.scratch:   # joint training from a fresh head (no stage 1): same recipe, top trainable or not
+                torch.manual_seed(seed * 10 + fi)
+                h1 = SH.build_module(h1.tab.in_features, h1.utt.in_features, len(vocab), LAYERS, **S6)
             ite = ES.apply_norms(items, te, tabn, uttn, lnorm, LAYERS)
             if a.mode == "stage1":
                 s, p, w = SH.predict(h1, ite, LAYERS)

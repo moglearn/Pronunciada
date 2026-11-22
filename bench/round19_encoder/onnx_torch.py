@@ -152,18 +152,46 @@ def build(model, device="cpu", lora=None, full=None):
             for k, v in self.pkey.items():
                 env[k] = self.params[v]
             env.update(feeds)
-            self._run(self.nodes, env)
+            self._run(self.nodes, env, self._free())
             return [env[o] for o in self.out_names]
 
-        def _run(self, nodes, env):
-            for name, op, ins, outs, at in nodes:
+        def _free(self):
+            """per top-level node: intermediate tensors whose last use is that node (dropped after it,
+            so the interpreter holds no more than autograd needs)."""
+            if getattr(self, "_free_", None) is None:
+                def uses(at, ins):
+                    u = set(i for i in ins if i)
+                    if isinstance(at, dict) and "then" in at:
+                        for br in (at["then"], at["else"]):
+                            for _, _, i2, _, a2 in br:
+                                u |= uses(a2, i2)
+                    return u
+                produced = {o for _, _, _, outs, _ in self.nodes for o in outs}
+                last = {}
+                for k, (_, _, ins, _, at) in enumerate(self.nodes):
+                    for i in uses(at, ins):
+                        if i in produced:
+                            last[i] = k
+                keep = set(self.out_names)
+                self._free_ = [[] for _ in self.nodes]
+                for i, k in last.items():
+                    if i not in keep:
+                        self._free_[k].append(i)
+            return self._free_
+
+        def _run(self, nodes, env, free=None):
+            for k, (name, op, ins, outs, at) in enumerate(nodes):
                 x = [env[i] if i else None for i in ins]
                 y = self._op(name, op, x, at, env)
+                del x
                 if isinstance(y, (list, tuple)):
                     for o, v in zip(outs, y):
                         env[o] = v
                 else:
                     env[outs[0]] = y
+                if free is not None:
+                    for i in free[k]:
+                        env.pop(i, None)
 
         def _op(self, name, op, x, at, env):  # noqa: C901
             d = self._d
