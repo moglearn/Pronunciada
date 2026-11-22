@@ -150,4 +150,5 @@ def apply_word(cal: dict, s_word, prob: float, strictness: float) -> float:
     if cal.get("no_raise_below") is not None and float(v.min()) < cal["no_raise_below"]:
         d = min(d, 0.0)
     p = min(max(prob, 1e-6), 1 - 1e-6)
-    return 1.0 / (1.0 + math.exp(-(math.log(p / (1 - p)) + d)))
+    z = min(max(math.log(p / (1 - p)) + d, -30.0), 30.0)
+    return 1.0 / (1.0 + math.exp(-z))

@@ -42,6 +42,7 @@ from bench.round19_rollout.train import SPEC, Ref
 from pronunciada import identity as ID
 
 SETS = ("cvpool", "dev", "devcor", "val")
+NATIVE_TOL = 1e-9          # native words below 0.5 / 0.6 may not rise on any pool (fr was run with 0.003)
 STRESS_LANGS = {"en", "es", "it", "pt", "ru", "de"}
 
 
@@ -133,6 +134,7 @@ def dev_metrics(items, rows, probs_of=None, with_units=False):
 # ----------------------------------------------------------------------------- guards
 
 def auc(pos, neg):
+    """AUC of low word P for error words (pos) against native words (neg); both are probabilities."""
     from bench.metrics import roc_auc
 
     pos, neg = np.asarray(pos), np.asarray(neg)
@@ -185,7 +187,7 @@ class Ctx:
         pc = P(self.cv_nat)
         m["cvdev_below_06"] = float(np.mean(pc < 0.6))
         err = np.concatenate([probs_of(r)[np.array(r["wrong"])] for r in self.cor_fit])
-        m["controlled_auc"] = auc(1 - err, 1 - P(self.cor_nat))
+        m["controlled_auc"] = auc(err, P(self.cor_nat))
         fm = dev_metrics(self.items, self.dev_fit, probs_of)
         m["fit_auc"], m["fit_fa80"], m["fit_buckets"] = fm["auc"], fm["fa80"], fm["bucket_auc"]
         vm = val_metrics(self.val, probs_of)
@@ -194,12 +196,15 @@ class Ctx:
 
 
 def guards_ok(m, b, lang):
+    # French was selected with +0.3 pt allowed; from Spanish on (the coordinator's stricter rule) no native
+    # pool may rise at all
+    tol = NATIVE_TOL
     why = []
-    if m["pool_below_05"] - b["pool_below_05"] > 0.003 or m["pool_below_06"] - b["pool_below_06"] > 0.003:
+    if m["pool_below_05"] - b["pool_below_05"] > tol or m["pool_below_06"] - b["pool_below_06"] > tol:
         why.append("G1 pool")
-    if m["val"]["native_below_0.6"] - b["val"]["native_below_0.6"] > 0.003 \
-            or m["val"]["swap_native_below_0.6"] - b["val"]["swap_native_below_0.6"] > 0.003 \
-            or m["cvdev_below_06"] - b["cvdev_below_06"] > 0.003:
+    if m["val"]["native_below_0.6"] - b["val"]["native_below_0.6"] > tol \
+            or m["val"]["swap_native_below_0.6"] - b["val"]["swap_native_below_0.6"] > tol \
+            or m["cvdev_below_06"] - b["cvdev_below_06"] > tol:
         why.append("G2 natives")
     if m["controlled_auc"] < b["controlled_auc"] - 1e-4:
         why.append("G3 controlled")
@@ -240,15 +245,19 @@ def step_design(rows, off, label_of):
     return np.array(F), np.array(z), np.array(y, float)
 
 
-def fit_offset_logistic(F, z, y, w, l2=10.0, iters=200):
-    c = np.zeros(F.shape[1])
-    for _ in range(iters):
+def fit_offset_logistic(F, z, y, w, l2=10.0):
+    """L2 logistic regression with a fixed offset z (the old log-odds); the intercept is not penalised."""
+    from scipy.optimize import minimize
+
+    pen = np.r_[np.ones(F.shape[1] - 1), 0.0]
+
+    def f(c):
         eta = z + F @ c
-        p = 1 / (1 + np.exp(-eta))
-        g = F.T @ (w * (p - y)) + l2 * np.r_[c[:-1], 0.0]
-        Hm = (F * (w * p * (1 - p))[:, None]).T @ F + l2 * np.diag(np.r_[np.ones(F.shape[1] - 1), 0.0]) + 1e-6 * np.eye(F.shape[1])
-        c -= np.linalg.solve(Hm, g)
-    return c
+        loss = np.sum(w * (np.logaddexp(0.0, eta) - y * eta)) + 0.5 * l2 * np.sum(pen * c * c)
+        p = 0.5 * (1 + np.tanh(0.5 * eta))
+        return loss, F.T @ (w * (p - y)) + l2 * pen * c
+
+    return minimize(f, np.zeros(F.shape[1]), jac=True, method="L-BFGS-B").x
 
 
 def step_grid(ctx):
@@ -269,7 +278,8 @@ def step_grid(ctx):
     F, z, y = np.vstack([F1, F2]), np.r_[z1, z2], np.r_[y1, y2]
     for wpos in (1.0, 2.0):
         w = np.where(y > 0, wpos, 1.0)
-        c = fit_offset_logistic(F, z, y, w)
+        # error log-odds = -(word log-odds); the step on the word log-odds is minus the fitted change
+        c = -fit_offset_logistic(F, -z, y, w)
         for nrb in (-2.0, 0.0, -99.0):
             rule = {"form": "step", "coef": [float(x) for x in c], "cap": 3.0, "wpos": wpos,
                     "no_raise_below": (None if nrb == -99.0 else nrb)}
@@ -347,14 +357,99 @@ def cmd_select(lang, save):
         Path(f"results/tables/round19_rollout_{lang}_fit.json").write_text(json.dumps(out, indent=1, default=float, ensure_ascii=False))
 
 
+def _boot_dev(items, rows, f, n=1000, seed=0):
+    """Paired speaker bootstrap of dev AUC / FA@80, without (0) and with (1) the rule."""
+    from bench.round19.evaluate import _metrics_light
+
+    _, u0 = dev_metrics(items, rows, None, with_units=True)
+    _, u1 = dev_metrics(items, rows, f, with_units=True)
+    key = lambda u: u[2]["id"]  # noqa: E731
+    u0.sort(key=key)
+    u1.sort(key=key)
+    grp = defaultdict(list)
+    for i, u in enumerate(u0):
+        grp[u[2].get("speaker")].append(i)
+    gl = list(grp.values())
+    rng = np.random.default_rng(seed)
+    D = []
+    for _ in range(n):
+        ii = [i for g in (gl[j] for j in rng.integers(0, len(gl), len(gl))) for i in g]
+        D.append([_metrics_light([u0[i] for i in ii]), _metrics_light([u1[i] for i in ii])])
+    D = np.array(D)            # n x 2 x (auc, fa80)
+    m0, m1 = _metrics_light(u0), _metrics_light(u1)
+    out = {}
+    for j, k in enumerate(("auc", "fa80")):
+        d = D[:, 1, j] - D[:, 0, j]
+        better = 1 if k == "auc" else -1
+        out[k] = {"off": m0[j], "on": m1[j], "off_ci": list(np.nanquantile(D[:, 0, j], [.025, .975])),
+                  "on_ci": list(np.nanquantile(D[:, 1, j], [.025, .975])), "delta": m1[j] - m0[j],
+                  "delta_ci": list(np.nanquantile(d, [.025, .975])),
+                  "p": float(min(1.0, 2 * min(np.mean(d * better <= 0), np.mean(d * better >= 0))))}
+    from bench.round19.evaluate import _metrics
+
+    out["buckets"] = {"off": _metrics(u0)["bucket_auc"], "on": _metrics(u1)["bucket_auc"]}
+    return out
+
+
+def cmd_report(lang):
+    """Dev and validation tables of the chosen rule (paired intervals); results/tables/round19_rollout_<lang>_dev.json."""
+    from bench.round19_rollout.heldout import cmd_fleurs  # noqa: F401  (same guard code)
+
+    fit = json.loads((work(lang) / "fit.json").read_text())
+    cal = fit["cal"]
+    off = cal["offset"]
+    ctx = Ctx(lang)
+    f = lambda r: new_probs(r, cal, off)  # noqa: E731
+    res = {"rule": {k: v for k, v in cal.items() if k != "offset"}, "ships": fit.get("ships")}
+    for name, rows in (("all", ctx.dev), ("fit", ctx.dev_fit), ("check", ctx.dev_chk),
+                       ("cv", [r for r in ctx.dev if r["meta"]["src"] == "cv"]),
+                       ("fleurs", [r for r in ctx.dev if r["meta"]["src"] == "fleurs"])):
+        res[f"dev_{name}"] = _boot_dev(ctx.items, rows, f)
+        x = res[f"dev_{name}"]
+        print(f"dev {name:6s} AUC {x['auc']['off']:.4f} -> {x['auc']['on']:.4f} d {x['auc']['delta']:+.4f} "
+              f"[{x['auc']['delta_ci'][0]:+.4f}, {x['auc']['delta_ci'][1]:+.4f}] p={x['auc']['p']:.3f} | FA@80 "
+              f"{100 * x['fa80']['off']:.2f} -> {100 * x['fa80']['on']:.2f} d {100 * x['fa80']['delta']:+.2f} "
+              f"[{100 * x['fa80']['delta_ci'][0]:+.2f}, {100 * x['fa80']['delta_ci'][1]:+.2f}] p={x['fa80']['p']:.3f}")
+    print("   buckets off", {k: round(v, 3) for k, v in res["dev_all"]["buckets"]["off"].items()})
+    print("   buckets on ", {k: round(v, 3) for k, v in res["dev_all"]["buckets"]["on"].items()})
+    b, m = ctx.measure(lambda r: r["prob"].astype(np.float64)), ctx.measure(f)
+    res["natives"] = {k: {"off": b[k], "on": m[k]} for k in ("pool_below_05", "pool_below_06", "cvdev_below_06", "controlled_auc")}
+    for k, v in res["natives"].items():
+        print(f"{k:16s} {v['off']:.4f} -> {v['on']:.4f}")
+    # validation guards with paired clip bootstrap (the held-out code path, prob_off = without the rule)
+    val = [dict(r, prob_off=r["prob"], prob=f(r)) for r in ctx.val]
+    import bench.round19_rollout.collect as CO
+
+    keep = CO.load
+    CO.load = lambda lang_, split: val      # noqa: E731
+    try:
+        from bench.round19_rollout.heldout import cmd_fleurs as _cf
+
+        tmp = work(lang) / "val_guards.json"
+        _cf(lang, "val", str(tmp))
+        res["val"] = json.loads(tmp.read_text())
+    finally:
+        CO.load = keep
+    # ship rule (coordinator): a significant check-fold gain (paired p < 0.05) AND no native row below 0.6 up
+    ck = res["dev_check"]
+    sig = (ck["auc"]["delta"] > 0 and ck["auc"]["p"] < 0.05) or (ck["fa80"]["delta"] < 0 and ck["fa80"]["p"] < 0.05)
+    up = [k for k in ("pool_below_06", "pool_below_05", "cvdev_below_06") if res["natives"][k]["on"] > res["natives"][k]["off"]]
+    up += [k for k in ("native_below_0.6", "swap_native_below_0.6") if res["val"][k]["on"] > res["val"][k]["off"]]
+    res["ship_rule"] = {"check_significant": bool(sig), "native_rows_up": up, "ships": bool(sig and not up)}
+    print("SHIP RULE", res["ship_rule"])
+    Path(f"results/tables/round19_rollout_{lang}_dev.json").write_text(json.dumps(res, indent=1, default=float, ensure_ascii=False))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["evidence", "select"])
+    ap.add_argument("cmd", choices=["evidence", "select", "report"])
     ap.add_argument("--lang", required=True)
     ap.add_argument("--save", action="store_true")
     a = ap.parse_args(argv)
     if a.cmd == "evidence":
         cmd_evidence(a.lang)
+    elif a.cmd == "report":
+        cmd_report(a.lang)
     else:
         cmd_select(a.lang, a.save)
 
