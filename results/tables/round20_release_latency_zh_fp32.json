@@ -1,0 +1,39 @@
+{
+ "lang": "zh",
+ "set": "fleurs-val",
+ "precision": "fp32",
+ "threads": 4,
+ "n": 100,
+ "old_tree": "836dba6 extract (round-19 frozen-run code)",
+ "new_tree": "d7434aa extract (main)",
+ "old_env": {},
+ "clip_seconds_median": 10.530000000000001,
+ "load_avg_1min_start_end": [
+  10.0546875,
+  8.74560546875
+ ],
+ "wall_s": 32.807563066482544,
+ "old_max_rss_mb": 994.90625,
+ "old_embed_outputs": [
+  "enc1",
+  "enc3",
+  "enc5",
+  "final"
+ ],
+ "new_max_rss_mb": 991.34375,
+ "new_embed_outputs": [
+  "enc1",
+  "enc3",
+  "enc5",
+  "final"
+ ],
+ "old_median_ms": 152.09079155465588,
+ "new_median_ms": 150.037062499905,
+ "paired_median_diff_ms": -0.10347951319999993,
+ "paired_median_diff_ci": [
+  -1.2034795072395355,
+  0.5208870046772032
+ ],
+ "old_p90_ms": 256.79327496909536,
+ "new_p90_ms": 251.42666223691782
+}

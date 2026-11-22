@@ -193,7 +193,7 @@ Ours: end-to-end `Scorer.score` on this Mac, 1 ONNX thread per process, 5 proces
 | lang | ours median ms (median audio s) | ours RTF | Azure median s | Azure p90 s |
 |---|---|---|---|---|
 | en | 330 (9.4) | 0.036 | 2.34 | 3.58 |
-| zh | 338 (10.7) | 0.032 | 1.82 | 2.86 |
+| zh | 348 (10.7) | 0.033 | 1.82 | 2.86 |
 | es | 376 (11.6) | 0.033 | 1.94 | 2.99 |
 | it | 474 (13.9) | 0.035 | 2.95 | 4.08 |
 | ja | 395 (12.4) | 0.032 | 2.22 | 3.01 |
