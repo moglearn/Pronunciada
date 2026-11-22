@@ -192,6 +192,16 @@ call actually does today:
     from alignment timing plus the length head.
   - contrast factor (`contrast_word.py`): lowers a word whose lowest contrast evidence is below a
     native quantile; adopted for zh (aspiration) and ja (voicing) only.
+  - Japanese (round 19, `ja_round19.py`; `PRONUNCIADA_JA_ROUND19=0` restores round 18):
+    - the round-19 length model (`length_r19.py`, `data/length/ja_r19.json`) replaces the length
+      factor's inputs;
+    - instead of the length factor, a capped two-sided step moves the word log-odds
+      (`word_step.py`); its evidence is the identity head (`ja_identity.py`), the length logit and
+      extra heard sounds (`word_match.py`);
+    - the front-end merges repeated vowel morae into one long vowel;
+    - the length labels judge consonants across word boundaries.
+
+    Details: results/round19_japanese.md.
 - **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
 - **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
   probability, the round-2/4 heads (`sentence_r4.npz`) in every language. The round-5 heads with

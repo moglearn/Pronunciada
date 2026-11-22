@@ -99,17 +99,17 @@ def cvreal_table(recs, A, B, n_boot=2000, seed=0):
     return out
 
 
-def report() -> None:
+def report(after: str = "after", out_name: str = "round19_ja_guards.json") -> None:
     from bench.eval_swap import evaluate, paired
 
-    res = {}
+    res = {"after_tag": after}
     recs = _records("swap")
-    A, B = _load("swap", "before"), _load("swap", "after")
+    A, B = _load("swap", "before"), _load("swap", after)
     ea, eb = evaluate(recs, A), evaluate(recs, B)
     res["fleurs_swap_ja"] = {"before": ea, "after": eb, "paired": paired(recs, A, B)}
     crecs = _records("cvreal")
-    res["cv_real_ja_testA"] = cvreal_table(crecs, _load("cvreal", "before"), _load("cvreal", "after"))
-    p = ROOT / "results" / "tables" / "round19_ja_guards.json"
+    res["cv_real_ja_testA"] = cvreal_table(crecs, _load("cvreal", "before"), _load("cvreal", after))
+    p = ROOT / "results" / "tables" / out_name
     p.write_text(json.dumps(res, indent=1, default=float))
     print(json.dumps(res["cv_real_ja_testA"], indent=1, default=float))
     for k in ("before", "after"):
@@ -122,11 +122,12 @@ def main(argv=None) -> None:
     ap.add_argument("cmd", choices=("score", "report"))
     ap.add_argument("--set", default="swap")
     ap.add_argument("--tag", default="after")
+    ap.add_argument("--out", default="round19_ja_guards.json")
     a = ap.parse_args(argv)
     if a.cmd == "score":
         score(a.set, a.tag)
     else:
-        report()
+        report(a.tag, a.out)
 
 
 if __name__ == "__main__":
