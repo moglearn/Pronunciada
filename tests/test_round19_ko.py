@@ -14,6 +14,19 @@ def test_classes_cover_korean_sounds():
     assert all(c is None or c in KI._head()["index"] for c in cls)
 
 
+def test_class_follows_edited_reference_sound():
+    import copy
+
+    ref = get_g2p("ko")("저기 곳이 있다")
+    cls = KI.classes(ref)
+    i = next(k for k, p in enumerate(ref.phones) if p.is_nucleus and p.ipa == "ɔ")    # 저
+    assert cls[i] == "ʌ"
+    ed = copy.deepcopy(ref)
+    ed.phones[i].ipa = "o"                         # a caller's reference now demands o here
+    assert KI.classes(ed)[i] == "o"
+    assert KI.classes(ed)[:i] + KI.classes(ed)[i + 1:] == cls[:i] + cls[i + 1:]
+
+
 def test_evidence_and_factor_shapes():
     ref = get_g2p("ko")("그래서 어제는 걷기에도")
     V = np.random.default_rng(0).standard_normal((len(ref.phones), 1024)).astype(np.float32)

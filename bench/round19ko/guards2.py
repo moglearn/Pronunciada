@@ -88,9 +88,10 @@ def audit_units(rows, P):
     for k, r in rows.items():
         if r.get("site") is None:
             by[r["meta"]["id"]]["nat"] += list(P[k])
-        elif not r.get("partner_in_alts"):
+        else:       # every edit, as the audit counts them (a "*" marks edits whose new sound was already an alternative)
             s = r["site"]
-            by[r["meta"]["id"]]["ed"].append((f"{s['contrast']}/{s['direction']}", float(P[k][r["edit_word"]])))
+            tag = f"{s['contrast']}/{s['direction']}" + ("*" if r.get("partner_in_alts") else "")
+            by[r["meta"]["id"]]["ed"].append((tag, float(P[k][r["edit_word"]])))
     return list(by.values())
 
 
@@ -128,8 +129,8 @@ def main():
         P1 = after(rows)
         rep[name] = boot(units(rows, P0), units(rows, P1), fn)
         if name == "audit":
-            rep[name]["n_edits"] = {c: sum(1 for r in rows.values() if r.get("site") and not r.get("partner_in_alts")
-                                           and f"{r['site']['contrast']}/{r['site']['direction']}" == c)
+            rep[name]["n_edits"] = {c: sum(1 for r in rows.values() if r.get("site")
+                                           and f"{r["site"]["contrast"]}/{r["site"]["direction"]}" + ("*" if r.get("partner_in_alts") else "") == c)
                                     for c in rep[name] if c != "pooled"}
     Path("results/tables/round19_ko2_guards_test.json").write_text(json.dumps(rep, indent=1, default=float))
     for g, d in rep.items():

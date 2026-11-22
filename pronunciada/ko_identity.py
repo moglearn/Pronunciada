@@ -42,8 +42,27 @@ def _vowel_of(syl_text: str) -> str | None:
     return VOWEL.get(d[1]) if d else None
 
 
+# Vowel symbols the Korean front-end writes for each spelled vowel class (ZIPA conventions: ㅓ -> ɔ,
+# ㅗ -> o / u before ㅇ, ㅡ -> u / ə / e by onset, ㅐ ㅔ -> e), and the class a vowel symbol names.
+_REALISED = {"a": {"a"}, "ʌ": {"ɔ"}, "o": {"o", "u"}, "u": {"u"}, "ɯ": {"ɯ", "ə", "u", "e"}, "i": {"i"},
+             "e": {"e"}}
+_IPA_VOWEL = {"a": "a", "ɐ": "a", "ɑ": "a", "ɔ": "ʌ", "ʌ": "ʌ", "o": "o", "u": "u", "ɯ": "ɯ", "ə": "ɯ", "ɨ": "ɯ",
+              "i": "i", "e": "e", "ɛ": "e"}
+
+
+def _is_ui(syl_text: str) -> bool:
+    from .text.ko import decompose
+
+    d = decompose(syl_text[0]) if syl_text else None
+    return bool(d) and d[1] == "ㅢ"
+
+
 def classes(ref) -> list[str | None]:
-    """Korean sound class of every reference sound (None = not judged)."""
+    """Korean sound class of every reference sound (None = not judged), read from the reference
+    sounds themselves. A vowel symbol is ambiguous in ZIPA conventions (u is ㅜ, ㅗ before ㅇ or ㅡ
+    after a labial), so the syllable's spelling picks the class only when the reference vowel is
+    one the front-end writes for that spelling; a reference whose sound was edited (or written by
+    a caller) gets the class its own symbol names."""
     out: list[str | None] = []
     for i, p in enumerate(ref.phones):
         syl = ref.syllables[p.syllable]
@@ -51,7 +70,14 @@ def classes(ref) -> list[str | None]:
         nuc = next((k for k in range(a, b) if ref.phones[k].is_nucleus), None)
         ipa = p.ipa
         if p.is_nucleus:
-            out.append(_vowel_of(syl.text) if len(ipa) == 1 else None)
+            if len(ipa) != 1:
+                out.append(None)
+                continue
+            if _is_ui(syl.text):
+                out.append(None)                  # ㅢ (i / ɯi / e readings) is not judged
+                continue
+            spelled = _vowel_of(syl.text)
+            out.append(spelled if spelled is not None and ipa in _REALISED[spelled] else _IPA_VOWEL.get(ipa))
         elif ipa in ("j", "w"):
             out.append(ipa)
         elif nuc is not None and i > nuc:

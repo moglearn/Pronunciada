@@ -343,9 +343,9 @@ bootstrapped over clips.
 | | m → n | 0.550 | 0.925 | |
 | | n → m | 0.825 | 0.942 | |
 | | plain → aspirated | 0.250 | 0.467 | |
-| | **ɔ → o (eo_o B>A)** | **0.367** | **0.100** | **[−0.342, −0.123]: worse** |
+| | **o → ɔ (eo_o B>A; said ㅗ, reference ɔ)** | **0.367** | **0.100** | **[−0.342, −0.123]: worse** |
 
-**The ɔ → o audit row got worse.** The audit edits the reference sound, not the spelling. The
+**The o → ɔ audit row (eo_o B>A; earlier mislabelled "ɔ → o") got worse; fixed in section 9.** The audit edits the reference sound, not the spelling. The
 identity head takes the expected vowel class from the syllable's spelling, so it still expects
 ㅓ (and hears ㅓ). The two-sided step then raises the word, and the edited word looks more
 correct. A real text prompt changes the spelling, and on those (Lingolix subtle, dev subtle) ㅓ/ㅗ
@@ -372,3 +372,126 @@ probabilities are not touched.
    other FLEURS test look).
 
 This was the third and fourth look at held-out data.
+
+## 9. Part 3 (final): the expected class comes from the reference sounds; the raising side
+
+**Fix.** `ko_identity.classes` now reads each vowel's class from the reference sound it is asked to
+judge.
+* The spelling is used only to disambiguate, and only when the reference vowel is one that the
+  front-end writes for that spelling. ZIPA conventions are ambiguous here: u can be ㅜ, ㅗ before ㅇ,
+  or ㅡ after a labial.
+* A reference whose sound was edited, or that a caller wrote, gets the class its own symbol names.
+* Consonants already came from the sound and its tense flag.
+
+**Identity for ordinary text** (`bench/round19ko/class_check.py`):
+* The new and old classes are identical on all 3,197 texts (250,412 sounds): every dev prompt and
+  planted target, FLEURS ko train / validation / test, Zeroth test, and the 200 Lingolix targets.
+* Re-scoring 300 dev clips gives max |ΔP| = 0.0 against the part-2 runtime.
+* So the Lingolix responses of look 3 stand. **No new benchmark look was made.**
+
+**Audit rows.** The FLEURS ko test audit (round-17 plan, all 8 Korean rows, 120 edits each) was
+rebuilt from the same rows with the new classes; this re-uses look 4.
+* A `*` marks a row whose new sound was already an accepted alternative of the reference.
+* Sound-level rows are unchanged: the word step does not touch sound probabilities. Switch on vs
+  off on 80 audit edits gives max |Δ| = 0.0. The scoreboard's sound-level numbers stand.
+
+| word-level hit@5 % | baseline | part 2 | **final** | Δ final − baseline [95 %] |
+|---|---|---|---|---|
+| aspiration: aspirated → plain* | 0.108 | – | **0.400** | [+0.195, +0.413] |
+| aspiration: plain → aspirated | 0.250 | 0.467 | **0.467** | [+0.101, +0.321] |
+| eo_o: ɔ → o* | 0.367 | – | **0.817** | [+0.361, +0.565] |
+| eo_o: o → ɔ | 0.367 | 0.100 | **0.817** | [+0.328, +0.573] |
+| m_n: m → n | 0.550 | 0.925 | **0.925** | [+0.298, +0.598] |
+| m_n: n → m | 0.825 | 0.942 | **0.942** | [+0.052, +0.216] |
+| n_ng: n → ŋ | 0.308 | 0.917 | **0.917** | [+0.470, +0.698] |
+| n_ng: ŋ → n | 0.325 | 0.783 | **0.783** | [+0.366, +0.586] |
+| pooled, all 960 edits | 0.388 | – | **0.758** | [+0.327, +0.445] |
+
+No row is worse than baseline. Part 2 printed only the six rows without `*`. The direction I
+called "ɔ → o" there was o → ɔ: the audio says ㅗ and the reference demands ㅓ.
+
+Planted-error word AUC also uses edited references. It rose further:
+* FLEURS validation: 0.918 → 0.931;
+* FLEURS test: 0.919 → 0.931 [Δ +0.009, +0.014].
+
+Swap and native rows are text-only, so they are unchanged.
+
+**Raising side.** Out of fold on dev, with the part-2 fit per fold (`bench/round19ko/raise_check.py`,
+`results/tables/round19_ko3_raise.json`):
+
+How often the step raises a changed word:
+
+| bucket | raised at all | raised from < 0.5 to ≥ 0.5 |
+|---|---|---|
+| all | 176 / 410 | **35** |
+| indel | 48 / 86 | 16 |
+| word_omission | 42 / 42 | 10 |
+| sub_gross | 40 / 121 | 7 |
+| sub_moderate | 27 / 79 | 0 |
+| sub_subtle | 19 / 82 | 2 |
+
+Dropped words are always raised, mostly from near 0; 10 of the 42 cross 0.5.
+
+| variant | AUC | FA@80 | changed words raised to ≥ 0.5 | native words < 0.6 (FLEURS val / CV / Zeroth; baseline 80 / 62 / 167) | native guard |
+|---|---|---|---|---|---|
+| **cap +3 (shipped)** | **0.9754** | **2.1 %** | **35** | 36 / 28 / 83 | pass |
+| cap +2 | 0.9725 | 2.1 % | 29 | 40 / 33 / 94 | pass |
+| cap +1.5 | 0.9698 | 2.1 % | 17 | 40 / 35 / 100 | pass |
+| cap +1 | 0.9659 | 2.3 % | 15 | 45 / 41 / 106 | pass |
+| cap +3, no raise if any sound's llr_sub < −τ (τ = 1, 2, 4) | 0.958–0.966 | 3.6 % | 0 | 87–89 / 72 / 173–176 | **fail**: every native word has some low-llr sound |
+| cap +3, no raise if the word's lowest identity margin < −2 | 0.9720 | 2.65 % | 3 | 50 / 62 / 132 | **fail** by one word: CV acceptance 1955 → 1954 |
+
+* **Decision.** The rule was fixed before the run: guarded variants within 0.002 AUC of the best,
+  then the fewest raised changed words. It keeps **cap +3 with no gate**: the caps change how far
+  words are raised, not which ones, so all guarded variants tie on that count.
+* **Answer to the question:** no. A lower cap or an aligner gate cannot remove the raised-error
+  cases without giving back native gain. The aligner gate gives it all back. A cap of +1.5 halves
+  the cases (35 → 17) for −0.006 AUC and part of the native gain.
+* **Alternative for the architect.** The identity-margin gate cuts raised errors to 3 and raised
+  changed words to 16 / 410, at AUC −0.003. It fails the native guard by a single CV word and
+  keeps less of the native gain.
+
+## 10. Final before / after (state of the branch)
+
+| | before (1.0.2 behaviour, `PRONUNCIADA_KO_IDENTITY=0`) | after (shipped) |
+|---|---|---|
+| **Lingolix ko, v2026.10 rules:** word AUC | 0.912 [0.874, 0.946] | **0.963 [0.942, 0.981]**; ΔAUC [+0.022, +0.082] |
+| FA@80 | 8.4 % [4.5, 19.3] | **2.9 % [1.1, 5.6]**; ΔFA [−15.1, −1.8] pt |
+| lowest-in-sentence | 0.711 | 0.833 |
+| **Lingolix ko, main rules:** word AUC | 0.915 | **0.965 [0.946, 0.983]** |
+| FA@80 | 7.7 % | **2.6 % [0.9, 5.1]** |
+| own flag, recall / precision (v2026.10) | 0.489 / 0.295 | 0.767 / 0.373 |
+| own flag on correct words | 7.5 % | 8.3 % |
+| own flag, dev recall / precision | 0.590 / 0.253 | 0.785 / 0.294 |
+| FLEURS test swap: near AUC / hit@5 % | 0.931 / 0.753 | 0.975 / 0.920 |
+| FLEURS test swap: far AUC | 0.994 | 0.996 |
+| FLEURS test swap: native words < 0.6 | 2.37 % | **1.21 %** |
+| FLEURS test planted: native acceptance | 97.66 % | 98.49 % |
+| FLEURS test planted: native words < 0.6 | 3.06 % | 1.72 % |
+| FLEURS test planted: word AUC | 0.919 | 0.931 |
+| contrast audit, word level (pooled) | 0.388 | 0.758 (no row worse) |
+| contrast audit, sound level | – | unchanged (verified identical) |
+| cv-real ko (sentence probability) | – | unchanged by construction |
+| size | – | +1.9 MB (`ko_identity.npz`) + 3 kB JSON |
+| latency (3.5 s clip, 4 threads, median) | 52.1–53.6 ms | 53.7–54.0 ms |
+
+Latency note: about 1 ms of extra-sound evidence runs in both settings for Korean.
+
+**Targets.**
+* Lingolix word AUC ≥ 0.96: **met** (0.963 under v2026.10 rules, 0.965 under main rules). The
+  interval reaches below the target (0.942).
+* FA@80 ≤ 2.5 %: **not met** (2.9 % v2026.10, 2.6 % main).
+* Against the published numbers (Lingolix 0.95 / 3 %, Azure 0.94 / 7 %): our AUC is the highest,
+  and our FA@80 is now below Lingolix's 3 % as rounded, not with room to spare.
+
+**Held-out looks, in order (all rounds):**
+1. Lingolix before;
+2. Lingolix part 1;
+3. FLEURS test guards, part 1;
+4. Lingolix part 2;
+5. FLEURS test guards and word-level audit, part 2;
+6. the same audit and planted rows rebuilt with the part-3 class source. These used the rows
+   collected in look 5; no new audio was scored, and Lingolix was not re-run because nothing
+   changes for text prompts.
+
+The brief counts the part-2 runs as the third and fourth looks.

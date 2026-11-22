@@ -68,10 +68,30 @@ def fit_delta(X, off, y, l2=1.0, w=None):
     return minimize(f, np.zeros(X.shape[1]), jac=True, method="L-BFGS-B").x
 
 
-def apply(r, X, b, cap_up=1.0):
-    d = X @ b
-    d = np.minimum(d, cap_up)           # raising is bounded
-    return 1 / (1 + np.exp(-(lg(r["prob"]) + d)))
+def word_llr_min(r):
+    st = r["st"]
+    out = np.zeros(len(r["prob"]))
+    for j in range(len(out)):
+        v = st["llr"][st["word"] == j]
+        out[j] = float(v.min()) if len(v) else 0.0
+    return out
+
+
+def deltas(r, X, b, cap_up=1.0, raise_gate=None):
+    """The word step: X b, capped at cap_up; with raise_gate = tau, a word with any sound whose
+    aligner llr_sub < -tau is never raised (its step is min(step, 0))."""
+    d = np.minimum(X @ b, cap_up)           # raising is bounded
+    if isinstance(raise_gate, str) and raise_gate.startswith("id"):
+        # identity gate: no raise when any sound's margin is below its class threshold by > g
+        g = float(raise_gate[2:] or 0.0)
+        d = np.where(X[:, 0] < -g, np.minimum(d, 0.0), d)
+    elif raise_gate is not None:
+        d = np.where(word_llr_min(r) < -raise_gate, np.minimum(d, 0.0), d)
+    return d
+
+
+def apply(r, X, b, cap_up=1.0, raise_gate=None):
+    return 1 / (1 + np.exp(-(lg(r["prob"]) + deltas(r, X, b, cap_up, raise_gate))))
 
 
 def fold_of(spk: str, k: int) -> int:
