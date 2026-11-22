@@ -12,28 +12,28 @@ Every comparison with an Azure column above, 84 in total, each classified by its
 | learner errors | 2 | 2 | 0 | 0 | 0 | 0 |
 | coaching | 4 | 4 | 0 | 0 | 0 | 0 |
 | OMPAL | 6 | 5 | 1 | 0 | 0 | 0 |
-| tone swaps | 3 | 0 | 0 | 0 | 3 | 0 |
-| swap benchmark | 50 | 28 | 12 | 0 | 7 | 3 |
+| tone swaps | 3 | 0 | 0 | 0 | 2 | 1 |
+| swap benchmark | 50 | 32 | 10 | 1 | 6 | 1 |
 | cv-real test A | 11 | 2 | 5 | 0 | 4 | 0 |
 | cv-real test B | 2 | 0 | 0 | 0 | 1 | 1 |
-| **all** | 84 | 45 | 18 | 0 | 17 | 4 |
+| **all** | 84 | 49 | 16 | 1 | 15 | 3 |
 
 By language:
 
 | lang | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant) |
 |---|---|---|---|---|---|---|
 | en | 19 | 13 | 1 | 0 | 3 | 2 |
-| zh | 16 | 5 | 6 | 0 | 5 | 0 |
+| zh | 16 | 7 | 6 | 0 | 2 | 1 |
 | ja | 6 | 4 | 0 | 0 | 2 | 0 |
-| es | 6 | 3 | 2 | 0 | 0 | 1 |
+| es | 6 | 4 | 1 | 0 | 1 | 0 |
 | fr | 6 | 5 | 0 | 0 | 1 | 0 |
 | de | 7 | 3 | 3 | 0 | 1 | 0 |
 | it | 6 | 3 | 2 | 0 | 1 | 0 |
-| pt | 6 | 3 | 1 | 0 | 1 | 1 |
-| ru | 6 | 3 | 1 | 0 | 2 | 0 |
+| pt | 6 | 4 | 0 | 0 | 2 | 0 |
+| ru | 6 | 3 | 1 | 1 | 1 | 0 |
 | ko | 6 | 3 | 2 | 0 | 1 | 0 |
 
-Significantly behind: en swap benchmark: native false alarms; es swap benchmark: native false alarms; pt swap benchmark: native false alarms; en cv-real test B: en/B.
+Significantly behind: zh tone swaps: right word blamed; en swap benchmark: native false alarms; en cv-real test B: en/B.
 
 ## How to read this
 
@@ -49,7 +49,7 @@ Significantly behind: en swap benchmark: native false alarms; es swap benchmark:
 
 Ablation: the same held-out items, metrics and resampling as the tables below, with Pronunciada replaced by the unmodified ZIPA model (`zipa-small-crctc-500k`, fp32, raw log-posteriors, no adapter) and the canonical phone sequence of Pronunciada's text front end (no alternatives, calibrators, prosody / length / contrast heads or fitted thresholds). **gop** = mean log-posterior of the canonical token over its CTC Viterbi-aligned frames (word / sentence = mean of their phones); **match** = greedy decode aligned to the canonical tokens (phone matched or not; sentence = 1 − token error rate). Δ = Pronunciada − gop, paired on the table's own resampling unit, two-sided p. Pronunciada's values are recomputed from the cached per-utterance outputs and equal the tables below. Baseline audio: 11304 files, 17.1 h. Source: `bench/eval_zipa_baseline.py` → `zipa_baseline.json` (write-up: results/zipa_baseline.md). These rows are not counted in the Azure tally.
 
-Pronunciada vs gop over 60 rows: significantly ahead 46, not different 14, significantly behind 0.
+Pronunciada vs gop over 60 rows: significantly ahead 48, not different 12, significantly behind 0.
 
 **speechocean762 test, Pearson with the expert scores (speaker bootstrap).**
 
@@ -82,16 +82,16 @@ Pronunciada vs gop over 60 rows: significantly ahead 46, not different 14, signi
 
 | test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
 |---|---|---|---|---|---|---|---|
-| word: any error | 8156 | 0.792 [0.750, 0.838] | 0.602 [0.560, 0.644] | 0.590 [0.556, 0.630] | +0.190 [+0.157, +0.241] | < 0.001 | **ahead** |
-| word: tone-only error | 8156 | 0.778 [0.732, 0.829] | 0.552 [0.506, 0.592] | 0.541 [0.509, 0.569] | +0.226 [+0.189, +0.292] | < 0.001 | **ahead** |
-| word: consonant / vowel error | 8156 | 0.856 [0.806, 0.895] | 0.839 [0.787, 0.882] | 0.823 [0.770, 0.863] | +0.017 [-0.009, +0.048] | 0.22 | ahead, n.s. |
+| word: any error | 8156 | 0.787 [0.746, 0.833] | 0.602 [0.560, 0.644] | 0.590 [0.556, 0.630] | +0.184 [+0.153, +0.235] | < 0.001 | **ahead** |
+| word: tone-only error | 8156 | 0.772 [0.726, 0.824] | 0.552 [0.506, 0.592] | 0.541 [0.509, 0.569] | +0.220 [+0.184, +0.284] | < 0.001 | **ahead** |
+| word: consonant / vowel error | 8156 | 0.854 [0.802, 0.893] | 0.839 [0.787, 0.882] | 0.823 [0.770, 0.863] | +0.015 [-0.016, +0.047] | 0.38 | ahead, n.s. |
 | sentence accuracy | 663 | 0.634 [0.467, 0.742] | 0.302 [0.086, 0.426] | 0.270 [0.091, 0.356] | +0.333 [+0.213, +0.462] | < 0.001 | **ahead** |
 
 **Tone swaps (zh, FLEURS test), ROC AUC; utterance bootstrap.**
 
 | test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
 |---|---|---|---|---|---|---|---|
-| zh tone AUC | 150 | 0.834 [0.801, 0.864] | 0.5 (blind) | 0.5 (blind) | +0.334 [+0.301, +0.364] | 0.002 | **ahead** |
+| zh tone AUC | 150 | 0.831 [0.798, 0.860] | 0.5 (blind) | 0.5 (blind) | +0.331 [+0.298, +0.360] | 0.002 | **ahead** |
 
 150 of 150 tone-swapped prompts map to the same ZIPA token sequence as the original prompt (ZIPA has no tone tokens), so the baseline cannot see the change; its AUC is 0.5 by construction and was not computed. Δ = Pronunciada − 0.5, CI and p from Pronunciada's utterance bootstrap.
 
@@ -100,14 +100,14 @@ Pronunciada vs gop over 60 rows: significantly ahead 46, not different 14, signi
 | lang | far AUC | near AUC | near hit@5 % |
 |---|---|---|---|
 | en | 0.995 / 0.995 / 0.984, -0.000 level (0.67) | 0.981 / 0.962 / 0.884, +0.019 **ahead** (0.002) | 0.893 / 0.840 / 0.082, +0.053 ahead, n.s. (0.16) |
-| zh | 0.992 / 0.992 / 0.977, -0.000 level (0.74) | 0.975 / 0.960 / 0.910, +0.015 **ahead** (0.02) | 0.900 / 0.827 / 0.338, +0.073 ahead, n.s. (0.08) |
-| ja | 0.995 / 0.986 / 0.949, +0.009 **ahead** (0.002) | 0.976 / 0.896 / 0.726, +0.080 **ahead** (0.002) | 0.893 / 0.353 / 0.032, +0.540 **ahead** (0.002) |
-| es | 0.998 / 0.997 / 0.989, +0.000 level (0.71) | 0.990 / 0.916 / 0.811, +0.074 **ahead** (0.002) | 0.967 / 0.380 / 0.091, +0.587 **ahead** (0.002) |
+| zh | 0.992 / 0.992 / 0.977, -0.000 level (0.77) | 0.980 / 0.960 / 0.910, +0.020 **ahead** (0.002) | 0.927 / 0.827 / 0.338, +0.100 **ahead** (0.004) |
+| ja | 0.996 / 0.986 / 0.949, +0.010 **ahead** (0.002) | 0.976 / 0.896 / 0.726, +0.080 **ahead** (0.002) | 0.887 / 0.353 / 0.032, +0.533 **ahead** (0.002) |
+| es | 0.998 / 0.997 / 0.989, +0.001 ahead, n.s. (0.08) | 0.994 / 0.916 / 0.811, +0.078 **ahead** (0.002) | 0.993 / 0.380 / 0.091, +0.613 **ahead** (0.002) |
 | fr | 0.997 / 0.995 / 0.969, +0.002 **ahead** (0.010) | 0.986 / 0.925 / 0.809, +0.062 **ahead** (0.002) | 0.927 / 0.440 / 0.182, +0.487 **ahead** (0.002) |
 | de | 0.997 / 0.989 / 0.979, +0.008 **ahead** (0.002) | 0.979 / 0.852 / 0.724, +0.127 **ahead** (0.002) | 0.907 / 0.240 / 0.187, +0.667 **ahead** (0.002) |
 | it | 0.998 / 0.997 / 0.976, +0.001 ahead, n.s. (0.57) | 0.979 / 0.949 / 0.834, +0.030 **ahead** (0.002) | 0.887 / 0.700 / 0.065, +0.187 **ahead** (0.004) |
-| pt | 0.997 / 0.996 / 0.967, +0.002 ahead, n.s. (0.12) | 0.963 / 0.919 / 0.781, +0.044 **ahead** (0.002) | 0.853 / 0.547 / 0.187, +0.307 **ahead** (0.002) |
-| ru | 0.990 / 0.988 / 0.957, +0.003 **ahead** (0.05) | 0.900 / 0.847 / 0.709, +0.052 **ahead** (0.002) | 0.620 / 0.340 / 0.086, +0.280 **ahead** (0.002) |
+| pt | 0.998 / 0.996 / 0.967, +0.002 **ahead** (0.004) | 0.967 / 0.919 / 0.781, +0.047 **ahead** (0.002) | 0.887 / 0.547 / 0.187, +0.340 **ahead** (0.002) |
+| ru | 0.992 / 0.988 / 0.957, +0.004 **ahead** (0.004) | 0.909 / 0.847 / 0.709, +0.062 **ahead** (0.002) | 0.667 / 0.340 / 0.086, +0.327 **ahead** (0.002) |
 | ko | 0.996 / 0.993 / 0.972, +0.002 **ahead** (0.05) | 0.974 / 0.838 / 0.695, +0.136 **ahead** (0.002) | 0.867 / 0.300 / 0.142, +0.567 **ahead** (0.002) |
 
 **cv-real test A, AUC of the sentence score (speaker bootstrap).**
@@ -192,9 +192,9 @@ Word level: AUC of the word score for characters the teachers marked wrong (all 
 
 | measure | first contact | current [95 % CI] | Azure [95 % CI] | Δ current − Azure | p | verdict |
 |---|---|---|---|---|---|---|
-| word: any error | 0.797 | 0.792 [0.750, 0.838] | 0.704 [0.655, 0.749] | +0.088 | < 0.001 | **ahead** |
-| word: tone-only error | 0.792 | 0.778 [0.732, 0.829] | 0.679 [0.616, 0.737] | +0.099 | < 0.001 | **ahead** |
-| word: consonant / vowel error | 0.820 | 0.856 [0.806, 0.895] | 0.822 [0.737, 0.874] | +0.035 | 0.09 | ahead, n.s. |
+| word: any error | 0.797 | 0.787 [0.746, 0.833] | 0.704 [0.655, 0.749] | +0.082 | < 0.001 | **ahead** |
+| word: tone-only error | 0.792 | 0.772 [0.726, 0.824] | 0.679 [0.616, 0.737] | +0.093 | < 0.001 | **ahead** |
+| word: consonant / vowel error | 0.820 | 0.854 [0.802, 0.893] | 0.822 [0.737, 0.874] | +0.032 | 0.10 | ahead, n.s. |
 | sentence accuracy | 0.388 | 0.634 [0.467, 0.742] | 0.363 [0.175, 0.484] | +0.272 | < 0.001 | **ahead** |
 | sentence fluency | 0.594 | 0.590 [0.485, 0.678] | 0.343 [0.201, 0.462] | +0.247 | < 0.001 | **ahead** |
 | sentence prosody | 0.419 | 0.530 [0.345, 0.676] | 0.189 [0.032, 0.321] | +0.341 | < 0.001 | **ahead** |
@@ -203,9 +203,9 @@ Word level: AUC of the word score for characters the teachers marked wrong (all 
 
 | measure | Pronunciada | Azure | Δ [95 % CI] | p | verdict |
 |---|---|---|---|---|---|
-| detection (AUC) | 0.834 | 0.846 | -0.012 [-0.058, +0.032] | 0.62 | behind, n.s. |
-| caught at 5 % native false alarms | 0.367 | 0.402 | -0.035 [-0.184, +0.079] | 0.46 | behind, n.s. |
-| right word blamed | 0.300 | 0.387 | -0.087 [-0.180, +0.000] | 0.07 | behind, n.s. |
+| detection (AUC) | 0.831 | 0.846 | -0.015 [-0.062, +0.027] | 0.51 | behind, n.s. |
+| caught at 5 % native false alarms | 0.333 | 0.402 | -0.069 [-0.219, +0.060] | 0.30 | behind, n.s. |
+| right word blamed | 0.280 | 0.387 | -0.107 [-0.207, -0.023] | 0.02 | **behind** |
 
 ## All ten languages
 
@@ -216,14 +216,14 @@ Word level: AUC of the word score for characters the teachers marked wrong (all 
 | lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6) |
 |---|---|---|---|---|---|
 | en | 0.995 / 0.994 ahead, n.s. (0.30) | 0.981 / 0.963 **ahead** (0.002) | 0.893 / 0.793 **ahead** (0.02) | 0.887 / 0.898 behind, n.s. (0.64) | 0.034 / 0.022 **behind** (0.002) |
-| zh | 0.992 / 0.989 ahead, n.s. (0.66) | 0.975 / 0.966 ahead, n.s. (0.29) | 0.900 / 0.896 ahead, n.s. (0.95) | 0.893 / 0.899 behind, n.s. (0.83) | 0.040 / 0.036 behind, n.s. (0.55) |
-| ja | 0.995 / 0.979 **ahead** (0.004) | 0.976 / 0.919 **ahead** (0.002) | 0.893 / 0.680 **ahead** (0.002) | 0.960 / 0.875 **ahead** (0.002) | 0.024 / 0.020 behind, n.s. (0.33) |
-| es | 0.998 / 0.993 **ahead** (0.03) | 0.990 / 0.942 **ahead** (0.002) | 0.967 / 0.679 **ahead** (0.002) | 0.953 / 0.910 ahead, n.s. (0.11) | 0.025 / 0.018 **behind** (0.02) |
+| zh | 0.992 / 0.989 ahead, n.s. (0.62) | 0.980 / 0.966 **ahead** (0.03) | 0.927 / 0.896 ahead, n.s. (0.34) | 0.900 / 0.899 ahead, n.s. (0.99) | 0.026 / 0.036 **ahead** (0.006) |
+| ja | 0.996 / 0.979 **ahead** (0.004) | 0.976 / 0.919 **ahead** (0.002) | 0.887 / 0.680 **ahead** (0.002) | 0.966 / 0.875 **ahead** (0.002) | 0.027 / 0.020 behind, n.s. (0.09) |
+| es | 0.998 / 0.993 **ahead** (0.008) | 0.994 / 0.942 **ahead** (0.002) | 0.993 / 0.679 **ahead** (0.002) | 0.980 / 0.910 **ahead** (0.002) | 0.023 / 0.018 behind, n.s. (0.06) |
 | fr | 0.997 / 0.986 **ahead** (0.002) | 0.986 / 0.937 **ahead** (0.002) | 0.927 / 0.647 **ahead** (0.002) | 0.927 / 0.823 **ahead** (0.002) | 0.027 / 0.020 behind, n.s. (0.11) |
 | de | 0.997 / 0.982 **ahead** (0.002) | 0.979 / 0.887 **ahead** (0.002) | 0.907 / 0.517 **ahead** (0.002) | 0.940 / 0.921 ahead, n.s. (0.43) | 0.040 / 0.049 ahead, n.s. (0.07) |
 | it | 0.998 / 0.990 **ahead** (0.004) | 0.979 / 0.970 ahead, n.s. (0.25) | 0.887 / 0.913 behind, n.s. (0.45) | 0.980 / 0.929 **ahead** (0.01) | 0.023 / 0.037 **ahead** (0.002) |
-| pt | 0.997 / 0.991 **ahead** (0.008) | 0.963 / 0.938 **ahead** (0.03) | 0.853 / 0.724 **ahead** (0.002) | 0.940 / 0.906 ahead, n.s. (0.21) | 0.028 / 0.020 **behind** (0.04) |
-| ru | 0.990 / 0.982 **ahead** (0.010) | 0.900 / 0.909 behind, n.s. (0.36) | 0.620 / 0.342 **ahead** (0.002) | 0.913 / 0.761 **ahead** (0.002) | 0.052 / 0.054 ahead, n.s. (0.79) |
+| pt | 0.998 / 0.991 **ahead** (0.002) | 0.967 / 0.938 **ahead** (0.01) | 0.887 / 0.724 **ahead** (0.002) | 0.960 / 0.906 **ahead** (0.03) | 0.024 / 0.020 behind, n.s. (0.41) |
+| ru | 0.992 / 0.982 **ahead** (0.002) | 0.909 / 0.909 level (0.99) | 0.667 / 0.342 **ahead** (0.002) | 0.933 / 0.761 **ahead** (0.002) | 0.045 / 0.054 ahead, n.s. (0.09) |
 | ko | 0.996 / 0.995 ahead, n.s. (0.55) | 0.974 / 0.937 **ahead** (0.002) | 0.867 / 0.708 **ahead** (0.002) | 0.980 / 0.973 ahead, n.s. (0.44) | 0.017 / 0.045 **ahead** (0.002) |
 
 ### cv-real: real Common Voice recordings judged by volunteers (test half)
@@ -253,14 +253,14 @@ Share of native sounds / words / sentences accepted (probability ≥ 0.5), and d
 | lang | sounds accepted | words accepted | sentences accepted | planted sound errors, AUC | planted word errors, AUC |
 |---|---|---|---|---|---|
 | en | 99.3 % | 97.2 % | 98.8 % | 0.982 | 0.949 |
-| zh | 99.6 % | 97.1 % | 99.5 % | 0.988 | 0.945 |
-| ja | 99.4 % | 97.6 % | 99.0 % | 0.973 | 0.942 |
-| es | 99.7 % | 98.4 % | 99.5 % | 0.994 | 0.973 |
+| zh | 99.6 % | 97.9 % | 99.5 % | 0.988 | 0.946 |
+| ja | 99.4 % | 97.1 % | 99.0 % | 0.973 | 0.952 |
+| es | 99.7 % | 98.4 % | 99.5 % | 0.994 | 0.974 |
 | fr | 99.3 % | 97.8 % | 99.0 % | 0.988 | 0.957 |
 | de | 99.5 % | 96.9 % | 99.2 % | 0.975 | 0.954 |
 | it | 99.9 % | 98.4 % | 99.8 % | 0.991 | 0.957 |
-| pt | 99.8 % | 97.6 % | 99.0 % | 0.983 | 0.944 |
-| ru | 98.7 % | 96.9 % | 99.0 % | 0.972 | 0.930 |
+| pt | 99.8 % | 97.7 % | 99.0 % | 0.983 | 0.943 |
+| ru | 98.7 % | 97.3 % | 99.0 % | 0.972 | 0.932 |
 | ko | 99.3 % | 98.1 % | 98.7 % | 0.974 | 0.940 |
 
 ### Specific sound contrasts (contrast audit, FLEURS test; no Azure column)
@@ -293,30 +293,30 @@ One sound of the prompt is changed to its partner in a contrast (e.g. plain → 
 | en | m_n | n → m | 120 | 100 % | 96 % | seen |
 | en | n_ng | n → ŋ | 120 | 90 % | 95 % | seen |
 | en | n_ng | ŋ → n | 120 | 77 % | 78 % | seen |
-| zh | aspiration | aspirated → plain | 120 | 100 % | 68 % | seen |
-| zh | aspiration | plain → aspirated | 120 | 99 % | 68 % | seen |
-| zh | retroflex | retroflex → dental | 120 | 95 % | 64 % | seen |
-| zh | retroflex | dental → retroflex | 120 | 89 % | 66 % | seen |
-| zh | n_ng | n → ŋ | 120 | 90 % | 58 % | seen |
-| zh | n_ng | ŋ → n | 120 | 81 % | 39 % | seen |
-| zh | y_u | y → u | 120 | 100 % | 93 % | seen |
-| zh | y_u | u → y | 120 | 100 % | 97 % | seen |
-| zh | r_l | ʐ → l | 120 | 99 % | 95 % | seen |
-| zh | r_l | l → ʐ | 120 | 98 % | 60 % | seen |
-| zh | tone | dictionary tone → other tone | 240 | 64 % | 40 % | seen |
-| zh | m_n | m → n | 120 | 95 % | 54 % | seen |
+| zh | aspiration | aspirated → plain | 120 | 100 % | 66 % | seen |
+| zh | aspiration | plain → aspirated | 120 | 99 % | 84 % | seen |
+| zh | retroflex | retroflex → dental | 120 | 95 % | 75 % | seen |
+| zh | retroflex | dental → retroflex | 120 | 89 % | 70 % | seen |
+| zh | n_ng | n → ŋ | 120 | 90 % | 60 % | seen |
+| zh | n_ng | ŋ → n | 120 | 81 % | 37 % | seen |
+| zh | y_u | y → u | 120 | 100 % | 98 % | seen |
+| zh | y_u | u → y | 120 | 100 % | 98 % | seen |
+| zh | r_l | ʐ → l | 120 | 99 % | 94 % | seen |
+| zh | r_l | l → ʐ | 120 | 98 % | 68 % | seen |
+| zh | tone | dictionary tone → other tone | 240 | 64 % | 38 % | seen |
+| zh | m_n | m → n | 120 | 95 % | 70 % | seen |
 | zh | m_n | n → m | 120 | 100 % | 100 % | seen |
-| ja | voicing | voiced → voiceless | 120 | 95 % | 79 % | seen |
-| ja | voicing | voiceless → voiced | 120 | 73 % | 74 % | seen |
-| ja | s_sh | s → ʃ | 120 | 74 % | 50 % | seen |
-| ja | s_sh | ʃ → s | 120 | 58 % | 94 % | weak |
-| ja | m_n | m → n | 120 | 88 % | 87 % | seen |
+| ja | voicing | voiced → voiceless | 120 | 95 % | 77 % | seen |
+| ja | voicing | voiceless → voiced | 120 | 73 % | 72 % | seen |
+| ja | s_sh | s → ʃ | 120 | 74 % | 49 % | seen |
+| ja | s_sh | ʃ → s | 120 | 58 % | 91 % | weak |
+| ja | m_n | m → n | 120 | 88 % | 83 % | seen |
 | ja | m_n | n → m | 120 | 98 % | 98 % | seen |
-| es | tap_trill | trill → tap | 120 | 72 % | 50 % | seen |
-| es | tap_trill | tap → trill | 120 | 97 % | 61 % | seen |
-| es | voicing | voiced → voiceless | 120 | 100 % | 97 % | seen |
-| es | voicing | voiceless → voiced | 120 | 100 % | 98 % | seen |
-| es | m_n | m → n | 120 | 99 % | 98 % | seen |
+| es | tap_trill | trill → tap | 120 | 72 % | 78 % | seen |
+| es | tap_trill | tap → trill | 120 | 97 % | 91 % | seen |
+| es | voicing | voiced → voiceless | 120 | 100 % | 100 % | seen |
+| es | voicing | voiceless → voiced | 120 | 100 % | 99 % | seen |
+| es | m_n | m → n | 120 | 99 % | 100 % | seen |
 | es | m_n | n → m | 120 | 100 % | 100 % | seen |
 | fr | nasal | nasal → oral | 120 | 56 % | 72 % | weak |
 | fr | nasal | oral → nasal | 120 | 88 % | 87 % | seen |
@@ -359,28 +359,28 @@ One sound of the prompt is changed to its partner in a contrast (e.g. plain → 
 | it | s_sh | ʃ → s | 53 | 74 % | 40 % | seen |
 | it | m_n | m → n | 120 | 100 % | 94 % | seen |
 | it | m_n | n → m | 120 | 100 % | 100 % | seen |
-| pt | nasal | nasal → oral | 120 | 19 % | 26 % | blind |
-| pt | nasal | oral → nasal | 120 | 98 % | 78 % | seen |
-| pt | mid_vowels | close → open | 120 | 79 % | 57 % | seen |
-| pt | mid_vowels | open → close | 120 | 13 % | 3 % | blind |
-| pt | tap_trill | strong r → tap | 61 | 46 % | 7 % | weak |
-| pt | tap_trill | tap → strong r | 179 | 100 % | 99 % | seen |
-| pt | voicing | voiced → voiceless | 120 | 78 % | 68 % | seen |
-| pt | voicing | voiceless → voiced | 120 | 94 % | 82 % | seen |
-| pt | s_sh | s → ʃ | 168 | 99 % | 90 % | seen |
-| pt | s_sh | ʃ → s | 72 | 39 % | 29 % | weak |
-| pt | m_n | m → n | 120 | 88 % | 78 % | seen |
-| pt | m_n | n → m | 120 | 98 % | 78 % | seen |
-| ru | hard_soft | soft → hard | 120 | 56 % | 11 % | weak |
-| ru | hard_soft | hard → soft | 120 | 94 % | 23 % | seen |
-| ru | unstressed_vowel | reduced → full | 240 | 58 % | 32 % | weak |
-| ru | voicing | voiced → voiceless | 120 | 56 % | 34 % | weak |
-| ru | voicing | voiceless → voiced | 120 | 98 % | 68 % | seen |
-| ru | final_devoicing | devoiced → voiced | 134 | 81 % | 4 % | seen |
-| ru | s_sh | s → ʂ | 120 | 64 % | 53 % | seen |
-| ru | s_sh | ʂ → s | 120 | 80 % | 61 % | seen |
-| ru | m_n | m → n | 120 | 91 % | 71 % | seen |
-| ru | m_n | n → m | 120 | 99 % | 92 % | seen |
+| pt | nasal | nasal → oral | 120 | 19 % | 21 % | blind |
+| pt | nasal | oral → nasal | 120 | 98 % | 83 % | seen |
+| pt | mid_vowels | close → open | 120 | 79 % | 78 % | seen |
+| pt | mid_vowels | open → close | 120 | 13 % | 9 % | blind |
+| pt | tap_trill | strong r → tap | 61 | 46 % | 23 % | weak |
+| pt | tap_trill | tap → strong r | 179 | 100 % | 100 % | seen |
+| pt | voicing | voiced → voiceless | 120 | 78 % | 85 % | seen |
+| pt | voicing | voiceless → voiced | 120 | 94 % | 93 % | seen |
+| pt | s_sh | s → ʃ | 168 | 99 % | 95 % | seen |
+| pt | s_sh | ʃ → s | 72 | 39 % | 51 % | weak |
+| pt | m_n | m → n | 120 | 88 % | 92 % | seen |
+| pt | m_n | n → m | 120 | 98 % | 96 % | seen |
+| ru | hard_soft | soft → hard | 120 | 56 % | 10 % | weak |
+| ru | hard_soft | hard → soft | 120 | 94 % | 35 % | seen |
+| ru | unstressed_vowel | reduced → full | 240 | 58 % | 41 % | weak |
+| ru | voicing | voiced → voiceless | 120 | 56 % | 68 % | weak |
+| ru | voicing | voiceless → voiced | 120 | 98 % | 79 % | seen |
+| ru | final_devoicing | devoiced → voiced | 134 | 81 % | 17 % | seen |
+| ru | s_sh | s → ʂ | 120 | 64 % | 92 % | seen |
+| ru | s_sh | ʂ → s | 120 | 80 % | 93 % | seen |
+| ru | m_n | m → n | 120 | 91 % | 94 % | seen |
+| ru | m_n | n → m | 120 | 99 % | 98 % | seen |
 | ko | aspiration | aspirated → plain | 120 | 82 % | 32 % | seen |
 | ko | aspiration | plain → aspirated | 120 | 96 % | 42 % | seen |
 | ko | eo_o | ɔ → o | 120 | 57 % | 72 % | weak |
@@ -396,13 +396,13 @@ Shipped runtime (`PhoneResult.length_prob`, `WordResult.prob`), 400 test clips. 
 
 | direction (said → expected) | n | sound caught | word caught |
 |---|---|---|---|
-| long vowel → short | 620 | 96 % | 46 % |
-| short vowel → long | 716 | 98 % | 84 % |
-| doubled consonant → single | 255 | 96 % | 37 % |
-| single consonant → doubled | 545 | 99 % | 79 % |
-| all | 2136 | 97 % | 66 % |
+| long vowel → short | 620 | 96 % | 44 % |
+| short vowel → long | 716 | 98 % | 86 % |
+| doubled consonant → single | 255 | 96 % | 34 % |
+| single consonant → doubled | 545 | 99 % | 77 % |
+| all | 2136 | 97 % | 65 % |
 
-Native word acceptance at strictness 0.5 on these clips: 97.6 %.
+Native word acceptance at strictness 0.5 on these clips: 97.1 %.
 
 ### Coaching tips on native speakers (FLEURS test; no Azure column)
 
@@ -411,14 +411,14 @@ Share of 250 native test clips per language that get at least one pronunciation 
 | lang | clips with a pronunciation tip, before → after | tips per clip, before → after |
 |---|---|---|
 | en | 85 % → 28 % | 1.66 → 0.32 |
-| zh | 10 % → 9 % | 0.11 → 0.10 |
+| zh | 10 % → 8 % | 0.11 → 0.10 |
 | ja | 72 % → 23 % | 1.14 → 0.26 |
-| es | 74 % → 19 % | 1.35 → 0.24 |
+| es | 74 % → 22 % | 1.35 → 0.28 |
 | fr | 89 % → 32 % | 1.96 → 0.42 |
 | de | 49 % → 17 % | 0.74 → 0.20 |
 | it | 76 % → 15 % | 1.38 → 0.16 |
 | pt | 42 % → 14 % | 0.58 → 0.16 |
-| ru | 96 % → 43 % | 2.18 → 0.55 |
+| ru | 96 % → 40 % | 2.18 → 0.52 |
 | ko | 56 % → 24 % | 0.83 → 0.28 |
 
 Learners, before → after: English (speechocean762 test) utterances with an expert-marked wrong sound that get a pronunciation tip 61 % → 34 %, tips right 64 % → 69 %, clean utterances with a tip 21 % → 7 %; Mandarin (OMPAL test) 23 % → 21 %, 70 % → 72 %, 2 % → 2 %.
@@ -439,14 +439,14 @@ Longer clips next to Azure (not a controlled comparison: different clip sets of 
 | lang | Pronunciada median (median audio) | Azure median (mean audio) |
 |---|---|---|
 | en | 330 ms (9.4 s) | 2.34 s (9.4 s) |
-| zh | 364 ms (10.7 s) | 1.82 s (10.6 s) |
-| ja | 417 ms (12.4 s) | 2.22 s (12.0 s) |
-| es | 405 ms (11.6 s) | 1.94 s (11.6 s) |
+| zh | 338 ms (10.7 s) | 1.82 s (10.6 s) |
+| ja | 395 ms (12.4 s) | 2.22 s (12.0 s) |
+| es | 376 ms (11.6 s) | 1.94 s (11.6 s) |
 | fr | 329 ms (10.2 s) | 2.18 s (10.4 s) |
 | de | 412 ms (11.4 s) | 2.49 s (12.0 s) |
 | it | 474 ms (13.9 s) | 2.95 s (13.3 s) |
-| pt | 424 ms (12.1 s) | 2.17 s (12.2 s) |
-| ru | 398 ms (11.1 s) | 2.25 s (10.9 s) |
+| pt | 394 ms (12.1 s) | 2.17 s (12.2 s) |
+| ru | 368 ms (11.1 s) | 2.25 s (10.9 s) |
 | ko | 423 ms (12.3 s) | 1.82 s (11.7 s) |
 
 What runs where: everything runs on the device (numpy + ONNX Runtime, no network after the first model download, no audio leaves the device). Shipped package data ≈ 21 MB (adapters, calibrators, tone / stress / attribute models ≈ 10 MB; pronunciation dictionaries ≈ 10 MB). No phone build exists yet; nothing has been timed on a phone.

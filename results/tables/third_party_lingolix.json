@@ -205,27 +205,27 @@
       "n_words": 1740,
       "n_positive": 90,
       "n_failed": 0,
-      "roc_auc": 0.9795,
+      "roc_auc": 0.9854,
       "roc_auc_ci": [
-        0.9698,
-        0.9875
+        0.976,
+        0.9926
       ],
-      "pr_auc": 0.6379,
-      "fpr_at_recall_50": 0.0097,
-      "fpr_at_recall_80": 0.0242,
+      "pr_auc": 0.7086,
+      "fpr_at_recall_50": 0.0048,
+      "fpr_at_recall_80": 0.0139,
       "fpr_at_recall_80_ci": [
-        0.0142,
-        0.0386
+        0.0075,
+        0.0228
       ],
-      "localisation_top1": 0.8667,
-      "latency_p50_ms": 106.4,
-      "latency_p95_ms": 146.4,
+      "localisation_top1": 0.8889,
+      "latency_p50_ms": 101.4,
+      "latency_p95_ms": 144.5,
       "by_bucket": {
-        "indel": 0.9704,
-        "sub_gross": 0.9875,
-        "sub_moderate": 0.9891,
-        "sub_subtle": 0.9706,
-        "word_omission": 0.9802
+        "indel": 0.9741,
+        "sub_gross": 0.9908,
+        "sub_moderate": 0.9936,
+        "sub_subtle": 0.9844,
+        "word_omission": 0.9824
       },
       "verdicts": {
         "recall": 0.8333,
@@ -317,27 +317,27 @@
       "n_words": 1040,
       "n_positive": 100,
       "n_failed": 0,
-      "roc_auc": 0.9174,
+      "roc_auc": 0.9226,
       "roc_auc_ci": [
-        0.8847,
-        0.9475
+        0.8907,
+        0.9511
       ],
-      "pr_auc": 0.6296,
+      "pr_auc": 0.6447,
       "fpr_at_recall_50": 0.0149,
-      "fpr_at_recall_80": 0.134,
+      "fpr_at_recall_80": 0.0968,
       "fpr_at_recall_80_ci": [
-        0.0361,
-        0.2635
+        0.038,
+        0.2063
       ],
-      "localisation_top1": 0.77,
-      "latency_p50_ms": 81.7,
-      "latency_p95_ms": 138.3,
+      "localisation_top1": 0.79,
+      "latency_p50_ms": 82.3,
+      "latency_p95_ms": 139.2,
       "by_bucket": {
-        "indel": 0.9161,
-        "length": 0.8719,
-        "sub_gross": 0.9893,
-        "sub_moderate": 0.9525,
-        "sub_subtle": 0.9468
+        "indel": 0.9398,
+        "length": 0.8779,
+        "sub_gross": 0.9869,
+        "sub_moderate": 0.9505,
+        "sub_subtle": 0.9461
       },
       "verdicts": {
         "recall": 0.64,
@@ -543,27 +543,27 @@
       "n_words": 1658,
       "n_positive": 90,
       "n_failed": 0,
-      "roc_auc": 0.9825,
+      "roc_auc": 0.9873,
       "roc_auc_ci": [
-        0.9732,
-        0.9901
+        0.9785,
+        0.9941
       ],
-      "pr_auc": 0.6728,
-      "fpr_at_recall_50": 0.0089,
-      "fpr_at_recall_80": 0.0191,
+      "pr_auc": 0.7302,
+      "fpr_at_recall_50": 0.0051,
+      "fpr_at_recall_80": 0.0102,
       "fpr_at_recall_80_ci": [
-        0.0096,
-        0.0338
+        0.0044,
+        0.0184
       ],
-      "localisation_top1": 0.9,
-      "latency_p50_ms": 106.4,
-      "latency_p95_ms": 146.4,
+      "localisation_top1": 0.9111,
+      "latency_p50_ms": 101.4,
+      "latency_p95_ms": 144.5,
       "by_bucket": {
-        "indel": 0.9739,
-        "sub_gross": 0.9897,
-        "sub_moderate": 0.9909,
-        "sub_subtle": 0.9759,
-        "word_omission": 0.9821
+        "indel": 0.9771,
+        "sub_gross": 0.9916,
+        "sub_moderate": 0.994,
+        "sub_subtle": 0.9879,
+        "word_omission": 0.9842
       },
       "verdicts": {
         "recall": 0.8333,
@@ -655,27 +655,27 @@
       "n_words": 955,
       "n_positive": 100,
       "n_failed": 0,
-      "roc_auc": 0.9252,
+      "roc_auc": 0.9302,
       "roc_auc_ci": [
-        0.8945,
-        0.9528
+        0.8995,
+        0.9566
       ],
-      "pr_auc": 0.6927,
+      "pr_auc": 0.7094,
       "fpr_at_recall_50": 0.0105,
-      "fpr_at_recall_80": 0.1193,
+      "fpr_at_recall_80": 0.083,
       "fpr_at_recall_80_ci": [
-        0.027,
-        0.2455
+        0.0307,
+        0.1909
       ],
-      "localisation_top1": 0.81,
-      "latency_p50_ms": 81.7,
-      "latency_p95_ms": 138.3,
+      "localisation_top1": 0.84,
+      "latency_p50_ms": 82.3,
+      "latency_p95_ms": 139.2,
       "by_bucket": {
-        "indel": 0.9246,
-        "length": 0.882,
-        "sub_gross": 0.9926,
-        "sub_moderate": 0.9578,
-        "sub_subtle": 0.9541
+        "indel": 0.9476,
+        "length": 0.887,
+        "sub_gross": 0.9911,
+        "sub_moderate": 0.9563,
+        "sub_subtle": 0.9535
       },
       "verdicts": {
         "recall": 0.64,

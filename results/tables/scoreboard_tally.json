@@ -123,7 +123,7 @@
   "area": "tone swaps",
   "lang": "zh",
   "measure": "right word blamed",
-  "cat": "behind (not significant)"
+  "cat": "behind (significant)"
  },
  {
   "area": "swap benchmark",
@@ -165,7 +165,7 @@
   "area": "swap benchmark",
   "lang": "zh",
   "measure": "near AUC",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
@@ -177,13 +177,13 @@
   "area": "swap benchmark",
   "lang": "zh",
   "measure": "far right word",
-  "cat": "behind (not significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "zh",
   "measure": "native false alarms",
-  "cat": "behind (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
@@ -212,71 +212,71 @@
  {
   "area": "swap benchmark",
   "lang": "ja",
-  "measure": "native false alarms",
-  "cat": "behind (not significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "es",
-  "measure": "far AUC",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "es",
-  "measure": "near AUC",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "es",
-  "measure": "near hit@5 %",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "es",
-  "measure": "far right word",
-  "cat": "ahead (not significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "es",
-  "measure": "native false alarms",
-  "cat": "behind (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "fr",
-  "measure": "far AUC",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "fr",
-  "measure": "near AUC",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "fr",
-  "measure": "near hit@5 %",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "fr",
-  "measure": "far right word",
-  "cat": "ahead (significant)"
- },
- {
-  "area": "swap benchmark",
-  "lang": "fr",
   "measure": "native false alarms",
   "cat": "behind (not significant)"
  },
  {
   "area": "swap benchmark",
+  "lang": "es",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "far right word",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "es",
+  "measure": "native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "far AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "near AUC",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "near hit@5 %",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "far right word",
+  "cat": "ahead (significant)"
+ },
+ {
+  "area": "swap benchmark",
+  "lang": "fr",
+  "measure": "native false alarms",
+  "cat": "behind (not significant)"
+ },
+ {
+  "area": "swap benchmark",
   "lang": "de",
   "measure": "far AUC",
   "cat": "ahead (significant)"
@@ -357,13 +357,13 @@
   "area": "swap benchmark",
   "lang": "pt",
   "measure": "far right word",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "pt",
   "measure": "native false alarms",
-  "cat": "behind (significant)"
+  "cat": "behind (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -375,7 +375,7 @@
   "area": "swap benchmark",
   "lang": "ru",
   "measure": "near AUC",
-  "cat": "behind (not significant)"
+  "cat": "level"
  },
  {
   "area": "swap benchmark",
