@@ -26,12 +26,12 @@ Baseline scored 14454 records over 11304 audio files, 17.15 h of audio (speechoc
 
 | group | test | n | metric | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
 |---|---|---|---|---|---|---|---|---|---|
-| speechocean762 | individual sounds | 47369 | Pearson | 0.685 [0.613, 0.731] | 0.434 [0.389, 0.481] | 0.347 [0.314, 0.378] | +0.250 [+0.217, +0.274] | 0.002 | ahead (significant) |
-| speechocean762 | words | 15967 | Pearson | 0.609 [0.533, 0.663] | 0.394 [0.335, 0.450] | 0.338 [0.291, 0.380] | +0.215 [+0.177, +0.244] | 0.002 | ahead (significant) |
-| speechocean762 | sentence accuracy | 2500 | Pearson | 0.748 [0.685, 0.794] | 0.583 [0.508, 0.640] | 0.601 [0.530, 0.655] | +0.165 [+0.101, +0.212] | 0.002 | ahead (significant) |
-| speechocean762 | sentence fluency | 2500 | Pearson | 0.779 [0.695, 0.836] | 0.562 [0.473, 0.638] | 0.584 [0.504, 0.640] | +0.217 [+0.090, +0.317] | 0.004 | ahead (significant) |
-| speechocean762 | sentence prosodic | 2500 | Pearson | 0.772 [0.693, 0.830] | 0.588 [0.508, 0.657] | 0.613 [0.540, 0.662] | +0.184 [+0.066, +0.274] | 0.006 | ahead (significant) |
-| speechocean762 | sentence total | 2500 | Pearson | 0.762 [0.700, 0.811] | 0.614 [0.538, 0.682] | 0.619 [0.552, 0.670] | +0.148 [+0.060, +0.214] | 0.002 | ahead (significant) |
+| speechocean762 | individual sounds | 47369 | Pearson | 0.700 [0.628, 0.747] | 0.434 [0.389, 0.481] | 0.347 [0.314, 0.378] | +0.265 [+0.228, +0.290] | 0.002 | ahead (significant) |
+| speechocean762 | words | 15967 | Pearson | 0.640 [0.563, 0.696] | 0.394 [0.335, 0.450] | 0.338 [0.291, 0.380] | +0.246 [+0.209, +0.273] | 0.002 | ahead (significant) |
+| speechocean762 | sentence accuracy | 2500 | Pearson | 0.778 [0.722, 0.820] | 0.583 [0.508, 0.640] | 0.601 [0.530, 0.655] | +0.195 [+0.145, +0.238] | 0.002 | ahead (significant) |
+| speechocean762 | sentence fluency | 2500 | Pearson | 0.814 [0.750, 0.860] | 0.562 [0.473, 0.638] | 0.584 [0.504, 0.640] | +0.253 [+0.141, +0.348] | 0.002 | ahead (significant) |
+| speechocean762 | sentence prosodic | 2500 | Pearson | 0.805 [0.748, 0.850] | 0.588 [0.508, 0.657] | 0.613 [0.540, 0.662] | +0.217 [+0.119, +0.302] | 0.002 | ahead (significant) |
+| speechocean762 | sentence total | 2500 | Pearson | 0.792 [0.744, 0.832] | 0.614 [0.538, 0.682] | 0.619 [0.552, 0.670] | +0.177 [+0.107, +0.237] | 0.002 | ahead (significant) |
 | learner errors | L2-ARCTIC test | 29760 | ROC AUC | 0.712 [0.647, 0.759] | 0.659 [0.586, 0.726] | 0.620 [0.562, 0.676] | +0.054 [+0.025, +0.084] | 0.002 | ahead (significant) |
 | learner errors | EpaDB test | 20665 | ROC AUC | 0.721 [0.707, 0.735] | 0.638 [0.614, 0.660] | 0.599 [0.578, 0.615] | +0.083 [+0.066, +0.103] | 0.002 | ahead (significant) |
 | coaching | precision at 'careful' recall (0.236) | 47041 | precision | 0.770 [0.721, 0.811] | 0.524 [0.468, 0.568] | 0.375 [0.340, 0.410] | +0.246 [+0.221, +0.277] | 0.002 | ahead (significant) |
@@ -41,7 +41,7 @@ Baseline scored 14454 records over 11304 audio files, 17.15 h of audio (speechoc
 | OMPAL | word: any error | 8156 | ROC AUC | 0.792 [0.750, 0.838] | 0.602 [0.560, 0.644] | 0.590 [0.556, 0.630] | +0.190 [+0.157, +0.241] | < 0.001 | ahead (significant) |
 | OMPAL | word: tone-only error | 8156 | ROC AUC | 0.778 [0.732, 0.829] | 0.552 [0.506, 0.592] | 0.541 [0.509, 0.569] | +0.226 [+0.189, +0.292] | < 0.001 | ahead (significant) |
 | OMPAL | word: consonant / vowel error | 8156 | ROC AUC | 0.856 [0.806, 0.895] | 0.839 [0.787, 0.882] | 0.823 [0.770, 0.863] | +0.017 [-0.009, +0.048] | 0.22 | ahead (not significant) |
-| OMPAL | sentence accuracy | 663 | Pearson | 0.634 [0.468, 0.742] | 0.302 [0.086, 0.426] | 0.270 [0.091, 0.356] | +0.333 [+0.213, +0.462] | < 0.001 | ahead (significant) |
+| OMPAL | sentence accuracy | 663 | Pearson | 0.634 [0.467, 0.742] | 0.302 [0.086, 0.426] | 0.270 [0.091, 0.356] | +0.333 [+0.213, +0.462] | < 0.001 | ahead (significant) |
 | swap benchmark | en far AUC | 150 | AUC | 0.995 [0.992, 0.997] | 0.995 [0.992, 0.997] | 0.984 [0.979, 0.988] | -0.000 [-0.002, +0.001] | 0.67 | level |
 | swap benchmark | en near AUC | 150 | AUC | 0.981 [0.973, 0.987] | 0.962 [0.952, 0.971] | 0.884 [0.867, 0.900] | +0.019 [+0.012, +0.025] | 0.002 | ahead (significant) |
 | swap benchmark | en near hit@5 % | 150 | % | 0.893 [0.840, 0.940] | 0.840 [0.753, 0.900] | 0.082 [0.043, 0.129] | +0.053 [-0.007, +0.133] | 0.16 | ahead (not significant) |
@@ -49,47 +49,47 @@ Baseline scored 14454 records over 11304 audio files, 17.15 h of audio (speechoc
 | swap benchmark | zh near AUC | 150 | AUC | 0.975 [0.965, 0.984] | 0.960 [0.942, 0.972] | 0.910 [0.889, 0.928] | +0.015 [+0.002, +0.030] | 0.02 | ahead (significant) |
 | swap benchmark | zh near hit@5 % | 150 | % | 0.900 [0.840, 0.947] | 0.827 [0.760, 0.887] | 0.338 [0.256, 0.424] | +0.073 [-0.007, +0.133] | 0.08 | ahead (not significant) |
 | tone swaps | zh tone AUC | 150 | ROC AUC | 0.834 [0.801, 0.864] | 0.5 (blind) | 0.5 (blind) | +0.334 [+0.301, +0.364] | 0.002 | ahead (significant) |
-| swap benchmark | ja far AUC | 149 | AUC | 0.991 [0.983, 0.997] | 0.986 [0.973, 0.995] | 0.949 [0.934, 0.960] | +0.005 [+0.001, +0.012] | 0.03 | ahead (significant) |
-| swap benchmark | ja near AUC | 150 | AUC | 0.968 [0.957, 0.978] | 0.896 [0.874, 0.916] | 0.726 [0.698, 0.755] | +0.072 [+0.054, +0.091] | 0.002 | ahead (significant) |
-| swap benchmark | ja near hit@5 % | 150 | % | 0.840 [0.760, 0.900] | 0.353 [0.260, 0.480] | 0.032 [0.004, 0.084] | +0.487 [+0.353, +0.573] | 0.002 | ahead (significant) |
+| swap benchmark | ja far AUC | 149 | AUC | 0.995 [0.989, 0.998] | 0.986 [0.973, 0.995] | 0.949 [0.934, 0.960] | +0.009 [+0.003, +0.018] | 0.002 | ahead (significant) |
+| swap benchmark | ja near AUC | 150 | AUC | 0.976 [0.966, 0.984] | 0.896 [0.874, 0.916] | 0.726 [0.698, 0.755] | +0.080 [+0.061, +0.100] | 0.002 | ahead (significant) |
+| swap benchmark | ja near hit@5 % | 150 | % | 0.893 [0.827, 0.940] | 0.353 [0.260, 0.480] | 0.032 [0.004, 0.084] | +0.540 [+0.413, +0.633] | 0.002 | ahead (significant) |
 | swap benchmark | es far AUC | 150 | AUC | 0.998 [0.996, 0.999] | 0.997 [0.996, 0.999] | 0.989 [0.985, 0.993] | +0.000 [-0.001, +0.001] | 0.71 | level |
 | swap benchmark | es near AUC | 150 | AUC | 0.990 [0.985, 0.993] | 0.916 [0.896, 0.933] | 0.811 [0.786, 0.833] | +0.074 [+0.057, +0.092] | 0.002 | ahead (significant) |
 | swap benchmark | es near hit@5 % | 150 | % | 0.967 [0.933, 0.993] | 0.380 [0.247, 0.480] | 0.091 [0.052, 0.137] | +0.587 [+0.473, +0.720] | 0.002 | ahead (significant) |
 | swap benchmark | fr far AUC | 150 | AUC | 0.997 [0.995, 0.998] | 0.995 [0.993, 0.997] | 0.969 [0.963, 0.975] | +0.002 [+0.000, +0.004] | 0.010 | ahead (significant) |
 | swap benchmark | fr near AUC | 150 | AUC | 0.986 [0.981, 0.991] | 0.925 [0.910, 0.939] | 0.809 [0.790, 0.830] | +0.062 [+0.048, +0.075] | 0.002 | ahead (significant) |
 | swap benchmark | fr near hit@5 % | 150 | % | 0.927 [0.887, 0.973] | 0.440 [0.347, 0.553] | 0.182 [0.085, 0.247] | +0.487 [+0.373, +0.587] | 0.002 | ahead (significant) |
-| swap benchmark | de far AUC | 150 | AUC | 0.996 [0.994, 0.997] | 0.989 [0.984, 0.992] | 0.979 [0.973, 0.984] | +0.007 [+0.003, +0.012] | 0.002 | ahead (significant) |
-| swap benchmark | de near AUC | 150 | AUC | 0.960 [0.943, 0.975] | 0.852 [0.828, 0.874] | 0.724 [0.693, 0.752] | +0.108 [+0.084, +0.133] | 0.002 | ahead (significant) |
-| swap benchmark | de near hit@5 % | 150 | % | 0.767 [0.700, 0.860] | 0.240 [0.153, 0.333] | 0.187 [0.127, 0.251] | +0.527 [+0.433, +0.660] | 0.002 | ahead (significant) |
+| swap benchmark | de far AUC | 150 | AUC | 0.997 [0.995, 0.998] | 0.989 [0.984, 0.992] | 0.979 [0.973, 0.984] | +0.008 [+0.005, +0.013] | 0.002 | ahead (significant) |
+| swap benchmark | de near AUC | 150 | AUC | 0.979 [0.970, 0.987] | 0.852 [0.828, 0.874] | 0.724 [0.693, 0.752] | +0.127 [+0.106, +0.149] | 0.002 | ahead (significant) |
+| swap benchmark | de near hit@5 % | 150 | % | 0.907 [0.853, 0.953] | 0.240 [0.153, 0.333] | 0.187 [0.127, 0.251] | +0.667 [+0.567, +0.760] | 0.002 | ahead (significant) |
 | swap benchmark | it far AUC | 150 | AUC | 0.998 [0.997, 0.999] | 0.997 [0.995, 0.999] | 0.976 [0.972, 0.981] | +0.001 [-0.001, +0.003] | 0.57 | ahead (not significant) |
 | swap benchmark | it near AUC | 150 | AUC | 0.979 [0.971, 0.985] | 0.949 [0.933, 0.963] | 0.834 [0.816, 0.851] | +0.030 [+0.017, +0.046] | 0.002 | ahead (significant) |
 | swap benchmark | it near hit@5 % | 150 | % | 0.887 [0.827, 0.933] | 0.700 [0.567, 0.800] | 0.065 [0.033, 0.103] | +0.187 [+0.080, +0.307] | 0.004 | ahead (significant) |
 | swap benchmark | pt far AUC | 150 | AUC | 0.997 [0.996, 0.998] | 0.996 [0.994, 0.997] | 0.967 [0.960, 0.972] | +0.002 [-0.000, +0.003] | 0.12 | ahead (not significant) |
-| swap benchmark | pt near AUC | 150 | AUC | 0.963 [0.945, 0.978] | 0.919 [0.895, 0.940] | 0.781 [0.754, 0.806] | +0.044 [+0.028, +0.060] | 0.002 | ahead (significant) |
+| swap benchmark | pt near AUC | 150 | AUC | 0.963 [0.945, 0.979] | 0.919 [0.895, 0.940] | 0.781 [0.754, 0.806] | +0.044 [+0.028, +0.060] | 0.002 | ahead (significant) |
 | swap benchmark | pt near hit@5 % | 150 | % | 0.853 [0.800, 0.907] | 0.547 [0.453, 0.667] | 0.187 [0.107, 0.254] | +0.307 [+0.187, +0.413] | 0.002 | ahead (significant) |
 | swap benchmark | ru far AUC | 150 | AUC | 0.990 [0.985, 0.994] | 0.988 [0.983, 0.992] | 0.957 [0.948, 0.966] | +0.003 [+0.000, +0.005] | 0.05 | ahead (significant) |
-| swap benchmark | ru near AUC | 150 | AUC | 0.900 [0.872, 0.924] | 0.847 [0.819, 0.876] | 0.709 [0.672, 0.741] | +0.052 [+0.029, +0.076] | 0.002 | ahead (significant) |
+| swap benchmark | ru near AUC | 150 | AUC | 0.900 [0.872, 0.924] | 0.847 [0.819, 0.876] | 0.709 [0.672, 0.741] | +0.052 [+0.029, +0.075] | 0.002 | ahead (significant) |
 | swap benchmark | ru near hit@5 % | 150 | % | 0.620 [0.533, 0.700] | 0.340 [0.227, 0.427] | 0.086 [0.033, 0.146] | +0.280 [+0.180, +0.400] | 0.002 | ahead (significant) |
-| swap benchmark | ko far AUC | 150 | AUC | 0.994 [0.988, 0.998] | 0.993 [0.988, 0.997] | 0.972 [0.961, 0.981] | +0.001 [-0.002, +0.004] | 0.51 | ahead (not significant) |
-| swap benchmark | ko near AUC | 150 | AUC | 0.944 [0.918, 0.963] | 0.838 [0.805, 0.869] | 0.695 [0.657, 0.731] | +0.106 [+0.080, +0.133] | 0.002 | ahead (significant) |
-| swap benchmark | ko near hit@5 % | 150 | % | 0.753 [0.673, 0.833] | 0.300 [0.220, 0.433] | 0.142 [0.095, 0.201] | +0.453 [+0.333, +0.540] | 0.002 | ahead (significant) |
+| swap benchmark | ko far AUC | 150 | AUC | 0.996 [0.990, 0.999] | 0.993 [0.988, 0.997] | 0.972 [0.961, 0.981] | +0.002 [+0.000, +0.005] | 0.05 | ahead (significant) |
+| swap benchmark | ko near AUC | 150 | AUC | 0.974 [0.961, 0.986] | 0.838 [0.805, 0.869] | 0.695 [0.657, 0.731] | +0.136 [+0.108, +0.165] | 0.002 | ahead (significant) |
+| swap benchmark | ko near hit@5 % | 150 | % | 0.867 [0.793, 0.920] | 0.300 [0.220, 0.433] | 0.142 [0.095, 0.201] | +0.567 [+0.433, +0.653] | 0.002 | ahead (significant) |
 | cv-real test A | en/A | 400 | ROC AUC | 0.748 [0.698, 0.799] | 0.719 [0.668, 0.769] | 0.689 [0.637, 0.741] | +0.029 [+0.000, +0.057] | 0.05 | ahead (significant) |
 | cv-real test B | en/B | 260 | ROC AUC | 0.517 [0.445, 0.588] | 0.537 [0.463, 0.609] | 0.520 [0.447, 0.596] | -0.021 [-0.068, +0.027] | 0.41 | behind (not significant) |
 | cv-real test A | zh-CN/A | 386 | ROC AUC | 0.771 [0.720, 0.819] | 0.717 [0.665, 0.769] | 0.738 [0.685, 0.790] | +0.053 [+0.024, +0.083] | < 0.001 | ahead (significant) |
 | cv-real test A | zh-TW/A | 400 | ROC AUC | 0.885 [0.849, 0.916] | 0.844 [0.802, 0.884] | 0.841 [0.801, 0.880] | +0.041 [+0.012, +0.071] | 0.003 | ahead (significant) |
-| cv-real test A | ja/A | 390 | ROC AUC | 0.798 [0.747, 0.845] | 0.735 [0.678, 0.789] | 0.756 [0.705, 0.803] | +0.064 [+0.032, +0.095] | < 0.001 | ahead (significant) |
+| cv-real test A | ja/A | 390 | ROC AUC | 0.803 [0.753, 0.849] | 0.735 [0.678, 0.789] | 0.756 [0.705, 0.803] | +0.068 [+0.035, +0.101] | < 0.001 | ahead (significant) |
 | cv-real test A | es/A | 396 | ROC AUC | 0.766 [0.718, 0.811] | 0.677 [0.624, 0.728] | 0.704 [0.653, 0.754] | +0.089 [+0.034, +0.146] | < 0.001 | ahead (significant) |
 | cv-real test A | fr/A | 396 | ROC AUC | 0.789 [0.743, 0.832] | 0.759 [0.710, 0.807] | 0.779 [0.733, 0.823] | +0.030 [-0.000, +0.062] | 0.05 | ahead (not significant) |
-| cv-real test A | de/A | 396 | ROC AUC | 0.823 [0.782, 0.863] | 0.630 [0.573, 0.686] | 0.700 [0.648, 0.750] | +0.193 [+0.143, +0.247] | < 0.001 | ahead (significant) |
-| cv-real test B | de/B | 102 | ROC AUC | 0.541 [0.423, 0.649] | 0.540 [0.410, 0.663] | 0.600 [0.492, 0.710] | +0.001 [-0.137, +0.144] | 0.98 | ahead (not significant) |
+| cv-real test A | de/A | 396 | ROC AUC | 0.829 [0.788, 0.867] | 0.630 [0.573, 0.686] | 0.700 [0.648, 0.750] | +0.199 [+0.147, +0.251] | < 0.001 | ahead (significant) |
+| cv-real test B | de/B | 102 | ROC AUC | 0.534 [0.420, 0.644] | 0.540 [0.410, 0.663] | 0.600 [0.492, 0.710] | -0.005 [-0.144, +0.139] | 0.96 | behind (not significant) |
 | cv-real test A | it/A | 398 | ROC AUC | 0.767 [0.718, 0.814] | 0.717 [0.663, 0.768] | 0.714 [0.665, 0.764] | +0.050 [+0.017, +0.084] | 0.003 | ahead (significant) |
 | cv-real test A | pt/A | 400 | ROC AUC | 0.729 [0.677, 0.779] | 0.688 [0.635, 0.739] | 0.721 [0.670, 0.770] | +0.041 [-0.002, +0.084] | 0.06 | ahead (not significant) |
 | cv-real test A | ru/A | 400 | ROC AUC | 0.788 [0.743, 0.829] | 0.754 [0.704, 0.801] | 0.725 [0.674, 0.773] | +0.033 [-0.007, +0.075] | 0.11 | ahead (not significant) |
 | cv-real test A | ko/A | 22 | ROC AUC | 0.802 [0.581, 0.985] | 0.826 [0.615, 0.985] | 0.860 [0.667, 1.000] | -0.025 [-0.222, +0.127] | 0.90 | behind (not significant) |
 
-Tally over 60 rows (Pronunciada vs gop, p < 0.05): significantly ahead 45, not different 15, significantly behind 0.
+Tally over 60 rows (Pronunciada vs gop, p < 0.05): significantly ahead 46, not different 14, significantly behind 0.
 
-Rows where the gop baseline equals or beats Pronunciada: swap benchmark en far AUC (Δ -0.000, p 0.67); swap benchmark zh far AUC (Δ -0.000, p 0.74); cv-real test B en/B (Δ -0.021, p 0.41); cv-real test A ko/A (Δ -0.025, p 0.90).
+Rows where the gop baseline equals or beats Pronunciada: swap benchmark en far AUC (Δ -0.000, p 0.67); swap benchmark zh far AUC (Δ -0.000, p 0.74); cv-real test B en/B (Δ -0.021, p 0.41); cv-real test B de/B (Δ -0.005, p 0.96); cv-real test A ko/A (Δ -0.025, p 0.90).
 
 Rows where the match baseline equals or beats Pronunciada: cv-real test B en/B; cv-real test B de/B; cv-real test A ko/A.
 
@@ -99,12 +99,12 @@ GOP scores are unbounded log-posteriors with a floor, so Pearson could understat
 
 | group | test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict |
 |---|---|---|---|---|---|---|---|---|
-| speechocean762 | individual sounds | 47369 | 0.469 [0.439, 0.501] | 0.309 [0.276, 0.339] | 0.317 [0.286, 0.346] | +0.160 [+0.147, +0.174] | 0.002 | ahead (significant) |
-| speechocean762 | words | 15967 | 0.415 [0.363, 0.463] | 0.350 [0.308, 0.390] | 0.339 [0.298, 0.376] | +0.065 [+0.051, +0.080] | 0.002 | ahead (significant) |
-| speechocean762 | sentence accuracy | 2500 | 0.709 [0.648, 0.758] | 0.606 [0.543, 0.658] | 0.614 [0.547, 0.666] | +0.103 [+0.080, +0.129] | 0.002 | ahead (significant) |
-| speechocean762 | sentence fluency | 2500 | 0.764 [0.708, 0.806] | 0.541 [0.455, 0.609] | 0.574 [0.488, 0.638] | +0.222 [+0.180, +0.269] | 0.002 | ahead (significant) |
-| speechocean762 | sentence prosodic | 2500 | 0.752 [0.694, 0.795] | 0.568 [0.486, 0.631] | 0.603 [0.524, 0.660] | +0.184 [+0.145, +0.227] | 0.002 | ahead (significant) |
-| speechocean762 | sentence total | 2500 | 0.734 [0.677, 0.778] | 0.619 [0.553, 0.671] | 0.627 [0.558, 0.677] | +0.114 [+0.088, +0.141] | 0.002 | ahead (significant) |
+| speechocean762 | individual sounds | 47369 | 0.471 [0.440, 0.504] | 0.309 [0.276, 0.339] | 0.317 [0.286, 0.346] | +0.163 [+0.149, +0.177] | 0.002 | ahead (significant) |
+| speechocean762 | words | 15967 | 0.420 [0.367, 0.470] | 0.350 [0.308, 0.390] | 0.339 [0.298, 0.376] | +0.070 [+0.055, +0.088] | 0.002 | ahead (significant) |
+| speechocean762 | sentence accuracy | 2500 | 0.748 [0.693, 0.790] | 0.606 [0.543, 0.658] | 0.614 [0.547, 0.666] | +0.142 [+0.113, +0.170] | 0.002 | ahead (significant) |
+| speechocean762 | sentence fluency | 2500 | 0.808 [0.761, 0.844] | 0.541 [0.455, 0.609] | 0.574 [0.488, 0.638] | +0.267 [+0.223, +0.319] | 0.002 | ahead (significant) |
+| speechocean762 | sentence prosodic | 2500 | 0.795 [0.741, 0.835] | 0.568 [0.486, 0.631] | 0.603 [0.524, 0.660] | +0.226 [+0.184, +0.275] | 0.002 | ahead (significant) |
+| speechocean762 | sentence total | 2500 | 0.767 [0.716, 0.806] | 0.619 [0.553, 0.671] | 0.627 [0.558, 0.677] | +0.148 [+0.116, +0.182] | 0.002 | ahead (significant) |
 | OMPAL | sentence accuracy | 663 | 0.638 [0.454, 0.764] | 0.308 [0.068, 0.468] | 0.295 [0.094, 0.426] | +0.330 [+0.217, +0.436] | < 0.001 | ahead (significant) |
 
 ## Notes per test
@@ -150,7 +150,7 @@ GOP scores are unbounded log-posteriors with a floor, so Pearson could understat
  "OMPAL": {
   "baseline_words_unplaced": 0,
   "units": 8156,
-  "ours_cache": "tone_zh_v3z-c0168a11__c1b348228564a762"
+  "ours_cache": "tone_zh_v3z-c0168a11__f7b0264ca55091df"
  },
  "swap benchmark": {
   "tone_records": 150,
@@ -197,7 +197,7 @@ GOP scores are unbounded log-posteriors with a floor, so Pearson could understat
   }
  },
  "cv-real": {
-  "ours_fingerprint": "c1b348228564a762",
+  "ours_fingerprint": "f7b0264ca55091df",
   "en/A": {
    "n": 400,
    "baseline_failed": 0,

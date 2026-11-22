@@ -9,7 +9,7 @@
   "area": "speechocean762",
   "lang": "en",
   "measure": "words",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "speechocean762",
@@ -21,13 +21,13 @@
   "area": "speechocean762",
   "lang": "en",
   "measure": "sentence fluency",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "speechocean762",
   "lang": "en",
   "measure": "sentence prosodic (intonation)",
-  "cat": "behind (significant)"
+  "cat": "behind (not significant)"
  },
  {
   "area": "speechocean762",
@@ -207,13 +207,13 @@
   "area": "swap benchmark",
   "lang": "ja",
   "measure": "far right word",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "ja",
   "measure": "native false alarms",
-  "cat": "behind (significant)"
+  "cat": "behind (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -297,7 +297,7 @@
   "area": "swap benchmark",
   "lang": "de",
   "measure": "far right word",
-  "cat": "behind (not significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -399,25 +399,25 @@
   "area": "swap benchmark",
   "lang": "ko",
   "measure": "far AUC",
-  "cat": "behind (not significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "ko",
   "measure": "near AUC",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "ko",
   "measure": "near hit@5 %",
-  "cat": "ahead (not significant)"
+  "cat": "ahead (significant)"
  },
  {
   "area": "swap benchmark",
   "lang": "ko",
   "measure": "far right word",
-  "cat": "behind (not significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -453,7 +453,7 @@
   "area": "cv-real test A",
   "lang": "ja",
   "measure": "ja/A",
-  "cat": "behind (significant)"
+  "cat": "behind (not significant)"
  },
  {
   "area": "cv-real test A",

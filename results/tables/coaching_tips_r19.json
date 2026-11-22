@@ -28,13 +28,13 @@
   "ja": {
    "before": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.704,
-    "pron_tips_per_clip": 1.12
+    "share_clips_with_pron_tip": 0.716,
+    "pron_tips_per_clip": 1.144
    },
    "after": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.276,
-    "pron_tips_per_clip": 0.324
+    "share_clips_with_pron_tip": 0.228,
+    "pron_tips_per_clip": 0.26
    }
   },
   "es": {
@@ -64,13 +64,13 @@
   "de": {
    "before": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.492,
-    "pron_tips_per_clip": 0.752
+    "share_clips_with_pron_tip": 0.488,
+    "pron_tips_per_clip": 0.74
    },
    "after": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.22,
-    "pron_tips_per_clip": 0.268
+    "share_clips_with_pron_tip": 0.172,
+    "pron_tips_per_clip": 0.2
    }
   },
   "it": {
@@ -112,13 +112,13 @@
   "ko": {
    "before": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.516,
-    "pron_tips_per_clip": 0.76
+    "share_clips_with_pron_tip": 0.556,
+    "pron_tips_per_clip": 0.832
    },
    "after": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.232,
-    "pron_tips_per_clip": 0.272
+    "share_clips_with_pron_tip": 0.24,
+    "pron_tips_per_clip": 0.276
    }
   }
  },
