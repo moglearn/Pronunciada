@@ -1,0 +1,71 @@
+{
+ "lang": "ja",
+ "cfg": "weighted_top2",
+ "feat": "rate",
+ "thr80": 0.07601354986323239,
+ "buckets": {
+  "indel": {
+   "n": 62,
+   "missed": 30,
+   "fires_on_missed": 0.7666666666666667,
+   "fires_on_caught": 0.9375
+  },
+  "length": {
+   "n": 114,
+   "missed": 29,
+   "fires_on_missed": 0.41379310344827586,
+   "fires_on_caught": 0.4588235294117647
+  },
+  "sub_gross": {
+   "n": 46,
+   "missed": 1,
+   "fires_on_missed": 0.0,
+   "fires_on_caught": 0.5333333333333333
+  },
+  "sub_moderate": {
+   "n": 79,
+   "missed": 2,
+   "fires_on_missed": 0.0,
+   "fires_on_caught": 0.4935064935064935
+  },
+  "sub_subtle": {
+   "n": 127,
+   "missed": 23,
+   "fires_on_missed": 0.5652173913043478,
+   "fires_on_caught": 0.49038461538461536
+  }
+ },
+ "fires_on_correct": 0.5062736506671978,
+ "fires_on_correct_above_thr": 0.8061926605504587,
+ "fires_on_correct_below_thr": 0.4432393347794649,
+ "n_correct_units": 5021,
+ "control_words": {
+  "n": 5423,
+  "lt06": 247,
+  "fires": 0.2786280656463212,
+  "fires_and_06_09": 108
+ },
+ "shipped_auc": {
+  "auc": 0.8673975843513319,
+  "fa80": 0.17367058354909382,
+  "b_indel": 0.7321282870010473,
+  "b_length": 0.8391973011596907,
+  "b_sub_gross": 0.9543937202878345,
+  "b_sub_moderate": 0.9330583700357233,
+  "b_sub_subtle": 0.8863936819688019
+ },
+ "unguarded_lower_only_best": {
+  "auc": 0.867911779870339,
+  "a_k": [
+   2.0,
+   0.0
+  ],
+  "native_ctl_lt06_rise": 35
+ },
+ "two_sided_guarded_best_in_sample": {
+  "auc": 0.8673975843513319,
+  "a_k_up": null,
+  "native_ctl_lt06_rise": 0
+ },
+ "indel_spearman_feature_vs_shipped": 0.1651598165137617
+}
