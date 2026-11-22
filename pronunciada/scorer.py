@@ -626,7 +626,8 @@ class Scorer:
             if c.get("identity_s") is not None:         # round 19 rollout: sound-identity evidence
                 from . import identity as _ID
 
-                prob = _ID.apply_word(_ID._cal(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s)
+                prob = _ID.apply_word(_ID._cal(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s,
+                                      sounds=sounds)
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5

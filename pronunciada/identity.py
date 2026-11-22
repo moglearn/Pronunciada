@@ -136,8 +136,15 @@ def step_features(v: np.ndarray) -> np.ndarray:
                      float(np.sum(1.0 / (1.0 + np.exp(2.0 * v)))), 1.0])
 
 
-def apply_word(cal: dict, s_word, prob: float, strictness: float) -> float:
-    """New WordResult.prob from the word's evidence values."""
+def _step(p: float, d: float) -> float:
+    p = min(max(p, 1e-6), 1 - 1e-6)
+    z = min(max(math.log(p / (1 - p)) + d, -30.0), 30.0)
+    return 1.0 / (1.0 + math.exp(-z))
+
+
+def apply_word(cal: dict, s_word, prob: float, strictness: float, sounds: float | None = None) -> float:
+    """New WordResult.prob from the word's evidence values. With "on": "sounds" the step moves only the
+    word's sounds probability; the other factors already in prob (stress, length, ...) are kept as they are."""
     v = np.asarray(s_word, np.float64)
     v = v[np.isfinite(v)]
     if cal is None or not len(v):
@@ -149,6 +156,6 @@ def apply_word(cal: dict, s_word, prob: float, strictness: float) -> float:
     d = min(d, float(cal.get("cap", 3.0)))
     if cal.get("no_raise_below") is not None and float(v.min()) < cal["no_raise_below"]:
         d = min(d, 0.0)
-    p = min(max(prob, 1e-6), 1 - 1e-6)
-    z = min(max(math.log(p / (1 - p)) + d, -30.0), 30.0)
-    return 1.0 / (1.0 + math.exp(-z))
+    if cal.get("on") == "sounds" and sounds is not None and sounds > 0:
+        return prob * _step(sounds, d) / sounds
+    return _step(prob, d)

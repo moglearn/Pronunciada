@@ -138,6 +138,8 @@ def cmd_select(lang: str) -> None:
     per, seen = Counter(), set()
     out = {"dev": [], "train": [], "pool": []}
     cap = {"dev": 2, "train": 4, "pool": 4}
+    if len({c["speaker"] for c in cands}) < 1000:          # few speakers (it, pt, ru, zh): more clips each
+        cap = {"dev": 4, "train": 16, "pool": 16}
     lim = {"dev": int(N_DEV_CV * 1.15), "train": N_TRAIN_CV, "pool": N_TRAIN_CV // 4}
     for c in cands:
         role = c["role"]

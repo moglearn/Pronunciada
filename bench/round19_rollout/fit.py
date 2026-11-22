@@ -91,7 +91,9 @@ def pre_prob(r):
 def new_probs(r, rule, off):
     pp, pres = pre_prob(r)
     vals = word_vals(r, off)
-    out = np.array([ID.apply_word(rule, v, float(p), 0.5) if len(v) else float(p) for v, p in zip(vals, pp)])
+    snd = r["sounds"].astype(np.float64)
+    out = np.array([ID.apply_word(rule, v, float(p), 0.5, sounds=float(q)) if len(v) else float(p)
+                    for v, p, q in zip(vals, pp, snd)])
     return out * pres
 
 
@@ -229,11 +231,12 @@ def knee_grid(ctx):
         yield {"form": "knee", "offset_kind": on, "q": q, "knee": knees, "floor": floor, "width": width}, off
 
 
-def step_design(rows, off, label_of):
-    """(features, offset logit, label, weight) of every judged word of rows."""
+def step_design(rows, off, label_of, on="prob"):
+    """(features, offset logit, label) of every judged word of rows; the offset is the logit of the word P
+    (before presence) or, with on="sounds", of the word's sounds probability."""
     F, z, y = [], [], []
     for r in rows:
-        pp, _ = pre_prob(r)
+        pp = pre_prob(r)[0] if on == "prob" else r["sounds"].astype(np.float64)
         lab = label_of(r)
         for wi, v in enumerate(word_vals(r, off)):
             if not len(v):
@@ -273,19 +276,22 @@ def step_grid(ctx):
                 out[k] = 1
         return out
 
-    F1, z1, y1 = step_design(ctx.dev_fit, off, dev_lab)
-    F2, z2, y2 = step_design(ctx.cor_fit, off, lambda r: [int(x) for x in r["wrong"]])
-    F, z, y = np.vstack([F1, F2]), np.r_[z1, z2], np.r_[y1, y2]
-    for wpos in (1.0, 2.0):
+    for on, wpos in itertools.product(("prob", "sounds"), (1.0, 2.0)):
+        F1, z1, y1 = step_design(ctx.dev_fit, off, dev_lab, on)
+        F2, z2, y2 = step_design(ctx.cor_fit, off, lambda r: [int(x) for x in r["wrong"]], on)
+        F, z, y = np.vstack([F1, F2]), np.r_[z1, z2], np.r_[y1, y2]
         w = np.where(y > 0, wpos, 1.0)
         # error log-odds = -(word log-odds); the step on the word log-odds is minus the fitted change
         c = -fit_offset_logistic(F, -z, y, w)
         for nrb in (-2.0, 0.0, -99.0):
             rule = {"form": "step", "coef": [float(x) for x in c], "cap": 3.0, "wpos": wpos,
-                    "no_raise_below": (None if nrb == -99.0 else nrb)}
+                    "no_raise_below": (None if nrb == -99.0 else nrb), "on": on}
             if nrb == -99.0:
                 rule["cap"] = 0.0          # never raise: a one-sided step
             yield rule, off
+            if nrb == -2.0:                # smaller raising caps (added for English, before its held-out runs)
+                for cap in (1.0, 2.0):
+                    yield dict(rule, cap=cap), off
 
 
 def _ref_word_of_unit(r, k):
