@@ -84,6 +84,29 @@ def _fbank_options():
 _OPTS = None
 
 
+def vtln_warp(fb: np.ndarray, alpha: float) -> np.ndarray:
+    """Vocal-tract-length warp in the log-mel domain (round 19 experiment, off by default):
+    the value of bin m becomes the (linearly interpolated) value of the original spectrum at
+    frequency f_m / alpha, so alpha < 1 moves formants DOWN by the factor alpha. Bins that would
+    read above the top band keep the top band's value."""
+    if alpha == 1.0:
+        return fb
+    lo, hi = 20.0, SAMPLE_RATE / 2 - 400.0
+
+    def mel(f):
+        return 1127.0 * np.log1p(np.asarray(f, np.float64) / 700.0)
+
+    edges = np.linspace(mel(lo), mel(hi), NUM_MEL_BINS + 2)
+    centres_mel = edges[1:-1]
+    centres_hz = 700.0 * np.expm1(centres_mel / 1127.0)
+    src = mel(np.clip(centres_hz / alpha, centres_hz[0], centres_hz[-1]))
+    pos = np.interp(src, centres_mel, np.arange(NUM_MEL_BINS))
+    i0 = np.floor(pos).astype(int)
+    i1 = np.minimum(i0 + 1, NUM_MEL_BINS - 1)
+    w = (pos - i0).astype(np.float32)
+    return (fb[:, i0] * (1 - w) + fb[:, i1] * w).astype(np.float32)
+
+
 def num_fbank_frames(num_samples: int) -> int:
     """Kaldi frame count with snip_edges=False."""
     return (int(num_samples) + 80) // 160

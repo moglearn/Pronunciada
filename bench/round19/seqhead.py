@@ -24,7 +24,7 @@ LAYER_DIMS = {"enc0": 192, "enc1": 256, "enc2": 384, "enc3": 512, "enc4": 384, "
 
 
 def build_module(n_tab, n_utt, n_phones, layers, d=96, n_layers=2, n_heads=4, ff=192, dropout=0.1,
-                 fuse="weighted"):
+                 fuse="weighted", bottleneck=False):
     import torch
     from torch import nn
 
@@ -47,6 +47,18 @@ def build_module(n_tab, n_utt, n_phones, layers, d=96, n_layers=2, n_heads=4, ff
             self.head_s = nn.Linear(d, 4)
             self.head_p = nn.Linear(d, 1)
             self.head_w = nn.Linear(d, 1)
+            # joint bottleneck: the 4 queries predict accuracy, fluency, prosodic, completeness and
+            # total is a linear function of them
+            self.bottleneck = bottleneck
+            self.head_t = nn.Linear(4, 1) if bottleneck else None
+            self.last_aux = None
+
+        def finish(self, sq):
+            """[B, 4] query outputs -> [B, 4] (accuracy, fluency, prosodic, total)."""
+            if not self.bottleneck:
+                return sq
+            self.last_aux = sq[:, 3]                       # completeness
+            return torch.cat([sq[:, :3], self.head_t(sq)], 1)
 
         def forward(self, xl: list, xt, pid, ppos, xu, mask):
             """xl: per layer [B, N, C_k]; xt [B, N, n_tab]; pid, ppos [B, N] long; xu [B, n_utt];
@@ -61,7 +73,7 @@ def build_module(n_tab, n_utt, n_phones, layers, d=96, n_layers=2, n_heads=4, ff
             keep = torch.cat([torch.ones(B, 5, dtype=torch.bool, device=mask.device), mask], 1)
             z = self.enc(z, src_key_padding_mask=~keep)
             z = self.norm(z)
-            s = torch.diagonal(self.head_s(z[:, :4]), dim1=1, dim2=2)
+            s = self.finish(torch.diagonal(self.head_s(z[:, :4]), dim1=1, dim2=2))
             hp = z[:, 5:]
             return s, self.head_p(hp)[..., 0], self.head_w(hp)[..., 0]
 
@@ -120,7 +132,8 @@ def pad_batch(items, layers):
            "xu": torch.tensor(np.stack([it["xu"] for it in items])),
            "ys": torch.tensor(np.stack([it["ys"] for it in items]), dtype=torch.float32),
            "yp": torch.full((B, N), float("nan")), "yw": torch.full((B, N), float("nan")),
-           "wid": torch.full((B, N), -1, dtype=torch.long)}
+           "wid": torch.full((B, N), -1, dtype=torch.long),
+           "yc": torch.tensor([float(it.get("yc", np.nan)) for it in items], dtype=torch.float32)}
     for b, it in enumerate(items):
         n = len(it["pid"])
         for i, k in enumerate(layers):
@@ -159,8 +172,27 @@ def corr_loss(p, y):
     return (1 - r).mean()
 
 
+def ccc_loss(p, y):
+    pm, ym = p.mean(0), y.mean(0)
+    cov = ((p - pm) * (y - ym)).mean(0)
+    ccc = 2 * cov / (p.var(0, unbiased=False) + y.var(0, unbiased=False) + (pm - ym) ** 2 + 1e-6)
+    return (1 - ccc).mean()
+
+
+def rank_loss(p, y, margin=0.05):
+    """Pairwise logistic ranking loss over the batch, per score column; pairs whose labels differ
+    by more than `margin` (0-1 scale)."""
+    import torch
+
+    d_y = y[:, None, :] - y[None, :, :]
+    d_p = p[:, None, :] - p[None, :, :]
+    m = (d_y.abs() > margin).float()
+    l = torch.nn.functional.softplus(-torch.sign(d_y) * d_p * 10.0) * m
+    return l.sum() / m.sum().clamp(min=1.0)
+
+
 def train(model, items, layers, epochs=40, bs=32, lr=1e-3, wd=1e-2, w_word=0.5, w_phone=0.5, w_corr=0.5,
-          seed=0, log=None):
+          seed=0, log=None, corr="pearson", w_rank=0.0, w_aux=0.5):
     import torch
 
     torch.manual_seed(seed)
@@ -177,7 +209,14 @@ def train(model, items, layers, epochs=40, bs=32, lr=1e-3, wd=1e-2, w_word=0.5, 
             s, p, pw = model(b["xl"], b["xt"], b["pid"], b["ppos"], b["xu"], b["mask"])
             loss = ((s - b["ys"]) ** 2).mean()
             if w_corr and len(s) > 4:
-                loss = loss + w_corr * corr_loss(s, b["ys"])
+                loss = loss + w_corr * (ccc_loss if corr == "ccc" else corr_loss)(s, b["ys"])
+            if w_rank and len(s) > 4:
+                loss = loss + w_rank * rank_loss(s, b["ys"])
+            aux = getattr(model, "last_aux", None)
+            if aux is not None and w_aux:
+                okc = torch.isfinite(b["yc"])
+                if okc.any():
+                    loss = loss + w_aux * ((aux[okc] - b["yc"][okc]) ** 2).mean()
             okp = b["mask"] & torch.isfinite(b["yp"])
             if w_phone and okp.any():
                 loss = loss + w_phone * ((p[okp] - b["yp"][okp]) ** 2).mean()

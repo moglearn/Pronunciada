@@ -58,6 +58,7 @@ class Scorer:
         # sentence_r19, delivery + F0 inputs + std-pooled activations of every encoder stack);
         # PRONUNCIADA_SENTENCE_HEAD=0 keeps the "sentence_model" choice
         self.seq_head, self.seq_weight = None, 0.0
+        self.seq_sound_weight = self.seq_word_weight = 0.0
         if os.environ.get("PRONUNCIADA_SENTENCE_HEAD", "1") != "0":
             sh = cfg.get("sentence_head", {}).get(self.lang)
             if sh:
@@ -67,6 +68,8 @@ class Scorer:
 
                     self.seq_head = SentenceHead(sh["seq"], calib_dir, threads=min(2, threads or 1))
                     self.seq_weight = float(sh["seq_weight"])
+                    self.seq_sound_weight = float(sh.get("sound_weight", 0.0))
+                    self.seq_word_weight = float(sh.get("word_weight", 0.0))
         self.sentence = C.load_level(self.sentence_name, calib_dir)
         self.sentence_proj = C.load_projection(self.sentence_name, calib_dir)
         self.sentence_lin = C.load_linear(self.sentence_name, calib_dir)
@@ -188,6 +191,16 @@ class Scorer:
             return self._lp_cache[key]
         t = time.perf_counter()
         x = self.am._features(wav)
+        vt = os.environ.get("PRONUNCIADA_VTLN")      # round 19 experiment: "alpha:min_median_f0_hz"
+        if vt:
+            from .audio import vtln_warp
+            from .prosody.f0 import track as _trk
+
+            alpha, thr = (float(v) for v in vt.split(":"))
+            tr = _trk(np.asarray(wav, np.float32))
+            v = tr.f0[tr.voiced & (tr.f0 > 0)]
+            if len(v) and float(np.median(v)) > thr:
+                x = vtln_warp(x, alpha)
         timing["fbank"] = (time.perf_counter() - t) * 1e3
         t = time.perf_counter()
         emb = None
@@ -306,12 +319,23 @@ class Scorer:
             t = time.perf_counter()
             feeds = self.seq_head.inputs(tab, ref, ev, emb, cache["S"], dv, trk)
             if feeds is not None:
-                s = self.seq_head(feeds)
+                o = self.seq_head.run(feeds, [p.word for p in ref.phones])
+                s = o["sentence"]
                 sent = dict(cache["sent"])
                 w = self.seq_weight
                 for j, k in enumerate(("accuracy", "fluency", "prosodic", "total")):
                     sent[f"reg_{k}"] = np.clip((1 - w) * np.asarray(sent[f"reg_{k}"], np.float64) + w * s[j], 0.0, 10.0)
                 cache["sent"], cache["sent_seq"] = sent, s
+                # reported 0-2 sound and 0-10 word scores (blend weights from config; 0 = unchanged);
+                # probabilities, coaching inputs and the sentence inputs do not read them
+                ws, ww = self.seq_sound_weight, self.seq_word_weight
+                if ws and "phone" in o and cache.get("s_reg") is not None:
+                    cache["s_reg"] = np.clip((1 - ws) * np.asarray(cache["s_reg"], np.float64) + ws * o["phone"], 0.0, 2.0)
+                if ww and "word" in o and len(o["word"]) == len(ref.words):
+                    wv = np.asarray(cache["w_reg"], np.float64)
+                    cache["w_reg"] = np.where(np.isfinite(o["word"]),
+                                              np.clip((1 - ww) * wv + ww * np.nan_to_num(o["word"]), 0.0, 10.0), wv)
+                cache["seq_level"] = o
             timing["sentence_head"] = (time.perf_counter() - t) * 1e3
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)

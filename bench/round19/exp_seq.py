@@ -46,6 +46,7 @@ def build(utts, XB, layers, utt_parts, vocab=None):
                       "yp": np.asarray(lab["phone"], float) / 2.0,
                       "yw_ph": np.asarray(lab["word"], float)[pw] / 10.0, "wid": pw.astype(np.int64),
                       "ys": np.array([lab["sentence"][h] for h in HEADS], np.float32) / 10.0,
+                      "yc": float(lab["sentence"].get("completeness", np.nan)) / 10.0,
                       "age": lab["age"], "spk": u["speaker"], "id": u["id"]})
     return items, vocab
 
@@ -115,6 +116,10 @@ def main():
     ap.add_argument("--no-tab", action="store_true")
     ap.add_argument("--seeds", default="0,1,2")
     ap.add_argument("--folds", default="")
+    ap.add_argument("--corr", default="pearson", choices=("pearson", "ccc"))
+    ap.add_argument("--w-rank", type=float, default=0.0)
+    ap.add_argument("--bottleneck", action="store_true")
+    ap.add_argument("--ens", type=int, default=1, help="models per fold (different seeds), outputs averaged")
     a = ap.parse_args()
     from bench.calib.common import calib_cache, load_json, save_json
     from bench.data.common import cache_root
@@ -154,11 +159,16 @@ def main():
             uttn = SH.Norm(np.stack([items[i]["xu_raw"] for i in tr]))
             itr = apply_norms(items, tr, tabn, uttn, lnorm, layers)
             ite = apply_norms(items, te, tabn, uttn, lnorm, layers)
-            m = SH.build_module(itr[0]["xt"].shape[1], len(itr[0]["xu"]), len(vocab), layers, d=a.d,
-                                n_layers=a.n_layers, ff=a.ff, dropout=a.dropout)
-            SH.train(m, itr, layers, epochs=a.epochs, lr=a.lr, wd=a.wd, w_word=a.w_word, w_phone=a.w_phone,
-                     w_corr=a.w_corr, seed=seed * 10 + fi)
-            s, p, w = SH.predict(m, ite, layers)
+            outs = []
+            for e in range(a.ens):
+                m = SH.build_module(itr[0]["xt"].shape[1], len(itr[0]["xu"]), len(vocab), layers, d=a.d,
+                                    n_layers=a.n_layers, ff=a.ff, dropout=a.dropout, bottleneck=a.bottleneck)
+                SH.train(m, itr, layers, epochs=a.epochs, lr=a.lr, wd=a.wd, w_word=a.w_word, w_phone=a.w_phone,
+                         w_corr=a.w_corr, seed=seed * 10 + fi + 1000 * e, corr=a.corr, w_rank=a.w_rank)
+                outs.append(SH.predict(m, ite, layers))
+            s = np.mean([o[0] for o in outs], 0)
+            p = [np.mean([o[1][k] for o in outs], 0) for k in range(len(te))]
+            w = [np.mean([o[2][k] for o in outs], 0) for k in range(len(te))]
             S[te] = s
             for k, i in enumerate(te):
                 P[i], Wd[i] = p[k], w[k]
@@ -172,6 +182,10 @@ def main():
         res["seeds"][seed] = r
         np.savez(oofdir / f"seq_{a.name}_seed{seed}.npz", ids=np.array([it["id"] for it in items]), S=S * 10,
                  done=done)
+        import pickle
+
+        (oofdir / f"seq_{a.name}_seed{seed}_pw.pkl").write_bytes(pickle.dumps(
+            {it["id"]: (P[i], Wd[i]) for i, it in enumerate(items) if done[i]}))
         print(f"seed {seed}: " + " ".join(f"{k}={v:.4f}" for k, v in r.items() if isinstance(v, float)), flush=True)
     ks = [k for k, v in next(iter(res["seeds"].values())).items() if isinstance(v, float)]
     res["mean"] = {k: float(np.mean([r[k] for r in res["seeds"].values()])) for k in ks}

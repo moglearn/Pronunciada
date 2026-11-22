@@ -145,5 +145,20 @@ class SentenceHead:
 
     def __call__(self, feeds: dict) -> np.ndarray:
         """-> [4] 0-10 scores (accuracy, fluency, prosodic, total)."""
-        s = self.sess.run(["sentence"], feeds)[0][0]
-        return np.clip(np.asarray(s, np.float64), 0.0, 1.0) * 10.0
+        return self.run(feeds)["sentence"]
+
+    def run(self, feeds: dict, phone_word=None) -> dict:
+        """sentence: [4] 0-10 scores; and, when the network has them, phone: [n] 0-2 sound scores
+        and word: [n_words] 0-10 word scores (mean of the word's per-sound contributions)."""
+        names = [o.name for o in self.sess.get_outputs()]
+        res = dict(zip(names, self.sess.run(names, feeds)))
+        out = {"sentence": np.clip(np.asarray(res["sentence"][0], np.float64), 0.0, 1.0) * 10.0}
+        if "phone" in res:
+            out["phone"] = np.clip(np.asarray(res["phone"][0], np.float64), 0.0, 1.0) * 2.0
+        if "word_part" in res and phone_word is not None:
+            pw = np.asarray(phone_word)
+            wp = np.asarray(res["word_part"][0], np.float64)
+            nw = int(pw.max()) + 1 if len(pw) else 0
+            w = np.array([wp[pw == k].mean() if np.any(pw == k) else np.nan for k in range(nw)])
+            out["word"] = np.clip(w, 0.0, 1.0) * 10.0
+        return out

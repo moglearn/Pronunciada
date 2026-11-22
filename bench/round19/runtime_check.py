@@ -76,8 +76,20 @@ def main():
             rn, ro = new.score(r["audio"], r["text"]), old.score(r["audio"], r["text"])
         except ValueError:
             continue
-        vals["new"].append([new.details(rn)["sentence"][h] for h in HEADS])
-        vals["old"].append([old.details(ro)["sentence"][h] for h in HEADS])
+        dn, do = new.details(rn), old.details(ro)
+        vals["new"].append([dn["sentence"][h] for h in HEADS])
+        vals["old"].append([do["sentence"][h] for h in HEADS])
+        for nm, d in (("new", dn), ("old", do)):
+            vals.setdefault(f"word_{nm}", []).extend(np.asarray(d["word_accuracy"], float).tolist())
+            vals.setdefault(f"phone_{nm}", []).extend(np.asarray(d["phone_score"], float).tolist())
+        vals.setdefault("prob_same", []).append(rn.prob == ro.prob and [w.prob for w in rn.words] == [w.prob for w in ro.words])
+    for lev in ("word", "phone"):
+        a_, b_ = np.array(vals[f"{lev}_new"]), np.array(vals[f"{lev}_old"])
+        out[f"native_{lev}_score"] = {"median_old": float(np.median(b_)), "median_new": float(np.median(a_)),
+                                      "mean_old": float(b_.mean()), "mean_new": float(a_.mean())}
+        print("native", lev, out[f"native_{lev}_score"], flush=True)
+    out["native_probabilities_identical"] = bool(all(vals["prob_same"]))
+    print("probabilities identical:", out["native_probabilities_identical"], flush=True)
     N, O = np.array(vals["new"]), np.array(vals["old"])
     g = {h: {"median_old": float(np.median(O[:, j])), "median_new": float(np.median(N[:, j])),
              "median_delta": float(np.median(N[:, j]) - np.median(O[:, j]))} for j, h in enumerate(HEADS)}

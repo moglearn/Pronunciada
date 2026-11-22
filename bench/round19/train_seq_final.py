@@ -23,20 +23,26 @@ from pronunciada.sentence_head import F0_KEYS
 CFG = dict(d=64, n_layers=1, ff=128, dropout=0.2, epochs=25, w_corr=1.0)
 
 
-def export_onnx(m, layers, n_tab, n_utt, path):
+def export_onnx(models, layers, n_tab, n_utt, path):
+    """One ONNX graph with every model of the ensemble; outputs = the models' mean sentence
+    scores [1, 4], per-sound scores [1, N] and per-sound word contributions [1, N] (0-1 scales)."""
     import torch
 
     class Wrap(torch.nn.Module):
         def __init__(self, inner):
             super().__init__()
-            self.m = inner
+            self.ms = torch.nn.ModuleList(inner)
 
         def forward(self, *args):
+            outs = [self.one(mm, args) for mm in self.ms]
+            k = float(len(outs))
+            return tuple(sum(o[j] for o in outs) / k for j in range(3))
+
+        def one(self, mm, args):
             # the module's forward re-written with shape-free reshapes (nn.MultiheadAttention
             # traces the sequence length as a constant); same weights, batch of one, no padding
             import torch.nn.functional as Fn
 
-            mm = self.m
             xl = list(args[:len(layers)])
             xt, pid, ppos, xu = args[len(layers):]
             wts = torch.softmax(mm.alpha, 0)
@@ -59,16 +65,19 @@ def export_onnx(m, layers, n_tab, n_utt, path):
                 y = lay.norm2(z)
                 z = z + lay.linear2(Fn.relu(lay.linear1(y)))
             z = mm.norm(z)
-            return torch.diagonal(mm.head_s(z[:, :4]), dim1=1, dim2=2)
+            s = torch.diagonal(mm.head_s(z[:, :4]), dim1=1, dim2=2)
+            hp = z[:, 5:]
+            return s, mm.head_p(hp)[..., 0], mm.head_w(hp)[..., 0]
 
-    w = Wrap(m).eval()
+    w = Wrap(models).eval()
     N = 7
     ex = tuple(torch.randn(1, N, SH.LAYER_DIMS[k]) for k in layers) + (
         torch.randn(1, N, n_tab), torch.ones(1, N, dtype=torch.long), torch.ones(1, N, dtype=torch.long),
         torch.randn(1, n_utt))
     names = [f"x_{k}" for k in layers] + ["xt", "pid", "ppos", "xu"]
     dyn = {n: {1: "n"} for n in names if n != "xu"}
-    torch.onnx.export(w, ex, str(path), input_names=names, output_names=["sentence"], dynamic_axes=dyn,
+    torch.onnx.export(w, ex, str(path), input_names=names, output_names=["sentence", "phone", "word_part"],
+                      dynamic_axes={**dyn, "phone": {1: "n"}, "word_part": {1: "n"}},
                       opset_version=17, dynamo=False)
     return w, ex, names
 
@@ -80,7 +89,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", default="seqhead_en")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--ens", type=int, default=1)
+    ap.add_argument("--corr", default="pearson")
     a = ap.parse_args()
+    CFG["corr"], CFG["ens"] = a.corr, a.ens
     from bench.calib.common import calib_cache, save_json, ship_dir
 
     layers = list(RD.LAYERS)
@@ -95,13 +107,15 @@ def main():
     tabn = SH.Norm(np.concatenate([it["xt_raw"] for it in items]))
     uttn = SH.Norm(np.stack([it["xu_raw"] for it in items]))
     itr = ES.apply_norms(items, np.arange(len(items)), tabn, uttn, lnorm, layers)
-    m = SH.build_module(itr[0]["xt"].shape[1], len(itr[0]["xu"]), len(vocab), layers, d=CFG["d"],
-                        n_layers=CFG["n_layers"], ff=CFG["ff"], dropout=CFG["dropout"])
-    SH.train(m, itr, layers, epochs=CFG["epochs"], w_corr=CFG["w_corr"], seed=a.seed)
-    m.eval()
+    models = []
+    for e in range(a.ens):                   # seeds as in exp_seq.py --ens (seed + 1000 e)
+        m = SH.build_module(itr[0]["xt"].shape[1], len(itr[0]["xu"]), len(vocab), layers, d=CFG["d"],
+                            n_layers=CFG["n_layers"], ff=CFG["ff"], dropout=CFG["dropout"])
+        SH.train(m, itr, layers, epochs=CFG["epochs"], w_corr=CFG["w_corr"], seed=a.seed + 1000 * e, corr=a.corr)
+        models.append(m.eval())
     dest = ship_dir()
     onnx_path = dest / f"{a.name}.onnx"
-    export_onnx(m, layers, itr[0]["xt"].shape[1], len(itr[0]["xu"]), onnx_path)
+    export_onnx(models, layers, itr[0]["xt"].shape[1], len(itr[0]["xu"]), onnx_path)
     utt_cols = list(F.SENT_NUM) + list(DV.ALL) + list(F0_KEYS)
     assert len(utt_cols) == len(itr[0]["xu"])
     arrays = {"layers": np.array(layers), "tab_cols": np.array(tab_cols), "utt_cols": np.array(utt_cols),
@@ -118,14 +132,15 @@ def main():
     for it in itr[:50]:
         b = SH.pad_batch([it], layers)
         with torch.no_grad():
-            st, _, _ = m(b["xl"], b["xt"], b["pid"], b["ppos"], b["xu"], b["mask"])
+            st = sum(mm(b["xl"], b["xt"], b["pid"], b["ppos"], b["xu"], b["mask"])[0] for mm in models) / len(models)
         feeds = {f"x_{k}": b["xl"][i].numpy() for i, k in enumerate(layers)}
         feeds.update(xt=b["xt"].numpy(), pid=b["pid"].numpy(), ppos=b["ppos"].numpy(), xu=b["xu"].numpy())
         so = sess.run(["sentence"], feeds)[0]
         diffs.append(float(np.abs(so - st.numpy()).max()))
-    out = {"params": SH.n_params(m), "onnx_kb": onnx_path.stat().st_size / 1024,
+    out = {"params": sum(SH.n_params(mm) for mm in models), "onnx_kb": onnx_path.stat().st_size / 1024,
            "npz_kb": (dest / f"{a.name}.npz").stat().st_size / 1024, "onnx_vs_torch_max_abs": max(diffs),
-           "layer_weights": torch.softmax(m.alpha, 0).detach().numpy().round(4).tolist(), "config": CFG}
+           "layer_weights": [torch.softmax(mm.alpha, 0).detach().numpy().round(4).tolist() for mm in models],
+           "config": CFG}
     print(out, flush=True)
     save_json("round19_english_seqhead_fit.json", out)
 

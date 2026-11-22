@@ -1,39 +1,52 @@
 {
  "parity_tree_inputs_max_abs": 0.0016997064246648819,
+ "native_word_score": {
+  "median_old": 9.902655389520602,
+  "median_new": 9.94099353806209,
+  "mean_old": 9.753601402100454,
+  "mean_new": 9.808246386972389
+ },
+ "native_phone_score": {
+  "median_old": 1.9645424364516693,
+  "median_new": 1.9744720369534798,
+  "mean_old": 1.9244345423469233,
+  "mean_new": 1.9373790046407913
+ },
+ "native_probabilities_identical": true,
  "native_guard_fleurs_validation": {
   "accuracy": {
    "median_old": 8.507718890845744,
-   "median_new": 8.654870112333393,
-   "median_delta": 0.1471512214876487
+   "median_new": 8.678408926981062,
+   "median_delta": 0.1706900361353174
   },
   "fluency": {
    "median_old": 8.77997420032603,
-   "median_new": 8.826443080930835,
-   "median_delta": 0.04646888060480414
+   "median_new": 8.844349271162788,
+   "median_delta": 0.06437507083675698
   },
   "prosodic": {
    "median_old": 8.358526375708227,
-   "median_new": 8.529935816763626,
-   "median_delta": 0.17140944105539901
+   "median_new": 8.50333216193583,
+   "median_delta": 0.14480578622760376
   },
   "total": {
    "median_old": 8.11833755277804,
-   "median_new": 8.212247913770884,
-   "median_delta": 0.09391036099284378
+   "median_new": 8.211004080032705,
+   "median_delta": 0.09266652725466429
   },
   "n": 100,
   "pass": true
  },
  "latency": {
-  "fp32_old_ms": 60.7218545046635,
-  "fp32_new_ms": 64.93510451400653,
-  "int8_old_ms": 53.19493799470365,
-  "int8_new_ms": 53.21868750615977,
+  "fp32_old_ms": 72.28918751934543,
+  "fp32_new_ms": 78.69560449034907,
+  "int8_old_ms": 63.51035399711691,
+  "int8_new_ms": 62.660395982675254,
   "clip_s_median": 3.35
  },
  "size_kb": {
   "sentence_r19.npz": 192.6689453125,
-  "seqhead_en.onnx": 814.63671875,
+  "seqhead_en.onnx": 2450.466796875,
   "seqhead_en.npz": 25.20703125
  }
 }
