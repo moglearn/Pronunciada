@@ -388,6 +388,7 @@ class Scorer:
 
                 pv = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
                 cache["identity_s"] = _ID.evidence(self.lang, ref, pv)
+                cache["identity_cls"] = _ID.classes(ref, _ID._cal(self.lang), _ID._head(self.lang))[0]
         cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -726,8 +727,13 @@ class Scorer:
             if c.get("identity_s") is not None:         # round 19 rollout: sound-identity evidence
                 from . import identity as _ID
 
-                prob = _ID.apply_word(_ID._cal(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s,
-                                      sounds=sounds)
+                # round 20: the rule may also read the word's tone factor, contrast factor and sound classes
+                # (pronunciada.identity.rule; PRONUNCIADA_IDENTITY_<LANG>_R20=0 restores the round-19 rule)
+                is_tone = bool(self.pros_cal) and self.pros_cal["kind"] == "tone"
+                icls = c.get("identity_cls")
+                prob = _ID.apply_word(_ID.rule(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s,
+                                      sounds=sounds, tone=f_pros if is_tone else None, contrast=p_con,
+                                      cls=None if icls is None else icls[w.phones[0]:w.phones[1]])
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5

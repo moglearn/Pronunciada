@@ -142,11 +142,37 @@ def _step(p: float, d: float) -> float:
     return 1.0 / (1.0 + math.exp(-z))
 
 
-def apply_word(cal: dict, s_word, prob: float, strictness: float, sounds: float | None = None) -> float:
+def rule(lang: str) -> dict | None:
+    """The word rule in force: the rule file, with its "round20" overrides unless
+    PRONUNCIADA_IDENTITY_<LANG>_R20=0 (that switch restores the round-19 rule exactly)."""
+    cal = _cal(lang)
+    if cal is None or "round20" not in cal or os.environ.get(f"PRONUNCIADA_IDENTITY_{lang.upper()}_R20", "1") == "0":
+        return cal
+    return _merged(lang)
+
+
+@lru_cache(maxsize=None)
+def _merged(lang: str) -> dict:
+    cal = _cal(lang)
+    return {**{k: v for k, v in cal.items() if k != "round20"}, **cal["round20"]}
+
+
+def apply_word(cal: dict, s_word, prob: float, strictness: float, sounds: float | None = None,
+               tone: float | None = None, contrast: float | None = None, cls=None) -> float:
     """New WordResult.prob from the word's evidence values. With "on": "sounds" the step moves only the
-    word's sounds probability; the other factors already in prob (stress, length, ...) are kept as they are."""
+    word's sounds probability; the other factors already in prob (stress, length, ...) are kept as they are.
+
+    Round-20 keys (absent from a rule file = the round-19 behaviour):
+      "on": "segmental"  the step moves sounds x contrast; the tone factor stays multiplicative
+      tone_gate t        no raise for a word whose tone factor is below t
+      tone_ramp [t0, t1] a raise is scaled by clip((tone - t0) / (t1 - t0), 0, 1)
+      no_raise_cls {class: s}  no raise when a judged sound of that class has evidence below s
+                         (cls = the word's class per evidence value, same order as s_word)"""
     v = np.asarray(s_word, np.float64)
-    v = v[np.isfinite(v)]
+    fin = np.isfinite(v)
+    if cls is not None:
+        cls = [c for c, f in zip(cls, fin) if f]
+    v = v[fin]
     if cal is None or not len(v):
         return prob
     if cal.get("form", "knee") == "knee":
@@ -156,6 +182,20 @@ def apply_word(cal: dict, s_word, prob: float, strictness: float, sounds: float 
     d = min(d, float(cal.get("cap", 3.0)))
     if cal.get("no_raise_below") is not None and float(v.min()) < cal["no_raise_below"]:
         d = min(d, 0.0)
-    if cal.get("on") == "sounds" and sounds is not None and sounds > 0:
+    if d > 0 and tone is not None:
+        if cal.get("tone_gate") is not None and tone < cal["tone_gate"]:
+            d = 0.0
+        if cal.get("tone_ramp") is not None:
+            t0, t1 = cal["tone_ramp"]
+            d *= min(max((tone - t0) / (t1 - t0), 0.0), 1.0)
+    if d > 0 and cls is not None and cal.get("no_raise_cls"):
+        nr = cal["no_raise_cls"]
+        if any(c in nr and x < nr[c] for c, x in zip(cls, v)):
+            d = 0.0
+    on = cal.get("on")
+    if on == "segmental" and sounds is not None and sounds > 0:
+        seg = sounds * (contrast if contrast is not None else 1.0)
+        return prob * _step(seg, d) / seg
+    if on == "sounds" and sounds is not None and sounds > 0:
         return prob * _step(sounds, d) / sounds
     return _step(prob, d)

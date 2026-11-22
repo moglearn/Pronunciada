@@ -56,5 +56,11 @@
   "n": -2.205139088630676
  },
  "lang": "zh",
+ "round20": {
+  "tone_ramp": [
+   0.2,
+   0.98
+  ]
+ },
  "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)"
 }

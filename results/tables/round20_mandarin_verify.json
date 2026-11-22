@@ -1,0 +1,7 @@
+{
+ "n_items": 80,
+ "max_abs_diff_runtime_vs_offline": {
+  "r19": 6.357231059284096e-05,
+  "new": 6.357231059284096e-05
+ }
+}
