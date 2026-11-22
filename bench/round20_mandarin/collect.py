@@ -4,8 +4,10 @@
 
 Scores the same items as bench.round19_rollout.collect (sets cvpool / dev / devcor / val, never a
 held-out set) with every identity switch off, and keeps per reference word: the word P, the sounds,
-tone / stress, contrast, length and presence factors, and the per-syllable tone / stress
-probabilities. Rows: $PRONUNCIADA_CACHE/round20/mandarin/<lang>/extra/<set>/<chunk>.pkl, keyed by the
+tone / stress, contrast, length and presence factors, the per-syllable tone / stress
+probabilities, and the word's extra-sound evidence (lowest llr_ins at and between its sounds; the
+aligner is made to compute it, which adds an output and changes nothing else; the zh rows were
+collected before this field existed). Rows: $PRONUNCIADA_CACHE/round20/mandarin/<lang>/extra/<set>/<chunk>.pkl, keyed by the
 round-19 item id, so they join the stored identity evidence (ev_<set>.pkl) one to one.
 """
 from __future__ import annotations
