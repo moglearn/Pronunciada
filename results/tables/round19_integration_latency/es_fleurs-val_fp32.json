@@ -1,0 +1,36 @@
+{
+ "lang": "es",
+ "set": "fleurs-val",
+ "precision": "fp32",
+ "threads": 4,
+ "n": 100,
+ "old_tree": "$PRONUNCIADA_CACHE/round19/integrator/src/main",
+ "new_tree": "$PRONUNCIADA_CACHE/round19/integrator/src/merged2",
+ "old_env": {},
+ "clip_seconds_median": 11.73,
+ "load_avg_1min_start_end": [
+  3.92529296875,
+  3.88427734375
+ ],
+ "wall_s": 33.267537117004395,
+ "old_max_rss_mb": 936.484375,
+ "old_embed_outputs": [
+  "round5"
+ ],
+ "new_max_rss_mb": 941.171875,
+ "new_embed_outputs": [
+  "enc1",
+  "enc3",
+  "enc5",
+  "final"
+ ],
+ "old_median_ms": 161.71918748295866,
+ "new_median_ms": 163.9205630053766,
+ "paired_median_diff_ms": 1.8881669675465673,
+ "paired_median_diff_ci": [
+  1.6797910211607814,
+  2.1303329849615693
+ ],
+ "old_p90_ms": 226.74773298786025,
+ "new_p90_ms": 229.2607119015884
+}

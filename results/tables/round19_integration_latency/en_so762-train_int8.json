@@ -1,0 +1,39 @@
+{
+ "lang": "en",
+ "set": "so762-train",
+ "precision": "int8",
+ "threads": 4,
+ "n": 100,
+ "old_tree": "$PRONUNCIADA_CACHE/round19/integrator/src/main",
+ "new_tree": "$PRONUNCIADA_CACHE/round19/integrator/src/merged2",
+ "old_env": {},
+ "clip_seconds_median": 3.647,
+ "load_avg_1min_start_end": [
+  3.93701171875,
+  4.1865234375
+ ],
+ "wall_s": 9.450021743774414,
+ "old_max_rss_mb": 411.953125,
+ "old_embed_outputs": [
+  "round5"
+ ],
+ "new_max_rss_mb": 419.0,
+ "new_embed_outputs": [
+  "enc0",
+  "enc1",
+  "enc2",
+  "enc3",
+  "enc4",
+  "enc5",
+  "final"
+ ],
+ "old_median_ms": 41.99058297672309,
+ "new_median_ms": 43.31820798688568,
+ "paired_median_diff_ms": 1.3346255000215024,
+ "paired_median_diff_ci": [
+  1.235167495906353,
+  1.4007080171722919
+ ],
+ "old_p90_ms": 63.82379174465314,
+ "new_p90_ms": 65.28237080201507
+}

@@ -94,7 +94,7 @@ def main():
         order = ("old", "new") if k % 2 == 0 else ("new", "old")
         for name in order:
             sides[name]["conn"].send((wav, text))
-            ms[name].append(sides[name]["conn"].recv()[0])
+            ms[name].append(sides[name]["conn"].recv())
     out = {"lang": a.lang, "set": a.set, "precision": a.precision, "threads": a.threads, "n": len(clips),
            "old_tree": a.old, "new_tree": a.new, "old_env": env_old,
            "clip_seconds_median": float(np.median([len(c[1]) / 16000 for c in clips])),
