@@ -35,14 +35,14 @@ def test_word_rules():
 
 
 def test_shipped_languages_and_switch(monkeypatch):
-    for lang in ("es", "ru", "pt", "it", "zh"):
+    for lang in ("es", "ru", "pt", "zh"):
         assert ID.enabled(lang), lang
         H, cal = ID._head(lang), ID._cal(lang)
         assert cal["form"] == "step" and len(cal["coef"]) == 5
         assert all(c in H["index"] for c in cal["offset"])
         monkeypatch.setenv(f"PRONUNCIADA_IDENTITY_{lang.upper()}", "0")
         assert not ID.enabled(lang)
-    for lang in ("fr", "en", "de"):                   # not shipped here (de keeps its own module)
+    for lang in ("fr", "en", "it", "de"):             # not shipped here (de keeps its own module)
         assert ID._cal(lang) is None
 
 

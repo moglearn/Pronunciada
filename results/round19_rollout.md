@@ -1,13 +1,13 @@
 # Round 19: rolling the sound-identity head out to more languages
 
-**Result.** Five languages ship: Spanish, Russian, Portuguese, Italian and Mandarin. French and English do not.
+**Result.** Four languages ship: Spanish, Russian, Portuguese and Mandarin. Italian, French and English do not.
 
 | lang | ships | dev check fold: AUC / FA@80 (paired p) | held-out headline |
 |---|---|---|---|
 | es | **yes** | .9636 → .9686 (p < .001) / 3.39 → 2.33 % (p < .001) | Lingolix es AUC .9795 → **.9854**, FA@80 2.42 → **1.39 %** |
 | ru | **yes** | .8870 → .8960 (p < .001) / 15.1 → 11.6 % (p = .14) | FLEURS test: every row better, stress-error AUC +.0195 |
 | pt | **yes** | .9248 → .9333 (p < .001) / 8.02 → 5.25 % (p = .004) | FLEURS test: every row better |
-| it | **yes** (architect, see 6) | .9653 → .9708 (p < .001) / 3.37 → 1.80 % (p = .002) | stress-error AUC on FLEURS test **−0.0063** |
+| it | no: held-out stress-error AUC -0.0063, over the 0.005 limit | .9653 → .9708 (p < .001) / 3.37 → 1.80 % (p = .002) | stress-error AUC on FLEURS test **−0.0063** |
 | zh | **yes** | .9393 → .9406 (p = .03) / 7.22 → 6.66 % (p = .23) | natives below 0.6 4.11 → 2.60 %; planted tone AUC −0.0032 |
 | fr | no | .9411 → .9420 / 3.82 → 3.37 % (p = .17) | not run (coordinator: gain too small, natives rose 0.2 pt) |
 | en | no | .9589 → .9632 (p < .001) / 3.34 → 2.67 % (p = .006) | not run: the stress guard set before the run failed (−0.0058 vs −0.005 allowed) |
@@ -46,8 +46,8 @@ its neighbours' mean. It is fitted on native speech only:
 * capped at +3;
 * no raise when the word's weakest sound has s < −2.
 
-ru and pt apply the step to the sounds probability only, which keeps the stress factor as it is. es, it and zh apply
-it to the word P. The German knee factor was tried in every language and never passed the strict native guard.
+ru and pt apply the step to the sounds probability only, which keeps the stress factor as it is. es and zh apply
+it to the word P (so did the unshipped Italian candidate). The German knee factor was tried in every language and never passed the strict native guard.
 
 **What it changes.** Only `WordResult.prob`, and through it the Azure-layout word score. The sentence probability,
 the 0–10 scores, the phone probabilities and `sounds_prob` are identical with the head on or off: max |diff| = 0 on
@@ -59,20 +59,20 @@ two changes are independent. English ships nothing here in any case.
 
 | switch | effect |
 |---|---|
-| `PRONUNCIADA_IDENTITY_<LANG>=0` (ES, RU, PT, IT, ZH) | that language back to the old behaviour |
+| `PRONUNCIADA_IDENTITY_<LANG>=0` (ES, RU, PT, ZH) | that language back to the old behaviour |
 | `PRONUNCIADA_IDENTITY=0` | every language back to the old behaviour |
 
 With the switches off, every output of all ten languages equals the German branch da9def0: max |diff| = 0.0 over
 108 clips (fr es en ru pt it zh: 12 dev items each; de ko ja: 8 FLEURS-train clips each). The check covers sentence
 P, the 0–10 scores, word P, sounds P and phone P (`tables/round19_rollout_switch_equivalence.json`). With the
-switches on, only the five shipped languages differ, and only in word P.
+switches on, only the four shipped languages differ (Italian equals da9def0 too), and only in word P.
 
 **Size and latency.**
 
 * 1.9 MB plus 1.3 kB per shipped language; the backbone is unchanged.
 * The head plus the word rule take a median of 0.4–0.8 ms per clip (p95 ≤ 1.5 ms), measured on stored vectors.
 * End to end on 3.5 s clips (4 threads, 80 interleaved runs), the on / off medians are: es 62.1 / 61.0, ru 93.5 /
-  89.5, pt 93.8 / 91.4, it 81.6 / 82.2 and zh 60.5 / 60.8 ms. These differences are within machine noise, and the
+  89.5, pt 93.8 / 91.4, zh 60.5 / 60.8 ms. These differences are within machine noise, and the
   machine was shared.
 * Runtime equals the offline rule: max |ΔP| ≤ 1.1e-4 on 80 dev items per language.
 
@@ -172,7 +172,7 @@ Published for comparison (not re-run here): Lingolix 0.97 / 2 %. The baseline he
 | cv-real test A: word mean / min | .7482 / .7427 | .7740 / .7720 | p < .001 / p < .001 |
 | audit word hit@5: nasal / mid vowels / tap–trill / voicing / s–ʃ / m–n | .517 / .304 / .758 / .754 / .717 / .783 | .521 / .438 / .804 / .892 / .817 / .942 | |
 
-### Italian: ships by the dev rule; the held-out stress row is over the dev limit (3 looks)
+### Italian: not shipped: held-out stress-error AUC -0.0063, over the 0.005 limit (3 looks; head and rule removed from the package)
 
 | row | off | on | Δ, p |
 |---|---|---|---|
@@ -247,10 +247,8 @@ Published for comparison (not re-run here): Lingolix 0.97 / 2 %. The baseline he
 
 ## 6. For the architect
 
-1. **Italian stress.** The held-out stress-error cost (−0.0063) is over the dev limit. The architect asked for the
-   looks to be run as frozen; nothing was changed afterwards. Options: keep it, or set `PRONUNCIADA_IDENTITY_IT=0`.
-   Applying the step to the sounds probability (the ru / pt form) would likely remove the stress cost. It was in the
-   Italian grid, did not pass the native guards there, and was not re-tried after the look.
+1. **Italian** was not shipped (architect): its held-out stress-error AUC (-0.0063) is over the 0.005 limit set
+   beforehand, and nothing is retuned after a held-out look. Its dev and held-out tables are kept.
 2. **English** is one guard away (stress −0.0058), with large native gains.
 3. **The pattern.** The head pays off where the contrast audit shows one-sound swaps the aligner misses (ru, pt, de,
    ko) and adds little where it does not (fr, and partly zh). Indels are the main remaining miss in every language.
@@ -260,8 +258,8 @@ Published for comparison (not re-run here): Lingolix 0.97 / 2 %. The baseline he
 
 * `pronunciada/identity.py`
 * `pronunciada/scorer.py` (hook)
-* `pronunciada/data/coach/identity/{es,ru,pt,it,zh}.npz`
-* `pronunciada/data/calib/identity/{es,ru,pt,it,zh}.json`
+* `pronunciada/data/coach/identity/{es,ru,pt,zh}.npz`
+* `pronunciada/data/calib/identity/{es,ru,pt,zh}.json`
 * `bench/round19_rollout/{sources,devset,collect,train,fit,verify,heldout}.py`
 * `tests/test_round19_rollout.py`
 * `tests/test_scorer.py`: `test_prosody_channel` now runs with `PRONUNCIADA_IDENTITY=0`. Its invariant, word P =
