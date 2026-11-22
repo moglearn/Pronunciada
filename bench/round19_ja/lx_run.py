@@ -61,18 +61,23 @@ def report() -> None:
     T = LX.tests()["tier1_ja"]
     main_unv = {it["id"]: it.get("unverified", []) for it in LX.load_manifest("repo_main_f8750aa", "tier1/manifest_ja.jsonl")}
     R = {t: {json.loads(x)["id"]: json.loads(x) for x in open(OUT / f"{t}.jsonl", encoding="utf-8")}
-         for t in ("before", "after")}
-    res = {"note": "third look at the benchmark in round 19 (baseline, candidate 1, candidate 2)"}
+         for t in ("before", "after", "final") if (OUT / f"{t}.jsonl").exists()}
+    res = {"note": "after = candidate 2 (third look at the benchmark in round 19); final = the round-19 final "
+                   "candidate (fourth and last look)"}
     for rules, kw in (("v2026.10", {}), ("main_f8750aa", {"exclude_unverified": main_unv})):
         res[rules] = {t: LX._clean(LX.metrics(T, R[t], **kw)) for t in R}  # noqa: SLF001
         res[rules]["paired_after_minus_before"] = _paired(T, R["before"], R["after"], **kw)
+        if "final" in R:
+            res[rules]["paired_final_minus_before"] = _paired(T, R["before"], R["final"], **kw)
+            res[rules]["paired_final_minus_after"] = _paired(T, R["after"], R["final"], **kw)
         for t in R:
             m = res[rules][t]
             v = m["verdicts"]
             print(f"{rules:12s} {t:6s} AUC {m['roc_auc']:.3f} {m['roc_auc_ci']} FA80 {m['fpr_at_recall_80']:.3f} "
                   f"{m['fpr_at_recall_80_ci']} buckets {m['by_bucket']} flag R {v['recall']:.2f} P {v['precision']:.2f} "
                   f"FA {v['fa']:.3f} length {v['recall_by_bucket'].get('length')}")
-        print(rules, "paired", res[rules]["paired_after_minus_before"])
+        for k in [x for x in res[rules] if x.startswith("paired")]:
+            print(rules, k, res[rules][k])
     p = Path(__file__).resolve().parents[2] / "results" / "tables" / "round19_ja_lingolix_runner.json"
     p.write_text(json.dumps(res, indent=1, ensure_ascii=False))
 
