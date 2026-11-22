@@ -1,6 +1,17 @@
 # Round 19: German false flags on the Lingolix benchmark
 
-**Result.** On the Lingolix test 1 German items (held out, run once with the frozen candidate),
+**Current result (part 2, section 8; candidate 2 = commit fa3232c; the third look at the benchmark).**
+On Lingolix test 1, German, word AUC is now **0.9621** [0.938, 0.981], up from 0.9405
+(paired Δ +0.022 [+0.010, +0.037], p < 0.001), so the AUC ≥ 0.96 target is **met**. FA@80 is now
+**2.70 %** [1.28, 7.01], down from 6.68 % (Δ −3.98 pt [−8.12, −0.73], p = 0.003), so the FA@80 ≤ 1.5 %
+target is **not met**. For comparison, Lingolix published 0.95 and 2 %. Under the later "main" rules
+the figures are 0.9636 and 2.57 %. On FLEURS test every German guard row is level or better except
+the stress-error word AUC, at −0.0044 (p < 0.001; its hit @ 5 % is +1.1 pt, n.s.). The 42 false flags
+that remain are listed in section 8.
+
+Sections 1–7 below describe part 1 (commit 66a0af2) and its held-out look, the second.
+
+**Part 1 result.** On the Lingolix test 1 German items (held out, run once with the frozen candidate),
 word AUC rose from 0.9405 to **0.9565** [0.933, 0.978], paired Δ +0.016 [+0.009, +0.026], p < 0.001.
 Lingolix published 0.95 and Azure 0.87. FA@80 fell from 6.68 % to **4.88 %** [1.80, 7.86],
 paired Δ −1.80 points [−6.80, −0.51], p = 0.009. Lingolix published 2 % and Azure 22 %.
@@ -282,3 +293,255 @@ bootstrap over clips.
 * `results/tables/round19_de_*.json`
 
 Dumps and logs are in `$PRONUNCIADA_CACHE/round19/german/`.
+
+## 8. Part 2: stress, sound identity, bounded second pass (candidate 2, commit fa3232c)
+
+Part 1 is the base; the coordinator accepted its two small guard drops. Everything new was fitted
+and selected on the dev set, a native pool and validation data, and then frozen (STATUS.md). After
+that came the **third look at the Lingolix benchmark**. The looks so far: (1) baseline diagnosis,
+(2) part-1 candidate, (3) this one.
+
+### 8.1 Stress (no change shipped)
+
+**Data** (`bench/round19/stress_collect.py`, `stress_fit.py`, `tables/round19_de_stress_curve.json`).
+Every dev clip (CV dev and FLEURS validation natives) was scored on its own text and with 2 planted
+stress errors. The check fold has 2,639 native words and 717 error words. Per word, the reliability
+of the pitch / energy evidence was recorded:
+
+* voiced share and mean voicing probability;
+* word energy;
+* number of syllables;
+* clip SNR;
+* speaking rate.
+
+"Native words lowered by stress" means: word P < τ while sounds × presence ≥ τ, with τ = 0.8
+(the Lingolix operating point).
+
+**Shipped, check fold.** 4.02 % of native words are lowered by stress at τ = 0.8 (1.14 % at 0.5).
+The stress-error word AUC is 0.878 and its hit@5 is 0.526.
+
+**Families tried** (all fitted on the fit fold):
+
+* a knee, f = min(1, P/k);
+* a reliability-aware recalibration: a logistic on the stress logits and their interactions with
+  the reliability features, with an intercept that keeps the share of natives below 0.5;
+* that recalibration with a knee or a log-odds shift;
+* a plain shift.
+
+| setting | natives lowered @0.8 | stress-error AUC (Δ) | hit@5 |
+|---|---|---|---|
+| shipped | 4.02 % | 0.878 | 0.526 |
+| reliability recal, no shift | 5.00 % | 0.897 (+0.020) | 0.551 |
+| reliability recal, shift 0.5 | 3.15 % (−22 %) | 0.881 (+0.003) | 0.505 |
+| reliability recal, shift 1.0 | 2.08 % (−48 %) | 0.860 (−0.018) | 0.456 |
+| plain shift 1.0 | 1.86 % (−54 %) | 0.839 (−0.039) | 0.410 |
+| knee 0.85 | 1.82 % (−55 %) | 0.792 (−0.086) | 0.488 |
+
+The pre-set rule asked for at least half fewer natives lowered with no more than 0.01 of AUC lost.
+**No setting meets it**, so nothing changes.
+
+* The planted-error AUC is carried by mild penalties. Every family that halves the native cost
+  loses 0.02 to 0.09 of AUC.
+* The reliability features do help: at the same native cost, the reliability recalibration loses
+  half as much AUC as a plain shift.
+* Azure has no per-word stress, so there is no Azure figure to compare against.
+* About 16 of the 42 remaining Lingolix false flags are driven by stress (8.6), so this is the
+  architect's decision.
+
+### 8.2 German sound-identity head (shipped)
+
+Code and data: `pronunciada/de_identity.py`, `data/coach/de_identity.npz` (1.9 MB),
+`data/calib/de_identity_word.json`. Pipeline: `bench/round19/cv_train.py`, `identity_collect.py`,
+`identity_train.py`, `identity_fit.py`.
+
+**Training data.**
+
+* FLEURS de train: 1,000 clips.
+* Common Voice 22.0 de **train**, shard 0: 2,612 clips. Excluded: every Lingolix clip, speaker and
+  prompt; every cv-real speaker; the dev / test speakers. 20 % of these CV speakers are held out as
+  a native pool.
+* 148 k sounds in total, capped at 8,000 per class.
+
+**The head.**
+
+* An MLP, 2048 → 512 → classes, on the pooled enc1|enc3|enc5 vectors, as in Korean.
+* The expected class is the reference sound being judged, after edits.
+* Native variants are folded into one class: r-coloured long vowels count as the long vowel;
+  z / s and ç / x are one class each; word-final obstruents count as devoiced.
+* Not judged: r, schwa, ɐ, ʔ, and an unstressed final -e.
+* Class accuracy: 97.3 % on dev controls (97.5 % CV, 97.2 % FLEURS) and 97.4 % on the native pool.
+
+**Word factor.** The round-18 one-sided knee:
+
+* per-class offset = the 5 % native quantile;
+* knee = the 1 % native quantile of word minima;
+* floor 0.3, width 4.
+
+It was chosen by a rule fixed in advance: the lowest fit-fold FA@80 among settings that pass all
+of these guards:
+
+* native pool (held-out CV train speakers + fit controls): words below 0.5 and below 0.6 rise by at
+  most 0.3 pt;
+* controlled sound errors: word AUC does not fall;
+* far swaps and word omission (wholly wrong or extra words): AUC does not fall.
+
+For the chosen setting:
+
+* native pool words below 0.5: +0.11 pt;
+* controlled-error AUC: 0.9433 → 0.9464;
+* fit-fold FA@80: 2.18 → 1.73 %.
+
+**Tried, not used: the Korean two-sided step** (log-odds += b·[margin features], capped at +3,
+offset logistic; `identity_fit2.py`, `tables/round19_de_identity_step_tried.json`).
+
+* With an intercept it lifted every word (native pool −1.4 pt below 0.5) but lost ranking:
+  fit FA@80 2.5–3.1 % against 2.18 % before, and far-swap and omission AUC fell.
+* Without an intercept, or with weighted positives, it did not help either.
+* A likely reason: part 1 had already recalibrated the German word log-odds, so there is little
+  calibration left to win back.
+
+### 8.3 Bounded explain-away (off)
+
+One second pass costs a median of 26 ms on 9–11 s clips (p95 45 ms, max 50 ms) and 9 ms on
+3–4.5 s clips (`ea_cost.py`). No band can keep the 10 s worst case under 12 ms whenever the pass
+runs, so the pass stays off. The band code stays in for later use (`config explain_away.lang`,
+`PRONUNCIADA_EA_BAND`).
+
+### 8.4 Dev numbers for frozen candidate 2 (runtime)
+
+| | base | part 1 | candidate 2 |
+|---|---|---|---|
+| dev, all: AUC / FA@80 | 0.9609 / 4.56 % | 0.9712 / 2.95 % | **0.9739 / 2.33 %** |
+| dev, check fold: AUC / FA@80 | 0.9548 / 6.41 % | 0.9675 / 3.66 % | **0.9711 / 3.20 %** |
+| sub_subtle AUC (all) | 0.922 | 0.949 | 0.963 |
+
+Candidate 2 vs part 1: ΔAUC +0.0026 [0.001, 0.004], ΔFA −0.63 [−0.84, −0.12], p = 0.002.
+
+**Validation guards** (switch off → candidate 2):
+
+| row | off | candidate 2 |
+|---|---|---|
+| near-swap AUC | 0.9535 | 0.9724 |
+| near-swap hit@5 | 0.800 | 0.894 |
+| far-swap AUC | 0.9961 | 0.9977 |
+| natives < 0.6 | 4.31 % | 3.77 % |
+| native acceptance | 96.73 % | 97.16 % |
+| sound-error AUC | 0.9433 | 0.9455 |
+| sound-error hit@5 | 0.768 | 0.799 |
+| stress-error AUC | 0.9276 | 0.9257 |
+| stress-error hit@5 | 0.578 | 0.605 |
+
+On cv-real dev every row went up.
+
+**Size and latency.** +1.9 MB. The head is one MLP over the word's sounds and costs well under
+1 ms; end-to-end medians with it on and off differ by less than the machine noise (77–83 ms).
+
+### 8.5 Held-out look 3 (run once after freezing)
+
+**Lingolix test 1, German** (`tables/round19_de_heldout3_lingolix*.json`):
+
+| | base (1.0.2) | part 1 | **candidate 2** | paired Δ vs base |
+|---|---|---|---|---|
+| AUC, v2026.10 rules | 0.9405 [0.911, 0.965] | 0.9565 | **0.9621 [0.938, 0.981]** | +0.022 [+0.010, +0.037], p < 0.001 |
+| FA@80, v2026.10 rules | 6.68 % [2.85, 13.10] | 4.88 % | **2.70 % [1.28, 7.01]** | −3.98 [−8.12, −0.73], p = 0.003 |
+| AUC, main rules | 0.9437 | – | **0.9636 [0.940, 0.982]** | +0.020 [+0.009, +0.035] |
+| FA@80, main rules | 6.03 % | – | **2.57 % [1.25, 6.33]** | −3.45 [−7.50, −0.54] |
+
+Candidate 2 vs part 1: ΔAUC +0.0056 [+0.001, +0.013], p = 0.003; ΔFA −2.18 [−3.26, +0.38], p = 0.25.
+
+AUC by bucket, base → candidate 2:
+
+| bucket | base | candidate 2 |
+|---|---|---|
+| subtle | 0.872 | 0.905 |
+| moderate | 0.966 | 0.985 |
+| gross | 0.985 | 0.995 |
+| indel | 0.909 | 0.945 |
+| omission | 0.999 | 0.999 |
+
+Own flag: recall 0.43 and false alarms 1.3 %, both unchanged. The factor does not set ErrorType.
+
+**FLEURS test** (`tables/round19_de_heldout3_fleurs_test.json`; paired bootstrap over clips;
+off → candidate 2):
+
+| row | off | candidate 2 | Δ [95 % CI], p |
+|---|---|---|---|
+| near-swap AUC | 0.9565 | 0.9745 | +0.0180 [+0.009, +0.032] |
+| near-swap hit@5 | 0.767 | 0.887 | +0.120 |
+| far-swap AUC | 0.9951 | 0.9964 | +0.0013 |
+| natives < 0.6, swap set | 4.64 % | 4.51 % | p = 0.67 |
+| native acceptance | 96.48 % | 96.77 % | +0.29 pt, p = 0.04 |
+| natives < 0.6 | 4.60 % | 4.34 % | p = 0.08 |
+| sound-error AUC | 0.9401 | 0.9421 | +0.0020, p = 0.03 |
+| sound-error hit@5 | 0.749 | 0.771 | |
+| **stress-error AUC** | 0.9292 | 0.9248 | **−0.0044** [−0.0070, −0.0015], p < 0.001 |
+| stress-error hit@5 | 0.596 | 0.608 | n.s. |
+
+The part-1 drop in sound-error AUC is gone.
+
+**cv-real test** (speaker bootstrap; off → candidate 2; all n.s.):
+
+| row | off | candidate 2 | Δ, p |
+|---|---|---|---|
+| Test A sentence | 0.8228 | 0.8284 | p = 0.09 |
+| Test A word mean | 0.8120 | 0.8208 | |
+| Test A word min | 0.8016 | 0.8135 | |
+| Test B sentence | 0.5406 | 0.5344 | −0.006, p = 0.51 |
+| Test B word mean | 0.4921 | 0.4840 | |
+| Test B word min | 0.4452 | 0.4398 | |
+
+**Contrast audit, German rows** (FLEURS test, 250 clips; `round19_de_contrast_audit_test_{off,on}.json`).
+The runner was pointed at a private cache copy (`$CACHE/round19/german/priv_cache`): the shared
+audit plan was copied in, and nothing shared was written. Sound-level rows are unchanged (AUC
+within ±0.003 per contrast). Word hit @ 5 % rose for every contrast:
+
+| contrast | off | candidate 2 |
+|---|---|---|
+| voicing | 19 % | 66 % |
+| s / ʃ | 31 % | 83 % |
+| m / n | 63 % | 92 % |
+| final n / ŋ | 57 % | 78 % |
+| front rounded / unrounded | 72 % | 85 % |
+| front / back rounded | 74 % | 86 % |
+| ç / ʃ | 87 % | 97 % |
+| long / short | 18 % | 22 % |
+| final devoicing | 1 % | 4 % |
+
+### 8.6 The 42 false flags that remain
+
+This is an aggregate diagnosis on Lingolix after the look. At the FA@80 threshold (word score
+0.665) there are 42 flagged correct words out of 1,558. Reaching 1.5 % needs 23 or fewer.
+
+| kind | count | examples | note |
+|---|---|---|---|
+| stress factor is the largest loss | 16 | Somit, dadurch, darüber, amerikanischen, englischen, beschrieben, Projekt, angeboten, Vulkanismus | blocked by the stress guard (8.1) |
+| loanword with a French / English lexicon entry | 6 | Management, Karriere, Karton, Saison, Make-up | lexicon entry differs from what speakers say |
+| unknown name | 3 | Buenos, Hampton, Kivu-See | |
+| next to the changed word | 7 | | alignment spill-over; the second pass would help but is over budget |
+| reduced function word or ending | 5 | oder, einen, hinter, gegenüber ×2 | |
+| other | 5 | | |
+
+The 18 changed words still missed are mostly short-word -e / -er changes and one-sound changes that
+ZIPA hears as the target (diese / dieser, ach / auch, ihn / in). Their mean log
+sounds-probability is −0.13.
+
+### 8.7 For the architect
+
+1. **Stress guard.** The stress-error word AUC on FLEURS test is −0.0044 (hit@5 +1.1 pt). The stress
+   channel itself is unchanged; the drop comes from the word-level changes moving native words
+   around the stress errors. A stress change that halves the stress-driven false flags costs at
+   least 0.018 of AUC on dev. It is the only route to FA@80 ≤ 1.5 % that I found.
+2. **Switches.** `PRONUNCIADA_DE_IDENTITY=0` removes the head (back to part 1);
+   `PRONUNCIADA_WORD_LANG=0` removes the recalibration; `PRONUNCIADA_DE_R19=0` reverts everything.
+3. **Loanword lexicon entries** (Management, Karriere, Karton, Saison, …). Fixing them is a cheap
+   follow-up that was not done. It would need a check that it fixes more than it breaks.
+
+**Part 2 files:**
+
+* `pronunciada/de_identity.py`
+* `data/coach/de_identity.npz`
+* `data/calib/de_identity_word.json`
+* `pronunciada/scorer.py`: identity factor, and the bounded explain-away option
+* `bench/round19/`: `stress_collect`, `stress_fit`, `cv_train`, `identity_collect`, `identity_train`,
+  `identity_fit`, `identity_fit2`, `ea_cost`
+* `tests/test_round19_de.py`
