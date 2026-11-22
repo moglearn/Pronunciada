@@ -13,6 +13,7 @@ Counts come from a minimum-cost alignment (insertion / deletion / substitution c
 """
 from __future__ import annotations
 
+from bisect import bisect_left
 from functools import lru_cache
 
 _DROP = {"ː"}
@@ -65,13 +66,18 @@ def _edit(a: tuple, b: tuple) -> tuple[int, int, int]:
 
 def align_word(phones, heard: tuple[str, ...]) -> tuple[int, int, int]:
     """Minimum-cost alignment of a word's sounds (each with its variants) to heard tokens."""
-    n, m = len(phones), len(heard)
+    return _align(tuple(tuple(_variants(p)) for p in phones), tuple(heard))
+
+
+@lru_cache(maxsize=1 << 14)
+def _align(vars_: tuple, heard: tuple) -> tuple[int, int, int]:
+    # memoised: common words (particles, endings) come back with the same sounds and tokens
+    n, m = len(vars_), len(heard)
     INF = (1 << 30, 0, 0, 0)
     D = [[INF] * (m + 1) for _ in range(n + 1)]
     D[0][0] = (0, 0, 0, 0)
     for j in range(1, m + 1):
         D[0][j] = (j, j, 0, 0)
-    vars_ = [_variants(p) for p in phones]
     for i in range(1, n + 1):
         V = vars_[i - 1]
         for j in range(m + 1):
@@ -102,6 +108,7 @@ def mismatch(ref, ev) -> list[dict]:
     slots = ev.slots
     free = ev.free_tokens
     mids = [(a + b) / 2 for _, a, b in free]
+    ordered = all(x <= y for x, y in zip(mids, mids[1:]))
     spans = []
     for w in ref.words:
         ss = [(slots[i].start_frame, slots[i].end_frame) for i in range(*w.phones)
@@ -119,7 +126,11 @@ def mismatch(ref, ev) -> list[dict]:
         nxt = next((spans[j] for j in range(k + 1, len(spans)) if spans[j] is not None), None)
         a = (prv[1] + lo) / 2 if prv is not None else -1e9
         b = (hi + nxt[0]) / 2 if nxt is not None else 1e9
-        heard = tuple(t for (t, *_), mm in zip(free, mids) if a <= mm < b and t not in _DROP)
+        if ordered:      # free tokens come in time order: the ones with a <= mid < b are a run
+            run = range(bisect_left(mids, a), bisect_left(mids, b))
+        else:
+            run = [q for q, mm in enumerate(mids) if a <= mm < b]
+        heard = tuple(free[q][0] for q in run if free[q][0] not in _DROP)
         heard = _toks("".join(heard))
         ins, dl, sb = align_word(phones, heard)
         out.append({"ins": ins, "del": dl, "sub": sb, "n": len(phones), "heard": "".join(heard)})

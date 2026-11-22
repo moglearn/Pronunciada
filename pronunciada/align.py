@@ -283,52 +283,85 @@ def _fast_scores(slots: list[Slot], lat: Lattice, tab: np.ndarray, insertion: bo
         p_slot = np.array([q[0] for q in pairs])
         p_last = np.array([q[1] for q in pairs]) - 1
         p_w = np.array([q[2] for q in pairs])
-        Kmax = int(p_last.max()) + 1
-        rows = np.arange(len(pairs))
+        P = len(pairs)
         inj_p = inj[:, p_slot] + p_w                                                # [T, P]
+        # round 19 extra-sound evidence: an extra "any speech" chain (1 or 2 sounds) between slot
+        # i and slot i + 1, fed like slot i + 1's wildcard (inj[:, i + 1]) and drained like slot
+        # i's (out[:, i]). Its chain states follow the same recursion as the wildcard chains, and
+        # states 0 and 1 of a chain do not depend on the chain's length, so any wildcard row of
+        # slot i + 1 with chain weight 0 already holds them (state 1 needs Kmax >= 2). A gap
+        # without such a row gets an extra row in the same recursion.
+        n_ins = n - 1 if insertion and n > 1 else 0
+        Kmax = max(int(p_last.max()) + 1, 2 if n_ins else 1)
+        n_extra = 0
+        if n_ins:
+            zero_row: dict[int, int] = {}
+            for r in np.flatnonzero(p_w == 0.0):
+                zero_row.setdefault(int(p_slot[r]), int(r))
+            ins_row = np.array([zero_row.get(i + 1, -1) for i in range(n - 1)], dtype=np.int64)
+            miss = np.flatnonzero(ins_row < 0)
+            n_extra = len(miss)
+            if n_extra:
+                ins_row[miss] = P + np.arange(n_extra)
+                inj_p = np.concatenate([inj_p, inj[:, miss + 1]], axis=1)          # [T, P + n_extra]
         logc = np.diff(A_aug)                                                       # log c_t
         lew = tab[:, V + 1] - logc
         leb = tab[:, V] - logc
-        P = len(pairs)
-        Wh = np.empty((T, P, Kmax))       # log W_k[t] - A[t]   (wildcard token states)
-        Bh = np.empty((T, P, Kmax))       # log b_k[t] - A[t]   (their blanks)
-        Wc = np.full((P, Kmax), NEG_INF)
-        Bc = np.full((P, Kmax), NEG_INF)
+        R2 = P + n_extra
+        Wh = np.empty((T, R2, Kmax))       # log W_k[t] - A[t]   (wildcard token states)
+        Bh = np.empty((T, R2, Kmax))       # log b_k[t] - A[t]   (their blanks)
+        # Oh[t, :, k] = log(W_k[t] + b_k[t]) - A[t] for k < Kmax - 1: the recursion forms it one
+        # frame later to feed state k + 1, so it is kept rather than formed again for the chain ends
+        Oh = np.empty((T, R2, Kmax - 1))
+        Wc = np.full((R2, Kmax), NEG_INF)
+        Bc = np.full((R2, Kmax), NEG_INF)
         lae = np.logaddexp
         for t in range(T):
             Wn, Bn = Wh[t], Bh[t]
             lae(Wc[:, 0], inj_p[t], out=Wn[:, 0])
             if Kmax > 1:
-                lae(Wc[:, 1:], lae(Wc[:, :-1], Bc[:, :-1]), out=Wn[:, 1:])
+                o = lae(Wc[:, :-1], Bc[:, :-1], out=Oh[t - 1] if t else None)
+                lae(Wc[:, 1:], o, out=Wn[:, 1:])
             Wn += lew[t]
             lae(Bc, Wc, out=Bn)
             Bn += leb[t]
             Wc, Bc = Wn, Bn
-        occ = lae(Wh[:, rows, p_last], Bh[:, rows, p_last])                       # [T, P]
+        if Kmax > 1:
+            lae(Wc[:, :-1], Bc[:, :-1], out=Oh[T - 1])
+        # occupancy of each chain's last state [T, P], laid out like a fancy-indexed result
+        # (column-major), so that the frame sums below add in the same order as before
+        occ = np.empty((T, P), order="F")
+        kept = np.flatnonzero(p_last < Kmax - 1)
+        occ[:, kept] = Oh[:, kept, p_last[kept]]
+        top = np.flatnonzero(p_last == Kmax - 1)
+        occ[:, top] = lae(Wh[:, top, Kmax - 1], Bh[:, top, Kmax - 1])
         L_pair = _lse_cols(occ + out[:, p_slot] + (A + B_aug[1:])[:, None])
         L_x = np.full(n, NEG_INF)
         np.logaddexp.at(L_x, p_slot, L_pair)
         L_wild = np.logaddexp(L_x, L_del)
-        if insertion and n > 1:
-            # round 19: an extra "any speech" chain (1 or 2 sounds) between slot i and slot i + 1:
-            # fed like slot i + 1's wildcard (inj[:, i + 1]) and drained like slot i's (out[:, i])
+        if n_ins:
             L_ins = np.full(n, np.nan)
-            ii = np.repeat(np.arange(n - 1), 2)
+            ii = np.repeat(np.arange(n - 1), 2)        # (gap i, chain length kk + 1), gap-major
             kk = np.tile([0, 1], n - 1)
-            inj_q = inj[:, ii + 1]
-            P2 = len(ii)
-            Wc = np.full((P2, 2), NEG_INF)
-            Bc = np.full((P2, 2), NEG_INF)
-            occ2 = np.empty((T, P2))
-            r2 = np.arange(P2)
-            for t in range(T):
-                Wn = np.empty((P2, 2))
-                lae(Wc[:, 0], inj_q[t], out=Wn[:, 0])
-                lae(Wc[:, 1], lae(Wc[:, 0], Bc[:, 0]), out=Wn[:, 1])
-                Wn += lew[t]
-                Bn = lae(Bc, Wc) + leb[t]
-                Wc, Bc = Wn, Bn
-                occ2[t] = lae(Wn[r2, kk], Bn[r2, kk])
+            # occupancy of state kk of gap i's chain (row ins_row[i]), row-major as before
+            r2 = ins_row[ii]
+            occ2 = np.full((T, len(ii)), NEG_INF)                                   # [T, 2(n - 1)]
+            low = np.flatnonzero(kk < Kmax - 1)
+            occ2[:, low] = Oh[:, r2[low], kk[low]]
+            last = np.flatnonzero(kk == Kmax - 1)          # only when Kmax == 2: the 2-sound chain
+            if len(last):
+                # a weight-0 row of slot i + 1 whose chain ends at this state has it in `occ`;
+                # the rest is formed only where the drain out[:, i] is above -inf (elsewhere the
+                # frame's term is -inf, or NaN, whatever the occupancy, so -inf changes no number)
+                occ_of = {int(p_slot[r]): int(r) for r in np.flatnonzero((p_w == 0.0) & (p_last == Kmax - 1))[::-1]}
+                src = np.array([occ_of.get(int(ii[q]) + 1, -1) for q in last], dtype=np.int64)
+                reuse, calc = last[src >= 0], last[src < 0]
+                occ2[:, reuse] = occ[:, src[src >= 0]]
+                if len(calc):
+                    part = np.full((T, len(calc)), NEG_INF)
+                    lae(Wh[:, r2[calc], Kmax - 1], Bh[:, r2[calc], Kmax - 1], out=part,
+                        where=out[:, ii[calc]] > NEG_INF)
+                    occ2[:, calc] = part
             L2 = _lse_cols(occ2 + out[:, ii] + (A + B_aug[1:])[:, None])
             Lc = np.full(n - 1, NEG_INF)
             np.logaddexp.at(Lc, ii, L2)
