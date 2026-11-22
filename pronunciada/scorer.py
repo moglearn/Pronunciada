@@ -430,6 +430,13 @@ class Scorer:
                 hs = _CH.length_evidence(self.lang, self.length_cal, [p.ipa for p in ref.phones], V19)
             lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal, head_s=hs)
             timing["length"] = (time.perf_counter() - t) * 1e3
+            if self.lang == "ja" and emb:                # round 20: padded-window vowel-length head
+                from . import ja_length20 as _JL20
+
+                if _JL20.on() and _JL20.params() is not None:
+                    t = time.perf_counter()
+                    lres = _JL20.adjust(ref, ev, lpa, emb, lres)
+                    timing["length20"] = (time.perf_counter() - t) * 1e3
         from . import word_step as _WS                   # round 19 (ja): word step inputs
 
         wsp = _WS.params(self.lang)

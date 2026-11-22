@@ -235,7 +235,9 @@ call actually does today:
 
 Selectable but off by default: `Scorer(..., explain_away=True)` (round 3 second pass; it lowered
 held-out English correlations); `coaching(..., delivery="all")` adds the `slow` / `flat_pitch`
-flags. Environment switches exist for paired before / after benchmarks and keep the shipped
+flags. `PRONUNCIADA_JA_LENGTH20=1` (round 20, `ja_length20.py`) lowers Japanese
+vowel length probabilities with a padded-window head on the stack-1 activations; it is off because
+it raised native words below 0.6 on dev (results/round20_japanese_length.md). Environment switches exist for paired before / after benchmarks and keep the shipped
 behavior when unset: `PRONUNCIADA_TONE_MODEL`, `PRONUNCIADA_STRESS_MODEL`,
 `PRONUNCIADA_TONE_LENIENCY`, `PRONUNCIADA_CONTRAST_CAPS=0`, `PRONUNCIADA_HEAD_CAPS=0`,
 `PRONUNCIADA_WORD_CONTRAST=0`, `PRONUNCIADA_PT_NASAL=0`, `PRONUNCIADA_KO_IDENTITY=0`.

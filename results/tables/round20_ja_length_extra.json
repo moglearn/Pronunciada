@@ -1,0 +1,119 @@
+{
+ "latency_head_stage": {
+  "cv_dev_80_clips_4_threads": {
+   "median_clip_s": 4.18,
+   "head_stage_median_ms": 0.678,
+   "head_stage_p90_ms": 1.487,
+   "total_median_ms": 57.8
+  }
+ },
+ "latency_ja": {
+  "lang": "ja",
+  "set": "fleurs-val",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {
+   "PRONUNCIADA_JA_LENGTH20": "0"
+  },
+  "clip_seconds_median": 12.36,
+  "load_avg_1min_start_end": [
+   1.62451171875,
+   2.1201171875
+  ],
+  "wall_s": 35.61885595321655,
+  "old_max_rss_mb": 1198.921875,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 1204.453125,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 161.36516648111865,
+  "new_median_ms": 162.47845799080096,
+  "paired_median_diff_ms": 1.2377705133985728,
+  "paired_median_diff_ci": [
+   1.1120829731225967,
+   1.3876250013709068
+  ],
+  "old_p90_ms": 247.0554455125239,
+  "new_p90_ms": 248.33670351072217
+ },
+ "r18_baseline": {
+  "lentab_fleurs_val_round18": {
+   "sound_threshold_5": 0.3777871463025292,
+   "word_threshold_5": 0.7073447442219334,
+   "native_word_accept_0.5": 0.9789444521401857,
+   "native_word_below_0.6": 0.035184928660479294,
+   "sound": {
+    "gemination:A>B": {
+     "n": 88,
+     "hit5": 0.8977272727272727
+    },
+    "gemination:B>A": {
+     "n": 186,
+     "hit5": 0.956989247311828
+    },
+    "vowel_length:A>B": {
+     "n": 409,
+     "hit5": 0.9584352078239609
+    },
+    "vowel_length:B>A": {
+     "n": 480,
+     "hit5": 0.9666666666666667
+    },
+    "all": {
+     "n": 1163,
+     "hit5": 0.9570077386070507
+    }
+   },
+   "word": {
+    "gemination:A>B": {
+     "n": 246,
+     "hit5": 0.056910569105691054
+    },
+    "gemination:B>A": {
+     "n": 532,
+     "hit5": 0.48872180451127817
+    },
+    "vowel_length:A>B": {
+     "n": 494,
+     "hit5": 0.6255060728744939
+    },
+    "vowel_length:B>A": {
+     "n": 532,
+     "hit5": 0.8082706766917294
+    },
+    "all": {
+     "n": 1804,
+     "hit5": 0.561529933481153
+    }
+   }
+  },
+  "dev_length_dirs_round18": {
+   "text_long": {
+    "n": 63,
+    "auc": 0.7991989200911727,
+    "flag_caught": 35
+   },
+   "text_short": {
+    "n": 51,
+    "auc": 0.6671099031128086,
+    "flag_caught": 20
+   }
+  },
+  "dev_flags_round18": {
+   "length_caught": 55,
+   "length_n": 114,
+   "recall": 0.5700934579439252,
+   "control_flag_rate": 0.20035849432383987
+  }
+ }
+}

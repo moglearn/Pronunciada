@@ -1,0 +1,17 @@
+{
+ "layers": [
+  "enc1"
+ ],
+ "w": 8,
+ "med_md": 3.9,
+ "a": 1.0,
+ "k_long": -5.651973724365234,
+ "k_short": -2.724297523498535,
+ "cap": 0.0,
+ "gate": 0,
+ "mode": "add",
+ "default_on": false,
+ "fit_on": "Common Voice ja train (round-19 fit pools: no Lingolix ja speaker or prompt, no cv-real test-half speaker) + FLEURS ja train; natural vowels, single vowels WSOLA-stretched / compressed, DEMAND noise (CC BY 4.0) at 5-20 dB in part; 4-fold speaker-grouped CV (bench/round20_ja_length/train.py, config e1_w8)",
+ "knees": "k_long / k_short = 1 % native quantiles of the out-of-fold match evidence per expected class",
+ "status": "off by default: on the round-19 dev sets every setting raised native words below 0.6 (results/round20_japanese_length.md); PRONUNCIADA_JA_LENGTH20=1 turns it on"
+}
