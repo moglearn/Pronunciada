@@ -1,0 +1,42 @@
+{
+ "lora8_e6": {
+  "args": {
+   "name": "lora8_e6",
+   "mode": "lora",
+   "e2": 6,
+   "rank": 8,
+   "lr_top": 0.0003,
+   "lr_head": 0.0003,
+   "l2sp": 0.0,
+   "soup": 1,
+   "device": "cpu",
+   "budget": 6000
+  },
+  "stage1": {
+   "accuracy": 0.5148784220815017,
+   "fluency": 0.29481866161244596,
+   "prosodic": 0.39234432894265225,
+   "total": 0.4589939901907094
+  },
+  "new": {
+   "accuracy": 0.7295934260487869,
+   "fluency": 0.5549495438756296,
+   "prosodic": 0.7064131231931405,
+   "total": 0.6428299734670766
+  },
+  "new_vs_stage1": {
+   "accuracy": 0.21471500396728516,
+   "fluency": 0.2601308822631836,
+   "prosodic": 0.3140687942504883,
+   "total": 0.1838359832763672
+  },
+  "share_lower_than_shipped_by_0.5": {
+   "accuracy": 0.01,
+   "fluency": 0.0,
+   "prosodic": 0.0,
+   "total": 0.01
+  },
+  "worst_drop": 0.29481866161244596,
+  "pass": true
+ }
+}
