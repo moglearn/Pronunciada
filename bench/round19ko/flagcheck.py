@@ -40,7 +40,7 @@ def main():
         r = dev[k]
         res = sc.score(audio, items[k]["target"])
         kid = res._pronunciada["ko_identity_s"]  # noqa: SLF001
-        off = F2.apply(r, F2.feats(r, cal["thr"], cal.get("ins_c", 2.0)), np.asarray(cal["coef"]), cal["cap_up"])
+        off = F2.apply(r, F2.feats(r, cal["thr"], cal.get("ins_c", 2.0)), np.asarray(cal["coef"]), cal["cap_up"], F2.gate_of(cal))
         p = np.array([w.prob for w in res.words])
         maxd = max(maxd, float(np.max(np.abs(p - off))))
         az = to_azure(res, granularity="Word", enable_miscue=True, layout="rest")

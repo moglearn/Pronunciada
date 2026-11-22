@@ -151,5 +151,7 @@
  "qc": 0.1,
  "l2": 10.0,
  "wpos": 2.0,
- "fitted_on": "round 19 Korean dev (FLEURS ko validation + Common Voice dev pool, Whisper-filtered, planted text edits) + Zeroth-Korean test natives (bench/round19ko/fit2.py)"
+ "fitted_on": "round 19 Korean dev (FLEURS ko validation + Common Voice dev pool, Whisper-filtered, planted text edits) + Zeroth-Korean test natives (bench/round19ko/fit2.py)",
+ "no_raise_below": -2.0,
+ "no_raise_note": "part 3 (architect decision on dev): a word whose lowest margin is below -2 is never raised (bench/round19ko/raise_check.py)"
 }

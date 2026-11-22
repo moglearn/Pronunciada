@@ -238,6 +238,9 @@ def word_deltas(ref, ev, s_raw: np.ndarray, cal: dict) -> np.ndarray:
         x = np.array([min(smin, 0.0), min(smin + 4.0, 0.0), float(np.clip(v, -10, 10).mean()) if len(v) else 0.0,
                       float(np.clip(-v, 0.0, 1.0).sum()), min(insm + cal.get("ins_c", 2.0), 0.0), min(delm, 0.0), abs(dur), 1.0])
         out[j] = min(float(x @ b), cal.get("cap_up", np.inf))
+        nr = cal.get("no_raise_below")             # part 3: never raise a word with a clearly wrong sound
+        if nr is not None and smin < nr:
+            out[j] = min(out[j], 0.0)
     return out
 
 

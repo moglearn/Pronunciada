@@ -30,7 +30,7 @@ from pronunciada import ko_identity as KI
 def after(rows):
     cal = KI._word_params()
     b = np.asarray(cal["coef"])
-    return {k: F2.apply(r, F2.feats(r, cal["thr"], cal.get("ins_c", 2.0)), b, cal["cap_up"]) for k, r in rows.items()}
+    return {k: F2.apply(r, F2.feats(r, cal["thr"], cal.get("ins_c", 2.0)), b, cal["cap_up"], F2.gate_of(cal)) for k, r in rows.items()}
 
 
 def _unit(r, p, k):

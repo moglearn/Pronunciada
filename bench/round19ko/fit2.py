@@ -90,6 +90,12 @@ def deltas(r, X, b, cap_up=1.0, raise_gate=None):
     return d
 
 
+def gate_of(cal: dict):
+    """The shipped no-raise rule as a raise_gate argument ("id<g>": no raise when the lowest margin < -g)."""
+    nr = cal.get("no_raise_below")
+    return None if nr is None else f"id{-float(nr)}"
+
+
 def apply(r, X, b, cap_up=1.0, raise_gate=None):
     return 1 / (1 + np.exp(-(lg(r["prob"]) + deltas(r, X, b, cap_up, raise_gate))))
 
@@ -254,7 +260,7 @@ def write(qc, l2, wpos, cap):
     X, off, y = stack({**dev, **zt}, thr, lambda r: r["changed"])
     b = fit_delta(X, off, y, l2, np.where(y == 0, wpos, 1.0))
     par = {"form": "delta", "version": 2, "features": list(FEATS), "coef": [float(x) for x in b], "cap_up": cap,
-           "flag_delta": -1.0,                   # bench/round19ko/flagcheck.py (dev flag precision rule)
+           "flag_delta": -1.0, "no_raise_below": -2.0,                  # bench/round19ko/flagcheck.py (dev flag precision rule)
            "ins_c": 2.0, "thr": thr, "qc": qc, "l2": l2, "wpos": wpos,
            "fitted_on": "round 19 Korean dev (FLEURS ko validation + Common Voice dev pool, Whisper-filtered, "
                         "planted text edits) + Zeroth-Korean test natives (bench/round19ko/fit2.py)"}
