@@ -82,6 +82,47 @@ def _best_path(lp: np.ndarray, toks: list[int], blank: int = 0) -> float:
     return float(max(a[-1], a[-2] if S > 1 else NEG))
 
 
+def _best_paths(lp: np.ndarray, jobs: list[tuple[int, int, list[int]]], blank: int = 0) -> list[float]:
+    """_best_path(lp[t0:t1], toks) for every (t0, t1, toks) job (t1 - t0 >= 1, toks non-empty), all
+    jobs in one recursion over frames. Each job is padded to the longest window and token sequence;
+    a padded state only feeds states to its right and a job's score is read at its own last frame,
+    so every number is the one _best_path computes (same operations, element by element)."""
+    N = len(jobs)
+    if not N:
+        return []
+    NEG = -1e30
+    S = np.array([2 * len(tk) + 1 for _, _, tk in jobs])
+    Tn = np.array([t1 - t0 for t0, t1, _ in jobs])
+    Smax, Tmax = int(S.max()), int(Tn.max())
+    lab = np.full((N, Smax), blank, dtype=np.int64)
+    skip = np.zeros((N, Smax), dtype=bool)
+    for k, (_, _, tk) in enumerate(jobs):
+        lk = [blank if s % 2 == 0 else tk[s // 2] for s in range(S[k])]
+        lab[k, :S[k]] = lk
+        skip[k, :S[k]] = [s >= 2 and lk[s] != blank and lk[s] != lk[s - 2] for s in range(S[k])]
+    t0 = np.array([j[0] for j in jobs])
+    tt = np.minimum(t0[:, None] + np.arange(Tmax)[None, :], (t0 + Tn - 1)[:, None])   # [N, Tmax]
+    em = lp[tt[:, :, None], lab[:, None, :]]                                          # [N, Tmax, Smax]
+    a = np.full((N, Smax), NEG)
+    a[:, 0] = em[:, 0, 0]
+    a[:, 1] = em[:, 0, 1]
+    rows = np.arange(N)
+    out = np.empty(N)
+
+    def read(sel):
+        out[sel] = np.maximum(a[sel, S[sel] - 1], a[sel, S[sel] - 2])
+
+    read(Tn == 1)
+    sk = skip[:, 2:]
+    for t in range(1, Tmax):
+        b = a.copy()
+        b[:, 1:] = np.maximum(b[:, 1:], a[:, :-1])
+        b[:, 2:] = np.where(sk, np.maximum(b[:, 2:], a[:, :-2]), b[:, 2:])
+        a = b + em[:, t]
+        read(rows[Tn == t + 1])
+    return [float(x) for x in out]
+
+
 def extra(ref, inp: dict, idx: list[int], rows: list[dict], lpa=None, slot_se=None, fb=None) -> None:
     """Add EXTRA keys to the feature rows (in place). inp: pronunciada.length.frame_inputs; fb: the
     raw log-mel filterbank (10 ms); lpa / slot_se: the adapted posteriors and slot spans for cf_llr."""
@@ -115,6 +156,27 @@ def extra(ref, inp: dict, idx: list[int], rows: list[dict], lpa=None, slot_se=No
         tid = token_ids()
         lp = np.array(lpa, np.float32)
         lp[:, 0] = np.logaddexp(lp[:, 0], lp[:, 3])        # blank = <blk> or the word separator
+    # counterfactual best paths (long form vs short form) of every sound, in one batch
+    cf_job: dict[int, int] = {}
+    jobs = []
+    if tid is not None:
+        for i in idx:
+            tw = _twin(P[i].ipa)
+            if tw is not None and all(ch in tid for ch in tw) and all(ch in tid for ch in P[i].ipa):
+                j0, j1 = max(i - 1, 0), min(i + 2, len(P))
+                t0 = int(slot_se[j0][0])
+                t1 = int(max(slot_se[j1 - 1][1], slot_se[i][1]))
+                if t1 - t0 >= 2:
+                    seq_a, seq_b = [], []
+                    for j in range(j0, j1):
+                        ip = P[j].ipa
+                        seq_a += [tid[ch] for ch in ip]
+                        seq_b += [tid[ch] for ch in (tw if j == i else ip)]
+                    n_fr = len(lp[t0:t1])
+                    if n_fr >= len(seq_a) and n_fr >= len(seq_b):
+                        cf_job[i] = len(jobs)
+                        jobs += [(t0, t0 + n_fr, seq_a), (t0, t0 + n_fr, seq_b)]
+    bp = _best_paths(lp, jobs) if jobs else []
     for i, r in zip(idx, rows):
         k = P[i].word
         md = (tot_d - wdur[k]) / max(tot_m - wmor[k], 1.0) if tot_m - wmor[k] >= 3 else tot_d / max(tot_m, 1.0)
@@ -157,21 +219,8 @@ def extra(ref, inp: dict, idx: list[int], rows: list[dict], lpa=None, slot_se=No
                     d = math.log((best + 1) / md)
             r["v_stable"], r["c_dip"] = 0.0, d
         cf = 0.0
-        if tid is not None:
-            tw = _twin(P[i].ipa)
-            if tw is not None and all(ch in tid for ch in tw) and all(ch in tid for ch in P[i].ipa):
-                j0, j1 = max(i - 1, 0), min(i + 2, len(P))
-                t0 = int(slot_se[j0][0])
-                t1 = int(max(slot_se[j1 - 1][1], slot_se[i][1]))
-                if t1 - t0 >= 2:
-                    seq_a, seq_b = [], []
-                    for j in range(j0, j1):
-                        ip = P[j].ipa
-                        seq_a += [tid[ch] for ch in ip]
-                        seq_b += [tid[ch] for ch in (tw if j == i else ip)]
-                    W = lp[t0:t1]
-                    if len(W) >= len(seq_a) and len(W) >= len(seq_b):
-                        cf = _best_path(W, seq_a) - _best_path(W, seq_b)
-                        cf = float(np.clip(cf, -30.0, 30.0))
+        if i in cf_job:
+            q = cf_job[i]
+            cf = float(np.clip(bp[q] - bp[q + 1], -30.0, 30.0))
         # evidence for the LONG form (log P(long form) - log P(short form)), whatever the text expects
         r["cf_llr"] = cf if own_long else -cf

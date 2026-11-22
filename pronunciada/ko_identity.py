@@ -154,31 +154,40 @@ for _ser in _SERIES:
         RIVALS[_c] = tuple(x for x in _ser if x != _c) + (("tʃ",) if _c == "s" else ("s",) if _c == "tʃ" else ())
 
 
-def evidence(ref, V: np.ndarray, H=None, offsets: dict | None = None, rivals: bool | None = None) -> np.ndarray:
+def evidence(ref, V: np.ndarray, H=None, offsets: dict | None = None, rivals: bool | None = None,
+             cls: list | None = None) -> np.ndarray:
     """s per sound (NaN where not judged): log P(expected) - log max P(other), minus the class's
-    native offset when the word parameters give one (offsets=None: the shipped ones)."""
+    native offset when the word parameters give one (offsets=None: the shipped ones).
+    cls: classes(ref) when the caller has it already."""
     H = H or _head()
     if offsets is None:
         offsets = (_word_params() or {}).get("offset", {})
     if rivals is None:
         rivals = bool((_word_params() or {}).get("rivals", False))
-    cls = classes(ref)
+    cls = classes(ref) if cls is None else cls
     s = np.full(len(cls), np.nan)
     idx = [i for i, c in enumerate(cls) if c is not None and c in H["index"]]
     if not idx:
         return s
     P = probs(np.asarray(V, np.float32), H)[idx]     # context = neighbours' mean over all sounds
     lp = np.log(np.clip(P, 1e-9, 1.0))
-    for r, i in enumerate(idx):
-        j = H["index"][cls[i]]
-        if rivals:
-            rv = [H["index"][c] for c in RIVALS.get(cls[i], ()) if c in H["index"]]
-            if not rv:
-                continue
-            best = lp[r, rv].max()
-        else:
-            best = np.delete(lp[r], j).max()
-        s[i] = lp[r, j] - best - float(offsets.get(cls[i], 0.0))
+    rows = np.arange(len(idx))
+    js = np.array([H["index"][cls[i]] for i in idx])
+    if rivals:                                 # best of the class's minimal-pair rivals
+        allowed = np.zeros(lp.shape, dtype=bool)
+        for r, i in enumerate(idx):
+            allowed[r, [H["index"][c] for c in RIVALS.get(cls[i], ()) if c in H["index"]]] = True
+        keep = allowed.any(1)                  # a class without rivals is not judged
+        best = np.where(allowed, lp, -np.inf).max(1)
+    else:                                      # best class other than the expected one
+        keep = np.ones(len(idx), dtype=bool)
+        other = lp.copy()
+        other[rows, js] = -np.inf
+        best = other.max(1)
+    # float32 like lp; the offsets enter as float32 too, as a Python float does in float32 arithmetic
+    off = np.array([float(offsets.get(cls[i], 0.0)) for i in idx], dtype=np.float32)
+    v = lp[rows, js] - best - off
+    s[np.asarray(idx)[keep]] = v[keep]
     return s
 
 
@@ -201,14 +210,15 @@ def positions(ref) -> list[str]:
     return out
 
 
-def word_deltas(ref, ev, s_raw: np.ndarray, cal: dict) -> np.ndarray:
+def word_deltas(ref, ev, s_raw: np.ndarray, cal: dict, cls: list | None = None) -> np.ndarray:
     """Round 19 part 2 ("delta" parameters): per word, the change of the word log-odds from
     the identity margins (minus the class x position native threshold), the extra-sound evidence
     at the word's boundaries (ev.llr_ins), the missing-sound evidence (llr_del) and the word's
     duration against its expected duration (number of sounds x the utterance's median frames per
-    sound). Linear in hinge features (bench/round19ko/fit2.py); capped above at cap_up."""
+    sound). Linear in hinge features (bench/round19ko/fit2.py); capped above at cap_up.
+    cls: classes(ref) when the caller has it already."""
     thr = cal["thr"]
-    cls, pos = classes(ref), positions(ref)
+    cls, pos = (classes(ref) if cls is None else cls), positions(ref)
     s = np.array([x - thr.get(f"{c}|{p}", thr.get(f"{c}|*", 0.0)) if c is not None else np.nan
                   for x, c, p in zip(s_raw, cls, pos)])
     word = np.array([p.word for p in ref.phones])

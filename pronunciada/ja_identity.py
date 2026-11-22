@@ -85,7 +85,9 @@ def evidence(ref, V: np.ndarray, H=None) -> np.ndarray:
     V = np.asarray(V, np.float32)
     X = np.concatenate([V, AH.context_vectors(V)], axis=1)[idx]
     lp = np.log(np.clip(_mlp(H, X), 1e-9, 1.0))
-    for r, i in enumerate(idx):
-        j = H["index"][cls[i]]
-        s[i] = lp[r, j] - np.delete(lp[r], j).max()
+    rows = np.arange(len(idx))
+    js = np.array([H["index"][cls[i]] for i in idx])
+    other = lp.copy()
+    other[rows, js] = -np.inf                  # best class other than the expected one
+    s[idx] = lp[rows, js] - other.max(1)
     return s

@@ -297,6 +297,7 @@ class Scorer:
             if _CZ.params() is not None:
                 phone_vec = _pv(emb, ev, len(ref.phones))
         contrast_ev = None
+        V17 = None
         if emb:                                  # round 17: head-based contrast evidence (ko / ru / zh)
             from . import contrast_heads as _CH
 
@@ -316,10 +317,13 @@ class Scorer:
             if _KI.enabled():
                 from .sound_emb import phone_vectors as _pv
 
-                Vk = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
-                ko_id = _KI.evidence(ref, Vk)
+                # the same phone vectors as the contrast heads' (same inputs), computed once
+                Vk = phone_vec if phone_vec is not None else V17 if V17 is not None \
+                    else _pv(emb, ev, len(ref.phones))
+                kcls = _KI.classes(ref)
+                ko_id = _KI.evidence(ref, Vk, cls=kcls)
                 if _KI._word_params().get("form") == "delta":     # round 19 part 2: word log-odds change
-                    ko_id = {"delta": _KI.word_deltas(ref, ev, ko_id, _KI._word_params()), "s": ko_id}
+                    ko_id = {"delta": _KI.word_deltas(ref, ev, ko_id, _KI._word_params(), cls=kcls), "s": ko_id}
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:

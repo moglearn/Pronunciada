@@ -11,6 +11,9 @@ Clip sets (dev / validation data only, never a held-out test):
                with one word replaced by the word at the same place in the next clip's text
                (exercises the error paths: identity steps, word recalibration, coaching)
   so762-train  100 speechocean762 TRAIN clips (seed 19), English learners, own text
+  cv-dev-short (round 20, latency) cv-real DEV-half clips of 2.5-5 s (seed 19), own text
+  fleurs-val-cut (round 20, latency) FLEURS validation clips cut at a word boundary near 3.5 s, text
+               cut to the same words (bench/round20_latency/make_cut.py writes the cut list)
 
 Per score the dump holds: SentenceResult.to_dict() without timing_ms, the same result rescored
 at strictness 0 and 1, Scorer.details(), coaching() and compat.azure.to_azure(). The compare step
@@ -59,6 +62,30 @@ def _clips(set_name: str, lang: str, n: int):
             wav, sr = sf.read(audio, dtype="float32")
             assert sr == 16000
             yield r["id"], wav, r["text"]
+    elif set_name == "cv-dev-short":
+        import soundfile as sf
+
+        from bench.cv_build import OUT_DIR, audio_path
+
+        recs = [json.loads(l) for l in (OUT_DIR / f"{lang}.jsonl").read_text(encoding="utf-8").splitlines()]
+        recs = [r for r in recs if r["half"] == "dev" and 2.5 <= r["dur"] <= 5.0]
+        pick = sorted(rng.choice(len(recs), min(n, len(recs)), replace=False))
+        for i in pick:
+            r = recs[i]
+            wav, sr = sf.read(str(audio_path(r["locale"], r["path"].rsplit(".", 1)[0])), dtype="float32")
+            if wav.ndim > 1:
+                wav = wav.mean(1)
+            assert sr == 16000, sr
+            yield r["id"], wav, r["sentence"]
+    elif set_name == "fleurs-val-cut":
+        from bench.pipeline.common import cache_root, iter_parquet_audio
+
+        man = cache_root() / "round20" / "latency" / f"fleurs_cut_{lang}.jsonl"
+        recs = [json.loads(l) for l in man.read_text(encoding="utf-8").splitlines()][:n]
+        by = {r["row"]: r for r in recs}
+        for i, wav in iter_parquet_audio(recs[0]["parquet"], set(by)):
+            r = by[i]
+            yield r["id"], wav[:r["cut"]], r["text"]
     else:
         raise SystemExit(f"unknown set {set_name}")
 

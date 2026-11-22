@@ -1,0 +1,558 @@
+{
+ "method": "cProfile of Scorer.score on 50 FLEURS validation clips (own text), posterior cache pre-filled (fbank + model excluded), 2 threads, machine shared (load 3-24); ms per clip",
+ "pairs": {
+  "ko: pre-19 c9773cc -> main 8c74789": {
+   "total_own_ms_old": 55.734169480000006,
+   "total_own_ms_new": 73.07390104,
+   "top_changes": [
+    {
+     "function": "pronunciada/align.py:_fast_scores",
+     "own_ms_old": 12.702,
+     "own_ms_new": 23.884,
+     "cum_ms_old": 24.96,
+     "cum_ms_new": 37.182
+    },
+    {
+     "function": "pronunciada/ko_identity.py:_mlp",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.84,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.848
+    },
+    {
+     "function": "~:<method 'reduce' of 'numpy.ufunc' objects>",
+     "own_ms_old": 5.362,
+     "own_ms_new": 5.802,
+     "cum_ms_old": 5.362,
+     "cum_ms_new": 5.802
+    },
+    {
+     "function": "pronunciada/align.py:_lse_cols",
+     "own_ms_old": 0.379,
+     "own_ms_new": 0.75,
+     "cum_ms_old": 0.446,
+     "cum_ms_new": 0.877
+    },
+    {
+     "function": "pronunciada/sound_emb.py:phone_vectors",
+     "own_ms_old": 0.244,
+     "own_ms_new": 0.541,
+     "cum_ms_old": 0.744,
+     "cum_ms_new": 1.593
+    },
+    {
+     "function": "numpy/_core/_methods.py:_mean",
+     "own_ms_old": 0.556,
+     "own_ms_new": 0.853,
+     "cum_ms_old": 1.434,
+     "cum_ms_new": 2.023
+    },
+    {
+     "function": "pronunciada/align.py:_forward_backward",
+     "own_ms_old": 7.011,
+     "own_ms_new": 7.3,
+     "cum_ms_old": 7.832,
+     "cum_ms_new": 8.156
+    },
+    {
+     "function": "pronunciada/ko_identity.py:word_deltas",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.288,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 1.086
+    },
+    {
+     "function": "pronunciada/align.py:viterbi",
+     "own_ms_old": 5.802,
+     "own_ms_new": 6.09,
+     "cum_ms_old": 9.758,
+     "cum_ms_new": 10.173
+    },
+    {
+     "function": "numpy/lib/_function_base_impl.py:delete",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.244,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.31
+    },
+    {
+     "function": "pronunciada/ko_identity.py:classes",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.228,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.577
+    },
+    {
+     "function": "pronunciada/ko_identity.py:evidence",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.144,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 1.784
+    },
+    {
+     "function": "~:<built-in method numpy.empty>",
+     "own_ms_old": 0.039,
+     "own_ms_new": 0.153,
+     "cum_ms_old": 0.039,
+     "cum_ms_new": 0.153
+    },
+    {
+     "function": "~:<method 'get' of 'dict' objects>",
+     "own_ms_old": 0.475,
+     "own_ms_new": 0.561,
+     "cum_ms_old": 0.475,
+     "cum_ms_new": 0.561
+    },
+    {
+     "function": "numpy/_core/_methods.py:_count_reduce_items",
+     "own_ms_old": 0.202,
+     "own_ms_new": 0.28,
+     "cum_ms_old": 0.249,
+     "cum_ms_new": 0.348
+    }
+   ]
+  },
+  "ja: pre-19 c9773cc -> main 8c74789": {
+   "total_own_ms_old": 47.81377358,
+   "total_own_ms_new": 69.36984364000001,
+   "top_changes": [
+    {
+     "function": "pronunciada/align.py:_fast_scores",
+     "own_ms_old": 8.155,
+     "own_ms_new": 17.707,
+     "cum_ms_old": 17.176,
+     "cum_ms_new": 27.44
+    },
+    {
+     "function": "pronunciada/length_r19.py:_best_path",
+     "own_ms_old": 0.0,
+     "own_ms_new": 2.86,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 3.319
+    },
+    {
+     "function": "pronunciada/length_r19.py:extra",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.969,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 5.639
+    },
+    {
+     "function": "pronunciada/word_match.py:align_word",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.951,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 1.129
+    },
+    {
+     "function": "pronunciada/ja_identity.py:_mlp",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.442,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.45
+    },
+    {
+     "function": "pronunciada/align.py:_lse_cols",
+     "own_ms_old": 0.325,
+     "own_ms_new": 0.673,
+     "cum_ms_old": 0.384,
+     "cum_ms_new": 0.786
+    },
+    {
+     "function": "pronunciada/length.py:_z_trees",
+     "own_ms_old": 0.154,
+     "own_ms_new": 0.464,
+     "cum_ms_old": 0.242,
+     "cum_ms_new": 0.677
+    },
+    {
+     "function": "~:<method 'reduce' of 'numpy.ufunc' objects>",
+     "own_ms_old": 4.134,
+     "own_ms_new": 4.375,
+     "cum_ms_old": 4.134,
+     "cum_ms_new": 4.375
+    },
+    {
+     "function": "pronunciada/scorer.py:_assemble",
+     "own_ms_old": 0.467,
+     "own_ms_new": 0.704,
+     "cum_ms_old": 1.576,
+     "cum_ms_new": 2.392
+    },
+    {
+     "function": "~:<built-in method builtins.max>",
+     "own_ms_old": 0.177,
+     "own_ms_new": 0.413,
+     "cum_ms_old": 0.19,
+     "cum_ms_new": 0.433
+    },
+    {
+     "function": "pronunciada/word_match.py:<genexpr>",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.235,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.235
+    },
+    {
+     "function": "pronunciada/length_r19.py:_fbi",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.211,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.337
+    },
+    {
+     "function": "numpy/lib/_function_base_impl.py:delete",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.199,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.252
+    },
+    {
+     "function": "~:<method 'copy' of 'numpy.ndarray' objects>",
+     "own_ms_old": 0.028,
+     "own_ms_new": 0.214,
+     "cum_ms_old": 0.028,
+     "cum_ms_new": 0.214
+    },
+    {
+     "function": "pronunciada/attr_heads.py:predict",
+     "own_ms_old": 2.134,
+     "own_ms_new": 2.303,
+     "cum_ms_old": 2.266,
+     "cum_ms_new": 2.446
+    }
+   ]
+  },
+  "ko: pre-19 c9773cc -> this branch": {
+   "total_own_ms_old": 80.82233842000001,
+   "total_own_ms_new": 91.42546194,
+   "top_changes": [
+    {
+     "function": "pronunciada/align.py:_fast_scores",
+     "own_ms_old": 18.523,
+     "own_ms_new": 20.381,
+     "cum_ms_old": 36.341,
+     "cum_ms_new": 39.629
+    },
+    {
+     "function": "pronunciada/ko_identity.py:_mlp",
+     "own_ms_old": 0.0,
+     "own_ms_new": 1.383,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 1.398
+    },
+    {
+     "function": "pronunciada/calibrate.py:raw",
+     "own_ms_old": 3.304,
+     "own_ms_new": 4.223,
+     "cum_ms_old": 3.667,
+     "cum_ms_new": 4.647
+    },
+    {
+     "function": "~:<method 'reduce' of 'numpy.ufunc' objects>",
+     "own_ms_old": 7.124,
+     "own_ms_new": 7.846,
+     "cum_ms_old": 7.124,
+     "cum_ms_new": 7.846
+    },
+    {
+     "function": "pronunciada/align.py:viterbi",
+     "own_ms_old": 7.917,
+     "own_ms_new": 8.492,
+     "cum_ms_old": 13.027,
+     "cum_ms_new": 13.911
+    },
+    {
+     "function": "pronunciada/align.py:_lse_cols",
+     "own_ms_old": 0.493,
+     "own_ms_new": 0.979,
+     "cum_ms_old": 0.601,
+     "cum_ms_new": 1.156
+    },
+    {
+     "function": "pronunciada/ko_identity.py:word_deltas",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.45,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 1.208
+    },
+    {
+     "function": "pronunciada/align.py:_forward_backward",
+     "own_ms_old": 9.763,
+     "own_ms_new": 10.156,
+     "cum_ms_old": 10.93,
+     "cum_ms_new": 11.369
+    },
+    {
+     "function": "pronunciada/scorer.py:_assemble",
+     "own_ms_old": 0.604,
+     "own_ms_new": 0.916,
+     "cum_ms_old": 1.689,
+     "cum_ms_new": 2.398
+    },
+    {
+     "function": "numpy/_core/_methods.py:_clip",
+     "own_ms_old": 0.306,
+     "own_ms_new": 0.543,
+     "cum_ms_old": 0.31,
+     "cum_ms_new": 0.548
+    },
+    {
+     "function": "pronunciada/text/_cjk_common.py:assemble",
+     "own_ms_old": 0.401,
+     "own_ms_new": 0.194,
+     "cum_ms_old": 0.6,
+     "cum_ms_new": 0.605
+    },
+    {
+     "function": "pronunciada/features.py:span_posterior_features",
+     "own_ms_old": 1.77,
+     "own_ms_new": 1.938,
+     "cum_ms_old": 5.679,
+     "cum_ms_new": 6.286
+    },
+    {
+     "function": "~:<method 'get' of 'dict' objects>",
+     "own_ms_old": 0.696,
+     "own_ms_new": 0.853,
+     "cum_ms_old": 0.696,
+     "cum_ms_new": 0.853
+    },
+    {
+     "function": "~:<built-in method numpy.asarray>",
+     "own_ms_old": 0.393,
+     "own_ms_new": 0.546,
+     "cum_ms_old": 0.393,
+     "cum_ms_new": 0.546
+    },
+    {
+     "function": "pronunciada/ko_identity.py:classes",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.152,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.377
+    }
+   ]
+  },
+  "ja: pre-19 c9773cc -> this branch": {
+   "total_own_ms_old": 69.33498368000001,
+   "total_own_ms_new": 75.25382586,
+   "top_changes": [
+    {
+     "function": "pronunciada/align.py:_fast_scores",
+     "own_ms_old": 11.429,
+     "own_ms_new": 13.321,
+     "cum_ms_old": 23.876,
+     "cum_ms_new": 25.82
+    },
+    {
+     "function": "pronunciada/length_r19.py:extra",
+     "own_ms_old": 0.0,
+     "own_ms_new": 1.08,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 3.482
+    },
+    {
+     "function": "pronunciada/length_r19.py:_best_paths",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.693,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.818
+    },
+    {
+     "function": "pronunciada/ja_identity.py:_mlp",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.554,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.566
+    },
+    {
+     "function": "~:<method 'reduce' of 'numpy.ufunc' objects>",
+     "own_ms_old": 5.709,
+     "own_ms_new": 5.268,
+     "cum_ms_old": 5.709,
+     "cum_ms_new": 5.268
+    },
+    {
+     "function": "pronunciada/align.py:_lse_cols",
+     "own_ms_old": 0.397,
+     "own_ms_new": 0.783,
+     "cum_ms_old": 0.479,
+     "cum_ms_new": 0.939
+    },
+    {
+     "function": "pronunciada/align.py:_forward_backward",
+     "own_ms_old": 6.831,
+     "own_ms_new": 6.485,
+     "cum_ms_old": 7.904,
+     "cum_ms_new": 7.48
+    },
+    {
+     "function": "pronunciada/length.py:_z_trees",
+     "own_ms_old": 0.209,
+     "own_ms_new": 0.524,
+     "cum_ms_old": 0.334,
+     "cum_ms_new": 0.773
+    },
+    {
+     "function": "numpy/lib/_arraysetops_impl.py:_isin",
+     "own_ms_old": 1.104,
+     "own_ms_new": 0.836,
+     "cum_ms_old": 2.051,
+     "cum_ms_new": 1.586
+    },
+    {
+     "function": "pronunciada/features.py:span_posterior_features",
+     "own_ms_old": 1.548,
+     "own_ms_new": 1.289,
+     "cum_ms_old": 5.112,
+     "cum_ms_new": 4.138
+    },
+    {
+     "function": "pronunciada/length_r19.py:_fbi",
+     "own_ms_old": 0.0,
+     "own_ms_new": 0.238,
+     "cum_ms_old": 0.0,
+     "cum_ms_new": 0.385
+    },
+    {
+     "function": "pronunciada/delivery.py:pool_embeddings",
+     "own_ms_old": 0.129,
+     "own_ms_new": 0.357,
+     "cum_ms_old": 0.768,
+     "cum_ms_new": 0.933
+    },
+    {
+     "function": "pronunciada/text/ipa.py:is_valid",
+     "own_ms_old": 0.288,
+     "own_ms_new": 0.066,
+     "cum_ms_old": 0.376,
+     "cum_ms_new": 0.134
+    },
+    {
+     "function": "pronunciada/calibrate.py:raw",
+     "own_ms_old": 3.589,
+     "own_ms_new": 3.371,
+     "cum_ms_old": 3.975,
+     "cum_ms_new": 3.738
+    },
+    {
+     "function": "pronunciada/scorer.py:_assemble",
+     "own_ms_old": 0.689,
+     "own_ms_new": 0.884,
+     "cum_ms_old": 2.215,
+     "cum_ms_new": 2.962
+    }
+   ]
+  }
+ },
+ "stage_means_ms_before": {
+  "note": "Scorer timing_ms means, same 50 clips, model excluded, 2 threads, one unpaired run per tree",
+  "ko": {
+   "pre19": {
+    "g2p": 0.38317999999999997,
+    "load": 0.06439999999999999,
+    "audio_check": 0.50898,
+    "fbank": 0.0,
+    "model": 0.0,
+    "adapter": 0.0,
+    "align": 34.45862,
+    "features": 4.87134,
+    "delivery": 2.31178,
+    "calibrate": 3.3076000000000003,
+    "total": 46.84121999999999
+   },
+   "main": {
+    "g2p": 0.4051200000000001,
+    "load": 0.06708,
+    "audio_check": 0.5493799999999999,
+    "fbank": 0.0,
+    "model": 0.0,
+    "adapter": 0.0,
+    "align": 46.98179999999999,
+    "features": 7.638000000000001,
+    "delivery": 2.4554,
+    "calibrate": 3.49798,
+    "assemble": 0.6597399999999999,
+    "total": 62.62482000000001
+   }
+  },
+  "ja": {
+   "pre19": {
+    "g2p": 1.39762,
+    "load": 0.06506,
+    "audio_check": 0.54906,
+    "fbank": 0.0,
+    "model": 0.0,
+    "adapter": 0.0,
+    "align": 23.691919999999996,
+    "features": 2.968559999999999,
+    "delivery": 2.31428,
+    "calibrate": 3.4320800000000005,
+    "length": 4.0193,
+    "total": 39.545139999999996
+   },
+   "main": {
+    "g2p": 1.4308799999999997,
+    "load": 0.06602000000000001,
+    "audio_check": 0.5695999999999999,
+    "fbank": 0.0,
+    "model": 0.0,
+    "adapter": 0.0,
+    "align": 32.82564,
+    "features": 3.01996,
+    "delivery": 2.35024,
+    "calibrate": 3.46944,
+    "length": 8.6883,
+    "word_step": 1.8686599999999998,
+    "assemble": 1.07978,
+    "total": 55.7342
+   }
+  }
+ },
+ "cpu_time_components_ms": {
+  "method": "process CPU time, median over 30 FLEURS validation clips (~12 s), min of 5 repeats per clip (aligner: paired, interleaved, 3 repeats), 2 threads",
+  "aligner score_reference, insertion on minus pre-19 aligner (paired median)": {
+   "ja": {
+    "main": 10.47,
+    "branch": 0.97
+   },
+   "ko": {
+    "main": 7.39,
+    "branch": 0.44
+   }
+  },
+  "aligner without insertion, branch minus pre-19 aligner (paired median)": {
+   "ja": -0.42,
+   "ko": -0.48
+  },
+  "ja length.score (round-19 model)": {
+   "main": 5.99,
+   "branch": 3.5
+  },
+  "ja length_r19.extra": {
+   "branch": 2.04,
+   "of which batched best paths": 0.61
+  },
+  "ja ja_identity.evidence": {
+   "main": 0.74,
+   "branch": 0.55
+  },
+  "ja word_match.extra_counts (repeat calls hit the memo)": {
+   "main": 0.98,
+   "branch": 0.13
+  },
+  "ko ko_identity.evidence": {
+   "main": 1.01,
+   "branch": 0.89
+  },
+  "ko ko_identity.word_deltas": {
+   "main": 0.38,
+   "branch": 0.38
+  },
+  "identity head MLP alone (110 sounds)": {
+   "ko": 0.82,
+   "ja": 0.42
+  }
+ }
+}
