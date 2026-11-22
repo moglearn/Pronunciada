@@ -1,0 +1,71 @@
+{
+ "lang": "ko",
+ "cfg": "weighted_top2",
+ "feat": "rate",
+ "thr80": 0.42233709172832334,
+ "buckets": {
+  "indel": {
+   "n": 86,
+   "missed": 27,
+   "fires_on_missed": 0.8148148148148148,
+   "fires_on_caught": 0.8813559322033898
+  },
+  "sub_gross": {
+   "n": 121,
+   "missed": 14,
+   "fires_on_missed": 0.6428571428571429,
+   "fires_on_caught": 0.5046728971962616
+  },
+  "sub_moderate": {
+   "n": 79,
+   "missed": 15,
+   "fires_on_missed": 0.4666666666666667,
+   "fires_on_caught": 0.421875
+  },
+  "sub_subtle": {
+   "n": 82,
+   "missed": 26,
+   "fires_on_missed": 0.5384615384615384,
+   "fires_on_caught": 0.3392857142857143
+  },
+  "word_omission": {
+   "n": 42,
+   "missed": 0,
+   "fires_on_missed": null,
+   "fires_on_caught": 0.9761904761904762
+  }
+ },
+ "fires_on_correct": 0.4403528114663727,
+ "fires_on_correct_above_thr": 0.719626168224299,
+ "fires_on_correct_below_thr": 0.43360433604336046,
+ "n_correct_units": 9070,
+ "control_words": {
+  "n": 5359,
+  "lt06": 111,
+  "fires": 0.43608882254151893,
+  "fires_and_06_09": 209
+ },
+ "shipped_auc": {
+  "auc": 0.9734288864388093,
+  "fa80": 0.023594266813671445,
+  "b_indel": 0.9607292120714853,
+  "b_sub_gross": 0.9898420913555723,
+  "b_sub_moderate": 0.9772068161835513,
+  "b_sub_subtle": 0.947503159706349,
+  "b_word_omission": 0.9956581088885389
+ },
+ "unguarded_lower_only_best": {
+  "auc": 0.9737292602253476,
+  "a_k": [
+   1.0,
+   0.0
+  ],
+  "native_ctl_lt06_rise": 14
+ },
+ "two_sided_guarded_best_in_sample": {
+  "auc": 0.9734288864388093,
+  "a_k_up": null,
+  "native_ctl_lt06_rise": 0
+ },
+ "indel_spearman_feature_vs_shipped": 0.04921142680150936
+}
