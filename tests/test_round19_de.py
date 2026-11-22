@@ -28,6 +28,19 @@ def test_word_lang_params_and_order():
     assert WL.params("en") is None
 
 
+def test_identity_classes_and_factor():
+    from pronunciada import de_identity as DI
+    from pronunciada.text import get_g2p
+
+    ref = get_g2p("de")("Der Wagen fährt")
+    cls = DI.classes(ref)
+    assert all(c is None for p, c in zip(ref.phones, cls) if p.ipa in ("ʀ", "ə"))
+    cal = DI._word_params()
+    assert cal is not None and DI._head() is not None
+    assert DI.word_factor(cal, [50.0], 0.5) == 1.0
+    assert abs(DI.word_factor(cal, [-50.0], 0.5) - cal["floor"]) < 1e-9
+
+
 def test_switch_off(monkeypatch):
     monkeypatch.setenv("PRONUNCIADA_DE_R19", "0")
     assert WL.params("de") is None

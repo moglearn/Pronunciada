@@ -21,6 +21,7 @@ def rebuild(rec: dict, fn) -> dict:
             vw.append(w)
             continue
         rw = next(it)
+        ctx["wi"] = ctx.get("wi", -1) + 1
         p = fn(rw, ctx)
         vw.append({**w, "score": round(min(1.0, max(0.0, p)) * 100, 1) / 100})
     rec["words"] = vw

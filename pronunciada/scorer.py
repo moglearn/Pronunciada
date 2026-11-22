@@ -135,6 +135,13 @@ class Scorer:
         if self.lang in ea.get("langs", ()) and os.environ.get("PRONUNCIADA_EXPLAIN_LANGS", "1") != "0" \
                 and not (self.lang == "de" and os.environ.get("PRONUNCIADA_DE_R19", "1") == "0"):
             ea["enabled"] = True
+            # bounded form: the pass runs only when the clip's lowest word (sounds-based P, s = 0.5)
+            # lies in an uncertain band [lo, hi), with at most max_passes passes
+            ea.update(ea.get("lang", {}).get(self.lang, {}))
+        if os.environ.get("PRONUNCIADA_EA_BAND"):               # selection runs only
+            ea["band"] = [float(x) for x in os.environ["PRONUNCIADA_EA_BAND"].split(",")]
+        if os.environ.get("PRONUNCIADA_EA_PASSES"):
+            ea["max_passes"] = int(os.environ["PRONUNCIADA_EA_PASSES"])
         if explain_away is not None:
             ea["enabled"] = bool(explain_away)
         self.ea = ea if ea.get("enabled") else None
@@ -285,6 +292,13 @@ class Scorer:
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)
+        if emb and self.lang == "de":            # round 19b: German sound-identity evidence (word factor)
+            from . import de_identity as _DI
+
+            if _DI.enabled():
+                from .sound_emb import phone_vectors as _pv
+
+                cache["de_identity_s"] = _DI.evidence(ref, _pv(emb, ev, len(ref.phones)))
         cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -296,7 +310,7 @@ class Scorer:
                 cache[k] = np.full_like(np.asarray(cache[k], dtype=np.float64), lo)
             cache["sent_zl"] = cache["sent_zs"] = lo
             cache["S"] = dict(cache["S"], completeness=np.zeros(1))
-        elif self.ea is not None:
+        elif self.ea is not None and self._ea_in_band(cache):
             t = time.perf_counter()
             cache = self.explain_away(lpa, cache, dur, self.ea["threshold"], self.ea["max_passes"])
             timing["explain_away"] = (time.perf_counter() - t) * 1e3
@@ -364,6 +378,14 @@ class Scorer:
         return m.predict(result._pronunciada["tab"])  # noqa: SLF001
 
     # ------------------------------------------------------------------ explain-away pass
+    def _ea_in_band(self, c: dict) -> bool:
+        band = self.ea.get("band")
+        if not band:
+            return True
+        pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), 0.5))
+        lo = float(np.min(pw)) if len(pw) else 1.0
+        return band[0] <= lo < band[1]
+
     def explain_away(self, lpa, c: dict, dur: float, threshold: float, max_passes: int) -> dict:
         """Second pass(es): while the lowest not-yet-wildcarded word has sounds-based P < threshold
         (s = 0.5), wildcard its sounds in the base lattice (pronunciada.align wild_slots), re-run the
@@ -567,6 +589,12 @@ class Scorer:
                 p_con = _CW.word_factor(self.contrast_word, c["contrast_z"][w.phones[0]:w.phones[1]], s)
                 if p_con is not None:
                     prob *= p_con
+            if c.get("de_identity_s") is not None:      # round 19b: German sound-identity factor
+                from . import de_identity as _DI
+
+                p_id = _DI.word_factor(_DI._word_params(), c["de_identity_s"][w.phones[0]:w.phones[1]], s)
+                if p_id is not None:
+                    prob *= p_id
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5

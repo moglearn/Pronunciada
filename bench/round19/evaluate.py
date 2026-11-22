@@ -37,8 +37,15 @@ def manifest_for(name: str) -> list[dict]:
     return manifest("lingolix" if name.startswith("lingolix") else "dev")
 
 
+MAIN_RULES = False      # Lingolix: the later "main" rule (unverified words dropped as negatives)
+
+
+def _unverified():
+    return {it["id"]: it.get("unverified", []) for it in L.load_manifest("repo_main_f8750aa", "tier1/manifest_de.jsonl")}
+
+
 def units(items, dump):
-    c = L.collect(items, dump)
+    c = L.collect(items, dump, exclude_unverified=_unverified() if MAIN_RULES else None)
     return c["units"]
 
 
@@ -154,7 +161,10 @@ def main(argv=None):
     ap.add_argument("--paired", action="store_true")
     ap.add_argument("--boot", type=int, default=1000)
     ap.add_argument("--json")
+    ap.add_argument("--main-rules", action="store_true")
     a = ap.parse_args(argv)
+    global MAIN_RULES
+    MAIN_RULES = a.main_rules
     res = summary(a.names, a.fold, a.source, a.paired, a.boot)
     print(fmt(res))
     if a.json:
