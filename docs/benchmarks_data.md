@@ -104,6 +104,8 @@ self-reported.
 |---|---|---|
 | LATIC (IEEE DataPort, DOI 10.21227/mqtj-qh10) | Mandarin by 4 learners (Russian, Korean, French, Arabic L1), 2,579 utts | files behind an IEEE DataPort login — skipped |
 | OMPAL (Interspeech 2025, Hsieh et al.) | Mandarin by French L1 learners, 1,768 utts, word/sentence scores | obtained later (CC BY 4.0, github.com/phantomhsieh/OMPAL-corpus): `python -m bench.ompal_build --clone`; dev half for tuning, test half for the benchmark (results/ompal.md) |
+| Heroico / USMA (OpenSLR 39) | Spanish by 10 USMA learners + native speakers, same prompts | learner suite (round 19): `python -m bench.learners.heroico`; results/round19_learners.md |
+| Speech Accent Archive (GMU, OSF) | English paragraph, natives + learners of 59 L1s (test) | learner suite (round 19): `python -m bench.learners.saa`; CC BY-NC-SA 4.0, evaluation only |
 | HF search (“mandarin l2”, “l2 korean”, “ifcasl”, “mispronunciation” …) | — | nothing relevant and openly downloadable for the 9 non-English languages |
 
 ## Tools
