@@ -203,9 +203,11 @@ call actually does today:
   English (round 19, config `sentence_head`): the four 0–10 scores are 0.65 × `sentence_r19`
   (trees on the round-4 inputs + delivery + F0 summary + a projection of the std-pooled outputs
   of every encoder stack, which passes the native guard where the mean-pooled ones did not)
-  + 0.35 × `seqhead_en.onnx` (`sentence_head.py`, a 205 k-parameter transformer over per-sound
-  fused stacks and aligner evidence); the acceptance probability is unchanged
-  (results/round19_english.md). `PRONUNCIADA_SENTENCE_HEAD=0` restores `sentence_r4`.
+  + 0.35 × `seqhead_en.onnx` (`sentence_head.py`, three averaged 205 k-parameter transformers
+  over per-sound fused stacks and aligner evidence). The same head's sound and word outputs are
+  blended into the reported English 0–2 sound score (0.3) and 0–10 word score (0.4); every
+  probability and the coaching inputs are unchanged (results/round19_english.md).
+  `PRONUNCIADA_SENTENCE_HEAD=0` restores `sentence_r4` and the previous sound / word scores.
 - **Tones and stress** (`prosody/`): the default tone model `tone_zh_v3z` reads the pitch contour,
   a low-frequency spectrum patch and per-syllable ZIPA activations (`tone_zh_v2` = pitch only,
   selectable); the stress model `stress_v3` likewise (`stress` = the previous one, selectable).
