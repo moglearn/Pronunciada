@@ -169,10 +169,12 @@ def test_sentence_scores_field(scorer, fox):
 
 
 @pytest.mark.model
-def test_prosody_channel(tts):
+def test_prosody_channel(tts, monkeypatch):
     """WordResult.prob = sounds_prob x P_pros x present_prob where the language has a fitted
     prosody channel and the word has scored syllables; sounds_prob unchanged; monotone in
-    strictness; omitted = present_prob < 0.5."""
+    strictness; omitted = present_prob < 0.5. (The round-19 sound-identity step, which also moves
+    the Mandarin word P, is switched off here; tests/test_round19_rollout.py covers it.)"""
+    monkeypatch.setenv("PRONUNCIADA_IDENTITY", "0")
     for lang, text in (("en", TEXT), ("zh", "你好")):
         sc = pronunciada.Scorer(lang, threads=4)
         res = sc.score(tts("ni hao" if lang == "zh" else TEXT), text)

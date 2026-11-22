@@ -1,0 +1,2629 @@
+{
+ "lang": "zh",
+ "base": {
+  "pool_below_05": 0.04498660273586236,
+  "pool_below_06": 0.053871104216612606,
+  "cvdev_below_06": 0.04890710382513661,
+  "controlled_auc": 0.9246777665463801,
+  "fit_auc": 0.9449993572356292,
+  "fit_fa80": 0.0666039384367229,
+  "fit_buckets": {
+   "swap_far": 0.9914458221694806,
+   "swap_near": 0.9663664136207725,
+   "tone": 0.8758037395969765
+  },
+  "val": {
+   "swap_native_below_0.6": 0.03169082125603865,
+   "swap_near_auc": 0.9661136098617358,
+   "swap_near_hit5": 0.8482758620689655,
+   "swap_far_auc": 0.9908818923871398,
+   "swap_far_hit5": 0.9827586206896551,
+   "native_accept": 0.9763360808295666,
+   "native_below_0.6": 0.032704068067003454,
+   "stress_auc": NaN,
+   "stress_hit5": NaN,
+   "n_stress": 0,
+   "sound_auc": 0.9470152884871045,
+   "sound_hit5": 0.82,
+   "n_sound": 2000,
+   "n_native": 3761
+  }
+ },
+ "grid": [
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.005,
+    "knee": [
+     -6.901681613922119,
+     -6.353383111953735,
+     -5.596976566314697
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05401212804964039,
+    "cvdev_below_06": 0.05,
+    "controlled_auc": 0.9251308050467966,
+    "fit_auc": 0.9456818267154444,
+    "fit_fa80": 0.06189932119094025,
+    "fit_buckets": {
+     "swap_far": 0.9917680232482322,
+     "swap_near": 0.9679806325919302,
+     "tone": 0.8759053724434012
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9675448942195569,
+     "swap_near_hit5": 0.8620689655172413,
+     "swap_far_auc": 0.9913749791770782,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9479508109545334,
+     "sound_hit5": 0.825,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.005,
+    "knee": [
+     -6.901681613922119,
+     -6.353383111953735,
+     -5.596976566314697
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05401212804964039,
+    "cvdev_below_06": 0.049453551912568304,
+    "controlled_auc": 0.9249370197922832,
+    "fit_auc": 0.9454465621476298,
+    "fit_fa80": 0.06586464144095705,
+    "fit_buckets": {
+     "swap_far": 0.9916550723096661,
+     "swap_near": 0.9674268641291246,
+     "tone": 0.8758695140802474
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9670924537731135,
+     "swap_near_hit5": 0.8551724137931035,
+     "swap_far_auc": 0.9912170581375979,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9476798723743686,
+     "sound_hit5": 0.825,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.005,
+    "knee": [
+     -6.901681613922119,
+     -6.353383111953735,
+     -5.596976566314697
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05401212804964039,
+    "cvdev_below_06": 0.04972677595628415,
+    "controlled_auc": 0.9249540414700445,
+    "fit_auc": 0.945477234175812,
+    "fit_fa80": 0.06586464144095705,
+    "fit_buckets": {
+     "swap_far": 0.9916691159432356,
+     "swap_near": 0.9674982986510345,
+     "tone": 0.8758756612282166
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9671784107946026,
+     "swap_near_hit5": 0.8551724137931035,
+     "swap_far_auc": 0.991239713476595,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9477189577240096,
+     "sound_hit5": 0.825,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.005,
+    "knee": [
+     -6.901681613922119,
+     -6.353383111953735,
+     -5.596976566314697
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05401212804964039,
+    "cvdev_below_06": 0.049453551912568304,
+    "controlled_auc": 0.9248375084453709,
+    "fit_auc": 0.9452999431118141,
+    "fit_fa80": 0.06620068552994153,
+    "fit_buckets": {
+     "swap_far": 0.9915858572585021,
+     "swap_near": 0.9670803563918604,
+     "tone": 0.8758473843475582
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9667952690321506,
+     "swap_near_hit5": 0.8482758620689655,
+     "swap_far_auc": 0.9910991171081126,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9474926881148631,
+     "sound_hit5": 0.824,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.01,
+    "knee": [
+     -6.353383111953735,
+     -5.596976566314697,
+     -4.3401641845703125
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.054294175715695954,
+    "cvdev_below_06": 0.05027322404371585,
+    "controlled_auc": 0.9254804041208172,
+    "fit_auc": 0.9460722041114944,
+    "fit_fa80": 0.06223536527992472,
+    "fit_buckets": {
+     "swap_far": 0.9920017494354961,
+     "swap_near": 0.9690682483410087,
+     "tone": 0.8757457515011335
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03188405797101449,
+     "swap_near_auc": 0.9689088788938864,
+     "swap_near_hit5": 0.8724137931034482,
+     "swap_far_auc": 0.9916375145760453,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03296995479925552,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9485341664450944,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.01,
+    "knee": [
+     -6.353383111953735,
+     -5.596976566314697,
+     -4.3401641845703125
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.05027322404371585,
+    "controlled_auc": 0.925242100632159,
+    "fit_auc": 0.9457478895453751,
+    "fit_fa80": 0.06223536527992472,
+    "fit_buckets": {
+     "swap_far": 0.9917804618951082,
+     "swap_near": 0.9682444372629833,
+     "tone": 0.8758248448050042
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.968127936031984,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9914016325170748,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9481290880085084,
+     "sound_hit5": 0.827,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.01,
+    "knee": [
+     -6.353383111953735,
+     -5.596976566314697,
+     -4.3401641845703125
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.05027322404371585,
+    "controlled_auc": 0.9252512661509534,
+    "fit_auc": 0.9457922460169,
+    "fit_fa80": 0.06223536527992472,
+    "fit_buckets": {
+     "swap_far": 0.9918143672390116,
+     "swap_near": 0.9683502810898131,
+     "tone": 0.8758172633225089
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9682598700649675,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.991399633516575,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9481721616591332,
+     "sound_hit5": 0.8285,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.01,
+    "knee": [
+     -6.353383111953735,
+     -5.596976566314697,
+     -4.3401641845703125
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.045409674234945706,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.05027322404371585,
+    "controlled_auc": 0.9250299843400565,
+    "fit_auc": 0.9455353425017307,
+    "fit_fa80": 0.06277303582229989,
+    "fit_buckets": {
+     "swap_far": 0.9916787458633975,
+     "swap_near": 0.9676922785922207,
+     "tone": 0.8758449254883705
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9675355655505581,
+     "swap_near_hit5": 0.8586206896551725,
+     "swap_far_auc": 0.9912377144760953,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9478320925285828,
+     "sound_hit5": 0.826,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.02,
+    "knee": [
+     -5.596976566314697,
+     -4.3401641845703125,
+     -2.947006607055664
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.048089127062473556,
+    "pool_below_06": 0.05767874770836271,
+    "cvdev_below_06": 0.05218579234972678,
+    "controlled_auc": 0.9257658445632762,
+    "fit_auc": 0.9463787221601628,
+    "fit_fa80": 0.061227233012971304,
+    "fit_buckets": {
+     "swap_far": 0.9923550471314374,
+     "swap_near": 0.9706206915425148,
+     "tone": 0.8747357750897894
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03304347826086956,
+     "swap_near_auc": 0.9725244044644344,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.9922205563884724,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9755384206328104,
+     "native_below_0.6": 0.0337676149960117,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9492787822387663,
+     "sound_hit5": 0.835,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.02,
+    "knee": [
+     -5.596976566314697,
+     -4.3401641845703125,
+     -2.947006607055664
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04597376956705683,
+    "pool_below_06": 0.05598646171202933,
+    "cvdev_below_06": 0.051092896174863386,
+    "controlled_auc": 0.9255380159532401,
+    "fit_auc": 0.9461737925652757,
+    "fit_fa80": 0.06284024464009678,
+    "fit_buckets": {
+     "swap_far": 0.9920623376831816,
+     "swap_near": 0.9698254542732534,
+     "tone": 0.8752216046842907
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03265700483091787,
+     "swap_near_auc": 0.9711590871231052,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.991856071964018,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9758043073650625,
+     "native_below_0.6": 0.03350172826375964,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9489181068864664,
+     "sound_hit5": 0.8325,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.02,
+    "knee": [
+     -5.596976566314697,
+     -4.3401641845703125,
+     -2.947006607055664
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04611479340008461,
+    "pool_below_06": 0.056550557044140456,
+    "cvdev_below_06": 0.051639344262295085,
+    "controlled_auc": 0.9254594543635726,
+    "fit_auc": 0.9460762487745513,
+    "fit_fa80": 0.06183211237314336,
+    "fit_buckets": {
+     "swap_far": 0.9920049594088834,
+     "swap_near": 0.9696735301491916,
+     "tone": 0.8751384132817738
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03265700483091787,
+     "swap_near_auc": 0.9712210561385973,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.9917934366150258,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03350172826375964,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.948843924488168,
+     "sound_hit5": 0.834,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.02,
+    "knee": [
+     -5.596976566314697,
+     -4.3401641845703125,
+     -2.947006607055664
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04555069806797349,
+    "pool_below_06": 0.05485827104780708,
+    "cvdev_below_06": 0.05081967213114754,
+    "controlled_auc": 0.9252840001466484,
+    "fit_auc": 0.9458837228130389,
+    "fit_fa80": 0.0625042005511123,
+    "fit_buckets": {
+     "swap_far": 0.9918394451561,
+     "swap_near": 0.9689181352329953,
+     "tone": 0.8754914644801398
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03207729468599034,
+     "swap_near_auc": 0.9698650674662669,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.9915329002165584,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03296995479925552,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9484812549853763,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.05,
+    "knee": [
+     -3.9280888438224792,
+     -2.4493733644485474,
+     -0.43957144021987915
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.05725567620927937,
+    "pool_below_06": 0.06698632068819631,
+    "cvdev_below_06": 0.06120218579234973,
+    "controlled_auc": 0.9258365499939769,
+    "fit_auc": 0.9460380941197138,
+    "fit_fa80": 0.06351233281806573,
+    "fit_buckets": {
+     "swap_far": 0.9931501174148079,
+     "swap_near": 0.9724013227661218,
+     "tone": 0.8710751484741139
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04,
+     "swap_near_auc": 0.9798354156255206,
+     "swap_near_hit5": 0.9275862068965517,
+     "swap_far_auc": 0.9923858070964517,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9710183461845254,
+     "native_below_0.6": 0.03881946290880085,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9497370380218028,
+     "sound_hit5": 0.8405,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.05,
+    "knee": [
+     -3.9280888438224792,
+     -2.4493733644485474,
+     -0.43957144021987915
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.0516147228881681,
+    "pool_below_06": 0.06219151036525173,
+    "cvdev_below_06": 0.05573770491803279,
+    "controlled_auc": 0.9261232997962636,
+    "fit_auc": 0.9464443805237879,
+    "fit_fa80": 0.061160024195174405,
+    "fit_buckets": {
+     "swap_far": 0.993084914830378,
+     "swap_near": 0.972190641232489,
+     "tone": 0.872591240068258
+    },
+    "val": {
+     "swap_native_below_0.6": 0.035942028985507246,
+     "swap_near_auc": 0.9788978843911378,
+     "swap_near_hit5": 0.9137931034482759,
+     "swap_far_auc": 0.9923491587539564,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9734113267747939,
+     "native_below_0.6": 0.03616059558628024,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9498233182664185,
+     "sound_hit5": 0.837,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.05,
+    "knee": [
+     -3.9280888438224792,
+     -2.4493733644485474,
+     -0.43957144021987915
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.05020448455789028,
+    "pool_below_06": 0.0631786771964462,
+    "cvdev_below_06": 0.05737704918032787,
+    "controlled_auc": 0.9257200169693034,
+    "fit_auc": 0.9460261623636957,
+    "fit_fa80": 0.06156327710195578,
+    "fit_buckets": {
+     "swap_far": 0.9927077429573685,
+     "swap_near": 0.9713253780093553,
+     "tone": 0.8725863223498825
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03632850241545894,
+     "swap_near_auc": 0.9784527736131934,
+     "swap_near_hit5": 0.9172413793103448,
+     "swap_far_auc": 0.9919693486590039,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.973677213507046,
+     "native_below_0.6": 0.03642648231853231,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9494278117521936,
+     "sound_hit5": 0.8375,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "none",
+    "q": 0.05,
+    "knee": [
+     -3.9280888438224792,
+     -2.4493733644485474,
+     -0.43957144021987915
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.047807079396418,
+    "pool_below_06": 0.0585248907065294,
+    "cvdev_below_06": 0.05327868852459016,
+    "controlled_auc": 0.925754060324826,
+    "fit_auc": 0.9462285977496978,
+    "fit_fa80": 0.06068956247059614,
+    "fit_buckets": {
+     "swap_far": 0.9925955945121493,
+     "swap_near": 0.9708961672058799,
+     "tone": 0.8737532559393744
+    },
+    "val": {
+     "swap_native_below_0.6": 0.033816425120772944,
+     "swap_near_auc": 0.9768688988838914,
+     "swap_near_hit5": 0.8931034482758621,
+     "swap_far_auc": 0.9919073796435116,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9750066471683063,
+     "native_below_0.6": 0.03483116192501994,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9493398032438182,
+     "sound_hit5": 0.8365,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.005,
+    "knee": [
+     -7.5469241866469385,
+     -6.881551905572414,
+     -5.820088508725166
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9249147606752107,
+    "fit_auc": 0.9453026395538521,
+    "fit_fa80": 0.0666711472545198,
+    "fit_buckets": {
+     "swap_far": 0.9917078362472201,
+     "swap_near": 0.9671034971524791,
+     "tone": 0.875707434278792
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9673816425120773,
+     "swap_near_hit5": 0.8620689655172413,
+     "swap_far_auc": 0.9912130601365984,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9474530709917575,
+     "sound_hit5": 0.8235,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.005,
+    "knee": [
+     -7.5469241866469385,
+     -6.881551905572414,
+     -5.820088508725166
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9248257242069208,
+    "fit_auc": 0.9451974783143705,
+    "fit_fa80": 0.0666711472545198,
+    "fit_buckets": {
+     "swap_far": 0.991577029831687,
+     "swap_near": 0.9668851691066419,
+     "tone": 0.8757437024518104
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9669645177411295,
+     "swap_near_hit5": 0.8482758620689655,
+     "swap_far_auc": 0.991096451774113,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9473387396968891,
+     "sound_hit5": 0.8235,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.005,
+    "knee": [
+     -7.5469241866469385,
+     -6.881551905572414,
+     -5.820088508725166
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9248309616462319,
+    "fit_auc": 0.945204826118924,
+    "fit_fa80": 0.0666711472545198,
+    "fit_buckets": {
+     "swap_far": 0.9916039133588058,
+     "swap_near": 0.9668839617626096,
+     "tone": 0.8757398092580966
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9670224887556221,
+     "swap_near_hit5": 0.8482758620689655,
+     "swap_far_auc": 0.991111777444611,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9473513693166711,
+     "sound_hit5": 0.8235,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.005,
+    "knee": [
+     -7.5469241866469385,
+     -6.881551905572414,
+     -5.820088508725166
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9247785872531202,
+    "fit_auc": 0.9451339771043759,
+    "fit_fa80": 0.0666711472545198,
+    "fit_buckets": {
+     "swap_far": 0.9915497450578948,
+     "swap_near": 0.9667024577097569,
+     "tone": 0.8757646027549059
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9666500083291687,
+     "swap_near_hit5": 0.8482758620689655,
+     "swap_far_auc": 0.9910271530901216,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9472466099441638,
+     "sound_hit5": 0.8225,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.01,
+    "knee": [
+     -6.881551905572414,
+     -5.820088508725166,
+     -4.647625135183334
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04569172190100127,
+    "pool_below_06": 0.05443519954872374,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.925184488799736,
+    "fit_auc": 0.9457761347757231,
+    "fit_fa80": 0.06606626789434773,
+    "fit_buckets": {
+     "swap_far": 0.9919459761478915,
+     "swap_near": 0.9681689782609658,
+     "tone": 0.8758184927521028
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03207729468599034,
+     "swap_near_auc": 0.9685130767949358,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9916355155755455,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03296995479925552,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9478775591597979,
+     "sound_hit5": 0.825,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.01,
+    "knee": [
+     -6.881551905572414,
+     -5.820088508725166,
+     -4.647625135183334
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04555069806797349,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9250705744947181,
+    "fit_auc": 0.9455460608588316,
+    "fit_fa80": 0.06599905907655085,
+    "fit_buckets": {
+     "swap_far": 0.9917573902113868,
+     "swap_near": 0.9676550521512255,
+     "tone": 0.8758350900516196
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9679426953190071,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9913989671830751,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9476595320393513,
+     "sound_hit5": 0.8245,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.01,
+    "knee": [
+     -6.881551905572414,
+     -5.820088508725166,
+     -4.647625135183334
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04555069806797349,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9250365311391954,
+    "fit_auc": 0.9455497010555829,
+    "fit_fa80": 0.06606626789434773,
+    "fit_buckets": {
+     "swap_far": 0.9917644120281716,
+     "swap_near": 0.9676552533752308,
+     "tone": 0.8758387783404011
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9680086623354989,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9914049641845744,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9476583355490561,
+     "sound_hit5": 0.8245,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.01,
+    "knee": [
+     -6.881551905572414,
+     -5.820088508725166,
+     -4.647625135183334
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05415315188266817,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9249370197922832,
+    "fit_auc": 0.9453787466303744,
+    "fit_fa80": 0.06626789434773843,
+    "fit_buckets": {
+     "swap_far": 0.9916392230660662,
+     "swap_near": 0.967268702060896,
+     "tone": 0.875840622484792
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9674302848575712,
+     "swap_near_hit5": 0.8551724137931035,
+     "swap_far_auc": 0.9912343828085957,
+     "swap_far_hit5": 0.9862068965517241,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9474941504918905,
+     "sound_hit5": 0.824,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.02,
+    "knee": [
+     -5.820088508725166,
+     -4.647625135183334,
+     -3.192936326265335
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.047948103229445774,
+    "pool_below_06": 0.056973628543223805,
+    "cvdev_below_06": 0.05136612021857923,
+    "controlled_auc": 0.9256846642539529,
+    "fit_auc": 0.9461256610748975,
+    "fit_fa80": 0.06290745345789367,
+    "fit_buckets": {
+     "swap_far": 0.9922164164057727,
+     "swap_near": 0.9694318601187302,
+     "tone": 0.8753187296222045
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03323671497584541,
+     "swap_near_auc": 0.9715815425620523,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.9921719140429786,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9755384206328104,
+     "native_below_0.6": 0.03350172826375964,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9486228396703005,
+     "sound_hit5": 0.8315,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.02,
+    "knee": [
+     -5.820088508725166,
+     -4.647625135183334,
+     -3.192936326265335
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.045832745734029054,
+    "pool_below_06": 0.05570441404597377,
+    "cvdev_below_06": 0.05081967213114754,
+    "controlled_auc": 0.9254437420456391,
+    "fit_auc": 0.9458953175138023,
+    "fit_fa80": 0.0625042005511123,
+    "fit_buckets": {
+     "swap_far": 0.991981887725162,
+     "swap_near": 0.9687464911564062,
+     "tone": 0.8755560095338167
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03265700483091787,
+     "swap_near_auc": 0.9705533899716808,
+     "swap_near_hit5": 0.8758620689655172,
+     "swap_far_auc": 0.9918394136265201,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.033235841531507576,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9483118851369317,
+     "sound_hit5": 0.829,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.02,
+    "knee": [
+     -5.820088508725166,
+     -4.647625135183334,
+     -3.192936326265335
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.04611479340008461,
+    "pool_below_06": 0.05598646171202933,
+    "cvdev_below_06": 0.05081967213114754,
+    "controlled_auc": 0.9253848208533884,
+    "fit_auc": 0.945824603321356,
+    "fit_fa80": 0.0626386181867061,
+    "fit_buckets": {
+     "swap_far": 0.9919054502338767,
+     "swap_near": 0.9686301836812966,
+     "tone": 0.875537568089909
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03265700483091787,
+     "swap_near_auc": 0.9705713809761786,
+     "swap_near_hit5": 0.8758620689655172,
+     "swap_far_auc": 0.991808095952024,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.033235841531507576,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9482656208455198,
+     "sound_hit5": 0.83,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.02,
+    "knee": [
+     -5.820088508725166,
+     -4.647625135183334,
+     -3.192936326265335
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04569172190100127,
+    "pool_below_06": 0.05485827104780708,
+    "cvdev_below_06": 0.05,
+    "controlled_auc": 0.9252263883142254,
+    "fit_auc": 0.9456478515457657,
+    "fit_fa80": 0.06297466227569057,
+    "fit_buckets": {
+     "swap_far": 0.9917914961786269,
+     "swap_near": 0.9680601160740553,
+     "tone": 0.8756971890321766
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03188405797101449,
+     "swap_near_auc": 0.9694779277028153,
+     "swap_near_hit5": 0.8724137931034482,
+     "swap_far_auc": 0.9915428952190571,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.947968359478862,
+     "sound_hit5": 0.8255,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.05,
+    "knee": [
+     -4.180818707495928,
+     -2.6428294152021414,
+     -0.42496200799942085
+    ],
+    "floor": 0.3,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.05739670004230715,
+    "pool_below_06": 0.06670427302214074,
+    "cvdev_below_06": 0.06038251366120219,
+    "controlled_auc": 0.9259674859767563,
+    "fit_auc": 0.9462263731850165,
+    "fit_fa80": 0.06169769473754957,
+    "fit_buckets": {
+     "swap_far": 0.9928889058304151,
+     "swap_near": 0.9722830030509584,
+     "tone": 0.8720347182721104
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03845410628019324,
+     "swap_near_auc": 0.9783015159087123,
+     "swap_near_hit5": 0.9172413793103448,
+     "swap_far_auc": 0.9923305014159587,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9731454400425419,
+     "native_below_0.6": 0.037490029247540545,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9493161393246476,
+     "sound_hit5": 0.837,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.05,
+    "knee": [
+     -4.180818707495928,
+     -2.6428294152021414,
+     -0.42496200799942085
+    ],
+    "floor": 0.3,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.05147369905514032,
+    "pool_below_06": 0.061909462699196165,
+    "cvdev_below_06": 0.05491803278688524,
+    "controlled_auc": 0.9261429401936805,
+    "fit_auc": 0.9464316398351584,
+    "fit_fa80": 0.06068956247059614,
+    "fit_buckets": {
+     "swap_far": 0.9927597044015757,
+     "swap_near": 0.9717250088840398,
+     "tone": 0.8733588139446822
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03536231884057971,
+     "swap_near_auc": 0.9774292853573213,
+     "swap_near_hit5": 0.9103448275862069,
+     "swap_far_auc": 0.992304514409462,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9747407604360543,
+     "native_below_0.6": 0.035097048657272,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.949285828237171,
+     "sound_hit5": 0.8355,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.05,
+    "knee": [
+     -4.180818707495928,
+     -2.6428294152021414,
+     -0.42496200799942085
+    ],
+    "floor": 0.6,
+    "width": 2.0
+   },
+   "m": {
+    "pool_below_05": 0.05076857989000141,
+    "pool_below_06": 0.06346072486250176,
+    "cvdev_below_06": 0.05573770491803279,
+    "controlled_auc": 0.925830003194838,
+    "fit_auc": 0.9460819787138821,
+    "fit_fa80": 0.061294441830768195,
+    "fit_buckets": {
+     "swap_far": 0.9924268702859785,
+     "swap_near": 0.9711336115322282,
+     "tone": 0.873238124939553
+    },
+    "val": {
+     "swap_native_below_0.6": 0.035942028985507246,
+     "swap_near_auc": 0.9770981176078627,
+     "swap_near_hit5": 0.9172413793103448,
+     "swap_far_auc": 0.9919740129935033,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9747407604360543,
+     "native_below_0.6": 0.03562882212177612,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9490247274660994,
+     "sound_hit5": 0.835,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "knee",
+    "offset_kind": "q05",
+    "q": 0.05,
+    "knee": [
+     -4.180818707495928,
+     -2.6428294152021414,
+     -0.42496200799942085
+    ],
+    "floor": 0.6,
+    "width": 4.0
+   },
+   "m": {
+    "pool_below_05": 0.04752503173036243,
+    "pool_below_06": 0.0585248907065294,
+    "cvdev_below_06": 0.05218579234972678,
+    "controlled_auc": 0.9258574997512217,
+    "fit_auc": 0.9461708938900848,
+    "fit_fa80": 0.06035351838161167,
+    "fit_buckets": {
+     "swap_far": 0.9923095056340049,
+     "swap_near": 0.9704776212746897,
+     "tone": 0.8742962540099896
+    },
+    "val": {
+     "swap_native_below_0.6": 0.033816425120772944,
+     "swap_near_auc": 0.9757741129435282,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9919247043145094,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9758043073650625,
+     "native_below_0.6": 0.03429938846051582,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9488618718425951,
+     "sound_hit5": 0.8335,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.2720917287939921,
+     0.03203235273895017,
+     0.08104533066021007,
+     1.077106113067688,
+     0.3949024170884822
+    ],
+    "cap": 3.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.03878155408263997,
+    "pool_below_06": 0.042730221407417855,
+    "cvdev_below_06": 0.0407103825136612,
+    "controlled_auc": 0.9257920317598319,
+    "fit_auc": 0.9459895918685555,
+    "fit_fa80": 0.06344512400026883,
+    "fit_buckets": {
+     "swap_far": 0.9922178207691297,
+     "swap_near": 0.9698991022592224,
+     "tone": 0.8744279054289972
+    },
+    "val": {
+     "swap_native_below_0.6": 0.020483091787439612,
+     "swap_near_auc": 0.9710924537731135,
+     "swap_near_hit5": 0.896551724137931,
+     "swap_far_auc": 0.9919993336665001,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9840467960648763,
+     "native_below_0.6": 0.020207391651156606,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9487002127093858,
+     "sound_hit5": 0.828,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": []
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.2720917287939921,
+     0.03203235273895017,
+     0.08104533066021007,
+     1.077106113067688,
+     0.3949024170884822
+    ],
+    "cap": 1.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.03892257791566775,
+    "pool_below_06": 0.043153292906501196,
+    "cvdev_below_06": 0.0412568306010929,
+    "controlled_auc": 0.9262070988252423,
+    "fit_auc": 0.9457900551577442,
+    "fit_fa80": 0.06431883863162847,
+    "fit_buckets": {
+     "swap_far": 0.9923654795449461,
+     "swap_near": 0.9704005524806292,
+     "tone": 0.8731599537078777
+    },
+    "val": {
+     "swap_native_below_0.6": 0.02106280193236715,
+     "swap_near_auc": 0.9719780109945028,
+     "swap_near_hit5": 0.8931034482758621,
+     "swap_far_auc": 0.9918773946360153,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9840467960648763,
+     "native_below_0.6": 0.02127093858016485,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9490097048657272,
+     "sound_hit5": 0.83,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": []
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.2720917287939921,
+     0.03203235273895017,
+     0.08104533066021007,
+     1.077106113067688,
+     0.3949024170884822
+    ],
+    "cap": 2.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.03878155408263997,
+    "pool_below_06": 0.04287124524044564,
+    "cvdev_below_06": 0.0407103825136612,
+    "controlled_auc": 0.9258797588682941,
+    "fit_auc": 0.9459618185155642,
+    "fit_fa80": 0.06344512400026883,
+    "fit_buckets": {
+     "swap_far": 0.9922045796289071,
+     "swap_near": 0.9698777725146521,
+     "tone": 0.8743787282452433
+    },
+    "val": {
+     "swap_native_below_0.6": 0.020483091787439612,
+     "swap_near_auc": 0.9710831251041147,
+     "swap_near_hit5": 0.896551724137931,
+     "swap_far_auc": 0.9919980009995002,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9840467960648763,
+     "native_below_0.6": 0.020207391651156606,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9486866524860409,
+     "sound_hit5": 0.828,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": []
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.2720917287939921,
+     0.03203235273895017,
+     0.08104533066021007,
+     1.077106113067688,
+     0.3949024170884822
+    ],
+    "cap": 3.0,
+    "wpos": 1.0,
+    "no_raise_below": 0.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.040050768579890005,
+    "pool_below_06": 0.045409674234945706,
+    "cvdev_below_06": 0.04316939890710383,
+    "controlled_auc": 0.9253376838995878,
+    "fit_auc": 0.9445460516235177,
+    "fit_fa80": 0.06532697089858189,
+    "fit_buckets": {
+     "swap_far": 0.9925295894343726,
+     "swap_near": 0.971986197643023,
+     "tone": 0.8675963749858615
+    },
+    "val": {
+     "swap_native_below_0.6": 0.02280193236714976,
+     "swap_near_auc": 0.9758014326170248,
+     "swap_near_hit5": 0.8896551724137931,
+     "swap_far_auc": 0.9914649341995669,
+     "swap_far_hit5": 0.993103448275862,
+     "native_accept": 0.9821855889391119,
+     "native_below_0.6": 0.02260037224142515,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9493261100771071,
+     "sound_hit5": 0.834,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G5 tone"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.2720917287939921,
+     0.03203235273895017,
+     0.08104533066021007,
+     1.077106113067688,
+     0.3949024170884822
+    ],
+    "cap": 0.0,
+    "wpos": 1.0,
+    "no_raise_below": null,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.05401212804964039,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9250941429716183,
+    "fit_auc": 0.9456042365958013,
+    "fit_fa80": 0.06579743262316017,
+    "fit_buckets": {
+     "swap_far": 0.991605117098826,
+     "swap_near": 0.967960912639403,
+     "tone": 0.8758559903547151
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03169082125603865,
+     "swap_near_auc": 0.9678947193070132,
+     "swap_near_hit5": 0.8482758620689655,
+     "swap_far_auc": 0.9911717474596036,
+     "swap_far_hit5": 0.9827586206896551,
+     "native_accept": 0.9763360808295666,
+     "native_below_0.6": 0.03296995479925552,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9476001063546929,
+     "sound_hit5": 0.824,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.29066854990026236,
+     -0.01869873948268205,
+     0.06585568113856946,
+     0.9476958643404276,
+     -0.24017389458716434
+    ],
+    "cap": 3.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.044563531236779017,
+    "pool_below_06": 0.0531659850514737,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9262437609004206,
+    "fit_auc": 0.946834050103803,
+    "fit_fa80": 0.06331070636467505,
+    "fit_buckets": {
+     "swap_far": 0.992079190043465,
+     "swap_near": 0.9694085181341061,
+     "tone": 0.8776358970492051
+    },
+    "val": {
+     "swap_native_below_0.6": 0.030531400966183574,
+     "swap_near_auc": 0.9713376645010828,
+     "swap_near_hit5": 0.8896551724137931,
+     "swap_far_auc": 0.9920453106779943,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.977931401223079,
+     "native_below_0.6": 0.03164052113799522,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9484902951342729,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.29066854990026236,
+     -0.01869873948268205,
+     0.06585568113856946,
+     0.9476958643404276,
+     -0.24017389458716434
+    ],
+    "cap": 1.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.044563531236779017,
+    "pool_below_06": 0.0531659850514737,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9263851717618222,
+    "fit_auc": 0.9467866601349852,
+    "fit_fa80": 0.06331070636467505,
+    "fit_buckets": {
+     "swap_far": 0.992052507139683,
+     "swap_near": 0.9693662610929764,
+     "tone": 0.8775621312735743
+    },
+    "val": {
+     "swap_native_below_0.6": 0.030531400966183574,
+     "swap_near_auc": 0.9713216724970848,
+     "swap_near_hit5": 0.8896551724137931,
+     "swap_far_auc": 0.9920406463434949,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.977931401223079,
+     "native_below_0.6": 0.03164052113799522,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9484675618186652,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.29066854990026236,
+     -0.01869873948268205,
+     0.06585568113856946,
+     0.9476958643404276,
+     -0.24017389458716434
+    ],
+    "cap": 2.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.044563531236779017,
+    "pool_below_06": 0.0531659850514737,
+    "cvdev_below_06": 0.04918032786885246,
+    "controlled_auc": 0.9262856604149099,
+    "fit_auc": 0.946834050103803,
+    "fit_fa80": 0.06331070636467505,
+    "fit_buckets": {
+     "swap_far": 0.992079190043465,
+     "swap_near": 0.9694085181341061,
+     "tone": 0.8776358970492051
+    },
+    "val": {
+     "swap_native_below_0.6": 0.030531400966183574,
+     "swap_near_auc": 0.9713376645010828,
+     "swap_near_hit5": 0.8896551724137931,
+     "swap_far_auc": 0.9920453106779943,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.977931401223079,
+     "native_below_0.6": 0.03164052113799522,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9484902951342729,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.29066854990026236,
+     -0.01869873948268205,
+     0.06585568113856946,
+     0.9476958643404276,
+     -0.24017389458716434
+    ],
+    "cap": 3.0,
+    "wpos": 2.0,
+    "no_raise_below": 0.0,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.04526865040191792,
+    "pool_below_06": 0.054717247214779295,
+    "cvdev_below_06": 0.050546448087431695,
+    "controlled_auc": 0.9264467116737285,
+    "fit_auc": 0.9464735358033237,
+    "fit_fa80": 0.06169769473754957,
+    "fit_buckets": {
+     "swap_far": 0.9922463092829421,
+     "swap_near": 0.9703542709593918,
+     "tone": 0.875406326480766
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03188405797101449,
+     "swap_near_auc": 0.9730574712643678,
+     "swap_near_hit5": 0.8793103448275862,
+     "swap_far_auc": 0.9918234216225221,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9763360808295666,
+     "native_below_0.6": 0.032704068067003454,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.948869183727732,
+     "sound_hit5": 0.829,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.29066854990026236,
+     -0.01869873948268205,
+     0.06585568113856946,
+     0.9476958643404276,
+     -0.24017389458716434
+    ],
+    "cap": 0.0,
+    "wpos": 2.0,
+    "no_raise_below": null,
+    "on": "prob"
+   },
+   "m": {
+    "pool_below_05": 0.04611479340008461,
+    "pool_below_06": 0.055281342546890426,
+    "cvdev_below_06": 0.05136612021857923,
+    "controlled_auc": 0.9264336180754505,
+    "fit_auc": 0.9464462680332145,
+    "fit_fa80": 0.06290745345789367,
+    "fit_buckets": {
+     "swap_far": 0.9921686680516364,
+     "swap_near": 0.9704234920172424,
+     "tone": 0.8753322533477368
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03246376811594203,
+     "swap_near_auc": 0.9728129268698984,
+     "swap_near_hit5": 0.8827586206896552,
+     "swap_far_auc": 0.991768115942029,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9758043073650625,
+     "native_below_0.6": 0.03350172826375964,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9488493751661792,
+     "sound_hit5": 0.8295,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.12352145475519705,
+     0.24562015706567927,
+     0.02928513183608411,
+     1.1520959759806546,
+     -0.4728938113888024
+    ],
+    "cap": 3.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.046255817233112395,
+    "pool_below_06": 0.054294175715695954,
+    "cvdev_below_06": 0.04972677595628415,
+    "controlled_auc": 0.9266994181204925,
+    "fit_auc": 0.9450413880258963,
+    "fit_fa80": 0.06492371799180052,
+    "fit_buckets": {
+     "swap_far": 0.9915186484407053,
+     "swap_near": 0.966560594785964,
+     "tone": 0.8756593840721659
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03400966183574879,
+     "swap_near_auc": 0.9652213893053473,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9915615525570548,
+     "swap_far_hit5": 0.9827586206896551,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03483116192501994,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.948664450943898,
+     "sound_hit5": 0.8255,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.12352145475519705,
+     0.24562015706567927,
+     0.02928513183608411,
+     1.1520959759806546,
+     -0.4728938113888024
+    ],
+    "cap": 1.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.046255817233112395,
+    "pool_below_06": 0.054294175715695954,
+    "cvdev_below_06": 0.04972677595628415,
+    "controlled_auc": 0.9267229865973928,
+    "fit_auc": 0.9449544951812221,
+    "fit_fa80": 0.06492371799180052,
+    "fit_buckets": {
+     "swap_far": 0.9914704988398956,
+     "swap_near": 0.9664853370079519,
+     "tone": 0.8755210732428582
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03400966183574879,
+     "swap_near_auc": 0.9651940696318507,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9915535565550558,
+     "swap_far_hit5": 0.9827586206896551,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03483116192501994,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9487156341398564,
+     "sound_hit5": 0.8255,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.12352145475519705,
+     0.24562015706567927,
+     0.02928513183608411,
+     1.1520959759806546,
+     -0.4728938113888024
+    ],
+    "cap": 2.0,
+    "wpos": 1.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.046255817233112395,
+    "pool_below_06": 0.054294175715695954,
+    "cvdev_below_06": 0.04972677595628415,
+    "controlled_auc": 0.9267007274803203,
+    "fit_auc": 0.9450393656943679,
+    "fit_fa80": 0.06492371799180052,
+    "fit_buckets": {
+     "swap_far": 0.9915176453240218,
+     "swap_near": 0.9665601923379533,
+     "tone": 0.8756546712587228
+    },
+    "val": {
+     "swap_native_below_0.6": 0.03400966183574879,
+     "swap_near_auc": 0.9652200566383475,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9915615525570548,
+     "swap_far_hit5": 0.9827586206896551,
+     "native_accept": 0.9760701940973145,
+     "native_below_0.6": 0.03483116192501994,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9486617920765754,
+     "sound_hit5": 0.8255,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.12352145475519705,
+     0.24562015706567927,
+     0.02928513183608411,
+     1.1520959759806546,
+     -0.4728938113888024
+    ],
+    "cap": 3.0,
+    "wpos": 1.0,
+    "no_raise_below": 0.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.046819912565223526,
+    "pool_below_06": 0.055563390212945984,
+    "cvdev_below_06": 0.05081967213114754,
+    "controlled_auc": 0.9268499945006887,
+    "fit_auc": 0.9446480445436046,
+    "fit_fa80": 0.06559580616976947,
+    "fit_buckets": {
+     "swap_far": 0.9914891568102093,
+     "swap_near": 0.9672960685256277,
+     "tone": 0.8737449572896159
+    },
+    "val": {
+     "swap_native_below_0.6": 0.034782608695652174,
+     "swap_near_auc": 0.96711977344661,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9913416625020823,
+     "swap_far_hit5": 0.9793103448275862,
+     "native_accept": 0.9747407604360543,
+     "native_below_0.6": 0.035362935389524064,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9493255783036426,
+     "sound_hit5": 0.8265,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.12352145475519705,
+     0.24562015706567927,
+     0.02928513183608411,
+     1.1520959759806546,
+     -0.4728938113888024
+    ],
+    "cap": 0.0,
+    "wpos": 1.0,
+    "no_raise_below": null,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.046819912565223526,
+    "pool_below_06": 0.055563390212945984,
+    "cvdev_below_06": 0.05081967213114754,
+    "controlled_auc": 0.9268185698648217,
+    "fit_auc": 0.9445724767554899,
+    "fit_fa80": 0.06586464144095705,
+    "fit_buckets": {
+     "swap_far": 0.9914590633097032,
+     "swap_near": 0.9672634702367562,
+     "tone": 0.873579189199379
+    },
+    "val": {
+     "swap_native_below_0.6": 0.034782608695652174,
+     "swap_near_auc": 0.967079793436615,
+     "swap_near_hit5": 0.8655172413793103,
+     "swap_far_auc": 0.9913323338330835,
+     "swap_far_hit5": 0.9793103448275862,
+     "native_accept": 0.9747407604360543,
+     "native_below_0.6": 0.035362935389524064,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9493436586014358,
+     "sound_hit5": 0.8255,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.1285010825681425,
+     0.24284372154040917,
+     -0.01225508918735535,
+     1.00223194888675,
+     -1.1087270797840532
+    ],
+    "cap": 3.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.052883937385418134,
+    "pool_below_06": 0.06670427302214074,
+    "cvdev_below_06": 0.05901639344262295,
+    "controlled_auc": 0.9299152058575522,
+    "fit_auc": 0.9408260401879069,
+    "fit_fa80": 0.0719806438604745,
+    "fit_buckets": {
+     "swap_far": 0.9914339853926148,
+     "swap_near": 0.9682508764311555,
+     "tone": 0.8612115372951565
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04811594202898551,
+     "swap_near_auc": 0.9696671664167916,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9917827752790271,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9654347248072321,
+     "native_below_0.6": 0.05184791278915182,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9527625631480989,
+     "sound_hit5": 0.8445,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives",
+    "G5 tone"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.1285010825681425,
+     0.24284372154040917,
+     -0.01225508918735535,
+     1.00223194888675,
+     -1.1087270797840532
+    ],
+    "cap": 1.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.052883937385418134,
+    "pool_below_06": 0.06670427302214074,
+    "cvdev_below_06": 0.05901639344262295,
+    "controlled_auc": 0.9299269900960022,
+    "fit_auc": 0.9408199731933214,
+    "fit_fa80": 0.0719806438604745,
+    "fit_buckets": {
+     "swap_far": 0.9914291704325339,
+     "swap_near": 0.9682446384869886,
+     "tone": 0.8612043656225258
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04811594202898551,
+     "swap_near_auc": 0.9696665000832917,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9917827752790271,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9654347248072321,
+     "native_below_0.6": 0.05184791278915182,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9527596383940441,
+     "sound_hit5": 0.8445,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives",
+    "G5 tone"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.1285010825681425,
+     0.24284372154040917,
+     -0.01225508918735535,
+     1.00223194888675,
+     -1.1087270797840532
+    ],
+    "cap": 2.0,
+    "wpos": 2.0,
+    "no_raise_below": -2.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.052883937385418134,
+    "pool_below_06": 0.06670427302214074,
+    "cvdev_below_06": 0.05901639344262295,
+    "controlled_auc": 0.9299152058575522,
+    "fit_auc": 0.9408260401879069,
+    "fit_fa80": 0.0719806438604745,
+    "fit_buckets": {
+     "swap_far": 0.9914339853926148,
+     "swap_near": 0.9682508764311555,
+     "tone": 0.8612115372951565
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04811594202898551,
+     "swap_near_auc": 0.9696671664167916,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9917827752790271,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9654347248072321,
+     "native_below_0.6": 0.05184791278915182,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.9527625631480989,
+     "sound_hit5": 0.8445,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives",
+    "G5 tone"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.1285010825681425,
+     0.24284372154040917,
+     -0.01225508918735535,
+     1.00223194888675,
+     -1.1087270797840532
+    ],
+    "cap": 3.0,
+    "wpos": 2.0,
+    "no_raise_below": 0.0,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.052883937385418134,
+    "pool_below_06": 0.06712734452122408,
+    "cvdev_below_06": 0.0592896174863388,
+    "controlled_auc": 0.9300055516856699,
+    "fit_auc": 0.9406807693731103,
+    "fit_fa80": 0.07218227031386518,
+    "fit_buckets": {
+     "swap_far": 0.9913643690947774,
+     "swap_near": 0.9681416117962341,
+     "tone": 0.8609523325557874
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04811594202898551,
+     "swap_near_auc": 0.9696271864067966,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9917621189405297,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9654347248072321,
+     "native_below_0.6": 0.05184791278915182,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.952792209518745,
+     "sound_hit5": 0.8445,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives",
+    "G5 tone"
+   ]
+  },
+  {
+   "rule": {
+    "form": "step",
+    "coef": [
+     0.1285010825681425,
+     0.24284372154040917,
+     -0.01225508918735535,
+     1.00223194888675,
+     -1.1087270797840532
+    ],
+    "cap": 0.0,
+    "wpos": 2.0,
+    "no_raise_below": null,
+    "on": "sounds"
+   },
+   "m": {
+    "pool_below_05": 0.052883937385418134,
+    "pool_below_06": 0.06712734452122408,
+    "cvdev_below_06": 0.0592896174863388,
+    "controlled_auc": 0.930004242325842,
+    "fit_auc": 0.9406807693731103,
+    "fit_fa80": 0.07218227031386518,
+    "fit_buckets": {
+     "swap_far": 0.9913643690947774,
+     "swap_near": 0.9681416117962341,
+     "tone": 0.8609523325557874
+    },
+    "val": {
+     "swap_native_below_0.6": 0.04811594202898551,
+     "swap_near_auc": 0.9696271864067966,
+     "swap_near_hit5": 0.8862068965517241,
+     "swap_far_auc": 0.9917621189405297,
+     "swap_far_hit5": 0.9896551724137931,
+     "native_accept": 0.9654347248072321,
+     "native_below_0.6": 0.05184791278915182,
+     "stress_auc": NaN,
+     "stress_hit5": NaN,
+     "n_stress": 0,
+     "sound_auc": 0.952792209518745,
+     "sound_hit5": 0.8445,
+     "n_sound": 2000,
+     "n_native": 3761
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives",
+    "G5 tone"
+   ]
+  }
+ ],
+ "picks": {
+  "step": {
+   "form": "step",
+   "coef": [
+    0.2720917287939921,
+    0.03203235273895017,
+    0.08104533066021007,
+    1.077106113067688,
+    0.3949024170884822
+   ],
+   "cap": 3.0,
+   "wpos": 1.0,
+   "no_raise_below": -2.0,
+   "on": "prob"
+  }
+ },
+ "win": {
+  "form": "step",
+  "coef": [
+   0.2720917287939921,
+   0.03203235273895017,
+   0.08104533066021007,
+   1.077106113067688,
+   0.3949024170884822
+  ],
+  "cap": 3.0,
+  "wpos": 1.0,
+  "no_raise_below": -2.0,
+  "on": "prob"
+ },
+ "check": {
+  "before": {
+   "auc": 0.9392699951134411,
+   "fa80": 0.0722245647852539,
+   "n_pos": 1043,
+   "n_neg": 16601,
+   "flag_recall": 0.6433365292425696,
+   "flag_fa": 0.036082163725076805,
+   "bucket_auc": {
+    "swap_far": 0.9862698573928557,
+    "swap_near": 0.9620584412931779,
+    "tone": 0.8689424482751057
+   }
+  },
+  "after": {
+   "auc": 0.9405855427046033,
+   "fa80": 0.06656225528582616,
+   "n_pos": 1043,
+   "n_neg": 16601,
+   "flag_recall": 0.6040268456375839,
+   "flag_fa": 0.030841515571351123,
+   "bucket_auc": {
+    "swap_far": 0.9874347335378181,
+    "swap_near": 0.9671424377564847,
+    "tone": 0.8666197418986877
+   }
+  }
+ },
+ "ships": true,
+ "cal": {
+  "merge": {},
+  "skip": [],
+  "skip_deletable": -2.0,
+  "form": "step",
+  "coef": [
+   0.2720917287939921,
+   0.03203235273895017,
+   0.08104533066021007,
+   1.077106113067688,
+   0.3949024170884822
+  ],
+  "cap": 3.0,
+  "no_raise_below": -2.0,
+  "on": "prob",
+  "offset": {
+   "w": 1.6525835037231449,
+   "eɪ": 1.839334589242935,
+   "ɑʊ": 0.896155059337616,
+   "l": -0.802885353565216,
+   "ɔ": -0.2720288634300232,
+   "tʰ": 0.8328231215476997,
+   "ʊ": 0.9227789640426636,
+   "ʈʂʰ": -0.32996056079864483,
+   "ɑ": -1.068150985240936,
+   "y": -0.5534673273563383,
+   "i": 1.3532295227050781,
+   "ʂ": -0.14201524555683076,
+   "tɕ": 1.6236043930053712,
+   "x": 1.0289153575897219,
+   "f": -0.2314054846763598,
+   "a": -0.0684182345867157,
+   "oʊ": 1.7900165915489197,
+   "t": 0.24487139582633966,
+   "ɤ": -0.08345042467117293,
+   "u": 1.279003167152405,
+   "ɕ": -0.16766476631164506,
+   "ts": -1.7784185409545898,
+   "p": -0.35088062286376953,
+   "ʈʂ": -0.8537161350250244,
+   "m": 0.5177974075078965,
+   "j": 2.267884349822998,
+   "ɑɻ": -2.155928540229797,
+   "tɕʰ": 1.1681773722171787,
+   "ɛ": 1.4587599277496341,
+   "k": 1.8001469671726231,
+   "s": -2.1953841924667357,
+   "ɥ": 0.33411615788936616,
+   "œ": -0.5159544259309766,
+   "ə": -1.3923476755619049,
+   "pʰ": -0.009030932188033913,
+   "aɪ": 1.8039838254451754,
+   "kʰ": 0.517917275428772,
+   "ʐ": -2.2977228164672847,
+   "tsʰ": -1.6132071256637572,
+   "n": -2.205139088630676
+  },
+  "lang": "zh",
+  "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)"
+ }
+}
