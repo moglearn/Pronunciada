@@ -10,7 +10,7 @@ Snapshot of 19 November 2026, updated 22 November. Pronunciada 1.0.2 (its scores
 |---|---|---|---|---|
 | **Pronunciada 1.0.2** | open-source library (Apache-2.0) | 10 | accuracy per sound, word and sentence; fluency, prosody and completeness; Mandarin tones; error flags; Python, command line, HTTP server, MCP server, Azure-format JSON | – |
 | Microsoft Azure Pronunciation Assessment | commercial API | 10 tested | accuracy per sound, word and sentence; fluency, completeness, prosody; error flags | run by us on all 84 tests in [SCOREBOARD.md](SCOREBOARD.md) |
-| Lingolix | commercial API | 21 offered, 6 in its benchmark; no Mandarin | word scores, error flags and a sentence score (what its benchmark reads) | run by us through its API on 22 November 2026 (model version 2026-11): its benchmark's 1,700 recordings and 989 more speechocean762 recordings |
+| Lingolix | commercial API | 21 offered, 6 in its benchmark; no Mandarin | word scores, error flags and a sentence score (what its benchmark reads) | run by us through its API on 22 November 2026 (model version 2026-11): its benchmark's 1,700 recordings and the other 2,000 speechocean762 test recordings |
 | TonePerfect | commercial API | 6 in that benchmark | the same | not run by us: the figures Lingolix published for its benchmark on 11 October 2026 |
 | OpenPronounce 1.1.0 | open-source library (AGPL-3.0) | 7: English, French, Spanish, German, Italian, Portuguese, Dutch | sentence scores (total, accuracy, fluency, prosody), a probability per word and sound, flagged words | run by us, 22 November 2026 |
 | E2E-GOP | open research model (MIT) | English | one score per expected sound | run by us, 18 November 2026 |
@@ -77,25 +77,23 @@ Test 2: 500 English learner recordings (speechocean762 test), Pearson correlatio
 | sentence | 0.763 [0.658, 0.832] | **0.788** | 0.713 | 0.76 | 0.59 |
 | word | 0.581 [0.489, 0.644] | 0.581 | 0.527 | **0.61** | 0.29 |
 
-More English learner recordings. Test 2 uses 500 of the 2,500 speechocean762 test recordings, a few from each speaker. On 22 November we sent Lingolix 989 more, completing the first 62 of the 125 speakers in ID order. `main` against Lingolix, with a paired test that resamples speakers:
+All English learner recordings. Test 2 uses 500 of the 2,500 speechocean762 test recordings, a few from each speaker. On 22 November we sent Lingolix the other 2,000, so the comparison now covers the whole test split (125 speakers, 20 recordings each). `main` against Lingolix, with a paired test that resamples speakers:
 
 | recordings | score | Pronunciada `main` | Lingolix | difference [95% interval] | p |
 |---|---|---|---|---|---|
 | the benchmark's 500 | sentence | 0.788 | 0.713 | +0.075 [−0.008, +0.168] | 0.074 |
 | | word | 0.581 | 0.527 | +0.054 [−0.021, +0.129] | 0.163 |
-| all 1,489 sent so far (125 speakers) | sentence | 0.718 | 0.580 | +0.138 [+0.031, +0.256] | 0.009 |
-| | word | 0.505 | 0.449 | +0.056 [+0.011, +0.106] | 0.014 |
-| the 62 complete speakers (1,240) | sentence | 0.663 | 0.530 | +0.133 [+0.015, +0.284] | 0.024 |
-| | word | 0.464 | 0.408 | +0.056 [+0.011, +0.107] | 0.016 |
+| all 2,500 | sentence | **0.792** | 0.668 | +0.124 [+0.057, +0.190] | < 0.001 |
+| | word | **0.573** | 0.490 | +0.083 [+0.043, +0.123] | < 0.001 |
 
-The 62 speakers are not a random half. Their human scores vary less, and both systems correlate less well on them: Pronunciada alone scores 0.663 on them, 0.860 on the other 63 speakers and 0.792 on all 2,500 recordings. The correlations in the lower rows are therefore not comparable with the first row; the difference between the two systems on the same recordings is. 1,011 recordings have not been sent to Lingolix, and 1.0.2 was not scored on the added ones.
+Lingolix answered all 2,500. 1.0.2 was not scored in this format on the added recordings.
 
 Mandarin learners: Lingolix does not offer Mandarin (a request with the code `zh` was refused on 22 November with its list of 21 languages), so the OMPAL test could not be run against it.
 
 Pronunciada is ahead of TonePerfect on every figure. Against Lingolix as measured:
 
 - **1.0.2** is not significantly different on English, French and Spanish AUC, on French false alarms and on the 500 learner recordings. It is behind on English and Spanish false alarms and on both figures in German, Japanese and Korean.
-- **`main`** is not significantly different in French, Spanish, German and Korean or on the 500 learner recordings. It is behind on English and Japanese false alarms and on Japanese length errors, and ahead on the larger learner sample.
+- **`main`** is not significantly different in French, Spanish, German and Korean or on the 500 learner recordings. It is behind on English and Japanese false alarms and on Japanese length errors, and ahead on the full set of 2,500 learner recordings, for sentence and word scores.
 
 ## Open-source systems
 
@@ -154,7 +152,7 @@ The 42 tests against OpenPronounce: the six speechocean762 rows above (ahead on 
 
 ## Verdict
 
-- **Commercial:** Pronunciada is not shown to be the most accurate system overall. Lingolix, as measured by us, is ahead of 1.0.2 in German, Japanese and Korean and on English and Spanish false alarms. Azure is ahead on 7 of 84 tests, and four large vendors were not tested. On the unreleased `main` branch the gap to Lingolix is down to English and Japanese false alarms and Japanese length errors, and `main` is ahead of Lingolix on the larger sample of English learner recordings.
+- **Commercial:** Pronunciada is not shown to be the most accurate system overall. Lingolix, as measured by us, is ahead of 1.0.2 in German, Japanese and Korean and on English and Spanish false alarms. Azure is ahead on 7 of 84 tests, and four large vendors were not tested. On the unreleased `main` branch the gap to Lingolix is down to English and Japanese false alarms and Japanese length errors, and `main` is ahead of Lingolix on the English learner test (all 2,500 speechocean762 test recordings).
 - **Open source:** no open system is ahead on everything. Against OpenPronounce 1.1.0, which also covers several languages, Pronunciada is ahead on 32 of 42 shared tests: word and sound scores for English learners and changed words in six languages. The two are not significantly different on the sentence scores for English learners, where OpenPronounce's figures are higher (0.790 against 0.762 on the total). OpenPronounce is ahead on the sounds annotators marked in L2-ARCTIC and EpaDB. Pronunciada runs 3.6 to 16 times faster with a quarter of the model size or less. Two English-only research models, E2E-GOP and CMUBYE, score single English sounds and words better; both return only per-sound scores.
 
 ## Reproducing
