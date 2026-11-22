@@ -1,7 +1,7 @@
 # Lingolix API measured by us, against Pronunciada
 
 Lingolix: POST https://api.lingolix.com/api/pronunciation/v3/check; model_version 2026-11 (1700); tested 2026-11-22T16:06:24Z to 2026-11-22T18:55:28Z (UTC); 1700 responses.
-Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache (installed package 1.0.2); repository commit d7434aa0d7 (uncommitted changes); benchmark v2026.10 (e021b08).
+Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache (installed package 1.0.2); repository commit d2ecb4888d; benchmark v2026.10 (e021b08).
 
 | test | metric | Pronunciada [95% CI] | Lingolix measured [95% CI] | Pronunciada − Lingolix [95% CI], p | Lingolix published |
 |---|---|---|---|---|---|
@@ -34,4 +34,25 @@ Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache
 | test 2 (speechocean762) | sentence Pearson | 0.788 [0.706, 0.847] | 0.713 [0.575, 0.792] | +0.075 [-0.014, +0.174], p 0.100 | 0.74 |
 
 FA@80: share of correct words flagged at the threshold that catches 80% of the planted errors (lower is better); its differences are in percentage points. Intervals: 1,000 resamples of utterances (test 1), speakers (test 2) or recordings (fleurs-swap); p two-sided, paired on the same resamples. Length errors caught: each system's own error flag on the 40 Japanese length items (Lingolix: report.py's flag, expected vs detected syllable IPA). Failed or unanswered requests: see the JSON.
+
+## speechocean762, more speakers
+
+All 2,500 speechocean762 test clips (125 speakers, 20 clips each) as test 2 items, built with build_tier2.py's rules; the builder reproduces 500 of the benchmark's 500 items exactly. Lingolix gets the same request as in test 2, so the benchmark's 500 clips were not sent again. Pronunciada's answers (read from $PRONUNCIADA_CACHE/third_party/lingolix/responses/pronunciada/tier2x.jsonl) equal those of test 2 above on all 500 clips.
+
+| clips | metric | Pronunciada [95% CI] | Lingolix measured [95% CI] | Pronunciada − Lingolix [95% CI], p | p, test 2 resampling |
+|---|---|---|---|---|---|
+| a. the benchmark's 500 clips (500 clips, 124 speakers) | sentence Pearson | 0.788 [0.731, 0.839] | 0.713 [0.606, 0.785] | +0.075 [-0.008, +0.168], p 0.074 | 0.100 |
+| a. the benchmark's 500 clips (500 clips, 124 speakers) | word Pearson | 0.581 [0.486, 0.655] | 0.527 [0.403, 0.629] | +0.054 [-0.021, +0.129], p 0.163 | 0.236 |
+| b. every clip with a Lingolix answer (500 clips, 124 speakers) | sentence Pearson | 0.788 [0.731, 0.839] | 0.713 [0.606, 0.785] | +0.075 [-0.008, +0.168], p 0.074 | 0.100 |
+| b. every clip with a Lingolix answer (500 clips, 124 speakers) | word Pearson | 0.581 [0.486, 0.655] | 0.527 [0.403, 0.629] | +0.054 [-0.021, +0.129], p 0.163 | 0.236 |
+| c. complete speakers only (0 of 125 speakers with all 20 clips answered, 0 clips) | sentence Pearson | n/a | n/a | n/a | — |
+| c. complete speakers only (0 of 125 speakers with all 20 clips answered, 0 clips) | word Pearson | n/a | n/a | n/a | — |
+
+p: two-sided, from 10,000 resamples of speakers (with replacement; both systems on the same resample; the intervals come from the same resamples). p, test 2 resampling: the method of the test 2 rows above (1,000 resamples of groups formed by the first four digits of the utterance id), repeated for continuity.
+
+To finish the split: 2,000 of 2,500 clips not yet sent, 128.77 audio minutes. If all of it is billed as overage at the Starter rate (EUR 0.05 per minute): EUR 6.44, or EUR 6.45 for 129 whole minutes. Source: https://lingolix.com/en/pricing (read 2026-11-22): Starter plan, overage billed per full minute used; usage measured by the second, only full minutes charged.
+
+## Mandarin
+
+2026-11-22: Lingolix does not accept Mandarin. One OMPAL clip (2.5 s) sent with `language_code=zh` at 20:33:46 UTC was refused with HTTP 400 and the message "Language 'zh' not supported", followed by the supported codes: bg, cs, da, de, el, en, es, fi, fr, hu, it, ja, ko, nb, nl, pl, pt, ru, sv, tr, uk. Nothing was billed. The OMPAL (Mandarin) comparison could therefore not be run.
 

@@ -200,6 +200,50 @@ def tests() -> dict[str, list[dict]]:
     return out
 
 
+MISPRONOUNCED_AT = 6          # build_tier2.py: human word accuracy <= this counts as mispronounced
+
+
+def so762_test_records() -> list[dict]:
+    """Pronunciada's speechocean762 manifest rows of the test split (2,500 clips, 125 speakers)."""
+    rows = [json.loads(line) for line in SO762_LOCAL.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [r for r in rows if r["split"] == "test"]
+
+
+def tier2x_items() -> tuple[list[dict], dict[str, str]]:
+    """Every speechocean762 test clip as a test 2 item, built with build_tier2.py's rules (v2026.10):
+    id = the corpus utterance id, target = prompt = the corpus text, label null, human labels from the
+    corpus scores (utterance accuracy, completeness, fluency, prosodic, total; per word text, accuracy,
+    stress, total, mispronounced = accuracy <= 6, phones, phone accuracies). build_tier2.py shuffles the
+    test ids with seed 42 and keeps 500; here all 2,500 are kept, ordered by speaker, then id.
+    build_tier2.py takes the text from the corpus's Kaldi `test/text` file, which has no punctuation
+    except apostrophes. Pronunciada's manifest keeps the punctuated text ("HE LOOKED BACK AT ME."), so the
+    target is rebuilt as the scored words joined by single spaces; for every test clip this equals the
+    punctuated text with all punctuation but apostrophes turned into spaces (checked in the tests).
+    Returns (items, {id: speaker})."""
+    items, spk = [], {}
+    for r in sorted(so762_test_records(), key=lambda r: (r["speaker"], r["id"])):
+        uid = r["id"].removeprefix("so762-")
+        s = r["labels"]["sentence"]
+        text = " ".join(w["text"] for w in r["labels"]["words"])
+        items.append({
+            "id": uid, "lang": "en", "audio": f"audio/{uid}.wav", "target": text, "prompt": text,
+            "label": None,
+            "human": {"utterance": {k: s.get(k) for k in ("accuracy", "completeness", "fluency", "prosodic", "total")},
+                      "words": [{"text": w["text"], "accuracy": w["accuracy"], "stress": w.get("stress"),
+                                 "total": w.get("total"), "mispronounced": w["accuracy"] <= MISPRONOUNCED_AT,
+                                 "phones": w.get("phones"), "phone_accuracy": w.get("phones_accuracy")}
+                                for w in r["labels"]["words"]]},
+        })
+        spk[uid] = r["speaker"]
+    return items, spk
+
+
+def tier2x_mismatches(items: list[dict], benchmark: list[dict]) -> list[str]:
+    """Ids of the benchmark's test 2 items that the builder does not reproduce exactly (empty = all equal)."""
+    by_id = {it["id"]: it for it in items}
+    return [b["id"] for b in benchmark if by_id.get(b["id"]) != b]
+
+
 def cmd_fetch() -> None:
     for name in SOURCES:
         print(name, fetch_repo(name))
@@ -278,6 +322,9 @@ def cmd_score(workers: int, threads: int, only: list[str] | None) -> None:
     workers = max(1, min(workers, 2))           # the laptop is shared: never more than 2 processes
     T = tests()
     so = so762_paths([x["id"] for x in T["tier2"]])
+    if only and "tier2x" in only:             # all 2,500 speechocean762 test clips (only when asked for)
+        T["tier2x"] = tier2x_items()[0]
+        so = so762_paths([x["id"] for x in T["tier2x"]])
     jobs_by_test = {}
     for test, items in T.items():
         if only and test not in only:
@@ -287,7 +334,7 @@ def cmd_score(workers: int, threads: int, only: list[str] | None) -> None:
         for it in items:
             if it["id"] in done:
                 continue
-            wav = so[it["id"]] if test == "tier2" else tier1_wav(it)
+            wav = so[it["id"]] if test in ("tier2", "tier2x") else tier1_wav(it)
             jobs.append((it["id"], it.get("lang", "en"), str(wav), it["target"]))
         jobs_by_test[test] = jobs
     with ProcessPoolExecutor(max_workers=workers) as ex:
@@ -714,7 +761,8 @@ def main(argv=None) -> None:
     ap.add_argument("cmd", choices=("fetch", "score", "report", "all"))
     ap.add_argument("--workers", type=int, default=2, help="processes (capped at 2)")
     ap.add_argument("--threads", type=int, default=2, help="threads per Scorer")
-    ap.add_argument("--only", nargs="*", help="tests to score, e.g. tier1_en tier2")
+    ap.add_argument("--only", nargs="*", help="tests to score, e.g. tier1_en tier2; tier2x (all 2,500 "
+                                              "speechocean762 test clips) is scored only when named here")
     a = ap.parse_args(argv)
     if a.cmd in ("fetch", "all"):
         cmd_fetch()

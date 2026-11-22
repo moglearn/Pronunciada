@@ -143,3 +143,27 @@ The benchmark repository and the public documentation leave these open. Each is 
 - a dry run that must not build the real transport or open any connection.
 
 The full suite passes: 632 tests.
+
+## Addendum, 22 November (evening): audio-minute budget and more speechocean762 speakers
+
+By now 1,700 answers are cached (tests 1 and 2, 129.99 audio minutes). Two facts changed the cost control. Lingolix meters by the second of audio. Paid plans do not stop at their included minutes, they bill the overage per minute, so the quota 429 no longer protects the budget.
+
+**Ledger and cap.** `$PRONUNCIADA_CACHE/third_party/lingolix_live/ledger.jsonl` (the dry run has its own under `DRYRUN_FAKE/`) gets one line per request attempt, written and flushed before the request goes out, and one line with its outcome after it. Every attempt counts, retries and failures included. On first use it was backfilled with one line per cached response, with the seconds of the exact bytes sent: 1,700 lines, 129.99 minutes. Running the backfill again adds nothing. A live send now refuses to start without `--quota-cap-min`. `--quota-used-min` overrides the ledger total. The plan keeps only what fits under the cap. The send checks the cap again, under a lock, before every attempt, and the first attempt that would cross it stops the run. This holds at any `--concurrency`.
+
+**More speechocean762 speakers.** `--so762-extend` sends more of the 2,500 speechocean762 test clips (125 speakers, 20 clips each). The items come from `lingolix.tier2x_items`, which applies `build_tier2.py`'s rules to Pronunciada's copy of the corpus. That copy keeps the punctuated prompt, so the target is rebuilt as the scored words joined by spaces, which is the corpus's Kaldi text. The builder reproduces all 500 benchmark items exactly, target text and human labels. The request is the one test 2 sends, so the plan over all 2,500 clips counts exactly 500 as cached. Speakers are taken whole, in ascending ID order, and the selection stops at the first speaker that does not fit.
+
+Plan-only, from the cache as it is:
+
+| budget | speakers | clips | audio min | next speaker (does not fit) |
+|---|---|---|---|---|
+| 44.5 min (`--quota-used-min 0 --quota-cap-min 44.5`) | 47 (0003 to 1420) | 743 | 43.78 | 1422: 16 clips, 1.13 min |
+| 59.5 min | 62 | 989 | 58.85 | 2252: 18 clips, 0.98 min |
+| cap 175 min, ledger 129.99 used | 48 (0003 to 1422) | 759 | 44.91 | 1465: 19 clips, 1.42 min |
+
+With a cap of 175 only 0.10 minutes are left after the 759 clips. Retries use the same budget, so a few retries can stop the run inside the last speaker. That speaker then counts as incomplete and stays out of row c.
+
+**Pronunciada's side.** `python -m bench.third_party.lingolix score --only tier2x` scored all 2,500 clips with the code at `main` a1716d3, with the same scorer settings and response shape as test 2. On the benchmark's 500 clips its answers are byte-identical to the round-19 frozen answers used by the test 2 rows (max difference 0).
+
+**Report.** `results/lingolix_live.md` has a new section, "speechocean762, more speakers", with three rows: (a) the benchmark's 500 clips, (b) every clip Lingolix answered, and (c) the speakers with all 20 clips answered. Each row has sentence and word Pearson as test 2 computes them. Each difference has a 95% interval and a two-sided p from 10,000 paired resamples of speakers. Row a reproduces the test 2 figures: sentence 0.788 vs 0.713, word 0.581 vs 0.527, and the old p of 0.100 and 0.236. With speakers resampled, the p values are 0.074 and 0.163. The test 2 rows resample groups made of the first four digits of the utterance id, and those four digits are not the speaker ID (`0` plus the first three digits of it). So each of those groups holds up to ten speakers, and there are 83 groups for the 500 clips. The test 2 rows are left as they were. The new rows resample the corpus speaker IDs. The section also gives the cost of finishing the split: 2,000 clips, 128.77 minutes, EUR 6.44 if all of it is billed as overage at the Starter rate of EUR 0.05 per minute. A dated note records that Lingolix refused Mandarin (HTTP 400, nothing billed), so the OMPAL comparison could not be run.
+
+**Dry run.** `--dry-run --so762-extend --quota-cap-min <dry ledger + 45> --concurrency 4` planned 48 speakers and 759 clips. The fake answered with 15 retries (429 and 503). The run made 763 attempts and stopped before the attempt that would have crossed the cap. That left the ledger 0.003 minutes under the cap. `--dry-run --report-only` then built all three rows; 47 speakers were complete. The real cache and ledger were not touched.
