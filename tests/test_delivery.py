@@ -143,6 +143,7 @@ def test_sentence_model_per_language_config(tmp_path, tts):
     cfg = json.loads((d / "config.json").read_text())
     cfg["sentence_model"] = {"en": "sentence_r4"}
     cfg.pop("word_score_model", None)
+    cfg.pop("sentence_head", None)                    # round 19 English head (tests/test_sentence_head.py)
     (d / "config.json").write_text(json.dumps(cfg))
     r4 = pronunciada.Scorer("en", threads=2, calib_dir=str(d))
     from pronunciada.prosody import needs_embeddings
@@ -158,7 +159,9 @@ def test_sentence_model_per_language_config(tmp_path, tts):
     assert set(a.scores) == set(b.scores)
     # since the licence-clean refit (2026-11-17) every language, English included, keeps the
     # round-4 heads (config "sentence_model"); the round-5 file is only used when selected
-    assert new.sentence_name == C.config().get("sentence_model", {}).get("en", "sentence")
+    # round 19: English reads config "sentence_head" first (PRONUNCIADA_SENTENCE_HEAD=0 = sentence_model)
+    head = C.config().get("sentence_head", {}).get("en")
+    assert new.sentence_name == (head["trees"] if head else C.config().get("sentence_model", {}).get("en", "sentence"))
     if new.sentence_name == "sentence":
         assert any(c in D.ALL or c.startswith("emb_") for c in new.sentence.num)
 

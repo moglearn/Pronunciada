@@ -1,0 +1,17 @@
+{
+ "load_avg_1min_start": 3.80419921875,
+ "clip_s_median": 3.4850000000000003,
+ "fp32": {
+  "old_ms": 53.23499997030012,
+  "new_ms": 54.41187450196594,
+  "paired_diff_median_ms": 1.2033749953843653,
+  "sentence_head_stage_ms": 1.1175000000000002
+ },
+ "int8": {
+  "old_ms": 42.61279202182777,
+  "new_ms": 44.07583302236162,
+  "paired_diff_median_ms": 1.385582989314571,
+  "sentence_head_stage_ms": 1.1155
+ },
+ "load_avg_1min_end": 3.740234375
+}

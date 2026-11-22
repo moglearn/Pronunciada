@@ -337,6 +337,17 @@ def pool_embeddings(emb: dict | None, ev) -> dict | None:
     return out
 
 
+def pooled_part(v, key: str) -> np.ndarray:
+    """Part of a pooled vector (mean ++ std) named by a projection layer key: "enc1" = all,
+    "enc1.mean" = the mean half, "enc1.std" = the std half (round 19)."""
+    v = np.asarray(v)
+    if key.endswith(".mean"):
+        return v[:len(v) // 2]
+    if key.endswith(".std"):
+        return v[len(v) // 2:]
+    return v
+
+
 def project(pooled: dict | None, proj: dict | None) -> dict:
     """Supervised linear projection of the pooled activations (fitted offline by
     bench/calib/train_delivery.py): z = ((concat(pooled[layers]) - mu) / sd) @ W + b, one output
@@ -344,9 +355,9 @@ def project(pooled: dict | None, proj: dict | None) -> dict:
     if not proj:
         return {}
     names = list(proj["names"])
-    if pooled is None or any(k not in pooled for k in proj["layers"]):
+    if pooled is None or any(k.split(".")[0] not in pooled for k in proj["layers"]):
         return {k: NAN for k in names}
-    x = np.concatenate([pooled[k] for k in proj["layers"]]).astype(np.float64)
+    x = np.concatenate([pooled_part(pooled[k.split(".")[0]], k) for k in proj["layers"]]).astype(np.float64)
     z = ((x - proj["mu"]) / proj["sd"]) @ proj["W"] + proj["b"]
     return {k: float(v) for k, v in zip(names, z)}
 

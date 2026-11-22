@@ -54,6 +54,16 @@
   "ru": "sentence_r4",
   "zh": "sentence_r4"
  },
+ "sentence_head": {
+  "en": {
+   "trees": "sentence_r19",
+   "seq": "seqhead_en",
+   "seq_weight": 0.35,
+   "sound_weight": 0.3,
+   "word_weight": 0.4
+  }
+ },
+ "sentence_head_note": "round 19: English sentence scores = 0.65 x sentence_r19 trees (SENT_NUM + delivery + F0 summary + projection of the std-pooled activations of every encoder stack) + 0.35 x seqhead_en (3-model sequence head over per-sound fused encoder stacks); the reported 0-2 sound score = 0.7 x sound_E + 0.3 x the head's sound output and the reported 0-10 word score = 0.6 x word_reg_r6 + 0.4 x the head's word output (probabilities and coaching inputs unchanged); bench/round19/, results/round19_english.md. PRONUNCIADA_SENTENCE_HEAD=0 restores all of them",
  "sentence_model_note": "round 5: languages listed in sentence_model keep the round-4 sentence heads because the round-5 heads lowered their native FLEURS-validation median fluency / prosodic / total by more than 0.3 (bench/calib/native_sentence_check.py)",
  "word_score_model": {
   "en": "word_reg_r6",

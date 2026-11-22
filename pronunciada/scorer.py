@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import time
 from collections import OrderedDict
 
@@ -53,12 +54,29 @@ class Scorer:
         # ({lang: packaged name}, default "sentence"); round-5 models also read the delivery
         # features of pronunciada.delivery (+ a projection of pooled encoder activations)
         self.sentence_name = cfg.get("sentence_model", {}).get(self.lang, "sentence")
+        # round 19: a newer sentence model per language (config "sentence_head"; English:
+        # sentence_r19, delivery + F0 inputs + std-pooled activations of every encoder stack);
+        # PRONUNCIADA_SENTENCE_HEAD=0 keeps the "sentence_model" choice
+        self.seq_head, self.seq_weight = None, 0.0
+        self.seq_sound_weight = self.seq_word_weight = 0.0
+        if os.environ.get("PRONUNCIADA_SENTENCE_HEAD", "1") != "0":
+            sh = cfg.get("sentence_head", {}).get(self.lang)
+            if sh:
+                self.sentence_name = sh["trees"]
+                if sh.get("seq"):              # sequence head blended into the four 0-10 scores
+                    from .sentence_head import SentenceHead
+
+                    self.seq_head = SentenceHead(sh["seq"], calib_dir, threads=min(2, threads or 1))
+                    self.seq_weight = float(sh["seq_weight"])
+                    self.seq_sound_weight = float(sh.get("sound_weight", 0.0))
+                    self.seq_word_weight = float(sh.get("word_weight", 0.0))
         self.sentence = C.load_level(self.sentence_name, calib_dir)
         self.sentence_proj = C.load_projection(self.sentence_name, calib_dir)
         self.sentence_lin = C.load_linear(self.sentence_name, calib_dir)
         from . import delivery as D
+        from . import sentence_head as SH
 
-        dcols = set(D.ALL) | set((self.sentence_proj or {}).get("names", []))
+        dcols = set(D.ALL) | set((self.sentence_proj or {}).get("names", [])) | set(SH.F0_KEYS) | set(SH.VOICE_KEYS)
         uses = any(c in dcols for c in self.sentence.num)
         # reported 0-10 word score (round 6): per-language choice in config "word_score_model";
         # reads the word-pooled ZIPA stack-1 activations. The sentence level keeps reading the
@@ -79,6 +97,13 @@ class Scorer:
             from .prosody import needs_embeddings
 
             want_emb = want_emb or needs_embeddings(self.lang)
+        extra_layers = {k.split(".")[0] for k in (self.sentence_proj or {}).get("layers", [])}
+        if self.seq_head is not None:
+            extra_layers |= set(self.seq_head.layers)
+        if want_emb and extra_layers - {"enc1", "enc3", "enc5", "final"}:
+            want_emb = sorted(extra_layers)      # round 19: stacks beyond the round-5 outputs
+        if want_emb and delivery is True and os.environ.get("PRONUNCIADA_ALL_LAYERS") == "1":
+            want_emb = "all"                     # training extraction: every encoder stack
         self.am = AcousticModel(model, precision, threads, embeddings=want_emb)
         self._word_layers = tuple(sorted(set(
             (["enc1"] if delivery is True else []) + list((self.word_score_proj or {}).get("layers", [])))))
@@ -166,6 +191,16 @@ class Scorer:
             return self._lp_cache[key]
         t = time.perf_counter()
         x = self.am._features(wav)
+        vt = os.environ.get("PRONUNCIADA_VTLN")      # round 19 experiment: "alpha:min_median_f0_hz"
+        if vt:
+            from .audio import vtln_warp
+            from .prosody.f0 import track as _trk
+
+            alpha, thr = (float(v) for v in vt.split(":"))
+            tr = _trk(np.asarray(wav, np.float32))
+            v = tr.f0[tr.voiced & (tr.f0 > 0)]
+            if len(v) and float(np.median(v)) > thr:
+                x = vtln_warp(x, alpha)
         timing["fbank"] = (time.perf_counter() - t) * 1e3
         t = time.perf_counter()
         emb = None
@@ -258,10 +293,16 @@ class Scorer:
 
             t = time.perf_counter()
             # the pitch track is shared with the prosody channel; skipped when neither needs it
-            need_pitch = self.prosody is not None or any(k in D.PITCH for k in self._dcols) \
+            need_pitch = self.prosody is not None or any(k in D.PITCH or k.startswith("f0_") for k in self._dcols) \
                 or self._delivery_forced
             trk = track(wav) if need_pitch else None
             dv = D.features(wav, fb, lpa, ref, ev, trk, pitch=need_pitch)
+            from . import sentence_head as SH
+
+            if self._delivery_forced or self.seq_head is not None or any(k in SH.F0_KEYS for k in self._dcols):
+                dv.update(SH.f0_summary(trk))          # round 19: speaker F0 summary
+            if self._delivery_forced or any(k in SH.VOICE_KEYS for k in self._dcols):
+                dv.update(SH.voice_cues(wav))          # round 19: spectral voice cues
             pooled = D.pool_embeddings(emb, ev)
             dv.update(D.project(pooled, self.sentence_proj))
             if emb is not None:      # word-level pooled activations (round 6 word head / training)
@@ -274,6 +315,28 @@ class Scorer:
         cache = self._calibrate(tab, ref, dur, dv, wpooled)
         cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
+        if self.seq_head is not None:            # round 19: sequence head blended into the 0-10 scores
+            t = time.perf_counter()
+            feeds = self.seq_head.inputs(tab, ref, ev, emb, cache["S"], dv, trk)
+            if feeds is not None:
+                o = self.seq_head.run(feeds, [p.word for p in ref.phones])
+                s = o["sentence"]
+                sent = dict(cache["sent"])
+                w = self.seq_weight
+                for j, k in enumerate(("accuracy", "fluency", "prosodic", "total")):
+                    sent[f"reg_{k}"] = np.clip((1 - w) * np.asarray(sent[f"reg_{k}"], np.float64) + w * s[j], 0.0, 10.0)
+                cache["sent"], cache["sent_seq"] = sent, s
+                # reported 0-2 sound and 0-10 word scores (blend weights from config; 0 = unchanged);
+                # probabilities, coaching inputs and the sentence inputs do not read them
+                ws, ww = self.seq_sound_weight, self.seq_word_weight
+                if ws and "phone" in o and cache.get("s_reg") is not None:
+                    cache["s_reg"] = np.clip((1 - ws) * np.asarray(cache["s_reg"], np.float64) + ws * o["phone"], 0.0, 2.0)
+                if ww and "word" in o and len(o["word"]) == len(ref.words):
+                    wv = np.asarray(cache["w_reg"], np.float64)
+                    cache["w_reg"] = np.where(np.isfinite(o["word"]),
+                                              np.clip((1 - ww) * wv + ww * np.nan_to_num(o["word"]), 0.0, 10.0), wv)
+                cache["seq_level"] = o
+            timing["sentence_head"] = (time.perf_counter() - t) * 1e3
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)

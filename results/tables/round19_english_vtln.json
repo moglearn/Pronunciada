@@ -1,0 +1,44 @@
+{
+ "vtln091_220": {
+  "n_warped": 1155,
+  "children": {
+   "n_utts": 660,
+   "llr_sub_phone_plain": 0.37895684046840344,
+   "llr_sub_utt_total_plain": 0.4329371727804109,
+   "llr_sub_phone_warped": 0.37670385343037976,
+   "llr_sub_utt_total_warped": 0.43315859872424284,
+   "z_llr_sub_phone_plain": 0.34615537962136544,
+   "z_llr_sub_utt_total_plain": 0.427905076818685,
+   "z_llr_sub_phone_warped": 0.3448860464905569,
+   "z_llr_sub_utt_total_warped": 0.42764560425183834,
+   "peak_post_phone_plain": 0.3333718632727718,
+   "peak_post_utt_total_plain": 0.484649745195236,
+   "peak_post_phone_warped": 0.3378906171235603,
+   "peak_post_utt_total_warped": 0.49755834371749985,
+   "llr_del_phone_plain": 0.3603167312995112,
+   "llr_del_utt_total_plain": 0.4780574034989098,
+   "llr_del_phone_warped": 0.36088413765459276,
+   "llr_del_utt_total_warped": 0.4849475806466051
+  },
+  "adults": {
+   "n_utts": 495,
+   "llr_sub_phone_plain": 0.5835897107511536,
+   "llr_sub_utt_total_plain": 0.7568886095778029,
+   "llr_sub_phone_warped": 0.5751997146212625,
+   "llr_sub_utt_total_warped": 0.7499257313137917,
+   "z_llr_sub_phone_plain": 0.5629111207893635,
+   "z_llr_sub_utt_total_plain": 0.7546053126848504,
+   "z_llr_sub_phone_warped": 0.552806122908956,
+   "z_llr_sub_utt_total_warped": 0.74489217025387,
+   "peak_post_phone_plain": 0.4828148601785297,
+   "peak_post_utt_total_plain": 0.7428901704609592,
+   "peak_post_phone_warped": 0.4796483194586518,
+   "peak_post_utt_total_warped": 0.7420451528413138,
+   "llr_del_phone_plain": 0.5663228816648287,
+   "llr_del_utt_total_plain": 0.7626865507421707,
+   "llr_del_phone_warped": 0.5626326824657965,
+   "llr_del_utt_total_warped": 0.7629205159952881
+  },
+  "note": "alpha 0.91 for clips with median F0 > 220 Hz; evidence-vs-expert Pearson on warped clips only; no fitting"
+ }
+}
