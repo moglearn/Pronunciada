@@ -1,0 +1,285 @@
+{
+ "dry_run": false,
+ "banner": null,
+ "lingolix": {
+  "endpoint": "POST https://api.lingolix.com/api/pronunciation/v3/check",
+  "options": {
+   "endpoint": "/api/pronunciation/v3/check",
+   "method": "POST",
+   "encoding": "multipart/form-data",
+   "fields": [
+    "sentence",
+    "language_code"
+   ],
+   "file_field": "speechdata",
+   "content_type": "audio/wav"
+  },
+  "model_versions": {
+   "2026-11": 200
+  },
+  "mixed_model_versions": false,
+  "version_headers": {},
+  "test_dates_utc": [
+   "2026-11-22T16:06:24Z",
+   "2026-11-22T16:09:59Z"
+  ],
+  "responses_used": 200
+ },
+ "pronunciada": {
+  "outputs_from": "$PRONUNCIADA_CACHE/round19/integrator/frozen_cache",
+  "version": "1.0.2"
+ },
+ "benchmark": {
+  "repo": "https://github.com/lingolix/pronunciation-benchmark",
+  "manifests": "v2026.10 (e021b08)",
+  "main_rules": "main f8750aa",
+  "tier1_audio": "https://github.com/lingolix/pronunciation-benchmark/releases/download/v2026.10/pronbench-tier1-audio-v2026.10.zip",
+  "adapter": "vendors.lingolix of lingolix/pronunciation-benchmark (identical at v2026.10 and main f8750aa)"
+ },
+ "git": {
+  "commit": "be8155222e06e19acc95d255d8f9543a43062541",
+  "dirty": true
+ },
+ "made_utc": "2026-11-22T16:47:59Z",
+ "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 utterance resamples (test 1), speaker resamples (test 2), cluster resamples (fleurs-swap), seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
+ "tier1": {
+  "ja": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.95,
+    "precision": 0.4439,
+    "f1": 0.6051,
+    "fa": 0.1266,
+    "recall_by_bucket": {
+     "indel": [
+      13,
+      15
+     ],
+     "length": [
+      38,
+      40
+     ],
+     "sub_gross": [
+      10,
+      10
+     ],
+     "sub_moderate": [
+      14,
+      15
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.64,
+    "precision": 0.4414,
+    "f1": 0.5224,
+    "fa": 0.0862,
+    "recall_by_bucket": {
+     "indel": [
+      8,
+      15
+     ],
+     "length": [
+      27,
+      40
+     ],
+     "sub_gross": [
+      9,
+      10
+     ],
+     "sub_moderate": [
+      12,
+      15
+     ],
+     "sub_subtle": [
+      8,
+      20
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9226,
+     "ci": [
+      0.8907,
+      0.9511
+     ]
+    },
+    "lingolix": {
+     "value": 0.9511,
+     "ci": [
+      0.922,
+      0.9775
+     ]
+    },
+    "delta": -0.0284,
+    "n_common": 200,
+    "delta_ci": [
+     -0.0643,
+     0.0059
+    ],
+    "p": 0.0979,
+    "published": 0.95
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0968,
+     "ci": [
+      0.038,
+      0.2063
+     ]
+    },
+    "lingolix": {
+     "value": 0.0319,
+     "ci": [
+      0.0194,
+      0.0468
+     ]
+    },
+    "delta": 0.0649,
+    "n_common": 200,
+    "delta_ci": [
+     0.0074,
+     0.1733
+    ],
+    "p": 0.032,
+    "published": 0.05
+   }
+  }
+ },
+ "tier1_main_rules": {
+  "ja": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.95,
+    "precision": 0.5523,
+    "f1": 0.6985,
+    "fa": 0.0901,
+    "recall_by_bucket": {
+     "indel": [
+      13,
+      15
+     ],
+     "length": [
+      38,
+      40
+     ],
+     "sub_gross": [
+      10,
+      10
+     ],
+     "sub_moderate": [
+      14,
+      15
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.64,
+    "precision": 0.5,
+    "f1": 0.5614,
+    "fa": 0.0749,
+    "recall_by_bucket": {
+     "indel": [
+      8,
+      15
+     ],
+     "length": [
+      27,
+      40
+     ],
+     "sub_gross": [
+      9,
+      10
+     ],
+     "sub_moderate": [
+      12,
+      15
+     ],
+     "sub_subtle": [
+      8,
+      20
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9302,
+     "ci": [
+      0.8995,
+      0.9566
+     ]
+    },
+    "lingolix": {
+     "value": 0.9577,
+     "ci": [
+      0.9299,
+      0.9826
+     ]
+    },
+    "delta": -0.0275,
+    "n_common": 200,
+    "delta_ci": [
+     -0.0628,
+     0.0057
+    ],
+    "p": 0.1099,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.083,
+     "ci": [
+      0.0307,
+      0.1909
+     ]
+    },
+    "lingolix": {
+     "value": 0.0175,
+     "ci": [
+      0.0084,
+      0.0304
+     ]
+    },
+    "delta": 0.0655,
+    "n_common": 200,
+    "delta_ci": [
+     0.0121,
+     0.1718
+    ],
+    "p": 0.02,
+    "published": null
+   }
+  }
+ },
+ "ja_length_caught": {
+  "n_items": 40,
+  "pronunciada": 27,
+  "lingolix": 38,
+  "lingolix_answered": 40,
+  "n_common": 40,
+  "delta": -11,
+  "delta_ci": [
+   -16.0,
+   -6.0
+  ],
+  "p": 0.002,
+  "published": 37
+ },
+ "tier2": {},
+ "fleurs_swap": {}
+}

@@ -66,9 +66,10 @@ a message naming it (the response is already cached, so fixing the adapter costs
       the benchmark's error flag depends on them.
   A6  `model_version` (top level, string or null) is the version string to cite; no version header is
       documented, so any response header whose name contains "version" or "model" is also recorded.
-  A7  A 429 whose body has `remaining_minutes`, `upgrade_url` or `plan`, or whose X-RateLimit-Remaining
-      is 0, is the documented monthly-quota error and stops the run; any other 429 is a transient rate
-      limit and is retried (no per-second limit and no Retry-After are documented).
+  A7  A 429 whose body has `remaining_minutes`, `upgrade_url` or `plan` at any nesting level (checked
+      live on 2026-11-22: they sit under error.message, with error "quota_exceeded"), or whose
+      X-RateLimit-Remaining is 0, is the monthly-quota error and stops the run; any other 429 is a
+      transient rate limit and is retried (no per-second limit and no Retry-After are documented).
   A8  Billing is per audio minute (usage measured per second, whole minutes charged; whether per request
       or per month is not documented), so the cost estimate is a range.
   A9  Language codes are the benchmark's (en fr es de ja ko; fleurs-swap: also it pt ru), all in the
@@ -509,6 +510,17 @@ def _json_or_none(b: bytes):
         return None
 
 
+def _is_quota_body(body, depth: int = 0) -> bool:
+    """The monthly-quota answer. Seen live on 2026-11-22 (free plan): the fields are nested,
+    {"error": {"code": "HTTP_429", "message": {"error": "quota_exceeded", "remaining_minutes": ...,
+    "plan": ..., "upgrade_url": ...}}}, so look through nested objects."""
+    if not isinstance(body, dict) or depth > 3:
+        return False
+    if body.get("error") == "quota_exceeded" or any(k in body for k in ("remaining_minutes", "upgrade_url", "plan")):
+        return True
+    return any(_is_quota_body(v, depth + 1) for v in body.values())
+
+
 def classify_status(resp: Response) -> str:
     """ok | retry | fatal | fail (this item only)."""
     s = resp.status
@@ -519,9 +531,8 @@ def classify_status(resp: Response) -> str:
     if s == 429:
         body = _json_or_none(resp.body)
         rem = next((v for k, v in resp.headers.items() if k.lower() == "x-ratelimit-remaining"), None)
-        if (isinstance(body, dict) and any(k in body for k in ("remaining_minutes", "upgrade_url", "plan"))) \
-                or (rem is not None and str(rem).strip() == "0"):
-            return "fatal"                                    # A7: documented monthly quota
+        if _is_quota_body(body) or (rem is not None and str(rem).strip() == "0"):
+            return "fatal"                                    # A7: monthly quota
         return "retry"
     if s in (408, 425) or s >= 500:
         return "retry"

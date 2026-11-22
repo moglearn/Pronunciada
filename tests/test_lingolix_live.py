@@ -302,3 +302,12 @@ def test_fake_responses_follow_the_documented_format():
         raw = LL.fake_response(text, lang, "0" * 64)
         LL.parse_response(raw, text, lang)
         assert set(raw) >= {"overall", "accuracy", "fluency", "model_version", "words"}
+
+
+def test_nested_quota_answer_stops_the_run():
+    """The shape the API really returns when the monthly quota is used up (seen 2026-11-22)."""
+    body = (b'{"error":{"code":"HTTP_429","message":{"error":"quota_exceeded","message":"Monthly quota exceeded.",'
+            b'"quota_percentage":99.8,"remaining_minutes":0.03,"plan":"api_free","upgrade_url":"https://example.invalid"},'
+            b'"path":"/api/pronunciation/v3/check","method":"POST"}}')
+    assert LL.classify_status(LL.Response(429, {}, body)) == "fatal"
+    assert LL.classify_status(LL.Response(429, {}, b'{"error":{"code":"HTTP_429","message":"slow down"}}')) == "retry"
