@@ -137,8 +137,22 @@ def _guard_dict(rows, which):
 
 
 def cmd_fleurs(lang: str, split: str, out_json: str | None, n_boot=1000):
-    from bench.round19.guards_dev import _metrics_of
+    from bench.round19.guards_dev import _metrics_of as _m
+    from bench.round19.guards_dev import _unit_probs
     from bench.round19_rollout.collect import load
+
+    def _metrics_of(d):
+        """The German guard rows, plus planted tone swaps (Mandarin fleurs-swap "tone" variant) when present."""
+        m = _m(d)
+        tone = np.array([_unit_probs(r)[r["k"]] for r in d["swap"] if r["variant"] == "tone"])
+        if len(tone):
+            from bench.metrics import roc_auc
+
+            nat = np.array([p for r in d["swap"] if r["variant"] == "orig" for p in _unit_probs(r)])
+            nat, tone = nat[np.isfinite(nat)], tone[np.isfinite(tone)]
+            m["swap_tone_auc"] = roc_auc(np.r_[np.ones(len(tone)), np.zeros(len(nat))], 1 - np.r_[tone, nat])
+            m["swap_tone_hit5"] = float((tone < np.quantile(nat, 0.05)).mean())
+        return m
 
     rows = load(lang, split)
     d0, d1 = _guard_dict(rows, "off"), _guard_dict(rows, "on")
