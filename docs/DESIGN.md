@@ -193,8 +193,11 @@ call actually does today:
   - contrast factor (`contrast_word.py`): lowers a word whose lowest contrast evidence is below a
     native quantile; adopted for zh (aspiration) and ja (voicing) only.
   - Korean identity factor (`ko_identity.py`, round 19): a small head on the pooled activations
-    names the Korean sound class that was said (7 vowels, glides, 18 onsets, 7 codas); a word whose
-    lowest "expected vs best other class" margin is below a native quantile is lowered (floor 0.5).
+    names the Korean sound class that was said (7 vowels, glides, 18 onsets, 7 codas). The word's
+    log-odds are shifted by a linear step in its margins ("expected vs best other class", relative
+    to class x position native thresholds), the aligner's extra-sound (`llr_ins`) and missing-sound
+    evidence and its duration against the expected one; the step can lower or raise (cap +3), and
+    a step <= -1 also marks the word mispronounced.
 - **Word 0–10 score**: `word_reg_r6` (adds word-pooled ZIPA activations).
 - **Sentence**: four regression heads (accuracy / fluency / prosodic / total) and the acceptance
   probability, the round-2/4 heads (`sentence_r4.npz`) in every language. The round-5 heads with

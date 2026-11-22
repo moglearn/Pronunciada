@@ -81,16 +81,16 @@ def paired(man, ra, rb, unv=None, n=1000):
     return out
 
 
-def report():
+def report(after: str = "after"):
     man = L.tests()["tier1_ko"]
     unv = {it["id"]: it.get("unverified", []) for it in L.load_manifest("repo_main_f8750aa", "tier1/manifest_ko.jsonl")}
-    ra, rb = read("before"), read("after")
+    ra, rb = read("before"), read(after)
     out = {}
     for name, kw in (("v2026.10", {}), ("main_rules", {"exclude_unverified": unv})):
         ma, mb = L.metrics(man, ra, **kw), L.metrics(man, rb, **kw)
         out[name] = {"before": ma, "after": mb, "paired": paired(man, ra, rb, kw.get("exclude_unverified"))}
     out["published_not_rerun_here"] = {k: L.PUBLISHED[k] for k in ("tier1_auc", "tier1_fa_at_80")}
-    p = Path("results/tables/round19_ko_lingolix.json")
+    p = Path("results/tables/round19_ko_lingolix.json" if after == "after" else f"results/tables/round19_ko_lingolix_{after}.json")
     p.write_text(json.dumps(L._clean(out), indent=1, ensure_ascii=False))
     for name in ("v2026.10", "main_rules"):
         b, a, pd = out[name]["before"], out[name]["after"], out[name]["paired"]
@@ -108,4 +108,4 @@ if __name__ == "__main__":
     ap.add_argument("cmd", choices=("score", "report"))
     ap.add_argument("--tag")
     a = ap.parse_args()
-    score(a.tag) if a.cmd == "score" else report()
+    score(a.tag) if a.cmd == "score" else report(a.tag or "after")

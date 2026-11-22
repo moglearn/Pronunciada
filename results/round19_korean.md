@@ -1,5 +1,8 @@
 # Round 19: Korean changed-word detection (Lingolix test 1, Korean)
 
+Part 1 (sections 1-7) shipped a word factor that the architect rejected for its native cost. Part 2
+(section 8) replaces it and is the current state of the branch.
+
 **Result.** On the held-out Lingolix Korean test, word AUC rose from 0.912 [0.874, 0.946] to
 **0.955 [0.931, 0.976]**. FA@80 fell from 8.4 % [4.5, 19.3] to **3.8 % [2.3, 6.2]**. Paired over clips,
 ΔAUC was [+0.015, +0.072] and ΔFA@80 [−14.4, −1.5] pt, with p < 0.001 for both. The changed word now
@@ -210,3 +213,162 @@ test was always possible, given the rule. I did not retune after seeing the test
 * Tooling: `bench/round19ko/*` (pool, planting, Whisper check, collection, heads, selection,
   2-fold check, guards, Lingolix before / after, runtime check).
 * Docs: `docs/DESIGN.md` §7, `docs/LICENSING.md`, `NOTICE` (Zeroth-Korean attribution).
+
+## 8. Part 2: winning back the native cost; extra / missing sounds; the error flag
+
+**Result (held-out looks 3 and 4).** On Lingolix test 1, Korean:
+
+| rules | word AUC | FA@80 | lowest-in-sentence |
+|---|---|---|---|
+| v2026.10 | **0.963 [0.942, 0.981]** (target 0.96: **met**) | **2.9 % [1.1, 5.6]** (target 2.5 %: **missed**) | 0.833 |
+| main | 0.965 [0.946, 0.983] | 2.6 % [0.9, 5.1] | 0.878 |
+
+* Paired against the baseline (v2026.10):
+  * ΔAUC [+0.022, +0.082], p < 0.001;
+  * ΔFA@80 [−15.1, −1.8] pt, p = 0.003.
+* By bucket (v2026.10):
+
+  | bucket | before | after |
+  |---|---|---|
+  | subtle | 0.753 | 0.932 |
+  | moderate | 0.946 | 0.980 |
+  | indel | 0.927 | 0.939 |
+  | gross | 0.982 | 0.983 |
+  | omission | 0.996 | 0.995 |
+
+* **Own flag:**
+
+  | | before | after |
+  |---|---|---|
+  | recall | 0.489 | 0.767 |
+  | precision | 0.295 | 0.373 |
+  | flag rate on correct words | 7.5 % | 8.3 % |
+
+* **Native rows on FLEURS test now improve** instead of getting worse (table below).
+
+### What changed
+
+1. **Selective firing: the aligner-agreement gate failed.** Per the brief, I tried requiring that:
+   * the head's top class is another class;
+   * the aligner agrees: llr_sub ≤ −τ;
+   * the sound has aligned frames.
+
+   On the native pool, the agreement gate removes almost every native crossing below 0.6 (2
+   left), but it also removes the gain: AUC 0.938 against a baseline of 0.936. The aligner works on
+   the same blind posteriors, so it rarely agrees where the head sees a swap. Not used.
+2. **Class × position thresholds.** The margin is now taken relative to a native 10 % threshold
+   per class and position. Positions are coda, the word's last syllable (particles and endings),
+   the first syllable, and medial.
+3. **Larger native pool.** It now has three parts:
+   * FLEURS validation controls (3,364 words);
+   * CV dev controls (1,995 words);
+   * Zeroth-Korean **test** (6,641 words, 10 speakers, disjoint from the Zeroth train speakers
+     the head saw).
+4. **Two-sided word step.** It replaces the one-sided knee factor:
+   * word log-odds += b·[min(s,0), min(s+4,0), mean s, soft count of s < 0, extra-sound
+     evidence, missing-sound evidence, |log duration ratio|, 1], capped at +3;
+   * b comes from an L2 logistic regression with the old log-odds as a fixed offset (changed dev
+     words vs everything else), fitted on dev + Zeroth test;
+   * the step can also **raise** a word: when every sound is clearly the expected class, a native
+     word that the posteriors under-scored moves up. That is what wins back the natives.
+5. **Extra-sound evidence (new in `align.py`).** `llr_ins` scores an extra "any speech" chain of
+   1–2 sounds between sound i and i + 1. It reuses the stitched forward / backward of the wildcard
+   machinery and matches an explicit lattice to 1e-12. It costs about 1 ms and is computed for
+   Korean only. The word also gets:
+   * duration against the expected duration (number of sounds × the utterance's median frames
+     per sound);
+   * the lowest llr_del.
+
+   The identity head's per-frame evidence for a sound outside the reference was not built.
+6. **Error flag.** A word whose step is ≤ −1 log-odds is also marked mispronounced (Azure
+   ErrorType and the coaching item), like Japanese length in 1.0.2. This was decided on dev:
+   flag precision 0.253 → 0.294 (did not fall), recall 0.590 → 0.785. It was the D with the
+   highest recall among those that kept precision.
+7. **Runtime matches offline:** max |ΔP| 2.5e-4 over all 953 dev items. A step-function count
+   feature was replaced by a soft count, because float16 / float32 differences flipped it and
+   moved some words by 0.08.
+
+### Selection
+
+The rule was fixed before looking at the grid:
+* every source of the native pool keeps or lowers its count of words below 0.6, and keeps or
+  raises its count of accepted words, out of fold;
+* the FLEURS-validation planted AUC does not fall;
+* among those settings, the highest speaker-grouped 4-fold out-of-fold dev AUC.
+
+Chosen: class threshold at the native 10 % quantile, l2 10, positive weight 2, up-cap +3 logits
+(`results/tables/round19_ko2_grid.json`, `round19_ko2_cv.json`).
+
+**Dev, out of fold:**
+
+| | part-1 factor (OOF) | part 2 (OOF) |
+|---|---|---|
+| AUC | 0.970 | **0.975 [0.966, 0.984]** (baseline 0.936) |
+| FA@80 | 2.9 % | **2.1 % [1.2, 3.5]** (baseline 6.4 %) |
+| indel | 0.957 | 0.962 |
+| subtle | 0.946 | 0.955 |
+| native words < 0.6, FLEURS val | worse | 80 → 36 |
+| native words < 0.6, CV | worse | 62 → 28 |
+| native words < 0.6, Zeroth test | – | 167 → 83 |
+
+Ablations, out of fold:
+
+| variant | AUC | FA@80 | note |
+|---|---|---|---|
+| identity features only | 0.973 | 2.1 % | |
+| extra / missing / duration features only | 0.9375 | 6.1 % | indel 0.932 → 0.939 |
+| without the intercept | 0.9745 | 2.1 % | natives below 0.6 still fall in every source |
+
+The extra-sound evidence adds little. Its coefficient ended near 0; the duration and deletion
+terms carry the indel gain. The native gain is therefore not only a global shift.
+
+### Guards, held-out (FLEURS ko test)
+
+Same rows as in part 1 (`results/tables/round19_ko2_guards_test.json`). 95 % CIs of the difference,
+bootstrapped over clips.
+
+| set | row | before | after | Δ [95 %] |
+|---|---|---|---|---|
+| swap benchmark | native words < 0.6 | 2.37 % | **1.21 %** | [−1.77, −0.59] pt |
+| | near-swap AUC | 0.931 | 0.975 | [+0.027, +0.064] |
+| | near-swap hit@5 % | 0.753 | 0.920 | [+0.100, +0.233] |
+| | far-swap AUC | 0.994 | 0.996 | [+0.000, +0.004] |
+| | far-swap hit@5 % | 0.993 | 1.000 | [0, +0.020] |
+| eval_languages errors | native acceptance | 97.66 % | **98.49 %** | [+0.51, +1.19] pt |
+| | native words < 0.6 | 3.06 % | 1.72 % | [−1.76, −0.94] pt |
+| | planted-error word AUC | 0.919 | 0.923 | [+0.001, +0.006] |
+| contrast audit, word level (round-17 test plan, 120 edits each) | pooled word hit@5 % | 0.438 | 0.689 | [+0.205, +0.346] |
+| | n → ŋ | 0.308 | 0.917 | |
+| | ŋ → n | 0.325 | 0.783 | |
+| | m → n | 0.550 | 0.925 | |
+| | n → m | 0.825 | 0.942 | |
+| | plain → aspirated | 0.250 | 0.467 | |
+| | **ɔ → o (eo_o B>A)** | **0.367** | **0.100** | **[−0.342, −0.123]: worse** |
+
+**The ɔ → o audit row got worse.** The audit edits the reference sound, not the spelling. The
+identity head takes the expected vowel class from the syllable's spelling, so it still expects
+ㅓ (and hears ㅓ). The two-sided step then raises the word, and the edited word looks more
+correct. A real text prompt changes the spelling, and on those (Lingolix subtle, dev subtle) ㅓ/ㅗ
+swaps are caught far better than before. Still, it is a regression on an existing scoreboard row.
+
+cv-real ko and the sound-level audit rows are unchanged by construction: sentence and sound
+probabilities are not touched.
+
+### Size and latency
+
+* No new model files. The parameter JSON is 3 kB.
+* Measured on the shared laptop (3.5 s clip, 4 threads, median of 40):
+  * switch on: 53.7–54.0 ms;
+  * switch off: 52.1–53.6 ms;
+  * the ~1 ms extra-sound evidence runs in both settings for Korean.
+* `pytest`: 582 passed.
+
+### Held-out looks, in order
+
+1. Lingolix before (part 1).
+2. Lingolix after (part 1).
+3. Lingolix after2 (part 2; the before run was not repeated: switch-off outputs are unchanged).
+4. FLEURS test guards and the word-level contrast audit (part 2; the part-1 guard run was the
+   other FLEURS test look).
+
+This was the third and fourth look at held-out data.
