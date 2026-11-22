@@ -278,7 +278,10 @@ class Scorer:
         # one implementation): Korean always (its word step), Japanese when its word step is on
         from .ja_round19 import on as _r19
 
-        ev = score_reference(lpa, ref, insertion=self.lang == "ko" or (self.lang == "ja" and _r19("step")))
+        from . import identity as _IDr
+
+        ev = score_reference(lpa, ref, insertion=self.lang == "ko" or (self.lang == "ja" and _r19("step"))
+                             or (self.lang != "de" and _IDr.needs_insertion(self.lang)))
         timing["align"] = (time.perf_counter() - t) * 1e3
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             warnings.append("the text is too long for the audio (the expected sounds cannot all fit)")
@@ -733,7 +736,8 @@ class Scorer:
                 icls = c.get("identity_cls")
                 prob = _ID.apply_word(_ID.rule(self.lang), c["identity_s"][w.phones[0]:w.phones[1]], prob, s,
                                       sounds=sounds, tone=f_pros if is_tone else None, contrast=p_con,
-                                      cls=None if icls is None else icls[w.phones[0]:w.phones[1]])
+                                      cls=None if icls is None else icls[w.phones[0]:w.phones[1]],
+                                      ins=_ID.word_ins(getattr(ev, "llr_ins", None), w.phones[0], w.phones[1]))
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5

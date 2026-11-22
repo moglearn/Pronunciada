@@ -1,0 +1,1274 @@
+{
+ "off": {
+  "audit": {
+   "A>B": {
+    "n": 120,
+    "word_hit5": 0.26666666666666666
+   },
+   "B>A": {
+    "n": 120,
+    "word_hit5": 0.8
+   },
+   "native_below_0.6": 0.03250091810503122
+  },
+  "m": {
+   "pool_below_05": 0.023323615160349854,
+   "pool_below_06": 0.03151464667499653,
+   "cvdev_below_06": 0.02631578947368421,
+   "controlled_auc": 0.9204716970505911,
+   "fit_auc": 0.9438594234558707,
+   "fit_fa80": 0.07003317360855142,
+   "fit_buckets": {
+    "indel": 0.8950023476032507,
+    "sub_gross": 0.9942777332090227,
+    "sub_moderate": 0.9585279744039157,
+    "sub_subtle": 0.9179482779804348,
+    "word_omission": 0.9962230322225407
+   },
+   "val": {
+    "swap_native_below_0.6": 0.028656639004149376,
+    "swap_near_auc": 0.9665397974627576,
+    "swap_near_hit5": 0.8442622950819673,
+    "swap_far_auc": 0.9972329261004871,
+    "swap_far_hit5": 0.9972826086956522,
+    "native_accept": 0.9758652094717668,
+    "native_below_0.6": 0.02982695810564663,
+    "stress_auc": 0.9552951388888888,
+    "stress_hit5": 0.75,
+    "n_stress": 400,
+    "sound_auc": 0.9368066370673953,
+    "sound_hit5": 0.773,
+    "n_sound": 2000,
+    "n_native": 4392
+   }
+  }
+ },
+ "on": {
+  "audit": {
+   "A>B": {
+    "n": 120,
+    "word_hit5": 0.19166666666666668
+   },
+   "B>A": {
+    "n": 120,
+    "word_hit5": 0.8333333333333334
+   },
+   "native_below_0.6": 0.0297466030113845
+  },
+  "m": {
+   "pool_below_05": 0.021102318478411774,
+   "pool_below_06": 0.028321532694710536,
+   "cvdev_below_06": 0.02443609022556391,
+   "controlled_auc": 0.9243865488480015,
+   "fit_auc": 0.9497533507794735,
+   "fit_fa80": 0.0491460867428431,
+   "fit_buckets": {
+    "indel": 0.8932421936706861,
+    "sub_gross": 0.9969789611384546,
+    "sub_moderate": 0.9694479339837667,
+    "sub_subtle": 0.9426261804593464,
+    "word_omission": 0.9972764876930008
+   },
+   "val": {
+    "swap_native_below_0.6": 0.02567427385892116,
+    "swap_near_auc": 0.9730765197378863,
+    "swap_near_hit5": 0.8797814207650273,
+    "swap_far_auc": 0.9980091726050875,
+    "swap_far_hit5": 0.9972826086956522,
+    "native_accept": 0.9770036429872495,
+    "native_below_0.6": 0.02663934426229508,
+    "stress_auc": 0.9589606102003643,
+    "stress_hit5": 0.7775,
+    "n_stress": 400,
+    "sound_auc": 0.9383003756830601,
+    "sound_hit5": 0.7835,
+    "n_sound": 2000,
+    "n_native": 4392
+   }
+  }
+ },
+ "grid": [
+  {
+   "name": "vowel no-raise below -1.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": -1.0,
+     "o": -1.0,
+     "\u025b": -1.0,
+     "e": -1.0,
+     "a": -1.0,
+     "u": -1.0,
+     "\u0254": -1.0,
+     "i": -1.0,
+     "ej": -1.0,
+     "aj": -1.0,
+     "ew": -1.0,
+     "oj": -1.0
+    }
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_fa80",
+    "val swap_near_auc",
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.16666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8333333333333334
+    },
+    "native_below_0.6": 0.030113845023870732
+   },
+   "m": {
+    "pool_below_05": 0.021379980563654033,
+    "pool_below_06": 0.028460363737331667,
+    "cvdev_below_06": 0.02474937343358396,
+    "controlled_auc": 0.9248610336729349,
+    "fit_auc": 0.9498270338787324,
+    "fit_fa80": 0.04963754761027153,
+    "fit_buckets": {
+     "indel": 0.892679427097046,
+     "sub_gross": 0.9969681200899084,
+     "sub_moderate": 0.9690429802588193,
+     "sub_subtle": 0.9445115260283606,
+     "word_omission": 0.9972651112840325
+    },
+    "val": {
+     "swap_native_below_0.6": 0.026063278008298756,
+     "swap_near_auc": 0.9728834348003537,
+     "swap_near_hit5": 0.8743169398907104,
+     "swap_far_auc": 0.9979866216399061,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.976775956284153,
+     "native_below_0.6": 0.0273224043715847,
+     "stress_auc": 0.9584153005464481,
+     "stress_hit5": 0.765,
+     "n_stress": 400,
+     "sound_auc": 0.9383108492714025,
+     "sound_hit5": 0.7825,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +0.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 0.0,
+     "o": 0.0,
+     "\u025b": 0.0,
+     "e": 0.0,
+     "a": 0.0,
+     "u": 0.0,
+     "\u0254": 0.0,
+     "i": 0.0,
+     "ej": 0.0,
+     "aj": 0.0,
+     "ew": 0.0,
+     "oj": 0.0
+    }
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_fa80",
+    "val swap_near_auc",
+    "val stress_auc",
+    "val sound_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.14166666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8333333333333334
+    },
+    "native_below_0.6": 0.031031950055086303
+   },
+   "m": {
+    "pool_below_05": 0.021935304734138555,
+    "pool_below_06": 0.029293349993058448,
+    "cvdev_below_06": 0.02537593984962406,
+    "controlled_auc": 0.9253664937683388,
+    "fit_auc": 0.9500178172579871,
+    "fit_fa80": 0.0507433345619855,
+    "fit_buckets": {
+     "indel": 0.8936568637775788,
+     "sub_gross": 0.9969355969442698,
+     "sub_moderate": 0.9685828625589565,
+     "sub_subtle": 0.9441980078887943,
+     "word_omission": 0.9972378079025087
+    },
+    "val": {
+     "swap_native_below_0.6": 0.02671161825726141,
+     "swap_near_auc": 0.9727140869101876,
+     "swap_near_hit5": 0.8743169398907104,
+     "swap_far_auc": 0.9979742890808226,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9765482695810564,
+     "native_below_0.6": 0.028233151183970857,
+     "stress_auc": 0.9582143670309654,
+     "stress_hit5": 0.765,
+     "n_stress": 400,
+     "sound_auc": 0.9378797244990893,
+     "sound_hit5": 0.7815,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +1.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 1.0,
+     "o": 1.0,
+     "\u025b": 1.0,
+     "e": 1.0,
+     "a": 1.0,
+     "u": 1.0,
+     "\u0254": 1.0,
+     "i": 1.0,
+     "ej": 1.0,
+     "aj": 1.0,
+     "ew": 1.0,
+     "oj": 1.0
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_auc",
+    "controlled_auc",
+    "val stress_auc",
+    "val sound_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.14166666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.825
+    },
+    "native_below_0.6": 0.03158281307381564
+   },
+   "m": {
+    "pool_below_05": 0.022074135776759683,
+    "pool_below_06": 0.030403998334027488,
+    "cvdev_below_06": 0.02694235588972431,
+    "controlled_auc": 0.9239543030282551,
+    "fit_auc": 0.9492011779207242,
+    "fit_fa80": 0.04816316500798624,
+    "fit_buckets": {
+     "indel": 0.8923448387832833,
+     "sub_gross": 0.9968958464329336,
+     "sub_moderate": 0.9678908054191083,
+     "sub_subtle": 0.9426039376183637,
+     "word_omission": 0.9971923022666357
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027619294605809128,
+     "swap_near_auc": 0.9731665079473052,
+     "swap_near_hit5": 0.8715846994535519,
+     "swap_far_auc": 0.9979503286803175,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.97632058287796,
+     "native_below_0.6": 0.029143897996357013,
+     "stress_auc": 0.9572933743169398,
+     "stress_hit5": 0.755,
+     "n_stress": 400,
+     "sound_auc": 0.9380919285063752,
+     "sound_hit5": 0.78,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +2.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 2.0,
+     "o": 2.0,
+     "\u025b": 2.0,
+     "e": 2.0,
+     "a": 2.0,
+     "u": 2.0,
+     "\u0254": 2.0,
+     "i": 2.0,
+     "ej": 2.0,
+     "aj": 2.0,
+     "ew": 2.0,
+     "oj": 2.0
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_auc",
+    "val stress_auc",
+    "val sound_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.15
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.825
+    },
+    "native_below_0.6": 0.03195005508630187
+   },
+   "m": {
+    "pool_below_05": 0.022212966819380814,
+    "pool_below_06": 0.03054282937664862,
+    "cvdev_below_06": 0.02725563909774436,
+    "controlled_auc": 0.9245428331671932,
+    "fit_auc": 0.9487996140374771,
+    "fit_fa80": 0.048408895441700454,
+    "fit_buckets": {
+     "indel": 0.8917299641935654,
+     "sub_gross": 0.9968777780186899,
+     "sub_moderate": 0.9683233411315134,
+     "sub_subtle": 0.9410988387118642,
+     "word_omission": 0.9971786505758738
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027878630705394192,
+     "swap_near_auc": 0.9730191256830601,
+     "swap_near_hit5": 0.8688524590163934,
+     "swap_far_auc": 0.9979397579153888,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.97632058287796,
+     "native_below_0.6": 0.029371584699453553,
+     "stress_auc": 0.9566080373406193,
+     "stress_hit5": 0.7575,
+     "n_stress": 400,
+     "sound_auc": 0.9379827527322404,
+     "sound_hit5": 0.7815,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +3.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 3.0,
+     "o": 3.0,
+     "\u025b": 3.0,
+     "e": 3.0,
+     "a": 3.0,
+     "u": 3.0,
+     "\u0254": 3.0,
+     "i": 3.0,
+     "ej": 3.0,
+     "aj": 3.0,
+     "ew": 3.0,
+     "oj": 3.0
+    }
+   },
+   "fail": [
+    "G2 natives"
+   ],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_auc",
+    "val swap_near_auc",
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.16666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8166666666666667
+    },
+    "native_below_0.6": 0.032133676092544985
+   },
+   "m": {
+    "pool_below_05": 0.022907122032486463,
+    "pool_below_06": 0.03123698458975427,
+    "cvdev_below_06": 0.02788220551378446,
+    "controlled_auc": 0.9245949279402571,
+    "fit_auc": 0.9495328419445276,
+    "fit_fa80": 0.0491460867428431,
+    "fit_buckets": {
+     "indel": 0.8924375362013586,
+     "sub_gross": 0.9968479651351879,
+     "sub_moderate": 0.9672100318195838,
+     "sub_subtle": 0.9450315848341955,
+     "word_omission": 0.9971649988851119
+    },
+    "val": {
+     "swap_native_below_0.6": 0.028137966804979254,
+     "swap_near_auc": 0.9727394182368546,
+     "swap_near_hit5": 0.8688524590163934,
+     "swap_far_auc": 0.9979214352561789,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.97632058287796,
+     "native_below_0.6": 0.02959927140255009,
+     "stress_auc": 0.9562295081967213,
+     "stress_hit5": 0.755,
+     "n_stress": 400,
+     "sound_auc": 0.9384781989981785,
+     "sound_hit5": 0.7835,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +4.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 4.0,
+     "o": 4.0,
+     "\u025b": 4.0,
+     "e": 4.0,
+     "a": 4.0,
+     "u": 4.0,
+     "\u0254": 4.0,
+     "i": 4.0,
+     "ej": 4.0,
+     "aj": 4.0,
+     "ew": 4.0,
+     "oj": 4.0
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_auc",
+    "controlled_auc",
+    "val swap_near_auc",
+    "val swap_far_auc",
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.2
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8166666666666667
+    },
+    "native_below_0.6": 0.032317297098788104
+   },
+   "m": {
+    "pool_below_05": 0.023184784117728723,
+    "pool_below_06": 0.03179230876023879,
+    "cvdev_below_06": 0.02788220551378446,
+    "controlled_auc": 0.923724804433406,
+    "fit_auc": 0.9487902460150774,
+    "fit_fa80": 0.04890035630912889,
+    "fit_buckets": {
+     "indel": 0.8912933538693767,
+     "sub_gross": 0.9971379631837991,
+     "sub_moderate": 0.9657017985963275,
+     "sub_subtle": 0.9438876672979397,
+     "word_omission": 0.9970808134587469
+    },
+    "val": {
+     "swap_native_below_0.6": 0.028397302904564315,
+     "swap_near_auc": 0.9721591005713897,
+     "swap_near_hit5": 0.8715846994535519,
+     "swap_far_auc": 0.997871047943352,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9760928961748634,
+     "native_below_0.6": 0.030054644808743168,
+     "stress_auc": 0.9552282559198543,
+     "stress_hit5": 0.75,
+     "n_stress": 400,
+     "sound_auc": 0.9386488501821494,
+     "sound_hit5": 0.784,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "vowel no-raise below +5.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_cls": {
+     "ow": 5.0,
+     "o": 5.0,
+     "\u025b": 5.0,
+     "e": 5.0,
+     "a": 5.0,
+     "u": 5.0,
+     "\u0254": 5.0,
+     "i": 5.0,
+     "ej": 5.0,
+     "aj": 5.0,
+     "ew": 5.0,
+     "oj": 5.0
+    }
+   },
+   "fail": [
+    "G1 pool",
+    "G2 natives"
+   ],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "fit_auc",
+    "val swap_near_auc",
+    "val swap_far_auc",
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.24166666666666667
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8333333333333334
+    },
+    "native_below_0.6": 0.03268453911127433
+   },
+   "m": {
+    "pool_below_05": 0.023462446202970985,
+    "pool_below_06": 0.03193113980285992,
+    "cvdev_below_06": 0.02819548872180451,
+    "controlled_auc": 0.9253143989952749,
+    "fit_auc": 0.9492091047089085,
+    "fit_fa80": 0.0491460867428431,
+    "fit_buckets": {
+     "indel": 0.8944148982851526,
+     "sub_gross": 0.9970945989896143,
+     "sub_moderate": 0.9638976858712524,
+     "sub_subtle": 0.9419408891204969,
+     "word_omission": 0.997034170181977
+    },
+    "val": {
+     "swap_native_below_0.6": 0.02891597510373444,
+     "swap_near_auc": 0.9722547573294333,
+     "swap_near_hit5": 0.8688524590163934,
+     "swap_far_auc": 0.9978315837542847,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9754098360655737,
+     "native_below_0.6": 0.030054644808743168,
+     "stress_auc": 0.9545543032786885,
+     "stress_hit5": 0.7525,
+     "n_stress": 400,
+     "sound_auc": 0.9398891734972677,
+     "sound_hit5": 0.787,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -1.5",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -1.5
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.26666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.825
+    },
+    "native_below_0.6": 0.03139919206757253
+   },
+   "m": {
+    "pool_below_05": 0.021935304734138555,
+    "pool_below_06": 0.029709843120921838,
+    "cvdev_below_06": 0.02537593984962406,
+    "controlled_auc": 0.9347857919250285,
+    "fit_auc": 0.9548524374333204,
+    "fit_fa80": 0.04570586067084408,
+    "fit_buckets": {
+     "indel": 0.9080068628999701,
+     "sub_gross": 0.9972066231579252,
+     "sub_moderate": 0.9684123557273997,
+     "sub_subtle": 0.944810215607272,
+     "word_omission": 0.9971604483215246
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027100622406639005,
+     "swap_near_auc": 0.9757449890030157,
+     "swap_near_hit5": 0.8879781420765027,
+     "swap_far_auc": 0.9980437037705214,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9760928961748634,
+     "native_below_0.6": 0.028688524590163935,
+     "stress_auc": 0.9563348132969035,
+     "stress_hit5": 0.7525,
+     "n_stress": 400,
+     "sound_auc": 0.9506493055555556,
+     "sound_hit5": 0.7915,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -2.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -2.0
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.26666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8333333333333334
+    },
+    "native_below_0.6": 0.03139919206757253
+   },
+   "m": {
+    "pool_below_05": 0.021518811606275164,
+    "pool_below_06": 0.029293349993058448,
+    "cvdev_below_06": 0.02506265664160401,
+    "controlled_auc": 0.935629164061928,
+    "fit_auc": 0.9550987083298653,
+    "fit_fa80": 0.045582995453986974,
+    "fit_buckets": {
+     "indel": 0.9084407306969968,
+     "sub_gross": 0.997215657365047,
+     "sub_moderate": 0.9691859051029185,
+     "sub_subtle": 0.9447456054501315,
+     "word_omission": 0.9971718247304928
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027100622406639005,
+     "swap_near_auc": 0.9761814672471261,
+     "swap_near_hit5": 0.8879781420765027,
+     "swap_far_auc": 0.9980588552002526,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9760928961748634,
+     "native_below_0.6": 0.028460837887067394,
+     "stress_auc": 0.956859631147541,
+     "stress_hit5": 0.75,
+     "n_stress": 400,
+     "sound_auc": 0.951402948542805,
+     "sound_hit5": 0.7915,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -2.5",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -2.5
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.26666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8333333333333334
+    },
+    "native_below_0.6": 0.03139919206757253
+   },
+   "m": {
+    "pool_below_05": 0.021518811606275164,
+    "pool_below_06": 0.029154518950437316,
+    "cvdev_below_06": 0.02506265664160401,
+    "controlled_auc": 0.9362191021677058,
+    "fit_auc": 0.9553139926907807,
+    "fit_fa80": 0.045582995453986974,
+    "fit_buckets": {
+     "indel": 0.9092689738999175,
+     "sub_gross": 0.997230112096442,
+     "sub_moderate": 0.9695582619335976,
+     "sub_subtle": 0.9440380712702993,
+     "word_omission": 0.9972173303663658
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027100622406639005,
+     "swap_near_auc": 0.975068306010929,
+     "swap_near_hit5": 0.8879781420765027,
+     "swap_far_auc": 0.9980750637064766,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9760928961748634,
+     "native_below_0.6": 0.028460837887067394,
+     "stress_auc": 0.9572427140255009,
+     "stress_hit5": 0.7525,
+     "n_stress": 400,
+     "sound_auc": 0.9515789503642987,
+     "sound_hit5": 0.7915,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -3.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -3.0
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "pool_below_05",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.275
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8416666666666667
+    },
+    "native_below_0.6": 0.03139919206757253
+   },
+   "m": {
+    "pool_below_05": 0.021518811606275164,
+    "pool_below_06": 0.029154518950437316,
+    "cvdev_below_06": 0.02506265664160401,
+    "controlled_auc": 0.9357192739396601,
+    "fit_auc": 0.9553431776836412,
+    "fit_fa80": 0.045214399803415656,
+    "fit_buckets": {
+     "indel": 0.9098449046039352,
+     "sub_gross": 0.9972391463035638,
+     "sub_moderate": 0.9687157575894346,
+     "sub_subtle": 0.9437881041049693,
+     "word_omission": 0.9972287067753342
+    },
+    "val": {
+     "swap_native_below_0.6": 0.027100622406639005,
+     "swap_near_auc": 0.9748557354374986,
+     "swap_near_hit5": 0.8879781420765027,
+     "swap_far_auc": 0.99807999673011,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9760928961748634,
+     "native_below_0.6": 0.028460837887067394,
+     "stress_auc": 0.9573770491803278,
+     "stress_hit5": 0.7525,
+     "n_stress": 400,
+     "sound_auc": 0.951014856557377,
+     "sound_hit5": 0.7915,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -4.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -4.0
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.275
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8416666666666667
+    },
+    "native_below_0.6": 0.030848329048843187
+   },
+   "m": {
+    "pool_below_05": 0.021102318478411774,
+    "pool_below_06": 0.028599194779952798,
+    "cvdev_below_06": 0.02474937343358396,
+    "controlled_auc": 0.9348083193944616,
+    "fit_auc": 0.9548722544037812,
+    "fit_fa80": 0.044477208502273005,
+    "fit_buckets": {
+     "indel": 0.9080578739051831,
+     "sub_gross": 0.9972554078763831,
+     "sub_moderate": 0.9688950405079098,
+     "sub_subtle": 0.9442827425211096,
+     "word_omission": 0.9972469090296834
+    },
+    "val": {
+     "swap_native_below_0.6": 0.026452282157676348,
+     "swap_near_auc": 0.9741078413033127,
+     "swap_near_hit5": 0.8852459016393442,
+     "swap_far_auc": 0.9980856344714054,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.97632058287796,
+     "native_below_0.6": 0.028005464480874317,
+     "stress_auc": 0.9578119307832422,
+     "stress_hit5": 0.755,
+     "n_stress": 400,
+     "sound_auc": 0.9498388547358835,
+     "sound_hit5": 0.7925,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -5.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -5.0
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "pool_below_06",
+    "cvdev_below_06",
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.26666666666666666
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8416666666666667
+    },
+    "native_below_0.6": 0.030664708042600075
+   },
+   "m": {
+    "pool_below_05": 0.021102318478411774,
+    "pool_below_06": 0.028460363737331667,
+    "cvdev_below_06": 0.02474937343358396,
+    "controlled_auc": 0.9334158401901318,
+    "fit_auc": 0.9546254430444056,
+    "fit_fa80": 0.0443543432854159,
+    "fit_buckets": {
+     "indel": 0.9072894177943939,
+     "sub_gross": 0.9972626352420806,
+     "sub_moderate": 0.9690893681468165,
+     "sub_subtle": 0.94413233854875,
+     "word_omission": 0.9972582854386516
+    },
+    "val": {
+     "swap_native_below_0.6": 0.026192946058091287,
+     "swap_near_auc": 0.9738389395279232,
+     "swap_near_hit5": 0.8825136612021858,
+     "swap_far_auc": 0.9980919769303627,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.9765482695810564,
+     "native_below_0.6": 0.027777777777777776,
+     "stress_auc": 0.9580794626593807,
+     "stress_hit5": 0.76,
+     "n_stress": 400,
+     "sound_auc": 0.9481650159380692,
+     "sound_hit5": 0.794,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  },
+  {
+   "name": "extra-sound no-raise below -6.0",
+   "rule": {
+    "merge": {},
+    "skip": [],
+    "skip_deletable": -2.0,
+    "form": "step",
+    "coef": [
+     0.15498991431780074,
+     0.38036973846453664,
+     0.17209738088177398,
+     0.6137274204753483,
+     0.11828731226440933
+    ],
+    "cap": 3.0,
+    "no_raise_below": -2.0,
+    "on": "sounds",
+    "lang": "pt",
+    "fit_on": "round-19 rollout dev fit fold + Common Voice pool speakers (bench/round19_rollout/fit.py)",
+    "no_raise_ins_below": -6.0
+   },
+   "fail": [],
+   "natives_up_vs_on": [
+    "native_below_0.6",
+    "swap_native_below_0.6"
+   ],
+   "worse_vs_on": [
+    "val stress_auc"
+   ],
+   "audit": {
+    "A>B": {
+     "n": 120,
+     "word_hit5": 0.25
+    },
+    "B>A": {
+     "n": 120,
+     "word_hit5": 0.8416666666666667
+    },
+    "native_below_0.6": 0.030664708042600075
+   },
+   "m": {
+    "pool_below_05": 0.021102318478411774,
+    "pool_below_06": 0.028321532694710536,
+    "cvdev_below_06": 0.02443609022556391,
+    "controlled_auc": 0.930829405105851,
+    "fit_auc": 0.951810532467584,
+    "fit_fa80": 0.04398574763484458,
+    "fit_buckets": {
+     "indel": 0.8997140092675477,
+     "sub_gross": 0.9972680557663537,
+     "sub_moderate": 0.9691896662830263,
+     "sub_subtle": 0.9421135359338392,
+     "word_omission": 0.9972651112840325
+    },
+    "val": {
+     "swap_native_below_0.6": 0.026192946058091287,
+     "swap_near_auc": 0.9729794458426865,
+     "swap_near_hit5": 0.8770491803278688,
+     "swap_far_auc": 0.997996840046004,
+     "swap_far_hit5": 0.9972826086956522,
+     "native_accept": 0.976775956284153,
+     "native_below_0.6": 0.027777777777777776,
+     "stress_auc": 0.9582843806921676,
+     "stress_hit5": 0.765,
+     "n_stress": 400,
+     "sound_auc": 0.9444455259562842,
+     "sound_hit5": 0.792,
+     "n_sound": 2000,
+     "n_native": 4392
+    }
+   },
+   "ok": false
+  }
+ ],
+ "pick": null
+}

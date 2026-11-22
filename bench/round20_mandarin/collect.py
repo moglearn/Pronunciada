@@ -31,9 +31,31 @@ def _nan(x):
     return np.nan if x is None else float(x)
 
 
+def force_insertion() -> None:
+    """Make the aligner compute the extra-sound evidence (llr_ins) for every language. It adds an output
+    only; nothing else in the evidence changes."""
+    import pronunciada.align as AL
+
+    if getattr(AL.score_reference, "_r20", False):
+        return
+    orig = AL.score_reference
+
+    def sr(*a, **k):
+        k["insertion"] = True
+        return orig(*a, **k)
+
+    sr._r20 = True
+    AL.score_reference = sr
+
+
 def extra_row(res) -> dict:
+    from pronunciada.identity import word_ins
+
     ws = res.words
+    c = res._pronunciada  # noqa: SLF001
+    li = getattr(c["ev"], "llr_ins", None)
     return {
+        "ins": np.array([np.nan if (x := word_ins(li, *w.phones)) is None else x for w in c["ref"].words], np.float64),
         "prob": np.array([w.prob for w in ws], np.float64),
         "sounds": np.array([w.sounds_prob for w in ws], np.float64),
         "present": np.array([_nan(w.present_prob) for w in ws], np.float64),
@@ -50,6 +72,7 @@ def run(lang: str, name: str, part: str | None) -> None:
     for v in ("OMP_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS"):
         os.environ.setdefault(v, "1")
     os.environ["PRONUNCIADA_IDENTITY"] = "0"
+    force_insertion()
     from bench.corrupt import NotApplicable, corrupt
     from bench.pipeline.common import stable_seed
     from bench.pipeline.evalctl import inventory
