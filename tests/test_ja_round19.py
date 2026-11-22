@@ -40,21 +40,48 @@ def test_vowel_before_vowel_label(monkeypatch):
     assert L.labels(r)[i] == "short"
 
 
-def test_word_cal_switch(monkeypatch):
-    from pronunciada import word_cal as WC
+def test_word_step_switch_and_cap(monkeypatch):
+    from pronunciada import word_step as WS
 
     monkeypatch.setenv("PRONUNCIADA_JA_ROUND19", "1")
-    assert WC.params("ja") is not None
-    assert WC.params("en") is None
-    monkeypatch.setenv("PRONUNCIADA_JA_ROUND19_OFF", "wordcal")
-    assert WC.params("ja") is None
+    P = WS.params("ja")
+    assert P is not None and WS.params("en") is None
+    # the step never exceeds the cap and a clearly different sound pushes the word down
+    assert WS.step(P, 50.0, 50.0, 0) <= P["cfg"]["cap"]
+    assert WS.step(P, -6.0, None, 0) < 0
+    assert WS.apply(0.01, WS.step(P, 50.0, 50.0, 0)) < 0.25     # a low word stays low
+    monkeypatch.setenv("PRONUNCIADA_JA_ROUND19_OFF", "step")
+    assert WS.params("ja") is None
 
 
-def test_off_by_default(monkeypatch):
+def test_length_r19_params(monkeypatch):
+    from pronunciada import length as L
+
+    monkeypatch.setenv("PRONUNCIADA_JA_ROUND19", "1")
+    assert L.params("ja").get("r19") and "flag" in L.params("ja")
+    monkeypatch.setenv("PRONUNCIADA_JA_ROUND19", "0")
+    assert not L.params("ja").get("r19")
+
+
+def test_identity_classes():
+    from pronunciada.ja_identity import head
+    from pronunciada.text.ja import JaG2P
+    from pronunciada.ja_identity import classes
+
+    r = JaG2P()("ちょっと東京")
+    cl = classes(r)
+    assert "tː" in cl and "oː" in cl
+    assert head() is not None
+
+
+def test_switch(monkeypatch):
     from pronunciada.ja_round19 import on
 
     monkeypatch.delenv("PRONUNCIADA_JA_ROUND19", raising=False)
-    assert not on("merge") and not on("labels") and not on("wordcal")
+    monkeypatch.delenv("PRONUNCIADA_JA_ROUND19_OFF", raising=False)
+    assert on("merge") and on("labels") and on("lenmodel") and on("step")
+    monkeypatch.setenv("PRONUNCIADA_JA_ROUND19", "0")
+    assert not on("merge") and not on("labels") and not on("lenmodel") and not on("step")
 
 
 def test_word_match_counts():

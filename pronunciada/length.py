@@ -152,10 +152,14 @@ def frame_inputs(ref, ev, lpa: np.ndarray, fb: np.ndarray) -> dict:
     tid = token_ids()
     e = (np.log(np.exp(np.asarray(fb, dtype=np.float32)).sum(1, dtype=np.float64) + 1e-10)
          if fb is not None and len(fb) else np.zeros(0))
-    return {"onset": np.array([s.start_frame for s in ev.slots], dtype=np.int64),
-            "ok": np.array([s.alt_index >= 0 for s in ev.slots], dtype=bool),
-            "colon": np.exp(lpa[:, tid["ː"]].astype(np.float64)) if len(lpa) else np.zeros(0),
-            "energy": e, "frame_shift": float(ev.frame_shift)}
+    out = {"onset": np.array([s.start_frame for s in ev.slots], dtype=np.int64),
+           "ok": np.array([s.alt_index >= 0 for s in ev.slots], dtype=bool),
+           "colon": np.exp(lpa[:, tid["ː"]].astype(np.float64)) if len(lpa) else np.zeros(0),
+           "energy": e, "frame_shift": float(ev.frame_shift)}
+    if ref.lang == "ja" and _r19("lenmodel"):          # round-19 inputs (pronunciada.length_r19)
+        out.update(lpa=lpa, fb=fb, slot_se=np.array([[s.start_frame, s.end_frame, s.alt_index] for s in ev.slots],
+                                                    dtype=np.int64).reshape(-1, 3))
+    return out
 
 
 def _fb_index(t: float) -> int:
@@ -271,12 +275,26 @@ def features(ref, lab: list, inp: dict):
 
 
 @lru_cache(maxsize=None)
-def params(lang: str) -> dict | None:
-    p = resources.files("pronunciada").joinpath(f"data/length/{lang}.json")
+def _load(name: str) -> dict | None:
+    p = resources.files("pronunciada").joinpath(f"data/length/{name}.json")
     try:
         return json.loads(p.read_text(encoding="utf-8"))
     except (FileNotFoundError, OSError):
         return None
+
+
+def params(lang: str) -> dict | None:
+    """The language's length parameters. Japanese with the round-19 part "lenmodel" on: the round-19
+    model (data/length/ja_r19.json: trees predicting "the sound matches its text" from the round-15
+    features, the head evidence and pronunciada.length_r19 durations, fitted on natives against planted
+    swaps), with its own word factor and coaching thresholds; the round-17 head stays configured
+    because its evidence is an input."""
+    base = _load(lang)
+    if base is not None and lang == "ja" and _r19("lenmodel"):
+        r = _load("ja_r19")
+        if r is not None:
+            return {**base, "model": r["model"], "word": r["word"], "coach": r["coach"], "flag": r["flag"], "r19": True}
+    return base
 
 
 def _z_trees(M: dict, x: np.ndarray) -> np.ndarray:
@@ -351,6 +369,24 @@ def score(ref, inp: dict, par: dict, head_s=None) -> dict:
     prob: list[float | None] = [None] * n
     expected: list[str | None] = [None] * n
     idx, cls, rows = features(ref, lab, inp)
+    if par.get("r19"):
+        # round 19: inputs read on the filterbank / posteriors, the head evidence relative to the
+        # expected value, and the expected length; the trees give P(the sound matches its text)
+        from . import length_r19 as R
+
+        for i, r in zip(idx, rows):
+            s = float(head_s[i]) if head_s is not None and np.isfinite(head_s[i]) else 0.0
+            r["head_rel"] = s
+            r["has_head"] = float(head_s is not None and np.isfinite(head_s[i]))
+            r["exp_long"] = float(lab[i] == "long")
+        R.extra(ref, inp, idx, rows, lpa=inp.get("lpa"), slot_se=inp.get("slot_se"), fb=inp.get("fb"))
+        for c in ("v", "c"):
+            sel = [k for k, x in enumerate(cls) if x == c]
+            if sel and c in par["model"]:
+                for k, p in zip(sel, p_long(par["model"], c, [rows[k] for k in sel])):
+                    expected[idx[k]] = lab[idx[k]]
+                    prob[idx[k]] = float(p)
+        return {"expected": expected, "prob": prob}
     for c in ("v", "c"):
         sel = [k for k, x in enumerate(cls) if x == c]
         if not sel or c not in par["model"]:

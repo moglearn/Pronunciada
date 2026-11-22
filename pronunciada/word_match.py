@@ -124,3 +124,8 @@ def mismatch(ref, ev) -> list[dict]:
         ins, dl, sb = align_word(phones, heard)
         out.append({"ins": ins, "del": dl, "sub": sb, "n": len(phones), "heard": "".join(heard)})
     return out
+
+
+def extra_counts(ref, ev) -> list[int]:
+    """Per word: sounds heard in addition to its text (the "ins" of mismatch)."""
+    return [m["ins"] for m in mismatch(ref, ev)]

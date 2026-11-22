@@ -34,7 +34,14 @@ WCOLS = ("wl_mean", "wl_min", "ws_mean", "ws_min", "wl_min2", "ws_min2", "n_phon
 def tag() -> str:
     from pronunciada.ja_round19 import on
 
+    if os.environ.get("PRONUNCIADA_R19_COLLECT") == "v2":
+        return "v2"
     return "merge" if on("merge") else "nomerge"
+
+
+def heavy() -> bool:
+    """v2 collections also keep fbank, adapted posteriors, phone vectors and slot spans (float16)."""
+    return os.environ.get("PRONUNCIADA_R19_COLLECT") == "v2"
 
 
 def rows_for(which: str) -> list[dict]:
@@ -44,6 +51,19 @@ def rows_for(which: str) -> list[dict]:
         return pool_rows("fit")
     if which == "devnat":
         return pool_rows("dev")
+    if which == "devswap":
+        from bench.calib.bias_grid import dev_swap
+
+        rows = []
+        for r in dev_swap("ja"):
+            rows.append({"id": r["id"], "audio": r["audio"].replace("/.cache/pronkit/", "/.cache/pronunciada/"),
+                         "text": r["text"], "group": r["src"], "source": "fleurs", "labels": r["labels"]})
+        return rows
+    if which == "cvdev":
+        from bench.cv_build import load_manifest
+
+        return [{"id": r["id"], "audio": r["audio"], "text": r["sentence"], "group": r["speaker"], "source": "cv",
+                 "side": r["side"]} for r in load_manifest(["ja"], half="dev", test="A")]
     name = {"dev": "set_dev.jsonl", "fitset": "set_fit.jsonl"}[which]
     return [json.loads(x) for x in open(WORK / name, encoding="utf-8")]
 
@@ -71,7 +91,16 @@ def item(sc, res) -> dict:
             "con": np.array([1.0 if w.contrast_prob is None else w.contrast_prob for w in res.words]),
             "w_zl": np.asarray(c["w_zl"], dtype=np.float64), "w_zs": np.asarray(c["w_zs"], dtype=np.float64),
             "s_zl": np.asarray(c["s_zl"], dtype=np.float64), "W": wcols, "mm": mismatch(ref, ev),
-            "spans": [list(w.char_span) for w in ref.words], "texts": [w.text for w in ref.words]}
+            "spans": [list(w.char_span) for w in ref.words], "texts": [w.text for w in ref.words],
+            **(_heavy(ref, ev, lpa, fb, emb) if heavy() else {})}
+
+
+def _heavy(ref, ev, lpa, fb, emb) -> dict:
+    from pronunciada.sound_emb import phone_vectors
+
+    return {"fb": np.asarray(fb, np.float16), "lpa": np.asarray(lpa, np.float16),
+            "V": phone_vectors(emb, ev, len(ref.phones)).astype(np.float16) if emb else None,
+            "slot_se": np.array([[s.start_frame, s.end_frame, s.alt_index] for s in ev.slots], np.int32)}
 
 
 def collect(which: str, threads: int = 2) -> None:
@@ -101,7 +130,7 @@ def collect(which: str, threads: int = 2) -> None:
                 print("skip", r["id"], type(e).__name__, e, file=sys.stderr)
                 continue
             it = item(sc, res)
-            it.update({k: r.get(k) for k in ("id", "group", "source", "units", "label", "text")})
+            it.update({k: r.get(k) for k in ("id", "group", "source", "units", "label", "text", "labels", "side")})
             items.append(it)
         tmp = out.with_suffix(".tmp")
         tmp.write_bytes(pickle.dumps(items))
@@ -119,7 +148,7 @@ def load(which: str, t: str | None = None) -> list[dict]:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("which", choices=("fit", "dev", "devnat", "fitset"))
+    ap.add_argument("which", choices=("fit", "dev", "devnat", "fitset", "devswap", "cvdev"))
     a = ap.parse_args(argv)
     collect(a.which)
 

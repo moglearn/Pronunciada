@@ -305,6 +305,7 @@ class Scorer:
                 warnings.append(f"prosody failed: {type(e).__name__}: {e}")
             timing["prosody"] = (time.perf_counter() - t) * 1e3
         lres = None
+        V19 = None
         if self.length_cal is not None and np.isfinite(ev.L_can) and ev.L_can > -1e5:
             from . import length as _L
 
@@ -314,21 +315,33 @@ class Scorer:
                 from . import contrast_heads as _CH
                 from .sound_emb import phone_vectors as _pv
 
-                hs = _CH.length_evidence(self.lang, self.length_cal, [p.ipa for p in ref.phones],
-                                         _pv(emb, ev, len(ref.phones)))
+                V19 = _pv(emb, ev, len(ref.phones))
+                hs = _CH.length_evidence(self.lang, self.length_cal, [p.ipa for p in ref.phones], V19)
             lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal, head_s=hs)
             timing["length"] = (time.perf_counter() - t) * 1e3
-        from . import word_cal as _WC                    # round 19 (ja): word recalibration inputs
+        from . import word_step as _WS                   # round 19 (ja): word step inputs
 
-        if _WC.params(self.lang) is not None and np.isfinite(ev.L_can) and ev.L_can > -1e5:
-            from .word_match import mismatch
+        wsp = _WS.params(self.lang)
+        if wsp is not None and emb and np.isfinite(ev.L_can) and ev.L_can > -1e5:
+            from . import ja_identity as _JI
 
             t = time.perf_counter()
-            cache["word_mm"] = mismatch(ref, ev)
-            timing["word_match"] = (time.perf_counter() - t) * 1e3
+            if V19 is None:
+                from .sound_emb import phone_vectors as _pv
+
+                V19 = _pv(emb, ev, len(ref.phones))
+            mm = None
+            if wsp["cfg"].get("a_mm"):
+                from .word_match import extra_counts
+
+                mm = extra_counts(ref, ev)
+            cache["word_step_in"] = {"s": _JI.evidence(ref, V19), "cls": _JI.classes(ref), "extra": mm}
+            timing["word_step"] = (time.perf_counter() - t) * 1e3
         cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav,   # f0 / wav: coaching only
                      length=lres)
+        t = time.perf_counter()
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
+        timing["assemble"] = (time.perf_counter() - t) * 1e3
         timing["total"] = (time.perf_counter() - t_all) * 1e3
         res.timing_ms = {k: round(v, 3) for k, v in timing.items()}
         return res
@@ -553,7 +566,8 @@ class Scorer:
                     from . import length as _L
 
                     p_len = _L.word_factor(self.length_cal, lv, s)
-                    prob *= p_len
+                    if c.get("word_step_in") is None:
+                        prob *= p_len
             p_con = None                 # round 18: word-level contrast factor (pronunciada.contrast_word)
             if self.contrast_word is not None and c.get("contrast_z") is not None:
                 from . import contrast_word as _CW
@@ -566,22 +580,22 @@ class Scorer:
                 prob, om = prob * present, present < 0.5
             else:
                 present, om = None, bool(omitted[wi])
+            wsi = c.get("word_step_in")
+            if wsi is not None:
+                # round 19 (ja): capped two-sided step on the word log-odds (pronunciada.word_step);
+                # the length evidence enters here instead of through the round-15 factor
+                from . import length as _L
+                from . import word_step as _WS
+
+                P19 = _WS.params(self.lang)
+                lv = [x.length_prob for x in ph if x.length_prob is not None]
+                zlen = min(math.log(max(x, 1e-6) / max(1 - x, 1e-6)) for x in lv) if lv else None
+                st19 = _WS.step(P19, _WS.word_s(P19, ref, w, wsi["s"], wsi["cls"]), zlen,
+                                wsi["extra"][wi] if wsi["extra"] is not None else 0)
+                prob = _WS.apply(prob, st19)
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
                                     present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))
-        from . import word_cal as _WC
-
-        wc = _WC.params(self.lang)
-        if wc is not None and c.get("word_mm") is not None and words:
-            # round 19 (ja): one recalibrated word probability from the same pieces (word_cal.py)
-            lmin = []
-            for w in words:
-                lv = [x.length_prob for x in w.phones if x.length_prob is not None]
-                lmin.append(min(_WC._logit(x) for x in lv) if lv else None)
-            feats = _WC.rows([w.sounds_prob for w in words], lmin, [w.contrast_prob for w in words],
-                             [w.present_prob for w in words], c["word_mm"], c["W"])
-            for w, p in zip(words, _WC.probs(wc, feats)):
-                w.prob = float(p)
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))
         flu = float(np.clip(c["sent"]["reg_fluency"][0] / 10.0, 0.0, 1.0))

@@ -163,8 +163,10 @@ def miscue_items(result, sound_items: list[dict], cfg: dict) -> list[dict]:
     by_word: dict[int, list] = {}
     # long / short sounds count only at the "careful" length threshold, so natives are rarely flagged
     from .length import params as _length_params
-    co = (_length_params(c["ref"].lang) or {}).get("coach")
-    len_thr = co["thresholds"]["careful"] if co else -1.0
+    lp = _length_params(c["ref"].lang) or {}
+    co = lp.get("coach")
+    # round 19 (ja, "lenmodel" on): the model's own flag threshold, chosen on dev
+    len_thr = lp["flag"] if "flag" in lp and lp.get("r19") else co["thresholds"]["careful"] if co else -1.0
 
     def confident_length(it) -> bool:
         return any(p.length_prob is not None and p.length_prob <= len_thr for p in result.words[it["word_index"]].phones)
