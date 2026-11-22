@@ -1,0 +1,800 @@
+{
+ "auc": 0.9546356033452807,
+ "fa80": 0.03799283154121864,
+ "thr80": 0.43200000000000005,
+ "n_pos": 90,
+ "n_neg": 1395,
+ "bucket": {
+  "indel": {
+   "n": 20,
+   "auc": 0.9337096774193548,
+   "caught_at_thr80": 14,
+   "median_signal": 0.639
+  },
+  "sub_gross": {
+   "n": 20,
+   "auc": 0.9826344086021506,
+   "caught_at_thr80": 19,
+   "median_signal": 0.8474999999999999
+  },
+  "sub_moderate": {
+   "n": 20,
+   "auc": 0.9719713261648746,
+   "caught_at_thr80": 18,
+   "median_signal": 0.7809999999999999
+  },
+  "sub_subtle": {
+   "n": 20,
+   "auc": 0.9091756272401433,
+   "caught_at_thr80": 11,
+   "median_signal": 0.46
+  },
+  "word_omission": {
+   "n": 10,
+   "auc": 0.9967383512544803,
+   "caught_at_thr80": 10,
+   "median_signal": 0.9895
+  }
+ },
+ "false_alarms": [
+  {
+   "id": "ko-0024",
+   "word": "무더운",
+   "k": 1,
+   "n": 6,
+   "signal": 0.528,
+   "clip": "word_omission",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0024",
+   "word": "토요일날",
+   "k": 3,
+   "n": 6,
+   "signal": 0.715,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0026",
+   "word": "다음에는",
+   "k": 1,
+   "n": 10,
+   "signal": 0.746,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.08695652173913043,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0026",
+   "word": "수가",
+   "k": 8,
+   "n": 10,
+   "signal": 0.478,
+   "clip": "word_omission",
+   "dist_to_edit": 6,
+   "whisper_cer": 0.08695652173913043,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0028",
+   "word": "누워",
+   "k": 5,
+   "n": 12,
+   "signal": 0.952,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0028",
+   "word": "뿐이고",
+   "k": 7,
+   "n": 12,
+   "signal": 0.567,
+   "clip": "word_omission",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0028",
+   "word": "않았다.",
+   "k": 11,
+   "n": 12,
+   "signal": 0.433,
+   "clip": "word_omission",
+   "dist_to_edit": 7,
+   "whisper_cer": 0.0,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0030",
+   "word": "견딜",
+   "k": 7,
+   "n": 9,
+   "signal": 0.649,
+   "clip": "sub_subtle",
+   "dist_to_edit": 5,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0033",
+   "word": "지금",
+   "k": 2,
+   "n": 7,
+   "signal": 0.472,
+   "clip": "indel",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0034",
+   "word": "소나타였습니다.",
+   "k": 8,
+   "n": 9,
+   "signal": 0.698,
+   "clip": "indel",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.08823529411764706,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0041",
+   "word": "이사람이",
+   "k": 4,
+   "n": 6,
+   "signal": 0.48,
+   "clip": "sub_moderate",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0042",
+   "word": "수",
+   "k": 6,
+   "n": 8,
+   "signal": 0.839,
+   "clip": "sub_moderate",
+   "dist_to_edit": 5,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0044",
+   "word": "듯이",
+   "k": 6,
+   "n": 9,
+   "signal": 0.598,
+   "clip": "sub_subtle",
+   "dist_to_edit": 2,
+   "whisper_cer": 0.08695652173913043,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0045",
+   "word": "놀라",
+   "k": 2,
+   "n": 8,
+   "signal": 0.997,
+   "clip": "indel",
+   "dist_to_edit": 2,
+   "whisper_cer": 0.05263157894736842,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0045",
+   "word": "몸을",
+   "k": 6,
+   "n": 8,
+   "signal": 1.0,
+   "clip": "indel",
+   "dist_to_edit": 2,
+   "whisper_cer": 0.05263157894736842,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0045",
+   "word": "피하였다.",
+   "k": 7,
+   "n": 8,
+   "signal": 0.894,
+   "clip": "indel",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.05263157894736842,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0047",
+   "word": "첫째는",
+   "k": 0,
+   "n": 6,
+   "signal": 0.755,
+   "clip": "indel",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.06666666666666667,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0056",
+   "word": "갑작스럽게",
+   "k": 1,
+   "n": 11,
+   "signal": 0.686,
+   "clip": "sub_gross",
+   "dist_to_edit": 6,
+   "whisper_cer": 0.06060606060606061,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0061",
+   "word": "지금",
+   "k": 0,
+   "n": 9,
+   "signal": 0.964,
+   "clip": "sub_subtle",
+   "dist_to_edit": 2,
+   "whisper_cer": 0.0,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0061",
+   "word": "생각",
+   "k": 1,
+   "n": 9,
+   "signal": 1.0,
+   "clip": "sub_subtle",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0061",
+   "word": "그에게",
+   "k": 3,
+   "n": 9,
+   "signal": 0.975,
+   "clip": "sub_subtle",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0061",
+   "word": "싶은",
+   "k": 5,
+   "n": 9,
+   "signal": 0.543,
+   "clip": "sub_subtle",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0061",
+   "word": "많았다.",
+   "k": 8,
+   "n": 9,
+   "signal": 0.587,
+   "clip": "sub_subtle",
+   "dist_to_edit": 6,
+   "whisper_cer": 0.0,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0062",
+   "word": "다만",
+   "k": 0,
+   "n": 9,
+   "signal": 0.733,
+   "clip": "sub_subtle",
+   "dist_to_edit": 8,
+   "whisper_cer": 0.041666666666666664,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0064",
+   "word": "못",
+   "k": 7,
+   "n": 11,
+   "signal": 1.0,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0069",
+   "word": "짐작하였다.",
+   "k": 7,
+   "n": 8,
+   "signal": 0.6,
+   "clip": "sub_moderate",
+   "dist_to_edit": 5,
+   "whisper_cer": 0.0,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0078",
+   "word": "가난한",
+   "k": 1,
+   "n": 12,
+   "signal": 0.76,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.07142857142857142,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0078",
+   "word": "지식이",
+   "k": 10,
+   "n": 12,
+   "signal": 0.672,
+   "clip": "word_omission",
+   "dist_to_edit": 8,
+   "whisper_cer": 0.07142857142857142,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0079",
+   "word": "새삼스럽게",
+   "k": 6,
+   "n": 9,
+   "signal": 0.478,
+   "clip": "indel",
+   "dist_to_edit": 2,
+   "whisper_cer": 0.09090909090909091,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0083",
+   "word": "앞을",
+   "k": 3,
+   "n": 8,
+   "signal": 0.532,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0085",
+   "word": "연못까지",
+   "k": 1,
+   "n": 7,
+   "signal": 0.616,
+   "clip": "sub_subtle",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.1,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0085",
+   "word": "때는",
+   "k": 3,
+   "n": 7,
+   "signal": 0.793,
+   "clip": "sub_subtle",
+   "dist_to_edit": 3,
+   "whisper_cer": 0.1,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0099",
+   "word": "인사를",
+   "k": 0,
+   "n": 7,
+   "signal": 0.454,
+   "clip": "word_omission",
+   "dist_to_edit": 1,
+   "whisper_cer": 0.0,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0103",
+   "word": "나무위키의",
+   "k": 0,
+   "n": 6,
+   "signal": 0.446,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0106",
+   "word": "닭을",
+   "k": 2,
+   "n": 12,
+   "signal": 0.481,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.07407407407407407,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0109",
+   "word": "다른",
+   "k": 0,
+   "n": 5,
+   "signal": 0.625,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0121",
+   "word": "마루에",
+   "k": 1,
+   "n": 8,
+   "signal": 0.475,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.047619047619047616,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0122",
+   "word": "형편이니",
+   "k": 4,
+   "n": 12,
+   "signal": 0.932,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.037037037037037035,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0123",
+   "word": "결혼",
+   "k": 2,
+   "n": 12,
+   "signal": 0.539,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0127",
+   "word": "한곡리가",
+   "k": 0,
+   "n": 8,
+   "signal": 0.651,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.05,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0127",
+   "word": "십",
+   "k": 1,
+   "n": 8,
+   "signal": 0.65,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.05,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0130",
+   "word": "쳐다보았다.",
+   "k": 5,
+   "n": 6,
+   "signal": 0.626,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.09523809523809523,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0136",
+   "word": "네가",
+   "k": 8,
+   "n": 10,
+   "signal": 0.455,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0168",
+   "word": "않은",
+   "k": 2,
+   "n": 12,
+   "signal": 0.562,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0625,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0168",
+   "word": "내지를",
+   "k": 10,
+   "n": 12,
+   "signal": 0.943,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0625,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0177",
+   "word": "열나흗날",
+   "k": 0,
+   "n": 8,
+   "signal": 0.511,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.08695652173913043,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0179",
+   "word": "허무맹랑한",
+   "k": 0,
+   "n": 5,
+   "signal": 0.459,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "first"
+  },
+  {
+   "id": "ko-0186",
+   "word": "수",
+   "k": 2,
+   "n": 6,
+   "signal": 0.864,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.07692307692307693,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0187",
+   "word": "것",
+   "k": 7,
+   "n": 9,
+   "signal": 0.851,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0190",
+   "word": "펼치는",
+   "k": 8,
+   "n": 12,
+   "signal": 0.45,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0190",
+   "word": "좋군요.",
+   "k": 11,
+   "n": 12,
+   "signal": 0.435,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "last"
+  },
+  {
+   "id": "ko-0193",
+   "word": "눈물이",
+   "k": 4,
+   "n": 9,
+   "signal": 0.749,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.06666666666666667,
+   "pos": "mid"
+  },
+  {
+   "id": "ko-0195",
+   "word": "후",
+   "k": 1,
+   "n": 5,
+   "signal": 0.456,
+   "clip": "control",
+   "dist_to_edit": null,
+   "whisper_cer": 0.0,
+   "pos": "mid"
+  }
+ ],
+ "fa_by_clip": {
+  "word_omission": 12,
+  "sub_subtle": 10,
+  "indel": 7,
+  "sub_moderate": 3,
+  "sub_gross": 1,
+  "control": 20
+ },
+ "fa_by_pos": {
+  "mid": 37,
+  "last": 7,
+  "first": 9
+ },
+ "fa_adjacent_to_edit": 12,
+ "fa_whisper_mismatch": 26,
+ "neg_by_pos": {
+  "first": 180,
+  "mid": 1031,
+  "last": 184
+ },
+ "loc_misses": [
+  {
+   "id": "ko-0009",
+   "bucket": "indel",
+   "changed": "않아",
+   "changed_signal": 0.054,
+   "picked": "다른",
+   "picked_signal": 0.101,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0019",
+   "bucket": "sub_moderate",
+   "changed": "들렸다",
+   "changed_signal": 0.084,
+   "picked": "전차",
+   "picked_signal": 0.13,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0028",
+   "bucket": "word_omission",
+   "changed": "해서",
+   "changed_signal": 0.946,
+   "picked": "누워",
+   "picked_signal": 0.952,
+   "adjacent": true
+  },
+  {
+   "id": "ko-0030",
+   "bucket": "sub_subtle",
+   "changed": "법을",
+   "changed_signal": 0.062,
+   "picked": "견딜",
+   "picked_signal": 0.649,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0034",
+   "bucket": "indel",
+   "changed": "씻는",
+   "changed_signal": 0.665,
+   "picked": "소나타였습니다.",
+   "picked_signal": 0.698,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0043",
+   "bucket": "sub_gross",
+   "changed": "국민의",
+   "changed_signal": 0.172,
+   "picked": "직업선택의",
+   "picked_signal": 0.305,
+   "adjacent": true
+  },
+  {
+   "id": "ko-0044",
+   "bucket": "sub_subtle",
+   "changed": "한데.",
+   "changed_signal": 0.483,
+   "picked": "듯이",
+   "picked_signal": 0.598,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0045",
+   "bucket": "indel",
+   "changed": "속을",
+   "changed_signal": 0.864,
+   "picked": "몸을",
+   "picked_signal": 1.0,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0057",
+   "bucket": "indel",
+   "changed": "못하는",
+   "changed_signal": 0.082,
+   "picked": "공부를",
+   "picked_signal": 0.211,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0061",
+   "bucket": "sub_subtle",
+   "changed": "하네",
+   "changed_signal": 0.875,
+   "picked": "생각",
+   "picked_signal": 1.0,
+   "adjacent": true
+  },
+  {
+   "id": "ko-0062",
+   "bucket": "sub_subtle",
+   "changed": "곳입니다.",
+   "changed_signal": 0.223,
+   "picked": "다만",
+   "picked_signal": 0.733,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0064",
+   "bucket": "word_omission",
+   "changed": "소리가",
+   "changed_signal": 0.992,
+   "picked": "못",
+   "picked_signal": 1.0,
+   "adjacent": true
+  },
+  {
+   "id": "ko-0066",
+   "bucket": "indel",
+   "changed": "미련한",
+   "changed_signal": 0.077,
+   "picked": "곡물과",
+   "picked_signal": 0.328,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0069",
+   "bucket": "sub_moderate",
+   "changed": "것을",
+   "changed_signal": 0.458,
+   "picked": "짐작하였다.",
+   "picked_signal": 0.6,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0085",
+   "bucket": "sub_subtle",
+   "changed": "그거",
+   "changed_signal": 0.526,
+   "picked": "때는",
+   "picked_signal": 0.793,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0088",
+   "bucket": "sub_subtle",
+   "changed": "많을",
+   "changed_signal": 0.011,
+   "picked": "따름이요",
+   "picked_signal": 0.041,
+   "adjacent": false
+  },
+  {
+   "id": "ko-0097",
+   "bucket": "sub_subtle",
+   "changed": "비어",
+   "changed_signal": 0.153,
+   "picked": "연돌",
+   "picked_signal": 0.176,
+   "adjacent": false
+  }
+ ],
+ "loc_miss_adjacent": 4
+}

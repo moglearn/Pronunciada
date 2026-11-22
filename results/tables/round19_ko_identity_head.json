@@ -1,0 +1,12 @@
+{
+ "n_train": 585922,
+ "hidden": 512,
+ "epochs": 25,
+ "extra": [
+  "zeroth-train",
+  "zeroth-train2"
+ ],
+ "dev_acc": 0.7917852164448433,
+ "dev_acc_cv": 0.6544298961553155,
+ "dev_acc_fleurs-val": 0.9595351204614863
+}

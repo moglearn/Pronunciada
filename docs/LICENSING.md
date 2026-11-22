@@ -65,6 +65,7 @@ used only to pick between candidates. Datasets that only appear in benchmark tab
 | audio-quality thresholds (constants in `pronunciada/quality.py`) | `bench/coach/audio_gate.py` | FLEURS validation + synthetic degradations, cv-real dev half (Common Voice) (thresholds). |
 | `data/coach/attr_heads.npz` | `bench/coach/fit_r4.py heads` | FLEURS train (training), FLEURS validation (leak check). |
 | `data/coach/contrast_heads.json`, `ko_tense.npz` | `bench/round17/fit.py`, `bench/round18/tense.py` | FLEURS train (training), FLEURS validation (thresholds). |
+| `data/coach/ko_identity.npz`, `data/calib/ko_identity_word.json` | `bench/round19ko/identity_mlp.py`, `bench/round19ko/select.py` | FLEURS ko train + Zeroth-Korean train (OpenSLR 40, CC BY 4.0; training); FLEURS ko validation + Common Voice 22.0 ko (CC0) dev pool with planted text edits (thresholds, selection). |
 | `data/coach/zh_sound.npz` | round 12b (`bench/calib/ompal_sound_emb.py`) | OMPAL dev learners (training). |
 | `data/coach/inventory.json` | front-ends over FLEURS text | FLEURS (text). |
 | `data/cjk/zh_neutral.txt`, `zh_tw_tones.txt` | hand-written | project (Apache-2.0). |

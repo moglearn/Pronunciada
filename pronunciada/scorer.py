@@ -257,7 +257,8 @@ class Scorer:
             timing["audio_check"] = (time.perf_counter() - t) * 1e3
         lpa, fb, emb = self._posteriors(wav, timing)
         t = time.perf_counter()
-        ev = score_reference(lpa, ref)
+        # round 19: Korean also gets the extra-sound (insertion) evidence between sounds (~1 ms)
+        ev = score_reference(lpa, ref, insertion=self.lang == "ko")
         timing["align"] = (time.perf_counter() - t) * 1e3
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             warnings.append("the text is too long for the audio (the expected sounds cannot all fit)")
@@ -285,6 +286,17 @@ class Scorer:
                 capz = _CH.cap_column(self.lang, contrast_ev)
                 if capz is not None:
                     tab["head_cap_z"] = capz
+        ko_id = None
+        if emb and self.lang == "ko":            # round 19: Korean sound-identity evidence (word factor)
+            from . import ko_identity as _KI
+
+            if _KI.enabled():
+                from .sound_emb import phone_vectors as _pv
+
+                Vk = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
+                ko_id = _KI.evidence(ref, Vk)
+                if _KI._word_params().get("form") == "delta":     # round 19 part 2: word log-odds change
+                    ko_id = {"delta": _KI.word_deltas(ref, ev, ko_id, _KI._word_params()), "s": ko_id}
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:
@@ -340,6 +352,7 @@ class Scorer:
         cache["phone_vec"] = phone_vec
         cache["emb"] = emb              # round 4 coaching: attribute heads read the activations (no score uses it)
         cache["contrast_ev"] = contrast_ev  # round 17: per-contrast head evidence (coaching)
+        cache["ko_identity_s"] = ko_id      # round 19: per-sound Korean identity evidence (word factor)
         cache.update(ref=ref, ev=ev, tab=tab)
         cache.update(lpa=lpa, audio=aq)          # read by pronunciada.coach; no score uses them
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
@@ -621,6 +634,20 @@ class Scorer:
                 prob, om = prob * present, present < 0.5
             else:
                 present, om = None, bool(omitted[wi])
+            if c.get("ko_identity_s") is not None:      # round 19: Korean identity factor (pronunciada.ko_identity)
+                from . import ko_identity as _KI
+
+                kid = c["ko_identity_s"]
+                if isinstance(kid, dict):                # "delta" form: shift the final word log-odds
+                    pq = min(max(prob, 1e-6), 1 - 1e-6)
+                    pn = 1.0 / (1.0 + np.exp(-(np.log(pq / (1 - pq)) + kid["delta"][wi])))
+                    p_id = float(pn / pq)
+                else:                                    # first form: knee factor on sounds x present
+                    p_id = _KI.word_factor(_KI._word_params(), kid[w.phones[0]:w.phones[1]], s,
+                                           sounds_prob=sounds)
+                if p_id is not None:
+                    prob *= p_id
+                    p_con = p_id if p_con is None else p_con * p_id
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
                                     present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))

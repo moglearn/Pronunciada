@@ -1,0 +1,330 @@
+{
+ "v2026.10": {
+  "before": {
+   "n_utterances": 190,
+   "n_words": 1485,
+   "n_positive": 90,
+   "n_failed": 0,
+   "roc_auc": 0.9122,
+   "roc_auc_ci": [
+    0.8742,
+    0.9459
+   ],
+   "pr_auc": 0.5934,
+   "fpr_at_recall_50": 0.0108,
+   "fpr_at_recall_80": 0.0839,
+   "fpr_at_recall_80_ci": [
+    0.0449,
+    0.1929
+   ],
+   "localisation_top1": 0.7111,
+   "latency_p50_ms": 111.3,
+   "latency_p95_ms": 157.4,
+   "by_bucket": {
+    "indel": 0.9267,
+    "sub_gross": 0.9817,
+    "sub_moderate": 0.9455,
+    "sub_subtle": 0.7528,
+    "word_omission": 0.9963
+   },
+   "verdicts": {
+    "recall": 0.4889,
+    "precision": 0.2953,
+    "f1": 0.3682,
+    "fa": 0.0753,
+    "recall_by_bucket": {
+     "indel": [
+      10,
+      20
+     ],
+     "sub_gross": [
+      8,
+      20
+     ],
+     "sub_moderate": [
+      9,
+      20
+     ],
+     "sub_subtle": [
+      7,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   }
+  },
+  "after": {
+   "n_utterances": 190,
+   "n_words": 1485,
+   "n_positive": 90,
+   "n_failed": 0,
+   "roc_auc": 0.9567,
+   "roc_auc_ci": [
+    0.9354,
+    0.9769
+   ],
+   "pr_auc": 0.6853,
+   "fpr_at_recall_50": 0.0086,
+   "fpr_at_recall_80": 0.0308,
+   "fpr_at_recall_80_ci": [
+    0.0192,
+    0.0974
+   ],
+   "localisation_top1": 0.8333,
+   "latency_p50_ms": 116.1,
+   "latency_p95_ms": 163.7,
+   "by_bucket": {
+    "indel": 0.9419,
+    "sub_gross": 0.9775,
+    "sub_moderate": 0.9737,
+    "sub_subtle": 0.9137,
+    "word_omission": 0.9965
+   },
+   "verdicts": {
+    "recall": 0.7667,
+    "precision": 0.373,
+    "f1": 0.5018,
+    "fa": 0.0832,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      16,
+      20
+     ],
+     "sub_moderate": [
+      15,
+      20
+     ],
+     "sub_subtle": [
+      16,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   }
+  },
+  "paired": {
+   "auc": {
+    "ci": [
+     0.018,
+     0.0742
+    ],
+    "p_not_better": 0.0
+   },
+   "fa80": {
+    "ci": [
+     -0.1455,
+     -0.0169
+    ],
+    "p_not_better": 0.004
+   },
+   "loc": {
+    "ci": [
+     0.051,
+     0.2
+    ],
+    "p_not_better": 0.0
+   }
+  }
+ },
+ "main_rules": {
+  "before": {
+   "n_utterances": 190,
+   "n_words": 1404,
+   "n_positive": 90,
+   "n_failed": 0,
+   "roc_auc": 0.9152,
+   "roc_auc_ci": [
+    0.8783,
+    0.9488
+   ],
+   "pr_auc": 0.6261,
+   "fpr_at_recall_50": 0.0091,
+   "fpr_at_recall_80": 0.0769,
+   "fpr_at_recall_80_ci": [
+    0.0398,
+    0.1834
+   ],
+   "localisation_top1": 0.7333,
+   "latency_p50_ms": 111.3,
+   "latency_p95_ms": 157.4,
+   "by_bucket": {
+    "indel": 0.9299,
+    "sub_gross": 0.984,
+    "sub_moderate": 0.9487,
+    "sub_subtle": 0.7574,
+    "word_omission": 0.9968
+   },
+   "verdicts": {
+    "recall": 0.4889,
+    "precision": 0.3411,
+    "f1": 0.4018,
+    "fa": 0.0647,
+    "recall_by_bucket": {
+     "indel": [
+      10,
+      20
+     ],
+     "sub_gross": [
+      8,
+      20
+     ],
+     "sub_moderate": [
+      9,
+      20
+     ],
+     "sub_subtle": [
+      7,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   }
+  },
+  "after": {
+   "n_utterances": 190,
+   "n_words": 1404,
+   "n_positive": 90,
+   "n_failed": 0,
+   "roc_auc": 0.96,
+   "roc_auc_ci": [
+    0.9388,
+    0.9793
+   ],
+   "pr_auc": 0.7227,
+   "fpr_at_recall_50": 0.0068,
+   "fpr_at_recall_80": 0.0259,
+   "fpr_at_recall_80_ci": [
+    0.0151,
+    0.091
+   ],
+   "localisation_top1": 0.8667,
+   "latency_p50_ms": 116.1,
+   "latency_p95_ms": 163.7,
+   "by_bucket": {
+    "indel": 0.9465,
+    "sub_gross": 0.9801,
+    "sub_moderate": 0.9764,
+    "sub_subtle": 0.9185,
+    "word_omission": 0.9971
+   },
+   "verdicts": {
+    "recall": 0.7667,
+    "precision": 0.4207,
+    "f1": 0.5433,
+    "fa": 0.0723,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      16,
+      20
+     ],
+     "sub_moderate": [
+      15,
+      20
+     ],
+     "sub_subtle": [
+      16,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   }
+  },
+  "paired": {
+   "auc": {
+    "ci": [
+     0.019,
+     0.0749
+    ],
+    "p_not_better": 0.0
+   },
+   "fa80": {
+    "ci": [
+     -0.1457,
+     -0.0144
+    ],
+    "p_not_better": 0.005
+   },
+   "loc": {
+    "ci": [
+     0.0602,
+     0.2174
+    ],
+    "p_not_better": 0.0
+   }
+  }
+ },
+ "published_not_rerun_here": {
+  "tier1_auc": {
+   "lingolix": {
+    "en": 0.97,
+    "fr": 0.96,
+    "es": 0.97,
+    "de": 0.95,
+    "ja": 0.95,
+    "ko": 0.95
+   },
+   "azure": {
+    "en": 0.94,
+    "fr": 0.91,
+    "es": 0.91,
+    "de": 0.87,
+    "ja": 0.93,
+    "ko": 0.94
+   },
+   "toneperfect": {
+    "en": 0.84,
+    "fr": 0.8,
+    "es": 0.79,
+    "de": 0.79,
+    "ja": 0.55,
+    "ko": 0.67
+   }
+  },
+  "tier1_fa_at_80": {
+   "lingolix": {
+    "en": 0.01,
+    "fr": 0.01,
+    "es": 0.02,
+    "de": 0.02,
+    "ja": 0.05,
+    "ko": 0.03
+   },
+   "azure": {
+    "en": 0.06,
+    "fr": 0.13,
+    "es": 0.14,
+    "de": 0.22,
+    "ja": 0.03,
+    "ko": 0.07
+   },
+   "toneperfect": {
+    "en": 0.26,
+    "fr": 0.26,
+    "es": 0.32,
+    "de": 0.42,
+    "ja": 0.74,
+    "ko": 0.56
+   }
+  }
+ }
+}
