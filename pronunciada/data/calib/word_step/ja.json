@@ -6,7 +6,11 @@
 "a_len": 1.0,
 "k_len": 0.0,
 "a_mm": 0.5,
-"cap": 3.0
+"cap": 3.0,
+"a_long": 0.5,
+"k_long": 0.0,
+"a_ins": 0.25,
+"k_ins": -2.0
 },
 "offset_q": 0.02,
 "offsets": {
@@ -85,5 +89,6 @@
 "a\u02d0|first": -5.121619853973389
 },
 "offset_global": -5.121619853973389,
-"fit_on": "round-19 dev set (Common Voice ja dev + FLEURS validation, planted one-word edits), grid with speaker-grouped 2-fold check; offsets = per class and position 2 % native quantiles of the identity margin on the dev-pool natives"
+"fit_on": "round-19 dev set (Common Voice ja dev + FLEURS validation, planted one-word edits), grid with speaker-grouped 2-fold check; offsets = per class and position 2 % native quantiles of the identity margin on the dev-pool natives",
+"part3": "a_long / a_ins added by coordinate search on dev under the dev guards (bench/round19_ja/stepgrid2.py); a_del and the word duration ratio were tried and did not pass the native guard"
 }

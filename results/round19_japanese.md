@@ -1,5 +1,199 @@
 # Round 19: Japanese word scores on Common Voice style audio
 
+## Final result (round-19 final candidate, commit dfc8ab3; the fourth and last look at the benchmark)
+
+**What ships.** The final candidate is on by default; `PRONUNCIADA_JA_ROUND19=0` restores round 18.
+It is candidate 2 (part 2) plus two new inputs to the word step, both chosen on dev under every dev
+guard:
+
+* **extra-sound evidence:** `llr_ins`, ported from the Korean round-19 `align.py`;
+* **expected-long vowels:** a separate term on the length logit of expected-long vowels.
+
+**Targets: none met.**
+
+| target | result (v2026.10 rules) | met? |
+|---|---|---|
+| AUC ≥ 0.96 | 0.923 | no |
+| FA@80 ≤ 4 % | 9.7 % | no |
+| length items flagged by our own flag ≥ 37 / 40 | 27 | no |
+
+### Side by side
+
+* Lingolix test 1 Japanese runs through the benchmark runner's code path (`bench/round19_ja/lx_run.py`).
+* Intervals: bootstrap over clips.
+* Guards: held-out FLEURS-swap ja test, cv-real ja Test A test half, and the length table on FLEURS
+  test.
+* Candidate 1's benchmark numbers are from `bench/round19_ja/unit_eval.py`, which reproduces the
+  runner. Its main-rules numbers were not computed.
+
+| | round 18 | candidate 1 | candidate 2 | **final** |
+|---|---|---|---|---|
+| **AUC, v2026.10 rules** | 0.846 [0.798, 0.891] | 0.884 [0.839, 0.924] | 0.917 [0.885, 0.948] | **0.923 [0.891, 0.951]** |
+| **FA@80, v2026.10 rules** | 20.1 % [12.7, 37.4] | 16.6 % | 13.4 % [3.6, 26.4] | **9.7 % [3.8, 20.6]** |
+| AUC, main rules | 0.855 | – | 0.925 | **0.930 [0.900, 0.957]** |
+| FA@80, main rules | 18.5 % | – | 11.9 % | **8.3 % [3.1, 19.1]** |
+| length items flagged (own ErrorType) | 19 / 40 | 21 / 40 | 27 / 40 | 27 / 40 |
+| flag recall / precision / false alarms on correct words | 0.56 / 0.41 / 8.4 % | 0.58 / – / 8.7 % | 0.64 / 0.44 / 8.6 % | 0.64 / 0.44 / 8.6 % |
+| length bucket AUC | 0.732 | 0.816 | 0.872 | 0.878 |
+| subtle / moderate / gross | 0.910 / 0.926 / 0.960 | 0.894 / 0.990 / 0.929 | 0.947 / 0.953 / 0.989 | 0.946 / 0.951 / 0.987 |
+| indel | 0.909 | 0.914 | 0.916 | **0.940** |
+| guard: FLEURS-swap far AUC | 0.991 | **0.958 ✗** | 0.995 | 0.996 |
+| guard: FLEURS-swap near AUC | 0.968 | 0.965 | 0.976 | 0.976 |
+| guard: natives below 0.6 (FLEURS-swap; Azure 2.0 %) | 3.27 % | 2.64 % | 2.41 % | 2.69 % |
+| guard: cv-real ja word mean AUC | 0.788 | **0.742 ✗** | 0.803 | **0.810** (+0.022 [0.002, 0.045], p = 0.04) |
+| guard: cv-real ja word min AUC | 0.775 | **0.682 ✗** | 0.791 | 0.795 (+0.020, p = 0.07) |
+| guard: cv-real ja sentence AUC | 0.798 | 0.798 | 0.803 | 0.803 |
+| length table: length-swapped words caught at 5 % native FA | 54.0 % | 55.4 % | 66.0 % | 65.3 % |
+| length table: native word acceptance | 97.06 % | 97.87 % | 97.62 % | 97.12 % |
+| length table sub-row "vowel_length A>B" (words) | 60.1 % | 49.7 % | 45.8 % | **43.8 %** |
+| length table sub-row "vowel_length B>A" (words) | 79.5 % | 71.6 % | 84.1 % | 86.5 % |
+| length table sub-row "gemination A>B" (words) | 8.1 % | 12.0 % | 37.2 % | 33.9 % |
+| length table sub-row "gemination B>A" (words) | 41.9 % | 62.6 % | 78.6 % | 77.4 % |
+| length table: sounds caught | 95.5 % | – | 97.3 % | 97.3 % |
+| added latency (4 threads, dev clips) | – | ≈ 6 ms | +3.0 ms | +4.2 ms (stage sum) |
+
+**Final against round 18 (paired):**
+
+| rules | AUC | FA@80 |
+|---|---|---|
+| v2026.10 | [+0.036, +0.120], p = 0.001 | [−24.2, −0.4] points, p = 0.04 |
+| main | [+0.035, +0.119], p = 0.001 | [−24.0, −0.6] points, p = 0.04 |
+
+**Final against candidate 2 (paired, v2026.10):**
+
+* AUC +0.006 [+0.001, +0.011], p = 0.02;
+* FA@80 [−7.3, +1.2] points, p = 0.50.
+
+**Remaining misses.** At the threshold that catches 80 %, the planted words still above it are:
+
+* 10 length;
+* 4 subtle;
+* 4 indel;
+* 2 moderate.
+
+That threshold now sits at word score 0.960.
+
+Not flagged by our own flag:
+
+* 13 of 40 length items;
+* about half of the subtle swaps.
+
+### Two held-out losses to state plainly
+
+* **The "vowel_length A>B" words sub-row of the length table is below round 18:** 60.1 % → 43.8 %.
+  It already fell in candidate 2 (45.8 %); the final candidate moves it by −2 points.
+  * The other three sub-rows and the total rose (54.0 → 65.3 %).
+  * The direction this sub-row measures is the opposite of the one the dev set showed weakest. On
+    dev, planted "text long, audio short" items rose 0.894 → 0.912 with the new term, and "text
+    short, audio long" stayed at 0.743 → 0.749.
+  * So the loss was not visible on dev and is not explained.
+* **Natives below 0.6 on FLEURS-swap test** are 2.69 % for the final against 2.41 % for candidate 2.
+  Both are better than round 18's 3.27 %.
+
+### Part 3: what was done and what was learnt
+
+**(1) The step fitted properly (log-loss, base log-odds as offset)** (`bench/round19_ja/stepfit.py`).
+
+* **Fit pool.**
+  * The Common Voice ja train split has no speakers outside the fit pool under the round's rules:
+    all 583 are in the pool that trained the head and the length model.
+  * So the fit used the 718 train **clips** the head never saw, from 186 of those speakers. 664
+    survived the planting rules: 359 edited, 305 controls.
+  * Plus FLEURS train (planted edits and controls; the head did see FLEURS train).
+  * Total: 25,262 words, 920 planted.
+* **Inputs.**
+  * identity margins as native z-scores per class;
+  * length logits separately for expected-long vowels, expected-short vowels and consonants;
+  * the counterfactual relative to the expected form;
+  * the word duration ratio;
+  * extra-sound evidence (`llr_ins`, free-decode count);
+  * missing-sound evidence (`llr_del`, present).
+* **Result.** Signed weights, capped at +3.
+
+  | fit | dev AUC |
+  |---|---|
+  | CV clips only | 0.812 |
+  | with FLEURS | 0.826 |
+  | with FLEURS, planted words up-weighted 5× | 0.834 |
+  | with FLEURS, planted words up-weighted 20× | 0.837 |
+  | candidate 2 | 0.862 |
+
+  The two up-weighted fits failed the native guard.
+* **Why the head is under-used.**
+  * It is **not** the pool size, and **not** missing per-class calibration. With z-scores per class
+    and 25k words, the weight on the identity hinge rose (0.08 → 0.24 → 0.40) but stayed small.
+  * The log-loss fit spends its capacity on calibration. The constant pushes every native word up,
+    and the many native words with one low-margin sound make a heavy identity term costly in
+    log-loss even where it helps ranking.
+  * Candidate 2's grid, chosen for dev AUC under the native guard, uses the identity margin much
+    more steeply (1.5 per unit below the class's 2 % native quantile + 2). It ranks better.
+* **So the final candidate keeps candidate 2's grid form.** A coordinate search added the two new
+  terms on dev (`bench/round19_ja/stepgrid2.py`):
+
+  | term | weight chosen | verdict |
+  |---|---|---|
+  | extra-sound evidence | +0.25·min(llr_ins + 2, 0) | chosen |
+  | expected-long vowel length logit | +0.5·min(z_long, 0) | chosen |
+  | missing-sound term (lowest llr_del), any weight | – | failed the native guard |
+  | word-duration ratio term, any weight | – | failed the native guard |
+
+**(2) Length.** The word duration ratio (word against its mora count at the local mora rate, this
+sound counted short) and the 10 ms spectral-stability span were already inputs of the round-2
+length model. The vowel sound-level AUC stayed at 0.972 with them.
+
+Neither the cap nor the 0.03 flag threshold explains the length-table loss:
+
+* The table measures word probabilities, not the flag, so the flag threshold does not enter it.
+* On dev, the expected-long-vowel direction was not the weak one.
+* The new expected-long term raised it on dev but not on the held-out sub-row.
+
+**(3) Extra / missing sounds.**
+
+* `llr_ins` was ported (`pronunciada/align.py` is now the Korean branch's version, with insertion
+  stitching; it is computed for Japanese only).
+* Dev indel AUC rose 0.707 → 0.732; held-out indel rose 0.916 → 0.940.
+* Missing-sound evidence did not pass the native guard.
+
+### Dev numbers of the final candidate
+
+Runtime dumps; `results/tables/round19_ja_devguards.json`.
+
+| dev | round 18 | candidate 2 | final |
+|---|---|---|---|
+| AUC | 0.811 | 0.862 | 0.867 |
+| FA@80 | 29.9 % | 18.4 % | 17.4 % |
+
+Paired, final − candidate 2: AUC +0.006 [+0.003, +0.009], p < 0.001; both speaker folds rose.
+
+Dev guards (all pass against round 18):
+
+| guard | final |
+|---|---|
+| FLEURS-validation natives < 0.5 / < 0.6 | 2.34 / 2.69 % (round 18: 2.11 / 3.52) |
+| CV-dev natives < 0.5 / < 0.6 | 7.87 / 8.46 % (round 18: 8.83 / 10.58) |
+| FLEURS-swap dev far / near AUC | 0.9992 / 0.9786 |
+| cv-real dev half word mean / min AUC | 0.774 / 0.764 |
+
+### Size and latency (Japanese, round 19 in total)
+
+**Size: about 1.07 MB.**
+
+| file | size |
+|---|---|
+| identity head | 0.97 MB |
+| length model | 98 kB |
+| step parameters | 3 kB |
+
+**Latency, round 19 against round 18 (median per stage):**
+
+* 60 dev clips, 4 threads: alignment with insertion +1.7 ms, length +1.7 ms, word step +0.7 ms,
+  assembly +0.2 ms. The stage sum is +4.2 ms.
+* 80 benchmark clips, 2 threads: the stage sum is +5.1 ms.
+* Medians of the total moved by +3.0 to +7.5 ms between runs. The model stage alone moved by
+  ±2.5 ms, because other jobs shared the machine.
+
+## Part 2 (candidate 2)
+
 Two candidates were built this round:
 
 * **Candidate 1 (part 1 below) was not adopted.** It replaced the word score with a learned model
