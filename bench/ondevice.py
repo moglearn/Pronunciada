@@ -87,7 +87,6 @@ def child(system: str, threads: int, clips_file: str) -> None:
         import torch
 
         torch.set_num_threads(threads)
-        torch.backends.mps.is_available = lambda: False
         from openpronounce import audio, phones, speech
 
         opts = {} if system == "openpronounce-default" else {"acoustic": False, "transcription": False,
