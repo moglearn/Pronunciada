@@ -2,6 +2,8 @@
 
 Snapshot of 19 November 2026, Pronunciada 1.0.1. It covers systems built to grade pronunciation: commercial APIs and open-source packages. General speech recognizers (Whisper, wav2vec2 phone recognizers, forced aligners) are not pronunciation systems and are not included here.
 
+> **Note, 22 November 2026.** OpenPronounce 1.0.0 and 1.1.0 were released on 18 and 19 November with new models. Its authors report a correlation of 0.79 between its overall score and the expert scores on speechocean762 (all speakers, sentence known). Pronunciada's sentence total on that test is 0.762. The OpenPronounce rows on this page are for version 0.4.0, so the open-source verdict below has not been checked against the new version yet. A rerun is in progress.
+
 ## Systems
 
 | system | kind | languages | what it returns | how it was compared |
