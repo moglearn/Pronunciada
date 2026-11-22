@@ -1,0 +1,83 @@
+{
+ "vowels_between_voiceless": {
+  "tokens": 600,
+  "measured": 477,
+  "pearson_r": 0.442,
+  "auc_aligner": 0.8925,
+  "auc_independent": 0.8222,
+  "long": {
+   "aligner": {
+    "n": 284,
+    "mean_ms": 125.1,
+    "p10_ms": 80.0,
+    "p50_ms": 120.0,
+    "p90_ms": 180.0
+   },
+   "independent": {
+    "n": 284,
+    "mean_ms": 133.0,
+    "p10_ms": 70.0,
+    "p50_ms": 120.0,
+    "p90_ms": 190.0
+   }
+  },
+  "short": {
+   "aligner": {
+    "n": 193,
+    "mean_ms": 69.0,
+    "p10_ms": 40.0,
+    "p50_ms": 70.0,
+    "p90_ms": 100.0
+   },
+   "independent": {
+    "n": 193,
+    "mean_ms": 82.2,
+    "p10_ms": 40.0,
+    "p50_ms": 70.0,
+    "p90_ms": 115.0
+   }
+  },
+  "label_agreement_at_median_split": 0.771
+ },
+ "voiceless_stops_k_t_p": {
+  "tokens": 600,
+  "measured": 468,
+  "pearson_r": 0.815,
+  "auc_aligner": 0.9723,
+  "auc_independent": 0.908,
+  "geminate": {
+   "aligner": {
+    "n": 290,
+    "mean_ms": 143.8,
+    "p10_ms": 100.0,
+    "p50_ms": 140.0,
+    "p90_ms": 190.0
+   },
+   "independent": {
+    "n": 290,
+    "mean_ms": 95.9,
+    "p10_ms": 45.0,
+    "p50_ms": 95.0,
+    "p90_ms": 145.5
+   }
+  },
+  "single": {
+   "aligner": {
+    "n": 178,
+    "mean_ms": 63.5,
+    "p10_ms": 47.0,
+    "p50_ms": 60.0,
+    "p90_ms": 90.0
+   },
+   "independent": {
+    "n": 178,
+    "mean_ms": 33.2,
+    "p10_ms": 10.0,
+    "p50_ms": 25.0,
+    "p90_ms": 60.0
+   }
+  },
+  "label_agreement_at_median_split": 0.803
+ },
+ "method": "voiced run: 5 ms frames, energy > p95-25 dB and autocorrelation peak >= 0.45 (70-400 Hz); closure: longest run 25 dB below the preceding vowel's peak that overlaps the aligned consonant (gem: Q+release)"
+}

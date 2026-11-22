@@ -1,0 +1,83 @@
+{
+ "excluded_sets": {
+  "lingolix_ja": {
+   "speakers": 184,
+   "clips_listed": 200,
+   "sentences": 300,
+   "clips_by_sentence": 1645,
+   "clips_by_speaker_or_clip": 26293
+  },
+  "cv_real_test": {
+   "speakers": 370,
+   "clips_listed": 390,
+   "sentences": 390,
+   "clips_by_sentence": 4491,
+   "clips_by_speaker_or_clip": 20951
+  },
+  "cv_real_dev": {
+   "speakers": 371,
+   "clips_listed": 388,
+   "sentences": 388,
+   "clips_by_sentence": 4512,
+   "clips_by_speaker_or_clip": 21775
+  },
+  "r19_cv_dev_pool": {
+   "speakers": 368,
+   "clips_listed": 680,
+   "sentences": 680,
+   "clips_by_sentence": 8189,
+   "clips_by_speaker_or_clip": 22896
+  },
+  "fleurs_validation": {
+   "speakers": 0,
+   "clips_listed": 0,
+   "sentences": 135
+  },
+  "fleurs_test": {
+   "speakers": 0,
+   "clips_listed": 0,
+   "sentences": 321
+  }
+ },
+ "excluded_union": {
+  "speakers": 1194,
+  "clips": 1641,
+  "sentences": 2182
+ },
+ "candidate_clips": 308353,
+ "filter_counts": {
+  "kept_validated": 22424,
+  "excluded_heldout_or_practice": 97650,
+  "down_votes": 25369,
+  "digits_or_latin": 3446,
+  "duration": 338,
+  "kept_other": 159126
+ },
+ "kept": {
+  "other/heldback": {
+   "hours": 15.86,
+   "speakers": 278
+  },
+  "other/train": {
+   "hours": 153.72,
+   "speakers": 3166
+  },
+  "other/validation": {
+   "hours": 13.63,
+   "speakers": 299
+  },
+  "validated/heldback": {
+   "hours": 2.02,
+   "speakers": 265
+  },
+  "validated/train": {
+   "hours": 23.51,
+   "speakers": 3031
+  },
+  "validated/validation": {
+   "hours": 2.1,
+   "speakers": 281
+  }
+ },
+ "hash_test_half_speakers_kept": 2239
+}

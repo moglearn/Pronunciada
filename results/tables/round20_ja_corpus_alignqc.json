@@ -1,0 +1,52 @@
+{
+ "frontend": {
+  "cv22:kept": 181333,
+  "cv22:frontend_warn": 165,
+  "cv22:frontend_error": 39,
+  "cv22:frontend_empty": 13,
+  "fleurs:kept": 2063,
+  "fleurs:frontend_warn": 227,
+  "fleurs:frontend_error": 2,
+  "kokoro:kept": 44342,
+  "kokoro:excluded_sentence": 1,
+  "kokoro:frontend_warn": 445
+ },
+ "kokoro_reading_check": {
+  "disagree": 9975,
+  "disagree_gem": 869,
+  "agree": 34367,
+  "disagree_N": 1834,
+  "disagree_long": 8010
+ },
+ "alignment_by_group": {
+  "cv22_validated+fleurs": {
+   "ok": 22095,
+   "variant:nogem": 505,
+   "variant:short": 1840,
+   "alignment_failed": 28,
+   "mismatch": 1
+  },
+  "kokoro_reading_agree": {
+   "ok": 28913,
+   "variant:short": 4053,
+   "variant:nogem": 1401
+  },
+  "cv22_other": {
+   "ok": 113281,
+   "variant:short": 35928,
+   "variant:nogem": 7992,
+   "alignment_failed": 1701,
+   "mismatch": 20,
+   "variant:spelled": 5
+  }
+ },
+ "alignment_total": {
+  "ok": 164289,
+  "variant:nogem": 9898,
+  "variant:short": 41821,
+  "alignment_failed": 1729,
+  "mismatch": 21,
+  "variant:spelled": 5
+ },
+ "note": "variant:<x> = the aligner preferred a non-canonical pronunciation (short: a long vowel shortened; nogem: geminate closure dropped; spelled: ou/ei spelling form) -> utterance dropped; alignment_failed = no alignment within beam 100 / retry 400; mismatch = word and phone tiers inconsistent. Kokoro clips whose own reading disagrees with the front-end on the number of long vowels / geminates / N were not aligned."
+}
