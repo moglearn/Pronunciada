@@ -40,6 +40,8 @@ CMUBYE has the same shape: English only, per-sound scores only. Its scoring head
 
 **Lingolix and TonePerfect**: results on the [Lingolix benchmark](https://github.com/lingolix/pronunciation-benchmark) (v2026.10). Lingolix built it and is one of the vendors it compares. The Lingolix, Azure and TonePerfect figures are the ones Lingolix published, rounded and without intervals. Pronunciada's figures are from our run on the same items, with 95% intervals. Full method: [third_party_lingolix.md](third_party_lingolix.md).
 
+> **Update, 22 November 2026.** Lingolix has since been measured by us through its API (model version 2026-11) on the same 1,700 recordings: [lingolix_live.md](lingolix_live.md). Its measured figures are at or above the published ones in the tables below (German 0.973 and 1.0%, Korean 0.964 and 2.4%, Japanese 0.951 and 3.2%, 38 of 40 length errors). The Pronunciada column on that page is the current `main` branch, not 1.0.2. On it, the two systems are not significantly different in French, Spanish, German and Korean or on the English learner test; Lingolix is significantly ahead on English false alarms and in Japanese (false alarms and length errors).
+
 Test 1: native recordings in which one word of the text was changed. Word-level AUC, higher is better.
 
 | | Pronunciada | Lingolix | Azure | TonePerfect |

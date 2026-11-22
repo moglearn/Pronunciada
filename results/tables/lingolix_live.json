@@ -15,15 +15,15 @@
    "content_type": "audio/wav"
   },
   "model_versions": {
-   "2026-11": 200
+   "2026-11": 1700
   },
   "mixed_model_versions": false,
   "version_headers": {},
   "test_dates_utc": [
    "2026-11-22T16:06:24Z",
-   "2026-11-22T16:09:59Z"
+   "2026-11-22T18:55:28Z"
   ],
-  "responses_used": 200
+  "responses_used": 1700
  },
  "pronunciada": {
   "outputs_from": "$PRONUNCIADA_CACHE/round19/integrator/frozen_cache",
@@ -37,12 +37,410 @@
   "adapter": "vendors.lingolix of lingolix/pronunciation-benchmark (identical at v2026.10 and main f8750aa)"
  },
  "git": {
-  "commit": "be8155222e06e19acc95d255d8f9543a43062541",
+  "commit": "d7434aa0d70ce5aa38402c02ccdfaa1f02045798",
   "dirty": true
  },
- "made_utc": "2026-11-22T16:47:59Z",
+ "made_utc": "2026-11-22T18:56:01Z",
  "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 utterance resamples (test 1), speaker resamples (test 2), cluster resamples (fleurs-swap), seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
  "tier1": {
+  "en": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.7667,
+    "precision": 0.371,
+    "f1": 0.5,
+    "fa": 0.0724,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      18,
+      20
+     ],
+     "sub_moderate": [
+      18,
+      20
+     ],
+     "sub_subtle": [
+      11,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9768,
+     "ci": [
+      0.9634,
+      0.9882
+     ]
+    },
+    "lingolix": {
+     "value": 0.982,
+     "ci": [
+      0.9661,
+      0.9925
+     ]
+    },
+    "delta": -0.0052,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0197,
+     0.0131
+    ],
+    "p": 0.4895,
+    "published": 0.97
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0247,
+     "ci": [
+      0.0103,
+      0.0387
+     ]
+    },
+    "lingolix": {
+     "value": 0.008,
+     "ci": [
+      0.0037,
+      0.0171
+     ]
+    },
+    "delta": 0.0167,
+    "n_common": 190,
+    "delta_ci": [
+     0.0025,
+     0.0276
+    ],
+    "p": 0.02,
+    "published": 0.01
+   }
+  },
+  "fr": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.9667,
+    "precision": 0.3118,
+    "f1": 0.4715,
+    "fa": 0.1129,
+    "recall_by_bucket": {
+     "indel": [
+      17,
+      20
+     ],
+     "sub_gross": [
+      20,
+      20
+     ],
+     "sub_moderate": [
+      20,
+      20
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.8667,
+    "precision": 0.4105,
+    "f1": 0.5571,
+    "fa": 0.0659,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      19,
+      20
+     ],
+     "sub_moderate": [
+      19,
+      20
+     ],
+     "sub_subtle": [
+      18,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.96,
+     "ci": [
+      0.9239,
+      0.987
+     ]
+    },
+    "lingolix": {
+     "value": 0.9682,
+     "ci": [
+      0.9465,
+      0.986
+     ]
+    },
+    "delta": -0.0082,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0424,
+     0.0176
+    ],
+    "p": 0.5854,
+    "published": 0.96
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0165,
+     "ci": [
+      0.0093,
+      0.031
+     ]
+    },
+    "lingolix": {
+     "value": 0.0153,
+     "ci": [
+      0.0095,
+      0.0301
+     ]
+    },
+    "delta": 0.0012,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0081,
+     0.0141
+    ],
+    "p": 0.8531,
+    "published": 0.01
+   }
+  },
+  "es": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.9778,
+    "precision": 0.3577,
+    "f1": 0.5238,
+    "fa": 0.0958,
+    "recall_by_bucket": {
+     "indel": [
+      19,
+      20
+     ],
+     "sub_gross": [
+      20,
+      20
+     ],
+     "sub_moderate": [
+      20,
+      20
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ],
+     "word_omission": [
+      9,
+      10
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.8333,
+    "precision": 0.3606,
+    "f1": 0.5034,
+    "fa": 0.0806,
+    "recall_by_bucket": {
+     "indel": [
+      17,
+      20
+     ],
+     "sub_gross": [
+      19,
+      20
+     ],
+     "sub_moderate": [
+      17,
+      20
+     ],
+     "sub_subtle": [
+      13,
+      20
+     ],
+     "word_omission": [
+      9,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9854,
+     "ci": [
+      0.976,
+      0.9926
+     ]
+    },
+    "lingolix": {
+     "value": 0.9769,
+     "ci": [
+      0.9566,
+      0.9909
+     ]
+    },
+    "delta": 0.0084,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0028,
+     0.0244
+    ],
+    "p": 0.1838,
+    "published": 0.97
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0139,
+     "ci": [
+      0.0075,
+      0.0228
+     ]
+    },
+    "lingolix": {
+     "value": 0.0115,
+     "ci": [
+      0.006,
+      0.0189
+     ]
+    },
+    "delta": 0.0024,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0036,
+     0.0081
+    ],
+    "p": 0.4615,
+    "published": 0.02
+   }
+  },
+  "de": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.4333,
+    "precision": 0.65,
+    "f1": 0.52,
+    "fa": 0.0135,
+    "recall_by_bucket": {
+     "indel": [
+      9,
+      20
+     ],
+     "sub_gross": [
+      10,
+      20
+     ],
+     "sub_moderate": [
+      6,
+      20
+     ],
+     "sub_subtle": [
+      4,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.967,
+     "ci": [
+      0.9445,
+      0.985
+     ]
+    },
+    "lingolix": {
+     "value": 0.9725,
+     "ci": [
+      0.9508,
+      0.9887
+     ]
+    },
+    "delta": -0.0055,
+    "n_common": 190,
+    "delta_ci": [
+     -0.029,
+     0.0189
+    ],
+    "p": 0.6573,
+    "published": 0.95
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0205,
+     "ci": [
+      0.0092,
+      0.0542
+     ]
+    },
+    "lingolix": {
+     "value": 0.0103,
+     "ci": [
+      0.0038,
+      0.0605
+     ]
+    },
+    "delta": 0.0103,
+    "n_common": 190,
+    "delta_ci": [
+     -0.019,
+     0.0359
+    ],
+    "p": 0.1958,
+    "published": 0.02
+   }
+  },
   "ja": {
    "n_items": 200,
    "lingolix_answered": 200,
@@ -152,9 +550,496 @@
     "p": 0.032,
     "published": 0.05
    }
+  },
+  "ko": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.7667,
+    "precision": 0.373,
+    "f1": 0.5018,
+    "fa": 0.0832,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      16,
+      20
+     ],
+     "sub_moderate": [
+      15,
+      20
+     ],
+     "sub_subtle": [
+      16,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9567,
+     "ci": [
+      0.9354,
+      0.9769
+     ]
+    },
+    "lingolix": {
+     "value": 0.9641,
+     "ci": [
+      0.9399,
+      0.9842
+     ]
+    },
+    "delta": -0.0075,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0214,
+     0.0075
+    ],
+    "p": 0.2697,
+    "published": 0.95
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0308,
+     "ci": [
+      0.0192,
+      0.0974
+     ]
+    },
+    "lingolix": {
+     "value": 0.0244,
+     "ci": [
+      0.0159,
+      0.052
+     ]
+    },
+    "delta": 0.0065,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0131,
+     0.0589
+    ],
+    "p": 0.6573,
+    "published": 0.03
+   }
   }
  },
  "tier1_main_rules": {
+  "en": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.7667,
+    "precision": 0.4107,
+    "f1": 0.5349,
+    "fa": 0.0637,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      18,
+      20
+     ],
+     "sub_moderate": [
+      18,
+      20
+     ],
+     "sub_subtle": [
+      11,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9809,
+     "ci": [
+      0.9682,
+      0.9912
+     ]
+    },
+    "lingolix": {
+     "value": 0.9843,
+     "ci": [
+      0.9686,
+      0.994
+     ]
+    },
+    "delta": -0.0034,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0177,
+     0.0142
+    ],
+    "p": 0.6134,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0193,
+     "ci": [
+      0.0063,
+      0.0322
+     ]
+    },
+    "lingolix": {
+     "value": 0.0064,
+     "ci": [
+      0.0031,
+      0.013
+     ]
+    },
+    "delta": 0.0129,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0006,
+     0.0238
+    ],
+    "p": 0.0879,
+    "published": null
+   }
+  },
+  "fr": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.9667,
+    "precision": 0.3973,
+    "f1": 0.5631,
+    "fa": 0.0845,
+    "recall_by_bucket": {
+     "indel": [
+      17,
+      20
+     ],
+     "sub_gross": [
+      20,
+      20
+     ],
+     "sub_moderate": [
+      20,
+      20
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.8667,
+    "precision": 0.4671,
+    "f1": 0.607,
+    "fa": 0.057,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      19,
+      20
+     ],
+     "sub_moderate": [
+      19,
+      20
+     ],
+     "sub_subtle": [
+      18,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9626,
+     "ci": [
+      0.9265,
+      0.9892
+     ]
+    },
+    "lingolix": {
+     "value": 0.9706,
+     "ci": [
+      0.9492,
+      0.9883
+     ]
+    },
+    "delta": -0.008,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0422,
+     0.0178
+    ],
+    "p": 0.5994,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0115,
+     "ci": [
+      0.0059,
+      0.0225
+     ]
+    },
+    "lingolix": {
+     "value": 0.0128,
+     "ci": [
+      0.007,
+      0.0218
+     ]
+    },
+    "delta": -0.0013,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0074,
+     0.0087
+    ],
+    "p": 0.967,
+    "published": null
+   }
+  },
+  "es": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": 0.9778,
+    "precision": 0.4171,
+    "f1": 0.5847,
+    "fa": 0.0784,
+    "recall_by_bucket": {
+     "indel": [
+      19,
+      20
+     ],
+     "sub_gross": [
+      20,
+      20
+     ],
+     "sub_moderate": [
+      20,
+      20
+     ],
+     "sub_subtle": [
+      20,
+      20
+     ],
+     "word_omission": [
+      9,
+      10
+     ]
+    }
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.8333,
+    "precision": 0.3989,
+    "f1": 0.5396,
+    "fa": 0.0721,
+    "recall_by_bucket": {
+     "indel": [
+      17,
+      20
+     ],
+     "sub_gross": [
+      19,
+      20
+     ],
+     "sub_moderate": [
+      17,
+      20
+     ],
+     "sub_subtle": [
+      13,
+      20
+     ],
+     "word_omission": [
+      9,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9873,
+     "ci": [
+      0.9785,
+      0.9941
+     ]
+    },
+    "lingolix": {
+     "value": 0.9799,
+     "ci": [
+      0.959,
+      0.9938
+     ]
+    },
+    "delta": 0.0073,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0037,
+     0.0233
+    ],
+    "p": 0.2837,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0102,
+     "ci": [
+      0.0044,
+      0.0184
+     ]
+    },
+    "lingolix": {
+     "value": 0.0077,
+     "ci": [
+      0.0032,
+      0.0139
+     ]
+    },
+    "delta": 0.0026,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0019,
+     0.0071
+    ],
+    "p": 0.4136,
+    "published": null
+   }
+  },
+  "de": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.4333,
+    "precision": 0.6964,
+    "f1": 0.5342,
+    "fa": 0.0115,
+    "recall_by_bucket": {
+     "indel": [
+      9,
+      20
+     ],
+     "sub_gross": [
+      10,
+      20
+     ],
+     "sub_moderate": [
+      6,
+      20
+     ],
+     "sub_subtle": [
+      4,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.9682,
+     "ci": [
+      0.9456,
+      0.9861
+     ]
+    },
+    "lingolix": {
+     "value": 0.9759,
+     "ci": [
+      0.9541,
+      0.9914
+     ]
+    },
+    "delta": -0.0076,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0307,
+     0.0167
+    ],
+    "p": 0.5534,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0196,
+     "ci": [
+      0.0088,
+      0.0478
+     ]
+    },
+    "lingolix": {
+     "value": 0.0061,
+     "ci": [
+      0.002,
+      0.0478
+     ]
+    },
+    "delta": 0.0135,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0141,
+     0.0355
+    ],
+    "p": 0.1279,
+    "published": null
+   }
+  },
   "ja": {
    "n_items": 200,
    "lingolix_answered": 200,
@@ -264,6 +1149,95 @@
     "p": 0.02,
     "published": null
    }
+  },
+  "ko": {
+   "n_items": 200,
+   "lingolix_answered": 200,
+   "lingolix_failed_or_missing": 0,
+   "pronunciada_failed": 0,
+   "lingolix_verdicts": {
+    "recall": null,
+    "precision": null,
+    "f1": null,
+    "fa": null,
+    "recall_by_bucket": {}
+   },
+   "pronunciada_verdicts": {
+    "recall": 0.7667,
+    "precision": 0.4207,
+    "f1": 0.5433,
+    "fa": 0.0723,
+    "recall_by_bucket": {
+     "indel": [
+      12,
+      20
+     ],
+     "sub_gross": [
+      16,
+      20
+     ],
+     "sub_moderate": [
+      15,
+      20
+     ],
+     "sub_subtle": [
+      16,
+      20
+     ],
+     "word_omission": [
+      10,
+      10
+     ]
+    }
+   },
+   "roc_auc": {
+    "pronunciada": {
+     "value": 0.96,
+     "ci": [
+      0.9388,
+      0.9793
+     ]
+    },
+    "lingolix": {
+     "value": 0.9677,
+     "ci": [
+      0.9439,
+      0.9868
+     ]
+    },
+    "delta": -0.0078,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0213,
+     0.0068
+    ],
+    "p": 0.2577,
+    "published": null
+   },
+   "fpr_at_recall_80": {
+    "pronunciada": {
+     "value": 0.0259,
+     "ci": [
+      0.0151,
+      0.091
+     ]
+    },
+    "lingolix": {
+     "value": 0.0205,
+     "ci": [
+      0.0128,
+      0.0432
+     ]
+    },
+    "delta": 0.0053,
+    "n_common": 190,
+    "delta_ci": [
+     -0.0112,
+     0.058
+    ],
+    "p": 0.5874,
+    "published": null
+   }
   }
  },
  "ja_length_caught": {
@@ -280,6 +1254,60 @@
   "p": 0.002,
   "published": 37
  },
- "tier2": {},
+ "tier2": {
+  "pcc_word": {
+   "pronunciada": {
+    "value": 0.5805,
+    "ci": [
+     0.4889,
+     0.644
+    ]
+   },
+   "lingolix": {
+    "value": 0.5269,
+    "ci": [
+     0.4004,
+     0.63
+    ]
+   },
+   "delta": 0.0536,
+   "n_common": 500,
+   "delta_ci": [
+    -0.0285,
+    0.1282
+   ],
+   "p": 0.2358,
+   "published": 0.51
+  },
+  "pcc_utterance": {
+   "pronunciada": {
+    "value": 0.7879,
+    "ci": [
+     0.7055,
+     0.8471
+    ]
+   },
+   "lingolix": {
+    "value": 0.7125,
+    "ci": [
+     0.5753,
+     0.792
+    ]
+   },
+   "delta": 0.0754,
+   "n_common": 500,
+   "delta_ci": [
+    -0.0143,
+    0.1739
+   ],
+   "p": 0.0999,
+   "published": 0.74
+  },
+  "counts": {
+   "n_items": 500,
+   "lingolix_failed_or_missing": 0,
+   "lingolix_word_coverage": 1.0
+  }
+ },
  "fleurs_swap": {}
 }
