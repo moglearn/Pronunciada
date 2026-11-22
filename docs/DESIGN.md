@@ -197,7 +197,7 @@ call actually does today:
       factor's inputs;
     - instead of the length factor, a capped two-sided step moves the word log-odds
       (`word_step.py`); its evidence is the identity head (`ja_identity.py`), the length logit and
-      extra heard sounds (`word_match.py`);
+      extra heard sounds (`word_match.py`, and `llr_ins` of `align.py`);
     - the front-end merges repeated vowel morae into one long vowel;
     - the length labels judge consonants across word boundaries.
 
