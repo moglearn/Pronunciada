@@ -182,6 +182,9 @@ class JaG2P(G2P):
             wd = Wd(text=text[sp[0]:sp[1]] or wl[wi]["string"], span=sp)
             wmap[sp] = widx[wi] = wd
             words.append(wd)
+        from ..ja_round19 import on as _r19
+
+        merge_on = _r19("merge")
         n = len(recs)
         i = 0
         pending_gem: dict | None = None
@@ -211,15 +214,23 @@ class JaG2P(G2P):
                     last_syl.phones.append(p)
                 i += 1
                 continue
+            # round 19: a bare vowel mora repeating the previous mora's vowel inside the same word
+            # is said as one long vowel (場合 バアイ [baːi], 思惟 シイ [ʃiː], 大きい オーキイ
+            # [oːkiː]); written as ー would be, so the length channel judges it as long
+            rep = (merge_on and not cons and vow in VOW and pending_gem is None and last_syl is not None
+                   and last_rec is not None and last_rec["w"] == r["w"] and not r["pause"]
+                   and not (lab is not None and lab[4])
+                   and next((p.ipa for p in last_syl.phones if p.nucleus), "") == VOW[vow])
             # ー (long vowel): merge into the previous mora's nucleus
-            if kana == "ー" and last_syl is not None and last_rec is not None and not r["pause"]:
+            if (kana == "ー" or rep) and last_syl is not None and last_rec is not None and not r["pause"]:
                 nuc = next(p for p in last_syl.phones if p.nucleus)
                 if not nuc.ipa.endswith("ː"):
                     base = nuc.ipa
                     nuc.ipa = base + "ː"
-                    nuc.alts = [(a + "ː" if a and a[-1] not in "ː" else a, pr) for a, pr in nuc.alts if a]
+                    nuc.alts = [(a + "ː" if a and a[-1] not in "ː" else a, pr) for a, pr in nuc.alts
+                                if a and not (rep and a[0] not in "aiueoɯ")]
                     nuc.alt(base, -0.7)                  # shortened in fast speech
-                    spelled = self._spelled_long(last_rec, base)
+                    spelled = None if rep else self._spelled_long(last_rec, base)
                     if spelled:
                         nuc.alt(spelled, -1.0)           # spelling-pronunciation おう -> [ou], えい -> [ei]
                 last_syl.text += kana

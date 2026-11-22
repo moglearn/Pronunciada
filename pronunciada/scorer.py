@@ -318,6 +318,14 @@ class Scorer:
                                          _pv(emb, ev, len(ref.phones)))
             lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal, head_s=hs)
             timing["length"] = (time.perf_counter() - t) * 1e3
+        from . import word_cal as _WC                    # round 19 (ja): word recalibration inputs
+
+        if _WC.params(self.lang) is not None and np.isfinite(ev.L_can) and ev.L_can > -1e5:
+            from .word_match import mismatch
+
+            t = time.perf_counter()
+            cache["word_mm"] = mismatch(ref, ev)
+            timing["word_match"] = (time.perf_counter() - t) * 1e3
         cache.update(prosody=pros, dur=dur, warnings=warnings, f0=trk, wav=wav,   # f0 / wav: coaching only
                      length=lres)
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
@@ -561,6 +569,19 @@ class Scorer:
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
                                     present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))
+        from . import word_cal as _WC
+
+        wc = _WC.params(self.lang)
+        if wc is not None and c.get("word_mm") is not None and words:
+            # round 19 (ja): one recalibrated word probability from the same pieces (word_cal.py)
+            lmin = []
+            for w in words:
+                lv = [x.length_prob for x in w.phones if x.length_prob is not None]
+                lmin.append(min(_WC._logit(x) for x in lv) if lv else None)
+            feats = _WC.rows([w.sounds_prob for w in words], lmin, [w.contrast_prob for w in words],
+                             [w.present_prob for w in words], c["word_mm"], c["W"])
+            for w, p in zip(words, _WC.probs(wc, feats)):
+                w.prob = float(p)
         zl, zs = c["sent_zl"], min(c["sent_zs"], c["sent_zl"])
         sp = float(C.sigmoid(C.blend_logit(zl, zs, s)))
         flu = float(np.clip(c["sent"]["reg_fluency"][0] / 10.0, 0.0, 1.0))

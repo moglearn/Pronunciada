@@ -33,6 +33,7 @@ from importlib import resources
 
 import numpy as np
 
+from .ja_round19 import on as _r19
 from .text.ipa import is_vowel, token_ids
 
 LANGS = ("ja", "it", "de")
@@ -60,22 +61,60 @@ def _word(ref, i):
     return ref.phones[i].word
 
 
+_MERGING = {("e", "i"), ("o", "u"), ("o", "ɯ")}
+
+
+def _merging_pair(P, i, prev_v, next_v) -> bool:
+    """Is vowel i part of a vowel pair natives often say as one long vowel (e+i, o+u, V+V)?"""
+    a = P[i].ipa
+    if next_v:
+        b = P[i + 1].ipa
+        if (a, b) in _MERGING or a == b.replace("ː", ""):
+            return True
+    if prev_v:
+        b = P[i - 1].ipa
+        if (b, a) in _MERGING or b.replace("ː", "") == a:
+            return True
+    return False
+
+
+def _joined(ref, w: int) -> bool:
+    """Word w follows word w - 1 with nothing but spaces between them in the text."""
+    if w <= 0:
+        return False
+    a = ref.words[w - 1].char_span[1]
+    b = ref.words[w].char_span[0]
+    return b >= a and not ref.text[a:b].strip()
+
+
 def labels(ref) -> list[str | None]:
     """'long' / 'short' / None per reference sound (see the module docstring)."""
     lang = ref.lang
     P = ref.phones
     n = len(P)
     out: list[str | None] = [None] * n
+    r19 = lang == "ja" and _r19("labels")
     for i, p in enumerate(P):
         if getattr(p, "length", None) in ("long", "short"):
             out[i] = p.length
             continue
         prev_v = i > 0 and _word(ref, i - 1) == p.word and is_vowel(P[i - 1].ipa)
         next_v = i + 1 < n and _word(ref, i + 1) == p.word and is_vowel(P[i + 1].ipa)
+        if r19 and not is_vowel(p.ipa) and not prev_v and i > 0 and is_vowel(P[i - 1].ipa) \
+                and _word(ref, i - 1) == p.word - 1 and next_v and _joined(ref, p.word):
+            # round 19: a consonant right after the previous word's vowel, inside a phrase (no
+            # punctuation between): 行っ|た has its っ on た, 変え|て its て
+            prev_v = True
         if lang == "ja":
             if p.is_nucleus and is_vowel(p.ipa) and len(p.ipa.replace("ː", "")) == 1:
                 if p.ipa.endswith("ː"):
                     out[i] = "long"
+                elif r19 and ref.words[p.word].syllables[1] - ref.words[p.word].syllables[0] > 1 \
+                        and not _merging_pair(P, i, prev_v, next_v):
+                    # round 19: a short vowel next to another vowel is judged unless the pair is
+                    # one natives say as a long vowel (e+i, o+u, or the same vowel twice): 倍 バイ
+                    # against 場合 バアイ, 恋 コイ against 行為 コーイ
+                    out[i] = "short"
                 elif not (prev_v or next_v) and ref.words[p.word].syllables[1] - ref.words[p.word].syllables[0] > 1:
                     # a short vowel next to another vowel of the same word is not judged:
                     # sequences such as えい / おお / いう are often said as one long vowel; nor
