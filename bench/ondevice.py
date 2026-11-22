@@ -15,7 +15,9 @@ Protocol, identical for every system:
   * threads: torch.set_num_threads(n) and OMP/MKL env for torch systems, Scorer(threads=n) for
     Pronunciada (ONNX Runtime intra-op threads); GPU / MPS never used;
   * peak memory = maximum resident set size of the process (getrusage), read after the last clip;
-  * weights on disk = the model files the system reads (listed in the output), package data included.
+  * weights on disk = the model files the system reads (listed in the output), package data included;
+  * the machine's 1-minute load average before and after the run is recorded (the machine is shared:
+    a run made under load is slower, so compare runs made at similar load).
 Systems:
   pronunciada-fp32 / pronunciada-int8   pronunciada.Scorer("en", precision=...), default settings.
   openpronounce-default                 OpenPronounce 1.1.0 compare_audio_with_text defaults (both
@@ -181,6 +183,7 @@ def measure(system: str, threads: int, n: int) -> dict:
                "--child", system, "--threads", thr, "--clips", str(cf)]
         if system.startswith("pronunciada"):
             cmd = [py, "-m", "bench.ondevice", "--child", system, "--threads", thr, "--clips", str(cf)]
+        load_before = os.getloadavg()[0]
         t_launch = time.time()
         p = subprocess.run(cmd, capture_output=True, text=True, env=env, cwd=cwd)
     ev = {}
@@ -202,16 +205,17 @@ def measure(system: str, threads: int, n: int) -> dict:
             "weights_mb": sum(f.stat().st_size for f in files) / 1e6,
             "weight_files": [{"file": f.name, "mb": round(f.stat().st_size / 1e6, 1)} for f in files
                              if f.stat().st_size > 5e6],
-            "machine": machine, "date": time.strftime("%Y-%m-%d %H:%M"), "per_clip_s": [round(x, 4) for x in t]}
+            "machine": machine, "load_avg_1min_before": load_before, "load_avg_1min_after": os.getloadavg()[0], "date": time.strftime("%Y-%m-%d %H:%M"), "per_clip_s": [round(x, 4) for x in t]}
 
 
 def report() -> None:
     rows = [json.loads(p.read_text()) for p in sorted(OUT.glob("*.json"))]
-    print("| system | threads | load s | cold start s | p50 s/clip | p95 s/clip | RTF | peak RSS MB | weights MB |")
-    print("|---|--:|--:|--:|--:|--:|--:|--:|--:|")
+    print("| system | threads | load s | cold start s | p50 s/clip | p95 s/clip | RTF | peak RSS MB | weights MB | machine load |")
+    print("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|")
     for r in sorted(rows, key=lambda r: (SYSTEMS.index(r["system"]), r["threads"])):
         print(f"| {r['system']} | {r['threads']} | {r['load_s']:.1f} | {r['cold_start_s']:.1f} | {r['p50_s']:.3f} | "
-              f"{r['p95_s']:.3f} | {r['rtf']:.3f} | {r['peak_rss_mb']:.0f} | {r['weights_mb']:.0f} |")
+              f"{r['p95_s']:.3f} | {r['rtf']:.3f} | {r['peak_rss_mb']:.0f} | {r['weights_mb']:.0f} | "
+              f"{r.get('load_avg_1min_before', float('nan')):.1f} |")
 
 
 def main(argv=None) -> None:
