@@ -1,6 +1,20 @@
 # Round 19: German false flags on the Lingolix benchmark
 
-**Current result (part 2, section 8; candidate 2 = commit fa3232c; the third look at the benchmark).**
+**Final result (round 3, section 9; candidate 3 = commit 9110699; the fourth and last look at the
+benchmark, no tuning after it).** On Lingolix test 1, German, word AUC is **0.9670** [0.944, 0.985]
+and FA@80 is **2.05 %** [0.92, 5.42]. Paired against the baseline: ΔAUC +0.027 [+0.015, +0.042] and
+ΔFA@80 −4.62 pt [−9.27, −1.28], both p < 0.001. Under the later "main" rules: 0.9682 and 1.96 %.
+
+* AUC ≥ 0.96: **met**.
+* FA@80 ≤ 1.5 %: **not met**. Lingolix published 2 %.
+* Known, accepted cost: the planted stress-error word AUC on FLEURS test falls by 0.023 (hit@5 %
+  by 6.5 pt), the price of the reliability-weighted stress factor.
+* Every other German guard row on FLEURS test is level or better, and so are cv-real and the
+  contrast audit.
+
+The side-by-side table is in section 9.
+
+**Round 2 result (section 8; candidate 2 = commit fa3232c; the third look at the benchmark).**
 On Lingolix test 1, German, word AUC is now **0.9621** [0.938, 0.981], up from 0.9405
 (paired Δ +0.022 [+0.010, +0.037], p < 0.001), so the AUC ≥ 0.96 target is **met**. FA@80 is now
 **2.70 %** [1.28, 7.01], down from 6.68 % (Δ −3.98 pt [−8.12, −0.73], p = 0.003), so the FA@80 ≤ 1.5 %
@@ -545,3 +559,172 @@ sounds-probability is −0.13.
 * `bench/round19/`: `stress_collect`, `stress_fit`, `cv_train`, `identity_collect`, `identity_train`,
   `identity_fit`, `identity_fit2`, `ea_cost`
 * `tests/test_round19_de.py`
+
+## 9. Round 3: stress factor and loanwords (candidate 3, commit 9110699; the fourth and last look)
+
+### 9.1 Reliability-weighted stress factor (shipped, German only)
+
+**Code.** `pronunciada/stress_rel.py` and `data/calib/stress_rel/de.json` (1.2 kB); written by
+`bench/round19/stress_save.py`; switch `PRONUNCIADA_DE_STRESS_REL=0`.
+
+**Why.** WordResult.prob answers "were this word's sounds acceptable". A stress judgement that is
+unreliable on casual recordings should not sink a native's word. Stress itself stays fully reported,
+in the syllable and word stress probabilities and in the coaching stress items.
+
+**What.** The coordinator chose the trade-off point measured in 8.1 (dev, part 2): the
+reliability-aware recalibration with a log-odds shift of 1.0. On the dev check fold it lowered 48 %
+fewer native words, at −0.018 stress-error AUC.
+
+* The recalibration is a logistic on the stress logits, their interactions with the reliability
+  features, and those features:
+  * voiced share and mean voicing probability over the word;
+  * word energy;
+  * log number of syllables;
+  * clip SNR;
+  * speaking rate.
+* It replaces the stress factor **only inside WordResult.prob**.
+* Strictness keeps the shipped channel's spread.
+
+**Check that stress outputs are unchanged** (`bench/round19/stress_verify.py`). On 60 dev clips, with
+the switch on and off:
+
+* WordResult.stress_prob: identical;
+* every SyllableResult.stress_prob: identical;
+* the coaching items about stress: identical;
+* word P changed on 409 of 742 words.
+
+**Known cost.** Planted stress-error word AUC, where the word P is the score:
+
+| set | before | after | Δ |
+|---|---|---|---|
+| FLEURS validation, AUC | 0.9257 | 0.9055 | −0.020 |
+| FLEURS validation, hit@5 % | 0.605 | 0.518 | |
+| FLEURS test, AUC | 0.9248 (round 2) | 0.9061 | −0.023 vs switch off [−0.028, −0.019] |
+| FLEURS test, hit@5 % | 0.608 | 0.531 | |
+
+### 9.2 Readings for foreign-entry lexicon words (shipped)
+
+**The rule.** It is general; no word list comes from any benchmark (`pronunciada/text/de.py`
+`loan_variants`; switch `PRONUNCIADA_DE_LOAN=0`). It applies to a lexicon word whose German entry
+uses a sound German words do not have: a nasal vowel, ʒ, dʒ, æ, ɹ, w, θ, ð or ɜ. Such a word also
+accepts two extra readings, both as whole-word variants:
+
+* its German letter-rule reading;
+* its English reading, when the English lexicon has the word.
+
+Words with no lexicon entry at all already got the English reading in part 1.
+
+**Choice on dev.** 48 dev correct words are affected.
+
+| variant | affected words flagged at FA@80 | mean word score | dev AUC | dev FA@80 |
+|---|---|---|---|---|
+| off | 18 | 0.541 | 0.9758 | 2.05 % |
+| letter rules | 16 | – | – | – |
+| **letter rules + English** | **14** | **0.627** | **0.9757** | **2.03 %** |
+| + nasal vowel → vowel + ŋ | 14 | – | 0.9757 | 2.03 % |
+
+* On the check fold, flagged affected words went 11 → 6.
+* Changed words were not hurt: bucket AUCs are identical and overall AUC −0.0001.
+* The nasal rule added nothing on dev, so it is left out (mode "lts_en").
+
+### 9.3 Dev and validation for candidate 3
+
+| | dev all: AUC / FA@80 | dev check fold: AUC / FA@80 |
+|---|---|---|
+| candidate 3 | 0.9757 / 2.03 % | 0.9731 / 2.71 % |
+
+Candidate 3 against candidate 2: ΔAUC +0.0018 [0.001, 0.002], ΔFA −0.29 [−0.54, −0.19], p < 0.001.
+
+The stress recalibration was fitted on the dev fit fold, so the all-fold gain is partly in-sample.
+The check fold is out of sample for it.
+
+**Validation, candidate 3 against candidate 2:**
+
+| row | candidate 2 | candidate 3 |
+|---|---|---|
+| natives < 0.6 | 3.77 % | 3.44 % |
+| native acceptance | 97.16 % | 97.51 % |
+| near-swap AUC | 0.9724 | 0.9747 |
+| sound-error AUC | 0.9455 | 0.9457 |
+| stress-error AUC | as 9.1 | |
+
+On cv-real dev every row is up against switch off.
+
+**Size and latency.** +1.2 kB. No measurable latency: median 68–71 ms on 3.5 s clips.
+
+### 9.4 Final side-by-side
+
+* Held out = Lingolix test 1, FLEURS test, cv-real test half and contrast audit test.
+* Each candidate was run once. "Baseline" = 1.0.2 = all switches off.
+* Lingolix intervals are clip bootstrap. FLEURS deltas in the text above are paired.
+
+| row | baseline | part 1 (66a0af2) | round 2 (fa3232c) | **round 3 (9110699)** |
+|---|---|---|---|---|
+| **Lingolix de AUC** (v2026.10) | 0.9405 [0.911, 0.965] | 0.9565 [0.933, 0.978] | 0.9621 [0.938, 0.981] | **0.9670 [0.944, 0.985]** |
+| **Lingolix de FA@80** (v2026.10) | 6.68 % [2.85, 13.10] | 4.88 % [1.80, 7.86] | 2.70 % [1.28, 7.01] | **2.05 % [0.92, 5.42]** |
+| Lingolix AUC / FA@80, main rules | 0.9437 / 6.03 % | – | 0.9636 / 2.57 % | **0.9682 / 1.96 %** |
+| Lingolix AUC: subtle / moderate / gross / indel / omission | .872 / .966 / .985 / .909 / .999 | .894 / .983 / .991 / .937 / .999 | .905 / .985 / .995 / .945 / .999 | .918 / .988 / .996 / .950 / .999 |
+| Lingolix own flag: recall / false alarms | 0.42 / 1.2 % | 0.43 / 1.3 % | 0.43 / 1.3 % | 0.43 / 1.3 % |
+| FLEURS test near-swap AUC | 0.9565 | 0.9663 | 0.9745 | **0.9771** |
+| FLEURS test near-swap hit@5 % | 0.767 | 0.853 | 0.887 | **0.907** |
+| FLEURS test far-swap AUC | 0.9951 | 0.9954 | 0.9964 | 0.9968 |
+| FLEURS test natives < 0.6 (swap set) | 4.64 % | 4.03 % | 4.51 % | **3.97 %** |
+| FLEURS test native acceptance | 96.48 % | 97.04 % | 96.77 % | **97.24 %** |
+| FLEURS test natives < 0.6 | 4.60 % | 4.02 % | 4.34 % | **3.84 %** |
+| FLEURS test sound-error word AUC | 0.9401 | 0.9380 | 0.9421 | 0.9425 |
+| FLEURS test sound-error hit@5 % | 0.749 | 0.753 | 0.771 | 0.783 |
+| FLEURS test **stress-error word AUC** | 0.9292 | 0.9264 | 0.9248 | **0.9061** (known cost) |
+| FLEURS test stress-error hit@5 % | 0.596 | 0.616 | 0.608 | **0.531** (known cost) |
+| cv-real test A: sentence / word min AUC | 0.8228 / 0.8016 | 0.8284 / 0.8054 | 0.8284 / 0.8135 | 0.8282 / **0.8282** (Δ +0.027, p = 0.02) |
+| cv-real test B: sentence / word min AUC | 0.5406 / 0.4452 | 0.5344 / 0.4391 | 0.5344 / 0.4398 | 0.5344 / 0.4637 (n.s.) |
+| contrast audit word hit@5 %: voicing / s–ʃ / m–n | 19 / 31 / 63 % | not run | 66 / 83 / 92 % | 70 / 84 / 91 % |
+| shipped size added | – | 1 kB | +1.9 MB | +1.2 kB |
+
+**Targets:**
+
+* AUC ≥ 0.96: **met** from round 2 on (0.9670 in round 3).
+* FA@80 ≤ 1.5 %: **not met** (2.05 %; 1.96 % under the main rules).
+
+**Against the published numbers** (author's, not re-run here):
+
+| | AUC | FA@80 |
+|---|---|---|
+| Lingolix | 0.95 | 2 % |
+| Azure | 0.87 | 22 % |
+| Pronunciada round 3 | 0.967 | 2.05 % |
+
+Pronunciada's AUC point estimate is above both; FA@80 is level with Lingolix's figure, within the
+intervals.
+
+**What remains.** At round 3's FA@80 threshold there are 32 flagged correct words out of 1,558.
+Reaching 1.5 % needs 23 or fewer. This is an aggregate diagnosis after the last look, with the
+audit's cause order:
+
+| cause | count |
+|---|---|
+| sound evidence | 19 |
+| neighbour of the changed word | 7 |
+| unknown word / name | 4 |
+| last word | 2 |
+
+By factor, the stress factor is still the largest loss for 7 of the 32 (16 of 42 in round 2).
+Function words and neighbours were ruled out of scope by the coordinator.
+
+**Looks at the benchmark, in order:**
+
+1. baseline diagnosis;
+2. part 1;
+3. round 2;
+4. round 3 (this one, last).
+
+Every number above is reported as measured. Nothing was tuned after any look.
+
+**Round 3 files:**
+
+* `pronunciada/stress_rel.py`
+* `data/calib/stress_rel/de.json`
+* `pronunciada/scorer.py`
+* `pronunciada/text/de.py`
+* `bench/round19/{stress_save,stress_verify,loan_check}.py`
+* `tests/test_round19_de.py`
+* `results/tables/round19_de_{heldout4_*,guards_val_g,dev_r19g_*,contrast_audit_test_round3}.json`
