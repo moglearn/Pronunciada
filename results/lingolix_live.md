@@ -1,7 +1,7 @@
 # Lingolix API measured by us, against Pronunciada
 
-Lingolix: POST https://api.lingolix.com/api/pronunciation/v3/check; model_version 2026-11 (1700); tested 2026-11-22T16:06:24Z to 2026-11-22T18:55:28Z (UTC); 1700 responses.
-Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache (installed package 1.0.2); repository commit d2ecb4888d; benchmark v2026.10 (e021b08).
+Lingolix: POST https://api.lingolix.com/api/pronunciation/v3/check; model_version 2026-11 (2689); tested 2026-11-22T16:06:24Z to 2026-11-22T21:29:52Z (UTC); 2689 responses.
+Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache (installed package 1.0.2); repository commit 354b29647b; benchmark v2026.10 (e021b08).
 
 | test | metric | Pronunciada [95% CI] | Lingolix measured [95% CI] | Pronunciada − Lingolix [95% CI], p | Lingolix published |
 |---|---|---|---|---|---|
@@ -33,7 +33,7 @@ Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache
 | test 2 (speechocean762) | word Pearson | 0.581 [0.489, 0.644] | 0.527 [0.400, 0.630] | +0.054 [-0.029, +0.128], p 0.236 | 0.51 |
 | test 2 (speechocean762) | sentence Pearson | 0.788 [0.706, 0.847] | 0.713 [0.575, 0.792] | +0.075 [-0.014, +0.174], p 0.100 | 0.74 |
 
-FA@80: share of correct words flagged at the threshold that catches 80% of the planted errors (lower is better); its differences are in percentage points. Intervals: 1,000 resamples of utterances (test 1), speakers (test 2) or recordings (fleurs-swap); p two-sided, paired on the same resamples. Length errors caught: each system's own error flag on the 40 Japanese length items (Lingolix: report.py's flag, expected vs detected syllable IPA). Failed or unanswered requests: see the JSON.
+FA@80: share of correct words flagged at the threshold that catches 80% of the planted errors (lower is better); its differences are in percentage points. Intervals: 1,000 resamples of utterances (test 1), groups of clips sharing the first four digits of the utterance id (test 2; close to speakers but not identical, see the speaker resampling below) or recordings (fleurs-swap); p two-sided, paired on the same resamples. Length errors caught: each system's own error flag on the 40 Japanese length items (Lingolix: report.py's flag, expected vs detected syllable IPA). Failed or unanswered requests: see the JSON.
 
 ## speechocean762, more speakers
 
@@ -43,14 +43,16 @@ All 2,500 speechocean762 test clips (125 speakers, 20 clips each) as test 2 item
 |---|---|---|---|---|---|
 | a. the benchmark's 500 clips (500 clips, 124 speakers) | sentence Pearson | 0.788 [0.731, 0.839] | 0.713 [0.606, 0.785] | +0.075 [-0.008, +0.168], p 0.074 | 0.100 |
 | a. the benchmark's 500 clips (500 clips, 124 speakers) | word Pearson | 0.581 [0.486, 0.655] | 0.527 [0.403, 0.629] | +0.054 [-0.021, +0.129], p 0.163 | 0.236 |
-| b. every clip with a Lingolix answer (500 clips, 124 speakers) | sentence Pearson | 0.788 [0.731, 0.839] | 0.713 [0.606, 0.785] | +0.075 [-0.008, +0.168], p 0.074 | 0.100 |
-| b. every clip with a Lingolix answer (500 clips, 124 speakers) | word Pearson | 0.581 [0.486, 0.655] | 0.527 [0.403, 0.629] | +0.054 [-0.021, +0.129], p 0.163 | 0.236 |
-| c. complete speakers only (0 of 125 speakers with all 20 clips answered, 0 clips) | sentence Pearson | n/a | n/a | n/a | — |
-| c. complete speakers only (0 of 125 speakers with all 20 clips answered, 0 clips) | word Pearson | n/a | n/a | n/a | — |
+| b. every clip with a Lingolix answer (1,489 clips, 125 speakers) | sentence Pearson | 0.718 [0.664, 0.768] | 0.580 [0.446, 0.693] | +0.138 [+0.031, +0.256], p 0.009 | 0.020 |
+| b. every clip with a Lingolix answer (1,489 clips, 125 speakers) | word Pearson | 0.505 [0.415, 0.591] | 0.449 [0.336, 0.560] | +0.056 [+0.011, +0.106], p 0.014 | 0.038 |
+| c. complete speakers only (62 of 125 speakers with all 20 clips answered, 1,240 clips) | sentence Pearson | 0.663 [0.587, 0.728] | 0.530 [0.346, 0.674] | +0.133 [+0.015, +0.284], p 0.024 | — |
+| c. complete speakers only (62 of 125 speakers with all 20 clips answered, 1,240 clips) | word Pearson | 0.464 [0.344, 0.577] | 0.408 [0.268, 0.545] | +0.056 [+0.011, +0.107], p 0.016 | — |
 
 p: two-sided, from 10,000 resamples of speakers (with replacement; both systems on the same resample; the intervals come from the same resamples). p, test 2 resampling: the method of the test 2 rows above (1,000 resamples of groups formed by the first four digits of the utterance id), repeated for continuity.
 
-To finish the split: 2,000 of 2,500 clips not yet sent, 128.77 audio minutes. If all of it is billed as overage at the Starter rate (EUR 0.05 per minute): EUR 6.44, or EUR 6.45 for 129 whole minutes. Source: https://lingolix.com/en/pricing (read 2026-11-22): Starter plan, overage billed per full minute used; usage measured by the second, only full minutes charged.
+The speakers were completed in ID order, so they are not a random sample of the split. Pronunciada alone, which has an answer for every clip: all 2,500 clips: sentence 0.792, word 0.573, human sentence scores mean 7.26, SD 1.55; the 62 complete speakers: sentence 0.663, word 0.464, human sentence scores mean 7.41, SD 1.35; the other 63 speakers: sentence 0.860, word 0.638, human sentence scores mean 7.12, SD 1.71. Correlations in rows b and c are for that mix of speakers and are not comparable with row a or with figures for the whole split; the paired difference between the two systems is.
+
+To finish the split: 1,011 of 2,500 clips not yet sent, 69.93 audio minutes. If all of it is billed as overage at the Starter rate (EUR 0.05 per minute): EUR 3.50, or EUR 3.50 for 70 whole minutes. Source: https://lingolix.com/en/pricing (read 2026-11-22): Starter plan, overage billed per full minute used; usage measured by the second, only full minutes charged.
 
 ## Mandarin
 

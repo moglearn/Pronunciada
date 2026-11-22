@@ -15,15 +15,15 @@
    "content_type": "audio/wav"
   },
   "model_versions": {
-   "2026-11": 1700
+   "2026-11": 2689
   },
   "mixed_model_versions": false,
   "version_headers": {},
   "test_dates_utc": [
    "2026-11-22T16:06:24Z",
-   "2026-11-22T18:55:28Z"
+   "2026-11-22T21:29:52Z"
   ],
-  "responses_used": 1700
+  "responses_used": 2689
  },
  "pronunciada": {
   "outputs_from": "$PRONUNCIADA_CACHE/round19/integrator/frozen_cache",
@@ -37,11 +37,11 @@
   "adapter": "vendors.lingolix of lingolix/pronunciation-benchmark (identical at v2026.10 and main f8750aa)"
  },
  "git": {
-  "commit": "d2ecb4888d3f919edb8771788bbd414fe694c2b5",
+  "commit": "354b29647b288e3816eeacbbd3d98ea7b7f79789",
   "dirty": false
  },
- "made_utc": "2026-11-22T21:05:24Z",
- "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 utterance resamples (test 1), speaker resamples (test 2), cluster resamples (fleurs-swap), seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
+ "made_utc": "2026-11-22T21:33:20Z",
+ "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 utterance resamples (test 1), resamples of groups of clips sharing the first four digits of the utterance id (test 2; close to speakers, not identical), cluster resamples (fleurs-swap), seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
  "tier1": {
   "en": {
    "n_items": 200,
@@ -1403,92 +1403,166 @@
    },
    "b": {
     "name": "every clip with a Lingolix answer",
-    "n_clips": 500,
-    "n_speakers": 124,
-    "lingolix_answered": 500,
-    "pronunciada_answered": 500,
+    "n_clips": 1489,
+    "n_speakers": 125,
+    "lingolix_answered": 1489,
+    "pronunciada_answered": 1489,
     "lingolix_failed_or_missing": 0,
     "pronunciada_failed_or_missing": 0,
     "pcc_utterance": {
      "pronunciada": {
-      "value": 0.7879,
+      "value": 0.7178,
       "ci": [
-       0.7309,
-       0.8387
+       0.6645,
+       0.7679
       ]
      },
      "lingolix": {
-      "value": 0.7125,
+      "value": 0.5801,
       "ci": [
-       0.6056,
-       0.7851
+       0.4458,
+       0.6926
       ]
      },
-     "delta": 0.0754,
+     "delta": 0.1377,
      "delta_ci": [
-      -0.0081,
-      0.1681
+      0.0307,
+      0.2555
      ],
-     "p": 0.0744,
-     "n_speakers_resampled": 124,
+     "p": 0.0094,
+     "n_speakers_resampled": 125,
      "previous_method": {
-      "p": 0.0999,
+      "p": 0.02,
       "delta_ci": [
-       -0.0143,
-       0.1739
+       0.0201,
+       0.2479
       ],
-      "n_common": 500
+      "n_common": 1489
      }
     },
     "pcc_word": {
      "pronunciada": {
-      "value": 0.5805,
+      "value": 0.5046,
       "ci": [
-       0.486,
-       0.6553
+       0.4155,
+       0.591
       ]
      },
      "lingolix": {
-      "value": 0.5269,
+      "value": 0.4491,
       "ci": [
-       0.4025,
-       0.6286
+       0.3364,
+       0.5603
       ]
      },
-     "delta": 0.0536,
+     "delta": 0.0555,
      "delta_ci": [
-      -0.0206,
-      0.1293
+      0.011,
+      0.1065
      ],
-     "p": 0.163,
-     "n_speakers_resampled": 124,
+     "p": 0.014,
+     "n_speakers_resampled": 125,
      "previous_method": {
-      "p": 0.2358,
+      "p": 0.038,
       "delta_ci": [
-       -0.0285,
-       0.1282
+       0.0043,
+       0.1065
       ],
-      "n_common": 500
+      "n_common": 1489
      }
     }
    },
    "c": {
     "name": "complete speakers only",
-    "n_clips": 0,
-    "n_speakers": 0,
-    "lingolix_answered": 0,
-    "pronunciada_answered": 0,
-    "complete_speakers": 0,
-    "speakers_total": 125
+    "n_clips": 1240,
+    "n_speakers": 62,
+    "lingolix_answered": 1240,
+    "pronunciada_answered": 1240,
+    "complete_speakers": 62,
+    "speakers_total": 125,
+    "lingolix_failed_or_missing": 0,
+    "pronunciada_failed_or_missing": 0,
+    "pcc_utterance": {
+     "pronunciada": {
+      "value": 0.6632,
+      "ci": [
+       0.5872,
+       0.7284
+      ]
+     },
+     "lingolix": {
+      "value": 0.5303,
+      "ci": [
+       0.3465,
+       0.6744
+      ]
+     },
+     "delta": 0.133,
+     "delta_ci": [
+      0.0149,
+      0.2843
+     ],
+     "p": 0.0238,
+     "n_speakers_resampled": 62
+    },
+    "pcc_word": {
+     "pronunciada": {
+      "value": 0.4642,
+      "ci": [
+       0.3439,
+       0.5772
+      ]
+     },
+     "lingolix": {
+      "value": 0.4081,
+      "ci": [
+       0.2678,
+       0.5454
+      ]
+     },
+     "delta": 0.0561,
+     "delta_ci": [
+      0.0108,
+      0.1069
+     ],
+     "p": 0.0156,
+     "n_speakers_resampled": 62
+    }
+   }
+  },
+  "sample": {
+   "all": {
+    "n_clips": 2500,
+    "n_speakers": 125,
+    "pronunciada_pcc_utterance": 0.792,
+    "pronunciada_pcc_word": 0.5732,
+    "human_sentence_total_mean": 7.2632,
+    "human_sentence_total_sd": 1.5493
+   },
+   "complete_speakers": {
+    "n_clips": 1240,
+    "n_speakers": 62,
+    "pronunciada_pcc_utterance": 0.6632,
+    "pronunciada_pcc_word": 0.4642,
+    "human_sentence_total_mean": 7.4137,
+    "human_sentence_total_sd": 1.3544
+   },
+   "other_speakers": {
+    "n_clips": 1260,
+    "n_speakers": 63,
+    "pronunciada_pcc_utterance": 0.8603,
+    "pronunciada_pcc_word": 0.6379,
+    "human_sentence_total_mean": 7.1151,
+    "human_sentence_total_sd": 1.7067
    }
   },
   "to_finish": {
-   "clips": 2000,
+   "clips": 1011,
    "of": 2500,
-   "audio_minutes": 128.7721,
-   "eur_if_all_overage": 6.4386,
-   "whole_minutes": 129,
-   "eur_if_all_overage_whole_minutes": 6.45,
+   "audio_minutes": 69.9255,
+   "eur_if_all_overage": 3.4963,
+   "whole_minutes": 70,
+   "eur_if_all_overage_whole_minutes": 3.5,
    "eur_per_min": 0.05,
    "price_source": "https://lingolix.com/en/pricing (read 2026-11-22): Starter plan, overage billed per full minute used; usage measured by the second, only full minutes charged"
   },
