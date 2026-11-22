@@ -1,0 +1,39 @@
+{
+ "parity_tree_inputs_max_abs": 0.0016997064246648819,
+ "native_guard_fleurs_validation": {
+  "accuracy": {
+   "median_old": 8.507718890845744,
+   "median_new": 8.654870112333393,
+   "median_delta": 0.1471512214876487
+  },
+  "fluency": {
+   "median_old": 8.77997420032603,
+   "median_new": 8.826443080930835,
+   "median_delta": 0.04646888060480414
+  },
+  "prosodic": {
+   "median_old": 8.358526375708227,
+   "median_new": 8.529935816763626,
+   "median_delta": 0.17140944105539901
+  },
+  "total": {
+   "median_old": 8.11833755277804,
+   "median_new": 8.212247913770884,
+   "median_delta": 0.09391036099284378
+  },
+  "n": 100,
+  "pass": true
+ },
+ "latency": {
+  "fp32_old_ms": 60.7218545046635,
+  "fp32_new_ms": 64.93510451400653,
+  "int8_old_ms": 53.19493799470365,
+  "int8_new_ms": 53.21868750615977,
+  "clip_s_median": 3.35
+ },
+ "size_kb": {
+  "sentence_r19.npz": 192.6689453125,
+  "seqhead_en.onnx": 814.63671875,
+  "seqhead_en.npz": 25.20703125
+ }
+}

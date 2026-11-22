@@ -91,8 +91,12 @@ def run(recs, lang, precision="fp32", workers=5, threads=1, tag=None, force=Fals
 
     from bench.calib.common import calib_cache
 
-    d = calib_cache() / "api"
-    d.mkdir(exist_ok=True)
+    from pathlib import Path
+
+    # PRONUNCIADA_API_DIR: keep a run's outputs apart from the shared cache (paired before / after
+    # runs while other work uses calib/api)
+    d = Path(os.environ["PRONUNCIADA_API_DIR"]) if os.environ.get("PRONUNCIADA_API_DIR") else calib_cache() / "api"
+    d.mkdir(parents=True, exist_ok=True)
     path = d / f"{tag}.pkl" if tag else None
     if path is not None and path.exists() and not force:
         out = pickle.loads(path.read_bytes())

@@ -32,6 +32,30 @@ EMBED_OUTPUTS = {
     "enc5": "/encoder/5/out_combiner/Add_output_0",      # stack 5 (late), 256-d
     "final": "/Transpose_1_output_0",                    # encoder output before the CTC layer, 512-d
 }
+# Round 19: the output of every encoder stack (layer fusion for the English sentence head).
+# Stack 0 runs at the full rate and has no out_combiner; its output is its last layer's bypass.
+# Same [T', 1, C] layout as the stacks above.
+ALL_LAYER_OUTPUTS = {
+    "enc0": "/encoder/0/layers.1/bypass/Add_output_0",
+    "enc1": EMBED_OUTPUTS["enc1"],
+    "enc2": "/encoder/2/out_combiner/Add_output_0",
+    "enc3": EMBED_OUTPUTS["enc3"],
+    "enc4": "/encoder/4/out_combiner/Add_output_0",
+    "enc5": EMBED_OUTPUTS["enc5"],
+    "final": EMBED_OUTPUTS["final"],
+}
+
+
+def embed_outputs_for(layers) -> dict:
+    """{key: tensor name} for a layer selection: True = EMBED_OUTPUTS (round 5), "all" =
+    ALL_LAYER_OUTPUTS, or an iterable of keys of ALL_LAYER_OUTPUTS (EMBED_OUTPUTS are always
+    included, since earlier rounds' inputs read them)."""
+    if layers is True:
+        return dict(EMBED_OUTPUTS)
+    if layers == "all":
+        return dict(ALL_LAYER_OUTPUTS)
+    keys = set(layers) | set(EMBED_OUTPUTS)
+    return {k: v for k, v in ALL_LAYER_OUTPUTS.items() if k in keys}
 
 
 # --------------------------------------------------------------------------- protobuf surgery
@@ -148,15 +172,19 @@ def write_with_graph_outputs(src_path: str, dest_path: str, names) -> None:
     raise ValueError("no graph in the ONNX model")
 
 
-def embedding_model_path(name: str, precision: str, cache_dir: str | None = None) -> str:
-    """Path of the model variant with EMBED_OUTPUTS as extra outputs, built (once) next to
-    the original in the model cache."""
+def embedding_model_path(name: str, precision: str, cache_dir: str | None = None,
+                         outputs: dict | None = None) -> str:
+    """Path of the model variant with `outputs` (default EMBED_OUTPUTS) as extra outputs, built
+    (once) next to the original in the model cache. The round-5 set keeps the file name
+    `<model>.emb.onnx`; any other set gets `<model>.emb-<keys>.onnx`."""
+    outputs = dict(EMBED_OUTPUTS) if outputs is None else outputs
     src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
-    dest = src[:-len(".onnx")] + ".emb.onnx"
+    tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
+    dest = src[:-len(".onnx")] + f".emb{tag}.onnx"
     if not os.path.exists(dest) or os.path.getmtime(dest) < os.path.getmtime(src):
         part = f"{dest}.{os.getpid()}.part"
         try:
-            write_with_graph_outputs(src, part, list(EMBED_OUTPUTS.values()))
+            write_with_graph_outputs(src, part, list(outputs.values()))
         except BaseException:
             if os.path.exists(part):
                 os.remove(part)
@@ -197,7 +225,7 @@ class AcousticModel:
 
     def __init__(self, name: str = "zipa-small-crctc-500k", precision: str = "fp32",
                  threads: int | None = None, providers: list | None = None,
-                 cache_dir: str | None = None, embeddings: bool = False):
+                 cache_dir: str | None = None, embeddings=False):
         import onnxruntime as ort
 
         if precision not in PRECISION_FILES:
@@ -205,9 +233,10 @@ class AcousticModel:
         self.name, self.precision = name, precision
         model_path = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
         self.embeddings = False
+        self.embed_outputs = embed_outputs_for(embeddings) if embeddings else {}
         if embeddings:
             try:
-                model_path = embedding_model_path(name, precision, cache_dir)
+                model_path = embedding_model_path(name, precision, cache_dir, self.embed_outputs)
                 self.embeddings = True
             except (OSError, ValueError):
                 pass        # fall back to the plain model: no embeddings, same log-probs
@@ -238,10 +267,11 @@ class AcousticModel:
             self._remap = np.array([pos.get(t, -1) for t in self.tokens], dtype=np.int64)
         if self.embeddings:
             outs = {o.name for o in self.session.get_outputs()}
-            if not all(v in outs for v in EMBED_OUTPUTS.values()):
+            if not all(v in outs for v in self.embed_outputs.values()):
                 self.embeddings = False
-        self._out_names = ["log_probs", "log_probs_len"] + (
-            list(EMBED_OUTPUTS.values()) if self.embeddings else [])
+        if not self.embeddings:
+            self.embed_outputs = {}
+        self._out_names = ["log_probs", "log_probs_len"] + list(self.embed_outputs.values())
 
     # ------------------------------------------------------------------ timing
     @staticmethod
@@ -286,7 +316,7 @@ class AcousticModel:
         if not self.embeddings:
             return lp, None
         emb = {}
-        for k, v in zip(EMBED_OUTPUTS, res[2:]):
+        for k, v in zip(self.embed_outputs, res[2:]):
             v = v[:, 0] if v.shape[1] == 1 and v.shape[0] != 1 else v[0]
             emb[k] = np.ascontiguousarray(v[:n], dtype=np.float32)
         return lp, emb
