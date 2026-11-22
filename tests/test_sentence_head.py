@@ -67,6 +67,11 @@ def test_english_sentence_head_and_switch(tts, monkeypatch):
     s = new.details(r)["sentence"]
     assert all(0 <= v <= 10 for v in s.values())
     assert c["sent_seq"].shape == (4,) and "sentence_head" in r.timing_ms
+    lv = c["seq_level"]                       # sound / word outputs blended into the reported scores
+    assert lv["phone"].shape == (len(c["ref"].phones),) and lv["word"].shape == (len(c["ref"].words),)
+    d = new.details(r)
+    assert np.all((d["phone_score"] >= 0) & (d["phone_score"] <= 2))
+    assert np.all((d["word_accuracy"] >= 0) & (d["word_accuracy"] <= 10))
     assert all(np.isfinite(float(np.asarray(c["S"][k]).reshape(-1)[0])) for k in ("emb_total", "f0_med_hz"))
     monkeypatch.setenv("PRONUNCIADA_SENTENCE_HEAD", "0")
     old = pronunciada.Scorer("en", threads=2)

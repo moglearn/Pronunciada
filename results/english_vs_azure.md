@@ -11,19 +11,19 @@ Phone level is scored on THEIR 47369 canonical phones: 47041 are aligned to one 
 | level | system | Pearson [95 % CI] | Spearman [95 % CI] | Δ Pearson vs Azure [95 % CI], p |
 |---|---|---|---|---|
 | phone | ours A (universal) | 0.628 [0.544, 0.684] | 0.431 [0.397, 0.466] | +0.089 [+0.069, +0.107], p=0.002 |
-| phone | **ours B (English) — shipped** | 0.685 [0.613, 0.731] | 0.469 [0.439, 0.501] | +0.147 [+0.124, +0.168], p=0.002 |
+| phone | **ours B (English) — shipped** | 0.700 [0.628, 0.747] | 0.471 [0.440, 0.504] | +0.162 [+0.140, +0.181], p=0.002 |
 | phone | ours C (+duration/rate) | 0.689 [0.616, 0.741] | 0.463 [0.431, 0.496] | +0.151 [+0.127, +0.172], p=0.002 |
 | phone | ours U (shipped universal) | 0.628 [0.544, 0.684] | 0.431 [0.397, 0.466] | +0.089 [+0.069, +0.107], p=0.002 |
 | phone | Azure | 0.538 [0.458, 0.600] | 0.339 [0.288, 0.388] | – |
-| word accuracy | **ours — shipped** | 0.609 [0.533, 0.663] | 0.415 [0.363, 0.463] | +0.020 [-0.022, +0.059], p=0.326 |
+| word accuracy | **ours — shipped** | 0.640 [0.563, 0.696] | 0.420 [0.367, 0.470] | +0.050 [+0.011, +0.084], p=0.022 |
 | word accuracy | Azure | 0.589 [0.515, 0.647] | 0.417 [0.363, 0.467] | – |
-| sentence accuracy | **ours — shipped** | 0.778 [0.722, 0.820] | 0.745 [0.690, 0.788] | +0.104 [+0.073, +0.139], p=0.002 |
+| sentence accuracy | **ours — shipped** | 0.778 [0.722, 0.820] | 0.748 [0.693, 0.790] | +0.104 [+0.073, +0.138], p=0.002 |
 | sentence accuracy | Azure | 0.673 [0.613, 0.720] | 0.652 [0.586, 0.706] | – |
-| sentence fluency | **ours — shipped** | 0.809 [0.739, 0.858] | 0.807 [0.759, 0.843] | +0.101 [+0.021, +0.190], p=0.016 |
+| sentence fluency | **ours — shipped** | 0.814 [0.750, 0.860] | 0.808 [0.761, 0.844] | +0.106 [+0.034, +0.191], p=0.004 |
 | sentence fluency | Azure | 0.708 [0.628, 0.760] | 0.613 [0.541, 0.679] | – |
-| sentence prosodic | **ours — shipped** | 0.800 [0.737, 0.848] | 0.793 [0.742, 0.832] | -0.027 [-0.086, +0.019], p=0.424 |
+| sentence prosodic | **ours — shipped** | 0.805 [0.748, 0.850] | 0.795 [0.741, 0.835] | -0.022 [-0.073, +0.021], p=0.454 |
 | sentence prosodic | Azure | 0.827 [0.788, 0.854] | 0.782 [0.726, 0.823] | – |
-| sentence total | **ours — shipped** | 0.791 [0.740, 0.832] | 0.765 [0.716, 0.805] | -0.006 [-0.046, +0.032], p=0.847 |
+| sentence total | **ours — shipped** | 0.792 [0.744, 0.832] | 0.767 [0.716, 0.806] | -0.004 [-0.043, +0.032], p=0.891 |
 | sentence total | Azure | 0.796 [0.743, 0.834] | 0.762 [0.709, 0.801] | – |
 
 ## 2. Calibration on speechocean762 TEST
@@ -127,24 +127,24 @@ First 100 speechocean762 test clips (mean 3.53 s of audio), one process, end-to-
 
 | precision | threads | median ms | p95 ms | real-time factor | load | g2p | fbank | model | adapter | align | features | calibrate |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| fp32 | 4 | 62.0 | 95.7 | 0.0187 | 1.4 | 0.3 | 3.5 | 38.4 | 0.1 | 3.2 | 1.1 | 3.4 |
-| fp32 | 1 | 116.7 | 175.2 | 0.0342 | 0.7 | 0.1 | 3.3 | 95.6 | 0.1 | 3.1 | 1.1 | 3.3 |
-| int8 | 4 | 48.6 | 69.7 | 0.0143 | 0.7 | 0.1 | 3.4 | 27.6 | 0.1 | 3.0 | 1.1 | 3.4 |
-| int8 | 1 | 74.5 | 115.3 | 0.0225 | 0.7 | 0.1 | 3.3 | 53.6 | 0.1 | 2.9 | 1.1 | 3.4 |
+| fp32 | 4 | 75.2 | 120.6 | 0.0225 | 1.3 | 0.2 | 3.5 | 49.5 | 0.1 | 3.8 | 1.3 | 3.6 |
+| fp32 | 1 | 122.3 | 192.5 | 0.0357 | 1.2 | 0.2 | 3.3 | 97.9 | 0.1 | 3.2 | 1.2 | 3.5 |
+| int8 | 4 | 58.1 | 88.2 | 0.0174 | 1.3 | 0.2 | 3.5 | 34.3 | 0.1 | 3.4 | 1.2 | 3.6 |
+| int8 | 1 | 78.6 | 115.8 | 0.0232 | 0.7 | 0.1 | 3.4 | 56.9 | 0.1 | 3.0 | 1.1 | 3.4 |
 
-Calibrators alone (sound, word, sentence; English = shipped B + universal U): 11.11 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 3.3, 'contrast_caps.json': 3.3, 'contrast_word': 0.1, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.5, 'sentence.npz': 152.2, 'sentence_r19.npz': 192.7, 'sentence_r4.npz': 128.7, 'sentence_zh_recal.json': 2.1, 'seqhead_en.npz': 25.2, 'seqhead_en.onnx': 814.6, 'sound_B.npz': 314.4, 'sound_E.npz': 317.0, 'sound_E_emb.npz': 94.7, 'sound_U.npz': 284.3, 'word.npz': 115.8, 'word_reg.npz': 21.4, 'word_reg_r6.npz': 31.9}.
+Calibrators alone (sound, word, sentence; English = shipped B + universal U): 10.49 ms for a 126-phone utterance. Model files: {'model.onnx': 248.2, 'model.int8.onnx': 67.4}; calibrator files (KB): {'config.json': 3.6, 'contrast_caps.json': 3.3, 'contrast_word': 0.1, 'omission.json': 8.1, 'phone_dist.npz': 13.0, 'prosody': 0.5, 'sentence.npz': 152.2, 'sentence_r19.npz': 192.7, 'sentence_r4.npz': 128.7, 'sentence_zh_recal.json': 2.1, 'seqhead_en.npz': 25.2, 'seqhead_en.onnx': 2450.5, 'sound_B.npz': 314.4, 'sound_E.npz': 317.0, 'sound_E_emb.npz': 94.7, 'sound_U.npz': 284.3, 'word.npz': 115.8, 'word_reg.npz': 21.4, 'word_reg_r6.npz': 31.9}.
 
 ## 5. Does int8 change the benchmark? (speechocean762 TEST, same protocol)
 
 | level | fp32 Pearson | int8 Pearson |
 |---|---|---|
-| phone (shipped B) | 0.685 | 0.684 |
+| phone (shipped B) | 0.700 | 0.699 |
 | phone (U) | 0.628 | 0.628 |
-| word accuracy | 0.609 | 0.611 |
+| word accuracy | 0.640 | 0.639 |
 | sentence accuracy | 0.778 | 0.774 |
-| sentence fluency | 0.809 | 0.809 |
-| sentence prosodic | 0.800 | 0.800 |
-| sentence total | 0.791 | 0.789 |
+| sentence fluency | 0.814 | 0.814 |
+| sentence prosodic | 0.805 | 0.805 |
+| sentence total | 0.792 | 0.789 |
 
 ## 6. Rounds 2 and 3 (word / sentence redesign, recalibration) — before → after on speechocean762 TEST
 
@@ -154,11 +154,11 @@ Columns: round 1, round 2, round 3 (= current: round-2 models + re-fitted word c
 
 | level | round 1 ours | round 2 ours | round 3 ours | Azure | round 3 Δ vs Azure, p |
 |---|---|---|---|---|---|
-| word accuracy | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.609 [0.533, 0.663] | 0.589 [0.515, 0.647] | +0.020 [-0.022, +0.059], p=0.326 |
-| sentence accuracy | 0.749 [0.685, 0.794] | 0.749 [0.686, 0.795] | 0.778 [0.722, 0.820] | 0.673 [0.613, 0.720] | +0.104 [+0.073, +0.139], p=0.002 |
-| sentence fluency | 0.778 [0.690, 0.839] | 0.783 [0.702, 0.840] | 0.809 [0.739, 0.858] | 0.708 [0.628, 0.760] | +0.101 [+0.021, +0.190], p=0.016 |
-| sentence prosodic | 0.767 [0.683, 0.828] | 0.773 [0.696, 0.830] | 0.800 [0.737, 0.848] | 0.827 [0.788, 0.854] | -0.027 [-0.086, +0.019], p=0.424 |
-| sentence total | 0.763 [0.700, 0.814] | 0.763 [0.699, 0.813] | 0.791 [0.740, 0.832] | 0.796 [0.743, 0.834] | -0.006 [-0.046, +0.032], p=0.847 |
+| word accuracy | 0.585 [0.505, 0.644] | 0.585 [0.505, 0.644] | 0.640 [0.563, 0.696] | 0.589 [0.515, 0.647] | +0.050 [+0.011, +0.084], p=0.022 |
+| sentence accuracy | 0.749 [0.685, 0.794] | 0.749 [0.686, 0.795] | 0.778 [0.722, 0.820] | 0.673 [0.613, 0.720] | +0.104 [+0.073, +0.138], p=0.002 |
+| sentence fluency | 0.778 [0.690, 0.839] | 0.783 [0.702, 0.840] | 0.814 [0.750, 0.860] | 0.708 [0.628, 0.760] | +0.106 [+0.034, +0.191], p=0.004 |
+| sentence prosodic | 0.767 [0.683, 0.828] | 0.773 [0.696, 0.830] | 0.805 [0.748, 0.850] | 0.827 [0.788, 0.854] | -0.022 [-0.073, +0.021], p=0.454 |
+| sentence total | 0.763 [0.700, 0.814] | 0.763 [0.699, 0.813] | 0.792 [0.744, 0.832] | 0.796 [0.743, 0.834] | -0.004 [-0.043, +0.032], p=0.891 |
 
 Calibration (ECE, 15 equal-mass bins). Round-1 word truths: accuracy ≥ 5 / ≥ 8; round-2 word truths: accuracy ≥ 5 AND every phone ≥ 1.0 (lenient), accuracy ≥ 8 AND every phone ≥ 1.8 (strict), midpoint 6.5 / 1.4; round-2 sentence strict truth: accuracy ≥ 8 AND every word lenient-ok.
 

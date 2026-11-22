@@ -1,5 +1,27 @@
 # Round 19: English sentence scores (layer fusion, delivery inputs, a sequence head)
 
+**Second pass (later the same night): where things now stand.**
+
+The third held-out look was the full benchmark run on the frozen second candidate.
+
+| measure | shipped baseline | first pass | second pass |
+|---|---|---|---|
+| sentence total, Everyone | 0.762 | 0.791 | **0.792** [0.743, 0.832] |
+| sentence total, Adults 13+ | 0.839 | 0.858 | 0.857 |
+| sentence total, Children ≤ 12 | 0.558 | 0.608 | **0.614** [0.523, 0.684] |
+| sound | 0.685 | 0.685 | **0.700** |
+| word | 0.609 | 0.609 | **0.640** |
+
+- The total-score target of 0.80 is **not reached**.
+- Second pass against first pass: total +0.001 (p = 0.41), children +0.005 (p = 0.06).
+- Against the shipped baseline:
+  - total +0.030 [+0.015, +0.051], p = 0.001;
+  - children +0.056 [+0.001, +0.121], p = 0.048.
+- The gains of this pass are at the sound and word levels.
+- Word is now significantly ahead of Azure: +0.050, p = 0.022.
+
+Details are in the section "Second pass" at the end. The first-pass write-up follows unchanged.
+
 **Outcome.** On speechocean762 TEST the sentence total score's Pearson rises from **0.762 to 0.791**
 (paired Δ +0.029 [+0.014, +0.050], p = 0.001). That is short of the 0.80 target. Adults rise
 from 0.839 to 0.858, and children of 12 and under from 0.558 to 0.608 (Δ +0.051, p = 0.11).
@@ -217,3 +239,143 @@ CV for children went 0.493 → 0.550, and test 0.558 → 0.608.
   - API outputs;
   - the five-rater score file of speechocean762 (`download/scores-detail.json`, from the corpus's
     GitHub repository, CC BY 4.0; train ids only used).
+
+## Second pass
+
+This pass followed the coordinator's second brief:
+
+1. seeds, losses and a bottleneck for the sequence head;
+2. its sound and word outputs;
+3. a VTLN ablation for children.
+
+The CV design is unchanged: the same folds, 3 seeds, train only. The guards use FLEURS
+validation. The held-out set was looked at **a third time**, once, after freezing, through the
+full `bench.eval_english` run. The first two looks were the baseline and the first frozen candidate.
+
+### 1. Sentence scores: sequence-head variants (CV total, 3 seeds)
+
+The reference is the single first-pass model `s6`, at 0.8326.
+
+| variant | total | child | adult | sound OOF | word OOF |
+|---|---|---|---|---|---|
+| single model (shipped in pass 1) | 0.8326 | 0.502 | 0.878 | 0.668 | 0.659 |
+| CCC loss instead of Pearson | 0.8339 | 0.512 | 0.878 | 0.656 | 0.646 |
+| + pairwise logistic ranking loss (0.5) | 0.8266 | 0.500 | 0.876 | 0.652 | 0.648 |
+| joint bottleneck (accuracy / fluency / prosodic / completeness → total) | 0.8012 | 0.480 | 0.847 | 0.670 | 0.662 |
+| **3 seeds, outputs averaged** | **0.8392** | 0.514 | 0.883 | **0.678** | **0.666** |
+
+The 3-seed average ships. It is one ONNX graph of 3 models, 2.45 MB, 615 k parameters.
+
+Weight averaging was not used, because each seed has its own initialisation and so does not
+share a basin with the others. CCC was left out: its +0.001 is within noise, and it weakens the
+sound and word outputs.
+
+**Blend with the trees, re-picked by CV** (`round19_english_cv_blend.json`, sequence-head weight):
+
+| weight | 0.15 | 0.25 | 0.35 | 0.5 |
+|---|---|---|---|---|
+| total | 0.849 | 0.852 | 0.854 | 0.854 |
+
+0.35 is kept. CV total is 0.8536, against 0.8529 with the single model. Inside the blend, the
+ensemble adds almost nothing to the sentence scores.
+
+### 2. Sound and word outputs of the sequence head
+
+Both sides are out-of-fold on the same folds:
+
+- **sound:** the round-12b `sound_E` recipe, refitted per fold (in-fold `emb_proj`), shipped
+  hyper-parameters;
+- **word:** the round-6 `word_reg_r6` recipe, refitted per fold.
+
+Table: `round19_english_cv_level.json`.
+
+| level | shipped recipe | blend (seq weight) | blended | detection on train folds |
+|---|---|---|---|---|
+| sound (0-2, Pearson) | 0.720 | 0.3 | **0.730** | AUC score < 2: 0.847 → 0.849; < 1: 0.956 → 0.962 |
+| word (0-10, Pearson) | 0.675 | 0.4 | **0.695** | AUC acc < 8: 0.928 → 0.935; < 6: 0.934 → 0.941 |
+
+**What is wired in.** For English only:
+
+- the reported 0-2 sound score (`details()["phone_score"]`) is 0.7 × `sound_E` + 0.3 × the head;
+- the 0-10 word score (`word_accuracy`) is 0.6 × `word_reg_r6` + 0.4 × the head.
+
+**What is not touched:**
+
+- the sound, word and sentence probabilities;
+- the coaching inputs (`coach_zl` / `coach_zs`);
+- the sentence calibrator's inputs.
+
+On the 100 FLEURS-validation natives, every probability is bit-identical with the switch on and
+off. Native medians went up: word 9.90 → 9.94, sound 1.965 → 1.974. Sentence medians changed
+by +0.06 to +0.17.
+
+### 3. Children: VTLN ablation (dropped)
+
+**Method** (`round19_english_vtln.json`):
+
+- a log-mel frequency warp (`audio.vtln_warp`, α = 0.91, formants moved down);
+- applied only to clips whose median F0 is above 220 Hz, decided from the audio;
+- experiment switch `PRONUNCIADA_VTLN=0.91:220`, off by default.
+
+**Result.** On the 1,155 train clips it touches, agreement between the aligner evidence and the
+experts did not improve:
+
+- children: `llr_sub` sound-level Pearson 0.379 → 0.377, `peak_post` 0.333 → 0.338, utterance
+  means within ±0.013;
+- adults: slightly worse (`llr_sub` 0.584 → 0.575).
+
+The rule also catches 34 % of adult clips (higher-pitched voices). It was dropped without
+training on it, as the brief asked.
+
+### Held-out look 3 (frozen second candidate; full `bench.eval_english`, before = `PRONUNCIADA_SENTENCE_HEAD=0`)
+
+Sentence scores by group, with paired differences against the shipped baseline:
+
+| group | score | before | after | paired Δ [95 % CI], p |
+|---|---|---|---|---|
+| Everyone | total | 0.762 | **0.792** [0.743, 0.832] | +0.030 [+0.015, +0.051], p = 0.001 |
+| Everyone | accuracy | 0.748 | 0.778 | +0.030, p = 0.001 |
+| Everyone | fluency | 0.779 | 0.814 | +0.036, p = 0.001 |
+| Everyone | prosodic | 0.772 | 0.805 | +0.033, p = 0.001 |
+| Adults 13+ | total | 0.839 | 0.857 [0.812, 0.890] | +0.018 [+0.011, +0.028], p = 0.001 |
+| Children ≤ 12 | total | 0.558 | 0.614 [0.523, 0.684] | +0.056 [+0.001, +0.121], p = 0.048 |
+
+Against Azure (cached responses): prosodic −0.022 (p = 0.45), total −0.004 (p = 0.89),
+fluency +0.106 (p = 0.004).
+
+| measure | before | after |
+|---|---|---|
+| sound, Pearson | 0.685 [0.613, 0.731] | **0.700** [0.628, 0.747] |
+| word, Pearson | 0.609 [0.533, 0.663] | **0.640** [0.563, 0.696] |
+| word minus Azure | +0.020, p = 0.33 | **+0.050, p = 0.022** |
+| int8: total / sound / word | 0.761 / 0.684 / 0.611 | 0.789 / 0.699 / 0.639 |
+| L2-ARCTIC / EpaDB detection AUC | 0.712 / 0.721 | 0.712 / 0.721 (unchanged) |
+
+Against look 2 (first-pass candidate): total +0.001 (p = 0.41). The second pass's held-out gain
+is at the sound level (+0.015) and the word level (+0.031).
+
+**Latency** (`round19_english_latency.json`; machine quieter, 1-minute load 3.8; old and new
+scorers interleaved call by call; 3.5 s clips; 4 threads):
+
+| backbone | median old → new | paired added time | `sentence_head` stage |
+|---|---|---|---|
+| fp32 | 53.2 → 54.4 ms | **+1.2 ms** | 1.1 ms |
+| int8 | 42.6 → 44.1 ms | **+1.4 ms** | 1.1 ms |
+
+The benchmark's own speed step ran on a loaded machine: fp32 74.3 → 75.2 ms, int8 58.7 → 58.1 ms.
+
+**Size** added for English: 2.67 MB in total (`sentence_r19.npz` 193 kB, `seqhead_en.onnx`
+2.45 MB, `seqhead_en.npz` 25 kB).
+
+**The parallel `encoder` engineer** had no frozen winner when this candidate froze. Per their
+STATUS, LoRA and full fine-tuning of stack 5 under the sequence head gave CV 0.824, below their
+frozen control at 0.830. If a variant wins later, its head would replace or join the 3-model
+ensemble inside the 0.35 blend weight, and the blend weight would need re-picking on the same folds.
+
+### Still not done
+
+- Direction 5 in the form briefed here: no backbone fine-tuning on my side; the `encoder`
+  engineer covers it.
+- Children remain the gap: 0.614, against the rival's reported 0.67. Every speaker-normalisation
+  cue tried was neutral. The label noise for children (single rater against the other four:
+  r = 0.53) caps what any model can reach, but not at 0.61.
