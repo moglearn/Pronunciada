@@ -1344,6 +1344,19 @@ def so762_more_speakers(jobs: list[Job], recs: dict, PA: dict, PA_tier2: dict) -
                     x["previous_method"] = {"p": pt["p"], "delta_ci": pt["delta_ci"], "n_common": pt["n_common"]}
                 row[k] = x
         rows[tag] = row
+    # How typical are the complete speakers? Pronunciada alone has an answer for every clip, so its
+    # correlation and the spread of the human scores can be shown on both halves of the split.
+    cset = set(complete)
+    sample = {}
+    for tag, man in (("all", items), ("complete_speakers", [it for it in items if spk[it["id"]] in cset]),
+                     ("other_speakers", [it for it in items if spk[it["id"]] not in cset])):
+        tot = [it["human"]["utterance"]["total"] for it in man]
+        mp = _pcc(man, PA) if len(man) >= 3 else {}
+        mean = sum(tot) / len(tot) if tot else None
+        sample[tag] = {"n_clips": len(man), "n_speakers": len({spk[it["id"]] for it in man}),
+                       "pronunciada_pcc_utterance": mp.get("pcc_utterance"), "pronunciada_pcc_word": mp.get("pcc_word"),
+                       "human_sentence_total_mean": mean,
+                       "human_sentence_total_sd": math.sqrt(sum((x - mean) ** 2 for x in tot) / len(tot)) if tot else None}
     sent = {j.id for j in xj if j.id in LX}
     left = [key_seconds(j)[1] for j in xj if j.id not in sent]
     left_min = sum(left) / 60
@@ -1351,6 +1364,7 @@ def so762_more_speakers(jobs: list[Job], recs: dict, PA: dict, PA_tier2: dict) -
                       "benchmark_items_reproduced": len(T2) - len(bad), "benchmark_items": len(T2)},
             "pronunciada_vs_test2_answers": _compare_pronunciada(PA, PA_tier2, [it["id"] for it in T2]),
             "rows": rows,
+            "sample": sample,
             "to_finish": {"clips": len(left), "of": len(items), "audio_minutes": left_min,
                           "eur_if_all_overage": left_min * STARTER_OVERAGE_EUR_PER_MIN,
                           "whole_minutes": math.ceil(left_min - 1e-9),
@@ -1446,7 +1460,8 @@ def build_table(jobs: list[Job], root: Path, pcache: Path, *, dry: bool, tier2x_
            "benchmark": benchmark_version(), "git": git_state(), "made_utc": utc_now(),
            "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); "
                      "Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 "
-                     "utterance resamples (test 1), speaker resamples (test 2), cluster resamples (fleurs-swap), "
+                     "utterance resamples (test 1), resamples of groups of clips sharing the first four digits of the "
+                     "utterance id (test 2; close to speakers, not identical), cluster resamples (fleurs-swap), "
                      "seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is "
                      "better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
            **res}
@@ -1532,8 +1547,19 @@ def _md_more_speakers(m: dict | None) -> list[str]:
     out += ["", "p: two-sided, from 10,000 resamples of speakers (with replacement; both systems on the same resample; "
             "the intervals come from the same resamples). p, test 2 resampling: the method of the test 2 rows above "
             "(1,000 resamples of groups formed by the first four digits of the utterance id), repeated for continuity.",
-            "",
-            f"To finish the split: {fin['clips']:,} of {fin['of']:,} clips not yet sent, {fin['audio_minutes']:.2f} audio "
+            ""]
+    sm = m.get("sample") or {}
+    a, c, o = sm.get("all"), sm.get("complete_speakers"), sm.get("other_speakers")
+    if a and c and o and c["n_clips"] and o["n_clips"]:
+        def one(x):
+            return (f"sentence {_fmt(x['pronunciada_pcc_utterance'])}, word {_fmt(x['pronunciada_pcc_word'])}, human "
+                    f"sentence scores mean {x['human_sentence_total_mean']:.2f}, SD {x['human_sentence_total_sd']:.2f}")
+        out += ["The speakers were completed in ID order, so they are not a random sample of the split. Pronunciada "
+                f"alone, which has an answer for every clip: all {a['n_clips']:,} clips: {one(a)}; the "
+                f"{c['n_speakers']} complete speakers: {one(c)}; the other {o['n_speakers']} speakers: {one(o)}. "
+                "Correlations in rows b and c are for that mix of speakers and are not comparable with row a or "
+                "with figures for the whole split; the paired difference between the two systems is.", ""]
+    out += [f"To finish the split: {fin['clips']:,} of {fin['of']:,} clips not yet sent, {fin['audio_minutes']:.2f} audio "
             f"minutes. If all of it is billed as overage at the Starter rate (EUR {fin['eur_per_min']:.2f} per minute): "
             f"EUR {fin['eur_if_all_overage']:.2f}, or EUR {fin['eur_if_all_overage_whole_minutes']:.2f} for "
             f"{fin['whole_minutes']} whole minutes. Source: {fin['price_source']}.", ""]
@@ -1601,7 +1627,8 @@ def markdown(t: dict) -> str:
                        f"{_cell(x['lingolix'])} | {_delta(x)} | — |")
     out += ["", "FA@80: share of correct words flagged at the threshold that catches 80% of the planted errors "
             "(lower is better); its differences are in percentage points. Intervals: 1,000 resamples of "
-            "utterances (test 1), speakers (test 2) or recordings (fleurs-swap); p two-sided, paired on the "
+            "utterances (test 1), groups of clips sharing the first four digits of the utterance id (test 2; close to "
+            "speakers but not identical, see the speaker resampling below) or recordings (fleurs-swap); p two-sided, paired on the "
             "same resamples. Length errors caught: each system's own error flag on the 40 Japanese length "
             "items (Lingolix: report.py's flag, expected vs detected syllable IPA). Failed or unanswered "
             "requests: see the JSON.", ""]
