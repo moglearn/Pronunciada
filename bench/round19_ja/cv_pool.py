@@ -36,9 +36,13 @@ CACHE = Path.home() / ".cache" / "pronunciada"
 WORK = CACHE / "round19" / "japanese"
 META_LOCAL = CACHE / "data" / "cv-real" / "meta" / "ja"
 SEED = 1919
-N = {"dev": 680, "fit": 1800}
-PER_SPK = {"dev": 3, "fit": 6}
-SPLIT = {"dev": "dev", "fit": "train"}
+N = {"dev": 680, "fit": 1800, "fit2": 2400}
+PER_SPK = {"dev": 3, "fit": 6, "fit2": 8}
+SPLIT = {"dev": "dev", "fit": "train", "fit2": "train"}
+# fit2 (round 19, part 3): Common Voice ja train CLIPS not in the fit pool (whose natives trained the
+# identity head and the length model), for fitting the word step against a large native pool. The
+# train split has no further speakers under these rules (the fit pool already holds all 583), so the
+# speakers overlap with the fit pool; the clips do not.
 
 
 def read_tsv(p: Path):
@@ -77,11 +81,16 @@ def select() -> None:
     dur = durations()
     rng = random.Random(SEED)
     out = {}
+    used_fit: set = set()
     for pool, split in SPLIT.items():
+        if pool == "fit2":
+            used_fit = {x["path"] for x in out["fit"]}
         src = META_LOCAL / "dev.tsv" if split == "dev" else WORK / "cvmeta" / "train.tsv"
         by_spk = defaultdict(list)
         for r in read_tsv(src):
             if r["client_id"] in bad_spk or speaker_half(r["client_id"]) == "test":
+                continue
+            if pool == "fit2" and r["path"] in used_fit:
                 continue
             if norm_sentence(r["sentence"]) in bad_prompts or text_rule(r["sentence"], "ja"):
                 continue
@@ -113,7 +122,10 @@ def select() -> None:
     a = {r["client_id"] for r in out["dev"]}
     b = {r["client_id"] for r in out["fit"]}
     assert not (a & b), "dev and fit pools share speakers"
-    assert not ((a | b) & bad_spk)
+    c = {r["client_id"] for r in out["fit2"]}
+    assert not (c & a), "fit2 shares speakers with dev"
+    assert not ({r["path"] for r in out["fit2"]} & {r["path"] for r in out["fit"]})
+    assert not ((a | b | c) & bad_spk)
 
 
 def fetch() -> None:

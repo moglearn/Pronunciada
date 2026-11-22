@@ -47,6 +47,9 @@ class Evidence:
     n_frames: int
     frame_shift: float
     free_tokens: list[tuple[str, int, int]] = field(default_factory=list)
+    # round 19 (insertion=True): L_can - L(an extra sound between slot i and i + 1), <= 0; NaN for
+    # the last slot or when not computed
+    llr_ins: np.ndarray | None = None
 
 
 # --------------------------------------------------------------------------- emissions
@@ -218,7 +221,7 @@ def _group_sum(vals: np.ndarray, groups: np.ndarray, n: int) -> np.ndarray:
     return np.add.reduceat(vals, starts, axis=1)
 
 
-def _fast_scores(slots: list[Slot], lat: Lattice, tab: np.ndarray):
+def _fast_scores(slots: list[Slot], lat: Lattice, tab: np.ndarray, insertion: bool = False):
     n = len(slots)
     T = len(tab)
     V = tab.shape[1] - 2
@@ -306,6 +309,31 @@ def _fast_scores(slots: list[Slot], lat: Lattice, tab: np.ndarray):
         L_x = np.full(n, NEG_INF)
         np.logaddexp.at(L_x, p_slot, L_pair)
         L_wild = np.logaddexp(L_x, L_del)
+        if insertion and n > 1:
+            # round 19: an extra "any speech" chain (1 or 2 sounds) between slot i and slot i + 1:
+            # fed like slot i + 1's wildcard (inj[:, i + 1]) and drained like slot i's (out[:, i])
+            L_ins = np.full(n, np.nan)
+            ii = np.repeat(np.arange(n - 1), 2)
+            kk = np.tile([0, 1], n - 1)
+            inj_q = inj[:, ii + 1]
+            P2 = len(ii)
+            Wc = np.full((P2, 2), NEG_INF)
+            Bc = np.full((P2, 2), NEG_INF)
+            occ2 = np.empty((T, P2))
+            r2 = np.arange(P2)
+            for t in range(T):
+                Wn = np.empty((P2, 2))
+                lae(Wc[:, 0], inj_q[t], out=Wn[:, 0])
+                lae(Wc[:, 1], lae(Wc[:, 0], Bc[:, 0]), out=Wn[:, 1])
+                Wn += lew[t]
+                Bn = lae(Bc, Wc) + leb[t]
+                Wc, Bc = Wn, Bn
+                occ2[t] = lae(Wn[r2, kk], Bn[r2, kk])
+            L2 = _lse_cols(occ2 + out[:, ii] + (A + B_aug[1:])[:, None])
+            Lc = np.full(n - 1, NEG_INF)
+            np.logaddexp.at(Lc, ii, L2)
+            L_ins[:-1] = np.logaddexp(L_can, Lc)
+            return L_can, L_wild, L_del, L_ins
     return L_can, L_wild, L_del
 
 
@@ -354,7 +382,7 @@ def _greedy(lp: np.ndarray):
 
 
 def score_reference(lp: np.ndarray, ref, *, exact: bool = False,
-                    frame_shift: float = 0.02, wild_slots=None) -> Evidence:
+                    frame_shift: float = 0.02, wild_slots=None, insertion: bool = False) -> Evidence:
     """Per-slot acoustic evidence for `ref` (a pronunciada.types.Reference) given frame
     log-posteriors lp [T, 127].
 
@@ -368,11 +396,11 @@ def score_reference(lp: np.ndarray, ref, *, exact: bool = False,
     fixed = sorted(set(int(i) for i in (wild_slots or ())))
     for i in fixed:
         slots[i] = wild_slot(slots[i])
-    return score_slots(lp, slots, exact=exact, frame_shift=frame_shift, fixed=fixed)
+    return score_slots(lp, slots, exact=exact, frame_shift=frame_shift, fixed=fixed, insertion=insertion)
 
 
 def score_slots(lp: np.ndarray, slots: list[Slot], *, exact: bool = False,
-                frame_shift: float = 0.02, fixed=()) -> Evidence:
+                frame_shift: float = 0.02, fixed=(), insertion: bool = False) -> Evidence:
     T = int(lp.shape[0]) if lp.ndim == 2 else 0
     n = len(slots)
     free = _greedy(lp) if T else []
@@ -381,14 +409,15 @@ def score_slots(lp: np.ndarray, slots: list[Slot], *, exact: bool = False,
 
     res = None
     if T and not exact:
-        res = _fast_scores(slots, lat, tab)
+        res = _fast_scores(slots, lat, tab, insertion=insertion)
     if T and (exact or res is None):
         which = [i for i in range(n) if i not in set(fixed)]
         L_can, L_wild, L_del = exact_scores(slots, tab, which=which)
         res = (L_can, L_wild, L_del)
     if T == 0:
         res = (NEG_INF, np.full(n, NEG_INF), np.full(n, NEG_INF))
-    L_can, L_wild, L_del = res
+    L_ins = res[3] if len(res) > 3 else None
+    L_can, L_wild, L_del = res[:3]
 
     if np.isfinite(L_can) and n:
         # stitched values that underflowed (or violate L_wild >= L_can) -> exact recompute
@@ -431,7 +460,11 @@ def score_slots(lp: np.ndarray, slots: list[Slot], *, exact: bool = False,
             heard = ""
         out.append(SlotEvidence(float(llr_sub[i]), float(llr_del[i]), int(s), int(e), int(k),
                                 peak, heard, int(e - s)))
-    return Evidence(out, float(L_can) if possible else LOG_FLOOR, T, frame_shift, free)
+    ev = Evidence(out, float(L_can) if possible else LOG_FLOOR, T, frame_shift, free)
+    if insertion:
+        ev.llr_ins = (np.minimum(L_can - L_ins, 0.0) if (possible and L_ins is not None)
+                      else np.full(n, np.nan))
+    return ev
 
 
 def _spans(lat: Lattice, slots: list[Slot], tab, T: int, possible: bool):

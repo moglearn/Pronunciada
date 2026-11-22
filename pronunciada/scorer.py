@@ -222,7 +222,11 @@ class Scorer:
             timing["audio_check"] = (time.perf_counter() - t) * 1e3
         lpa, fb, emb = self._posteriors(wav, timing)
         t = time.perf_counter()
-        ev = score_reference(lpa, ref)
+        # round 19: Japanese gets the extra-sound (insertion) evidence between sounds (the Korean
+        # round-19 stitching in align.py, ~1 ms), read by the word step
+        from .ja_round19 import on as _r19
+
+        ev = score_reference(lpa, ref, insertion=self.lang == "ja" and _r19("step"))
         timing["align"] = (time.perf_counter() - t) * 1e3
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             warnings.append("the text is too long for the audio (the expected sounds cannot all fit)")
@@ -586,12 +590,19 @@ class Scorer:
                 # the length evidence enters here instead of through the round-15 factor
                 from . import length as _L
                 from . import word_step as _WS
+                from .text.ipa import is_vowel
 
                 P19 = _WS.params(self.lang)
+                lg = lambda x: math.log(max(x, 1e-6) / max(1 - x, 1e-6))  # noqa: E731
                 lv = [x.length_prob for x in ph if x.length_prob is not None]
-                zlen = min(math.log(max(x, 1e-6) / max(1 - x, 1e-6)) for x in lv) if lv else None
+                zlen = min(lg(x) for x in lv) if lv else None
+                ll = [x.length_prob for x in ph if x.length_prob is not None and x.length_expected == "long"
+                      and is_vowel(x.ipa[0])]
+                ins_v = [] if ev.llr_ins is None else [float(x) for x in ev.llr_ins[max(w.phones[0] - 1, 0):w.phones[1] - 1]
+                                                         if np.isfinite(x)]
                 st19 = _WS.step(P19, _WS.word_s(P19, ref, w, wsi["s"], wsi["cls"]), zlen,
-                                wsi["extra"][wi] if wsi["extra"] is not None else 0)
+                                wsi["extra"][wi] if wsi["extra"] is not None else 0,
+                                min(lg(x) for x in ll) if ll else None, min(ins_v) if ins_v else 0.0)
                 prob = _WS.apply(prob, st19)
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,

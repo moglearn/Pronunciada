@@ -3,12 +3,16 @@
 The round-18 word probability stays the base (sounds x present x contrast; the length channel enters
 here instead of as its round-15 factor). Its log-odds move by
 
-    step = min(cap, c0 + a_id * min(s - k_id, 0) + a_len * min(z_len - k_len, 0) - a_mm * extra)
+    step = min(cap, c0 + a_id * min(s - k_id, 0) + a_len * min(z_len - k_len, 0) - a_mm * extra
+                    + a_long * min(z_long - k_long, 0) + a_ins * min(ins - k_ins, 0))
 
 * s:     the word's lowest identity margin (pronunciada.ja_identity), each sound's margin taken
          relative to the 2 % native quantile of its class and position (first / middle / final);
 * z_len: the word's lowest length logit (pronunciada.length, round-19 model);
-* extra: sounds heard over the word in addition to its text (pronunciada.word_match).
+* extra: sounds heard over the word in addition to its text (pronunciada.word_match);
+* z_long: the lowest length logit over the word's expected-long vowels (round 19, part 3);
+* ins:   the lowest extra-sound log-likelihood ratio inside the word or in the gap before it
+         (pronunciada.align, insertion=True; the Korean round-19 stitching), part 3.
 
 So a word whose sounds all clearly match is nudged up by at most `cap`, and a word with a clearly
 different sound, a wrong length or an extra sound is pushed down without a floor. A word that was
@@ -56,13 +60,19 @@ def word_s(P: dict, ref, w, s_id, cls) -> float | None:
     return min(vals) if vals else None
 
 
-def step(P: dict, s_min: float | None, z_len: float | None, extra: int) -> float:
+def step(P: dict, s_min: float | None, z_len: float | None, extra: int, z_long: float | None = None,
+         ins: float = 0.0) -> float:
+    """z_long: lowest length logit over the word's expected-long vowels; ins: lowest extra-sound
+    log-likelihood ratio (align.py, insertion) inside the word or in the gap before it (<= 0)."""
     c = P["cfg"]
     u = c["c0"] - c["a_mm"] * extra
     if s_min is not None:
         u += c["a_id"] * min(s_min - c["k_id"], 0.0)
     if z_len is not None:
         u += c["a_len"] * min(z_len - c["k_len"], 0.0)
+    if z_long is not None:
+        u += c.get("a_long", 0.0) * min(z_long - c.get("k_long", 0.0), 0.0)
+    u += c.get("a_ins", 0.0) * min(ins - c.get("k_ins", 0.0), 0.0)
     return min(u, c["cap"])
 
 
