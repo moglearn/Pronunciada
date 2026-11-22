@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import time
 from collections import OrderedDict
 
@@ -130,6 +131,10 @@ class Scorer:
         self.omit_cal = json.loads(po.read_text()) if po.exists() else None
         # explain-away second pass (round 3): config "explain_away" {threshold, max_passes, enabled}
         ea = {"threshold": 0.3, "max_passes": 2, **cfg.get("explain_away", {})}
+        # round 19: on by default for the languages listed in config "explain_away.langs" (de)
+        if self.lang in ea.get("langs", ()) and os.environ.get("PRONUNCIADA_EXPLAIN_LANGS", "1") != "0" \
+                and not (self.lang == "de" and os.environ.get("PRONUNCIADA_DE_R19", "1") == "0"):
+            ea["enabled"] = True
         if explain_away is not None:
             ea["enabled"] = bool(explain_away)
         self.ea = ea if ea.get("enabled") else None
@@ -142,6 +147,9 @@ class Scorer:
         from . import contrast_word as _CW                 # round 18: word-level contrast factor
 
         self.contrast_word = _CW.params(self.lang)
+        from . import word_lang as _WL                     # round 19: per-language word recalibration
+
+        self.word_lang = _WL.params(self.lang)
         self.audio_check = bool(audio_check)     # pronunciada.quality gate -> SentenceResult.audio
         self.prosody = None
         self.prosody_error = None
@@ -481,7 +489,13 @@ class Scorer:
         s = C.clip_strictness(strictness)
         ref, ev, tab = c["ref"], c["ev"], c["tab"]
         ps = C.sigmoid(C.blend_logit(c["s_zl"], c["s_zs"], s))
-        pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), s))
+        if getattr(self, "word_lang", None) is not None:      # round 19 (de): shown word P only
+            from . import word_lang as _WL
+
+            wzl, wzs = _WL.transform(self.word_lang, c["W"], c["w_zl"], c["w_zs"], _WL.oov_words(ref))
+            pw = C.sigmoid(C.blend_logit(wzl, np.minimum(wzs, wzl), s))
+        else:
+            pw = C.sigmoid(C.blend_logit(c["w_zl"], np.minimum(c["w_zs"], c["w_zl"]), s))
         pr = c.get("prosody") or [dict() for _ in ref.syllables]
         lres = c.get("length")
         f2t = self.am.frame_to_time
