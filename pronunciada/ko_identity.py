@@ -156,6 +156,65 @@ def evidence(ref, V: np.ndarray, H=None, offsets: dict | None = None, rivals: bo
     return s
 
 
+def positions(ref) -> list[str]:
+    """Position of each sound: "coda", "final" (the word's last syllable, where particles and
+    endings sit; words of 2+ syllables), "initial" (first syllable) or "medial"."""
+    out = []
+    for i, p in enumerate(ref.phones):
+        w = ref.words[p.word]
+        a, b = ref.syllables[p.syllable].phones
+        nuc = next((k for k in range(a, b) if ref.phones[k].is_nucleus), None)
+        if nuc is not None and i > nuc:
+            out.append("coda")
+        elif p.syllable == w.syllables[1] - 1 and w.syllables[1] - w.syllables[0] > 1:
+            out.append("final")
+        elif p.syllable == w.syllables[0]:
+            out.append("initial")
+        else:
+            out.append("medial")
+    return out
+
+
+def word_deltas(ref, ev, s_raw: np.ndarray, cal: dict) -> np.ndarray:
+    """Round 19 part 2 ("delta" parameters): per word, the change of the word log-odds from
+    the identity margins (minus the class x position native threshold), the extra-sound evidence
+    at the word's boundaries (ev.llr_ins), the missing-sound evidence (llr_del) and the word's
+    duration against its expected duration (number of sounds x the utterance's median frames per
+    sound). Linear in hinge features (bench/round19ko/fit2.py); capped above at cap_up."""
+    thr = cal["thr"]
+    cls, pos = classes(ref), positions(ref)
+    s = np.array([x - thr.get(f"{c}|{p}", thr.get(f"{c}|*", 0.0)) if c is not None else np.nan
+                  for x, c, p in zip(s_raw, cls, pos)])
+    word = np.array([p.word for p in ref.phones])
+    nfr = np.array([sl.n_frames for sl in ev.slots], np.float64)
+    st = np.array([sl.start_frame for sl in ev.slots])
+    en = np.array([sl.end_frame for sl in ev.slots])
+    dele = np.array([sl.llr_del for sl in ev.slots], np.float64)
+    ins = ev.llr_ins if getattr(ev, "llr_ins", None) is not None else np.full(len(word), np.nan)
+    fr = nfr[nfr > 0]
+    rate = float(np.median(fr)) if len(fr) else 3.0
+    b = np.asarray(cal["coef"], np.float64)
+    out = np.zeros(len(ref.words))
+    for j in range(len(ref.words)):
+        idx = np.flatnonzero(word == j)
+        if not len(idx):
+            continue
+        v = s[idx]
+        v = v[np.isfinite(v)]
+        smin = float(v.min()) if len(v) else 0.0
+        bi = [k for k in [idx[0] - 1] + list(idx) if 0 <= k < len(ins)]
+        iv = np.asarray(ins, np.float64)[bi]
+        iv = iv[np.isfinite(iv)]
+        insm = float(np.clip(iv.min(), -40, 0)) if len(iv) else 0.0
+        delm = float(np.clip(dele[idx].min(), -40, 40))
+        span = en[idx].max() - st[idx].min()
+        dur = float(np.log(max(span, 1) / (len(idx) * rate)))
+        x = np.array([min(smin, 0.0), min(smin + 4.0, 0.0), float(np.clip(v, -10, 10).mean()) if len(v) else 0.0,
+                      float(np.clip(-v, 0.0, 1.0).sum()), min(insm + cal.get("ins_c", 2.0), 0.0), min(delm, 0.0), abs(dur), 1.0])
+        out[j] = min(float(x @ b), cal.get("cap_up", np.inf))
+    return out
+
+
 def knee_at(cal: dict, s: float) -> float:
     k = cal["knee"]
     s = min(max(float(s), 0.0), 1.0)

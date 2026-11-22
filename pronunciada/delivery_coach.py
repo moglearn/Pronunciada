@@ -172,11 +172,27 @@ def miscue_items(result, sound_items: list[dict], cfg: dict) -> list[dict]:
     for it in sound_items:
         if it["kind"] in ("substitution", "missing") or (it["kind"] == "length" and confident_length(it)):
             by_word.setdefault(it["word_index"], []).append(it)
+    # round 19 (Korean): a confident identity / extra-sound word change (pronunciada.ko_identity delta
+    # at or below the parameters' flag_delta) marks the word too, like Japanese length in 1.0.2
+    kid = c.get("ko_identity_s")
+    flag_d = None
+    if isinstance(kid, dict):
+        from .ko_identity import _word_params
+
+        flag_d = (_word_params() or {}).get("flag_delta")
+    id_words = set()
+    if flag_d is not None:
+        id_words = {wi for wi, d in enumerate(kid["delta"]) if d <= flag_d and wi < len(result.words)
+                    and not result.words[wi].omitted}
+        for wi in id_words:
+            by_word.setdefault(wi, [])
     for wi, its in sorted(by_word.items()):
         w = result.words[wi]
-        ep = max(i["error_prob"] for i in its)
-        out.append(_it("mispronounced_word", result.words, wi, w.start, w.end, round(ep, 4),
-                       {"n_sounds_flagged": len(its), "prob": round(float(w.prob), 4)}, expected=w.text))
+        ep = max([i["error_prob"] for i in its] + ([round(1.0 - float(w.prob), 4)] if wi in id_words else []))
+        extra = {"n_sounds_flagged": len(its), "prob": round(float(w.prob), 4)}
+        if wi in id_words:
+            extra["identity_delta"] = round(float(kid["delta"][wi]), 3)
+        out.append(_it("mispronounced_word", result.words, wi, w.start, w.end, round(ep, 4), extra, expected=w.text))
     X = cfg.get("extra_speech")
     if X:
         for g in extra_segments(c):

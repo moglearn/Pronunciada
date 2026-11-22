@@ -222,7 +222,8 @@ class Scorer:
             timing["audio_check"] = (time.perf_counter() - t) * 1e3
         lpa, fb, emb = self._posteriors(wav, timing)
         t = time.perf_counter()
-        ev = score_reference(lpa, ref)
+        # round 19: Korean also gets the extra-sound (insertion) evidence between sounds (~1 ms)
+        ev = score_reference(lpa, ref, insertion=self.lang == "ko")
         timing["align"] = (time.perf_counter() - t) * 1e3
         if not np.isfinite(ev.L_can) or ev.L_can <= -1e5:
             warnings.append("the text is too long for the audio (the expected sounds cannot all fit)")
@@ -259,6 +260,8 @@ class Scorer:
 
                 Vk = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
                 ko_id = _KI.evidence(ref, Vk)
+                if _KI._word_params().get("form") == "delta":     # round 19 part 2: word log-odds change
+                    ko_id = {"delta": _KI.word_deltas(ref, ev, ko_id, _KI._word_params()), "s": ko_id}
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
         if self.delivery:
@@ -563,19 +566,25 @@ class Scorer:
                 p_con = _CW.word_factor(self.contrast_word, c["contrast_z"][w.phones[0]:w.phones[1]], s)
                 if p_con is not None:
                     prob *= p_con
-            if c.get("ko_identity_s") is not None:      # round 19: Korean identity factor (pronunciada.ko_identity)
-                from . import ko_identity as _KI
-
-                p_id = _KI.word_factor(_KI._word_params(), c["ko_identity_s"][w.phones[0]:w.phones[1]], s,
-                                       sounds_prob=sounds)
-                if p_id is not None:
-                    prob *= p_id
-                    p_con = p_id if p_con is None else p_con * p_id
             if self.omit_cal:
                 present = _present_prob(self.omit_cal, tab["llr_del"][w.phones[0]:w.phones[1]])
                 prob, om = prob * present, present < 0.5
             else:
                 present, om = None, bool(omitted[wi])
+            if c.get("ko_identity_s") is not None:      # round 19: Korean identity factor (pronunciada.ko_identity)
+                from . import ko_identity as _KI
+
+                kid = c["ko_identity_s"]
+                if isinstance(kid, dict):                # "delta" form: shift the final word log-odds
+                    pq = min(max(prob, 1e-6), 1 - 1e-6)
+                    pn = 1.0 / (1.0 + np.exp(-(np.log(pq / (1 - pq)) + kid["delta"][wi])))
+                    p_id = float(pn / pq)
+                else:                                    # first form: knee factor on sounds x present
+                    p_id = _KI.word_factor(_KI._word_params(), kid[w.phones[0]:w.phones[1]], s,
+                                           sounds_prob=sounds)
+                if p_id is not None:
+                    prob *= p_id
+                    p_con = p_id if p_con is None else p_con * p_id
             words.append(WordResult(w.text, prob, st, en, ph, syls, sounds_prob=sounds,
                                     stress_prob=stress, tone_prob=tone,
                                     present_prob=present, omitted=om, length_prob=p_len, contrast_prob=p_con))
