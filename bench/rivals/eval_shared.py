@@ -71,17 +71,25 @@ def main(argv=None) -> None:
         R["rows"] += r
         R["counts"]["swap benchmark"] = c
     if "cv" in tests:
-        r, c = Z.eval_cv(Z.baseline("cv-real"))
+        Bc = Z.baseline("cv-real")
+        r, c = Z.eval_cv(Bc)
         cv_langs = {t["lang"] for t in Z.tasks()["cv-real"]}
+        n_cv, got_cv = defaultdict(int), defaultdict(int)
+        for t in Z.tasks()["cv-real"]:
+            n_cv[t["lang"]] += 1
+        for o in Bc.values():
+            got_cv[o["lang"]] += 1
+        full = {x for x in COVERED if got_cv.get(x) == n_cv[x]}
         loc_lang = {}
         from bench import eval_cv as EC
 
         for rec in EC.records():
             loc_lang[rec["locale"]] = rec["lang"] if "lang" in rec else rec["locale"].split("-")[0]
-        keep = [x for x in r if loc_lang.get(x["test"].split("/")[0], "") in COVERED]
+        keep = [x for x in r if loc_lang.get(x["test"].split("/")[0], "") in full]
         R["rows"] += keep
         R["counts"]["cv-real"] = c
         R["counts"]["cv-real_languages_in_corpus"] = sorted(cv_langs)
+        R["counts"]["cv-real_languages_scored"] = sorted(full)
     for r in R["rows"]:
         r["verdict"] = Z.verdict(r["delta"], r["p"])
 

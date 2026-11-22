@@ -133,6 +133,8 @@ def main(argv=None) -> None:
     out = json.loads(OUT.read_text()) if OUT.exists() else {}
     res = {"tier1": {}, "tier2": {}}
     for lang in ("en", "fr", "es", "de"):
+        if len(OP[f"tier1_{lang}"]) < len(T[f"tier1_{lang}"]):
+            continue                                   # the student is English only
         man = T[f"tier1_{lang}"]
         PA = L.read_responses(f"tier1_{lang}")
         mp, mo = L.metrics(man, PA), L.metrics(man, OP[f"tier1_{lang}"])
