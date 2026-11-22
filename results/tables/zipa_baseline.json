@@ -577,10 +577,10 @@
    "test": "word: any error",
    "n": 8156,
    "pronunciada": {
-    "value": 0.7865984906498762,
+    "value": 0.7899855470153346,
     "ci": [
-     0.7456057045989422,
-     0.8329480052109994
+     0.7487484875594488,
+     0.8363406244340524
     ]
    },
    "gop": {
@@ -597,16 +597,16 @@
      0.6295760683384211
     ]
    },
-   "delta": 0.1842536918335319,
+   "delta": 0.18764074819899035,
    "p": 0.0009995002498750624,
    "unit": "ROC AUC",
    "delta_ci": [
-    0.1529090163202171,
-    0.23478766896264455
+    0.15553272865953802,
+    0.23975602604852372
    ],
    "n_pos": 1220,
    "n_neg": 6936,
-   "pronunciada_table": 0.7865984906498762,
+   "pronunciada_table": 0.7899855470153346,
    "pronunciada_matches_table": true,
    "verdict": "ahead (significant)"
   },
@@ -615,10 +615,10 @@
    "test": "word: tone-only error",
    "n": 8156,
    "pronunciada": {
-    "value": 0.7724309188544699,
+    "value": 0.7768286951218396,
     "ci": [
-     0.7257939480926725,
-     0.8236183580424665
+     0.7302373246442592,
+     0.8282185774903583
     ]
    },
    "gop": {
@@ -635,16 +635,16 @@
      0.5687007653101581
     ]
    },
-   "delta": 0.21994173486388024,
+   "delta": 0.22433951113124995,
    "p": 0.0009995002498750624,
    "unit": "ROC AUC",
    "delta_ci": [
-    0.18371254526247452,
-    0.2839206138882396
+    0.18743881687933756,
+    0.2901828345782669
    ],
    "n_pos": 1008,
    "n_neg": 6936,
-   "pronunciada_table": 0.7724309188544699,
+   "pronunciada_table": 0.7768286951218396,
    "pronunciada_matches_table": true,
    "verdict": "ahead (significant)"
   },
@@ -653,10 +653,10 @@
    "test": "word: consonant / vowel error",
    "n": 8156,
    "pronunciada": {
-    "value": 0.8539612848469021,
+    "value": 0.8525426541315749,
     "ci": [
-     0.8015528374267469,
-     0.8927115334314222
+     0.79983017730012,
+     0.8916806906207747
     ]
    },
    "gop": {
@@ -673,16 +673,16 @@
      0.8633211950396164
     ]
    },
-   "delta": 0.014567147613762543,
-   "p": 0.3808095952023988,
+   "delta": 0.013148516898435325,
+   "p": 0.4007996001999001,
    "unit": "ROC AUC",
    "delta_ci": [
-    -0.016058125396942693,
-    0.04718233286536513
+    -0.015633775910546106,
+    0.04476162147924302
    ],
    "n_pos": 212,
    "n_neg": 6936,
-   "pronunciada_table": 0.8539612848469021,
+   "pronunciada_table": 0.8525426541315749,
    "pronunciada_matches_table": true,
    "verdict": "ahead (not significant)"
   },
@@ -839,10 +839,10 @@
    "test": "zh far AUC",
    "n": 150,
    "pronunciada": {
-    "value": 0.9920275718558981,
+    "value": 0.9919755494862791,
     "ci": [
-     0.9882378161543176,
-     0.9949694653538212
+     0.9883247205441825,
+     0.9948922075241925
     ]
    },
    "gop": {
@@ -859,15 +859,15 @@
      0.9824828420624712
     ]
    },
-   "delta": -0.0003719599427753906,
-   "p": 0.7732267732267732,
+   "delta": -0.00042398231239437756,
+   "p": 0.7532467532467533,
    "unit": "AUC",
    "delta_ci": [
-    -0.003201581234283315,
-    0.002724211267977138
+    -0.0031612194835040075,
+    0.002644707505151891
    ],
    "lang": "zh",
-   "pronunciada_table": 0.9920275718558981,
+   "pronunciada_table": 0.9919755494862791,
    "pronunciada_matches_table": true,
    "verdict": "level"
   },
@@ -876,10 +876,10 @@
    "test": "zh near AUC",
    "n": 150,
    "pronunciada": {
-    "value": 0.9801144492131617,
+    "value": 0.9794381584081155,
     "ci": [
-     0.9722994918675908,
-     0.9876136639670068
+     0.9714480264483696,
+     0.9870879610043741
     ]
    },
    "gop": {
@@ -896,15 +896,15 @@
      0.9277298054321562
     ]
    },
-   "delta": 0.020382364416699272,
+   "delta": 0.019706073611653108,
    "p": 0.001998001998001998,
    "unit": "AUC",
    "delta_ci": [
-    0.008995377113565291,
-    0.03541947378381781
+    0.008199633943505324,
+    0.03479026224274294
    ],
    "lang": "zh",
-   "pronunciada_table": 0.9801144492131617,
+   "pronunciada_table": 0.9794381584081155,
    "pronunciada_matches_table": true,
    "verdict": "ahead (significant)"
   },
@@ -913,10 +913,10 @@
    "test": "zh near hit@5 %",
    "n": 150,
    "pronunciada": {
-    "value": 0.9266666666666666,
+    "value": 0.9133333333333333,
     "ci": [
-     0.8733333333333333,
-     0.9666666666666667
+     0.8666666666666667,
+     0.96
     ]
    },
    "gop": {
@@ -933,15 +933,15 @@
      0.42368055555555556
     ]
    },
-   "delta": 0.09999999999999998,
-   "p": 0.003996003996003996,
+   "delta": 0.08666666666666667,
+   "p": 0.013986013986013986,
    "unit": "%",
    "delta_ci": [
-    0.033333333333333326,
-    0.15999999999999992
+    0.02649999999999996,
+    0.15333333333333332
    ],
    "lang": "zh",
-   "pronunciada_table": 0.9266666666666666,
+   "pronunciada_table": 0.9133333333333333,
    "pronunciada_matches_table": true,
    "verdict": "ahead (significant)"
   },
@@ -950,10 +950,10 @@
    "test": "zh tone AUC",
    "n": 150,
    "pronunciada": {
-    "value": 0.8305267264923917,
+    "value": 0.8333697489920666,
     "ci": [
-     0.7984260901885472,
-     0.860309903946002
+     0.8009927282237236,
+     0.8634502551997253
     ]
    },
    "gop": {
@@ -966,16 +966,16 @@
     "ci": null,
     "by_construction": true
    },
-   "delta": 0.3305267264923917,
+   "delta": 0.3333697489920666,
    "p": 0.001998001998001998,
    "unit": "ROC AUC",
    "delta_ci": [
-    0.29842609018854716,
-    0.3603099039460021
+    0.3009927282237235,
+    0.36345025519972524
    ],
    "lang": "zh",
    "note": "150 of 150 tone-swapped prompts map to the same ZIPA token sequence as the original prompt (ZIPA has no tone tokens), so the baseline cannot see the change; its AUC is 0.5 by construction and was not computed. Δ = Pronunciada − 0.5, CI and p from Pronunciada's utterance bootstrap.",
-   "pronunciada_table": 0.8305267264923917,
+   "pronunciada_table": 0.8333697489920666,
    "pronunciada_matches_table": true,
    "verdict": "ahead (significant)"
   },
@@ -2392,7 +2392,7 @@
   "OMPAL": {
    "baseline_words_unplaced": 0,
    "units": 8156,
-   "ours_cache": "tone_zh_v3z-c0168a11__34a1bbdccdf25297"
+   "ours_cache": "tone_zh_v3z-c0168a11__dbcbc984e4d6da87"
   },
   "swap benchmark": {
    "tone_records": 150,
@@ -2439,7 +2439,7 @@
    }
   },
   "cv-real": {
-   "ours_fingerprint": "34a1bbdccdf25297",
+   "ours_fingerprint": "dbcbc984e4d6da87",
    "en/A": {
     "n": 400,
     "baseline_failed": 0,

@@ -1,0 +1,650 @@
+[
+ {
+  "section": "Tally against Azure",
+  "header": "area | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+  "row": "tone swaps",
+  "occurrence": 0,
+  "before": [
+   "tone swaps",
+   "3",
+   "0",
+   "0",
+   "0",
+   "2",
+   "1"
+  ],
+  "after": [
+   "tone swaps",
+   "3",
+   "0",
+   "0",
+   "0",
+   "3",
+   "0"
+  ]
+ },
+ {
+  "section": "Tally against Azure",
+  "header": "area | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+  "row": "swap benchmark",
+  "occurrence": 0,
+  "before": [
+   "swap benchmark",
+   "50",
+   "32",
+   "10",
+   "1",
+   "6",
+   "1"
+  ],
+  "after": [
+   "swap benchmark",
+   "50",
+   "31",
+   "11",
+   "1",
+   "6",
+   "1"
+  ]
+ },
+ {
+  "section": "Tally against Azure",
+  "header": "area | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+  "row": "**all**",
+  "occurrence": 0,
+  "before": [
+   "**all**",
+   "84",
+   "49",
+   "16",
+   "1",
+   "15",
+   "3"
+  ],
+  "after": [
+   "**all**",
+   "84",
+   "48",
+   "17",
+   "1",
+   "16",
+   "2"
+  ]
+ },
+ {
+  "section": "Tally against Azure",
+  "header": "lang | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "16",
+   "7",
+   "6",
+   "0",
+   "2",
+   "1"
+  ],
+  "after": [
+   "zh",
+   "16",
+   "6",
+   "7",
+   "0",
+   "3",
+   "0"
+  ]
+ },
+ {
+  "section": "OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker",
+  "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+  "row": "word: any error",
+  "occurrence": 0,
+  "before": [
+   "word: any error",
+   "8156",
+   "0.787 [0.746, 0.833]",
+   "0.602 [0.560, 0.644]",
+   "0.590 [0.556, 0.630]",
+   "+0.184 [+0.153, +0.235]",
+   "< 0.001",
+   "**ahead**"
+  ],
+  "after": [
+   "word: any error",
+   "8156",
+   "0.790 [0.749, 0.836]",
+   "0.602 [0.560, 0.644]",
+   "0.590 [0.556, 0.630]",
+   "+0.188 [+0.156, +0.240]",
+   "< 0.001",
+   "**ahead**"
+  ]
+ },
+ {
+  "section": "OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker",
+  "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+  "row": "word: tone-only error",
+  "occurrence": 0,
+  "before": [
+   "word: tone-only error",
+   "8156",
+   "0.772 [0.726, 0.824]",
+   "0.552 [0.506, 0.592]",
+   "0.541 [0.509, 0.569]",
+   "+0.220 [+0.184, +0.284]",
+   "< 0.001",
+   "**ahead**"
+  ],
+  "after": [
+   "word: tone-only error",
+   "8156",
+   "0.777 [0.730, 0.828]",
+   "0.552 [0.506, 0.592]",
+   "0.541 [0.509, 0.569]",
+   "+0.224 [+0.187, +0.290]",
+   "< 0.001",
+   "**ahead**"
+  ]
+ },
+ {
+  "section": "OMPAL test, word AUC (all test speakers) and sentence-accuracy Pearson (learners); speaker",
+  "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+  "row": "word: consonant / vowel error",
+  "occurrence": 0,
+  "before": [
+   "word: consonant / vowel error",
+   "8156",
+   "0.854 [0.802, 0.893]",
+   "0.839 [0.787, 0.882]",
+   "0.823 [0.770, 0.863]",
+   "+0.015 [-0.016, +0.047]",
+   "0.38",
+   "ahead, n.s."
+  ],
+  "after": [
+   "word: consonant / vowel error",
+   "8156",
+   "0.853 [0.800, 0.892]",
+   "0.839 [0.787, 0.882]",
+   "0.823 [0.770, 0.863]",
+   "+0.013 [-0.016, +0.045]",
+   "0.40",
+   "ahead, n.s."
+  ]
+ },
+ {
+  "section": "Tone swaps (zh, FLEURS test), ROC AUC; utterance bootstrap.",
+  "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+  "row": "zh tone AUC",
+  "occurrence": 0,
+  "before": [
+   "zh tone AUC",
+   "150",
+   "0.831 [0.798, 0.860]",
+   "0.5 (blind)",
+   "0.5 (blind)",
+   "+0.331 [+0.298, +0.360]",
+   "0.002",
+   "**ahead**"
+  ],
+  "after": [
+   "zh tone AUC",
+   "150",
+   "0.833 [0.801, 0.863]",
+   "0.5 (blind)",
+   "0.5 (blind)",
+   "+0.333 [+0.301, +0.363]",
+   "0.002",
+   "**ahead**"
+  ]
+ },
+ {
+  "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+  "header": "lang | far AUC | near AUC | near hit@5 %",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "0.992 / 0.992 / 0.977, -0.000 level (0.77)",
+   "0.980 / 0.960 / 0.910, +0.020 **ahead** (0.002)",
+   "0.927 / 0.827 / 0.338, +0.100 **ahead** (0.004)"
+  ],
+  "after": [
+   "zh",
+   "0.992 / 0.992 / 0.977, -0.000 level (0.75)",
+   "0.979 / 0.960 / 0.910, +0.020 **ahead** (0.002)",
+   "0.913 / 0.827 / 0.338, +0.087 **ahead** (0.01)"
+  ]
+ },
+ {
+  "section": "Real learners: OMPAL test (French-L1 learners of Taiwan Mandarin; 21 speakers, teachers ma",
+  "header": "measure | first contact | current [95 % CI] | Azure [95 % CI] | Δ current − Azure | p | verdict",
+  "row": "word: any error",
+  "occurrence": 0,
+  "before": [
+   "word: any error",
+   "0.797",
+   "0.787 [0.746, 0.833]",
+   "0.704 [0.655, 0.749]",
+   "+0.082",
+   "< 0.001",
+   "**ahead**"
+  ],
+  "after": [
+   "word: any error",
+   "0.797",
+   "0.790 [0.749, 0.836]",
+   "0.704 [0.655, 0.749]",
+   "+0.086",
+   "< 0.001",
+   "**ahead**"
+  ]
+ },
+ {
+  "section": "Real learners: OMPAL test (French-L1 learners of Taiwan Mandarin; 21 speakers, teachers ma",
+  "header": "measure | first contact | current [95 % CI] | Azure [95 % CI] | Δ current − Azure | p | verdict",
+  "row": "word: tone-only error",
+  "occurrence": 0,
+  "before": [
+   "word: tone-only error",
+   "0.792",
+   "0.772 [0.726, 0.824]",
+   "0.679 [0.616, 0.737]",
+   "+0.093",
+   "< 0.001",
+   "**ahead**"
+  ],
+  "after": [
+   "word: tone-only error",
+   "0.792",
+   "0.777 [0.730, 0.828]",
+   "0.679 [0.616, 0.737]",
+   "+0.097",
+   "< 0.001",
+   "**ahead**"
+  ]
+ },
+ {
+  "section": "Real learners: OMPAL test (French-L1 learners of Taiwan Mandarin; 21 speakers, teachers ma",
+  "header": "measure | first contact | current [95 % CI] | Azure [95 % CI] | Δ current − Azure | p | verdict",
+  "row": "word: consonant / vowel error",
+  "occurrence": 0,
+  "before": [
+   "word: consonant / vowel error",
+   "0.820",
+   "0.854 [0.802, 0.893]",
+   "0.822 [0.737, 0.874]",
+   "+0.032",
+   "0.10",
+   "ahead, n.s."
+  ],
+  "after": [
+   "word: consonant / vowel error",
+   "0.820",
+   "0.853 [0.800, 0.892]",
+   "0.822 [0.737, 0.874]",
+   "+0.031",
+   "0.12",
+   "ahead, n.s."
+  ]
+ },
+ {
+  "section": "Tones: same syllable, different tone in the prompt (FLEURS test, native audio)",
+  "header": "measure | Pronunciada | Azure | Δ [95 % CI] | p | verdict",
+  "row": "detection (AUC)",
+  "occurrence": 0,
+  "before": [
+   "detection (AUC)",
+   "0.831",
+   "0.846",
+   "-0.015 [-0.062, +0.027]",
+   "0.51",
+   "behind, n.s."
+  ],
+  "after": [
+   "detection (AUC)",
+   "0.833",
+   "0.846",
+   "-0.012 [-0.060, +0.030]",
+   "0.61",
+   "behind, n.s."
+  ]
+ },
+ {
+  "section": "Tones: same syllable, different tone in the prompt (FLEURS test, native audio)",
+  "header": "measure | Pronunciada | Azure | Δ [95 % CI] | p | verdict",
+  "row": "caught at 5 % native false alarms",
+  "occurrence": 0,
+  "before": [
+   "caught at 5 % native false alarms",
+   "0.333",
+   "0.402",
+   "-0.069 [-0.219, +0.060]",
+   "0.30",
+   "behind, n.s."
+  ],
+  "after": [
+   "caught at 5 % native false alarms",
+   "0.353",
+   "0.402",
+   "-0.049 [-0.199, +0.080]",
+   "0.44",
+   "behind, n.s."
+  ]
+ },
+ {
+  "section": "Tones: same syllable, different tone in the prompt (FLEURS test, native audio)",
+  "header": "measure | Pronunciada | Azure | Δ [95 % CI] | p | verdict",
+  "row": "right word blamed",
+  "occurrence": 0,
+  "before": [
+   "right word blamed",
+   "0.280",
+   "0.387",
+   "-0.107 [-0.207, -0.023]",
+   "0.02",
+   "**behind**"
+  ],
+  "after": [
+   "right word blamed",
+   "0.307",
+   "0.387",
+   "-0.080 [-0.180, +0.007]",
+   "0.08",
+   "behind, n.s."
+  ]
+ },
+ {
+  "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+  "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "0.992 / 0.989 ahead, n.s. (0.62)",
+   "0.980 / 0.966 **ahead** (0.03)",
+   "0.927 / 0.896 ahead, n.s. (0.34)",
+   "0.900 / 0.899 ahead, n.s. (0.99)",
+   "0.026 / 0.036 **ahead** (0.006)"
+  ],
+  "after": [
+   "zh",
+   "0.992 / 0.989 ahead, n.s. (0.63)",
+   "0.979 / 0.966 ahead, n.s. (0.05)",
+   "0.913 / 0.896 ahead, n.s. (0.55)",
+   "0.900 / 0.899 ahead, n.s. (0.99)",
+   "0.028 / 0.036 **ahead** (0.05)"
+  ]
+ },
+ {
+  "section": "Native speakers are not punished (FLEURS test, default strictness 0.5; no Azure column)",
+  "header": "lang | sounds accepted | words accepted | sentences accepted | planted sound errors, AUC | planted word errors, AUC",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "99.6 %",
+   "97.9 %",
+   "99.5 %",
+   "0.988",
+   "0.946"
+  ],
+  "after": [
+   "zh",
+   "99.6 %",
+   "97.7 %",
+   "99.5 %",
+   "0.988",
+   "0.946"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "aspiration",
+   "aspirated → plain",
+   "120",
+   "100 %",
+   "66 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "aspiration",
+   "aspirated → plain",
+   "120",
+   "100 %",
+   "60 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 1,
+  "before": [
+   "zh",
+   "aspiration",
+   "plain → aspirated",
+   "120",
+   "99 %",
+   "84 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "aspiration",
+   "plain → aspirated",
+   "120",
+   "99 %",
+   "80 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 2,
+  "before": [
+   "zh",
+   "retroflex",
+   "retroflex → dental",
+   "120",
+   "95 %",
+   "75 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "retroflex",
+   "retroflex → dental",
+   "120",
+   "95 %",
+   "72 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 3,
+  "before": [
+   "zh",
+   "retroflex",
+   "dental → retroflex",
+   "120",
+   "89 %",
+   "70 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "retroflex",
+   "dental → retroflex",
+   "120",
+   "89 %",
+   "68 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 4,
+  "before": [
+   "zh",
+   "n_ng",
+   "n → ŋ",
+   "120",
+   "90 %",
+   "60 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "n_ng",
+   "n → ŋ",
+   "120",
+   "90 %",
+   "57 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 5,
+  "before": [
+   "zh",
+   "n_ng",
+   "ŋ → n",
+   "120",
+   "81 %",
+   "37 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "n_ng",
+   "ŋ → n",
+   "120",
+   "81 %",
+   "32 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 8,
+  "before": [
+   "zh",
+   "r_l",
+   "ʐ → l",
+   "120",
+   "99 %",
+   "94 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "r_l",
+   "ʐ → l",
+   "120",
+   "99 %",
+   "93 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 10,
+  "before": [
+   "zh",
+   "tone",
+   "dictionary tone → other tone",
+   "240",
+   "64 %",
+   "38 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "tone",
+   "dictionary tone → other tone",
+   "240",
+   "64 %",
+   "40 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+  "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+  "row": "zh",
+  "occurrence": 11,
+  "before": [
+   "zh",
+   "m_n",
+   "m → n",
+   "120",
+   "95 %",
+   "70 %",
+   "seen"
+  ],
+  "after": [
+   "zh",
+   "m_n",
+   "m → n",
+   "120",
+   "95 %",
+   "67 %",
+   "seen"
+  ]
+ },
+ {
+  "section": "Coaching tips on native speakers (FLEURS test; no Azure column)",
+  "header": "lang | clips with a pronunciation tip, before → after | tips per clip, before → after",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "10 % → 8 %",
+   "0.11 → 0.10"
+  ],
+  "after": [
+   "zh",
+   "10 % → 9 %",
+   "0.11 → 0.10"
+  ]
+ },
+ {
+  "section": "Speed, size, and what runs where",
+  "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+  "row": "zh",
+  "occurrence": 0,
+  "before": [
+   "zh",
+   "338 ms (10.7 s)",
+   "1.82 s (10.6 s)"
+  ],
+  "after": [
+   "zh",
+   "348 ms (10.7 s)",
+   "1.82 s (10.6 s)"
+  ]
+ }
+]

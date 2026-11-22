@@ -123,7 +123,7 @@
   "area": "tone swaps",
   "lang": "zh",
   "measure": "right word blamed",
-  "cat": "behind (significant)"
+  "cat": "behind (not significant)"
  },
  {
   "area": "swap benchmark",
@@ -165,7 +165,7 @@
   "area": "swap benchmark",
   "lang": "zh",
   "measure": "near AUC",
-  "cat": "ahead (significant)"
+  "cat": "ahead (not significant)"
  },
  {
   "area": "swap benchmark",

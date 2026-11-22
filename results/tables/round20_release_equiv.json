@@ -1,0 +1,263 @@
+{
+ "release": "main d7434aa",
+ "reference": "round-19 frozen run 2 code 836dba6 (dumps of the round-19 merge check)",
+ "tolerance": 0,
+ "rows": [
+  {
+   "lang": "de",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 731718,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "de",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 730613,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "en",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 673242,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "en",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 670541,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "en",
+   "set": "so762-train",
+   "precision": "fp32",
+   "items": 100,
+   "values": 87670,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "en",
+   "set": "so762-train",
+   "precision": "int8",
+   "items": 100,
+   "values": 87363,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "es",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 858504,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "es",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 858586,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "fr",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 662690,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "fr",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 661918,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "it",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 856636,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "it",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 854839,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ja",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 830712,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ja",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 832432,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ko",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 735905,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ko",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 739026,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "pt",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 768134,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "pt",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 767721,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ru",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 831673,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "ru",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 833117,
+   "max_abs_diff": 0.0,
+   "n_numeric_diff": 0,
+   "n_other_diff": 0,
+   "identical": true
+  },
+  {
+   "lang": "zh",
+   "set": "fleurs-val",
+   "precision": "fp32",
+   "items": 200,
+   "values": 602908,
+   "max_abs_diff": 20.5,
+   "n_numeric_diff": 4046,
+   "n_other_diff": 0,
+   "identical": false,
+   "differing_keys": {
+    "s1[]": 1348,
+    "result.words[].prob": 1080,
+    "s0[]": 865,
+    "azure.NBest[].Words[].PronunciationAssessment.AccuracyScore": 749,
+    "coaching[].prob": 4
+   }
+  },
+  {
+   "lang": "zh",
+   "set": "fleurs-val",
+   "precision": "int8",
+   "items": 200,
+   "values": 603633,
+   "max_abs_diff": 14.299999999999997,
+   "n_numeric_diff": 4028,
+   "n_other_diff": 0,
+   "identical": false,
+   "differing_keys": {
+    "s1[]": 1329,
+    "result.words[].prob": 1078,
+    "s0[]": 854,
+    "azure.NBest[].Words[].PronunciationAssessment.AccuracyScore": 761,
+    "coaching[].prob": 6
+   }
+  }
+ ]
+}
