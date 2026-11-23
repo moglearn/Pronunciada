@@ -901,6 +901,27 @@ posterior-level files are `$PRONUNCIADA_CACHE/opt/results/posterr_*.json` and
 ### Candidates
 
 <!-- opt:ondevice-candidates -->
+Posterior columns: the backbone alone against fp32 on the 200 practice clips (`sensitivity.py posterr`, 21,596 frames; KL = mean per-frame KL(fp32 || candidate)); fragility: Gaussian feature noise of sd 1e-4 on 20 clips, the candidate against itself (fp32: 0.0041 nats). Score columns: whole Scorer, 200 practice clips, max |difference| at sentence / word / sound level of the 0-1 probabilities (`candidates parity`). Latency: p50 ms per clip (about 10 s of audio), median over en / de / ja / zh, and the paired mean difference against the fp32 default; load: process start to Scorer built (every candidate loads its file through PRONUNCIADA_BACKBONE; `fp32-file` is fp32 loaded the same way). RSS: peak MB, load only / after 10 clips, median over en / zh and 1 / 4 threads.
+
+| candidate | MB | max abs dlogp | mean abs dlogp | KL | top token changed | fragility 1e-4 max (top changed) | max diff sentence / word / sound P | p50 ms 1 / 2 / 4 thr (vs fp32) | load s | RSS MB load / after | screen | gate strict / budget |
+|---|--:|--:|--:|--:|--:|---|---|---|--:|---|---|---|
+| fp32: fp32 (default) | 260.3 | 0 | 0 | 0.0e+00 | 0.00 % | 0.00414 (0.00 %) | 0 / 0 / 0 | 332 / 214 / 157 | 0.52 | 471 / 774 | – | – |
+| int8-dyn: shipped dynamic int8 (MatMulInteger, activations quantized per call) | 70.7 | 5.01 | 0.419 | 1.0e-02 | 2.72 % | 3.49 (0.92 %) | 0.224 (mean 0.0110) / 0.681 (mean 0.0084) / 0.624 (mean 0.0054) | 225 (-32 %) / 156 (-26 %) / 125 (-18 %) | 0.60 | 301 / 599 | – | – |
+| nb8-sym-b32: 8-bit weights, MatMulNBits, symmetric, block 32 | 77.8 | 0.796 | 0.0213 | 3.3e-05 | 0.14 % | 0.00472 (0.00 %) | 0.035 (mean 0.0021) / 0.317 (mean 0.0014) / 0.275 (mean 0.0006) | 382 (+14 %) / 245 (+15 %) / 179 (+12 %) | 0.53 | 304 / 576 | SURVIVES | – |
+| nb8-asym-b32: 8-bit weights, MatMulNBits, asymmetric, block 32 | 79.8 | 0.828 | 0.0186 | 2.8e-05 | 0.14 % | 0.00418 (0.00 %) | – | – | – | – | – | – |
+| nb8-sym-b128: 8-bit weights, MatMulNBits, symmetric, block 128 | 73.4 | 0.999 | 0.0267 | 5.6e-05 | 0.19 % | 0.00421 (0.00 %) | 0.038 (mean 0.0021) / 0.367 (mean 0.0018) / 0.133 (mean 0.0008) | 370 (+10 %) / 235 (+10 %) / 169 (+7 %) | 0.53 | 300 / 571 | SURVIVES | – |
+| dq8-sym-ch: int8 per-channel + DequantizeLinear (posterior columns: default ORT options; all other columns with session.disable_quant_qdq=1) | 70.5 | 2.22 | 0.036 | 1.2e-04 | 0.23 % | 0.462 (0.10 %) | 0.075 (mean 0.0033) / 0.318 (mean 0.0020) / 0.221 (mean 0.0009) | 332 (-0 %) / 215 (+1 %) / 154 (+0 %) | 0.62 | 532 / 764 | DISCARD | – |
+| dq8-asym-ch: uint8 per-channel + DequantizeLinear (default ORT options) | 70.5 | 1.69 | 0.035 | 1.1e-04 | 0.24 % | 1.79 (0.11 %) | – | – | – | – | – | – |
+| dq8-sym-tensor: int8 per-tensor + DequantizeLinear (default ORT options) | 69.8 | 1.8 | 0.0578 | 4.0e-04 | 0.56 % | 0.696 (0.12 %) | – | – | – | – | – | – |
+| dq8-asym-tensor: uint8 per-tensor + DequantizeLinear (default ORT options) | 69.8 | 2.96 | 0.0574 | 4.1e-04 | 0.56 % | 1.33 (0.11 %) | – | – | – | – | – | – |
+| mix-A: 4-bit encoder stack 3, 8-bit rest (MatMulNBits, block 32) | 62.7 | 2.83 | 0.0439 | 1.9e-04 | 0.29 % | 0.0046 (0.00 %) | 0.046 (mean 0.0033) / 0.358 (mean 0.0022) / 0.217 (mean 0.0011) | 360 (+8 %) / 232 (+8 %) / 165 (+6 %) | 0.54 | 289 / 561 | SURVIVES | – |
+| mix-B: 4-bit for the least sensitive 150 MB of fp32 weights, 8-bit rest | 59.0 | 3.69 | 0.0517 | 4.1e-04 | 0.43 % | 0.00305 (0.00 %) | 0.079 (mean 0.0040) / 0.366 (mean 0.0029) / 0.278 (mean 0.0015) | 354 (+6 %) / 229 (+7 %) / 165 (+5 %) | 0.54 | 285 / 561 | SURVIVES | – |
+| mix-C: 4-bit for the least sensitive 200 MB, 8-bit rest | 52.3 | 3.8 | 0.0768 | 9.9e-04 | 0.74 % | 0.00293 (0.00 %) | 0.106 (mean 0.0061) / 0.476 (mean 0.0039) / 0.538 (mean 0.0022) | 343 (+3 %) / 222 (+4 %) / 162 (+2 %) | 0.55 | 279 / 555 | SURVIVES | – |
+| nb4-sym-b32: 4-bit weights, MatMulNBits, block 32 | 46.0 | 8.06 | 0.355 | 8.4e-03 | 2.58 % | 0.00144 (0.00 %) | – | – | – | – | – | – |
+| nb4-sym-b128: 4-bit weights, block 128 | 40.9 | 19.9 | 0.433 | 1.2e-02 | 3.04 % | 0.00292 (0.00 %) | – | – | – | – | – | – |
+| s8-minmax: static int8 (QDQ, per-channel weights, fixed activation scales, MinMax calibration) | 71.8 | 7.77 | 0.525 | 2.1e-02 | 4.00 % | 4.14 (2.22 %) | – | – | – | – | – | – |
+
+Load of fp32 through PRONUNCIADA_BACKBONE (`fp32-file`): 0.61 s; the default fp32 (pre-optimized graph): 0.52 s.
 <!-- /opt:ondevice-candidates -->
 
 ### Full gate, budget rule and strict rule
@@ -958,6 +979,35 @@ candidates below keep the ordering much closer to fp32.
 ### Total size on the device
 
 <!-- opt:ondevice-size -->
+Total on device = backbone file + the language's scoring bundle (`results/tables/mobile_bundles.json`) + the ONNX Runtime library. The library sizes are not measured on a phone; see the table after this one.
+
+Backbone + bundle, MB (library not included):
+
+| lang | bundle MB | fp32 | int8-dyn | nb8-sym-b128 | dq8-sym-ch | mix-A | mix-B | mix-C |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| en | 4.6 | 264.9 | 75.3 | 78.1 | 75.1 | 67.4 | 63.7 | 57.0 |
+| de | 3.6 | 263.9 | 74.3 | 77.1 | 74.1 | 66.4 | 62.7 | 55.9 |
+| es | 3.9 | 264.2 | 74.6 | 77.4 | 74.4 | 66.7 | 63.0 | 56.2 |
+| fr | 1.1 | 261.4 | 71.8 | 74.5 | 71.6 | 63.8 | 60.1 | 53.4 |
+| it | 1.9 | 262.2 | 72.6 | 75.4 | 72.4 | 64.7 | 61.0 | 54.3 |
+| pt | 3.6 | 263.8 | 74.2 | 77.0 | 74.0 | 66.3 | 62.6 | 55.9 |
+| ru | 4.1 | 264.4 | 74.8 | 77.6 | 74.6 | 66.9 | 63.2 | 56.5 |
+| ja | 2.4 | 262.7 | 73.1 | 75.9 | 72.9 | 65.1 | 61.4 | 54.7 |
+| ko | 3.6 | 263.9 | 74.3 | 77.1 | 74.1 | 66.3 | 62.6 | 55.9 |
+| zh | 4.2 | 264.5 | 74.9 | 77.6 | 74.7 | 66.9 | 63.2 | 56.5 |
+
+ONNX Runtime library (a phone app ships one of these):
+
+| build | MB | source |
+|---|--:|---|
+| macOS arm64 desktop, onnxruntime 1.32.0 wheel, libonnxruntime.dylib | 33.6 | measured here |
+| Android, pre-built onnxruntime-android AAR 1.18.0 (all ABIs, full operator set) | 24.4 | quoted: ONNX Runtime custom-build documentation example |
+| Android, custom reduced-operator AAR 1.18.0 (same example) | 7.5 | quoted, same source |
+| Android arm64, onnxruntime-mobile 1.11 libonnxruntime.so | 3.3 | quoted: ONNX Runtime 1.11 mobile docs |
+| iOS, onnxruntime-mobile-c 1.11 static library | 22.0 | quoted: ONNX Runtime 1.11 mobile docs (static, before linking) |
+| Web, ort-wasm-simd-threaded.wasm | 10.6 | quoted: hosted copies of onnxruntime-web, 10 to 12.3 MB |
+
+MatMulNBits is an ONNX Runtime contrib operator (com.microsoft domain). The pre-built mobile and web packages include contrib operators; a reduced-operator build must list MatMulNBits (and, for the DequantizeLinear candidates, DequantizeLinear) in its operator configuration. Not verified on a phone.
 <!-- /opt:ondevice-size -->
 
 ### Recommendation
