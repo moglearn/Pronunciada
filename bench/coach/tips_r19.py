@@ -172,6 +172,13 @@ def main():
         for kind, lang, o, dt in ex.map(_job, jobs()):
             R.setdefault(kind, {}).setdefault(lang, []).extend(o)
             print(f"{kind} {lang}: {len(o)} utterances, {dt:.0f}s", flush=True)
+    if os.environ.get("PRONUNCIADA_BENCH_DUMP"):     # per-clip outputs for paired before / after tests
+        import pickle
+        from pathlib import Path
+
+        d = Path(os.environ["PRONUNCIADA_BENCH_DUMP"])
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "coaching_tips_r19.pkl").write_bytes(pickle.dumps(R))
     out = {"setup": "default strictness 0.5, sensitivity 'balanced', max_tips 3; before = gate off "
                     "(include_accepted=True), after = gate on",
            "natives_fleurs_test": {l: native_summary(R["fleurs"][l]) for l in LANGS},

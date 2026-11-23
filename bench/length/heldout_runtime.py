@@ -78,7 +78,14 @@ def main():
     a = ap.parse_args()
     recs = sorted(records("fleurs", split="test", lang=a.lang), key=lambda r: r["id"])
     with ProcessPoolExecutor(min(a.workers, 3), initializer=_init, initargs=(a.lang,)) as ex:
-        rows = [r for r in ex.map(_one, [(r, a.lang) for r in recs], chunksize=4) if r is not None]
+        res = list(ex.map(_one, [(r, a.lang) for r in recs], chunksize=4))
+    rows = [r for r in res if r is not None]
+    if os.environ.get("PRONUNCIADA_BENCH_DUMP"):     # per-clip outputs for paired before / after tests
+        import pickle
+
+        d = Path(os.environ["PRONUNCIADA_BENCH_DUMP"])
+        d.mkdir(parents=True, exist_ok=True)
+        (d / f"length_runtime_{a.lang}.pkl").write_bytes(pickle.dumps({r["id"]: o for r, o in zip(recs, res)}))
     nat = np.array([x for r in rows for x in r["nat_len"]], float)
     natw = np.array([x for r in rows for x in r["nat_word"]], float)
     t5, tw5 = float(np.quantile(nat, 0.05)), float(np.quantile(natw, 0.05))
