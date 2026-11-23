@@ -19,7 +19,9 @@ FILE = Path(__file__).resolve().parent / "candidates.json"
 
 def spec(name: str, code: str) -> dict:
     d = json.loads(FILE.read_text())[name]
-    s = json.loads(json.dumps(d).replace("{C}", str(opt_root() / "candidates")))
+    from .common import model_dir
+
+    s = json.loads(json.dumps(d).replace("{C}", str(opt_root() / "candidates")).replace("{M}", str(model_dir())))
     return load_spec({"name": name, "code": code, **s})
 
 

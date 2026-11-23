@@ -201,7 +201,8 @@ def layers(n, out) -> None:
     for g, nodes in sorted(G.items()):
         t0 = time.time()
         m = onnx.load(str(FP32))
-        q = MatMulNBitsQuantizer(m, bits=4, block_size=32, is_symmetric=True, nodes_to_include=nodes)
+        others = [x for gg, nn in G.items() if gg != g for x in nn]      # nodes_to_include is not honoured
+        q = MatMulNBitsQuantizer(m, bits=4, block_size=32, is_symmetric=True, nodes_to_exclude=others)
         q.process()
         onnx.save(q.model.model, str(tmp))
         r = compare(_session(tmp), X, R)
@@ -213,11 +214,39 @@ def layers(n, out) -> None:
     tmp.unlink(missing_ok=True)
 
 
+def layouts() -> None:
+    """Mixed 4 / 8-bit layouts chosen from layers.json alone (practice-clip sensitivity):
+    A = every MatMul of encoder stack 3 at 4 bits (the stack with the lowest KL per MB);
+    B / C = groups at 4 bits in increasing order of mean KL per fp32 weight byte until 150 / 200 MB of
+    fp32 weights are covered; everything else at 8 bits. Written to sensitivity/<A|B|C>.json."""
+    G = json.loads((SENS / "layers.json").read_text())["groups"]
+    rank = sorted(G, key=lambda g: G[g]["mean_kl"] / G[g]["fp32_bytes"])
+    all_nodes = [n for g in G.values() for n in g["nodes"]]
+
+    def write(name, four_groups, rule):
+        four = {n for g in four_groups for n in G[g]["nodes"]}
+        lay = {"rule": rule, "four_groups": four_groups, "bits8": sorted(set(all_nodes) - four), "symmetric": True,
+               "block4": 32, "block8": 32}
+        (SENS / f"{name}.json").write_text(json.dumps(lay, indent=1))
+        print(f"{name}: {len(four)} MatMuls 4-bit ({sum(G[g]['fp32_bytes'] for g in four_groups) / 1e6:.1f} MB fp32 "
+              f"weights), sum of group KL {sum(G[g]['mean_kl'] for g in four_groups):.2e}; groups {four_groups}")
+
+    write("A", [g for g in G if g.startswith("enc3/")], "4-bit: every MatMul of encoder stack 3; 8-bit: the rest")
+    for name, limit in (("B", 150e6), ("C", 200e6)):
+        acc, sel = 0, []
+        for g in rank:
+            if acc >= limit:
+                break
+            sel.append(g)
+            acc += G[g]["fp32_bytes"]
+        write(name, sel, f"4-bit: groups in increasing KL per MB until {limit / 1e6:.0f} MB of fp32 weights; 8-bit: rest")
+
+
 def main() -> None:
     import argparse
 
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=("feats", "posterr", "layers"))
+    ap.add_argument("cmd", choices=("feats", "posterr", "layers", "layouts"))
     ap.add_argument("specs", nargs="*")
     ap.add_argument("--n", type=int, default=None)
     ap.add_argument("--out", default=None)
@@ -226,6 +255,8 @@ def main() -> None:
         feats()
     elif a.cmd == "posterr":
         posterr(a.specs, a.n, a.out)
+    elif a.cmd == "layouts":
+        layouts()
     else:
         layers(a.n or 40, a.out or str(SENS / "layers.json"))
 

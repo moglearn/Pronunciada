@@ -49,9 +49,13 @@ def _nbits(m, bits, sym, block, fmt, include=None):
     if block == "ch":
         kw["channel_wised_quantize"] = True
         block = 128
+    exclude = None
+    if include is not None:          # nodes_to_include is not honoured by onnxruntime 1.32: exclude the rest
+        inc = set(include)
+        exclude = [n.name for n in m.graph.node if n.op_type == "MatMul" and n.name not in inc]
     q = MatMulNBitsQuantizer(m, bits=bits, block_size=block, is_symmetric=sym,
                              quant_format=QuantFormat.QDQ if fmt == "dq" else QuantFormat.QOperator,
-                             nodes_to_include=include, **kw)
+                             nodes_to_exclude=exclude, **kw)
     q.process()
     return q.model.model
 
@@ -103,7 +107,7 @@ class _Reader:
         import numpy as np
 
         z = np.load(path, allow_pickle=True)
-        self.items = [z[k] for k in sorted(z.files)]
+        self.items = [z[k] for k in sorted(z.files)][::int(os.environ.get("OPT_CALIB_STEP", "3"))]
         self.i = 0
 
     def get_next(self):
