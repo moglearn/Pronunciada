@@ -113,6 +113,9 @@ class SentenceHead:
         so.log_severity_level = 3
         so.intra_op_num_threads = int(threads or 1)
         so.inter_op_num_threads = 1
+        from ._overrides import apply_ort_options
+
+        apply_ort_options(so, "sentence_head")
         self.sess = ort.InferenceSession(str(d / f"{name}.onnx"), so, providers=["CPUExecutionProvider"])
 
     def inputs(self, tab: dict, ref, ev, emb: dict, S: dict, dv: dict | None, trk) -> dict | None:

@@ -13,6 +13,7 @@ import urllib.request
 
 import numpy as np
 
+from ._overrides import apply_ort_options, backbone_file
 from .audio import fbank, load_audio
 from .text.ipa import load_tokens
 
@@ -178,7 +179,7 @@ def embedding_model_path(name: str, precision: str, cache_dir: str | None = None
     (once) next to the original in the model cache. The round-5 set keeps the file name
     `<model>.emb.onnx`; any other set gets `<model>.emb-<keys>.onnx`."""
     outputs = dict(EMBED_OUTPUTS) if outputs is None else outputs
-    src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+    src = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
     tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
     dest = src[:-len(".onnx")] + f".emb{tag}.onnx"
     if not os.path.exists(dest) or os.path.getmtime(dest) < os.path.getmtime(src):
@@ -231,7 +232,7 @@ class AcousticModel:
         if precision not in PRECISION_FILES:
             raise ValueError(f"precision must be one of {sorted(PRECISION_FILES)}")
         self.name, self.precision = name, precision
-        model_path = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+        model_path = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
         self.embeddings = False
         self.embed_outputs = embed_outputs_for(embeddings) if embeddings else {}
         if embeddings:
@@ -252,6 +253,7 @@ class AcousticModel:
         if threads:
             so.intra_op_num_threads = int(threads)
             so.inter_op_num_threads = 1
+        apply_ort_options(so, "backbone")
         self.session = ort.InferenceSession(model_path, so,
                                             providers=providers or ["CPUExecutionProvider"])
 

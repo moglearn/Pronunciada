@@ -55,6 +55,11 @@ class Adapter:
     # ------------------------------------------------------------------ io
     @staticmethod
     def path(lang: str) -> Path:
+        from ._overrides import adapter_file
+
+        alt = adapter_file(lang)             # PRONUNCIADA_ADAPTER_DIR (unset: None)
+        if alt is not None:
+            return alt
         return Path(str(resources.files("pronunciada").joinpath(f"data/adapters/{lang}.npz")))
 
     @classmethod
