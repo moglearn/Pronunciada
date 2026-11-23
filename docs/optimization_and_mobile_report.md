@@ -529,6 +529,50 @@ How each was made:
 ## int8 against fp32
 
 <!-- opt:int8 -->
+The int8 baseline (`record-baseline --precision int8`, same code cbc6d6a, same suite and audit plans;
+1,628 s) compared with the fp32 baseline in the gate's own terms (`python -m bench.opt.gate compare
+--baseline <fp32 run> --candidate <int8 run>`). This is a description of the small model, not a gate on
+anything. Result file: `$PRONUNCIADA_CACHE/opt/results/int8_vs_fp32.json`.
+
+**In the gate's terms int8 would FAIL:** 59 failing row checks, 336 of 416 rows move, every language has at
+least one failing row; 361 rows had a paired test, and every recomputed value equalled its table.
+
+speechocean762 Pearson, fp32 -> int8:
+
+| level | fp32 | int8 | change |
+|---|--:|--:|--:|
+| individual sounds | 0.6999 | 0.6987 | -0.0012 |
+| words | 0.6395 | 0.6394 | -0.0001 |
+| sentence accuracy | 0.7776 | 0.7743 | **-0.0033** |
+| sentence fluency | 0.8144 | 0.8139 | -0.0005 |
+| sentence prosodic | 0.8050 | 0.8047 | -0.0003 |
+| sentence total | 0.7918 | 0.7894 | **-0.0024** |
+
+Azure tally (84 rows), fp32 -> int8: significantly ahead 48 -> 47, ahead n.s. 17 -> 15, level 1 -> 1,
+behind n.s. 16 -> 17, significantly behind 2 -> 4. Ten rows change class:
+
+- zh tone swaps, right word blamed: behind n.s. -> **behind (significant)**
+- fr swap benchmark, native false alarms: behind n.s. -> **behind (significant)**
+- zh swap benchmark, native false alarms: ahead (significant) -> ahead n.s.
+- en cv-real A: ahead (significant) -> ahead n.s.
+- zh swap benchmark, far right word: ahead n.s. -> behind n.s.
+- ko swap benchmark, far right word: ahead n.s. -> behind n.s.
+- zh-CN cv-real A: ahead n.s. -> behind n.s.
+- ko swap benchmark, far AUC: ahead n.s. -> level
+- de swap benchmark, native false alarms: ahead n.s. -> ahead (significant) (better)
+- ru swap benchmark, near AUC: level -> ahead n.s. (better)
+
+Other material moves:
+- Native false alarms rise in every language: on the swap benchmark by 0.2 to 0.4 points (en, zh, es, fr, it,
+  ru, ko); native coaching tips by 0.4 to 4.8 points of clips (ru 4.8, ko 4.0); natives' words accepted fall
+  by 0.1 to 0.26 points and sentences accepted by up to 0.5 points (de).
+- Detection AUCs drop by more than 0.002 on cv-real A (en, zh-CN, zh-TW, es, de, ru), cv-real B (de),
+  EpaDB (-0.0045, paired p = 0.002), and OMPAL word any error / tone-only.
+- Learner errors L2-ARCTIC -0.0015 (p = 0.016); coaching precision-recall AUC -0.0064 (p = 0.002).
+
+int8 is 3.6x smaller on disk (70.7 vs 260.3 MB), about 150 MB less memory, and 19 % (4 threads) to 35 %
+(1 thread) faster on speechocean762 clips. These quality costs fit the fragility measured in the next
+section.
 <!-- /opt:int8 -->
 
 ## Numerical fragility of the int8 backbone
