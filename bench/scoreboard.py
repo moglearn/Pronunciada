@@ -530,14 +530,14 @@ def main():
     coach_tips(body)
     speed(body)
     head = ["# Pronunciada scoreboard", "",
-            "Every held-out number in one place, for the code of branch `release-prep`: `main` at fce7918 merged with "
+            "Every held-out number in one place, for the code on `main`: the round-20 code (commit fce7918) merged with "
             "the learner benchmark, the size / CPU-speed work and the two-layer text front end (own number speller, "
             "kana and pinyin input, one backbone file per precision in the model cache, no second Japanese "
             "dictionary). The only scoring change in that merge is the removal of the second Japanese dictionary "
             "(Sudachi): its Japanese rows come from one held-out run of that code on 2026-11-23 (18 table rows moved, "
-            "all Japanese, none failing the quality gate); every other language gives the outputs of `main` (the "
+            "all Japanese, none failing the quality gate); every other language gives the outputs of the round-20 code (the "
             "scoring targets of all 40,585 benchmark prompts are identical outside Japanese, and the backbone outputs "
-            "are identical under the new file layout). `main` itself is round 19 plus the round-20 Mandarin word step "
+            "are identical under the new file layout). The round-20 code is round 19 plus the round-20 Mandarin word step "
             "and Korean / Japanese speed-up: the round-19 frozen run of 2026-11-22 (results/round19_integration.md) with "
             "every Mandarin row re-run on that code the same day; the other nine languages give bitwise-identical outputs "
             "under it (results/round20_release_check.md). Plus the round-20 Spanish false-alarm fixes (number readings, "

@@ -19,6 +19,12 @@ with `--only chivox` (the Chivox sample). Generated tables:
 system, intervals and paired differences), `learner_benchmark_sample.json` / `_sample_tables.md`,
 `learner_benchmark_systems.json`, `learner_benchmark_cost/`.
 
+![Score against size on disk for Pronunciada, OpenPronounce and ZIPA alone on four English tests, with Azure and Lingolix as cloud services. Pronunciada is highest on sounds and words, the sentence scores are level, and OpenPronounce is highest on marked sounds.](../docs/assets/chart-size.png)
+
+![Model files on disk, peak memory and time per recording for Pronunciada int8, Pronunciada, OpenPronounce distilled and OpenPronounce default.](../docs/assets/chart-cost.png)
+
+The same results as a page: <https://pronunciada.dev/benchmarks/>.
+
 ## 1. The suite
 
 | set | lang | speakers | items | hours | label type | licence | what it can show | what it cannot show |

@@ -35,7 +35,7 @@ Pronunciada is an open-source Python library. It takes a recording and the text 
 
 ## What is in this repository
 
-Pronunciada uses [ZIPA](https://huggingface.co/anyspeech/zipa-small-crctc-500k) unchanged as its phone recognizer. This repository holds the small models that Pronunciada adds on top of it, about 10 MB in total:
+Pronunciada uses [ZIPA](https://huggingface.co/anyspeech/zipa-small-crctc-500k) unchanged as its phone recognizer. This repository holds the small models that Pronunciada adds on top of it, about 25 MB in total:
 
 | Folder | Contents |
 | --- | --- |
@@ -79,7 +79,7 @@ speechocean762 test set (2,500 recordings of English learners, each scored by fi
 
 Bold marks the better of Pronunciada and Azure where the difference is significant (paired bootstrap over speakers, p < 0.05). "ZIPA alone" is the unmodified model with the standard goodness-of-pronunciation score.
 
-Scoring a 3.5-second recording takes about 50 ms on an Apple M3 Pro CPU. With the quantized ZIPA model (71 MB) the Python process uses about 0.3 GB of memory.
+Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro CPU. With the quantized ZIPA model (71 MB) the Python process uses about 0.3 GB of memory.
 
 Every table, the confidence intervals and the tests where Azure is ahead are in the [scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md).
 

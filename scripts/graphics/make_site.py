@@ -21,10 +21,11 @@ NUMBER = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven"}
 
 
 def stats() -> str:
-    """The four figures under the headline, read from the scoreboard."""
+    """The figures under the headline, read from the scoreboard and the timing run."""
     rows = tally()
     total, better, same = (sum(r[k] for r in rows) for k in (1, 2, 3))
-    ms = re.match(r"(\d+) ms", next(r for r in table("End-to-end `Scorer.score`") if r[0] == "fp32")[1]).group(1)
+    quiet = ROOT / "results/tables/learner_benchmark_cost/quiet/pronunciada-fp32__t4.json"     # the benchmark page's own timing
+    ms = round(json.loads(quiet.read_text(encoding="utf-8"))["p50_s"] * 1000)
     cells = [
         (f"{better + same}<small> of {total}</small>", "comparisons level with or ahead of Azure"),
         (f"{ms}<small> ms</small>", "per sentence on a laptop CPU"),
