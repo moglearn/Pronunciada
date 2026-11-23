@@ -2,7 +2,7 @@
 
 Modules: `pronunciada/text/zh.py`, `ja.py`, `ko.py`, shared helpers `pronunciada/text/_cjk_common.py`,
 hand-written tables in `pronunciada/data/cjk/`. Tests: `tests/test_text_cjk_{zh,ja,ko}.py` (offline).
-Runtime packages: `requirements-text-cjk.txt`.
+Runtime packages: `requirements/text-cjk.txt`.
 
 ## Provenance and licenses
 

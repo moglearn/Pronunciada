@@ -141,56 +141,91 @@ def figure_word() -> str:
             f'gets {word["prob"]:.2f}.</p></figure>')
 
 
-HOW_CSS = """
-.how{margin:22px 40px 0;display:grid;grid-template-columns:292px repeat(4,1fr);border-top:1px solid rgba(255,255,255,.14)}
-.how > div{display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.14);padding:22px 0}
-.how .lab{display:block;padding:22px 24px 22px 0}
-.how .lab b{display:flex;align-items:center;gap:12px;font-weight:500;font-size:19px;letter-spacing:-.01em}
-.how .lab b i{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.45);font:500 13px/24px 'Geist',sans-serif;font-style:normal;text-align:center}
-.how .lab span{display:block;margin:8px 0 0 38px;font-size:14px;line-height:20px;color:rgba(255,255,255,.62)}
-.how .lab svg{display:block;margin:14px 0 0 38px}
-.how .snd{font-weight:300;font-size:44px;letter-spacing:-.02em;line-height:1}
-.how .none{font-size:19px;color:#7db8ff}
-.how .diff{color:#7db8ff}
-.how .num{font-weight:300;font-size:36px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
-.how .link > div, .how .link{border-bottom:0}
-.how .link{padding:0;height:34px;font:400 20px/1 'Geist Mono',monospace;color:rgba(255,255,255,.45)}
-.how .link.lab{padding:0}
-.how .link.diff{color:#7db8ff}
-.how .word{grid-column:1/-1;justify-content:flex-end;gap:18px;border-bottom:0;padding:24px 0 0;font-size:17px;color:rgba(255,255,255,.62)}
-.how .word b{font-weight:300;font-size:36px;letter-spacing:-.02em;color:#7db8ff}
+CARD_CSS = """
+*{box-sizing:border-box;margin:0}
+body{margin:0;font-family:'Geist',sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.card{position:relative;width:920px;background:linear-gradient(rgba(4,6,10,.40),rgba(4,6,10,.40)),#06080c url(GRADIENT) center/cover}
+.arch{height:506px}
+.arch .head{position:absolute;left:40px;top:34px;display:flex;align-items:center;gap:12px;font-size:21px;letter-spacing:-.02em;color:rgba(255,255,255,.66)}
+.arch .head svg{height:17.5px;display:block}
+.box{position:absolute;border-radius:16px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.26);backdrop-filter:blur(8px)}
+.in{padding:14px 16px}
+.in b,.zipa small,.group .gh{display:block;font:500 11px/1 'Geist Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.in svg{display:block;margin-top:14px}
+.in p{margin-top:11px;font-size:14.5px;line-height:20px;color:rgba(255,255,255,.92)}
+.zipa{padding:18px 20px;background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.5)}
+.zipa h3{margin:12px 0 2px;font-weight:300;font-size:40px;line-height:1;letter-spacing:-.03em}
+.zipa p{font-size:13.5px;color:rgba(255,255,255,.72)}
+.pill{display:inline-flex;align-items:center;gap:7px;margin-top:14px;height:27px;padding:0 12px 0 9px;border-radius:99px;background:#fff;color:#06080c;font-size:12.5px;font-weight:500;white-space:nowrap}
+.note{position:absolute;font-size:13px;color:rgba(255,255,255,.7)}
+.group{padding:16px 14px 14px;background:rgba(4,6,10,.34);border-color:rgba(255,255,255,.22)}
+.group .gh{display:flex;justify-content:space-between;padding:0 4px 13px}
+.group .gh span{color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{height:86px;padding:13px 14px;border-radius:12px}
+.tile.wide{grid-column:1/-1;height:70px}
+.tile b{display:block;font-weight:500;font-size:14.5px;line-height:18px;letter-spacing:-.005em}
+.tile span{display:block;margin-top:5px;font-size:12px;line-height:15px;color:rgba(255,255,255,.86)}
+.out{position:absolute;width:86px;text-align:center}
+.out em{display:block;font:500 11px/1 'Geist Mono',monospace;letter-spacing:.08em;text-transform:uppercase;font-style:normal;color:rgba(255,255,255,.62);margin-bottom:12px}
+.out i{display:block;height:36px;margin-bottom:9px;border-radius:99px;background:#fff;color:#06080c;font:500 13.5px/36px 'Geist',sans-serif;font-style:normal}
+.arch .cap{position:absolute;left:40px;right:40px;bottom:30px;font-size:14.5px;line-height:21px;color:rgba(255,255,255,.8)}
+svg.wires{position:absolute;left:0;top:0}
+.stats{display:grid;grid-template-columns:1.25fr .8fr 1fr 1.15fr;gap:0 36px;padding:40px 44px 38px}
+.stats b{display:block;font-weight:300;font-size:58px;line-height:1;letter-spacing:-.04em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.stats b small{font-size:25px;letter-spacing:-.02em;color:rgba(255,255,255,.72);margin-left:5px}
+.stats span{display:block;margin-top:14px;font-size:14.5px;line-height:20px;color:rgba(255,255,255,.78)}
 """
+TILES = (("linear-gradient(135deg,#2f6bff,#1b93d6)", "Adapter", "corrects ZIPA's habits in each language", ""),
+         ("linear-gradient(135deg,#1b93d6,#12b3a6)", "Tone, stress, length", "read from ZIPA's inner layers", ""),
+         ("linear-gradient(135deg,#3f5cf6,#2f8cf0)", "Sound-by-sound scoring", "said, replaced or dropped", ""),
+         ("linear-gradient(135deg,#12b3a6,#25c08a)", "Calibration", "fitted on expert-scored speech", ""),
+         ("linear-gradient(90deg,#2a55d8,#16a7b8)", "Dictionary and sound rules", "the sounds the text should contain", " wide"))
 
 
-def figure_how() -> str:
-    """How one word is scored, as three steps: the sounds in the text, the sounds heard, the score of each."""
+def figure_architecture() -> str:
+    """How it works: the recording goes through ZIPA as released, and Pronunciada's small models do the scoring."""
     import soundfile as sf
+    from make_logo import wordmark
 
     sample = ROOT / "site/samples/en-learner-1"
-    word = next(w for w in json.loads(sample.with_suffix(".json").read_text(encoding="utf-8"))["result"]["words"] if w["prob"] < 0.5)
-    phones = word["phones"]
     audio, sr = sf.read(str(sample.with_suffix(".mp3")), dtype="float32", always_2d=True)
-    mono = audio.mean(axis=1)[int((word["start"] - 0.08) * sr):int((word["end"] + 0.08) * sr)]
-    n = 42
+    mono = audio.mean(axis=1)
+    n = 22
     step = len(mono) // n
     level = [float(abs(mono[i * step:(i + 1) * step]).max()) for i in range(n)]
     top = max(level)
-    bars = "".join(f'<rect x="{i * 5}" y="{17 - max(1.5, v / top * 16):.1f}" width="3" height="{2 * max(1.5, v / top * 16):.1f}" rx="1.5" fill="#fff"/>'
+    bars = "".join(f'<rect x="{i * 5.4:.1f}" y="{15 - max(1.5, (v / top) ** .7 * 14):.1f}" width="3" height="{2 * max(1.5, (v / top) ** .7 * 14):.1f}" rx="1.5" fill="#fff"/>'
                    for i, v in enumerate(level))
-    wave = f'<svg width="{n * 5}" height="34" viewBox="0 0 {n * 5} 34">{bars}</svg>'
-    same = lambda p: p["heard"] is None
-    lab = lambda k, title, text, extra="": f'<div class="lab"><b><i>{k}</i>{title}</b><span>{text}</span>{extra}</div>'
-    cells = [lab(1, "The text", f"the sounds “{esc(word['text'])}” should contain")]
-    cells += [f'<div class="snd">{esc(p["ipa"])}</div>' for p in phones]
-    cells += ['<div class="link lab"></div>'] + [f'<div class="link{"" if same(p) else " diff"}">{"=" if same(p) else "≠"}</div>' for p in phones]
-    cells += [lab(2, "The recording", "the sounds the speech model hears, without seeing the text", wave)]
-    cells += [f'<div class="snd">{esc(p["ipa"])}</div>' if same(p) else
-              (f'<div class="snd diff">{esc(p["heard"])}</div>' if p["heard"] else '<div class="none">nothing</div>') for p in phones]
-    cells += ['<div class="link lab"></div>'] + ['<div class="link">↓</div>' for _ in phones]
-    cells += [lab(3, "The score", "the probability that a teacher would accept each sound")]
-    cells += [f'<div class="num{"" if p["prob"] >= 0.5 else " diff"}">{p["prob"]:.2f}</div>' for p in phones]
-    cells += [f'<div class="word">the word “{esc(word["text"])}”<b>{word["prob"]:.2f}</b></div>']
-    return f'<div class="how">{"".join(cells)}</div>'
+    snow = ('<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#06080c" stroke-width="1.3" stroke-linecap="round">'
+            '<path d="M6.5 1v11M1.7 3.75l9.6 5.5M11.3 3.75l-9.6 5.5"/></svg>')
+    tiles = "".join(f'<div class="tile{cls}" style="background:{bg}"><b>{name}</b><span>{what}</span></div>' for bg, name, what, cls in TILES)
+    mb = round(sum(f.stat().st_size for f in (ROOT / "pronunciada/data").rglob("*") if f.is_file()) / 1e6)     # models and dictionaries
+    arrow = lambda x1, y, x2: (f'<path d="M{x1} {y}H{x2 - 2}" stroke="rgba(255,255,255,.75)" stroke-width="1.5"/>'
+                               f'<path d="M{x2 - 7} {y - 5}l6 5-6 5" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>')
+    wires = f'<svg class="wires" width="920" height="506">{arrow(190, 172, 232)}{arrow(428, 172, 470)}{arrow(190, 354, 470)}{arrow(772, 262, 800)}</svg>'
+    return (f'<div class="card arch"><div class="head">{wordmark("#ffffff")}<span>How it works</span></div>'
+            f'<div class="box in" style="left:40px;top:126px;width:150px;height:92px"><b>Recording</b><svg width="120" height="30">{bars}</svg></div>'
+            f'<div class="box in" style="left:40px;top:308px;width:150px;height:92px"><b>Text</b><p>“…a beautiful day for a float”</p></div>'
+            f'<div class="box zipa" style="left:232px;top:96px;width:196px;height:152px"><small>Open speech model</small><h3>ZIPA</h3><p>64M parameters</p>'
+            f'<span class="pill">{snow}frozen, not fine-tuned</span></div>'
+            f'<div class="note" style="left:232px;top:262px;width:196px">One model for all 10 languages, used exactly as released.</div>'
+            f'<div class="box group" style="left:470px;top:84px;width:302px;height:318px"><div class="gh"><span>Pronunciada</span>{mb} MB in total</div>'
+            f'<div class="tiles">{tiles}</div></div>'
+            f'<div class="out" style="left:800px;top:176px"><em>Scores</em><i>sound</i><i>word</i><i>sentence</i></div>'
+            f'{wires}<p class="cap">The speech model is never retrained. Pronunciada adds small models and dictionaries around it, {mb} MB for all 10 languages, '
+            'and they do the scoring.</p></div>')
+
+
+def figure_stats() -> str:
+    """The key figures as one strip."""
+    rows = tally()
+    ahead, behind = sum(r[2] for r in rows), sum(r[4] for r in rows)
+    quiet = json.loads((ROOT / "results/tables/learner_benchmark_cost/quiet/pronunciada-int8__t4.json").read_text(encoding="utf-8"))
+    size = round(next(w["mb"] for w in quiet["weight_files"] if w["file"].startswith("model")))
+    cells = [(f"{ahead}–{behind}", "significant wins and losses against Azure"), (f"{len(rows)}", "languages"),
+             (f"{size}<small>MB</small>", "small model"), (f"{round(quiet['p50_s'] * 1000)}<small>ms</small>", "per sentence on a laptop CPU")]
+    return '<div class="card stats">' + "".join(f"<div><b>{n}</b><span>{label}</span></div>" for n, label in cells) + "</div>"
 
 
 def readme_images() -> None:
@@ -202,11 +237,10 @@ def readme_images() -> None:
             f"--page:{INK};--card:{INK};--pale:#34343a;--accent:linear-gradient(90deg,#7db8ff,#5eead4)}}"
             f"body{{background:{INK}}}.chart{{box-shadow:none;margin:0;border-radius:0;padding:36px 40px 30px}}.langs{{margin:0;border-radius:0}}")
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{dark}</style></head><body>"
-    from make_charts import CSS as DARK_CSS, page as dark_page
-    how = dark_page("How a word is scored", figure_how(),
-                    "A learner from the speechocean762 test set says “float” without its l. The speech model hears no l and a different "
-                    "vowel, so those two sounds score low and so does the word.", legend=())
-    render(how.replace(DARK_CSS, DARK_CSS + HOW_CSS), ROOT / "docs/assets/figure-how.png", 920, 692)
+    gradient = (ROOT / "site/assets/gradient.jpg").as_uri()
+    card = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{CARD_CSS.replace('GRADIENT', gradient)}</style></head><body>"
+    render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/architecture.jpg", 920, 506)
+    render(card + figure_stats() + "</body></html>", ROOT / "docs/assets/stats.jpg", 920, 196)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
     render(head.replace("url(assets/gradient.jpg)", f"url('{(ROOT / 'site/assets/gradient.jpg').as_uri()}')") + langs + "</body></html>",
            ROOT / "docs/assets/languages.jpg", 920, 272)
@@ -223,9 +257,9 @@ if __name__ == "__main__":
         block = make()
         page = pattern.sub(lambda m: f"{m.group(1)}\n{block}\n{m.group(2)}", page)
     PAGE.write_text(page, encoding="utf-8")
-    space = ROOT / "space_static/index.html"          # the Hugging Face Space page repeats the key figures
+    space = ROOT / "huggingface/space_static/index.html"          # the Hugging Face Space page repeats the key figures
     text = space.read_text(encoding="utf-8")
     space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
                      encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote docs/assets/figure-how.png and languages.jpg")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in huggingface/space_static/index.html; wrote docs/assets/architecture.jpg, stats.jpg and languages.jpg")

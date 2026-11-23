@@ -1,5 +1,5 @@
 # Benchmark-only dependencies (never imported by the pronunciada runtime).
-# Install: uv pip install --python .venv/bin/python -r requirements-bench.txt
+# Install: uv pip install --python .venv/bin/python -r requirements/bench.txt
 pyarrow>=15          # remote parquet row-group reads (FLEURS, speechocean762, CV zh-TW)
 fsspec>=2024.2       # HTTP range requests
 aiohttp>=3.9         # fsspec HTTP backend

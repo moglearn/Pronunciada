@@ -232,7 +232,7 @@ if __name__ == "__main__":
                 f"Held-out test sets; L2-ARCTIC and EpaDB were not used in training. Lines show 95% confidence intervals. {star}"),
            out / "chart-detection.png", W, height(len(d), 64, 34 + 112))
     l = languages()
-    render(page("Ten languages: changed-word detection", dumbbell(l),
+    render(page("10 languages: changed-word detection", dumbbell(l),
                 "Native FLEURS test recordings, 150 per language, scored against a reference with one word replaced by a "
                 f"word one phoneme away. Area under the ROC curve for the replaced word, higher is better. Not a test on learner speech. {star}"),
            out / "chart-languages.png", W, height(len(l), 38, 40 + 112))
