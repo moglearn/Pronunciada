@@ -1,0 +1,290 @@
+{
+ "kind": "opt_rss",
+ "date": "2026-11-23 04:07",
+ "machine": {
+  "cpu": "Apple M3 Pro",
+  "ncpu": 12,
+  "mem_gb": 18.0,
+  "python": "3.12.13",
+  "numpy": "2.5.5",
+  "onnxruntime": "1.32.0",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "load_avg_1min": 3.6689453125
+ },
+ "configs": [
+  {
+   "name": "fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32"
+  },
+  {
+   "name": "ort-arena-off",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "ort_options": {
+    "enable_cpu_mem_arena": false,
+    "sessions": [
+     "backbone"
+    ]
+   }
+  },
+  {
+   "name": "ort-mempattern-on",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "ort_options": {
+    "enable_mem_pattern": true,
+    "sessions": [
+     "backbone"
+    ]
+   }
+  },
+  {
+   "name": "ort-nospin",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "ort_options": {
+    "config": {
+     "session.intra_op.allow_spinning": "0"
+    }
+   }
+  },
+  {
+   "name": "ort-ext-level",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "ort_options": {
+    "graph_optimization_level": "ORT_ENABLE_EXTENDED",
+    "sessions": [
+     "backbone"
+    ]
+   }
+  },
+  {
+   "name": "slim-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/slim-fp32/model.onnx"
+  },
+  {
+   "name": "ortopt-ext-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/ortopt-ext-fp32/model.onnx"
+  },
+  {
+   "name": "ortopt-basic-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/ortopt-basic-fp32/model.onnx"
+  },
+  {
+   "name": "prep-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/prep-fp32/model.onnx"
+  }
+ ],
+ "clip_set": "practice",
+ "n_clips": 10,
+ "results": [
+  {
+   "config": "fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 424.578125,
+   "load_s": 0.5795879364013672,
+   "after_n_mb": 690.21875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 424.78125,
+   "load_s": 0.5383069515228271,
+   "after_n_mb": 689.359375,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-arena-off",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 484.84375,
+   "load_s": 0.5907618999481201,
+   "after_n_mb": 835.484375,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-arena-off",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 425.9375,
+   "load_s": 0.5262222290039062,
+   "after_n_mb": 836.5,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-mempattern-on",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 424.65625,
+   "load_s": 0.5201230049133301,
+   "after_n_mb": 692.71875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-mempattern-on",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 425.921875,
+   "load_s": 0.5343990325927734,
+   "after_n_mb": 691.203125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-nospin",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 423.90625,
+   "load_s": 0.5216250419616699,
+   "after_n_mb": 690.71875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-nospin",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 425.1875,
+   "load_s": 0.5210249423980713,
+   "after_n_mb": 688.71875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-ext-level",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 424.578125,
+   "load_s": 0.5185480117797852,
+   "after_n_mb": 689.9375,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ort-ext-level",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 426.15625,
+   "load_s": 0.5220270156860352,
+   "after_n_mb": 690.3125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "slim-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 417.65625,
+   "load_s": 0.514664888381958,
+   "after_n_mb": 706.703125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "slim-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 417.703125,
+   "load_s": 0.47931814193725586,
+   "after_n_mb": 706.828125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ortopt-ext-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 416.421875,
+   "load_s": 0.45816922187805176,
+   "after_n_mb": 707.046875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ortopt-ext-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 416.09375,
+   "load_s": 0.42725396156311035,
+   "after_n_mb": 708.21875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ortopt-basic-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 415.6875,
+   "load_s": 0.4541938304901123,
+   "after_n_mb": 716.625,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "ortopt-basic-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 416.59375,
+   "load_s": 0.42578697204589844,
+   "after_n_mb": 718.125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "prep-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 419.953125,
+   "load_s": 0.454456090927124,
+   "after_n_mb": 710.0625,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "prep-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 419.328125,
+   "load_s": 0.42766904830932617,
+   "after_n_mb": 710.546875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  }
+ ]
+}
