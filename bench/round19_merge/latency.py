@@ -112,6 +112,9 @@ def main():
                paired_median_diff_ms=float(np.median(d)),
                paired_median_diff_ci=[float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5))],
                old_p90_ms=float(np.percentile(o, 90)), new_p90_ms=float(np.percentile(n, 90)))
+    mboots = [float(np.mean(d[rng.integers(0, len(d), len(d))])) for _ in range(2000)]
+    out.update(paired_mean_diff_ms=float(np.mean(d)),       # round 20: the mean too (rare costly clips)
+               paired_mean_diff_ci=[float(np.percentile(mboots, 2.5)), float(np.percentile(mboots, 97.5))])
     with open(a.out, "w") as f:
         json.dump(out, f, indent=1)
     print(json.dumps({k: v for k, v in out.items() if "tree" not in k}))
