@@ -50,7 +50,7 @@ VOWEL_IPA = {"ㅏ": ("", "a"), "ㅐ": ("", "e"), "ㅑ": ("j", "a"), "ㅒ": ("j",
 
 SINO = "영일이삼사오육칠팔구"
 
-# round 20 (on by default, pronunciada.r20.DEFAULTS; PRONUNCIADA_R20_KO_NINS=0 switches it off): optional
+# round 20 (off by default, pronunciada.r20.DEFAULTS; PRONUNCIADA_R20_KO_NINS=1 switches it on): optional
 # ㄴ-insertion inside an eojeol, as already allowed across eojeols. A coda before a syllable 이 / 야 / 여 / 요 / 유 is linked canonically (꽃잎 -> 꼬칩);
 # the standard optional reading inserts ㄴ and nasalises the coda (꽃잎 -> [꼰닙], 십육 -> [심뉵]).
 NINS_VOWELS = ("ㅣ", "ㅑ", "ㅕ", "ㅛ", "ㅠ")

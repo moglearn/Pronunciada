@@ -19,29 +19,30 @@ def _clean(monkeypatch):
 
 
 def test_defaults_per_language():
-    assert r20.DEFAULTS == {"en": ("numalt",), "de": ("numalt", "de_lexalt"), "es": ("numalt", "es_glide"),
-                            "fr": ("numalt",), "ko": ("numalt", "ko_nins")}
-    for lang in ("en", "de", "ko", "es", "fr"):
-        assert r20.any_on(lang)
-    for lang in ("it", "pt", "ru", "ja", "zh"):
+    assert r20.DEFAULTS == {"en": (), "de": (), "es": ("numalt", "es_glide"), "fr": (), "ko": ()}
+    assert r20.any_on("es")
+    for lang in ("en", "de", "fr", "ko", "it", "pt", "ru", "ja", "zh"):
         assert not r20.any_on(lang)
         assert not any(r20.enabled(f, lang) for f in r20.ENV)
-    assert r20.enabled("es_glide", "es") and not r20.enabled("es_glide", "en")
-    assert r20.enabled("ko_nins", "ko") and not r20.enabled("de_lexalt", "fr")
+    assert r20.enabled("es_glide", "es") and r20.enabled("numalt", "es")
 
 
-def test_switches_turn_each_fix_off(monkeypatch):
-    for fix, var in r20.ENV.items():
+def test_switches_turn_each_fix_on_and_off(monkeypatch):
+    for var in r20.ENV.values():
+        monkeypatch.setenv(var, "1")
+    assert all(r20.any_on(lang) for lang in ("en", "de", "es", "fr", "ko"))
+    assert r20.enabled("de_lexalt", "de") and r20.enabled("ko_nins", "ko")
+    for var in r20.ENV.values():
         monkeypatch.setenv(var, "0")
-        assert not any(r20.enabled(fix, lang) for lang in r20.DEFAULTS)
-    for lang in r20.DEFAULTS:
-        assert not r20.any_on(lang)
+    assert not any(r20.enabled(f, lang) for f in r20.ENV for lang in r20.DEFAULTS)
+    assert not any(r20.any_on(lang) for lang in r20.DEFAULTS)
 
 
 def test_one_language_off_leaves_the_others(monkeypatch):
-    monkeypatch.setitem(r20.DEFAULTS, "fr", ())
-    assert not r20.any_on("fr")
-    assert r20.any_on("en") and r20.enabled("numalt", "de")
+    monkeypatch.setitem(r20.DEFAULTS, "fr", ("numalt",))
+    assert r20.any_on("fr") and r20.any_on("es")
+    monkeypatch.setitem(r20.DEFAULTS, "es", ())
+    assert not r20.any_on("es") and r20.any_on("fr")
 
 
 def test_replace_word_keeps_a_valid_reference():
@@ -85,9 +86,9 @@ def test_ko_n_insertion_switch(monkeypatch):
     def alts(r):
         return [a for p in r.phones for a, _ in p.alts]
 
-    assert "nn" in alts(ko.build()("꽃잎"))
-    monkeypatch.setenv("PRONUNCIADA_R20_KO_NINS", "0")
     assert "nn" not in alts(ko.build()("꽃잎"))
+    monkeypatch.setenv("PRONUNCIADA_R20_KO_NINS", "1")
+    assert "nn" in alts(ko.build()("꽃잎"))
 
 
 @pytest.mark.model
@@ -103,9 +104,9 @@ def test_second_pass_word_probabilities_equal_a_full_pass(tts):
 def test_number_readings_take_the_best(tts, monkeypatch):
     wav = tts("It happened in two thousand and ten")
     sc = pronunciada.Scorer("en", threads=2)
-    on = sc.score(wav, "It happened in 2010")
-    monkeypatch.setenv("PRONUNCIADA_R20_NUMALT", "0")
     off = sc.score(wav, "It happened in 2010")
+    monkeypatch.setenv("PRONUNCIADA_R20_NUMALT", "1")
+    on = sc.score(wav, "It happened in 2010")
     assert on.words[3].prob >= off.words[3].prob
     assert [w.prob for w in on.words[:3]] == [w.prob for w in off.words[:3]]
     # the replaced word keeps the canonical reading's sound list: per-sound consumers still work
@@ -120,6 +121,8 @@ def test_number_readings_take_the_best(tts, monkeypatch):
 def test_switch_off_skips_the_pass(tts, monkeypatch):
     wav = tts(TEXT)
     sc = pronunciada.Scorer("en", threads=2)
+    off = sc.score(wav, TEXT)
+    monkeypatch.setenv("PRONUNCIADA_R20_NUMALT", "1")
     on = sc.score(wav, TEXT)
     assert "r20" in on.timing_ms
     monkeypatch.setenv("PRONUNCIADA_R20_NUMALT", "0")

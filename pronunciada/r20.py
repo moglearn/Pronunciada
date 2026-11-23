@@ -1,4 +1,4 @@
-"""Round 20 fixes against native false alarms, ON by default per language (DEFAULTS), each switchable.
+"""Round 20 fixes against native false alarms, on by default per language (DEFAULTS), each switchable.
 
 Fixes (DEFAULTS: language -> fixes on by default; other languages have none):
   numalt     C: a number token is also scored against its other standard readings (best kept).
@@ -31,12 +31,15 @@ ALT_GATE = 0.9
 MAX_ALTS = 3
 MAX_WORDS = 4
 
+# Decided by the held-out release check (results/round20_fa_release_check.md): en, de and fr failed the
+# accuracy rule (planted-error audit rows significantly worse), ko the latency budget (mean +4 ms per clip on
+# natural text); they are off, i.e. identical to the round-19 / 1.0.x outputs. Spanish passed both.
 DEFAULTS: dict[str, tuple[str, ...]] = {
-    "en": ("numalt",),
-    "de": ("numalt", "de_lexalt"),
+    "en": (),
+    "de": (),
     "es": ("numalt", "es_glide"),
-    "fr": ("numalt",),
-    "ko": ("numalt", "ko_nins"),
+    "fr": (),
+    "ko": (),
 }
 ENV = {"numalt": "PRONUNCIADA_R20_NUMALT", "de_lexalt": "PRONUNCIADA_R20_DE_LEXALT",
        "es_glide": "PRONUNCIADA_R20_ES_GLIDE", "ko_nins": "PRONUNCIADA_R20_KO_NINS"}
