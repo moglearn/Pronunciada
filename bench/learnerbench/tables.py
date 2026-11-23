@@ -5,7 +5,7 @@ from pathlib import Path
 
 SHORT = {"pronunciada-fp32": "Pronunciada fp32", "pronunciada-int8": "Pronunciada int8",
          "openpronounce-1.1.0": "OpenPronounce 1.1.0", "openpronounce-1.1.0-student": "OpenPronounce student",
-         "azure": "Azure (cached)", "lingolix": "Lingolix (cached)", "zipa-alone": "ZIPA alone (reference)", "-duration": "-duration"}
+         "azure": "Azure (cached)", "lingolix": "Lingolix (cached)", "zipa-alone": "ZIPA alone (reference)", "chivox": "Chivox (sample, measured 2026-11-23)", "-duration": "-duration"}
 
 
 def _f(x, d=3):

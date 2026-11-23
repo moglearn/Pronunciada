@@ -61,7 +61,38 @@
    "licence_code": "commercial service", "licence_weights": "-",
    "languages_of_suite": {"en": "supported", "zh": "not supported (HTTP 400 'Language zh not supported', 2026-11-22)", "es": "supported, not run", "de": "supported, not run"},
    "given": "recording + prompt text", "levels": "syllable, word, sentence (no sound level)",
-   "score_used": {"word": "word accuracy", "sentence": "the benchmark adapter's utterance score (overall)", "sentence accuracy": "top-level accuracy"}
+   "score_used": {"word": "word accuracy", "sentence": "the benchmark adapter's utterance score (overall)", "sentence accuracy": "top-level accuracy"},
+   "heroico": "Heroico / USMA test, 600 items, measured 2026-11-23 (model_version 2026-11); sentence score = `overall`"
+  },
+  "chivox": {
+   "label": "Chivox speech evaluation API (sample)",
+   "category": "commercial, measured on a 299-recording sample per language (free pilot)",
+   "version": "chivox-eval 1.0.0; engines eng.snt.G4.N1.0.13 (English) and chn.snt.G4.A2.0.8 (Mandarin); 2026-11-23",
+   "licence_code": "commercial service", "licence_weights": "-",
+   "languages_of_suite": {"en": "supported, sample of 299 speechocean762 test items", "zh": "supported, sample of 299 OMPAL test items", "es": "not run", "de": "not run"},
+   "given": "recording as 64 kbit/s MP3 (its endpoint accepts only MP3; every other system scored the original audio) + prompt text; documented default settings",
+   "levels": "word, sentence (English sentence engine: no sound scores); Mandarin: character units",
+   "score_used": "bench/third_party/chivox_live.py mapping (results/chivox_harness.md)"
+  },
+  "zipa-alone": {
+   "label": "ZIPA alone (reference: the underlying phone model without Pronunciada)",
+   "category": "reference, not a pronunciation-assessment system",
+   "version": "anyspeech zipa-small-crctc-500k, fp32, the same file Pronunciada loads; recipe bench/eval_zipa_baseline.py ('gop' scoring, as reported in the README and results/zipa_baseline.md)",
+   "licence_code": "recipe Apache-2.0", "licence_weights": "CC BY 4.0",
+   "languages_of_suite": {"en": "scored", "zh": "scored", "es": "scored", "de": "scored"},
+   "given": "recording + Pronunciada's canonical phones for the prompt (first alternative only)",
+   "levels": "sound (mean log-posterior over CTC-aligned frames), word (mean of its sounds), sentence (mean of all sounds; used for every sentence-level test)",
+   "score_used": "recipe unchanged; failures score -60"
   }
+ },
+ "coverage": {
+  "_": "supported / not supported per language of the suite (en, zh, es, de); 'not run' = supported but no cached responses",
+  "pronunciada-fp32": "en zh es de", "pronunciada-int8": "en zh es de",
+  "openpronounce-1.1.0": "en es de (es, de marked experimental); zh not supported",
+  "openpronounce-1.1.0-student": "en only",
+  "azure": "en zh es de (de not run)",
+  "lingolix": "en es de (es: Heroico only; de not run); zh not supported",
+  "chivox": "en zh (299-item samples); es, de not run",
+  "zipa-alone": "en zh es de (reference)"
  }
 }
