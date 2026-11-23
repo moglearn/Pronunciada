@@ -479,6 +479,51 @@ Rebuilding the int8 model with `quantize_dynamic(MatMul, QInt8)` reproduces the 
 what is stated.
 
 <!-- opt:candidates -->
+| candidate | kind | precision | size MB (default fp32 260.3, int8 70.7; adapters 4.57 in total) | result | latency vs default, mean | peak RSS vs default |
+|---|---|---|--:|---|---|---|
+| ort-arena-off | a. ONNX Runtime options | fp32 | – | exactly identical | en t1 +0.2 ms [-0.8, +1.0]; en t4 -0.1 ms [-0.8, +0.4]; zh t1 -0.2 ms [-1.1, +0.9]; zh t4 +0.1 ms [-0.5, +0.6] | t1 +146 MB; t4 +147 MB |
+| ort-mempattern-on | a. ONNX Runtime options | fp32 | – | exactly identical | en t1 -0.4 ms [-1.7, +1.1]; en t4 -1.9 ms [-2.8, -1.2]; zh t1 -1.6 ms [-4.7, +1.3]; zh t4 -0.1 ms [-1.4, +1.4] | t1 +3 MB; t4 +2 MB |
+| ort-nospin | a. ONNX Runtime options | fp32 | – | exactly identical | en t1 +0.3 ms [-0.7, +1.2]; en t4 +11.7 ms [+9.8, +13.6]; zh t1 -2.1 ms [-4.4, -0.7]; zh t4 +14.6 ms [+12.7, +17.0] | t1 +1 MB; t4 -0 MB |
+| ort-blockbase4 | a. ONNX Runtime options | fp32 | – | not identical (200/200 clips differ; raw posteriors max 5.72e-05) | – | – |
+| ort-ext-level | a. ONNX Runtime options | fp32 | – | exactly identical | en t1 +1.3 ms [-1.7, +6.4]; en t4 -1.0 ms [-1.7, -0.3]; zh t1 -3.6 ms [-8.1, -1.2]; zh t4 -0.6 ms [-1.3, +0.0] | t1 +1 MB; t4 +1 MB |
+| slim-fp32 | b. lossless graph | fp32 | 259.9 | exactly identical | en t1 -0.3 ms [-1.3, +0.6]; en t4 -1.0 ms [-1.9, -0.3]; zh t1 -3.3 ms [-8.0, -0.6]; zh t4 -0.5 ms [-1.2, +0.1] | t1 +17 MB; t4 +18 MB |
+| slim-int8 | b. lossless graph | int8 | 69.8 | exactly identical | en t1 -1.9 ms [-3.1, -0.5]; en t4 -0.3 ms [-1.0, +0.5]; zh t1 +3.7 ms [+0.2, +9.0]; zh t4 +0.1 ms [-0.3, +0.7] | t1 -12 MB; t4 -13 MB |
+| ortopt-basic-fp32 | b. lossless graph | fp32 | 259.7 | exactly identical | en t1 +0.5 ms [-0.8, +2.1]; en t4 -0.8 ms [-1.7, -0.1]; zh t1 -2.6 ms [-6.4, -0.5]; zh t4 -0.2 ms [-1.1, +0.6] | t1 +27 MB; t4 +29 MB |
+| ortopt-basic-int8 | b. lossless graph | int8 | 70.1 | exactly identical | en t1 -0.4 ms [-1.7, +0.8]; en t4 -0.7 ms [-1.8, +0.3]; zh t1 +2.1 ms [-1.3, +6.8]; zh t4 +0.5 ms [+0.1, +0.9] | t1 -6 MB; t4 -8 MB |
+| ortopt-ext-fp32 | b. lossless graph | fp32 | 259.7 | exactly identical | en t1 +1.4 ms [+0.5, +2.5]; en t4 -0.8 ms [-1.9, +0.1]; zh t1 -2.9 ms [-7.3, -0.6]; zh t4 +0.2 ms [-0.5, +0.8] | t1 +18 MB; t4 +19 MB |
+| ortopt-ext-int8 | b. lossless graph | int8 | 69.7 | exactly identical | en t1 -0.3 ms [-1.6, +0.6]; en t4 -0.5 ms [-1.2, +0.4]; zh t1 +1.5 ms [-1.6, +6.2]; zh t4 -0.2 ms [-0.6, +0.3] | t1 -13 MB; t4 -12 MB |
+| prep-fp32 | b. lossless graph | fp32 | 260.0 | exactly identical | en t1 +1.0 ms [+0.2, +1.9]; en t4 -0.8 ms [-1.7, -0.1]; zh t1 -1.5 ms [-3.5, -0.2]; zh t4 -0.3 ms [-0.9, +0.3] | t1 +21 MB; t4 +21 MB |
+| f16store-fp32 | c. float16 storage | fp32 | 132.3 | not identical (200/200 clips differ; raw posteriors max 0.0486) | en t1 -1.2 ms [-3.0, +0.4]; en t4 +1.7 ms [-0.0, +4.1]; zh t1 -1.2 ms [-2.8, +0.2]; zh t4 -0.5 ms [-1.1, +0.1] | t1 +72 MB; t4 +71 MB |
+| int8x-embed+out | e. int8, MatMuls kept fp32 | int8 | 72.3 | not identical (200/200 clips differ; raw posteriors max 5.42) | en t1 +3.8 ms [+2.3, +5.2]; en t4 +1.2 ms [+0.2, +2.2]; zh t1 +4.3 ms [+3.6, +5.0]; zh t4 +1.1 ms [+0.6, +1.4] | t1 +3 MB; t4 +3 MB |
+| int8x-embed+enc0+out | e. int8, MatMuls kept fp32 | int8 | 78.3 | not identical (200/200 clips differ; raw posteriors max 4.81) | en t1 +18.2 ms [+13.2, +23.5]; en t4 +5.7 ms [+4.2, +7.2]; zh t1 +19.1 ms [+15.5, +23.7]; zh t4 +5.0 ms [+4.1, +5.9] | t1 +6 MB; t4 +7 MB |
+| nbits4-fp32 | e. 4-bit weights | fp32 | 46.0 | not identical (200/200 clips differ; raw posteriors max 8.06) | en t1 +3.9 ms [+1.9, +5.4]; en t4 +1.2 ms [+0.2, +2.5]; zh t1 +2.8 ms [+0.8, +4.5]; zh t4 -0.1 ms [-1.8, +1.5] | t1 -202 MB; t4 -200 MB |
+| adapters-fp16 | d. adapters | fp32 | 2.0 | not identical (200/200 clips differ; adapted posteriors max 0.0109) | – | – |
+| adapters-int8 | d. adapters | fp32 | 0.9 | not identical (200/200 clips differ; adapted posteriors max 0.699) | – | – |
+| adapters-lowrank32 | d. adapters | fp32 | 1.4 | not identical (200/200 clips differ; adapted posteriors max 5.31) | – | – |
+| adapters-lowrank16 | d. adapters | fp32 | 0.7 | not identical (200/200 clips differ; adapted posteriors max 21.2) | – | – |
+
+How each was made:
+
+- **ort-arena-off**: {"enable_cpu_mem_arena": false, "sessions": ["backbone"]}
+- **ort-mempattern-on**: {"enable_mem_pattern": true, "sessions": ["backbone"]}
+- **ort-nospin**: {"config": {"session.intra_op.allow_spinning": "0"}}
+- **ort-blockbase4**: {"config": {"session.dynamic_block_base": "4"}, "sessions": ["backbone"]}
+- **ort-ext-level**: {"graph_optimization_level": "ORT_ENABLE_EXTENDED", "sessions": ["backbone"]}
+- **slim-fp32**: onnxslim.slim(model) default passes
+- **slim-int8**: onnxslim.slim(model) default passes
+- **ortopt-basic-fp32**: InferenceSession(optimized_model_filepath, GraphOptimizationLevel.ORT_ENABLE_BASIC)
+- **ortopt-basic-int8**: InferenceSession(optimized_model_filepath, GraphOptimizationLevel.ORT_ENABLE_BASIC)
+- **ortopt-ext-fp32**: InferenceSession(optimized_model_filepath, GraphOptimizationLevel.ORT_ENABLE_EXTENDED)
+- **ortopt-ext-int8**: InferenceSession(optimized_model_filepath, GraphOptimizationLevel.ORT_ENABLE_EXTENDED)
+- **prep-fp32**: quant_pre_process(skip_symbolic_shape=True): onnx shape inference + ORT basic optimisation
+- **f16store-fp32**: 627 float32 initializers (>= 256 values) stored as float16 + Cast to float32
+- **int8x-embed+out**: quantize_dynamic(MatMul, QInt8), 2 MatMul nodes kept fp32 (['embed', 'out'])
+- **int8x-embed+enc0+out**: quantize_dynamic(MatMul, QInt8), 48 MatMul nodes kept fp32 (['embed', 'enc0', 'out'])
+- **nbits4-fp32**: MatMulNBitsQuantizer(block_size=32, is_symmetric=True), default accuracy level
+- **adapters-fp16**: fp16 storage of all ten adapters, compressed npz (pronunciada/data/adapters: 4.57 MB)
+- **adapters-int8**: int8 storage of all ten adapters, compressed npz (pronunciada/data/adapters: 4.57 MB)
+- **adapters-lowrank32**: lowrank32 storage of all ten adapters, compressed npz (pronunciada/data/adapters: 4.57 MB)
+- **adapters-lowrank16**: lowrank16 storage of all ten adapters, compressed npz (pronunciada/data/adapters: 4.57 MB)
 <!-- /opt:candidates -->
 
 ## int8 against fp32
