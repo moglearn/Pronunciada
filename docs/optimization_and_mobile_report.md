@@ -864,6 +864,38 @@ practice clips only (`bench/opt/sensitivity.py`; FLEURS train). Nothing was adop
 was changed.
 
 <!-- opt:ondevice-findings -->
+Findings on the backbone alone, measured on the practice clips. Numbers are in the table below;
+posterior-level files are `$PRONUNCIADA_CACHE/opt/results/posterr_*.json` and
+`sensitivity_layers.json`.
+
+- **8-bit weights with fp32 compute are close to lossless and as stable as fp32.** ONNX Runtime
+  1.32 CPU runs MatMulNBits at 8 bits. It accepts block sizes 32 and 128; per-channel is refused
+  in this format. Mean |dlogp| against fp32 is 0.019 to 0.027 nats, mean KL 3 to 6e-5, and 0.14 to
+  0.19 % of frames change their top token. The shipped dynamic int8 gives 0.42 nats, 1e-2 and
+  2.7 %. Under a 1e-4 feature change the 8-bit models move by 0.0042 to 0.0047 nats, which is the
+  fp32 level; the shipped int8 moves by 3.5 nats. Symmetric and asymmetric are equal; block 128
+  is 4 MB smaller than block 32, with slightly larger error.
+- **Pitfall: DequantizeLinear in front of an fp32 MatMul is not safe with default ONNX Runtime
+  options.** At load, ONNX Runtime fuses DequantizeLinear + MatMul into a dynamically quantized
+  int8 MatMul, which brings back the fragility: 0.46 to 1.8 nats under a 1e-4 change. With the
+  session option `session.disable_quant_qdq=1` the graph stays fp32 and is stable (0.0017), but
+  the weights are then dequantized to fp32 at load. Memory is then the fp32 level (532 MB after
+  load against 471 for fp32), and only the download is smaller. The MatMulNBitsQuantizer's QDQ
+  output at 8 bits left the model unchanged; the per-channel QDQ files were written by
+  `build_small.py` itself.
+- **Static int8 (fixed activation scales) does not remove the fragility.** Calibrated with MinMax
+  on 40 practice clips, it gives KL 2.1e-2 and 4.0 % top-token changes against fp32, and 4.1 nats
+  and 2.2 % under a 1e-4 change. So the cause is quantizing the activations at all, not the
+  per-call scale. Percentile calibration failed inside ONNX Runtime's calibrator (histograms of
+  inhomogeneous shape) and was not pursued.
+- **Per-layer sensitivity.** One group of MatMuls at a time was put at 4 bits, with the rest fp32,
+  on 40 practice clips. Per MB, the most sensitive groups are the CTC output projection (0.3 MB,
+  mean KL 3.7e-3), encoder stack 0 (1.2e-3) and stack 5. Encoder stack 3, which holds 121 of the
+  254 MB, is the least sensitive: its feed-forward block is 75.5 MB at KL 7e-5. Layouts A, B and C
+  put stack 3 (A), then the least-sensitive groups up to 150 MB (B) and 200 MB (C), at 4 bits and
+  the rest at 8 bits. They were chosen from these numbers alone, before any held-out run.
+- **All-4-bit is too lossy for this model:** mean KL 8e-3 to 1.2e-2, comparable to the shipped
+  int8, though it is stable.
 <!-- /opt:ondevice-findings -->
 
 ### Candidates
@@ -879,6 +911,48 @@ was changed.
 ### Why the shipped int8 fails: fixed thresholds or ranking
 
 <!-- opt:ondevice-rows -->
+This is the int8 baseline against the fp32 baseline (both at cbc6d6a), re-run with both rules
+(`$PRONUNCIADA_CACHE/opt/results/int8_vs_fp32.json`). The rows are classified by
+`python -m bench.opt.row_kinds`:
+- A **fixed-threshold** row counts scores on one side of a constant fitted on fp32 outputs: native
+  false alarms below 0.6, natives accepted at P >= 0.5, coaching tips and precision at the shipped
+  sensitivity thresholds, and length native word acceptance.
+- A **ranking** row depends only on the order of scores: Pearson, AUC, hit rate at the run's own
+  5 % native quantile, and "right word".
+
+| | fixed-threshold rows | ranking rows | total |
+|---|--:|--:|--:|
+| fail under the budget rule | 27 | 16 | 43 |
+| fail only under the strict rule (significant, inside tolerance) | 2 | 6 | 8 |
+| **failing rows** (59 failing checks) | **29** | **22** | **51** |
+
+**Fixed-threshold rows, 27 of them failing the budget rule:**
+- swap-benchmark native false alarms in 7 languages;
+- natives' words or sentences accepted, 11 rows;
+- native coaching tips in 8 languages;
+- the Japanese length native word acceptance.
+
+These would move if int8 only shifted its scores, and a calibration refitted on the int8 outputs
+could address them.
+
+**Ranking rows, 16 of them failing the budget rule:**
+- cv-real AUC, 7 rows, down 0.0035 to 0.0124;
+- speechocean762 sentence accuracy -0.0033 and total -0.0024;
+- EpaDB -0.0045;
+- OMPAL word any error and tone-only;
+- swap far AUC and far right word (ko, zh);
+- zh tone right word.
+
+These are real losses of ordering, and recalibration cannot recover them.
+
+Across the 361 paired rows, 18 have p < 0.05 where 18.1 are expected by chance. Of these, 12 are
+worse where 9.0 are expected. The significant moves are therefore only slightly more than chance;
+the gate fails mainly on tolerance breaches.
+
+**Answer:** about 57 % of int8's failing rows (29 of 51) are fixed-threshold rows and 43 % are
+ranking rows. Refitting the calibration for int8 would address roughly 30 of the 51 rows. It would
+not address the 16 ranking rows that break the budget, and nothing was refitted. The weight-only
+candidates below keep the ordering much closer to fp32.
 <!-- /opt:ondevice-rows -->
 
 ### Total size on the device
