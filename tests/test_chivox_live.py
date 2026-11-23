@@ -315,6 +315,7 @@ def test_real_mandarin_layout_and_alignment_skip_punctuation():
 
 
 def test_english_without_phones_has_no_sound_row():
+    pytest.importorskip("rapidfuzz")          # benchmark-only dependency, absent from the core test environment
     import numpy as np
     from bench.third_party import live_eval as LE
 
@@ -506,6 +507,7 @@ def test_dry_run_guard_blocks_the_network():
 
 
 def test_real_transport_only_talks_to_the_documented_host():
+    pytest.importorskip("requests")          # benchmark-only dependency, absent from the core test environment
     with pytest.raises(C.Fatal, match="refusing"):
         C.RequestsTransport((CX.HOST,)).post("https://example.org/", headers={}, json_body={})
 
@@ -513,6 +515,7 @@ def test_real_transport_only_talks_to_the_documented_host():
 # ── evaluation on synthetic speechocean762 rows ──
 
 def test_so762_rows_line_up_with_the_scoreboard_rows():
+    pytest.importorskip("rapidfuzz")          # benchmark-only dependency, absent from the core test environment
     import numpy as np
     from bench.third_party import live_eval as LE
 
