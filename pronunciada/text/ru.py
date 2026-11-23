@@ -261,16 +261,25 @@ class Russian(EuG2P):
 
     def __init__(self):
         super().__init__()
-        self.stress: dict[str, str] = {}
-        with C.lex_path("ru.tsv.gz").open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
-            for line in f:
-                k, _, v = line.rstrip("\n").partition("\t")
-                if k[:1] == "#":
-                    if k == "#onsets":
-                        self.onsets = C.parse_onsets(v)
-                    continue
-                self.stress[k] = v
-        self._keys = sorted(self.stress)
+        # the sorted stress lexicon as one buffer (pronunciada.text._eu_common.SortedLexicon: same
+        # entries as the dict, about a third of the memory); its keys in order serve the stem search
+        lex = C.SortedLexicon.from_tsv(C.read_gz("ru.tsv.gz"))
+        if lex is not None:
+            self.stress = lex
+            if "onsets" in lex.meta:
+                self.onsets = C.parse_onsets(lex.meta["onsets"])
+            self._keys = lex.sorted_keys()
+        else:
+            self.stress = {}
+            with C.lex_path("ru.tsv.gz").open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
+                for line in f:
+                    k, _, v = line.rstrip("\n").partition("\t")
+                    if k[:1] == "#":
+                        if k == "#onsets":
+                            self.onsets = C.parse_onsets(v)
+                        continue
+                    self.stress[k] = v
+            self._keys = sorted(self.stress)
         self._src: dict[str, str] = {}               # word -> where its stress came from
         self.vowel_table = load_vowel_table()
         self.vowel_min = VOWEL_MIN

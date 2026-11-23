@@ -46,3 +46,38 @@ def test_small_tsv_layouts():
 def test_read_gz_matches_gzip(name):
     with C.lex_path(name).open("rb") as fb, gzip.open(fb, "rb") as f:
         assert C.read_gz(name) == f.read()
+
+
+def _ru_dict():
+    d, onsets = {}, None
+    with C.lex_path("ru.tsv.gz").open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
+        for line in f:
+            k, _, v = line.rstrip("\n").partition("\t")
+            if k[:1] == "#":
+                if k == "#onsets":
+                    onsets = v
+                continue
+            d[k] = v
+    return d, onsets
+
+
+def test_russian_stress_lexicon_identical_to_dict():
+    import bisect
+
+    from pronunciada.text import get_g2p
+
+    raw = C.read_gz("ru.tsv.gz")
+    assert C.SortedLexicon.from_tsv(raw, check=True) is not None
+    d, onsets = _ru_dict()
+    g = get_g2p("ru")
+    assert isinstance(g.stress, C.SortedLexicon) and len(g.stress) == len(d)
+    assert g.onsets == C.parse_onsets(onsets)
+    keys = sorted(d)
+    assert list(g._keys) == keys and len(g._keys) == len(keys)
+    rng = random.Random(2)
+    for w in rng.sample(keys, 20000):
+        assert g.stress[w] == d[w] and g.stress.get(w) == d.get(w)
+    for stem in [w[:n] for w in rng.sample(keys, 3000) for n in (2, 3, 5)] + ["", "я", "яяяя"]:
+        assert bisect.bisect_left(g._keys, stem) == bisect.bisect_left(keys, stem)
+        assert (stem in g.stress) == (stem in d) and g.stress.get(stem + "ъ") == d.get(stem + "ъ")
+    assert g._keys[-1] == keys[-1] and g._keys[2:5] == keys[2:5]

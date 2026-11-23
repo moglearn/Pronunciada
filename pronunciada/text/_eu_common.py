@@ -15,7 +15,7 @@ import gzip
 import math
 import re
 import unicodedata
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from importlib import resources
 
@@ -359,6 +359,29 @@ class SortedLexicon(Mapping):
     def __iter__(self):
         for i in range(len(self._lo)):
             yield self._key(i).decode("utf-8")
+
+    def sorted_keys(self) -> "_SortedKeys":
+        """The keys as a read-only sequence in increasing order (= sorted(dict)), decoded on
+        access: what bisect.bisect_left and prefix scans need, without a list of every key."""
+        return _SortedKeys(self)
+
+
+class _SortedKeys(Sequence):
+    def __init__(self, lex: SortedLexicon):
+        self._lex = lex
+
+    def __len__(self) -> int:
+        return len(self._lex)
+
+    def __getitem__(self, i):
+        if isinstance(i, slice):
+            return [self[j] for j in range(*i.indices(len(self)))]
+        n = len(self)
+        if i < 0:
+            i += n
+        if not 0 <= i < n:
+            raise IndexError(i)
+        return self._lex._key(i).decode("utf-8")
 
 
 class SortedWords:
