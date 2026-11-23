@@ -120,9 +120,14 @@ def eval_so762(views: dict, ref=None, human=None, n_boot: int = N_BOOT, vendor: 
     if len(i):
         y = np.asarray(P["y"], float)[i]
         spk = np.asarray(P["spk"])[i]
-        s = {vendor: np.array([Ph.get(P["key"][k], np.nan) for k in i]), "pronunciada": np.asarray(P["B"], float)[i],
-             "azure": np.asarray(P["az"], float)[i]}
-        out["sounds_pearson"] = {"n": len(i), **paired({k: pearson_fn(y, v) for k, v in s.items()}, spk, n_boot, 11, vendor)}
+        s = {"pronunciada": np.asarray(P["B"], float)[i], "azure": np.asarray(P["az"], float)[i]}
+        # a vendor whose answers carry no phone scores at all has no sound level (its word scores
+        # are not passed off as sound scores)
+        has = any((w.get("phones") or []) for v in views.values() for w in v.get("words") or [])
+        if has:
+            s[vendor] = np.array([Ph.get(P["key"][k], np.nan) for k in i])
+        out["sounds_pearson"] = {"n": len(i), "vendor_has_score": has,
+                                 **paired({k: pearson_fn(y, v) for k, v in s.items()}, spk, n_boot, 11, vendor)}
     # words
     i = take(Wd, "key", None)
     if len(i):

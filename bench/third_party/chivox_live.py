@@ -49,14 +49,19 @@ FIELD MAPPING, fixed from the documentation before any response existed (docs "R
     sentence accuracy     <- accuracy           ("Phoneme / syllable correctness")
     sentence fluency      <- fluency.overall
     sentence completeness <- integrity          (reported in the JSON only; no table row uses it)
-    sentence prosodic     <- none documented    (row shown as "—")
+    sentence prosodic     <- none documented. Real answers (2026-11-23) carry one: Mandarin `tone` (the
+                             sentence tone score, the prosody-like row asked for) and English
+                             `rhythm.overall` (an object {overall, sense, stress, tone}, not in the docs)
     secondary             <- pron (speechocean762: vs expert accuracy), overall (OMPAL: vs teacher
                              accuracy, the slot Azure's PronScore takes in results/ompal.md)
-    word                  <- details[i].score   (details[i].char = the word; Mandarin: the character)
-    sound                 <- details[i].phone[j].score (phoneme in .phoneme; dp_type kept, not used)
-    tone (Mandarin)       <- details[i].tone_ref vs tone_detected: 100 if equal, 0 if not (diagnostic
-                             tone channel); the Mandarin "sounds" channel = min phone score of the unit.
-All scores are on 0-100 ("all 0-100 unless noted").
+    word                  <- details[i].score   (English: one entry per word, `char` = the word in lower
+                             case; Mandarin: one per character, `char` = pinyin, `chn_char` = character)
+    sound                 <- details[i].phone[j].score (Mandarin: initial and final, labelled `char`; real
+                             English answers carry NO phones, so English has no sound row)
+    tone (Mandarin)       <- details[i].tonescore (the documented tone_ref / tone_detected do not exist in
+                             real answers; used only if tonescore is absent); the Mandarin "sounds"
+                             channel = min phone score of the syllable (initial, final).
+All scores are on 0-100 ("all 0-100 unless noted"). Layout of the real answers: results/chivox_harness.md.
 
 ASSUMPTIONS the documentation does not settle; checked on every answer (`validate`); a real answer
 that breaks one stops the run after it is cached, so fixing the adapter costs nothing:
@@ -71,7 +76,9 @@ that breaks one stops the run after it is cached, so fixing the adapter costs no
       number or an object with `overall`.
   C4  details is a list of objects with `char` (string) and `score` (number in [0, 100]) in the order
       of the text; at least half of the reference words (English) / characters (Mandarin) appear.
-  C5  details[i].phone, when present, is a list of objects with `phoneme` and `score` in [0, 100].
+  C5  details[i].phone, when present, is a list of objects with a label (`phoneme` in the docs, `char`
+      in real answers) and `score` in [0, 100].
+  C6' details[i].tonescore, when present, is a number in [0, 100].
   C6  No version field is documented; the version string is the MCP serverInfo name + version of
       the session, plus any top-level `version` / `engine_version` / `res` field of the result.
   C7  Quota / billing errors: HTTP 401, 402, 403 ("API Key invalid, disabled, or quota exhausted"),
@@ -126,11 +133,16 @@ PRICES = {"source": "https://api-portal.cloud.chivox.com/pricing (read 2026-11-2
           "free_points": 600, "free_valid_days": 30}
 MAPPING = {
     "sentence_total": "overall", "sentence_accuracy": "accuracy", "sentence_fluency": "fluency.overall",
-    "sentence_completeness": "integrity", "sentence_prosodic": None,
+    "sentence_completeness": "integrity",
+    "sentence_prosodic": {"speechocean762": "rhythm.overall (real answers; not in the docs)",
+                          "ompal": "tone (sentence tone score)"},
     "secondary": {"speechocean762": "pron", "ompal": "overall"},
-    "word": "details[i].score", "sound": "details[i].phone[j].score",
-    "tone": "details[i].tone_ref == details[i].tone_detected -> 100 else 0 (Mandarin, diagnostic)",
-    "mandarin_sounds_channel": "min details[i].phone[j].score",
+    "word": "details[i].score (en: one entry per word, `char` = word; zh: one per character, `chn_char`)",
+    "sound": "details[i].phone[j].score (zh: initial and final; en: real answers carry no phones -> no sound row)",
+    "tone": "details[i].tonescore (Mandarin, diagnostic tone channel); the docs' tone_ref == tone_detected "
+            "is used only when tonescore is absent",
+    "mandarin_sounds_channel": "min details[i].phone[j].score (initial, final)",
+    "real_layout": "read from the two answers of the 2026-11-23 smoke test (structure only)",
     "scale": "0-100", "source": "https://api-portal.cloud.chivox.com/docs (Response fields), read 2026-11-23"}
 
 _QUOTA = re.compile(r"quota|insufficient|\bpoints?\b|balance|credit|exhaust|billing|payment|cap (?:reached|exceeded)",
@@ -501,6 +513,23 @@ def received_keys(ev: dict, top: dict | None) -> str:
     return "; ".join(parts)
 
 
+def _is_han(ch: str) -> bool:
+    return "一" <= ch <= "鿿" or "㐀" <= ch <= "䶿"
+
+
+def _unit_text(d: dict, lang: str) -> str:
+    """The text a details entry stands for. Real answers (2026-11-23): English `char` = the word in
+    lower case; Mandarin `char` = the syllable in pinyin and `chn_char` = the character."""
+    if lang == "zh" and isinstance(d.get("chn_char"), str):
+        return d["chn_char"]
+    return d["char"]
+
+
+def _phone_label(p: dict):
+    """Real Mandarin answers label a phone (initial or final) with `char`; the docs use `phoneme`."""
+    return p.get("phoneme", p.get("char"))
+
+
 def validate_eval(ev: dict, text: str, lang: str, top: dict | None = None) -> None:
     def bad(a, msg):
         raise C.ResponseFormatError(f"Chivox answer does not match assumption {a}: {msg}. Keys received: "
@@ -515,16 +544,23 @@ def validate_eval(ev: dict, text: str, lang: str, top: dict | None = None) -> No
     f = _fluency(ev)
     if f is not None and not _num01(f):
         bad("C3", f"fluency = {ev.get('fluency')!r}")
+    pr = _prosodic(ev, lang)
+    if pr is not None and not _num01(pr):
+        bad("C3", f"prosody-like score ({'rhythm.overall' if lang == 'en' else 'tone'}) = {pr!r}")
     det = ev.get("details")
     if not isinstance(det, list) or (text.strip() and not det):
         bad("C4", "no `details` list")
     for i, d in enumerate(det):
         if not isinstance(d, dict) or not isinstance(d.get("char"), str) or not _num01(d.get("score")):
             bad("C4", f"details[{i}] = {str(d)[:120]}")
+        if lang == "zh" and d.get("chn_char") is not None and not isinstance(d["chn_char"], str):
+            bad("C4", f"details[{i}].chn_char = {d['chn_char']!r}")
+        if d.get("tonescore") is not None and not _num01(d["tonescore"]):
+            bad("C6'", f"details[{i}].tonescore = {d['tonescore']!r}, expected a number in [0, 100]")
         ph = d.get("phone")
         if ph is not None:
-            if not isinstance(ph, list) or not all(isinstance(p, dict) and isinstance(p.get("phoneme"), str)
-                                                   and _num01(p.get("score")) for p in ph):
+            if not isinstance(ph, list) or not all(isinstance(q, dict) and isinstance(_phone_label(q), str)
+                                                   and _num01(q.get("score")) for q in ph):
                 bad("C5", f"details[{i}].phone = {str(ph)[:120]}")
     if lang == "en":
         from bench.third_party import lingolix as L
@@ -534,11 +570,11 @@ def validate_eval(ev: dict, text: str, lang: str, top: dict | None = None) -> No
         if want and hit < 0.5 * len(want):
             bad("C4", f"only {hit} of {len(want)} words of the sentence appear in `details`")
     else:
-        han = [ch for ch in text if "一" <= ch <= "鿿"]
-        got = "".join(d["char"] for d in det)
+        han = [ch for ch in text if _is_han(ch)]
+        got = "".join(_unit_text(d, "zh") for d in det)
         hit = sum(ch in got for ch in han)
         if han and hit < 0.5 * len(han):
-            bad("C4", f"only {hit} of {len(han)} characters of the sentence appear in `details`")
+            bad("C4", f"only {hit} of {len(han)} characters of the sentence appear in `details[].chn_char`")
 
 
 def validate(resp: C.Response, item: C.Item) -> None:
@@ -551,53 +587,95 @@ def _tone(x):
     return m.group() if m else None
 
 
+def _prosodic(ev: dict, lang: str):
+    """The prosody-like sentence score: Mandarin `tone` (sentence tone score); English `rhythm.overall`
+    (not in the docs; present in real answers, an object {overall, sense, stress, tone})."""
+    if lang == "zh":
+        t = ev.get("tone")
+        return t if isinstance(t, (int, float)) and not isinstance(t, bool) else None
+    r = ev.get("rhythm")
+    return r.get("overall") if isinstance(r, dict) else None
+
+
+def zh_units(details: list, text: str) -> tuple[list, dict]:
+    """(a, b, word score, tone score, sounds score) per details entry, as character spans of the text
+    sent (Simplified, one character for one character of the OMPAL prompt, so the spans are the OMPAL
+    unit spans). Each entry's chn_char is located left to right from the previous one, which skips
+    whatever the service leaves out (punctuation); counts are returned for the report.
+    Tone channel: the syllable's `tonescore` (real answers); the docs' tone_ref / tone_detected (equal ->
+    100, else 0) only when no tonescore is given. Sounds channel: min score of the syllable's phones
+    (real answers: initial and final)."""
+    units, cur, cnt = [], 0, {"details": len(details), "han_in_text": sum(_is_han(c) for c in text), "placed": 0}
+    for d in details:
+        t = _unit_text(d, "zh").strip()
+        j = text.find(t, cur) if t else -1
+        if j < 0:
+            continue
+        if _num01(d.get("tonescore")):
+            tone = float(d["tonescore"])
+        else:
+            tr, td = _tone(d.get("tone_ref")), _tone(d.get("tone_detected"))
+            tone = None if tr is None or td is None else (100.0 if tr == td else 0.0)
+        ph = [float(q["score"]) for q in d.get("phone") or []]
+        units.append((j, j + len(t), float(d["score"]), tone, min(ph) if ph else None))
+        cnt["placed"] += 1
+        cur = j + len(t)
+    return units, cnt
+
+
 def view(rec: dict, item: C.Item) -> dict | None:
     o = outer(rec)
     ev = _unwrap(o)
     validate_eval(ev, item.text, item.lang, o)
-    sent = {"total": ev.get("overall"), "accuracy": ev.get("accuracy"), "fluency": _fluency(ev), "prosodic": None,
-            "completeness": ev.get("integrity"),
+    sent = {"total": ev.get("overall"), "accuracy": ev.get("accuracy"), "fluency": _fluency(ev),
+            "prosodic": _prosodic(ev, item.lang), "completeness": ev.get("integrity"),
             "secondary": ev.get("pron") if item.lang == "en" else ev.get("overall")}
-    words = [{"text": d["char"], "score": float(d["score"]),
-              "phones": [(p["phoneme"], float(p["score"])) for p in d.get("phone") or []]} for d in ev["details"]]
+    words = [{"text": _unit_text(d, item.lang), "score": float(d["score"]),
+              "phones": [(_phone_label(q), float(q["score"])) for q in d.get("phone") or []]} for d in ev["details"]]
     out = {"sentence": sent, "words": words}
     if item.lang == "zh":
-        units, cur = [], 0
-        for d in ev["details"]:
-            t = d["char"].strip()
-            j = item.text.find(t, cur) if t else -1
-            if j < 0:
-                continue
-            tr, td = _tone(d.get("tone_ref")), _tone(d.get("tone_detected"))
-            tone = None if tr is None or td is None else (100.0 if tr == td else 0.0)
-            ph = [float(p["score"]) for p in d.get("phone") or []]
-            units.append((j, j + len(t), float(d["score"]), tone, min(ph) if ph else None))
-            cur = j + len(t)
-        out["zh_units"] = units
+        out["zh_units"], out["zh_alignment"] = zh_units(ev["details"], item.text)
     return out
 
 
 # ── the local fake ─────────────────────────────────────────────────────────────
 
 def fake_eval(text: str, lang: str, audio_sha: str) -> dict:
-    """An evaluation in the documented shape (docs "What the engine returns"), random scores."""
+    """The `result` object in the layout of the real answers of 2026-11-23 (field names and nesting;
+    random scores). English: one details entry per word (`char` = the word in lower case), no phones,
+    `rhythm` object. Mandarin: one entry per character (`char` = pinyin, `chn_char` = character,
+    `phone` = [initial, final] as {char, score}, `tone`, `tonescore`), sentence `tone`."""
     rng = random.Random(hashlib.sha256(f"{audio_sha}|{text}|{lang}".encode()).hexdigest())
-    units = [c for c in text if "一" <= c <= "鿿"] if lang == "zh" else re.findall(r"[\w']+", text)
-    det = []
+    zh = lang == "zh"
+    units = [c for c in text if _is_han(c)] if zh else re.findall(r"[\w']+", text)
+    det, pos = [], 0
     for u in units:
-        sc = rng.uniform(20, 60) if rng.random() < 0.12 else rng.uniform(70, 100)
-        n = 2 if lang == "zh" else max(1, min(len(u), 6) - 1)
-        phones = [{"phoneme": u[k % len(u)].lower(), "score": round(min(100, max(0, sc + rng.uniform(-15, 10))), 1),
-                   "dp_type": "normal" if sc > 60 else "mispron"} for k in range(n)]
-        d = {"char": u, "score": round(sc, 1), "phone": phones}
-        if lang == "zh":
-            t = rng.randint(1, 4)
-            d.update(tone_ref=f"T{t}", tone_detected=f"T{t if sc > 55 else (t % 4) + 1}")
+        sc = int(rng.uniform(20, 60) if rng.random() < 0.12 else rng.uniform(70, 100))
+        b = text.find(u, pos)
+        pos = b + len(u)
+        d = {"beginindex": b, "endindex": b + len(u) - 1, "start": 0, "end": 0, "dur": 0, "fluency": 100,
+             "score": sc}
+        if zh:
+            d.update(char="x" + "ai"[:1 + rng.randint(0, 1)], chn_char=u, overall=sc, pron=sc, phn=sc,
+                     tone=rng.randint(1, 4), tonescore=int(min(100, max(0, sc + rng.uniform(-20, 10)))), group=0,
+                     confidence=[rng.randint(0, 100) for _ in range(5)],
+                     phone=[{"char": "x", "score": int(min(100, max(0, sc + rng.uniform(-15, 10))))},
+                            {"char": "ai", "score": int(min(100, max(0, sc + rng.uniform(-15, 10))))}])
+        else:
+            d.update(char=u.lower(), accent=0, indict=1, pause_ref=0, pause_score=100, senseref=0, sensescore=100,
+                     stressref=0, stressscore=100, toneref=0, tonescore=100)
         det.append(d)
-    m = sum(d["score"] for d in det) / len(det) if det else 0.0
-    return {"overall": round(m, 1), "accuracy": round(m - 2, 1), "pron": round(m + 1, 1), "integrity": 100,
-            "fluency": {"overall": round(rng.uniform(60, 100), 1), "speed": 65, "pause": rng.randint(0, 3)},
-            "details": det}
+    m = int(sum(d["score"] for d in det) / len(det)) if det else 0
+    res = {"overall": m, "accuracy": max(0, m - 2), "pron": min(100, m + 1), "integrity": 100,
+           "fluency": {"overall": rng.randint(60, 100), "pause": rng.randint(0, 3), "speed": 65},
+           "details": det, "forceout": 0, "info": {"clip": 0, "snr": 20.0, "tipId": 0, "trunc": 0, "volume": 2000},
+           "pretime": 0, "rank": 100, "res": "FAKE.snt", "systime": 0, "textmode": 0, "usehookw": 0, "useref": 1,
+           "version": "FAKE", "wavetime": 0}
+    if zh:
+        res.update(tone=rng.randint(50, 100), phn=m, chars={"chn_input": text})
+    else:
+        res["rhythm"] = {"overall": rng.randint(50, 100), "sense": 100, "stress": 100, "tone": 100}
+    return res
 
 
 # The two input schemas as tools/list returned them in the live smoke test (2026-11-23), descriptions
@@ -668,7 +746,8 @@ class FakeTransport:
         res = fake_eval(args["ref_text"], lang, hashlib.sha256(audio).hexdigest())
         ev = {"app": {"applicationId": "FAKE"}, "audio": {"audioType": "mp3", "channel": 1, "sampleBytes": 2,
                                                           "sampleRate": 16000},
-              "ccode": 0, "eof": 1,
+              "ccode": {"code": "fake", "len": 0, "time": "0"}, "eof": 1, "time": {}, "tokenId": "fake",
+              "uuid": "fake",
               "request": {"coreType": "cn.sent.raw" if lang == "zh" else "en.sent.score", "refText": args["ref_text"],
                           "tokenId": "fake", **{k: v for k, v in args.items() if k not in ("ref_text", "audio_base64")}},
               "result": {**res, "delaytime": 0}}

@@ -54,6 +54,43 @@ The public documentation was enough to build the client: single Bearer key, endp
 4. **Timeouts.** A `core is timeout` tool error is retried with a low limit: 2 attempts in all. If the first two items of a run both end that way, the run stops with a message saying the request format is wrong, not that the service is slow.
 5. **Tool errors are not answers.** Nothing is cached for a tool error or a JSON-RPC error; the body is kept under `errors/` for diagnosis, and the item will be sent again by a later run. A scored answer is still cached the moment it arrives.
 
+## Real answer layout (smoke test of 2026-11-23, structure only)
+
+Read from the two answers the smoke test cached: one speechocean762 clip and one OMPAL clip. Only the structure was used (field names, types, nesting), never how the scores relate to the human labels. No raw response text is committed.
+
+- **Envelope.** The tool's JSON text has the top-level keys `app`, `audio` (`audioType` "mp3", `channel`, `sampleBytes`, `sampleRate`), `ccode`, `eof`, `request` (the request as the engine saw it, with `coreType` `en.sent.score` / `cn.sent.raw`), `result`, `time`, `tokenId` and `uuid`. The scores are under `result`.
+- **Engine.** `result.res` names the engine (English `eng.snt.G4.N1.0.13`, Mandarin `chn.snt.G4.A2.0.8`) and `result.version` gives its build. Both go into the version string and the cache file name, after the MCP server's `chivox-eval-1.0.0`.
+- **English `result`.**
+  - Sentence scores: `overall`, `accuracy`, `pron`, `integrity` (integers 0–100) and `fluency` {`overall`, `pause`, `speed`}.
+  - `rhythm` {`overall`, `sense`, `stress`, `tone`}, which the docs don't mention.
+  - Other fields: `info` {`clip`, `snr`, `tipId`, `trunc`, `volume`}, timing fields, `rank`, `res`, `version`.
+  - `details` has **one entry per word**: `char` (the word in lower case), `score`, `beginindex` / `endindex` (character positions in the reference text), `start` / `end` / `dur`, `fluency`, and per-word `stressscore` / `stressref`, `tonescore` / `toneref`, `sensescore` / `senseref`, `pause_score` / `pause_ref`, `accent`, `indict`.
+  - **There is no `phone` list in English answers.**
+- **Mandarin `result`.**
+  - Sentence scores: the same fields as English, plus `tone` (an integer sentence tone score), `phn`, and `chars` {`chn_input`}. There is no `rhythm`.
+  - `details` has **one entry per character**: `char` (the syllable in pinyin), `chn_char` (the character), `score`, `overall`, `pron`, `phn`, `tone` (an integer), `tonescore`, `confidence` (5 integers), `group`, `beginindex` / `endindex`, timing fields, and `phone`.
+  - `phone` holds the initial and the final as {`char`, `score`}. A syllable without an initial has a single entry.
+  - The documented `tone_ref` / `tone_detected` do not appear.
+
+A synthetic example in this layout (values made up), Mandarin, one character:
+
+```json
+{"result": {"overall": 72, "accuracy": 70, "pron": 74, "integrity": 100, "tone": 65,
+            "fluency": {"overall": 80, "pause": 0, "speed": 100}, "res": "chn.snt.…", "version": "…",
+            "details": [{"char": "hai", "chn_char": "孩", "score": 61, "tone": 2, "tonescore": 40,
+                         "phone": [{"char": "h", "score": 50}, {"char": "ai", "score": 70}]}]}}
+```
+
+**How the parser reads it now.** The choices written down from the docs are kept; only how each field is read changed.
+
+- **Words.** The Mandarin word unit is located by `chn_char`, left to right in the Simplified text sent. The text is converted one character for one character from the Traditional prompt, so the span is the OMPAL unit span by position, the same span matching `bench/eval_ompal.unit_table` uses for the other systems. Characters the service leaves out, such as punctuation, are skipped. The report counts entries, Han characters and placed entries; both real answers placed every entry (20 of 20 in the OMPAL clip).
+- **Phones.** A phone is labelled `char` as well as the documented `phoneme`.
+- **Documented choices the real layout makes impossible:**
+  - **English sound level.** English answers have no phones, so **English has no sound row**. The vendor's word scores are not passed off as sound scores; the row shows "—" for Chivox.
+  - **Mandarin tone channel.** `tone_ref` / `tone_detected` don't exist, so the tone channel is the syllable's **`tonescore`**, the per-syllable tone information the answers do carry. The integer `tone` field is kept in the cache and not used. The equality rule remains only as a fallback when `tonescore` is absent.
+- **Prosody-like rows.** The docs listed none. The OMPAL prosody row now uses the sentence `tone` score, as asked. For speechocean762 I added `rhythm.overall`: it is the only rhythm / intonation score the English answers carry. I chose it from the field's name and structure before any score was read. Drop it if you prefer "—" there.
+- **The two cached answers stay valid.** Their cache keys are unchanged, so `--limit 299 --plan` now shows 596 to send (598 minus the 2 cached), with 6 points in the ledger.
+
 ## Field mapping (fixed from the documentation before any response existed)
 
 | level | speechocean762 row | OMPAL row | Chivox field |
@@ -61,12 +98,12 @@ The public documentation was enough to build the client: single Bearer key, endp
 | sentence total | total | — | `overall` |
 | sentence accuracy | accuracy | accuracy | `accuracy` |
 | sentence fluency | fluency | fluency | `fluency.overall` |
-| sentence prosodic | prosodic: no Chivox score ("—") | prosody: no Chivox score ("—") | none documented |
+| sentence prosodic | prosodic | prosody | none documented; real answers: `rhythm.overall` (en), sentence `tone` (zh) |
 | secondary | vs expert accuracy | vs teacher accuracy (the slot Azure's PronScore takes in results/ompal.md) | `pron` (en), `overall` (zh) |
 | completeness | JSON only | JSON only | `integrity` |
 | word | word Pearson, low-word AUC | word unit (one character) | `details[i].score` |
-| sound | sound Pearson | sounds channel = min phone score of the unit | `details[i].phone[j].score` |
-| tone | — | tone channel: 100 if `tone_ref` = `tone_detected`, else 0 | `tone_ref`, `tone_detected` |
+| sound | sound Pearson: none (real English answers have no phones) | sounds channel = min phone score of the unit (initial, final) | `details[i].phone[j].score` |
+| tone | — | tone channel: `details[i].tonescore` (docs: 100 if `tone_ref` = `tone_detected`, else 0; those fields don't exist in real answers, so only a fallback) | `tonescore` |
 
 The brief asked for sentence total mapped to overall and sentence accuracy mapped to pronunciation / accuracy. Chivox documents both `accuracy` ("phoneme / syllable correctness") and `pron` ("articulation quality"). Accuracy is mapped to `accuracy`, which is the closer definition of the experts' accuracy score. `pron` is reported as the secondary row.
 

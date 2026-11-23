@@ -127,9 +127,10 @@ def test_cached_answer_written_at_once_with_version(tmp_path):
     _run(items, root, CX.FakeTransport())
     files = list((root / "responses").rglob("*.json"))
     assert len(files) == 1
-    assert files[0].name.endswith("__speechocean762-0000__FAKE-chivox-dry-run.json")
+    # server name-version, then the engine's `version` and `res` (as in the real answers)
+    assert files[0].name.endswith("__speechocean762-0000__FAKE-chivox-dry-run_FAKE_FAKE.snt.json")
     rec = json.loads(files[0].read_text())
-    assert rec["final"] == "answered" and rec["version"] == "FAKE-chivox-dry-run" and rec["status"] == 200
+    assert rec["final"] == "answered" and rec["version"] == "FAKE-chivox-dry-run_FAKE_FAKE.snt" and rec["status"] == 200
 
 
 def test_ledger_arithmetic(tmp_path):
@@ -264,6 +265,93 @@ def test_live_shaped_answer_is_read_under_result():
             "result": dict(DOC_EXAMPLE, delaytime=10)}
     it = C.Item("speechocean762", "x", "s", Path("x.wav"), "HELLO", "en")
     assert CX.view(_rec(live), it)["sentence"]["accuracy"] == 82
+
+
+# Synthetic answers in the REAL layout of 2026-11-23 (field names and nesting as received; values made up)
+def _real(result: dict, core: str) -> dict:
+    return {"app": {"applicationId": "x", "userId": "mcp-user"},
+            "audio": {"audioType": "mp3", "channel": 1, "sampleBytes": 2, "sampleRate": 16000},
+            "ccode": {"code": "c", "len": 1, "time": "0"}, "eof": 1,
+            "request": {"coreType": core, "rank": 100, "refText": "x", "tokenId": "t", "attachAudioUrl": 0},
+            "result": result, "time": {"request": "0"}, "tokenId": "t", "uuid": "u"}
+
+
+REAL_EN = _real({"accuracy": 70, "overall": 72, "pron": 74, "integrity": 100, "rank": 100,
+                 "fluency": {"overall": 80, "pause": 0, "speed": 100},
+                 "rhythm": {"overall": 66, "sense": 100, "stress": 90, "tone": 50},
+                 "res": "eng.snt.TEST", "version": "0.0.TEST", "delaytime": 1, "forceout": 0, "info": {"snr": 1.0},
+                 "details": [{"char": "sandy", "score": 60, "beginindex": 0, "endindex": 4, "start": 0, "end": 1,
+                              "dur": 1, "fluency": 100, "stressscore": 100, "tonescore": 100, "sensescore": 100},
+                             {"char": "likes", "score": 90, "beginindex": 6, "endindex": 10},
+                             {"char": "skin", "score": 80, "beginindex": 12, "endindex": 15}]}, "en.sent.score")
+REAL_ZH = _real({"accuracy": 70, "overall": 72, "pron": 74, "integrity": 100, "tone": 65, "phn": 70,
+                 "fluency": {"overall": 80, "pause": 0, "speed": 100}, "chars": {"chn_input": "x"},
+                 "res": "chn.snt.TEST", "version": "0.0.TEST",
+                 "details": [{"char": "hai", "chn_char": "孩", "score": 61, "tone": 2, "tonescore": 40, "overall": 61,
+                              "pron": 61, "phn": 61, "confidence": [0, 1, 90, 5, 4],
+                              "phone": [{"char": "h", "score": 50}, {"char": "ai", "score": 70}]},
+                             {"char": "er", "chn_char": "儿", "score": 90, "tone": 2, "tonescore": 95,
+                              "phone": [{"char": "er", "score": 88}]}]}, "cn.sent.raw")
+
+
+def test_real_english_layout():
+    it = C.Item("speechocean762", "x", "s", Path("x.wav"), "SANDY LIKES SKIN", "en")
+    v = CX.view(_rec(REAL_EN), it)
+    assert v["sentence"] == {"total": 72, "accuracy": 70, "fluency": 80, "prosodic": 66, "completeness": 100,
+                             "secondary": 74}
+    assert [(w["text"], w["score"], w["phones"]) for w in v["words"]] == [("sandy", 60.0, []), ("likes", 90.0, []),
+                                                                          ("skin", 80.0, [])]
+    r = C.Response(200, {}, _rec(REAL_EN)["body"].encode())
+    assert CX.version(r, {"server": {"name": "chivox-eval", "version": "1.0.0"}}) == "chivox-eval-1.0.0_0.0.TEST_eng.snt.TEST"
+
+
+def test_real_mandarin_layout_and_alignment_skip_punctuation():
+    it = C.Item("ompal", "z", "s", Path("z.wav"), "孩，儿。", "zh")
+    v = CX.view(_rec(REAL_ZH), it)
+    assert v["zh_units"] == [(0, 1, 61.0, 40.0, 50.0), (2, 3, 90.0, 95.0, 88.0)]    # tonescore; min(initial, final)
+    assert v["zh_alignment"] == {"details": 2, "han_in_text": 2, "placed": 2}
+    assert v["sentence"]["prosodic"] == 65 and v["sentence"]["secondary"] == 72
+    assert [w["text"] for w in v["words"]] == ["孩", "儿"] and v["words"][0]["phones"] == [("h", 50.0), ("ai", 70.0)]
+
+
+def test_english_without_phones_has_no_sound_row():
+    import numpy as np
+    from bench.third_party import live_eval as LE
+
+    human = {"so762-1": [{"text": "HI", "phones": ["HH", "AY1"], "accuracy": 8}],
+             "so762-2": [{"text": "HI", "phones": ["HH", "AY1"], "accuracy": 4}],
+             "so762-3": [{"text": "HI", "phones": ["HH", "AY1"], "accuracy": 6}]}
+    views = {k: {"sentence": {}, "words": [{"text": "hi", "score": 10.0 * h[0]["accuracy"], "phones": []}]}
+             for k, h in human.items()}
+    P = {"y": [], "spk": [], "az": [], "B": [], "key": []}
+    for k in human:
+        for j in range(2):
+            for name, x in (("y", float(j)), ("spk", k), ("az", np.random.rand()), ("B", np.random.rand()),
+                            ("key", (k, 0, j))):
+                P[name].append(x)
+    Wd = {"y": [8.0, 4.0, 6.0], "spk": list(human), "az": [1.0, 2.0, 3.0], "ours": [3.0, 1.0, 2.0],
+          "key": [(k, 0) for k in human]}
+    S = {k: [] for k in ("accuracy", "fluency", "prosodic", "total", "spk", "key")}
+    S.update({f"az_{k}": [] for k in ("accuracy", "fluency", "prosodic", "total")},
+             ours={k: [] for k in ("accuracy", "fluency", "prosodic", "total")})
+    R = LE.eval_so762(views, ref=(P, Wd, S, 0), human=human, n_boot=10, vendor="chivox")
+    assert R["sounds_pearson"]["vendor_has_score"] is False and "chivox" not in R["sounds_pearson"]
+    assert "chivox" in R["words_pearson"]
+
+
+def test_fake_answers_in_the_real_layout(tmp_path):
+    t = CX.FakeTransport()
+    root = tmp_path / "root"
+    _run(_items(tmp_path, 1) + _items(tmp_path, 1, "zh"), root, t)
+    for f in (root / "responses").rglob("*.json"):
+        o = CX.outer(json.loads(f.read_text()))
+        assert set(o) == {"app", "audio", "ccode", "eof", "request", "result", "time", "tokenId", "uuid"}
+        d0 = o["result"]["details"][0]
+        if o["request"]["coreType"] == "cn.sent.raw":
+            assert {"chn_char", "tonescore", "phone"} <= set(d0) and set(d0["phone"][0]) == {"char", "score"}
+            assert isinstance(o["result"]["tone"], int)
+        else:
+            assert "phone" not in d0 and set(o["result"]["rhythm"]) == {"overall", "sense", "stress", "tone"}
 
 
 def test_schema_mismatch_lists_the_keys_received():
