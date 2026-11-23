@@ -121,6 +121,43 @@ def so762() -> dict:
     return out
 
 
+def ondevice_paired(rounds: int = 3) -> None:
+    """Round-20 latency cost: bench.ondevice (pronunciada-fp32 and -int8, 4 threads, the same 200 speechocean762
+    TRAIN clips) with the round-20 switches off and on (B+C+E, and B alone), interleaved `rounds` times so that
+    machine load hits both alike. Medians of the per-run p50 / mean per-clip times."""
+    import statistics
+
+    import bench.ondevice as OD
+    from bench.data import load
+
+    OD.clips = lambda n: [{"id": r["id"], "audio": r["audio"], "text": r["text"], "dur": r["dur"]}
+                          for r in load("speechocean762", split="train")[:n]]
+    cfgs = {"off": {}, "B": {"PRONUNCIADA_R20_UNSAID": "1"},
+            "B+C+E": {"PRONUNCIADA_R20_UNSAID": "1", "PRONUNCIADA_R20_NUMALT": "1", "PRONUNCIADA_R20_ES_GLIDE": "1",
+                      "PRONUNCIADA_R20_DE_LEXALT": "1", "PRONUNCIADA_R20_KO_NINS": "1"}}
+    res = {}
+    for _ in range(rounds):
+        for sysname in ("pronunciada-fp32", "pronunciada-int8"):
+            for name, env in cfgs.items():
+                for k in [k for k in os.environ if k.startswith("PRONUNCIADA_R20")]:
+                    del os.environ[k]
+                os.environ.update(env)
+                r = OD.measure(sysname, 4, 200)
+                t = r.get("times") or []
+                res.setdefault(f"{sysname}|{name}", []).append(
+                    {"p50": r["p50_s"], "mean": (sum(t) / len(t)) if t else r["rtf"] * r["audio_seconds"] / r["n_clips"],
+                     "load": r.get("load_avg_1min_before")})
+                print(sysname, name, round(1000 * r["p50_s"], 2), flush=True)
+    for k in [k for k in os.environ if k.startswith("PRONUNCIADA_R20")]:
+        del os.environ[k]
+    out = {k: {"p50_ms": 1000 * statistics.median(x["p50"] for x in v),
+               "mean_ms": 1000 * statistics.median(x["mean"] for x in v), "runs": v} for k, v in res.items()}
+    from bench.round20_native_fa import core as K
+
+    K.save_json("r20_latency.json", out)
+    print(json.dumps({k: (round(v["p50_ms"], 2), round(v["mean_ms"], 2)) for k, v in out.items()}))
+
+
 def ondevice() -> None:
     """bench.ondevice for pronunciada-fp32 / int8 at 4 threads, written to this job's cache.
     One change to the protocol: the 200 clips are the first 200 speechocean762 TRAIN recordings instead of
@@ -145,4 +182,5 @@ def ondevice() -> None:
 
 
 if __name__ == "__main__":
-    {"practice": practice, "errdet": errdet, "ondevice": ondevice, "so762": so762}[sys.argv[1]]()
+    {"practice": practice, "errdet": errdet, "ondevice": ondevice, "so762": so762,
+     "ondevice_paired": ondevice_paired}[sys.argv[1]]()

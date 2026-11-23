@@ -32,19 +32,55 @@ def practice_items(lang: str) -> list[dict]:
     return its
 
 
-def word_rows(lang: str) -> list[dict]:
+_KEY = re.compile(r"[^\w]", re.UNICODE)
+
+
+def _key(t: str) -> str:
+    return _KEY.sub("", t.lower())
+
+
+def tokens(target: str, measure: bool):
+    """(tokens, char spans). measure=False: str.split() as the benchmark-style metric (the diagnosis).
+    measure=True (fix A of round 20, measurement side): split only on ordinary whitespace, so a number written
+    with a no-break or thin space ("1 400") stays one token, and drop tokens without a letter or digit
+    (« » ! ? : ; - ...), which are not words."""
+    if not measure:
+        ms = list(re.finditer(r"\S+", target))
+    else:
+        ms = [m for m in re.finditer(r"[^ \t\n\r]+", target) if _key(m.group())]
+    return [m.group() for m in ms], [(m.start(), m.end()) for m in ms]
+
+
+def changed_index(it: dict, toks: list[str], pos):
+    """Fix 0a: the round-19 builders store word_index in front-end units (punctuation-only tokens skipped);
+    the metric needs the token index. The token equal to the replacement / added word closest to the stored
+    index (which is never larger than the token index)."""
+    lab = it.get("label") or {}
+    new = lab.get("replacement") or lab.get("added")
+    if pos is None or new is None:
+        return pos
+    if pos < len(toks) and _key(toks[pos]) == _key(new):
+        return pos
+    js = [j for j, t in enumerate(toks) if _key(t) == _key(new)]
+    return min(js, key=lambda j: (abs(j - pos), j)) if js else pos
+
+
+def word_rows(lang: str, tag: str | None = None, fix_labels: bool = False, measure: bool = False) -> list[dict]:
     its = practice_items(lang)
     dump = load_dump(lang)
+    if tag:                              # a tagged run re-scores a subset; the rest is the untagged (main) dump
+        dump.update(load_dump(lang, tag))
     rows = []
     for it in its:
         rec = dump.get(it["id"])
         if rec is None or rec.get("error"):
             continue
         lab = it.get("label") or {}
-        toks = it["target"].split()
+        toks, spans = tokens(it["target"], measure)
         al = L.align(toks, rec["words"])
         pos = lab.get("word_index")
-        spans = [(m.start(), m.end()) for m in re.finditer(r"\S+", it["target"])]
+        if lab and (fix_labels or measure):
+            pos = changed_index(it, toks, pos)
         for k, tok in enumerate(toks):
             a, b = spans[k]
             iw = [j for j, w in enumerate(rec["rwords"]) if w["span"][0] < b and w["span"][1] > a]
@@ -52,7 +88,7 @@ def word_rows(lang: str) -> list[dict]:
                          "source": it["source"], "k": k, "tok": tok, "label": int(k == pos), "pos": pos,
                          "err": L.error_signal(al[k]), "score": 1.0 - L.error_signal(al[k]),
                          "kind": lab.get("bucket") or "control", "n_tok": len(toks), "iw": iw,
-                         "changed_item": bool(lab), "unaligned": al[k] is None})
+                         "changed_item": bool(lab), "unaligned": al[k] is None, "fold": it.get("fold")})
     return rows
 
 
@@ -92,8 +128,8 @@ def boot(rows, fn, n=1000, seed=0):
     return [s[int(0.025 * len(s))], s[min(len(s) - 1, int(0.975 * len(s)))]]
 
 
-def dump_rec(lang: str) -> dict:
-    return load_dump(lang)
+def dump_rec(lang: str, tag: str | None = None) -> dict:
+    return load_dump(lang, tag)
 
 
 def save_json(name: str, obj) -> None:

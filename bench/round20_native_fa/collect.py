@@ -45,13 +45,21 @@ def items(lang: str) -> list[dict]:
             out.append({"id": r["item"], "clip": r["id"], "audio": audio, "target": r["target"],
                         "prompt": r["prompt"], "label": r["label"], "speaker": r["speaker"],
                         "source": "cv" if r["src"] == "cv" else "fleurs", "lang": "ko",
-                        "asr_cer": asr.get(r["id"])})
+                        "asr_cer": asr.get(r["id"]),
+                        "fold": "fit" if _fold_hash(r["speaker"]) % 2 == 0 else "check"})
         return out
     for r in rows:
         out.append({"id": r["id"], "clip": r["id"].rsplit("__", 1)[0], "audio": r["audio"], "target": r["target"],
                     "prompt": r["prompt"], "label": r["label"], "speaker": r["speaker"], "source": r["source"],
-                    "lang": lang, "fold": r.get("fold")})
+                    "lang": lang.split("@")[0], "fold": r.get("fold")})
     return out
+
+
+def _fold_hash(spk: str) -> int:
+    """Speaker-disjoint fit / check halves for Korean, the rule of the other builders (sha256 of "fold|speaker")."""
+    import hashlib
+
+    return int(hashlib.sha256(f"fold|{spk}".encode()).hexdigest()[:12], 16)
 
 
 def _f(x, nd=4):
@@ -106,7 +114,7 @@ def detail(sc, res) -> dict:
             p, sl = ref.phones[i], ev.slots[i]
             ph.append({"ipa": p.ipa, "nalt": len(p.alts), "alt": sl.alt_index,
                        "alt_ipa": (p.alts[sl.alt_index - 1][0] if sl.alt_index > 0 else ("" if sl.alt_index < 0 else p.ipa)),
-                       "p": _f(wr.phones[i - a].prob), "zl": _f(c["s_zl"][i]), "heard": sl.heard,
+                       "p": _f(wr.phones[i - a].prob) if i - a < len(wr.phones) else None, "zl": _f(c["s_zl"][i]), "heard": sl.heard,
                        "llr_sub": _f(sl.llr_sub), "llr_del": _f(sl.llr_del), "z_sub": _f(tab["z_llr_sub"][i])
                        if "z_llr_sub" in tab else None, "nf": int(sl.n_frames), "peak": _f(sl.peak_post),
                        "sf": int(sl.start_frame), "ef": int(sl.end_frame),
@@ -125,28 +133,29 @@ def detail(sc, res) -> dict:
             "t0": float(f2t(0))}
 
 
-def run(lang: str, part: str | None, limit: int | None, threads: int = 2) -> Path:
+def run(lang: str, part: str | None, limit: int | None, threads: int = 2, tag: str | None = None,
+        only: set | None = None) -> Path:
     from bench.third_party.lingolix import reduce_azure_shape
     from pronunciada import Scorer
     from pronunciada.compat.azure import to_azure
 
     _install_recorders()
     k_part, n_part = (int(x) for x in part.split("/")) if part else (0, 1)
-    d = DUMPS
+    d = DUMPS / tag if tag else DUMPS
     d.mkdir(parents=True, exist_ok=True)
     out = d / (f"{lang}.jsonl" if n_part == 1 else f"{lang}.p{k_part}.jsonl")
     done = set()
-    for p in d.glob(f"{lang}*.jsonl"):
+    for p in [q for q in d.glob(f"{lang}.*jsonl") if q.name == f"{lang}.jsonl" or q.name.startswith(f"{lang}.p")]:
         for l in p.read_text(encoding="utf-8").splitlines():
             if l.strip():
                 done.add(json.loads(l)["id"])
     its = items(lang)
     clips = sorted({it["clip"] for it in its})
     mine = {c for j, c in enumerate(clips) if j % n_part == k_part}
-    its = [it for it in its if it["clip"] in mine]
+    its = [it for it in its if it["clip"] in mine and (only is None or it["id"] in only)]
     if limit:
         its = its[:limit]
-    sc = Scorer(lang, threads=threads)
+    sc = Scorer(lang.split("@")[0], threads=threads)
     t0, n = time.time(), 0
     with open(out, "a", encoding="utf-8") as f:
         for it in its:
@@ -161,6 +170,7 @@ def run(lang: str, part: str | None, limit: int | None, threads: int = 2) -> Pat
                                layout="rest", grading_system="HundredMark")
                 vw = reduce_azure_shape(raw)
                 rec = {"id": it["id"], "latency_ms": round(lat, 1), **detail(sc, res),
+                       "r20": res._pronunciada.get("r20"),  # noqa: SLF001
                        "words": [{"text": w["text"], "score": w["score"], "error_type": w["error_type"]} for w in vw]}
             except Exception as e:  # noqa: BLE001
                 rec = {"id": it["id"], "error": f"{type(e).__name__}: {e}"}
@@ -173,10 +183,11 @@ def run(lang: str, part: str | None, limit: int | None, threads: int = 2) -> Pat
     return out
 
 
-def load(lang: str) -> dict[str, dict]:
+def load(lang: str, tag: str | None = None) -> dict[str, dict]:
     out = {}
-    for p in sorted(DUMPS.glob(f"{lang}*.jsonl")):
-        if p.name.startswith(f"{lang}.") or p.name == f"{lang}.jsonl":
+    d = DUMPS / tag if tag else DUMPS
+    for p in sorted(q for q in d.glob(f"{lang}.*jsonl") if q.name == f"{lang}.jsonl" or q.name.startswith(f"{lang}.p")):
+        if True:
             for l in p.read_text(encoding="utf-8").splitlines():
                 if l.strip():
                     r = json.loads(l)
@@ -190,6 +201,8 @@ def main(argv=None):
     ap.add_argument("--part")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--workers", type=int, default=1)
+    ap.add_argument("--tag")
+    ap.add_argument("--only", help="json file: item ids to score (the rest is taken from the untagged dump)")
     a = ap.parse_args(argv)
     for v in ("OMP_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS"):
         os.environ.setdefault(v, "1")
@@ -198,12 +211,16 @@ def main(argv=None):
         import sys
 
         ps = [subprocess.Popen([sys.executable, "-m", "bench.round20_native_fa.collect", "--lang", a.lang,
-                                "--part", f"{k}/{a.workers}"]) for k in range(a.workers)]
+                                "--part", f"{k}/{a.workers}"] + (["--tag", a.tag] if a.tag else [])
+                             + (["--only", a.only] if a.only else []))
+              for k in range(a.workers)]
         codes = [p.wait() for p in ps]
         if any(codes):
             raise SystemExit(f"worker failed: {codes}")
         return
-    run(a.lang, a.part, a.limit)
+    only = set(json.loads(Path(a.only).read_text())) if a.only else None
+    for lang in a.lang.split(","):
+        run(lang, a.part, a.limit, tag=a.tag, only=only)
 
 
 if __name__ == "__main__":

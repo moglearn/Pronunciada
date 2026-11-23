@@ -191,6 +191,8 @@ def run(lang: str, step: str) -> None:
 
 
 def manifest_path(lang: str) -> Path:
+    if lang.endswith("@fresh"):
+        return ROOT / "fresh" / lang.split("@")[0] / "dev_manifest.jsonl"
     if lang == "de":
         return german_work() / "dev_manifest.jsonl"
     if lang == "ko":
