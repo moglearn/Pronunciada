@@ -115,10 +115,33 @@ def prepare(spec: dict, run: Path) -> dict:
         (src / "results" / "tables" / name).unlink(missing_ok=True)
     (src / "results" / "SCOREBOARD.md").unlink(missing_ok=True)
     build(cache_root(), run / "cache")
+    plans = pin_audit_plans(run)
     (run / "logs").mkdir(exist_ok=True)
-    meta = {"spec": spec, "tree": tree.name, "created": time.strftime("%Y-%m-%d %H:%M:%S"), "machine": machine()}
+    meta = {"spec": spec, "tree": tree.name, "created": time.strftime("%Y-%m-%d %H:%M:%S"), "machine": machine(),
+            "audit_plans_sha1": plans}
     meta_p.write_text(json.dumps(meta, indent=1))
     return meta
+
+
+def pin_audit_plans(run: Path) -> dict:
+    """The contrast-audit edit plans of the frozen runs behind the committed tables. They live only in
+    those runs' overlays (the de and ja plans were regenerated on 2026-11-22; the real cache still
+    holds the 2026-11-18 ones, which overlay.py would copy), so they are pinned under
+    $PRONUNCIADA_CACHE/opt/audit_plans/<lang>/plan_250.json and copied into every run."""
+    from .common import file_sha1, opt_root
+
+    src = opt_root() / "audit_plans"
+    out = {}
+    for d in sorted(src.iterdir()) if src.is_dir() else []:
+        f = d / "plan_250.json"
+        if f.exists():
+            dest = run / "cache" / "audit" / "contrast_v1_test" / d.name
+            dest.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dest / f.name)
+            out[d.name] = file_sha1(f)
+    if len(out) < 10:
+        raise SystemExit(f"pinned audit plans missing under {src} (found {sorted(out)})")
+    return out
 
 
 def step_env(spec: dict, run: Path) -> dict:
