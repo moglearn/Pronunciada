@@ -50,6 +50,8 @@ def english(T, out):
         _row(out, "speechocean762", "en", name, o["pearson"], kind="pcc", azure=a["pearson"], delta=d["delta"],
              p=d["p_value_two_sided"], tally=True)
     for ds, label in (("l2arctic", "L2-ARCTIC test"), ("epadb", "EpaDB test")):
+        if ds not in E.get("errdet", {}):          # the screen runs eval_english without errdet
+            continue
         a = E["errdet"][ds]["all"]
         o, z = a["ours_B"], a["azure"]
         d = o.get("minus_azure")
