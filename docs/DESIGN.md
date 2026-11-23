@@ -159,7 +159,7 @@ numbers and say so. Controlled errors are a proxy for real learner errors and ar
 
 ## Conventions for contributors
 
-- Python ≥ 3.10; runtime deps limited to numpy, onnxruntime, kaldi-native-fbank, soundfile, scipy
+- Python ≥ 3.10; runtime deps limited to numpy, onnxruntime, kaldi-native-fbank, soundfile
   plus small permissively-licensed per-language text packages. Training-only deps (torch, sklearn,
   datasets …) stay out of the runtime path.
 - Large data and model files go under `~/.cache/pronunciada/` (override with `PRONUNCIADA_CACHE`), never in the repo.

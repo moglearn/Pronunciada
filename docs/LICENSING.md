@@ -149,7 +149,6 @@ Runtime (core, `pip install pronunciada`):
 | package | license | note |
 |---|---|---|
 | numpy | BSD-3-Clause | |
-| scipy | BSD-3-Clause | |
 | onnxruntime | MIT | |
 | kaldi-native-fbank | Apache-2.0 | |
 | soundfile | BSD-3-Clause | wheels bundle libsndfile (LGPL-2.1), dynamically loaded |
@@ -160,7 +159,7 @@ entries BSD-3 option, Unihan Unicode-3.0, an unused HTS voice CC BY 3.0) with su
 sudachidict-core (Apache-2.0), pydantic family (MIT); `[numbers]` num2words (LGPL-2.1-or-later,
 optional, imported unmodified). Korean needs nothing extra.
 
-Benchmark / training only (never imported by `pronunciada/`): torch (BSD-3), scikit-learn
+Benchmark / training / tests only (never imported by `pronunciada/`): scipy (BSD-3), torch (BSD-3), scikit-learn
 (BSD-3), pandas (BSD-3), pyarrow (Apache-2.0), fsspec (BSD-3), aiohttp (Apache-2.0), requests
 (Apache-2.0), panphon (MIT), huggingface_hub (Apache-2.0), onnx / onnxscript (Apache-2.0 / MIT),
 praat-parselmouth (GPL-3.0: offline pitch cross-check only), silero-stress (MIT, offline),
