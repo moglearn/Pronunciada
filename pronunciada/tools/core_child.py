@@ -4,7 +4,9 @@
 
 job.json: {"lang": "es", "items": [{"id": ..., "samples": "<path of a float32 .npy, 16 kHz>",
            "target": {... pronunciada.core target ...}}], "kw": {"precision": "fp32", "threads": 2},
-           "rescore": [0.0, 1.0]}
+           "rescore": [0.0, 1.0], "details": true}
+           With "mode": "text" the items carry "audio" (file path) and "text" instead, and the existing
+           pipeline Scorer(lang, **kw).score(audio, text) runs (for comparisons).
 Output: {"results": {id: {"result": to_dict() without timing_ms, "rescore": {s: to_dict()}, "details": ...}},
          "modules": sorted top-level modules loaded, "pronunciada_modules": [...],
          "opened": every file path opened (audit hook), "peak_rss_bytes": ..., "seconds": {...}}
@@ -55,13 +57,22 @@ def main(argv=None) -> None:
     from pronunciada.core import get_scorer, score_phones
 
     kw = job.get("kw") or {}
-    sc = get_scorer(job["lang"], **kw)
+    text_mode = job.get("mode") == "text"        # the existing pipeline: Scorer(lang).score(audio file, text)
+    if text_mode:
+        from pronunciada.scorer import Scorer
+
+        sc = Scorer(job["lang"], **kw)
+    else:
+        sc = get_scorer(job["lang"], **kw)
     t_load = time.perf_counter() - t0
     out, lat = {}, []
     for it in job["items"]:
-        wav = np.load(it["samples"])
+        wav = None if text_mode else np.load(it["samples"])
         t = time.perf_counter()
-        r = score_phones(wav, 16000, it["target"], job["lang"], scorer=sc)
+        if text_mode:
+            r = sc.score(it["audio"], it["text"])
+        else:
+            r = score_phones(wav, 16000, it["target"], job["lang"], scorer=sc)
         lat.append(time.perf_counter() - t)
         d = r.to_dict()
         d.pop("timing_ms", None)
