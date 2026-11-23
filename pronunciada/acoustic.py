@@ -214,7 +214,7 @@ def _cpu_fingerprint() -> str:
     import hashlib
     import platform
 
-    parts = [platform.machine(), platform.processor(), platform.system()]
+    parts = [platform.machine(), platform.system()]           # (platform.processor() forks uname)
     try:
         with open("/proc/cpuinfo", encoding="utf-8", errors="replace") as f:
             for line in f:
@@ -224,6 +224,19 @@ def _cpu_fingerprint() -> str:
                         break
     except OSError:
         pass
+    if platform.system() == "Darwin":                         # no /proc: ask sysctl directly
+        try:
+            import ctypes
+
+            libc = ctypes.CDLL(None)
+            for key in (b"machdep.cpu.brand_string", b"machdep.cpu.features", b"machdep.cpu.leaf7_features"):
+                size = ctypes.c_size_t(0)
+                if libc.sysctlbyname(key, None, ctypes.byref(size), None, 0) == 0 and size.value:
+                    buf = ctypes.create_string_buffer(size.value)
+                    if libc.sysctlbyname(key, buf, ctypes.byref(size), None, 0) == 0:
+                        parts.append(buf.value.decode("ascii", "replace"))
+        except (OSError, AttributeError):
+            pass
     return hashlib.sha1("\n".join(parts).encode()).hexdigest()[:8]
 
 
