@@ -1,0 +1,286 @@
+{
+ "machine": "Darwin arm64, Python 3.12.13, onnxruntime 1.32.0",
+ "generated": "2026-11-23 05:11",
+ "command": "python scripts/mobile_parity.py ",
+ "note": "indicative numbers from one laptop CPU; not a phone measurement",
+ "precisions": {
+  "fp32": {
+   "en": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 121977,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     },
+     "speechocean762-train": {
+      "clips": 100,
+      "clips_identical": 100,
+      "values": 136062,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "de": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 147500,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "es": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 140688,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "fr": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 119434,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "it": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 154521,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "pt": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 142533,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ru": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 131512,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ja": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 145259,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ko": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 136409,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "zh": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 112579,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   }
+  },
+  "int8": {
+   "en": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 121977,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     },
+     "speechocean762-train": {
+      "clips": 100,
+      "clips_identical": 100,
+      "values": 136062,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "de": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 147500,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "es": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 140688,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "fr": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 119434,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "it": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 154521,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "pt": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 142533,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ru": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 131512,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ja": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 145259,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "ko": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 136409,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   },
+   "zh": {
+    "summary": {
+     "practice": {
+      "clips": 20,
+      "clips_identical": 20,
+      "values": 112579,
+      "values_differing": 0,
+      "max_abs_diff": 0.0
+     }
+    },
+    "identical": true,
+    "differing_clips": {}
+   }
+  }
+ }
+}

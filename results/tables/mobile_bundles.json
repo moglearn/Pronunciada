@@ -1,0 +1,174 @@
+{
+ "backbone_bytes": {
+  "int8": 70677672,
+  "fp32": 260267872,
+  "tokens": 769
+ },
+ "languages": [
+  {
+   "lang": "en",
+   "files": 22,
+   "bundle_bytes": 4648805,
+   "backbone_int8_plus_bundle": 75327246,
+   "backbone_fp32_plus_bundle": 264917446,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "de",
+   "files": 21,
+   "bundle_bytes": 3629655,
+   "backbone_int8_plus_bundle": 74308096,
+   "backbone_fp32_plus_bundle": 263898296,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "es",
+   "files": 19,
+   "bundle_bytes": 3925779,
+   "backbone_int8_plus_bundle": 74604220,
+   "backbone_fp32_plus_bundle": 264194420,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "fr",
+   "files": 13,
+   "bundle_bytes": 1101482,
+   "backbone_int8_plus_bundle": 71779923,
+   "backbone_fp32_plus_bundle": 261370123,
+   "unlisted_licence": [],
+   "share_alike_question": [],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "it",
+   "files": 17,
+   "bundle_bytes": 1940015,
+   "backbone_int8_plus_bundle": 72618456,
+   "backbone_fp32_plus_bundle": 262208656,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "native/it.json",
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "pt",
+   "files": 19,
+   "bundle_bytes": 3553956,
+   "backbone_int8_plus_bundle": 74232397,
+   "backbone_fp32_plus_bundle": 263822597,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "calib/identity/pt.json",
+    "coach/identity/pt.npz",
+    "native/pt.json",
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "ru",
+   "files": 20,
+   "bundle_bytes": 4143783,
+   "backbone_int8_plus_bundle": 74822224,
+   "backbone_fp32_plus_bundle": 264412424,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "calib/identity/ru.json",
+    "coach/attr_heads.npz",
+    "coach/identity/ru.npz",
+    "native/ru.json",
+    "prosody/stress_v3.json",
+    "prosody/stress_v3.onnx"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "ja",
+   "files": 19,
+   "bundle_bytes": 2411397,
+   "backbone_int8_plus_bundle": 73089838,
+   "backbone_fp32_plus_bundle": 262680038,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "coach/attr_heads.npz"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "ko",
+   "files": 17,
+   "bundle_bytes": 3615798,
+   "backbone_int8_plus_bundle": 74294239,
+   "backbone_fp32_plus_bundle": 263884439,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "coach/attr_heads.npz"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  },
+  {
+   "lang": "zh",
+   "files": 23,
+   "bundle_bytes": 4186927,
+   "backbone_int8_plus_bundle": 74865368,
+   "backbone_fp32_plus_bundle": 264455568,
+   "unlisted_licence": [],
+   "share_alike_question": [
+    "coach/attr_heads.npz"
+   ],
+   "check_identical": true,
+   "check_clips": 7,
+   "check_outside_opens": []
+  }
+ ],
+ "shared_files": [
+  "calib/config.json",
+  "calib/contrast_caps.json",
+  "calib/omission.json",
+  "calib/phone_dist.npz",
+  "calib/sound_U.npz",
+  "calib/word.npz",
+  "calib/word_reg.npz",
+  "calib/word_reg_r6.npz",
+  "coach/contrast_heads.json",
+  "zipa_tokens.txt"
+ ],
+ "note": "sizes of raw files (no compression); backbone = model file + tokens.txt"
+}

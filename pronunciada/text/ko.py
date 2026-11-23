@@ -12,10 +12,7 @@ from ..types import Reference
 from ._cjk_common import Ph, Syl, Wd, assemble, is_latin, nfkc_digit
 from .base import G2P
 
-L = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
-V = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
-T = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ",
-     "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
+from ..hangul import L, T, V, decompose  # noqa: E402,F401  (Hangul arithmetic shared with scoring)
 
 # clusters: (stays in coda, moves to next onset before a vowel)
 CLUSTER = {"ㄳ": ("ㄱ", "ㅅ"), "ㄵ": ("ㄴ", "ㅈ"), "ㄶ": ("ㄴ", "ㅎ"), "ㄺ": ("ㄹ", "ㄱ"), "ㄻ": ("ㄹ", "ㅁ"),
@@ -68,13 +65,6 @@ def _n_insertion_alt(raw_coda: str, phones) -> None:
     ins = {"ㄹ": "ll", "ㄱ": "ŋn", "ㄷ": "nn", "ㅂ": "mn", "ㄴ": "nn", "ㅁ": "mn"}.get(nc)
     if ins and not p0.nucleus:
         p0.alt(ins, -1.0)
-
-
-def decompose(ch: str) -> tuple[str, str, str] | None:
-    o = ord(ch) - 0xAC00
-    if not 0 <= o < 11172:
-        return None
-    return L[o // 588], V[(o % 588) // 28], T[o % 28]
 
 
 def _sino_int(n: int) -> str:

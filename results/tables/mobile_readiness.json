@@ -1,0 +1,903 @@
+{
+ "machine": "Darwin arm64, Python 3.12.13, onnxruntime 1.32.0",
+ "generated": "2026-11-23 05:11",
+ "command": "python scripts/mobile_parity.py ",
+ "note": "indicative numbers from one laptop CPU; not a phone measurement",
+ "threads": [
+  1,
+  2,
+  4
+ ],
+ "languages": {
+  "en": {
+   "bundle_bytes": 4648805,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 264917902,
+    "threads_1": {
+     "peak_rss_mb": 674.0,
+     "load_s": 0.306,
+     "latency_ms_median": 295.3,
+     "latency_ms_first": 378.0,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 675.1,
+     "load_s": 0.299,
+     "latency_ms_median": 188.7,
+     "latency_ms_first": 248.9,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 673.7,
+     "load_s": 0.306,
+     "latency_ms_median": 140.0,
+     "latency_ms_first": 185.6,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 75327702,
+    "threads_1": {
+     "peak_rss_mb": 492.5,
+     "load_s": 0.234,
+     "latency_ms_median": 199.2,
+     "latency_ms_first": 259.3,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 493.0,
+     "load_s": 0.231,
+     "latency_ms_median": 139.0,
+     "latency_ms_first": 191.3,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 492.6,
+     "load_s": 0.237,
+     "latency_ms_median": 108.4,
+     "latency_ms_first": 152.2,
+     "clip_seconds": [
+      11.22,
+      18.42,
+      5.4,
+      12.84,
+      6.3
+     ]
+    }
+   }
+  },
+  "de": {
+   "bundle_bytes": 3629655,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 263898752,
+    "threads_1": {
+     "peak_rss_mb": 753.0,
+     "load_s": 0.275,
+     "latency_ms_median": 435.3,
+     "latency_ms_first": 293.8,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 753.0,
+     "load_s": 0.274,
+     "latency_ms_median": 284.6,
+     "latency_ms_first": 200.1,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 754.1,
+     "load_s": 0.274,
+     "latency_ms_median": 206.8,
+     "latency_ms_first": 151.9,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74308552,
+    "threads_1": {
+     "peak_rss_mb": 592.4,
+     "load_s": 0.204,
+     "latency_ms_median": 300.8,
+     "latency_ms_first": 203.8,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 591.5,
+     "load_s": 0.201,
+     "latency_ms_median": 212.9,
+     "latency_ms_first": 153.0,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 592.2,
+     "load_s": 0.204,
+     "latency_ms_median": 169.8,
+     "latency_ms_first": 127.4,
+     "clip_seconds": [
+      8.64,
+      21.24,
+      16.68,
+      9.18,
+      10.14
+     ]
+    }
+   }
+  },
+  "es": {
+   "bundle_bytes": 3925779,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 264194876,
+    "threads_1": {
+     "peak_rss_mb": 519.8,
+     "load_s": 0.284,
+     "latency_ms_median": 288.0,
+     "latency_ms_first": 328.6,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 518.4,
+     "load_s": 0.282,
+     "latency_ms_median": 182.2,
+     "latency_ms_first": 218.0,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 522.2,
+     "load_s": 0.287,
+     "latency_ms_median": 137.0,
+     "latency_ms_first": 179.5,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74604676,
+    "threads_1": {
+     "peak_rss_mb": 333.7,
+     "load_s": 0.209,
+     "latency_ms_median": 190.2,
+     "latency_ms_first": 230.6,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 334.3,
+     "load_s": 0.214,
+     "latency_ms_median": 135.7,
+     "latency_ms_first": 168.1,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 339.2,
+     "load_s": 0.211,
+     "latency_ms_median": 118.2,
+     "latency_ms_first": 141.7,
+     "clip_seconds": [
+      9.3,
+      9.84,
+      8.76,
+      7.38,
+      9.6
+     ]
+    }
+   }
+  },
+  "fr": {
+   "bundle_bytes": 1101482,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 261370579,
+    "threads_1": {
+     "peak_rss_mb": 482.2,
+     "load_s": 0.272,
+     "latency_ms_median": 244.6,
+     "latency_ms_first": 218.3,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 480.5,
+     "load_s": 0.271,
+     "latency_ms_median": 149.9,
+     "latency_ms_first": 144.4,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 480.7,
+     "load_s": 0.269,
+     "latency_ms_median": 103.3,
+     "latency_ms_first": 106.8,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 71780379,
+    "threads_1": {
+     "peak_rss_mb": 291.2,
+     "load_s": 0.2,
+     "latency_ms_median": 154.8,
+     "latency_ms_first": 146.5,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 291.5,
+     "load_s": 0.2,
+     "latency_ms_median": 103.6,
+     "latency_ms_first": 106.7,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 291.8,
+     "load_s": 0.2,
+     "latency_ms_median": 77.1,
+     "latency_ms_first": 86.3,
+     "clip_seconds": [
+      7.08,
+      10.02,
+      9.54,
+      8.16,
+      7.32
+     ]
+    }
+   }
+  },
+  "it": {
+   "bundle_bytes": 1940015,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 262209112,
+    "threads_1": {
+     "peak_rss_mb": 636.6,
+     "load_s": 0.271,
+     "latency_ms_median": 307.9,
+     "latency_ms_first": 475.1,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 638.9,
+     "load_s": 0.284,
+     "latency_ms_median": 199.6,
+     "latency_ms_first": 319.1,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 636.7,
+     "load_s": 0.286,
+     "latency_ms_median": 159.0,
+     "latency_ms_first": 266.5,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 72618912,
+    "threads_1": {
+     "peak_rss_mb": 456.5,
+     "load_s": 0.211,
+     "latency_ms_median": 210.2,
+     "latency_ms_first": 344.1,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 457.6,
+     "load_s": 0.211,
+     "latency_ms_median": 143.3,
+     "latency_ms_first": 236.6,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 462.9,
+     "load_s": 0.215,
+     "latency_ms_median": 125.6,
+     "latency_ms_first": 195.3,
+     "clip_seconds": [
+      14.52,
+      9.3,
+      17.1,
+      6.72,
+      10.92
+     ]
+    }
+   }
+  },
+  "pt": {
+   "bundle_bytes": 3553956,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 263823053,
+    "threads_1": {
+     "peak_rss_mb": 748.9,
+     "load_s": 0.272,
+     "latency_ms_median": 316.4,
+     "latency_ms_first": 602.0,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 748.6,
+     "load_s": 0.294,
+     "latency_ms_median": 199.5,
+     "latency_ms_first": 411.0,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 748.8,
+     "load_s": 0.27,
+     "latency_ms_median": 144.5,
+     "latency_ms_first": 293.9,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74232853,
+    "threads_1": {
+     "peak_rss_mb": 562.9,
+     "load_s": 0.2,
+     "latency_ms_median": 207.2,
+     "latency_ms_first": 426.4,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 563.1,
+     "load_s": 0.201,
+     "latency_ms_median": 146.4,
+     "latency_ms_first": 304.8,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 562.8,
+     "load_s": 0.2,
+     "latency_ms_median": 115.9,
+     "latency_ms_first": 247.5,
+     "clip_seconds": [
+      17.64,
+      6.78,
+      23.52,
+      12.36,
+      7.62
+     ]
+    }
+   }
+  },
+  "ru": {
+   "bundle_bytes": 4143783,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 264412880,
+    "threads_1": {
+     "peak_rss_mb": 607.7,
+     "load_s": 0.276,
+     "latency_ms_median": 384.7,
+     "latency_ms_first": 402.1,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 606.7,
+     "load_s": 0.28,
+     "latency_ms_median": 246.7,
+     "latency_ms_first": 275.4,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 607.8,
+     "load_s": 0.278,
+     "latency_ms_median": 176.2,
+     "latency_ms_first": 210.7,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74822680,
+    "threads_1": {
+     "peak_rss_mb": 426.5,
+     "load_s": 0.204,
+     "latency_ms_median": 256.8,
+     "latency_ms_first": 286.3,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 427.5,
+     "load_s": 0.203,
+     "latency_ms_median": 181.7,
+     "latency_ms_first": 215.7,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 427.8,
+     "load_s": 0.206,
+     "latency_ms_median": 142.7,
+     "latency_ms_first": 179.2,
+     "clip_seconds": [
+      11.22,
+      11.52,
+      14.64,
+      12.96,
+      10.98
+     ]
+    }
+   }
+  },
+  "ja": {
+   "bundle_bytes": 2411397,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 262680494,
+    "threads_1": {
+     "peak_rss_mb": 552.8,
+     "load_s": 0.283,
+     "latency_ms_median": 399.7,
+     "latency_ms_first": 290.2,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 551.4,
+     "load_s": 0.276,
+     "latency_ms_median": 251.0,
+     "latency_ms_first": 194.3,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 554.9,
+     "load_s": 0.279,
+     "latency_ms_median": 174.3,
+     "latency_ms_first": 145.6,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 73090294,
+    "threads_1": {
+     "peak_rss_mb": 371.7,
+     "load_s": 0.203,
+     "latency_ms_median": 264.1,
+     "latency_ms_first": 200.1,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 371.6,
+     "load_s": 0.203,
+     "latency_ms_median": 180.3,
+     "latency_ms_first": 147.0,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 374.1,
+     "load_s": 0.205,
+     "latency_ms_median": 136.4,
+     "latency_ms_first": 120.6,
+     "clip_seconds": [
+      8.88,
+      13.74,
+      5.16,
+      13.02,
+      14.88
+     ]
+    }
+   }
+  },
+  "ko": {
+   "bundle_bytes": 3615798,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 263884895,
+    "threads_1": {
+     "peak_rss_mb": 582.4,
+     "load_s": 0.284,
+     "latency_ms_median": 358.0,
+     "latency_ms_first": 459.8,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 584.5,
+     "load_s": 0.278,
+     "latency_ms_median": 221.3,
+     "latency_ms_first": 298.7,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 584.0,
+     "load_s": 0.282,
+     "latency_ms_median": 156.6,
+     "latency_ms_first": 218.1,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74294695,
+    "threads_1": {
+     "peak_rss_mb": 406.8,
+     "load_s": 0.21,
+     "latency_ms_median": 234.6,
+     "latency_ms_first": 311.1,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 407.6,
+     "load_s": 0.207,
+     "latency_ms_median": 158.9,
+     "latency_ms_first": 218.8,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 408.1,
+     "load_s": 0.212,
+     "latency_ms_median": 133.3,
+     "latency_ms_first": 176.0,
+     "clip_seconds": [
+      13.74,
+      14.94,
+      7.68,
+      9.9,
+      13.68
+     ]
+    }
+   }
+  },
+  "zh": {
+   "bundle_bytes": 4186927,
+   "fp32": {
+    "backbone_bytes": 260269097,
+    "backbone_plus_bundle_bytes": 264456024,
+    "threads_1": {
+     "peak_rss_mb": 675.2,
+     "load_s": 0.28,
+     "latency_ms_median": 427.5,
+     "latency_ms_first": 326.6,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 675.0,
+     "load_s": 0.282,
+     "latency_ms_median": 268.6,
+     "latency_ms_first": 219.1,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 676.1,
+     "load_s": 0.277,
+     "latency_ms_median": 187.3,
+     "latency_ms_first": 166.4,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    }
+   },
+   "int8": {
+    "backbone_bytes": 70678897,
+    "backbone_plus_bundle_bytes": 74865824,
+    "threads_1": {
+     "peak_rss_mb": 492.3,
+     "load_s": 0.203,
+     "latency_ms_median": 282.9,
+     "latency_ms_first": 228.7,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    },
+    "threads_2": {
+     "peak_rss_mb": 491.3,
+     "load_s": 0.206,
+     "latency_ms_median": 193.4,
+     "latency_ms_first": 168.4,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    },
+    "threads_4": {
+     "peak_rss_mb": 492.1,
+     "load_s": 0.205,
+     "latency_ms_median": 148.7,
+     "latency_ms_first": 140.8,
+     "clip_seconds": [
+      9.48,
+      19.92,
+      14.52,
+      13.68,
+      9.9
+     ]
+    }
+   }
+  }
+ }
+}

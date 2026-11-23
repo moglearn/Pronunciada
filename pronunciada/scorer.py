@@ -38,15 +38,22 @@ class Scorer:
                  calib_dir: str | None = None, sound_model: str | None = None,
                  prosody: bool = True, cache_size: int = 4, explain_away: bool | None = None,
                  delivery: bool | None = None,
-                 audio_check: bool = True, length: bool = True):
+                 audio_check: bool = True, length: bool = True, frontend: bool = True):
         from .acoustic import AcousticModel
         from .adapter import Adapter
-        from .text import get_g2p, normalize_lang
+        from .text.base import normalize_lang
         from .variants import NativeStats
 
         self.lang = normalize_lang(lang)
         self.strictness = float(strictness)
-        self.g2p = get_g2p(self.lang)
+        # frontend=False (pronunciada.core.score_phones): no text front-end is loaded; score() then
+        # takes a ready Reference only
+        if frontend:
+            from .text import get_g2p
+
+            self.g2p = get_g2p(self.lang)
+        else:
+            self.g2p = None
         self.adapter = Adapter.load(self.lang)
         self.native = NativeStats.load(self.lang)
         cfg = C.config(calib_dir)
@@ -252,6 +259,8 @@ class Scorer:
         else:
             if text is None or not str(text).strip():
                 raise ValueError("text is empty")
+            if self.g2p is None:
+                raise ValueError("this Scorer has no text front-end (frontend=False): pass a Reference")
             t = time.perf_counter()
             ref = self.g2p(str(text))
         ref.validate()

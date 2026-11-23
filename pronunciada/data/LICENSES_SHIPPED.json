@@ -1,0 +1,2240 @@
+{
+ "version": 1,
+ "note": "Licence and provenance of every file that would ship in the backbone export and in each language's scoring bundle (no lexicons, no front-end data). Paths are relative to pronunciada/data/. 'licence' is the licence the project declares (docs/LICENSING.md, data/lex/LICENSE.txt); 'share_alike_question' marks files fitted with labels or references from the CC BY-SA it / pt / ru lexicons, whose classification is an open owner decision (docs/LICENSING.md, open question 4). Per-language lists come from the code and an audit-hook trace of one practice clip per language (files that exist only); ONNX files opened by onnxruntime are added from the code. Not legal advice.",
+ "backbone": [
+  {
+   "file": "model.int8.onnx",
+   "licence": "CC-BY-4.0",
+   "source": "huggingface.co/anyspeech/zipa-small-crctc-500k (model card metadata license: cc-by-4.0, read 2026-11-23)",
+   "notes": "Zhu et al., 'ZIPA: A family of efficient models for multilingual phone recognition', github.com/lingjzhu/zipa; attribution required; the -ns- variants (CC BY-NC-SA) are not used"
+  },
+  {
+   "file": "model.onnx",
+   "licence": "CC-BY-4.0",
+   "source": "huggingface.co/anyspeech/zipa-small-crctc-500k",
+   "notes": "fp32; same attribution"
+  },
+  {
+   "file": "tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "huggingface.co/anyspeech/zipa-small-crctc-500k (identical to pronunciada/data/zipa_tokens.txt)",
+   "notes": "same attribution"
+  }
+ ],
+ "shared": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  }
+ ],
+ "en": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/en.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/en.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/prosody/en.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r19.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (training); FLEURS validation English natives (native guard)",
+   "basis": "bench/round19/fit_final.py; commit f7913c9",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/seqhead_en.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (normalisation / vocabulary of the sequence head)",
+   "basis": "bench/round19/train_seq_final.py; commits f7913c9, 8388bd5",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/seqhead_en.onnx",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (training; blend weights chosen on train CV folds)",
+   "basis": "bench/round19/train_seq_final.py; commits f7913c9, 8388bd5",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_B.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_sound.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_E.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_sound_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_E_emb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS-en train (native prototypes)",
+   "basis": "bench/calib/sound_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "de": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/de.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/de.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/prosody/de.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/de_identity_word.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold (Common Voice 22.0 dev split + FLEURS validation natives, planted edits) + held-out Common Voice 22.0 de train native pool (CC0)",
+   "basis": "bench/round19/identity_fit.py; commit fa3232c; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/stress_rel/de.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold (Common Voice 22.0 dev split + FLEURS validation)",
+   "basis": "bench/round19/stress_save.py; commit 9110699",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_lang/de.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold: planted edits on Common Voice 22.0 dev-split and FLEURS validation natives + controlled sound errors",
+   "basis": "bench/round19 (commit 66a0af2); file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/de_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS de train natives + Common Voice 22.0 de train natives (CC0); labels: classes of the German front-end's references (ipa-dict MIT lexicon)",
+   "basis": "bench/round19/identity_train.py, bench/round19/cv_train.py; commit fa3232c",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "es": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/es.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/es.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/prosody/es.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/identity/es.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/identity/es.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) es train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the es text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "fr": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/fr.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/fr.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  }
+ ],
+ "it": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/it.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the it WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/it.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  {
+   "path": "calib/prosody/it.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "pt": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/pt.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the pt WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/pt.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  {
+   "path": "calib/prosody/pt.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/identity/pt.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "rule fitted on evidence computed against the front-end's references",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/identity/pt.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) pt train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the pt text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "ru": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/ru.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the ru WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/ru.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  {
+   "path": "calib/prosody/ru.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/identity/ru.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "rule fitted on evidence computed against the front-end's references",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/identity/ru.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) ru train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the ru text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged.",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/attr_heads.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train, all ten languages (training), FLEURS validation (leak check); labels: articulatory attributes of the front-end's reference phones",
+   "basis": "bench/coach/fit_r4.py heads (train_rows reads the FLEURS-train dump of all ten languages; the cached dump holds 200 clips each of en zh ja es fr de it pt ru ko)",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for ja, ko, ru, zh.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  }
+ ],
+ "ja": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/ja.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_step/ja.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 Japanese dev set (Common Voice ja dev + FLEURS validation, planted one-word edits)",
+   "basis": "bench/round19_ja/step.py, stepgrid2.py; commits 7a3dfde, dfc8ab3; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_word/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives; contrast-audit swaps",
+   "basis": "bench/round18/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/attr_heads.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train, all ten languages (training), FLEURS validation (leak check); labels: articulatory attributes of the front-end's reference phones",
+   "basis": "bench/coach/fit_r4.py heads (train_rows reads the FLEURS-train dump of all ten languages; the cached dump holds 200 clips each of en zh ja es fr de it pt ru ko)",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for ja, ko, ru, zh.",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/ja_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "Common Voice ja train (CC0) + FLEURS ja train natives; labels pronunciada.ja_identity.phone_class",
+   "basis": "bench/round19_ja/identity.py; commit 7a3dfde",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "length/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ja train / validation",
+   "basis": "bench/length/fit_length.py, bench/round17/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "length/ja_r19.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice ja train (CC0, 1800 clips) + FLEURS ja train; natives vs planted long/short swaps",
+   "basis": "bench/round19_ja/length_fit3.py; commit 7a3dfde; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  }
+ ],
+ "ko": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/ko.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/ko.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/ko_identity_word.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko validation + Common Voice 22.0 ko (CC0) dev pool with planted text edits",
+   "basis": "bench/round19ko/select.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/attr_heads.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train, all ten languages (training), FLEURS validation (leak check); labels: articulatory attributes of the front-end's reference phones",
+   "basis": "bench/coach/fit_r4.py heads (train_rows reads the FLEURS-train dump of all ten languages; the cached dump holds 200 clips each of en zh ja es fr de it pt ru ko)",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for ja, ko, ru, zh.",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/ko_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko train + Zeroth-Korean train (OpenSLR 40, CC BY 4.0)",
+   "basis": "bench/round19ko/identity_mlp.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/ko_tense.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko train (training), FLEURS validation (thresholds)",
+   "basis": "bench/round18/tense.py",
+   "notes": "",
+   "share_alike_question": false
+  }
+ ],
+ "zh": [
+  {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  },
+  {
+   "path": "adapters/zh.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "native/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/prosody/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/sentence_zh_recal.json",
+   "licence": "Apache-2.0",
+   "source": "OMPAL dev learners (CC BY 4.0) (calibration)",
+   "basis": "bench/calib/fit_sentence_zh.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/identity/zh.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards); round-20 tone-ramp keys: the same rows + FLEURS validation tone swaps",
+   "basis": "bench/round19_rollout/fit.py; bench/round20_mandarin/dev.py, commit 8d1952e; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "calib/contrast_word/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives; contrast-audit swaps",
+   "basis": "bench/round18/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/attr_heads.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train, all ten languages (training), FLEURS validation (leak check); labels: articulatory attributes of the front-end's reference phones",
+   "basis": "bench/coach/fit_r4.py heads (train_rows reads the FLEURS-train dump of all ten languages; the cached dump holds 200 clips each of en zh ja es fr de it pt ru ko)",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for ja, ko, ru, zh.",
+   "share_alike_question": true
+  },
+  {
+   "path": "coach/identity/zh.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) zh train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the zh text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "coach/zh_sound.npz",
+   "licence": "Apache-2.0",
+   "source": "OMPAL dev learners (CC BY 4.0)",
+   "basis": "round 12b, bench/calib/ompal_sound_emb.py",
+   "notes": "read by Scorer.score for zh (decides whether phone vectors are computed); used for coaching",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/tone_zh_v3z.json",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/tone_zh_v3z.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  {
+   "path": "prosody/tone_zh_v3z.onnx",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  }
+ ],
+ "files": {
+  "adapters/de.npz": {
+   "path": "adapters/de.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/en.npz": {
+   "path": "adapters/en.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/es.npz": {
+   "path": "adapters/es.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/fr.npz": {
+   "path": "adapters/fr.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/it.npz": {
+   "path": "adapters/it.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the it WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  "adapters/ja.npz": {
+   "path": "adapters/ja.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/ko.npz": {
+   "path": "adapters/ko.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "adapters/pt.npz": {
+   "path": "adapters/pt.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the pt WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  "adapters/ru.npz": {
+   "path": "adapters/ru.npz",
+   "licence": "CC-BY-SA-4.0",
+   "source": "FLEURS (CC BY 4.0) train; CTC targets from references built with the ru WikiPron lexicon (Wiktionary contributors)",
+   "basis": "docs/LICENSING.md section 5; data/lex/LICENSE.txt",
+   "notes": "treated as a CC BY-SA adaptation (owner decision); attribution 'Wiktionary contributors'",
+   "share_alike_question": false
+  },
+  "adapters/zh.npz": {
+   "path": "adapters/zh.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train (CTC training), validation (early stopping); targets from the text front-end",
+   "basis": "bench/pipeline/train_adapter.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/config.json": {
+   "path": "calib/config.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS train / validation natives (biases, guards), Common Voice cv-real dev half (CC0) (guards)",
+   "basis": "bench/calib/finalize.py, bias_grid.py, native_sentence_check.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/contrast_caps.json": {
+   "path": "calib/contrast_caps.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (thresholds)",
+   "basis": "bench/calib/contrast_fix.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/contrast_word/ja.json": {
+   "path": "calib/contrast_word/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives; contrast-audit swaps",
+   "basis": "bench/round18/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/contrast_word/zh.json": {
+   "path": "calib/contrast_word/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives; contrast-audit swaps",
+   "basis": "bench/round18/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/de_identity_word.json": {
+   "path": "calib/de_identity_word.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold (Common Voice 22.0 dev split + FLEURS validation natives, planted edits) + held-out Common Voice 22.0 de train native pool (CC0)",
+   "basis": "bench/round19/identity_fit.py; commit fa3232c; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/identity/es.json": {
+   "path": "calib/identity/es.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/identity/pt.json": {
+   "path": "calib/identity/pt.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "rule fitted on evidence computed against the front-end's references",
+   "share_alike_question": true
+  },
+  "calib/identity/ru.json": {
+   "path": "calib/identity/ru.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards)",
+   "basis": "bench/round19_rollout/fit.py; file field fit_on",
+   "notes": "rule fitted on evidence computed against the front-end's references",
+   "share_alike_question": true
+  },
+  "calib/identity/zh.json": {
+   "path": "calib/identity/zh.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice 22.0, speakers of its dev split (CC0-1.0) (dev fit fold with planted edits, native pool) + FLEURS validation (guards); round-20 tone-ramp keys: the same rows + FLEURS validation tone swaps",
+   "basis": "bench/round19_rollout/fit.py; bench/round20_mandarin/dev.py, commit 8d1952e; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/ko_identity_word.json": {
+   "path": "calib/ko_identity_word.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko validation + Common Voice 22.0 ko (CC0) dev pool with planted text edits",
+   "basis": "bench/round19ko/select.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/omission.json": {
+   "path": "calib/omission.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation planted extra words",
+   "basis": "bench/calib/fit_omission.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/phone_dist.npz": {
+   "path": "calib/phone_dist.npz",
+   "licence": "Apache-2.0",
+   "source": "panphon feature table (MIT), computed offline",
+   "basis": "bench/calib/phone_dist.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/prosody/de.json": {
+   "path": "calib/prosody/de.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/prosody/en.json": {
+   "path": "calib/prosody/en.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/prosody/es.json": {
+   "path": "calib/prosody/es.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/prosody/it.json": {
+   "path": "calib/prosody/it.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  "calib/prosody/pt.json": {
+   "path": "calib/prosody/pt.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  "calib/prosody/ru.json": {
+   "path": "calib/prosody/ru.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "planted stress errors are defined relative to the front-end's stress marks",
+   "share_alike_question": false
+  },
+  "calib/prosody/zh.json": {
+   "path": "calib/prosody/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation (calibration of the stress / tone evidence)",
+   "basis": "bench/calib/fit_prosody.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sentence_r19.npz": {
+   "path": "calib/sentence_r19.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (training); FLEURS validation English natives (native guard)",
+   "basis": "bench/round19/fit_final.py; commit f7913c9",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sentence_r4.npz": {
+   "path": "calib/sentence_r4.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py; refit 2026-11-17",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sentence_zh_recal.json": {
+   "path": "calib/sentence_zh_recal.json",
+   "licence": "Apache-2.0",
+   "source": "OMPAL dev learners (CC BY 4.0) (calibration)",
+   "basis": "bench/calib/fit_sentence_zh.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/seqhead_en.npz": {
+   "path": "calib/seqhead_en.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (normalisation / vocabulary of the sequence head)",
+   "basis": "bench/round19/train_seq_final.py; commits f7913c9, 8388bd5",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/seqhead_en.onnx": {
+   "path": "calib/seqhead_en.onnx",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train (training; blend weights chosen on train CV folds)",
+   "basis": "bench/round19/train_seq_final.py; commits f7913c9, 8388bd5",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sound_B.npz": {
+   "path": "calib/sound_B.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_sound.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sound_E.npz": {
+   "path": "calib/sound_E.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_sound_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sound_E_emb.npz": {
+   "path": "calib/sound_E_emb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS-en train (native prototypes)",
+   "basis": "bench/calib/sound_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/sound_U.npz": {
+   "path": "calib/sound_U.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_wide.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/stress_rel/de.json": {
+   "path": "calib/stress_rel/de.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold (Common Voice 22.0 dev split + FLEURS validation)",
+   "basis": "bench/round19/stress_save.py; commit 9110699",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/word.npz": {
+   "path": "calib/word.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train + FLEURS validation planted errors (refit 2026-11-17)",
+   "basis": "bench/calib/train_word2.py, recal_word.py; results/licence_refit.md",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/word_lang/de.json": {
+   "path": "calib/word_lang/de.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 German dev fit fold: planted edits on Common Voice 22.0 dev-split and FLEURS validation natives + controlled sound errors",
+   "basis": "bench/round19 (commit 66a0af2); file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/word_reg.npz": {
+   "path": "calib/word_reg.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word2.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/word_reg_r6.npz": {
+   "path": "calib/word_reg_r6.npz",
+   "licence": "Apache-2.0",
+   "source": "speechocean762 (CC BY 4.0 on OpenSLR SLR101) train",
+   "basis": "bench/calib/train_word_emb.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "calib/word_step/ja.json": {
+   "path": "calib/word_step/ja.json",
+   "licence": "Apache-2.0",
+   "source": "round-19 Japanese dev set (Common Voice ja dev + FLEURS validation, planted one-word edits)",
+   "basis": "bench/round19_ja/step.py, stepgrid2.py; commits 7a3dfde, dfc8ab3; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/attr_heads.npz": {
+   "path": "coach/attr_heads.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train, all ten languages (training), FLEURS validation (leak check); labels: articulatory attributes of the front-end's reference phones",
+   "basis": "bench/coach/fit_r4.py heads (train_rows reads the FLEURS-train dump of all ten languages; the cached dump holds 200 clips each of en zh ja es fr de it pt ru ko)",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for ja, ko, ru, zh.",
+   "share_alike_question": true
+  },
+  "coach/contrast_heads.json": {
+   "path": "coach/contrast_heads.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS validation natives + contrast-audit swaps (thresholds)",
+   "basis": "bench/round17/fit.py; file field fitted_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/de_identity.npz": {
+   "path": "coach/de_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS de train natives + Common Voice 22.0 de train natives (CC0); labels: classes of the German front-end's references (ipa-dict MIT lexicon)",
+   "basis": "bench/round19/identity_train.py, bench/round19/cv_train.py; commit fa3232c",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/identity/es.npz": {
+   "path": "coach/identity/es.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) es train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the es text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/identity/pt.npz": {
+   "path": "coach/identity/pt.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) pt train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the pt text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged.",
+   "share_alike_question": true
+  },
+  "coach/identity/ru.npz": {
+   "path": "coach/identity/ru.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) ru train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the ru text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged.",
+   "share_alike_question": true
+  },
+  "coach/identity/zh.npz": {
+   "path": "coach/identity/zh.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) zh train natives + Common Voice 22.0, speakers of its dev split (CC0-1.0) (the 'train' speaker hash share); labels: reference classes from the zh text front-end",
+   "basis": "bench/round19_rollout/train.py, sources.py, collect.py (labels = identity.classes(sc.g2p(text).phones))",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/ja_identity.npz": {
+   "path": "coach/ja_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "Common Voice ja train (CC0) + FLEURS ja train natives; labels pronunciada.ja_identity.phone_class",
+   "basis": "bench/round19_ja/identity.py; commit 7a3dfde",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/ko_identity.npz": {
+   "path": "coach/ko_identity.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko train + Zeroth-Korean train (OpenSLR 40, CC BY 4.0)",
+   "basis": "bench/round19ko/identity_mlp.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/ko_tense.npz": {
+   "path": "coach/ko_tense.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ko train (training), FLEURS validation (thresholds)",
+   "basis": "bench/round18/tense.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "coach/zh_sound.npz": {
+   "path": "coach/zh_sound.npz",
+   "licence": "Apache-2.0",
+   "source": "OMPAL dev learners (CC BY 4.0)",
+   "basis": "round 12b, bench/calib/ompal_sound_emb.py",
+   "notes": "read by Scorer.score for zh (decides whether phone vectors are computed); used for coaching",
+   "share_alike_question": false
+  },
+  "length/ja.json": {
+   "path": "length/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS ja train / validation",
+   "basis": "bench/length/fit_length.py, bench/round17/fit.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "length/ja_r19.json": {
+   "path": "length/ja_r19.json",
+   "licence": "Apache-2.0",
+   "source": "Common Voice ja train (CC0, 1800 clips) + FLEURS ja train; natives vs planted long/short swaps",
+   "basis": "bench/round19_ja/length_fit3.py; commit 7a3dfde; file field fit_on",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/de.json": {
+   "path": "native/de.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/en.json": {
+   "path": "native/en.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/es.json": {
+   "path": "native/es.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/fr.json": {
+   "path": "native/fr.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/it.json": {
+   "path": "native/it.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  "native/ja.json": {
+   "path": "native/ja.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/ko.json": {
+   "path": "native/ko.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "native/pt.json": {
+   "path": "native/pt.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  "native/ru.json": {
+   "path": "native/ru.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "statistics of model evidence grouped by the front-end's reference phones",
+   "share_alike_question": true
+  },
+  "native/zh.json": {
+   "path": "native/zh.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train / validation natives (per-phone statistics, learned native variants)",
+   "basis": "bench/pipeline/native_stats.py; docs/LICENSING.md section 2",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "prosody/stress_v3.json": {
+   "path": "prosody/stress_v3.json",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  "prosody/stress_v3.onnx": {
+   "path": "prosody/stress_v3.onnx",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": true
+  },
+  "prosody/stress_v3.zemb.npz": {
+   "path": "prosody/stress_v3.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "FLEURS (CC BY 4.0) train of en de es it pt ru (training, labels = the front-end's primary stress), FLEURS validation (selection, Platt maps)",
+   "basis": "bench/prosody/prosody3.py (round 8), bench/prosody/stress_train.py",
+   "notes": "Labels taken from the text front-end's references, which for it / pt / ru are built from the CC BY-SA WikiPron lexicons in data/lex/; docs/LICENSING.md section 5 treats the it / pt / ru adapters as CC BY-SA on this basis. Whether the same treatment applies here is an open owner decision (docs/LICENSING.md open question 4); declared licence unchanged. Shared file: read by scoring for en, de, es, it, pt, ru.",
+   "share_alike_question": false
+  },
+  "prosody/tone_zh_v3z.json": {
+   "path": "prosody/tone_zh_v3z.json",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "prosody/tone_zh_v3z.onnx": {
+   "path": "prosody/tone_zh_v3z.onnx",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "prosody/tone_zh_v3z.zemb.npz": {
+   "path": "prosody/tone_zh_v3z.zemb.npz",
+   "licence": "Apache-2.0",
+   "source": "AISHELL-3, AISHELL-1 (Apache-2.0), Common Voice zh-TW train (CC0), FLEURS zh train; selection on OMPAL dev (CC BY 4.0)",
+   "basis": "bench/prosody/tone3.py",
+   "notes": "",
+   "share_alike_question": false
+  },
+  "zipa_tokens.txt": {
+   "path": "zipa_tokens.txt",
+   "licence": "CC-BY-4.0",
+   "source": "token list of anyspeech/zipa-small-crctc-500k (CC BY 4.0)",
+   "basis": "docs/LICENSING.md section 1",
+   "notes": "same licence as the ZIPA model (Zhu et al.)",
+   "share_alike_question": false
+  }
+ }
+}

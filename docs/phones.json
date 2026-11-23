@@ -1,0 +1,1460 @@
+{
+ "format": "pronunciada-phones",
+ "version": 1,
+ "tokens": [
+  "<blk>",
+  "<sos/eos>",
+  "<unk>",
+  "▁",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "æ",
+  "ç",
+  "ð",
+  "ø",
+  "ħ",
+  "ŋ",
+  "œ",
+  "ǀ",
+  "ǁ",
+  "ǂ",
+  "ǃ",
+  "ɐ",
+  "ɑ",
+  "ɒ",
+  "ɓ",
+  "ɔ",
+  "ɕ",
+  "ɖ",
+  "ɗ",
+  "ɘ",
+  "ə",
+  "ɛ",
+  "ɜ",
+  "ɞ",
+  "ɟ",
+  "ɠ",
+  "ɢ",
+  "ɣ",
+  "ɤ",
+  "ɥ",
+  "ɦ",
+  "ɧ",
+  "ɨ",
+  "ɪ",
+  "ɬ",
+  "ɭ",
+  "ɮ",
+  "ɯ",
+  "ɰ",
+  "ɱ",
+  "ɲ",
+  "ɳ",
+  "ɴ",
+  "ɵ",
+  "ɶ",
+  "ɸ",
+  "ɹ",
+  "ɺ",
+  "ɻ",
+  "ɽ",
+  "ɾ",
+  "ʀ",
+  "ʁ",
+  "ʂ",
+  "ʃ",
+  "ʄ",
+  "ʈ",
+  "ʉ",
+  "ʊ",
+  "ʋ",
+  "ʌ",
+  "ʍ",
+  "ʎ",
+  "ʏ",
+  "ʐ",
+  "ʑ",
+  "ʒ",
+  "ʔ",
+  "ʕ",
+  "ʘ",
+  "ʙ",
+  "ʛ",
+  "ʜ",
+  "ʝ",
+  "ʟ",
+  "ʡ",
+  "ʢ",
+  "ʰ",
+  "ʲ",
+  "ʷ",
+  "ʼ",
+  "ː",
+  "˞",
+  "ˠ",
+  "ˤ",
+  "̃",
+  "̚",
+  "̥",
+  "̩",
+  "̪",
+  "̴",
+  "̺",
+  "β",
+  "θ",
+  "χ",
+  "ᶑ",
+  "ⱱ"
+ ],
+ "special_tokens": [
+  "<blk>",
+  "<sos/eos>",
+  "<unk>",
+  "▁"
+ ],
+ "modifiers": [
+  "ʰ",
+  "ʲ",
+  "ʷ",
+  "ʼ",
+  "ː",
+  "˞",
+  "ˠ",
+  "ˤ",
+  "̃",
+  "̚",
+  "̥",
+  "̩",
+  "̪",
+  "̴",
+  "̺"
+ ],
+ "vowel_letters": [
+  "a",
+  "e",
+  "i",
+  "o",
+  "u",
+  "y",
+  "æ",
+  "ø",
+  "œ",
+  "ɐ",
+  "ɑ",
+  "ɒ",
+  "ɔ",
+  "ɘ",
+  "ə",
+  "ɛ",
+  "ɜ",
+  "ɞ",
+  "ɤ",
+  "ɨ",
+  "ɪ",
+  "ɯ",
+  "ɵ",
+  "ɶ",
+  "ʉ",
+  "ʊ",
+  "ʌ",
+  "ʏ"
+ ],
+ "fold": {
+  " ": "",
+  "'": "",
+  ".": "",
+  "|": "",
+  "ǝ": "ə",
+  "ɚ": "ə˞",
+  "ɝ": "ɜ˞",
+  "ɡ": "g",
+  "ɩ": "ɪ",
+  "ɫ": "l",
+  "ɷ": "ʊ",
+  "ʣ": "dz",
+  "ʤ": "dʒ",
+  "ʥ": "dʑ",
+  "ʦ": "ts",
+  "ʧ": "tʃ",
+  "ʨ": "tɕ",
+  "ʱ": "ʰ",
+  "ˈ": "",
+  "ˌ": "",
+  "ːː": "ː",
+  "ˑ": "",
+  "˥": "",
+  "˦": "",
+  "˧": "",
+  "˨": "",
+  "˩": "",
+  "̆": "",
+  "̈": "",
+  "̘": "",
+  "̙": "",
+  "̜": "",
+  "̝": "",
+  "̞": "",
+  "̟": "",
+  "̠": "",
+  "̤": "",
+  "̬": "",
+  "̯": "",
+  "̰": "",
+  "̹": "",
+  "̻": "",
+  "̼": "",
+  "͜": "",
+  "͡": "",
+  "ε": "ɛ",
+  "‖": "",
+  "’": "",
+  "‿": "",
+  "ꞵ": "β"
+ },
+ "languages": {
+  "en": {
+   "inventory": [
+    "aɪ",
+    "aʊ",
+    "b",
+    "d",
+    "dʒ",
+    "eɪ",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "l̴",
+    "m",
+    "n",
+    "oʊ",
+    "p",
+    "s",
+    "t",
+    "tʃ",
+    "u",
+    "v",
+    "w",
+    "z",
+    "æ",
+    "ð",
+    "ŋ",
+    "ɑ",
+    "ɔ",
+    "ɔɪ",
+    "ə",
+    "ɛ",
+    "ɜ˞",
+    "ɪ",
+    "ɹ",
+    "ʃ",
+    "ʊ",
+    "ʒ",
+    "θ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 14,
+    "phones_droppable": 0
+   },
+   "frontend": "pronunciada/text/en.py (English.rewrite: CMUdict ARPAbet -> ZIPA symbols, stress digits); OOV words: pronunciada/text/_eu_lts.py; shared EU pipeline pronunciada/text/_eu_base.py, _eu_common.py",
+   "examples": [
+    {
+     "text": "The river carries 8 times as much water.",
+     "words": [
+      {
+       "text": "The",
+       "phones": "ð (ə) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "river",
+       "phones": "ɹ (ɪ) /s1 . v (ɜ˞) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "carries",
+       "phones": "k (æ) /s1 . ɹ (i) z /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "8",
+       "phones": "(eɪ) t /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "times",
+       "phones": "t (aɪ) m z /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "as",
+       "phones": "(æ) z /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "much",
+       "phones": "m (ə) tʃ /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "water",
+       "phones": "w (ɔ) /s1 . t (ɜ˞) /s0",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "She thought about the weather.",
+     "words": [
+      {
+       "text": "She",
+       "phones": "ʃ (i) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "thought",
+       "phones": "θ (ɔ) t /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "about",
+       "phones": "(ə) /s0 . b (aʊ) t /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "the",
+       "phones": "ð (ə) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "weather",
+       "phones": "w (ɛ) /s1 . ð (ɜ˞) /s0",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "de": {
+   "inventory": [
+    "a",
+    "ai",
+    "au",
+    "aːɐ",
+    "b",
+    "d",
+    "dʒ",
+    "e",
+    "eː",
+    "eːɐ",
+    "f",
+    "g",
+    "h",
+    "iː",
+    "iːɐ",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "oː",
+    "oːɐ",
+    "p",
+    "pf",
+    "s",
+    "t",
+    "ts",
+    "tʃ",
+    "uː",
+    "uːɐ",
+    "v",
+    "w",
+    "x",
+    "yː",
+    "yːɐ",
+    "z",
+    "z̥",
+    "æ",
+    "ç",
+    "ð",
+    "øː",
+    "øːɐ",
+    "ŋ",
+    "ŋ̩",
+    "œ",
+    "œː",
+    "œːɐ",
+    "ɑː",
+    "ɑ̃",
+    "ɑ̃ː",
+    "ɔ",
+    "ɔɪ",
+    "ɔː",
+    "ɔːɐ",
+    "ɔ̃ː",
+    "ə",
+    "ə˞",
+    "ɛ",
+    "ɛɪ",
+    "ɛː",
+    "ɛːɐ",
+    "ɪ",
+    "ʀ",
+    "ʃ",
+    "ʊ",
+    "ʌ",
+    "ʏ",
+    "ʒ",
+    "ʔ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 15,
+    "phones_droppable": 3
+   },
+   "frontend": "pronunciada/text/de.py (German.rewrite: ipa-dict de -> ZIPA symbols, compound splitting, length from ː); English loanwords via en; shared EU pipeline _eu_base.py, _eu_common.py",
+   "examples": [
+    {
+     "text": "Der Zug fährt um acht Uhr nach Berlin.",
+     "words": [
+      {
+       "text": "Der",
+       "phones": "d (eːɐ) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "Zug",
+       "phones": "ts (uː) k /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "fährt",
+       "phones": "f (ɛːɐ) t /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "um",
+       "phones": "(uː) m /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "acht",
+       "phones": "(a) x t /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "Uhr",
+       "phones": "(uːɐ) /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "nach",
+       "phones": "n (ɑː) x /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "Berlin",
+       "phones": "b (ɛ) ʀ /s0 . l (iː) n /s1",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "Wir möchten zwei Brötchen.",
+     "words": [
+      {
+       "text": "Wir",
+       "phones": "v (iːɐ) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "möchten",
+       "phones": "m (œ) /s1 . ç t (ə) n /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "zwei",
+       "phones": "ts v (ai) /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "Brötchen",
+       "phones": "b ʀ (øː) t /s1 . ç (ə) n /s0",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "es": {
+   "inventory": [
+    "a",
+    "ai",
+    "au",
+    "aua",
+    "b",
+    "d",
+    "e",
+    "ei",
+    "eu",
+    "f",
+    "g",
+    "i",
+    "ia",
+    "ie",
+    "ieu",
+    "ii",
+    "io",
+    "iou",
+    "iu",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "oi",
+    "oio",
+    "ou",
+    "oui",
+    "p",
+    "r",
+    "s",
+    "t",
+    "tʃ",
+    "u",
+    "w",
+    "x",
+    "ɲ",
+    "ɾ",
+    "ʎ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 14,
+    "phones_droppable": 3
+   },
+   "frontend": "pronunciada/text/es.py (rules(): orthographic rules; Spanish.rewrite; round-20 glide alternatives when es_glide is on); shared EU pipeline _eu_base.py, _eu_common.py",
+   "examples": [
+    {
+     "text": "Tengo 31 años y vivo en Madrid.",
+     "words": [
+      {
+       "text": "Tengo",
+       "phones": "t (e) n /s1 . g (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "31",
+       "phones": "t r (ei) n /s1 . t (a) /s0 . (i) /s1 . (u) /s1 . n (o) /s0",
+       "alternatives": 1
+      },
+      {
+       "text": "años",
+       "phones": "(a) /s1 . ɲ (o) s /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "y",
+       "phones": "(i) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "vivo",
+       "phones": "b (i) /s1 . b (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "en",
+       "phones": "(e) n /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "Madrid",
+       "phones": "m (a) /s0 . d r (i) d /s1",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "El perro corre por la calle.",
+     "words": [
+      {
+       "text": "El",
+       "phones": "(e) l /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "perro",
+       "phones": "p (e) /s1 . ɾ (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "corre",
+       "phones": "k (o) /s1 . ɾ (e) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "por",
+       "phones": "p (o) r /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "la",
+       "phones": "l (a) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "calle",
+       "phones": "k (a) /s1 . ʎ (e) /s0",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "fr": {
+   "inventory": [
+    "a",
+    "b",
+    "d",
+    "e",
+    "f",
+    "g",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "y",
+    "z",
+    "ø",
+    "ŋ",
+    "œ",
+    "œ̃",
+    "ɑ̃",
+    "ɔ",
+    "ɔ̃",
+    "ə",
+    "ɛ",
+    "ɛ̃",
+    "ɥ",
+    "ɲ",
+    "ʁ",
+    "ʃ",
+    "ʒ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 13,
+    "phones_droppable": 5
+   },
+   "frontend": "pronunciada/text/fr.py (French: ipa-dict fr_FR, liaison and schwa as \"\" alternatives; no stress); shared EU pipeline _eu_base.py, _eu_common.py",
+   "examples": [
+    {
+     "text": "Le train part à huit heures.",
+     "words": [
+      {
+       "text": "Le",
+       "phones": "l (ə)",
+       "alternatives": 0
+      },
+      {
+       "text": "train",
+       "phones": "t ʁ (ɛ̃)",
+       "alternatives": 0
+      },
+      {
+       "text": "part",
+       "phones": "p (a) ʁ",
+       "alternatives": 0
+      },
+      {
+       "text": "à",
+       "phones": "(a)",
+       "alternatives": 0
+      },
+      {
+       "text": "huit",
+       "phones": "ɥ (i) t",
+       "alternatives": 0
+      },
+      {
+       "text": "heures",
+       "phones": "(œ) ʁ",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "Les enfants ont un livre.",
+     "words": [
+      {
+       "text": "Les",
+       "phones": "l (e) z",
+       "alternatives": 0
+      },
+      {
+       "text": "enfants",
+       "phones": "(ɑ̃) . f (ɑ̃)",
+       "alternatives": 0
+      },
+      {
+       "text": "ont",
+       "phones": "(ɔ̃) t",
+       "alternatives": 0
+      },
+      {
+       "text": "un",
+       "phones": "(y) n",
+       "alternatives": 0
+      },
+      {
+       "text": "livre",
+       "phones": "l (i) v ʁ",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "it": {
+   "inventory": [
+    "a",
+    "b",
+    "d",
+    "dz",
+    "dʒ",
+    "e",
+    "f",
+    "g",
+    "i",
+    "ia",
+    "j",
+    "k",
+    "l",
+    "la",
+    "li",
+    "m",
+    "n",
+    "o",
+    "p",
+    "r",
+    "s",
+    "t",
+    "ts",
+    "tʃ",
+    "tʃɛ",
+    "u",
+    "v",
+    "w",
+    "y",
+    "z",
+    "ø",
+    "ɛ",
+    "ɲ",
+    "ʃ",
+    "ʎ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 10,
+    "phones_droppable": 5
+   },
+   "frontend": "pronunciada/text/it.py (Italian.rewrite: WikiPron it, stress_from_end, doubled consonants as length); shared EU pipeline _eu_base.py, _eu_common.py",
+   "examples": [
+    {
+     "text": "Il treno parte alle otto per Roma.",
+     "words": [
+      {
+       "text": "Il",
+       "phones": "(i) l /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "treno",
+       "phones": "t r (ɛ) /s1 . n (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "parte",
+       "phones": "p (a) r /s1 . t (e) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "alle",
+       "phones": "(a) l /s1 . l (e) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "otto",
+       "phones": "(o) t /s1 . t (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "per",
+       "phones": "p (e) r /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "Roma",
+       "phones": "r (o) /s1 . m (a) /s0",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "Abbiamo mangiato la pizza.",
+     "words": [
+      {
+       "text": "Abbiamo",
+       "phones": "(a) b /s0 . b j (a) /s1 . m (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "mangiato",
+       "phones": "m (a) n /s0 . dʒ (a) /s1 . t (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "la",
+       "phones": "l (a) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "pizza",
+       "phones": "p (i) /s1 . ts (a) /s0",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "pt": {
+   "inventory": [
+    "a",
+    "aj",
+    "aw",
+    "b",
+    "d",
+    "dʒ",
+    "e",
+    "ej",
+    "ew",
+    "f",
+    "g",
+    "i",
+    "iw",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "oj",
+    "ow",
+    "p",
+    "r",
+    "s",
+    "t",
+    "tʃ",
+    "u",
+    "uj",
+    "v",
+    "w",
+    "z",
+    "ɐ",
+    "ɔ",
+    "ɔj",
+    "ɛ",
+    "ɛj",
+    "ɛw",
+    "ɲ",
+    "ɾ",
+    "ʁ",
+    "ʃ",
+    "ʒ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 15,
+    "phones_droppable": 4
+   },
+   "frontend": "pronunciada/text/pt.py (rules(): Brazilian rules + WikiPron corrections); shared EU pipeline",
+   "examples": [
+    {
+     "text": "O trem parte às oito horas.",
+     "words": [
+      {
+       "text": "O",
+       "phones": "(o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "trem",
+       "phones": "t ɾ (e) n /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "parte",
+       "phones": "p (a) r /s1 . tʃ (i) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "às",
+       "phones": "(a) s /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "oito",
+       "phones": "(oj) /s1 . t (o) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "horas",
+       "phones": "(ɔ) /s1 . ɾ (a) s /s0",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "Ela não quer café.",
+     "words": [
+      {
+       "text": "Ela",
+       "phones": "(ɛ) /s1 . l (a) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "não",
+       "phones": "n (ow) /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "quer",
+       "phones": "k (ɛ) r /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "café",
+       "phones": "k (a) /s0 . f (ɛ) /s1",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "ru": {
+   "inventory": [
+    "a",
+    "b",
+    "bʲ",
+    "d",
+    "dz",
+    "dzʲ",
+    "dʐ",
+    "f",
+    "g",
+    "i",
+    "j",
+    "k",
+    "m",
+    "mʲ",
+    "n",
+    "nʲ",
+    "o",
+    "p",
+    "pʲ",
+    "r",
+    "rʲ",
+    "s",
+    "sʲ",
+    "t",
+    "ts",
+    "tsʲ",
+    "tʂ",
+    "tʃ",
+    "t̪",
+    "u",
+    "v",
+    "vʲ",
+    "w",
+    "x",
+    "z",
+    "zʲ",
+    "ɑ",
+    "ɔ",
+    "ɛ",
+    "ɨ",
+    "ɭ",
+    "ɭʲ",
+    "ʂ",
+    "ʂʲ",
+    "ʃ",
+    "ʈʂ",
+    "ʋ",
+    "ʐ",
+    "ʑ",
+    "ʒ",
+    "ʝ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [
+     0,
+     1
+    ],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 24,
+    "phones_droppable": 3
+   },
+   "frontend": "pronunciada/text/ru.py (rules(): palatalisation, reduction, voicing by stress position; Russian.rewrite); shared EU pipeline",
+   "examples": [
+    {
+     "text": "Поезд отправляется в восемь часов.",
+     "words": [
+      {
+       "text": "Поезд",
+       "phones": "p (o) /s1 . j (ɛ) s t /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "отправляется",
+       "phones": "(a) t /s0 . p r (a) /s0 . v ɭʲ (a) /s1 . j (ɛ) t /s0 . sʲ (a) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "в",
+       "phones": "(v) /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "восемь",
+       "phones": "v (o) /s1 . sʲ (ɛ) m /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "часов",
+       "phones": "ʈʂ (a) /s0 . s (o) f /s1",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "Мы читаем книгу.",
+     "words": [
+      {
+       "text": "Мы",
+       "phones": "m (ɨ) /s1",
+       "alternatives": 0
+      },
+      {
+       "text": "читаем",
+       "phones": "ʈʂ (i) /s0 . t (ɑ) /s1 . j (ɛ) m /s0",
+       "alternatives": 0
+      },
+      {
+       "text": "книгу",
+       "phones": "k n (i) /s1 . g (u) /s0",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "ja": {
+   "inventory": [
+    "a",
+    "aː",
+    "b",
+    "d",
+    "dd",
+    "ddʒ",
+    "dʒ",
+    "e",
+    "eː",
+    "f",
+    "ff",
+    "g",
+    "gg",
+    "h",
+    "hh",
+    "i",
+    "iː",
+    "j",
+    "k",
+    "kk",
+    "kw",
+    "m",
+    "n",
+    "o",
+    "oː",
+    "p",
+    "pp",
+    "r",
+    "rr",
+    "s",
+    "ss",
+    "t",
+    "ts",
+    "tt",
+    "tts",
+    "ttʃ",
+    "tʃ",
+    "u",
+    "uː",
+    "v",
+    "w",
+    "z",
+    "ŋ",
+    "ɲ",
+    "ʃ",
+    "ʃʃ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 13,
+    "phones_droppable": 3
+   },
+   "frontend": "pronunciada/text/ja.py (JaG2P: Open JTalk readings -> moras; one syllable per mora, っ merged into the next mora as a doubled consonant, long vowels as Vː)",
+   "examples": [
+    {
+     "text": "電車は八時に出発します。",
+     "words": [
+      {
+       "text": "電車",
+       "phones": "d (e) . (ŋ) . ʃ (a)",
+       "alternatives": 0
+      },
+      {
+       "text": "は",
+       "phones": "w (a)",
+       "alternatives": 0
+      },
+      {
+       "text": "八時",
+       "phones": "h (a) . tʃ (i) . dʒ (i)",
+       "alternatives": 0
+      },
+      {
+       "text": "に",
+       "phones": "n (i)",
+       "alternatives": 0
+      },
+      {
+       "text": "出発",
+       "phones": "ʃ (u) . pp (a) . ts (u)",
+       "alternatives": 0
+      },
+      {
+       "text": "し",
+       "phones": "ʃ (i)",
+       "alternatives": 0
+      },
+      {
+       "text": "ます",
+       "phones": "m (a) . s (u)",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "きっと大丈夫です。",
+     "words": [
+      {
+       "text": "きっと",
+       "phones": "k (i) . tt (o)",
+       "alternatives": 0
+      },
+      {
+       "text": "大丈夫",
+       "phones": "d (a) . (i) . dʒ (oː) . b (u)",
+       "alternatives": 0
+      },
+      {
+       "text": "です",
+       "phones": "d (e) . s (u)",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "ko": {
+   "inventory": [
+    "a",
+    "b",
+    "e",
+    "h",
+    "i",
+    "j",
+    "k",
+    "kʰ",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "pʰ",
+    "r",
+    "s",
+    "t",
+    "tʃ",
+    "tʃʰ",
+    "tʰ",
+    "u",
+    "w",
+    "ŋ",
+    "ɔ",
+    "ə",
+    "ɯi",
+    "ʃ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [],
+    "tone_values": [],
+    "length_values": [],
+    "tense_values": [
+     false
+    ],
+    "phones_with_alternatives": 25,
+    "phones_droppable": 2
+   },
+   "frontend": "pronunciada/text/ko.py (KoG2P: standard pronunciation rules from Hangul; tense flag on RefPhone.tense, the symbol stays plain); Hangul arithmetic pronunciada/hangul.py",
+   "examples": [
+    {
+     "text": "기차는 여덟 시에 출발합니다.",
+     "words": [
+      {
+       "text": "기차는",
+       "phones": "k (i) /k:lax . tʃʰ (a) . n (e) n",
+       "alternatives": 0
+      },
+      {
+       "text": "여덟",
+       "phones": "j (ɔ) . t (ɔ) l /t:lax",
+       "alternatives": 0
+      },
+      {
+       "text": "시에",
+       "phones": "ʃ (i) /ʃ:lax . (e)",
+       "alternatives": 0
+      },
+      {
+       "text": "출발합니다",
+       "phones": "tʃʰ (u) l . b (a) l /b:lax . h (a) m . n (i) . t (a) /t:lax",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "책을 읽고 싶어요.",
+     "words": [
+      {
+       "text": "책을",
+       "phones": "tʃʰ (e) . k (ə) l /k:lax",
+       "alternatives": 0
+      },
+      {
+       "text": "읽고",
+       "phones": "(i) l . k (o) /k:lax",
+       "alternatives": 0
+      },
+      {
+       "text": "싶어요",
+       "phones": "ʃ (i) /ʃ:lax . pʰ (ɔ) . j (o)",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  },
+  "zh": {
+   "inventory": [
+    "a",
+    "aɪ",
+    "eɪ",
+    "f",
+    "i",
+    "j",
+    "k",
+    "kʰ",
+    "l",
+    "m",
+    "n",
+    "oʊ",
+    "p",
+    "pʰ",
+    "s",
+    "t",
+    "ts",
+    "tsʰ",
+    "tɕ",
+    "tɕʰ",
+    "tʰ",
+    "u",
+    "w",
+    "x",
+    "y",
+    "ŋ",
+    "œ",
+    "ɑ",
+    "ɑɻ",
+    "ɑʊ",
+    "ɔ",
+    "ɕ",
+    "ə",
+    "ɛ",
+    "ɤ",
+    "ɥ",
+    "ɨ",
+    "ɯ",
+    "ɻ",
+    "ʂ",
+    "ʈʂ",
+    "ʈʂʰ",
+    "ʊ",
+    "ʐ"
+   ],
+   "inventory_source": "pronunciada/data/coach/inventory.json",
+   "marks": {
+    "stress_values": [],
+    "tone_values": [
+     1,
+     3,
+     4,
+     5
+    ],
+    "length_values": [],
+    "tense_values": [],
+    "phones_with_alternatives": 3,
+    "phones_droppable": 2
+   },
+   "frontend": "pronunciada/text/zh.py (ZhG2P: OpenCC -> jieba -> pypinyin -> sandhi; one syllable per hanzi; tones on the syllable)",
+   "examples": [
+    {
+     "text": "火车八点出发。",
+     "words": [
+      {
+       "text": "火车",
+       "phones": "x w (ɔ) /t3 . ʈʂʰ (ɤ) /t1",
+       "alternatives": 0
+      },
+      {
+       "text": "八点",
+       "phones": "p (a) /t1 . t j (ɛ) n /t3",
+       "alternatives": 0
+      },
+      {
+       "text": "出发",
+       "phones": "ʈʂʰ (u) /t1 . f (a) /t1",
+       "alternatives": 0
+      }
+     ]
+    },
+    {
+     "text": "我不知道。",
+     "words": [
+      {
+       "text": "我",
+       "phones": "w (ɔ) /t3",
+       "alternatives": 0
+      },
+      {
+       "text": "不",
+       "phones": "p (u) /t4",
+       "alternatives": 0
+      },
+      {
+       "text": "知道",
+       "phones": "ʈʂ (ɨ) /t1 . t (ɑʊ) /t5",
+       "alternatives": 0
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

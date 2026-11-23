@@ -37,6 +37,13 @@ Models trained for this project (pronunciada/data; details per file in docs/LICE
   Korean sound-identity head (data/coach/ko_identity.npz): FLEURS ko train and Zeroth-Korean
   train (Zeroth project, openslr.org/40, CC BY 4.0; read via the Hugging Face copy kresnik/zeroth_korean).
   Mandarin defaults, coaching models: OMPAL dev (CC BY 4.0), Common Voice (CC0).
+  Round-19 sound-identity heads and word rules (de, es, pt, ru, zh, ja) and the Japanese length
+  model: FLEURS and Common Voice 22.0 (CC0). English sentence heads (sentence_r19, seqhead_en):
+  speechocean762 train.
+  Some files were trained on labels taken from references built partly from the it / pt / ru
+  CC BY-SA lexicons (data/coach/identity/pt.npz and ru.npz, data/prosody/stress_v3.onnx,
+  data/coach/attr_heads.npz); whether they are treated as share-alike like the adapters is an
+  open question in docs/LICENSING.md. Per-file list: pronunciada/data/LICENSES_SHIPPED.json.
   Mandarin tone models: AISHELL-3 (OpenSLR SLR93) and AISHELL-1 (OpenSLR SLR33), both Apache
   License 2.0 (200 of the 300 AISHELL-1 speakers were fetched from a community mirror that
   re-hosts the same corpus), Common Voice zh-TW (CC0), FLEURS zh train.
