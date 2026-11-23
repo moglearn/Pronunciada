@@ -37,7 +37,8 @@ import numpy as np
 
 CACHE = Path(os.environ.get("PRONUNCIADA_CACHE") or Path.home() / ".cache" / "pronunciada")
 SENS = CACHE / "opt" / "sensitivity"
-FP32 = CACHE / "models" / "zipa-small-crctc-500k" / "model.onnx"
+FP32 = CACHE / "models" / "zipa-small-crctc-500k" / "model.onnx"   # resolved in main(): the cache may
+# hold only the one all-outputs file; bench/opt/common.py default_backbone restores the download
 
 
 def feats() -> None:
@@ -251,6 +252,12 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=None)
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
+    if a.cmd in ("posterr", "layers"):
+        global FP32
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from common import default_backbone
+
+        FP32 = default_backbone("fp32")
     if a.cmd == "feats":
         feats()
     elif a.cmd == "posterr":

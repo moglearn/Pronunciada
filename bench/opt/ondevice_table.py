@@ -125,7 +125,7 @@ def candidate_md() -> str:
                  f"({100 * fr['top_token_changed_share']:.2f} %) | {pc} | {lt} | {ld} | {rs} | {sc} | {gs} |")
     if "fp32-file" in LAT:
         L += ["", f"Load of fp32 through PRONUNCIADA_BACKBONE (`fp32-file`): {np.median(LAT['fp32-file']['load']):.2f} s; "
-              f"the default fp32 (pre-optimized graph): {np.median(LAT['fp32']['load']):.2f} s."]
+              f"fp32 with the pre-optimized graph (the default when this was measured; now `PRONUNCIADA_PREOPT=1`): {np.median(LAT['fp32']['load']):.2f} s."]
     return "\n".join(L)
 
 

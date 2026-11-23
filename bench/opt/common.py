@@ -21,6 +21,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import io
 from pathlib import Path
@@ -49,7 +50,20 @@ def model_dir() -> Path:
 
 
 def default_backbone(precision: str) -> Path:
-    return model_dir() / PRECISION_FILES[precision]
+    """The plain downloaded backbone file of a precision (what candidates are built from and the int8
+    suite runs as PRONUNCIADA_BACKBONE). The model cache keeps one all-outputs file per precision and
+    removes the download; the package's own loader restores the download from it, byte for byte with
+    its SHA-256 checked (no network), and PRONUNCIADA_KEEP_DOWNLOAD=1 (set for this process and every
+    child) keeps it in place while the harness uses it."""
+    os.environ["PRONUNCIADA_KEEP_DOWNLOAD"] = "1"
+    plain = model_dir() / PRECISION_FILES[precision]
+    if plain.exists():
+        return plain
+    if str(REPO) not in sys.path:
+        sys.path.insert(0, str(REPO))       # the build scripts run as plain scripts in the tools venv
+    from pronunciada.acoustic import ensure_model_file
+
+    return Path(ensure_model_file(MODEL, PRECISION_FILES[precision], str(cache_root())))
 
 
 # ----------------------------------------------------------------------------- specs
@@ -108,6 +122,7 @@ def child_env(spec: dict, tree: Path, threads: int | None = None, suite: bool = 
            and not k.startswith(("PRONUNCIADA_BACKBONE", "PRONUNCIADA_ADAPTER_DIR", "PRONUNCIADA_ORT_OPTIONS"))}
     env["PYTHONPATH"] = str(tree)
     env["PYTHONHASHSEED"] = "0"
+    env["PRONUNCIADA_KEEP_DOWNLOAD"] = "1"      # the plain backbone files stay usable (default_backbone)
     if threads is not None:
         for v in THREAD_VARS:
             env[v] = str(threads)

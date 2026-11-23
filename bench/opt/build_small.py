@@ -128,7 +128,9 @@ def build(name: str) -> dict:
 
     import onnxruntime as ort
 
-    src = MODELS / "model.onnx"
+    from common import default_backbone
+
+    src = default_backbone("fp32")
     d = Path(os.environ["OPT_BUILD_DIR"]) / name if os.environ.get("OPT_BUILD_DIR") else OUT / name
     d.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
