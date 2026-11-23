@@ -166,5 +166,9 @@ if __name__ == "__main__":
         block = make()
         page = pattern.sub(lambda m: f"{m.group(1)}\n{block}\n{m.group(2)}", page)
     PAGE.write_text(page, encoding="utf-8")
+    space = ROOT / "space_static/index.html"          # the Hugging Face Space page repeats the key figures
+    text = space.read_text(encoding="utf-8")
+    space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
+                     encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html; wrote docs/assets/figure-word.png and languages.jpg")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote docs/assets/figure-word.png and languages.jpg")
