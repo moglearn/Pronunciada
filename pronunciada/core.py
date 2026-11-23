@@ -41,7 +41,7 @@ the normalisation rules is docs/PHONES.md:
 `words[i].alternatives` is a list of readings, each a list of syllables in the format above. The
 round-20 word-level pass (pronunciada.r20; on by default for Spanish number tokens) re-scores a word
 whose probability is below 0.9 against each reading and keeps the best word-level values. The
-readings come from the front-end (num2words for the spelled-out numbers), so the core takes them as
+readings come from the front-end (pronunciada.text.numbers spells the numbers), so the core takes them as
 data: `phones_for` fills them exactly as the text path would compute them, and a target without them
 gives that word no second pass (the first-pass values are returned, a documented difference, not an
 approximation of it).
@@ -185,8 +185,8 @@ def reference_from_target(target, lang: str | None = None) -> Reference:
 def phones_for(text: str, lang: str) -> dict:
     """The target of `text` from today's text front-end (pronunciada.text), including the round-20
     candidate readings of each word that the text path would compute (pronunciada.r20.text_fragments,
-    for the languages and fixes enabled now). Runs the front-end (and num2words when the prompt has
-    digits); not part of the on-device core."""
+    for the languages and fixes enabled now). Runs the layer-2 text front-end (lexicons, dictionaries) and the
+    number speller; not part of the on-device core. See docs/TEXT_LAYERS.md."""
     from . import r20 as R20
     from .text import get_g2p, normalize_lang
 
