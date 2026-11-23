@@ -1,0 +1,16 @@
+{
+ "_doc": "Candidate specs for bench/opt (gate / parity / profile). Backbone files are built by bench/opt/build_candidates.py under $PRONUNCIADA_CACHE/opt/candidates/<name>/model.onnx ({C} below). Code = the commit of record.",
+ "ort-arena-off": {"precision": "fp32", "ort_options": {"enable_cpu_mem_arena": false, "sessions": ["backbone"]}},
+ "ort-mempattern-on": {"precision": "fp32", "ort_options": {"enable_mem_pattern": true, "sessions": ["backbone"]}},
+ "ort-nospin": {"precision": "fp32", "ort_options": {"config": {"session.intra_op.allow_spinning": "0"}}},
+ "ort-blockbase4": {"precision": "fp32", "ort_options": {"config": {"session.dynamic_block_base": "4"}, "sessions": ["backbone"]}},
+ "ort-ext-level": {"precision": "fp32", "ort_options": {"graph_optimization_level": "ORT_ENABLE_EXTENDED", "sessions": ["backbone"]}},
+ "slim-fp32": {"precision": "fp32", "backbone": "{C}/slim-fp32/model.onnx"},
+ "slim-int8": {"precision": "int8", "backbone": "{C}/slim-int8/model.onnx"},
+ "ortopt-basic-fp32": {"precision": "fp32", "backbone": "{C}/ortopt-basic-fp32/model.onnx"},
+ "ortopt-basic-int8": {"precision": "int8", "backbone": "{C}/ortopt-basic-int8/model.onnx"},
+ "ortopt-ext-fp32": {"precision": "fp32", "backbone": "{C}/ortopt-ext-fp32/model.onnx"},
+ "ortopt-ext-int8": {"precision": "int8", "backbone": "{C}/ortopt-ext-int8/model.onnx"},
+ "prep-fp32": {"precision": "fp32", "backbone": "{C}/prep-fp32/model.onnx"},
+ "f16store-fp32": {"precision": "fp32", "backbone": "{C}/f16store-fp32/model.onnx"}
+}
