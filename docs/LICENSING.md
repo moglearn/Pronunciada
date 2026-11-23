@@ -12,7 +12,9 @@ Short version:
 - Bundled data: everything in `pronunciada/data/` is project-made (Apache-2.0) **except** the
   lexicons in `pronunciada/data/lex/`, which keep their source licenses (BSD-2-Clause-style,
   MIT, and CC BY-SA for it / pt / ru), and the it / pt / ru output adapters, treated as CC BY-SA
-  adaptations of those lexicons; see `pronunciada/data/lex/LICENSE.txt`.
+  adaptations of those lexicons; see `pronunciada/data/lex/LICENSE.txt`. A few more files were
+  trained on labels derived from the it / pt / ru lexicons; their classification is open
+  question 4.
 - **Nothing shipped is fitted on, or selected with, non-commercial data.** The round-2 word model
   `word.npz` had been trained partly on L2-ARCTIC train (CC BY-NC 4.0) and EpaDB train; it was
   re-fitted without them on 2026-11-17, together with everything fitted on its outputs (§3).
@@ -67,6 +69,14 @@ used only to pick between candidates. Datasets that only appear in benchmark tab
 | `data/coach/contrast_heads.json`, `ko_tense.npz` | `bench/round17/fit.py`, `bench/round18/tense.py` | FLEURS train (training), FLEURS validation (thresholds). |
 | `data/coach/ko_identity.npz`, `data/calib/ko_identity_word.json` | `bench/round19ko/identity_mlp.py`, `bench/round19ko/select.py` | FLEURS ko train + Zeroth-Korean train (OpenSLR 40, CC BY 4.0; training); FLEURS ko validation + Common Voice 22.0 ko (CC0) dev pool with planted text edits (thresholds, selection). |
 | `data/coach/zh_sound.npz` | round 12b (`bench/calib/ompal_sound_emb.py`) | OMPAL dev learners (training). |
+| `data/calib/sentence_r19.npz` | `bench/round19/fit_final.py` | speechocean762 train (training); FLEURS validation English natives (native guard). |
+| `data/calib/seqhead_en.onnx`, `seqhead_en.npz` | `bench/round19/train_seq_final.py` | speechocean762 train (training; blend weights chosen on train cross-validation folds). |
+| `data/coach/de_identity.npz` | `bench/round19/identity_train.py`, `cv_train.py` | FLEURS de train + Common Voice 22.0 de train natives (CC0) (training; labels = classes of the German front-end's reference sounds). |
+| `data/calib/de_identity_word.json` | `bench/round19/identity_fit.py` | round-19 German dev set (Common Voice 22.0 dev split + FLEURS validation, planted edits) and held-out Common Voice de train speakers (thresholds, selection). |
+| `data/calib/stress_rel/de.json`, `data/calib/word_lang/de.json` | `bench/round19/stress_save.py`; `bench/round19/` (commit `66a0af2`) | round-19 German dev set, fit fold (calibration). |
+| `data/coach/identity/{es,pt,ru,zh}.npz` | `bench/round19_rollout/train.py` | FLEURS train natives + Common Voice 22.0 speakers of its dev split (CC0) (training; labels = classes of the language front-end's reference sounds, `bench/round19_rollout/collect.py`). |
+| `data/calib/identity/{es,pt,ru,zh}.json` | `bench/round19_rollout/fit.py`; zh round-20 keys `bench/round20_mandarin/dev.py` | Common Voice 22.0 dev-split speakers (planted edits, native pool) and FLEURS validation (thresholds, guards, selection). |
+| `data/coach/ja_identity.npz`, `data/length/ja_r19.json`, `data/calib/word_step/ja.json` | `bench/round19_ja/identity.py`, `length_fit3.py`, `step.py` / `stepgrid2.py` | Common Voice ja train (CC0) + FLEURS ja train (training); Common Voice ja dev + FLEURS validation planted edits (word step: calibration, selection). |
 | `data/coach/inventory.json` | front-ends over FLEURS text | FLEURS (text). |
 | `data/cjk/zh_neutral.txt`, `zh_tw_tones.txt` | hand-written | project (Apache-2.0). |
 | `data/lex/*` | `pronunciada/text/_eu_build.py`, `bench/calib/ru_stress_lex.py`, `ru_round8.py` | see §5. |
@@ -125,11 +135,20 @@ benchmark tables.
 
 | `adapters/it.npz`, `pt.npz`, `ru.npz` | trained (FLEURS train audio, CTC) towards references built from the it / pt / ru lexicons | **CC BY-SA 4.0** (treated as adaptations; owner decision) |
 
-What share-alike implies: these nine files (six lexicon files, three adapters) may be
+What share-alike implies: these eight files (five lexicon files, three adapters) may be
 redistributed inside the Apache-2.0 repository, but they stay CC BY-SA. Anyone who redistributes
 them, or a modified version, must keep the CC BY-SA license and the "Wiktionary contributors"
 attribution. The share-alike clause does not reach the code that reads them (separate works).
-The other calibration files are fitted on scores, not on the lexicons, and stay Apache-2.0.
+The other shipped files are declared Apache-2.0. Most calibration files are fitted on scores
+(error / no-error labels), not on the lexicons. Some files, however, were trained with labels
+taken from the front-end's references, which for it / pt / ru come from the files above, the
+same basis on which the three adapters are treated as CC BY-SA: `data/coach/identity/pt.npz`,
+`ru.npz` (sound classes of the reference), `data/prosody/stress_v3.onnx` and its `.json`
+(primary stress of the reference; one model shared by en de es it pt ru), and
+`data/coach/attr_heads.npz` (attributes of the reference sounds; FLEURS train of all ten
+languages; read by scoring for ja ko ru zh). How to classify them is open question 4.
+Per-file licence and provenance of every file a scoring bundle ships:
+`pronunciada/data/LICENSES_SHIPPED.json`.
 
 Packaging done now (no code change, no path change): `pronunciada/data/lex/LICENSE.txt` lists
 each file's license and attribution, including the three adapters, `pyproject.toml` declares the combined license expression
@@ -181,6 +200,13 @@ ffmpeg (system binary, offline decoding).
    use, but cite it either way.
 3. **Azure output in results**: tables contain aggregate statistics of Azure responses, no raw
    responses. Check Microsoft's terms on publishing benchmark results of the service.
+4. **Files trained on lexicon-derived labels (it / pt / ru)**: the files named at the end of §5
+   were trained with labels from references built partly from the CC BY-SA lexicons. Owner
+   decision: treat them like the it / pt / ru adapters (CC BY-SA 4.0) or keep them Apache-2.0.
+   The shared files (`stress_v3.onnx`, `attr_heads.npz`) are also read for languages without a
+   share-alike lexicon. Less direct cases, fitted on model evidence computed against those
+   references rather than on reference labels: `data/native/{it,pt,ru}.json`,
+   `data/calib/identity/{pt,ru}.json`, `data/calib/prosody/{it,pt,ru}.json`.
 
 Resolved on 2026-11-17: the non-commercial training data (§3); AISHELL-1 / -3 licenses (OpenSLR,
 Apache 2.0; §4); the it / pt / ru adapters (treated as CC BY-SA; §5); the Common Voice manifests
