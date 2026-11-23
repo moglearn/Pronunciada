@@ -1,0 +1,1737 @@
+{
+ "en": {
+  "ae_e: said æ, expected ɛ": {
+   "n": 120,
+   "sound": {
+    "main": 0.9083333333333333,
+    "rc": 0.9083333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.6666666666666666,
+    "rc": 0.6666666666666666,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.029869783734389255
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "ae_e: said ɛ, expected æ": {
+   "n": 120,
+   "sound": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.825,
+    "rc": 0.8083333333333333,
+    "delta": -0.016666666666666607,
+    "ci": [
+     -0.04347826086956519,
+     0.009015265265265249
+    ],
+    "p": 0.369,
+    "significantly_worse": false
+   }
+  },
+  "dh_d: said d, expected ð": {
+   "n": 120,
+   "sound": {
+    "main": 0.9666666666666667,
+    "rc": 0.9666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9666666666666667,
+    "rc": 0.8916666666666667,
+    "delta": -0.07499999999999996,
+    "ci": [
+     -0.13762258778867453,
+     -0.02307251908396952
+    ],
+    "p": 0.001,
+    "significantly_worse": true
+   }
+  },
+  "dh_d: said ð, expected d": {
+   "n": 120,
+   "sound": {
+    "main": 0.875,
+    "rc": 0.875,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7166666666666667,
+    "rc": 0.7166666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.03362056687081608
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "dh_z: said z, expected ð": {
+   "n": 120,
+   "sound": {
+    "main": 0.9833333333333333,
+    "rc": 0.9833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.8833333333333333,
+    "rc": 0.8833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.02105823068309063
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "dh_z: said ð, expected z": {
+   "n": 120,
+   "sound": {
+    "main": 0.9166666666666666,
+    "rc": 0.9166666666666666,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.6833333333333333,
+    "rc": 0.6833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.029419044845661005
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said m, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.008773870517000482
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said n, expected m": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.9416666666666667,
+    "delta": -0.01666666666666672,
+    "ci": [
+     -0.042025708588520116,
+     0.0
+    ],
+    "p": 0.297,
+    "significantly_worse": false
+   }
+  },
+  "n_ng: said n, expected ŋ": {
+   "n": 120,
+   "sound": {
+    "main": 0.9,
+    "rc": 0.9,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.95,
+    "rc": 0.9083333333333333,
+    "delta": -0.04166666666666663,
+    "ci": [
+     -0.08198225297037147,
+     -0.008545197740112977
+    ],
+    "p": 0.018,
+    "significantly_worse": true
+   }
+  },
+  "n_ng: said ŋ, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.7666666666666667,
+    "rc": 0.7666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.775,
+    "rc": 0.775,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.02362204724409445
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "r_l: said l, expected ɹ": {
+   "n": 120,
+   "sound": {
+    "main": 0.9833333333333333,
+    "rc": 0.9833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "r_l: said ɹ, expected l": {
+   "n": 120,
+   "sound": {
+    "main": 0.9833333333333333,
+    "rc": 0.9833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.975,
+    "rc": 0.9666666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.028037383177570097,
+     0.008064516129032251
+    ],
+    "p": 0.77,
+    "significantly_worse": false
+   }
+  },
+  "s_sh: said s, expected ʃ": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9666666666666667,
+    "rc": 0.9416666666666667,
+    "delta": -0.025000000000000022,
+    "ci": [
+     -0.057696280991735446,
+     0.0
+    ],
+    "p": 0.12,
+    "significantly_worse": false
+   }
+  },
+  "s_sh: said ʃ, expected s": {
+   "n": 120,
+   "sound": {
+    "main": 0.9416666666666667,
+    "rc": 0.9416666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7666666666666667,
+    "rc": 0.775,
+    "delta": 0.008333333333333304,
+    "ci": [
+     0.0,
+     0.03125
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "tense_lax: said lax, expected tense": {
+   "n": 120,
+   "sound": {
+    "main": 0.9333333333333333,
+    "rc": 0.9333333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.8916666666666667,
+    "rc": 0.8833333333333333,
+    "delta": -0.008333333333333415,
+    "ci": [
+     -0.027272727272727337,
+     0.017245127436281763
+    ],
+    "p": 0.856,
+    "significantly_worse": false
+   }
+  },
+  "tense_lax: said tense, expected lax": {
+   "n": 120,
+   "sound": {
+    "main": 0.475,
+    "rc": 0.475,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.575,
+    "rc": 0.5666666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.02564102564102566,
+     0.025005252100840383
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "th_s: said s, expected θ": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.925,
+    "rc": 0.925,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.02362673415823015
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "th_s: said θ, expected s": {
+   "n": 120,
+   "sound": {
+    "main": 0.95,
+    "rc": 0.95,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.825,
+    "rc": 0.7666666666666667,
+    "delta": -0.05833333333333324,
+    "ci": [
+     -0.10436009817671804,
+     -0.013081472620946763
+    ],
+    "p": 0.019,
+    "significantly_worse": true
+   }
+  },
+  "v_b: said b, expected v": {
+   "n": 120,
+   "sound": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9333333333333333,
+    "rc": 0.9333333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.00926142263759089
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "v_b: said v, expected b": {
+   "n": 120,
+   "sound": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.95,
+    "rc": 0.925,
+    "delta": -0.02499999999999991,
+    "ci": [
+     -0.05661725067385443,
+     0.0
+    ],
+    "p": 0.117,
+    "significantly_worse": false
+   }
+  },
+  "v_w: said v, expected w": {
+   "n": 120,
+   "sound": {
+    "main": 0.9833333333333333,
+    "rc": 0.9833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9666666666666667,
+    "rc": 0.9583333333333334,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.027027027027026976,
+     0.0
+    ],
+    "p": 0.758,
+    "significantly_worse": false
+   }
+  },
+  "v_w: said w, expected v": {
+   "n": 120,
+   "sound": {
+    "main": 0.8833333333333333,
+    "rc": 0.8833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.975,
+    "rc": 0.9666666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.02777777777777779,
+     0.0
+    ],
+    "p": 0.75,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiced, expected voiceless": {
+   "n": 120,
+   "sound": {
+    "main": 0.7916666666666666,
+    "rc": 0.7916666666666666,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.525,
+    "rc": 0.525,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.018181818181818188
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiceless, expected voiced": {
+   "n": 120,
+   "sound": {
+    "main": 0.7416666666666667,
+    "rc": 0.7416666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.725,
+    "rc": 0.7166666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.027027027027026973,
+     0.028301886792452824
+    ],
+    "p": 0.923,
+    "significantly_worse": false
+   }
+  }
+ },
+ "de": {
+  "final_devoicing: said devoiced, expected voiced": {
+   "n": 153,
+   "sound": {
+    "main": 0.43790849673202614,
+    "rc": 0.43790849673202614,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.013071895424836602,
+    "rc": 0.0196078431372549,
+    "delta": 0.0065359477124183,
+    "ci": [
+     0.0,
+     0.022058823529411763
+    ],
+    "p": 0.944,
+    "significantly_worse": false
+   }
+  },
+  "front_back: said back, expected front": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9416666666666667,
+    "rc": 0.9166666666666666,
+    "delta": -0.025000000000000022,
+    "ci": [
+     -0.06300182987689919,
+     0.016003225806451502
+    ],
+    "p": 0.315,
+    "significantly_worse": false
+   }
+  },
+  "front_back: said front, expected back": {
+   "n": 120,
+   "sound": {
+    "main": 0.9666666666666667,
+    "rc": 0.9666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7916666666666666,
+    "rc": 0.775,
+    "delta": -0.016666666666666607,
+    "ci": [
+     -0.07813265931372548,
+     0.04065040650406504
+    ],
+    "p": 0.571,
+    "significantly_worse": false
+   }
+  },
+  "ich_isch: said ç, expected ʃ": {
+   "n": 120,
+   "sound": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.9083333333333333,
+    "delta": -0.050000000000000044,
+    "ci": [
+     -0.1015625,
+     -0.0086956521739131
+    ],
+    "p": 0.02,
+    "significantly_worse": true
+   }
+  },
+  "ich_isch: said ʃ, expected ç": {
+   "n": 120,
+   "sound": {
+    "main": 0.95,
+    "rc": 0.95,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9833333333333333,
+    "rc": 0.9333333333333333,
+    "delta": -0.04999999999999993,
+    "ci": [
+     -0.08943392792136881,
+     -0.009610849056603765
+    ],
+    "p": 0.015,
+    "significantly_worse": true
+   }
+  },
+  "m_n: said m, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.8416666666666667,
+    "rc": 0.8416666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.875,
+    "rc": 0.825,
+    "delta": -0.050000000000000044,
+    "ci": [
+     -0.1089153915391539,
+     0.0
+    ],
+    "p": 0.075,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said n, expected m": {
+   "n": 120,
+   "sound": {
+    "main": 0.9833333333333333,
+    "rc": 0.9833333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.9083333333333333,
+    "delta": -0.050000000000000044,
+    "ci": [
+     -0.10619469026548667,
+     -0.006632653061225425
+    ],
+    "p": 0.05,
+    "significantly_worse": false
+   }
+  },
+  "n_ng: said n, expected ŋ": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9833333333333333,
+    "rc": 0.9416666666666667,
+    "delta": -0.04166666666666663,
+    "ci": [
+     -0.07964762087982559,
+     -0.007872477854330703
+    ],
+    "p": 0.03,
+    "significantly_worse": true
+   }
+  },
+  "n_ng: said ŋ, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.36666666666666664,
+    "rc": 0.36666666666666664,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.6166666666666667,
+    "rc": 0.6,
+    "delta": -0.01666666666666672,
+    "ci": [
+     -0.05405405405405406,
+     0.06923913043478254
+    ],
+    "p": 0.96,
+    "significantly_worse": false
+   }
+  },
+  "round_front: said rounded, expected unrounded": {
+   "n": 120,
+   "sound": {
+    "main": 0.8,
+    "rc": 0.8,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7666666666666667,
+    "rc": 0.7083333333333334,
+    "delta": -0.05833333333333335,
+    "ci": [
+     -0.11719898897058824,
+     0.007580162085976009
+    ],
+    "p": 0.106,
+    "significantly_worse": false
+   }
+  },
+  "round_front: said unrounded, expected rounded": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9666666666666667,
+    "rc": 0.9083333333333333,
+    "delta": -0.05833333333333335,
+    "ci": [
+     -0.10833333333333339,
+     -0.017699115044247815
+    ],
+    "p": 0.009,
+    "significantly_worse": true
+   }
+  },
+  "s_sh: said s, expected ʃ": {
+   "n": 120,
+   "sound": {
+    "main": 0.775,
+    "rc": 0.775,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9166666666666666,
+    "rc": 0.8,
+    "delta": -0.11666666666666659,
+    "ci": [
+     -0.1916826923076923,
+     -0.05929529373045932
+    ],
+    "p": 0.0,
+    "significantly_worse": true
+   }
+  },
+  "s_sh: said ʃ, expected s": {
+   "n": 120,
+   "sound": {
+    "main": 0.5916666666666667,
+    "rc": 0.5916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7916666666666666,
+    "rc": 0.775,
+    "delta": -0.016666666666666607,
+    "ci": [
+     -0.06194861768539479,
+     0.017865259740259744
+    ],
+    "p": 0.361,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiced, expected voiceless": {
+   "n": 120,
+   "sound": {
+    "main": 0.9166666666666666,
+    "rc": 0.9166666666666666,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7083333333333334,
+    "rc": 0.6583333333333333,
+    "delta": -0.050000000000000044,
+    "ci": [
+     -0.10257009345794389,
+     0.009436208445642393
+    ],
+    "p": 0.136,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiceless, expected voiced": {
+   "n": 120,
+   "sound": {
+    "main": 0.975,
+    "rc": 0.975,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7583333333333333,
+    "rc": 0.7333333333333333,
+    "delta": -0.025000000000000022,
+    "ci": [
+     -0.0847457627118644,
+     0.015513104466592815
+    ],
+    "p": 0.201,
+    "significantly_worse": false
+   }
+  },
+  "vowel_length: said long, expected short": {
+   "n": 120,
+   "sound": {
+    "main": 0.375,
+    "rc": 0.375,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.225,
+    "rc": 0.225,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.05129310344827584
+    ],
+    "p": 0.962,
+    "significantly_worse": false
+   }
+  },
+  "vowel_length: said short, expected long": {
+   "n": 120,
+   "sound": {
+    "main": 0.5666666666666667,
+    "rc": 0.5666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.31666666666666665,
+    "rc": 0.31666666666666665,
+    "delta": 0.0,
+    "ci": [
+     -0.045454545454545414,
+     0.04425270403146508
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  }
+ },
+ "es": {
+  "m_n: said m, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 1.0,
+    "rc": 0.9833333333333333,
+    "delta": -0.01666666666666672,
+    "ci": [
+     -0.04445273631840792,
+     0.0
+    ],
+    "p": 0.318,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said n, expected m": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "tap_trill: said tap, expected trill": {
+   "n": 120,
+   "sound": {
+    "main": 0.9666666666666667,
+    "rc": 0.9666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.008131747301079495
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9083333333333333,
+    "rc": 0.925,
+    "delta": 0.01666666666666672,
+    "ci": [
+     0.0,
+     0.037391994357256174
+    ],
+    "p": 0.953,
+    "significantly_worse": false
+   }
+  },
+  "tap_trill: said trill, expected tap": {
+   "n": 120,
+   "sound": {
+    "main": 0.7166666666666667,
+    "rc": 0.7083333333333334,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.023255813953488413,
+     0.02272727272727271
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.775,
+    "rc": 0.775,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.025210084033613467
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiced, expected voiceless": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 1.0,
+    "rc": 0.9916666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.028043995767942163,
+     0.0
+    ],
+    "p": 0.706,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiceless, expected voiced": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9916666666666667,
+    "rc": 0.9833333333333333,
+    "delta": -0.008333333333333415,
+    "ci": [
+     -0.03077519379844961,
+     0.0
+    ],
+    "p": 0.698,
+    "significantly_worse": false
+   }
+  }
+ },
+ "fr": {
+  "front_back: said back, expected front": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9083333333333333,
+    "rc": 0.9083333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.01562807578740156
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "front_back: said front, expected back": {
+   "n": 120,
+   "sound": {
+    "main": 0.9666666666666667,
+    "rc": 0.9666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9333333333333333,
+    "rc": 0.9333333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0078125
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said m, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said n, expected m": {
+   "n": 120,
+   "sound": {
+    "main": 0.9916666666666667,
+    "rc": 0.9916666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.95,
+    "delta": -0.008333333333333415,
+    "ci": [
+     -0.02777777777777779,
+     0.008622563718140993
+    ],
+    "p": 0.782,
+    "significantly_worse": false
+   }
+  },
+  "mid_vowels: said close, expected open": {
+   "n": 120,
+   "sound": {
+    "main": 0.775,
+    "rc": 0.775,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.49166666666666664,
+    "rc": 0.5,
+    "delta": 0.00833333333333336,
+    "ci": [
+     0.0,
+     0.03102620893318563
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "mid_vowels: said open, expected close": {
+   "n": 120,
+   "sound": {
+    "main": 0.8166666666666667,
+    "rc": 0.8166666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.6083333333333333,
+    "rc": 0.6083333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.02564655172413792
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "nasal: said nasal, expected oral": {
+   "n": 120,
+   "sound": {
+    "main": 0.5583333333333333,
+    "rc": 0.5583333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.725,
+    "rc": 0.7166666666666667,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.025862068965517238,
+     0.01429353493222097
+    ],
+    "p": 0.872,
+    "significantly_worse": false
+   }
+  },
+  "nasal: said oral, expected nasal": {
+   "n": 120,
+   "sound": {
+    "main": 0.875,
+    "rc": 0.875,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.8666666666666667,
+    "rc": 0.8666666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.017865259740259744
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "round_front: said rounded, expected unrounded": {
+   "n": 120,
+   "sound": {
+    "main": 0.9583333333333334,
+    "rc": 0.9583333333333334,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9083333333333333,
+    "rc": 0.9083333333333333,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.016949152542372947
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "round_front: said unrounded, expected rounded": {
+   "n": 120,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.95,
+    "delta": -0.008333333333333415,
+    "ci": [
+     -0.02752293577981646,
+     0.0
+    ],
+    "p": 0.731,
+    "significantly_worse": false
+   }
+  },
+  "s_sh: said s, expected ʃ": {
+   "n": 134,
+   "sound": {
+    "main": 1.0,
+    "rc": 1.0,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9925373134328358,
+    "rc": 0.9626865671641791,
+    "delta": -0.02985074626865669,
+    "ci": [
+     -0.06206896551724139,
+     -0.006896551724137945
+    ],
+    "p": 0.034,
+    "significantly_worse": true
+   }
+  },
+  "s_sh: said ʃ, expected s": {
+   "n": 106,
+   "sound": {
+    "main": 0.9811320754716981,
+    "rc": 0.9811320754716981,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.8679245283018868,
+    "rc": 0.8679245283018868,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.01786942988204454
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiced, expected voiceless": {
+   "n": 120,
+   "sound": {
+    "main": 0.9416666666666667,
+    "rc": 0.9416666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.875,
+    "rc": 0.875,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.01819023569023565
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "voicing: said voiceless, expected voiced": {
+   "n": 120,
+   "sound": {
+    "main": 0.95,
+    "rc": 0.95,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7833333333333333,
+    "rc": 0.775,
+    "delta": -0.008333333333333304,
+    "ci": [
+     -0.027027027027026973,
+     0.016400273224043693
+    ],
+    "p": 0.851,
+    "significantly_worse": false
+   }
+  }
+ },
+ "ko": {
+  "aspiration: said aspirated, expected plain": {
+   "n": 120,
+   "sound": {
+    "main": 0.8166666666666667,
+    "rc": 0.8166666666666667,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.015387596899224846
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.325,
+    "rc": 0.31666666666666665,
+    "delta": -0.00833333333333336,
+    "ci": [
+     -0.037746651303471115,
+     0.04580152671755722
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "aspiration: said plain, expected aspirated": {
+   "n": 120,
+   "sound": {
+    "main": 0.9583333333333334,
+    "rc": 0.9583333333333334,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.009090909090909042
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.425,
+    "rc": 0.4083333333333333,
+    "delta": -0.016666666666666663,
+    "ci": [
+     -0.03968253968253965,
+     0.07938095238095229
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "eo_o: said o, expected ɔ": {
+   "n": 120,
+   "sound": {
+    "main": 0.6583333333333333,
+    "rc": 0.6583333333333333,
+    "delta": 0.0,
+    "ci": [
+     -0.01853174603174611,
+     0.02941176470588236
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7416666666666667,
+    "rc": 0.7583333333333333,
+    "delta": 0.016666666666666607,
+    "ci": [
+     0.0,
+     0.07628748370273787
+    ],
+    "p": 0.401,
+    "significantly_worse": false
+   }
+  },
+  "eo_o: said ɔ, expected o": {
+   "n": 120,
+   "sound": {
+    "main": 0.5666666666666667,
+    "rc": 0.5666666666666667,
+    "delta": 0.0,
+    "ci": [
+     -0.03125615157480315,
+     0.027027027027026973
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.725,
+    "rc": 0.6916666666666667,
+    "delta": -0.033333333333333326,
+    "ci": [
+     -0.09677419354838712,
+     0.02308593749999998
+    ],
+    "p": 0.313,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said m, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.6583333333333333,
+    "rc": 0.6666666666666666,
+    "delta": 0.008333333333333304,
+    "ci": [
+     0.0,
+     0.03448275862068961
+    ],
+    "p": 0.755,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9,
+    "rc": 0.9,
+    "delta": 0.0,
+    "ci": [
+     -0.0390625,
+     0.04854368932038844
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "m_n: said n, expected m": {
+   "n": 120,
+   "sound": {
+    "main": 0.8416666666666667,
+    "rc": 0.8416666666666667,
+    "delta": 0.0,
+    "ci": [
+     -0.024595244546809402,
+     0.03199999999999992
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.9583333333333334,
+    "rc": 0.9416666666666667,
+    "delta": -0.01666666666666672,
+    "ci": [
+     -0.04098994422849421,
+     0.021448412698412626
+    ],
+    "p": 0.588,
+    "significantly_worse": false
+   }
+  },
+  "n_ng: said n, expected ŋ": {
+   "n": 120,
+   "sound": {
+    "main": 0.6166666666666667,
+    "rc": 0.6083333333333333,
+    "delta": -0.008333333333333415,
+    "ci": [
+     -0.024793388429752095,
+     0.026086956521739094
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.825,
+    "rc": 0.825,
+    "delta": 0.0,
+    "ci": [
+     0.0,
+     0.10000000000000009
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   }
+  },
+  "n_ng: said ŋ, expected n": {
+   "n": 120,
+   "sound": {
+    "main": 0.375,
+    "rc": 0.38333333333333336,
+    "delta": 0.00833333333333336,
+    "ci": [
+     -0.023446800595238095,
+     0.02816901408450706
+    ],
+    "p": 1.0,
+    "significantly_worse": false
+   },
+   "word": {
+    "main": 0.7166666666666667,
+    "rc": 0.6916666666666667,
+    "delta": -0.025000000000000022,
+    "ci": [
+     -0.08461864406779664,
+     0.009540816326530487
+    ],
+    "p": 0.185,
+    "significantly_worse": false
+   }
+  }
+ }
+}

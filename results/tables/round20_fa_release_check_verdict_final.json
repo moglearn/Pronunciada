@@ -1,0 +1,807 @@
+{
+ "tally": {
+  "main": {
+   "ahead": 48,
+   "level": 34,
+   "behind": 2
+  },
+  "rc": {
+   "ahead": 48,
+   "level": 34,
+   "behind": 2
+  },
+  "changed": [],
+  "down": []
+ },
+ "lingolix_paired": {
+  "en": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.976832955404384,
+     "rc": 0.976832955404384,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.024737167594310452,
+     "rc": 0.024737167594310452,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9808916058916058,
+     "rc": 0.9808916058916058,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.019305019305019305,
+     "rc": 0.019305019305019305,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "fr": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9599705882352941,
+     "rc": 0.9599705882352941,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01647058823529412,
+     "rc": 0.01647058823529412,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9625551287523119,
+     "rc": 0.9625551287523119,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.011523687580025609,
+     "rc": 0.011523687580025609,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "es": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9853501683501683,
+     "rc": 0.9858282828282828,
+     "delta": 0.0004781144781145219,
+     "n_common": 190,
+     "delta_ci": [
+      1.8093228230098294e-05,
+      0.0011760349929184066
+     ],
+     "p": 0.04395604395604396,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.013939393939393939,
+     "rc": 0.012727272727272728,
+     "delta": -0.0012121212121212113,
+     "n_common": 190,
+     "delta_ci": [
+      -0.003701475997897959,
+      0.0
+     ],
+     "p": 0.35564435564435565,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9872555272108844,
+     "rc": 0.9877480158730159,
+     "delta": 0.0004924886621314739,
+     "n_common": 190,
+     "delta_ci": [
+      1.3267210245229699e-05,
+      0.001228827424388501
+     ],
+     "p": 0.04395604395604396,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01020408163265306,
+     "rc": 0.008928571428571428,
+     "delta": -0.0012755102040816323,
+     "n_common": 190,
+     "delta_ci": [
+      -0.0038968046342147057,
+      0.0
+     ],
+     "p": 0.35564435564435565,
+     "significantly_worse": false
+    }
+   }
+  },
+  "de": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9670125517044644,
+     "rc": 0.9670125517044644,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.02053915275994865,
+     "rc": 0.02053915275994865,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9682464454976303,
+     "rc": 0.9682464454976303,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01963439404197698,
+     "rc": 0.01963439404197698,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "ja": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9226489361702128,
+     "rc": 0.9226489361702128,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.09680851063829787,
+     "rc": 0.09680851063829787,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9301988304093567,
+     "rc": 0.9301988304093567,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.08304093567251462,
+     "rc": 0.08304093567251462,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "ko": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9566865790521705,
+     "rc": 0.9566865790521705,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.03082437275985663,
+     "rc": 0.03082437275985663,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9599780145442246,
+     "rc": 0.9599780145442246,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.0258751902587519,
+     "rc": 0.0258751902587519,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "tier2": {
+   "pcc_word": {
+    "main": 0.5805085432641618,
+    "rc": 0.5805085432641618,
+    "delta": 0.0
+   },
+   "pcc_utterance": {
+    "main": 0.787924704413397,
+    "rc": 0.787924704413397,
+    "delta": 0.0
+   },
+   "answers_identical": true
+  }
+ },
+ "lingolix_tables": {
+  "a:pcc_utterance": {
+   "name": "the benchmark's 500 clips",
+   "main": 0.7879,
+   "rc": 0.7879,
+   "delta": 0.0
+  },
+  "a:pcc_word": {
+   "name": "the benchmark's 500 clips",
+   "main": 0.5805,
+   "rc": 0.5805,
+   "delta": 0.0
+  },
+  "b:pcc_utterance": {
+   "name": "every clip with a Lingolix answer",
+   "main": 0.792,
+   "rc": 0.792,
+   "delta": 0.0
+  },
+  "b:pcc_word": {
+   "name": "every clip with a Lingolix answer",
+   "main": 0.5732,
+   "rc": 0.5732,
+   "delta": 0.0
+  },
+  "tier2:pcc_word": {
+   "main": 0.5805,
+   "rc": 0.5805,
+   "delta": 0.0
+  },
+  "tier2:pcc_utterance": {
+   "main": 0.7879,
+   "rc": 0.7879,
+   "delta": 0.0
+  },
+  "tier1_en:roc_auc": {
+   "main": 0.9768,
+   "rc": 0.9768,
+   "vs_lingolix_main": [
+    -0.0052,
+    0.4895
+   ],
+   "vs_lingolix_rc": [
+    -0.0052,
+    0.4895
+   ]
+  },
+  "tier1_en:fpr_at_recall_80": {
+   "main": 0.0247,
+   "rc": 0.0247,
+   "vs_lingolix_main": [
+    0.0167,
+    0.02
+   ],
+   "vs_lingolix_rc": [
+    0.0167,
+    0.02
+   ]
+  },
+  "tier1_fr:roc_auc": {
+   "main": 0.96,
+   "rc": 0.96,
+   "vs_lingolix_main": [
+    -0.0082,
+    0.5854
+   ],
+   "vs_lingolix_rc": [
+    -0.0082,
+    0.5854
+   ]
+  },
+  "tier1_fr:fpr_at_recall_80": {
+   "main": 0.0165,
+   "rc": 0.0165,
+   "vs_lingolix_main": [
+    0.0012,
+    0.8531
+   ],
+   "vs_lingolix_rc": [
+    0.0012,
+    0.8531
+   ]
+  },
+  "tier1_es:roc_auc": {
+   "main": 0.9854,
+   "rc": 0.9858,
+   "vs_lingolix_main": [
+    0.0084,
+    0.1838
+   ],
+   "vs_lingolix_rc": [
+    0.0089,
+    0.1578
+   ]
+  },
+  "tier1_es:fpr_at_recall_80": {
+   "main": 0.0139,
+   "rc": 0.0127,
+   "vs_lingolix_main": [
+    0.0024,
+    0.4615
+   ],
+   "vs_lingolix_rc": [
+    0.0012,
+    0.7552
+   ]
+  },
+  "tier1_de:roc_auc": {
+   "main": 0.967,
+   "rc": 0.967,
+   "vs_lingolix_main": [
+    -0.0055,
+    0.6573
+   ],
+   "vs_lingolix_rc": [
+    -0.0055,
+    0.6573
+   ]
+  },
+  "tier1_de:fpr_at_recall_80": {
+   "main": 0.0205,
+   "rc": 0.0205,
+   "vs_lingolix_main": [
+    0.0103,
+    0.1958
+   ],
+   "vs_lingolix_rc": [
+    0.0103,
+    0.1958
+   ]
+  },
+  "tier1_ja:roc_auc": {
+   "main": 0.9226,
+   "rc": 0.9226,
+   "vs_lingolix_main": [
+    -0.0284,
+    0.0979
+   ],
+   "vs_lingolix_rc": [
+    -0.0284,
+    0.0979
+   ]
+  },
+  "tier1_ja:fpr_at_recall_80": {
+   "main": 0.0968,
+   "rc": 0.0968,
+   "vs_lingolix_main": [
+    0.0649,
+    0.032
+   ],
+   "vs_lingolix_rc": [
+    0.0649,
+    0.032
+   ]
+  },
+  "tier1_ko:roc_auc": {
+   "main": 0.9567,
+   "rc": 0.9567,
+   "vs_lingolix_main": [
+    -0.0075,
+    0.2697
+   ],
+   "vs_lingolix_rc": [
+    -0.0075,
+    0.2697
+   ]
+  },
+  "tier1_ko:fpr_at_recall_80": {
+   "main": 0.0308,
+   "rc": 0.0308,
+   "vs_lingolix_main": [
+    0.0065,
+    0.6573
+   ],
+   "vs_lingolix_rc": [
+    0.0065,
+    0.6573
+   ]
+  }
+ },
+ "scoreboard_rows_changed": [
+  {
+   "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+   "header": "lang | far AUC | near AUC | near hit@5 %",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "0.998 / 0.997 / 0.989, +0.001 ahead, n.s. (0.08)",
+    "0.994 / 0.916 / 0.811, +0.078 **ahead** (0.002)",
+    "0.993 / 0.380 / 0.091, +0.613 **ahead** (0.002)"
+   ],
+   "rc": [
+    "es",
+    "0.999 / 0.997 / 0.989, +0.001 ahead, n.s. (0.06)",
+    "0.994 / 0.916 / 0.811, +0.079 **ahead** (0.002)",
+    "0.993 / 0.380 / 0.091, +0.613 **ahead** (0.002)"
+   ]
+  },
+  {
+   "section": "cv-real test A, AUC of the sentence score (speaker bootstrap).",
+   "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+   "row": "es/A",
+   "occurrence": 0,
+   "main": [
+    "es/A",
+    "396",
+    "0.766 [0.718, 0.811]",
+    "0.677 [0.624, 0.728]",
+    "0.704 [0.653, 0.754]",
+    "+0.089 [+0.034, +0.146]",
+    "< 0.001",
+    "**ahead**"
+   ],
+   "rc": [
+    "es/A",
+    "396",
+    "0.768 [0.722, 0.813]",
+    "0.677 [0.624, 0.728]",
+    "0.704 [0.653, 0.754]",
+    "+0.092 [+0.037, +0.149]",
+    "< 0.001",
+    "**ahead**"
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "0.998 / 0.993 **ahead** (0.008)",
+    "0.994 / 0.942 **ahead** (0.002)",
+    "0.993 / 0.679 **ahead** (0.002)",
+    "0.980 / 0.910 **ahead** (0.002)",
+    "0.023 / 0.018 behind, n.s. (0.06)"
+   ],
+   "rc": [
+    "es",
+    "0.999 / 0.993 **ahead** (0.008)",
+    "0.994 / 0.942 **ahead** (0.002)",
+    "0.993 / 0.679 **ahead** (0.002)",
+    "0.980 / 0.910 **ahead** (0.002)",
+    "0.021 / 0.018 behind, n.s. (0.18)"
+   ]
+  },
+  {
+   "section": "cv-real: real Common Voice recordings judged by volunteers (test half)",
+   "header": "locale / test | n (bad / good) | Pronunciada [CI] | Azure [CI] | Δ [CI] | p | verdict",
+   "row": "es/A",
+   "occurrence": 0,
+   "main": [
+    "es/A",
+    "198 / 198",
+    "0.766 [0.718, 0.811]",
+    "0.726 [0.674, 0.773]",
+    "+0.040 [-0.014, +0.097]",
+    "0.15",
+    "ahead, n.s."
+   ],
+   "rc": [
+    "es/A",
+    "198 / 198",
+    "0.768 [0.722, 0.813]",
+    "0.726 [0.674, 0.773]",
+    "+0.043 [-0.011, +0.098]",
+    "0.13",
+    "ahead, n.s."
+   ]
+  },
+  {
+   "section": "Native speakers are not punished (FLEURS test, default strictness 0.5; no Azure column)",
+   "header": "lang | sounds accepted | words accepted | sentences accepted | planted sound errors, AUC | planted word errors, AUC",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "99.7 %",
+    "98.4 %",
+    "99.5 %",
+    "0.994",
+    "0.974"
+   ],
+   "rc": [
+    "es",
+    "99.7 %",
+    "98.6 %",
+    "99.5 %",
+    "0.994",
+    "0.975"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "tap_trill",
+    "trill → tap",
+    "120",
+    "72 %",
+    "78 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "tap_trill",
+    "trill → tap",
+    "120",
+    "71 %",
+    "78 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 1,
+   "main": [
+    "es",
+    "tap_trill",
+    "tap → trill",
+    "120",
+    "97 %",
+    "91 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "tap_trill",
+    "tap → trill",
+    "120",
+    "97 %",
+    "92 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 2,
+   "main": [
+    "es",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "100 %",
+    "100 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "100 %",
+    "99 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 3,
+   "main": [
+    "es",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "100 %",
+    "99 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "100 %",
+    "98 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 4,
+   "main": [
+    "es",
+    "m_n",
+    "m → n",
+    "120",
+    "99 %",
+    "100 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "m_n",
+    "m → n",
+    "120",
+    "99 %",
+    "98 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Coaching tips on native speakers (FLEURS test; no Azure column)",
+   "header": "lang | clips with a pronunciation tip, before → after | tips per clip, before → after",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "74 % → 22 %",
+    "1.35 → 0.28"
+   ],
+   "rc": [
+    "es",
+    "73 % → 18 %",
+    "1.33 → 0.24"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "376 ms (11.6 s)",
+    "1.94 s (11.6 s)"
+   ],
+   "rc": [
+    "es",
+    "374 ms (11.6 s)",
+    "1.94 s (11.6 s)"
+   ]
+  }
+ ]
+}
