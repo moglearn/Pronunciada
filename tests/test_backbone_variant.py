@@ -117,3 +117,12 @@ def test_preoptimized_graph_bit_identical(monkeypatch, tmp_path):
     os.remove(d / UNION)
     again = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path), embeddings="all")
     assert np.array_equal(lp, again.posteriors_from_features(x)) and (d / opt).stat().st_size > 1000
+
+
+def test_preopt_name_carries_runtime_and_cpu(monkeypatch):
+    ort = pytest.importorskip("onnxruntime")
+    p = A.preoptimized_model_path("/c/m/model.int8.emb-x.onnx")
+    assert p.startswith("/c/m/model.int8.emb-x.ort" + ort.__version__ + "-") and p.endswith(".onnx")
+    assert A._cpu_fingerprint() in p and len(A._cpu_fingerprint()) == 8
+    monkeypatch.setattr(A, "_cpu_fingerprint", lambda: "deadbeef")
+    assert A.preoptimized_model_path("/c/m/model.int8.emb-x.onnx") != p   # another CPU: another file

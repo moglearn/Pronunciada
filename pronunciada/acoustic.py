@@ -8,6 +8,7 @@ frame j, so a span [s, e) of frames covers [frame_to_time(s), frame_to_time(e)).
 """
 from __future__ import annotations
 
+import functools
 import os
 import urllib.request
 
@@ -206,14 +207,36 @@ def embedding_model_path(name: str, precision: str, cache_dir: str | None = None
     return dest
 
 
+@functools.lru_cache(maxsize=1)
+def _cpu_fingerprint() -> str:
+    """Short hash of what identifies the CPU's instruction set: the optimizer's output can depend
+    on it (on x86, e.g., the vector width picks the blocked layout), so a cache copied to another
+    machine (a container image, a synced home directory) builds its own graph."""
+    import hashlib
+    import platform
+
+    parts = [platform.machine(), platform.processor(), platform.system()]
+    try:
+        with open("/proc/cpuinfo", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                if line.startswith(("flags", "Features", "model name", "CPU part")):
+                    parts.append(line.strip())
+                    if len(parts) > 8:
+                        break
+    except OSError:
+        pass
+    return hashlib.sha1("\n".join(parts).encode()).hexdigest()[:8]
+
+
 def _preopt_tag() -> str:
-    """ONNX Runtime version and machine: an optimized graph is only reused by the same runtime
-    on the same kind of CPU (the optimizer's output may use hardware-specific kernels)."""
+    """ONNX Runtime version, machine and CPU fingerprint: an optimized graph is only reused by
+    the same runtime on the same kind of CPU (the optimizer's output may use hardware-specific
+    kernels)."""
     import platform
 
     import onnxruntime as ort
 
-    return f"ort{ort.__version__}-{platform.machine() or 'cpu'}"
+    return f"ort{ort.__version__}-{platform.machine() or 'cpu'}-{_cpu_fingerprint()}"
 
 
 def preoptimized_model_path(src_variant: str) -> str:
