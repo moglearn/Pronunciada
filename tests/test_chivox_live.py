@@ -16,6 +16,18 @@ from bench.third_party import chivox_live as CX  # noqa: E402
 from bench.third_party import live_core as C  # noqa: E402
 
 SECRET = "cvx_TEST_SECRET_9b1f3c55aa"
+HAVE_FFMPEG = __import__("shutil").which("ffmpeg") is not None
+
+
+@pytest.fixture(autouse=True)
+def _mp3_without_ffmpeg(monkeypatch):
+    """Where ffmpeg is missing, stand in for the encoder with fake MP3 bytes (frame sync + the WAV's
+    hash), so the transport tests still run; the encoder itself is tested only where ffmpeg exists."""
+    if not HAVE_FFMPEG:
+        import hashlib
+
+        monkeypatch.setattr(CX, "encode_audio", lambda it, wav: b"\xff\xfb" + hashlib.sha256(wav).digest())
+        monkeypatch.setattr(CX, "record_extra", lambda it, sent: {"sent_audio": {"format": "mp3 (test stand-in)"}})
 
 
 def _wav(p: Path, seconds=0.5, tone=1) -> Path:
@@ -170,13 +182,121 @@ def test_session_expiry_reinitializes(tmp_path):
     assert sum((c["body"] or {}).get("method") == "initialize" for c in t.calls) == 2
 
 
-def test_rejected_request_is_cached_and_not_resent(tmp_path):
+@pytest.mark.parametrize("body", [
+    {"jsonrpc": "2.0", "id": 2, "error": {"code": -32000, "message": "Evaluation failed: bad ref_text"}},
+    CX.tool_error(2, "评测失败: 请求错误: map[id:12345 msg:something else]"),
+])
+def test_tool_error_is_not_an_answer(tmp_path, body):
     items, root = _items(tmp_path, 1), tmp_path / "root"
-    bad = json.dumps({"jsonrpc": "2.0", "id": 2, "error": {"code": -32000, "message": "Evaluation failed: bad ref_text"}})
-    _run(items, root, CX.FakeTransport(script={1: C.Response(200, {}, bad.encode())}))
-    p = C.plan(CX, items, root, used=0, cap=None)
-    assert p["n_send"] == 0 and p["rows"]["speechocean762"]["rejected"] == 1
-    assert C.plan(CX, items, root, used=0, cap=None, refresh_rejected=True)["n_send"] == 1
+    st, _ = _run(items, root, CX.FakeTransport(script={1: C.Response(200, {}, json.dumps(body).encode())}))
+    assert st["failed"] == 1 and st["answered"] == 0
+    assert not list((root / "responses").rglob("*.json"))                  # nothing cached as an answer
+    assert list((root / "errors").rglob("*.json"))                         # the body is kept for diagnosis
+    assert C.plan(CX, items, root, used=0, cap=None)["n_send"] == 1        # it will be sent again next run
+
+
+# ── the live smoke test of 2026-11-23: MP3 only, "core is timeout" for WAV ──
+
+def test_a_wav_gets_the_timeout_tool_error_from_the_fake():
+    t = CX.FakeTransport()
+    import base64 as b64
+    r = t.post(CX.URL, headers={}, json_body={"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {
+        "name": "en_sentence_eval", "arguments": {"ref_text": "HI", "audio_base64": b64.b64encode(b"RIFF....").decode()}}})
+    kind, detail = CX.classify(r, {"last_id": 5})
+    assert kind == "retry" and CX.TIMEOUT_MSG in detail and CX.attempt_limit(detail) == 2
+
+
+def test_timeout_is_retried_once_then_given_up(tmp_path):
+    to = C.Response(200, {}, json.dumps(CX.tool_error(2, CX.TIMEOUT_TOOL_ERROR), ensure_ascii=False).encode())
+    t = CX.FakeTransport(script={1: to, 2: to})
+    st, ledger = _run(_items(tmp_path, 2), tmp_path / "root", t)
+    assert len(_tool_calls(t)) == 3                       # item 1: 2 attempts; item 2: answered
+    assert st["failed"] == 1 and st["answered"] == 1 and st["stopped"] is None
+    assert ledger.spent() == 3
+
+
+def test_first_two_items_timing_out_stop_the_run(tmp_path, monkeypatch):
+    monkeypatch.setattr(CX, "encode_audio", lambda it, wav: wav)          # what went wrong live: a WAV
+    t = CX.FakeTransport()
+    st, _ = _run(_items(tmp_path, 4), tmp_path / "root", t)
+    assert len(_tool_calls(t)) == 4                       # 2 items x 2 attempts, then the stop
+    assert "request format is wrong" in st["stopped"]
+    assert not list((tmp_path / "root" / "responses").rglob("*.json"))
+
+
+def test_mp3_is_sent_and_recorded(tmp_path):
+    import base64 as b64
+    t = CX.FakeTransport()
+    root = tmp_path / "root"
+    st, _ = _run(_items(tmp_path, 1), root, t)
+    sent = b64.b64decode(_tool_calls(t)[0]["body"]["params"]["arguments"]["audio_base64"])
+    assert sent[:4] != b"RIFF" and (sent[:3] == b"ID3" or sent[0] == 0xFF)
+    rec = json.loads(next((root / "responses").rglob("*.json")).read_text())
+    assert rec["sent_audio"]["format"].startswith("mp3")
+    assert rec["request"]["options"]["mp3"]["bitrate"] == "64k"        # the MP3 settings are in the request hash
+
+
+@pytest.mark.skipif(not HAVE_FFMPEG, reason="ffmpeg not installed")
+def test_mp3_encoding_is_deterministic_and_recorded(tmp_path):
+    it = _items(tmp_path, 1)[0]
+    wav = C.audio_bytes(it)
+    a = CX.encode_audio(it, wav)
+    CX._MP3.clear()
+    b = CX.encode_audio(it, wav)
+    assert a == b and a[:3] != b"ID3" and a[0] == 0xFF                 # no tags, frame sync first
+    ex = CX.record_extra(it, a)["sent_audio"]
+    assert ex["ffmpeg"].startswith("ffmpeg version") and ex["ffmpeg_args"] == CX.FFMPEG_ARGS
+    assert "64k" in CX.FFMPEG_ARGS and "libmp3lame" in CX.FFMPEG_ARGS
+
+
+def test_missing_ffmpeg_fails_clearly(monkeypatch, tmp_path):
+    import shutil
+    monkeypatch.setattr(CX, "_FFV", [])
+    monkeypatch.setattr(shutil, "which", lambda name: None)
+    with pytest.raises(C.Fatal, match="ffmpeg is not installed"):
+        CX.ffmpeg_version()
+
+
+def test_live_shaped_answer_is_read_under_result():
+    live = {"app": {"applicationId": "x"}, "audio": {"audioType": "mp3", "channel": 1, "sampleBytes": 2,
+                                                     "sampleRate": 16000},
+            "ccode": 0, "eof": 1, "request": {"coreType": "en.sent.score", "refText": "HELLO"},
+            "result": dict(DOC_EXAMPLE, delaytime=10)}
+    it = C.Item("speechocean762", "x", "s", Path("x.wav"), "HELLO", "en")
+    assert CX.view(_rec(live), it)["sentence"]["accuracy"] == 82
+
+
+def test_schema_mismatch_lists_the_keys_received():
+    live = {"app": {}, "audio": {}, "ccode": 0, "eof": 1, "request": {},
+            "result": {"accuracy": 76, "delaytime": 3, "details": [{"char": "sandy", "score": 70, "beginindex": 0}]}}
+    it = C.Item("speechocean762", "x", "s", Path("x.wav"), "SANDY", "en")
+    with pytest.raises(C.ResponseFormatError) as e:
+        CX.view(_rec(live), it)
+    m = str(e.value)
+    assert "C3" in m and "top level ['app', 'audio', 'ccode', 'eof', 'request', 'result']" in m
+    assert "scores object ['accuracy', 'delaytime', 'details']" in m and "beginindex" in m
+
+
+# ── tools/list ──
+
+def test_schemas_are_checked_and_stored_before_any_audio(tmp_path):
+    t = CX.FakeTransport()
+    st, _ = _run(_items(tmp_path, 1), tmp_path / "root", t)
+    assert [c["body"].get("method") for c in t.calls[:3]] == ["initialize", "notifications/initialized", "tools/list"]
+    assert st["session"]["tool_schemas"]["en_sentence_eval"]["required"] == ["ref_text"]
+
+
+@pytest.mark.parametrize("change, msg", [
+    (lambda s: s["en_sentence_eval"]["required"].append("audio_format"), "requires"),
+    (lambda s: s["en_sentence_eval"]["properties"].pop("voiced"), "no longer lists"),
+    (lambda s: s.pop("cn_sentence_eval"), "not listed"),
+])
+def test_schema_change_stops_before_sending_audio(tmp_path, change, msg):
+    sch = json.loads(json.dumps(CX.LIVE_SCHEMAS))
+    change(sch)
+    t = CX.FakeTransport(schemas=sch)
+    st, ledger = _run(_items(tmp_path, 2), tmp_path / "root", t)
+    assert _tool_calls(t) == [] and msg in st["stopped"] and ledger.spent() == 0
 
 
 # ── secrets ──
@@ -203,8 +323,11 @@ def test_request_body_follows_the_docs(tmp_path):
     assert init["method"] == "initialize" and t.calls[0]["url"] == "https://mcp-global.cloud.chivox.com/"
     en, zh = (c["body"]["params"] for c in _tool_calls(t))
     assert en["name"] == "en_sentence_eval" and en["arguments"]["accent"] == 3 and en["arguments"]["rank"] == 100
-    assert zh["name"] == "cn_sentence_eval" and zh["arguments"]["age_group"] == "adult"
-    assert set(en["arguments"]) == {"ref_text", "audio_base64", "accent", "rank"}
+    assert en["arguments"]["voiced"] == 1 and en["arguments"]["attachAudioUrl"] == 0
+    assert zh["name"] == "cn_sentence_eval" and zh["arguments"]["attachAudioUrl"] == 0
+    assert set(en["arguments"]) == {"ref_text", "audio_base64", "accent", "rank", "voiced", "attachAudioUrl"}
+    assert set(zh["arguments"]) == {"ref_text", "audio_base64", "rank", "attachAudioUrl"}         # no age_group
+    assert set(zh["arguments"]) <= set(CX.LIVE_SCHEMAS["cn_sentence_eval"]["properties"])
     assert all(c["headers"].get("Mcp-Session-Id") == "fake-session-1" for c in _tool_calls(t))
 
 

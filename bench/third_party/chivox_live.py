@@ -3,9 +3,9 @@
     export CHIVOX_API_KEY=...                                          # read from the environment only
     python -m bench.third_party.chivox_live --plan                     # what a full run sends and costs
     python -m bench.third_party.chivox_live --pilot --plan             # the 300 + 300 pilot
-    python -m bench.third_party.chivox_live --limit 1 --yes --points-cap 2      # smoke test, 2 points
-    python -m bench.third_party.chivox_live --pilot --yes --points-cap 600      # the pilot
-    python -m bench.third_party.chivox_live --yes --points-cap 3245             # full run
+    python -m bench.third_party.chivox_live --limit 1 --yes --points-cap N      # smoke test (N = ledger + 2)
+    python -m bench.third_party.chivox_live --pilot --yes --points-cap N        # the pilot (N = ledger + 600)
+    python -m bench.third_party.chivox_live --yes --points-cap N                # full run (N = ledger + 3245)
     python -m bench.third_party.chivox_live --report-only [--pilot]    # results/chivox_live.md from the cache
     python -m bench.third_party.chivox_live --dry-run --limit 20       # the whole pipeline on a local fake
 
@@ -17,18 +17,27 @@ Write-up: results/chivox_harness.md.
 What is sent. Only speechocean762 TEST (2,500 clips, Apache-2.0; prompt = the scored words joined by
 single spaces, the Lingolix all-2,500 convention, bench.third_party.lingolix.tier2x_items) and the
 OMPAL TEST half (745 clips incl. natives, CC BY 4.0; bench.eval_ompal.records("test")). Any other set
-is refused (live_core.check_datasets). Audio: decoded locally to 16 kHz mono 16-bit PCM WAV (the
-docs recommend 16 kHz mono WAV or MP3), sent inline as `audio_base64`.
+is refused (live_core.check_datasets). Audio: decoded locally to 16 kHz mono 16-bit PCM WAV, then
+encoded locally by ffmpeg to MP3 (libmp3lame, 64 kbit/s CBR, 16 kHz mono, bit-exact flags, no tags;
+FFMPEG_ARGS) and sent inline as `audio_base64`. Live smoke test 2026-11-23: the server labels inline
+audio as MP3 whatever is sent (the answer echoes audioType "mp3"); WAV got the tool error "core is
+timeout" three times, the same clip as MP3 was scored in 2 s. So Chivox receives MP3 while
+Pronunciada and Azure scored the original audio. The request hash covers the WAV and OPTIONS (which
+name the MP3 settings); each cached record holds the MP3's sha256, the ffmpeg version and arguments.
 
 Request (MCP over Streamable HTTP, JSON-RPC 2.0; docs/api-reference.md §4):
     POST https://mcp-global.cloud.chivox.com/      Authorization: Bearer $CHIVOX_API_KEY
-    1. initialize (once per run; not an evaluation, 0 points; the server's name and version are recorded)
+    1. initialize (once per session; 0 points; the server's name and version are recorded; live:
+       chivox-eval 1.0.0)
     2. notifications/initialized
-    3. per clip: tools/call {"name": "en_sentence_eval" | "cn_sentence_eval",
+    3. tools/list (free): the two input schemas go into the run log; the run stops before any audio
+       if a required argument we do not send appears or one we send has disappeared
+    4. per clip: tools/call {"name": "en_sentence_eval" | "cn_sentence_eval",
                              "arguments": {"ref_text", "audio_base64", ...}}
-       English: accent 3 (neutral, the documented default), rank 100 (0-100 scale, the default).
-       Mandarin: ref_text = the OMPAL prompt in Simplified characters (OpenCC t2s, the converter the
-       Azure zh-CN run used; one character for one character), age_group "adult", rank 100.
+       Only arguments of the live schema, each at its documented default, sent explicitly:
+       English: accent 3 (British or American), rank 100, voiced 1 (strict), attachAudioUrl 0.
+       Mandarin: rank 100, attachAudioUrl 0; ref_text = the OMPAL prompt in Simplified characters
+       (OpenCC t2s, the converter the Azure zh-CN run used; one character for one character).
     The evaluation JSON is the text of result.content[0] (examples/quick-test/python/test_eval.py).
 
 Billing: points; 1 point per word / phrase / sentence evaluation, 2 per paragraph, 0 for a failed call
@@ -53,9 +62,12 @@ ASSUMPTIONS the documentation does not settle; checked on every answer (`validat
 that breaks one stops the run after it is cached, so fixing the adapter costs nothing:
   C1  The MCP endpoint above is the scoring path for audio_base64 (the function-calling host
       fc-global.cloud.chivox.com/v1/call has no documented body and is not used).
-  C2  The server reads the WAV container (no audio_format / sample_rate argument is documented for
-      the one-shot tools; the streaming session's defaults are wav-or-mp3, 16000 Hz, 1 channel, 2 bytes).
-  C3  overall (and accuracy / pron / integrity when present) is a number in [0, 100]; fluency is a
+  C2  Inline audio is MP3 (settled live 2026-11-23, see above). A "core is timeout" tool error is
+      retried once (2 attempts in all); if the first two items of a run both end that way the run
+      stops: the request format is wrong. A tool error is never cached as an answer.
+  C3  The scores sit at the top of the tool's JSON or under its `result` (live: top-level app, audio,
+      ccode, eof, request, result; result has accuracy and details). A mismatch message lists the keys
+      received. overall (and accuracy / pron / integrity when present) is a number in [0, 100]; fluency is a
       number or an object with `overall`.
   C4  details is a list of objects with `char` (string) and `score` (number in [0, 100]) in the order
       of the text; at least half of the reference words (English) / characters (Mandarin) appear.
@@ -89,9 +101,25 @@ HOST = "mcp-global.cloud.chivox.com"
 URL = f"https://{HOST}/"
 PROTOCOL = "2025-03-26"
 TOOLS = {"en": "en_sentence_eval", "zh": "cn_sentence_eval"}
-ARGS = {"en": {"accent": 3, "rank": 100}, "zh": {"age_group": "adult", "rank": 100}}
+# Every argument the tools/list schema offers besides the audio and the text, sent explicitly at its
+# documented default so the configuration is on record (tools/list, seen live 2026-11-23).
+ARGS = {"en": {"accent": 3, "rank": 100, "voiced": 1, "attachAudioUrl": 0}, "zh": {"rank": 100, "attachAudioUrl": 0}}
+# Inline audio must be MP3: the live smoke test (2026-11-23) showed the server labels audio_base64 as
+# MP3 whatever is sent (the answer echoes audioType "mp3"); a WAV timed out ("core is timeout") and
+# the same clip as MP3 was scored in 2 s. Encoded locally from the 16 kHz mono PCM16 WAV.
+MP3 = {"codec": "libmp3lame", "bitrate": "64k", "mode": "CBR", "sample_rate": 16000, "channels": 1}
+FFMPEG_ARGS = ["-nostdin", "-hide_banner", "-loglevel", "error", "-f", "wav", "-i", "pipe:0",
+               "-map_metadata", "-1", "-fflags", "+bitexact", "-flags:a", "+bitexact", "-ac", "1", "-ar", "16000",
+               "-c:a", "libmp3lame", "-b:a", "64k", "-write_xing", "0", "-id3v2_version", "0", "-f", "mp3", "pipe:1"]
 OPTIONS = {"endpoint": URL, "transport": "MCP Streamable HTTP, JSON-RPC 2.0 tools/call", "tools": TOOLS, "args": ARGS,
-           "audio": "audio_base64 of a 16 kHz mono PCM16 WAV", "zh_text": "Simplified (OpenCC t2s)"}
+           "audio": "audio_base64 of an MP3 encoded locally by ffmpeg from the 16 kHz mono PCM16 WAV",
+           "mp3": MP3, "ffmpeg_args": FFMPEG_ARGS, "zh_text": "Simplified (OpenCC t2s)"}
+REPORT_NOTE = ("**Audio: Chivox received MP3 (libmp3lame, 64 kbit/s CBR, 16 kHz mono, encoded locally by ffmpeg "
+               "from the 16 kHz mono PCM16 WAV); Pronunciada and Azure scored the original audio.** Chivox reads "
+               "inline audio as MP3 whatever is sent (live smoke test 2026-11-23: WAV timed out, MP3 was scored), "
+               "so MP3 is the only working input; at 64 kbit/s the coding loss is negligible for speech.")
+TIMEOUT_MSG = "core is timeout"            # the tool error a wrongly formatted request gets
+TIMEOUT_ATTEMPTS = 2
 MAX_UPLOAD_BYTES = 50 * 1024 * 1024
 PRICES = {"source": "https://api-portal.cloud.chivox.com/pricing (read 2026-11-23)", "currency": "USD",
           "per_sentence": {"Standard": 0.0038, "Advanced": 0.0035, "Flagship": 0.0032},
@@ -158,7 +186,53 @@ def new_session() -> dict:
 
 
 def session_info(s: dict) -> dict:
-    return {"server": s.get("server"), "protocol": s.get("protocol"), "has_session_id": bool(s.get("id"))}
+    return {"server": s.get("server"), "protocol": s.get("protocol"), "has_session_id": bool(s.get("id")),
+            "tool_schemas": s.get("tools")}
+
+
+# ── MP3 encoding ───────────────────────────────────────────────────────────────
+
+_MP3: dict = {}
+_FFV: list = []
+
+
+def ffmpeg_version() -> str:
+    import shutil
+    import subprocess
+
+    if not _FFV:
+        exe = shutil.which("ffmpeg")
+        if exe is None:
+            raise C.Fatal("ffmpeg is not installed (needed to send MP3 to Chivox: inline audio must be MP3); "
+                          "nothing sent. Install it, e.g. `brew install ffmpeg`")
+        out = subprocess.run([exe, "-version"], capture_output=True, text=True, timeout=30).stdout
+        _FFV.append(out.splitlines()[0] if out else "ffmpeg (version unknown)")
+    return _FFV[0]
+
+
+def encode_audio(item: C.Item, wav: bytes) -> bytes:
+    """The bytes sent: the 16 kHz mono PCM16 WAV encoded to MP3 by ffmpeg (FFMPEG_ARGS, bit-exact flags,
+    no tags), so the same WAV always gives the same MP3 with the same ffmpeg build."""
+    import hashlib as _h
+    import shutil
+    import subprocess
+
+    k = _h.sha256(wav).hexdigest()
+    if k in _MP3:
+        return _MP3[k]
+    ffmpeg_version()
+    r = subprocess.run([shutil.which("ffmpeg"), *FFMPEG_ARGS], input=wav, capture_output=True, timeout=120)
+    if r.returncode != 0 or not r.stdout:
+        raise C.Fatal(f"ffmpeg could not encode {item.id} to MP3: {r.stderr.decode('utf-8', 'replace')[:200]}")
+    if len(_MP3) > 64:
+        _MP3.clear()
+    _MP3[k] = r.stdout
+    return r.stdout
+
+
+def record_extra(item: C.Item, sent: bytes) -> dict:
+    return {"sent_audio": {"format": "mp3", "sha256": hashlib.sha256(sent).hexdigest(), "bytes": len(sent),
+                           "ffmpeg": ffmpeg_version(), "ffmpeg_args": FFMPEG_ARGS, **MP3}}
 
 
 def _headers(key: str, s: dict) -> dict:
@@ -226,12 +300,54 @@ def ensure_session(s: dict, *, transport, key: str, budget: C.Budget, policy: C.
     sid = next((v for k, v in r.headers.items() if k.lower() == "mcp-session-id"), None)
     info = res.get("serverInfo") or {}
     s.update(id=sid, server={"name": info.get("name"), "version": info.get("version")},
-             protocol=res.get("protocolVersion"), next_id=1, ready=True)
+             protocol=res.get("protocolVersion"), next_id=1)
     try:
         transport.post(URL, headers=_headers(key, s), json_body={"jsonrpc": "2.0", "method": "notifications/initialized"},
                        timeout=policy.timeout_s)
     except C.TransientError:
         pass
+    # tools/list (free): the live input schemas; stop before any audio if ours no longer fit
+    if budget.ledger is not None:
+        budget.ledger.append({"kind": "session", "utc": C.utc_now(), "vendor": NAME, "method": "tools/list",
+                              "cost": 0, "unit": UNIT})
+    try:
+        r = transport.post(URL, headers=_headers(key, s), json_body={"jsonrpc": "2.0", "id": 1, "method": "tools/list"},
+                           timeout=policy.timeout_s)
+    except C.TransientError as e:
+        raise C.Fatal(f"Chivox tools/list failed ({e}); nothing sent, rerun later") from None
+    if budget.ledger is not None:
+        budget.ledger.append({"kind": "session_result", "utc": C.utc_now(), "vendor": NAME, "status": r.status})
+    m = rpc_reply(r, 1) or {}
+    tools = {t.get("name"): t.get("inputSchema") or {} for t in ((m.get("result") or {}).get("tools") or [])
+             if isinstance(t, dict)}
+    s["tools"] = {name: tools.get(name) for name in TOOLS.values()}
+    problems = check_schemas(s["tools"])
+    if problems:
+        raise C.Fatal("Chivox tools/list does not fit the requests this runner sends, nothing sent: " + "; ".join(problems))
+    s["ready"] = True
+
+
+def sent_arguments(lang: str) -> set:
+    return {"ref_text", "audio_base64", *ARGS[lang]}
+
+
+def check_schemas(tools: dict) -> list[str]:
+    """Problems: a tool missing, a required argument we do not send, an argument we send that the
+    schema does not list."""
+    out = []
+    for lang, name in TOOLS.items():
+        sc = tools.get(name)
+        if not sc:
+            out.append(f"tool {name} not listed")
+            continue
+        props = set((sc.get("properties") or {}))
+        req = set(sc.get("required") or [])
+        sent = sent_arguments(lang)
+        if req - sent:
+            out.append(f"{name} requires {sorted(req - sent)}, which this runner does not send")
+        if sent - props:
+            out.append(f"{name} no longer lists {sorted(sent - props)}")
+    return out
 
 
 def request_body(s: dict, item: C.Item, audio: bytes) -> dict:
@@ -257,13 +373,31 @@ def _tool_text(m: dict) -> tuple[bool, str]:
 
 
 def _message_kind(msg: str) -> str:
+    """A tool / JSON-RPC error is never an answer: nothing is cached for it (fail, retry or stop)."""
+    if TIMEOUT_MSG in msg:
+        return "retry"                      # at most TIMEOUT_ATTEMPTS attempts (attempt_limit)
     if _QUOTA.search(msg) or _AUTH.search(msg):
         return "fatal"
     if _TRANSIENT.search(msg):
         return "retry"
     if _SESSION.search(msg) and re.search(r"not found|expired|invalid", msg, re.I):
         return "session"
-    return "rejected"
+    return "fail"
+
+
+def attempt_limit(detail) -> int:
+    return TIMEOUT_ATTEMPTS if detail and TIMEOUT_MSG in str(detail) else 99
+
+
+def after_item(s: dict, item: C.Item, outcome, detail) -> None:
+    """Stop when the first two items of a run both end in "core is timeout": that is a wrong request
+    format (seen live with WAV), not a slow service."""
+    s.setdefault("first", [])
+    if len(s["first"]) < 2:
+        s["first"].append(outcome == "failed" and TIMEOUT_MSG in str(detail or ""))
+        if len(s["first"]) == 2 and all(s["first"]):
+            raise C.Fatal(f"the first two items both failed with '{TIMEOUT_MSG}' ({TIMEOUT_ATTEMPTS} attempts each): "
+                          "the request format is wrong (audio not MP3?), not a slow service; run stopped")
 
 
 def classify(resp: C.Response, s: dict | None = None) -> tuple[str, str]:
@@ -282,7 +416,7 @@ def classify(resp: C.Response, s: dict | None = None) -> tuple[str, str]:
     if st in (408, 425) or st >= 500:
         return "retry", f"HTTP {st}"
     if st == 400:
-        return "rejected", f"HTTP 400: {snippet}"
+        return "fail", f"HTTP 400: {snippet}"
     if not 200 <= st < 300:
         return "fail", f"HTTP {st}: {snippet}"
     m = rpc_reply(resp, (s or {}).get("last_id"))
@@ -297,9 +431,9 @@ def classify(resp: C.Response, s: dict | None = None) -> tuple[str, str]:
     try:
         ev = json.loads(text)
     except ValueError:
-        return "rejected", f"tool answer is not JSON: {text[:200]}"
+        return _message_kind(text), f"tool answer is not JSON: {text[:200]}"
     if not isinstance(ev, dict):
-        return "rejected", "tool answer is not a JSON object"
+        return "fail", "tool answer is not a JSON object"
     ev = _unwrap(ev)
     if "overall" not in ev and "details" not in ev:
         return _message_kind(text), f"tool answer without scores: {text[:200]}"
@@ -313,7 +447,8 @@ def _unwrap(ev: dict) -> dict:
     return ev
 
 
-def evaluation(rec_or_resp) -> dict:
+def outer(rec_or_resp) -> dict:
+    """The tool's JSON text as received (live: top-level app, audio, ccode, eof, request, result)."""
     if isinstance(rec_or_resp, C.Response):
         resp = rec_or_resp
     else:
@@ -321,17 +456,23 @@ def evaluation(rec_or_resp) -> dict:
                           rec_or_resp["body"].encode("utf-8"))
     m = rpc_reply(resp, None) or {}
     _, text = _tool_text(m)
-    return _unwrap(json.loads(text))
+    return json.loads(text)
+
+
+def evaluation(rec_or_resp) -> dict:
+    return _unwrap(outer(rec_or_resp))
 
 
 def version(resp: C.Response, s: dict) -> str:
     srv = (s or {}).get("server") or {}
     v = f"{srv.get('name') or 'mcp'}-{srv.get('version') or 'unknown'}"
     try:
-        ev = evaluation(resp)
+        o = outer(resp)
+        ev = _unwrap(o)
     except (ValueError, TypeError):
-        ev = {}
-    extra = [str(ev[k]) for k in ("version", "engine_version", "res") if isinstance(ev.get(k), (str, int, float))]
+        o, ev = {}, {}
+    extra = [str(d[k]) for d in (o, ev) for k in ("version", "engine_version", "res")
+             if isinstance(d.get(k), (str, int, float))]
     return "_".join([v] + extra)
 
 
@@ -348,10 +489,23 @@ def _fluency(ev):
     return f
 
 
-def validate_eval(ev: dict, text: str, lang: str) -> None:
+def received_keys(ev: dict, top: dict | None) -> str:
+    parts = []
+    if isinstance(top, dict):
+        parts.append(f"top level {sorted(top)}")
+    if isinstance(ev, dict) and ev is not top:
+        parts.append(f"scores object {sorted(ev)}")
+    det = ev.get("details") if isinstance(ev, dict) else None
+    if isinstance(det, list) and det and isinstance(det[0], dict):
+        parts.append(f"details[0] {sorted(det[0])}")
+    return "; ".join(parts)
+
+
+def validate_eval(ev: dict, text: str, lang: str, top: dict | None = None) -> None:
     def bad(a, msg):
-        raise C.ResponseFormatError(f"Chivox answer does not match assumption {a}: {msg}. Check the adapter "
-                                    "(bench/third_party/chivox_live.py) against the cached answer.")
+        raise C.ResponseFormatError(f"Chivox answer does not match assumption {a}: {msg}. Keys received: "
+                                    f"{received_keys(ev, top)}. Check the adapter (bench/third_party/chivox_live.py) "
+                                    "against the cached answer.")
 
     if not _num01(ev.get("overall")):
         bad("C3", f"`overall` = {ev.get('overall')!r}, expected a number in [0, 100]")
@@ -388,7 +542,8 @@ def validate_eval(ev: dict, text: str, lang: str) -> None:
 
 
 def validate(resp: C.Response, item: C.Item) -> None:
-    validate_eval(evaluation(resp), item.text, item.lang)
+    o = outer(resp)
+    validate_eval(_unwrap(o), item.text, item.lang, o)
 
 
 def _tone(x):
@@ -397,8 +552,9 @@ def _tone(x):
 
 
 def view(rec: dict, item: C.Item) -> dict | None:
-    ev = evaluation(rec)
-    validate_eval(ev, item.text, item.lang)
+    o = outer(rec)
+    ev = _unwrap(o)
+    validate_eval(ev, item.text, item.lang, o)
     sent = {"total": ev.get("overall"), "accuracy": ev.get("accuracy"), "fluency": _fluency(ev), "prosodic": None,
             "completeness": ev.get("integrity"),
             "secondary": ev.get("pron") if item.lang == "en" else ev.get("overall")}
@@ -444,35 +600,79 @@ def fake_eval(text: str, lang: str, audio_sha: str) -> dict:
             "details": det}
 
 
-class FakeTransport:
-    """Local stand-in for the MCP server. `script` maps a tools/call number (1-based) to a Response.
-    Records every call (auth header kept only to test that it is never logged elsewhere)."""
+# The two input schemas as tools/list returned them in the live smoke test (2026-11-23), descriptions
+# shortened; 17 tools exist, the fake lists these two.
+LIVE_SCHEMAS = {
+    "en_sentence_eval": {"type": "object", "required": ["ref_text"], "properties": {
+        "ref_text": {"type": "string"}, "audio_base64": {"type": "string"}, "audio_url": {"type": "string"},
+        "accent": {"type": "number", "description": "1 British, 2 American, 3 either (default 3)"},
+        "rank": {"type": "number", "description": "4 or 100 (default 100)"},
+        "attachAudioUrl": {"type": "number", "description": "default 0"},
+        "voiced": {"type": "number", "description": "0 lenient, 1 strict (default 1)"}}},
+    "cn_sentence_eval": {"type": "object", "required": ["ref_text"], "properties": {
+        "ref_text": {"type": "string"}, "audio_base64": {"type": "string"}, "audio_url": {"type": "string"},
+        "rank": {"type": "number"}, "attachAudioUrl": {"type": "number"}}},
+}
+TIMEOUT_TOOL_ERROR = "评测失败: 请求错误: map[id:53000 msg:core is timeout]"
 
-    def __init__(self, script: dict | None = None, sse: bool = False, session_id: str = "fake-session-1"):
+
+def tool_error(rid, text: str) -> dict:
+    return {"jsonrpc": "2.0", "id": rid, "result": {"content": [{"type": "text", "text": text}], "isError": True}}
+
+
+def tool_answer(rid, ev: dict) -> dict:
+    return {"jsonrpc": "2.0", "id": rid, "result": {"content": [{"type": "text", "text": json.dumps(ev, ensure_ascii=False)}]}}
+
+
+class FakeTransport:
+    """Local stand-in for the MCP server, following what the live smoke test showed: inline audio is
+    read as MP3 (a WAV gets the "core is timeout" tool error), the answer is a JSON text with top-level
+    app / audio / ccode / eof / request / result, and arguments outside the schema are refused.
+    `script` maps a tools/call number (1-based) to a Response; `schemas` replaces tools/list."""
+
+    def __init__(self, script: dict | None = None, sse: bool = False, session_id: str = "fake-session-1",
+                 schemas: dict | None = None):
         self.calls: list[dict] = []
         self.script = dict(script or {})
         self.sse, self.session_id = sse, session_id
+        self.schemas = LIVE_SCHEMAS if schemas is None else schemas
         self.n_tool = 0
 
     def post(self, url, *, headers, json_body=None, data=None, files=None, timeout=60.0) -> C.Response:
         self.calls.append({"url": url, "headers": dict(headers), "body": json_body})
         method = (json_body or {}).get("method")
+        rid = (json_body or {}).get("id")
         if method == "initialize":
-            m = {"jsonrpc": "2.0", "id": json_body["id"], "result": {
+            m = {"jsonrpc": "2.0", "id": rid, "result": {
                 "protocolVersion": PROTOCOL, "capabilities": {"tools": {}},
                 "serverInfo": {"name": "FAKE-chivox", "version": "dry-run"}}}
             return self._reply(m, {"Mcp-Session-Id": self.session_id})
         if method == "notifications/initialized":
             return C.Response(202, {}, b"")
+        if method == "tools/list":
+            return self._reply({"jsonrpc": "2.0", "id": rid, "result": {"tools": [
+                {"name": k, "description": k, "inputSchema": v} for k, v in self.schemas.items()]}}, {})
         self.n_tool += 1
         if self.n_tool in self.script:
             return self.script[self.n_tool]
+        name = json_body["params"]["name"]
         args = json_body["params"]["arguments"]
-        lang = "zh" if json_body["params"]["name"].startswith("cn_") else "en"
-        sha = hashlib.sha256(base64.b64decode(args["audio_base64"])).hexdigest()
-        ev = fake_eval(args["ref_text"], lang, sha)
-        return self._reply({"jsonrpc": "2.0", "id": json_body["id"],
-                            "result": {"content": [{"type": "text", "text": json.dumps(ev, ensure_ascii=False)}]}}, {})
+        extra = set(args) - set((self.schemas.get(name) or {}).get("properties") or {})
+        if extra:
+            return self._reply({"jsonrpc": "2.0", "id": rid, "error": {"code": -32602,
+                                                                       "message": f"Invalid params: {sorted(extra)}"}}, {})
+        audio = base64.b64decode(args["audio_base64"])
+        if audio[:4] == b"RIFF":
+            return self._reply(tool_error(rid, TIMEOUT_TOOL_ERROR), {})
+        lang = "zh" if name.startswith("cn_") else "en"
+        res = fake_eval(args["ref_text"], lang, hashlib.sha256(audio).hexdigest())
+        ev = {"app": {"applicationId": "FAKE"}, "audio": {"audioType": "mp3", "channel": 1, "sampleBytes": 2,
+                                                          "sampleRate": 16000},
+              "ccode": 0, "eof": 1,
+              "request": {"coreType": "cn.sent.raw" if lang == "zh" else "en.sent.score", "refText": args["ref_text"],
+                          "tokenId": "fake", **{k: v for k, v in args.items() if k not in ("ref_text", "audio_base64")}},
+              "result": {**res, "delaytime": 0}}
+        return self._reply(tool_answer(rid, ev), {})
 
     def _reply(self, m: dict, extra: dict) -> C.Response:
         if self.sse:

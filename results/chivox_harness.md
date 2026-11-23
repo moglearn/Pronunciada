@@ -10,7 +10,7 @@ Sources: https://api-portal.cloud.chivox.com/global, /docs, /pricing, /runtime, 
 |---|---|
 | endpoint | MCP over Streamable HTTP, JSON-RPC 2.0: `POST https://mcp-global.cloud.chivox.com/` (`initialize`, `tools/list`, `tools/call`). Function-calling host `fc-global.cloud.chivox.com` (`GET /v1/functions`, `POST /v1/call`), but its request body is not documented, so the runner does not use it. Streaming WebSockets exist and are not used. |
 | authentication | `Authorization: Bearer <api key>` on every request. One key, no secret and no signature on the self-serve (B2C) path. The repository also describes a B2B JWT scheme (`cvx_ak_` / `cvx_sk_`, HS256), which the portal does not offer to this account. |
-| tools used | `en_sentence_eval` (English read-aloud sentence) and `cn_sentence_eval` (Mandarin sentence). Arguments: `ref_text`, plus one of `audio_base64` or `audio_url`. Optional: `accent` (1 British, 2 American, 3 neutral, default 3), `rank` (4 or 100, default 100), `voiced` (en, default 1 strict), `age_group` (zh, `child` or `adult`, default adult), `attachAudioUrl` (default 0). |
+| tools used | `en_sentence_eval` (English read-aloud sentence) and `cn_sentence_eval` (Mandarin sentence). Arguments: `ref_text`, plus one of `audio_base64` or `audio_url`. Optional: `accent` (1 British, 2 American, 3 neutral, default 3), `rank` (4 or 100, default 100), `voiced` (en, default 1 strict), `age_group` (zh, `child` or `adult`, default adult), `attachAudioUrl` (default 0). The live `tools/list` schema has no `age_group`; see the smoke test below. |
 | Mandarin text | Only Chinese characters appear in the examples (`"今天天气真好"`, Simplified). No pinyin input is documented for `cn_sentence_eval`. |
 | audio | "MP3, WAV, etc.", recommended 16 kHz mono; the FAQ lists mp3 / wav / m4a / ogg / aac / pcm. Max 50 MB per file. No maximum duration is published. |
 | response | The scoring JSON is the text of `result.content[0]`. Fields: `overall` ("weighted roll-up"), `accuracy` ("phoneme / syllable correctness"), `pron` ("articulation quality"), `integrity` ("did the user read every word?"), `fluency.overall` / `.speed` / `.pause`, `details[i].char` / `.score`, `details[i].phone[j].phoneme` / `.score` / `.dp_type`, `phoneme_error {expected, actual}` (English), and `tone_ref` / `tone_detected` (Mandarin). Scale 0–100. No version field. |
@@ -21,12 +21,38 @@ Sources: https://api-portal.cloud.chivox.com/global, /docs, /pricing, /runtime, 
 | training | Privacy: "We do not use your evaluation content to train public models unless you opt in to a separate program disclosed in the console." Terms §7 grants a licence to process inputs and outputs "to provide and improve the Service". |
 | benchmarking | Neither the terms nor the privacy policy restricts benchmarking or publishing comparisons. Terms §9: scores are "informational and not a guarantee of accuracy". Terms §4 forbids processing children's voice data without a lawful basis (none of the audio here is children's speech). |
 
-The public documentation was enough to build the client: single Bearer key, endpoint, arguments, response fields and billing unit. Two points can only be settled by the first real answer. The runner checks both and stops on a mismatch.
+The public documentation was enough to build the client: single Bearer key, endpoint, arguments, response fields and billing unit. It left two points open, the audio format and the exact answer wrapper. The live smoke test settled the first and part of the second.
 
-1. **Whether the MCP server accepts a 16 kHz WAV in `audio_base64` without a format argument.** No `audio_format` is documented for the one-shot tools.
-2. **The exact wrapper.** The docs' Quickstart nests the result once more (`result.details`). The parser accepts both shapes.
+## Live smoke test (2026-11-23, run by the coordinator, not by this runner)
 
-Run the 2-point smoke test (below) first.
+- **Session.** `initialize` with the single Bearer key works; the server is `chivox-eval` 1.0.0.
+- **Audio format: inline audio must be MP3.**
+  - A 16 kHz mono PCM16 WAV in `audio_base64` got HTTP 200 with a tool error (`isError: true`) after about 30 s (once after 2 s): `评测失败: 请求错误: map[id:53000 msg:core is timeout]`. This happened on three attempts, including one with a plain 44-byte header and lower-case text.
+  - The same clip as MP3 (mono, 16 kHz) was scored in 2 s.
+  - The answer echoes `"audio": {"audioType": "mp3", "channel": 1, "sampleBytes": 2, "sampleRate": 16000}`: the server labels inline audio as MP3 whatever is sent.
+- **Answer shape.** The answer is a JSON text in `result.content[0].text`.
+  - Top-level keys: `app`, `audio`, `ccode`, `eof`, `request` and `result`.
+  - `request` holds `coreType: "en.sent.score"`, `accent`, `attachAudioUrl`, `rank`, `refText`, `tokenId` and `voiced`.
+  - `result` holds `accuracy`, `delaytime` and `details: [{accent, beginindex, char, dur, end, endindex, …}]`.
+  - The full body was not saved, so the runner still checks the first real answer against the mapping below. On a mismatch it stops and lists the keys it received at the top level, in the scores object and in `details[0]`.
+- **Input schemas (`tools/list`, free).**
+  - `en_sentence_eval`: `ref_text` (required), `audio_base64`, `audio_url`, `accent` (1 British, 2 American, 3 either; default 3), `rank` (4 or 100; default 100), `attachAudioUrl` (default 0), `voiced` (0 lenient, 1 strict; default 1).
+  - `cn_sentence_eval`: `ref_text` (required), `audio_base64`, `audio_url`, `rank`, `attachAudioUrl`.
+  - There is **no `age_group`** and no audio-format argument. 17 tools exist; the runner uses only these two.
+- **Ledger.** It holds 4 booked attempts for item 001220068: 3 timed out, and 1 was scored by the diagnostic but not cached. Chivox charges nothing for failed calls, so about 1 of the 600 free points is used.
+
+**What changed in the runner after the smoke test:**
+
+1. **MP3.** Audio is now sent as MP3, encoded locally and deterministically by ffmpeg from the 16 kHz mono PCM16 WAV:
+   - Arguments: `ffmpeg -nostdin -hide_banner -loglevel error -f wav -i pipe:0 -map_metadata -1 -fflags +bitexact -flags:a +bitexact -ac 1 -ar 16000 -c:a libmp3lame -b:a 64k -write_xing 0 -id3v2_version 0 -f mp3 pipe:1`. That is libmp3lame, 64 kbit/s CBR, 16 kHz mono, no tags; the build used here is ffmpeg 7.1.1.
+   - The request hash covers the WAV and the request options, which include these MP3 settings.
+   - Every cached record stores the MP3's sha256 and size, the ffmpeg version and the arguments.
+   - If ffmpeg is missing, the runner stops before sending.
+   - **Chivox therefore received MP3 at 64 kbit/s while Pronunciada and Azure scored the original audio**, because MP3 is the only inline format Chivox reads. At 64 kbit/s the coding loss is negligible for speech. The report header says so.
+2. **Arguments.** Only arguments in the live schema are sent, each at its documented default. English: `accent` 3, `rank` 100, `voiced` 1, `attachAudioUrl` 0. Mandarin: `rank` 100, `attachAudioUrl` 0. `age_group` was dropped.
+3. **Schema check.** After `initialize`, a free `tools/list` call stores the two input schemas in the run log. The run stops before any audio if a required argument the runner does not send appears, or if one it sends has disappeared.
+4. **Timeouts.** A `core is timeout` tool error is retried with a low limit: 2 attempts in all. If the first two items of a run both end that way, the run stops with a message saying the request format is wrong, not that the service is slow.
+5. **Tool errors are not answers.** Nothing is cached for a tool error or a JSON-RPC error; the body is kept under `errors/` for diagnosis, and the item will be sent again by a later run. A scored answer is still cached the moment it arrives.
 
 ## Field mapping (fixed from the documentation before any response existed)
 
@@ -51,18 +77,20 @@ The brief asked for sentence total mapped to overall and sentence accuracy mappe
 
 ## What is sent
 
-- **speechocean762 TEST**: all 2,500 clips (Apache-2.0). Prompt = the scored words joined by single spaces (`lingolix.tier2x_items`, the convention of the Lingolix all-2,500 run), so the human word labels line up. `en_sentence_eval` with `accent` 3 and `rank` 100, both the documented defaults sent explicitly.
-- **OMPAL TEST**: 745 clips including the 3 native speakers (CC BY 4.0; `bench.eval_ompal.records("test")`). `cn_sentence_eval` with `ref_text` in Simplified characters. The conversion uses OpenCC t2s, the converter of the Azure zh-CN run; the corpus prompts are Traditional, and Chivox documents only Simplified examples. `age_group` is `adult`, `rank` is 100.
-- **Audio**: decoded locally to 16 kHz mono PCM16 WAV. The conversion is deterministic, so the same file always gives the same bytes and the same cache key. It is sent inline as base64.
+- **speechocean762 TEST**: all 2,500 clips (Apache-2.0). Prompt = the scored words joined by single spaces (`lingolix.tier2x_items`, the convention of the Lingolix all-2,500 run), so the human word labels line up. `en_sentence_eval` with `accent` 3, `rank` 100, `voiced` 1 and `attachAudioUrl` 0, all the documented defaults sent explicitly.
+- **OMPAL TEST**: 745 clips including the 3 native speakers (CC BY 4.0; `bench.eval_ompal.records("test")`). `cn_sentence_eval` with `ref_text` in Simplified characters, `rank` 100 and `attachAudioUrl` 0. The conversion uses OpenCC t2s, the converter of the Azure zh-CN run; the corpus prompts are Traditional, and Chivox documents only Simplified examples.
+- **Audio**: decoded locally to 16 kHz mono PCM16 WAV, then encoded locally to MP3 by ffmpeg (64 kbit/s CBR, 16 kHz mono, bit-exact, no tags; see the smoke-test section). It is sent inline as base64. The same file always gives the same WAV, and with the same ffmpeg build the same MP3.
 - **Nothing else.** Every other set is refused, including L2-ARCTIC, EpaDB, Speech Accent Archive, Heroico, LeaP and Common Voice.
 
 ## Safety
 
 - **Dry run is the default.** A live send needs `--yes`, `--points-cap N` and `CHIVOX_API_KEY`. Without all three it prints the plan and sends nothing.
-- **The cap.** Every attempt books 1 point under a lock before it is sent, retries included. Points already in the ledger count, and the first refusal ends the run. `initialize` is not an evaluation; it is logged at 0 points.
+- **The cap.** Every attempt books 1 point under a lock before it is sent, retries included. Points already in the ledger count (the cap is a ledger total), and the first refusal ends the run. `initialize` and `tools/list` are not evaluations; they are logged at 0 points.
 - **Ledger**: `$PRONUNCIADA_CACHE/third_party/chivox_live/ledger.jsonl`. Each attempt line (UTC time, set, item id, request hash, cost, unit) is fsynced before sending. Each result line records the HTTP status.
-- **Cache**: every answer is written atomically the moment it arrives, to `responses/<h[:2]>/<h>__<item>__<server name-version>.json`. Here `h` hashes the audio, text, language and request options. An answered or finally rejected request is never sent again; `--retry-rejected` overrides this for rejections only.
-- **Stopping**: the run stops at once on 401, 402, 403, any 429 without Retry-After, or a JSON-RPC error that mentions quota, points, balance, credits or the key. At most 4 attempts with exponential backoff, for 5xx, 408, timeouts and "upstream" or "capacity" messages only. 404 (session expired) re-initializes and retries. Requests go out at most one every 2 s, one at a time.
+- **Cache**: every scored answer is written atomically the moment it arrives, to `responses/<h[:2]>/<h>__<item>__<server name-version>.json`. Here `h` hashes the WAV, text, language and request options (MP3 settings included). An answered request is never sent again. Tool errors are never cached as answers.
+- **Stopping**: the run stops at once on 401, 402, 403, any 429 without Retry-After, or a JSON-RPC or tool error that mentions quota, points, balance, credits or the key.
+- **Retries**: at most 4 attempts with exponential backoff, for 5xx, 408 and "upstream", "capacity" or timeout messages only. `core is timeout` gets at most 2 attempts, and the run stops if the first two items both end that way. 404 (session expired) re-initializes and retries.
+- **Pace**: requests go out at most one every 2 s, one at a time.
 - **The key** is read only from `CHIVOX_API_KEY`. The transport refuses any host but `mcp-global.cloud.chivox.com`. Every file written is scrubbed for the key, and the Authorization header is never stored.
 
 ## Cost (from the real item lists)
@@ -70,23 +98,27 @@ The brief asked for sentence total mapped to overall and sentence accuracy mappe
 | run | requests | points | USD at paid rates (Flagship to Standard) |
 |---|---|---|---|
 | smoke test (`--limit 1`) | 2 | 2 | — (free points) |
-| pilot (`--pilot`: 300 speechocean762 + 300 OMPAL) | 600 | 600 | — (exactly the 600 free points) |
+| pilot (`--pilot`: 300 speechocean762 + 300 OMPAL) | 600 | 600 | — (the 600 free points; 1 is already used, so run `--limit 299` = 598) |
 | full (2,500 + 745) | 3,245 | 3,245 | $10.38 to $12.33 |
 
 The pilot sample is seeded (seed 0) and speaker-balanced: one clip per speaker per round, in a seeded speaker order. It covers all 125 speechocean762 speakers and all 21 OMPAL speakers. A smaller `--limit` is a prefix of the same order, so the smoke test's 2 items count towards the pilot.
 
-Because every retry also books a point, a pilot capped at 600 stops early if anything is retried. Chivox does not charge failed calls, so in that case raise the cap by the number of retries the ledger shows, without buying anything. After the free points, the full run needs about 2,650 more points: a Standard pack plus a top-up, or an Advanced pack.
+Because every retry also books a point, a pilot stops early if anything is retried. Chivox does not charge failed calls, so in that case raise the cap by the number of retries the ledger shows, without buying anything. After the free points, the full run needs about 2,650 more points: a Standard pack plus a top-up, or an Advanced pack.
+
+**The cap is a ledger total.** The ledger already holds 4 attempts from the smoke test. About 599 free points remain, because only the diagnostic's one scored call was charged; check the balance in the console.
+
+The full 300 + 300 pilot needs 600 points, 1 more than remains. Run 299 + 299 instead (`--limit 299`): that is 598 points, and it already includes the smoke test's 2 items, since a smaller `--limit` is a prefix of the same order. The report marks it as a sample.
 
 ## Commands
 
 ```
 export CHIVOX_API_KEY=...        # the user's key; never in a file
 python -m bench.third_party.chivox_live --plan                              # full run: requests, points, cached
-python -m bench.third_party.chivox_live --pilot --plan                      # pilot plan
-python -m bench.third_party.chivox_live --limit 1 --yes --points-cap 2      # smoke test: 1 English + 1 Mandarin
-python -m bench.third_party.chivox_live --pilot --yes --points-cap 600      # pilot
-python -m bench.third_party.chivox_live --pilot --report-only               # results/chivox_live.md + results/tables/chivox_live.json
-python -m bench.third_party.chivox_live --yes --points-cap 3245             # full run (resumes; cached items are skipped)
+python -m bench.third_party.chivox_live --limit 299 --plan                  # pilot plan (598 requests)
+python -m bench.third_party.chivox_live --limit 1 --yes --points-cap 6      # smoke test: 1 English + 1 Mandarin (ledger 4 + 2)
+python -m bench.third_party.chivox_live --limit 299 --yes --points-cap 603  # pilot: ledger 4 + 599 free points
+python -m bench.third_party.chivox_live --limit 299 --report-only           # results/chivox_live.md + results/tables/chivox_live.json
+python -m bench.third_party.chivox_live --yes --points-cap N                # full run, N = ledger total + 2,647 (resumes; cached items are skipped)
 python -m bench.third_party.chivox_live --report-only                       # full report
 python -m bench.third_party.chivox_live --dry-run --pilot                   # rehearsal against the local fake (no network)
 ```

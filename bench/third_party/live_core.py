@@ -506,7 +506,13 @@ def print_plan(p: dict, vendor, *, dry: bool, out=sys.stderr) -> None:
 
 def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy: Policy,
         sleep=time.sleep, clock=time.monotonic, progress: bool = True) -> dict:
-    """Send each (item, hash, cost) one at a time; cache each answer as it arrives."""
+    """Send each (item, hash, cost) one at a time; cache each answer as it arrives.
+
+    Optional vendor hooks (a vendor without them behaves exactly as before):
+      encode_audio(item, wav) -> the bytes actually sent (the request hash stays that of the WAV and
+          the vendor's OPTIONS, which name the encoding); record_extra(item, sent) -> fields added to
+          every cached record; attempt_limit(detail) -> a lower attempt limit for that kind of
+          failure; after_item(session, item, outcome, detail) -> may raise Fatal to stop the run."""
     st = {"sent": 0, "answered": 0, "rejected": 0, "failed": 0, "retries": 0, "failures": [], "versions": {},
           "stopped": None}
     nxt = 0.0
@@ -519,8 +525,10 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
         it.seconds = wav_seconds(audio)
         cost = vendor.cost(it.seconds)
         _, inputs = request_hash(audio, it.text, vendor.api_lang(it), vendor.OPTIONS)
-        why = None
+        why, outcome, detail = None, None, None
         try:
+            payload = vendor.encode_audio(it, audio) if hasattr(vendor, "encode_audio") else audio
+            limit = policy.max_attempts
             for attempt in range(policy.max_attempts):
                 if policy.rps > 0:
                     now = clock()
@@ -531,14 +539,14 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
                 aid = budget.reserve(it, cost, h)
                 t0 = time.perf_counter()
                 try:
-                    resp = vendor.send(session, it, audio, h, transport=transport, key=key, policy=policy)
+                    resp = vendor.send(session, it, payload, h, transport=transport, key=key, policy=policy)
                 except TransientError as e:
                     resp, why = None, str(e)
                 lat = round((time.perf_counter() - t0) * 1000, 1)
                 budget.result(aid, it, resp.status if resp is not None else "network error",
                               vendor.ledger_extra(resp) if resp is not None else None)
                 if resp is None:
-                    kind, ra = "retry", None
+                    kind, ra, detail = "retry", None, why
                 else:
                     kind, detail = vendor.classify(resp, session)
                     ra = retry_after_s(resp.headers)
@@ -548,12 +556,15 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
                            "received_utc": utc_now(), "status": resp.status, "headers": keep_headers(resp.headers),
                            "latency_ms": lat, "classified": kind, "detail": detail, "body": body,
                            "session": vendor.session_info(session)}
+                    if hasattr(vendor, "record_extra"):
+                        rec.update(vendor.record_extra(it, payload))
                     if kind in ("answered", "rejected"):
                         version = vendor.version(resp, session) if kind == "answered" else "rejected"
                         rec.update(final=kind, version=version)
                         save_answer(root, h, it, version, rec, key)
                         st["sent"] += 1
                         st[kind] += 1
+                        outcome = kind
                         st["versions"][version] = st["versions"].get(version, 0) + 1
                         if kind == "answered":
                             vendor.validate(resp, it)            # after caching: a fix of the adapter costs nothing
@@ -564,6 +575,7 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
                     if kind == "fatal":
                         raise Fatal(scrub(f"{vendor.NAME}: HTTP {resp.status}: {detail}; run stopped", key))
                     if kind == "fail":
+                        outcome = "failed"
                         st["sent"] += 1
                         st["failed"] += 1
                         st["failures"].append({"dataset": it.dataset, "id": it.id, "error": scrub(detail, key)})
@@ -571,11 +583,14 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
                     if kind == "session":
                         session.clear()
                     why = f"HTTP {resp.status}: {detail}"
-                if attempt == policy.max_attempts - 1:
+                if hasattr(vendor, "attempt_limit"):
+                    limit = min(limit, vendor.attempt_limit(detail))
+                if attempt >= limit - 1:
+                    outcome = "failed"
                     st["sent"] += 1
                     st["failed"] += 1
                     st["failures"].append({"dataset": it.dataset, "id": it.id,
-                                           "error": scrub(f"gave up after {policy.max_attempts} attempts ({why})", key)})
+                                           "error": scrub(f"gave up after {attempt + 1} attempts ({why})", key)})
                     break
                 if ra is not None:
                     if ra > policy.max_retry_after_s:
@@ -585,6 +600,8 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
                     delay = min(policy.cap_s, policy.base_s * 2 ** attempt) * rng.uniform(0.5, 1.0)
                 st["retries"] += 1
                 sleep(delay)
+            if hasattr(vendor, "after_item"):
+                vendor.after_item(session, it, outcome, detail)
         except Fatal as e:
             msg = scrub(str(e), key)
             budget.close(msg)
@@ -596,6 +613,7 @@ def run(vendor, todo, *, transport, key: str, root: Path, budget: Budget, policy
         if progress and (n + 1) % 25 == 0:
             print(f"  {n + 1}/{len(todo)} done, {budget.used - budget.start:g} {budget.unit}s booked", file=sys.stderr)
     st["booked"] = budget.used - budget.start
+    st["session"] = vendor.session_info(session)        # run log only (Chivox: the tools/list schemas)
     return st
 
 
@@ -831,6 +849,8 @@ def markdown(vendor, A: dict, R: dict, L: dict, *, dry: bool, n_boot: int = 10_0
     lines = [f"# {name} API measured by us, against Pronunciada", ""]
     if dry:
         lines += [f"**DRY RUN, FAKE DATA: the {name} column comes from a local fake and says nothing about {name}.**", ""]
+    if getattr(vendor, "REPORT_NOTE", None):
+        lines += [vendor.REPORT_NOTE, ""]
     for ds, d in A.items():
         vs = ", ".join(f"{k} ({v})" for k, v in d["versions"].items()) or "none"
         full = vendor.FULL_SIZE.get(ds, d["items"])
