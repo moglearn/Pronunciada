@@ -30,5 +30,6 @@
  "mix-C": {"precision": "fp32", "backbone": "{C}/mix-C/model.onnx"},
  "nb4-sym-b32": {"precision": "fp32", "backbone": "{C}/nb4-sym-b32/model.onnx"},
  "s8-minmax": {"precision": "fp32", "backbone": "{C}/s8-minmax/model.onnx"},
- "int8-shipped-vs-fp32": {"precision": "fp32", "backbone": "{M}/model.int8.onnx"}
+ "int8-shipped-vs-fp32": {"precision": "fp32", "backbone": "{M}/model.int8.onnx"},
+ "fp32-file": {"precision": "fp32", "backbone": "{M}/model.onnx"}
 }
