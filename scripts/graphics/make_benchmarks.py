@@ -443,7 +443,7 @@ svg.sc{display:block;width:100%;height:auto;overflow:visible}
 .size .ch-key i.oth{background:#8c8782}
 .size .ch-key i.ring{background:var(--card);box-shadow:inset 0 0 0 1.6px #8c8782}
 .size .ch-key i.dia{background:var(--card);box-shadow:inset 0 0 0 1.4px var(--soft);border-radius:1px;transform:rotate(45deg) scale(.82)}
-.cost .sp-row{grid-template-columns:236px 1fr 104px}
+.cost .sp-row{grid-template-columns:272px 1fr 104px}
 .cost .cg + .cg{margin-top:18px}
 .cg-h{font-size:13px;line-height:19px;color:var(--soft);padding:0 0 10px}
 .cost .sp-row{padding:13px 0}
@@ -585,8 +585,8 @@ def github_charts() -> None:
             ".sc-pt.ring{stroke:#77777f}.size .ch-key i.ring{box-shadow:inset 0 0 0 1.6px #77777f}"
             ".sp-row.own .ch-track i{background:#fff}.ch-row b,.sp-row b{color:rgba(255,255,255,.5)}.ch-row.own b,.sp-row.own b{color:#fff}")
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{EXTRA_CSS}{dark}</style></head><body>"
-    render(head + chart_size() + "</body></html>", ROOT / "docs/assets/chart-size.png", 920, 898)
-    render(head + chart_cost() + "</body></html>", ROOT / "docs/assets/chart-cost.png", 920, 978)
+    render(head + chart_size() + "</body></html>", ROOT / "docs/assets/chart-size.png", 920, 922)
+    render(head + chart_cost() + "</body></html>", ROOT / "docs/assets/chart-cost.png", 920, 1112)
 
 
 if __name__ == "__main__":

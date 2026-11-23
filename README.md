@@ -18,7 +18,7 @@ It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portugu
 - It runs on the device. Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is a 71 MB file and uses about 0.3 GB of memory.
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (260 MB, or 71 MB quantized). It is significantly more accurate than ZIPA alone on 48 of 60 tests and significantly less accurate on none.
 
-The numbers, the tests where Azure is ahead, and a link to the comparison with other assessment systems on real learner speech are under [Benchmarks](#benchmarks).
+The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
 
 A 45-second overview, with sound:
 
@@ -312,7 +312,7 @@ All models trained for this project together add about 25 MB to the package. The
 
 ## Limitations
 
-- Learner speech with expert scores is public for English and Mandarin only. Spanish and German were also tested on recordings of learners and native speakers reading the same text ([benchmarks](https://pronunciada.dev/benchmarks/)). The other six languages are evaluated on native speech with altered reference text and on Common Voice recordings accepted or rejected by volunteer validators.
+- Learner speech with expert scores is public for English and Mandarin only. Spanish and German were also tested on recordings of learners and native speakers reading the same text. The other six languages are evaluated on native speech with altered reference text and on Common Voice recordings accepted or rejected by volunteer validators.
 - English sentence prosody correlates slightly less well with expert scores than Azure's (0.805 against 0.827; the difference is not significant).
 - At the default strictness, 3.4% of a native English speaker's words score below 0.6, against 2.2% for Azure. In the other nine languages the rate is between 1.7% and 4.5% and is not significantly higher than Azure's.
 - In Mandarin, a low tone probability on one syllable does not always lower the word probability. Applications that grade tones should read `syllable.tone_prob` directly.
