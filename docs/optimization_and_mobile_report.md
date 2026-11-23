@@ -25,8 +25,10 @@ candidates measured. No package default and no shipped file has been changed by 
   in every language. The int8 backbone is numerically fragile: a feature change of 1e-4 moves its
   log-posteriors by up to 2–3 nats, while fp32 moves by 0.003. Keeping its most exposed MatMuls in fp32
   does not fix this and is slower.
-- **float16 storage of the fp32 backbone** (132 MB instead of 260 MB, fp32 compute): survives the screen;
-  its full gate result is below. It needs about 70 MB more memory and runs at the same speed.
+- **float16 storage of the fp32 backbone** (132 MB instead of 260 MB, fp32 compute): survives the screen
+  but **fails the full gate on one row**. OMPAL consonant / vowel word AUC goes from 0.8525 to 0.8524,
+  paired p = 0.035. No class changes and every other row is within tolerance. It also needs about 70 MB
+  more memory and runs at the same speed. Dropped.
 - **4-bit weights (46 MB):** discarded by the screen.
 - **Adapters:** float16 and int8 storage survive the screen; low-rank is discarded. The saving is at most
   3.6 MB out of a 260 MB fp32 install (1.4 %), too small to matter.
@@ -493,6 +495,13 @@ Hangul decomposition moved to `pronunciada/hangul.py`), fp32, default settings, 
 baseline: **PASS by identity**, all 6,376 per-clip output files and all eleven tables equal; no row moved.
 Suite 1,884 s. Result file: `$PRONUNCIADA_CACHE/opt/results/code-06c7eee.gate.json`.
 
+**f16store-fp32** (the fp32 backbone with its weights stored as float16 and cast back to float32, 132 MB)
+against the fp32 baseline: **FAIL, one row**: OMPAL word AUC for consonant / vowel errors 0.8525 -> 0.8524
+(-0.0002 [-0.0006, -0.0000], paired speaker bootstrap p = 0.035). 102 rows moved, 56 worse and 46 better,
+every other move inside tolerance and not significant. No Azure tally row changed class. speechocean762
+correlations changed by +0.0001 to +0.0006. Dropped by the rule; the failing difference is very small.
+Suite 1,913 s. Result file: `$PRONUNCIADA_CACHE/opt/results/f16store-fp32.gate.json`.
+
 The int8 baseline and int8 against fp32 are in "int8 against fp32" below.
 <!-- /opt:gate -->
 
@@ -529,7 +538,7 @@ what is stated.
 | ortopt-ext-fp32 | b. lossless graph | fp32 | 259.7 | exactly identical | en t1 +1.4 ms [+0.5, +2.5]; en t4 -0.8 ms [-1.9, +0.1]; zh t1 -2.9 ms [-7.3, -0.6]; zh t4 +0.2 ms [-0.5, +0.8] | t1 +18 MB; t4 +19 MB |
 | ortopt-ext-int8 | b. lossless graph | int8 | 69.7 | exactly identical | en t1 -0.3 ms [-1.6, +0.6]; en t4 -0.5 ms [-1.2, +0.4]; zh t1 +1.5 ms [-1.6, +6.2]; zh t4 -0.2 ms [-0.6, +0.3] | t1 -13 MB; t4 -12 MB |
 | prep-fp32 | b. lossless graph | fp32 | 260.0 | exactly identical | en t1 +1.0 ms [+0.2, +1.9]; en t4 -0.8 ms [-1.7, -0.1]; zh t1 -1.5 ms [-3.5, -0.2]; zh t4 -0.3 ms [-0.9, +0.3] | t1 +21 MB; t4 +21 MB |
-| f16store-fp32 | c. float16 storage | fp32 | 132.3 | not identical (200/200 clips differ; raw posteriors max 0.0486); screen: SURVIVES | en t1 -1.2 ms [-3.0, +0.4]; en t4 +1.7 ms [-0.0, +4.1]; zh t1 -1.2 ms [-2.8, +0.2]; zh t4 -0.5 ms [-1.1, +0.1] | t1 +72 MB; t4 +71 MB |
+| f16store-fp32 | c. float16 storage | fp32 | 132.3 | not identical (200/200 clips differ; raw posteriors max 0.0486); screen: SURVIVES; full gate: FAIL | en t1 -1.2 ms [-3.0, +0.4]; en t4 +1.7 ms [-0.0, +4.1]; zh t1 -1.2 ms [-2.8, +0.2]; zh t4 -0.5 ms [-1.1, +0.1] | t1 +72 MB; t4 +71 MB |
 | int8x-embed+out | e. int8, MatMuls kept fp32 | int8 | 72.3 | not identical (200/200 clips differ; raw posteriors max 5.42) | en t1 +3.8 ms [+2.3, +5.2]; en t4 +1.2 ms [+0.2, +2.2]; zh t1 +4.3 ms [+3.6, +5.0]; zh t4 +1.1 ms [+0.6, +1.4] | t1 +3 MB; t4 +3 MB |
 | int8x-embed+enc0+out | e. int8, MatMuls kept fp32 | int8 | 78.3 | not identical (200/200 clips differ; raw posteriors max 4.81) | en t1 +18.2 ms [+13.2, +23.5]; en t4 +5.7 ms [+4.2, +7.2]; zh t1 +19.1 ms [+15.5, +23.7]; zh t4 +5.0 ms [+4.1, +5.9] | t1 +6 MB; t4 +7 MB |
 | nbits4-fp32 | e. 4-bit weights | fp32 | 46.0 | not identical (200/200 clips differ; raw posteriors max 8.06); screen: DISCARD (1 reasons) | en t1 +3.9 ms [+1.9, +5.4]; en t4 +1.2 ms [+0.2, +2.5]; zh t1 +2.8 ms [+0.8, +4.5]; zh t4 -0.1 ms [-1.8, +1.5] | t1 -202 MB; t4 -200 MB |
