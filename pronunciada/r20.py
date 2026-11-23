@@ -1,70 +1,58 @@
-"""Round 20 word-level passes against native false alarms (all OFF by default; each behind its own switch).
+"""Round 20 fixes against native false alarms, ON by default per language (DEFAULTS), each switchable.
 
-Each pass works on a finished SentenceResult and only replaces WordResult objects of the words it concerns;
-sentence-level outputs, coaching inputs and details() keep the first pass. Re-scoring passes call
-Scorer.score(wav, Reference, _second=True), which reuses the cached posteriors (no acoustic model run) and
-skips the sentence-only delivery features and sequence head.
+Fixes (DEFAULTS: language -> fixes on by default; other languages have none):
+  numalt     C: a number token is also scored against its other standard readings (best kept).
+             Word-level pass, here. Environment: PRONUNCIADA_R20_NUMALT.
+  de_lexalt  E (de): every lexicon reading of a word is a candidate reading (best kept). Word-level pass, here.
+             Environment: PRONUNCIADA_R20_DE_LEXALT.
+  es_glide   es front-end: the glides of rising diphthongs may be heard as vowels (pronunciada.text.es).
+             Environment: PRONUNCIADA_R20_ES_GLIDE.
+  ko_nins    ko front-end: optional n-insertion inside an eojeol (pronunciada.text.ko).
+             Environment: PRONUNCIADA_R20_KO_NINS.
+An environment variable set to "0" (or "off") switches its fix off for every language; set to "1" it switches it
+on for every language where the fix applies. Unset, the language's DEFAULTS entry decides.
 
-Switches (environment, "1" = on):
-  PRONUNCIADA_R20_UNSAID   B: unsaid words. A word whose presence probability is below TAU
-                           (PRONUNCIADA_R20_UNSAID_TAU, default from data/calib/r20.json) is taken out of the
-                           reference, the clip is aligned again, and the words up to 2 positions on either side
-                           take their results from that second alignment. The unsaid word keeps its own result.
-  PRONUNCIADA_R20_NUMALT   C: number tokens are also scored against their other standard readings (best kept).
-  PRONUNCIADA_R20_GUESS    D: words the front-end had to guess. "d1": other letter-to-sound readings at the
-                           ambiguity points of the existing rules (best kept); "d2": the error signal of such a
-                           word is shrunk by a factor (gross mismatches, P < GROSS, untouched).
-  PRONUNCIADA_R20_DE_LEXALT  E (de): every lexicon reading of a word is a candidate reading (best kept).
-Front-end switches of round 20 (read by the text modules): PRONUNCIADA_R20_ES_GLIDE, PRONUNCIADA_R20_KO_NINS.
-Candidate readings are tried only for a word whose probability is below ALT_GATE (0.9; a word already scored
-as fine cannot gain), at most MAX_ALTS readings per word and MAX_WORDS words per clip.
+The word-level passes work on a finished SentenceResult and only change word-level values of the words they
+concern; the sounds, syllables and times, sentence-level outputs, coaching inputs and details() keep the first
+pass. Re-scoring calls Scorer.score(wav, Reference, _second=True), which reuses the cached posteriors (no
+acoustic model run) and skips the sentence-only delivery features and sequence head. Candidate readings are
+tried only for a word whose probability is below ALT_GATE (0.9; a word already scored as fine cannot gain), at
+most MAX_ALTS readings per word and MAX_WORDS words per clip.
+
+Measured in results/round20_native_fa.md; the held-out check is results/round20_fa_release_check.md.
 """
 from __future__ import annotations
 
 import copy
-import json
-import math
 import os
 import re
-from functools import lru_cache
-from importlib import resources
 
 ALT_GATE = 0.9
 MAX_ALTS = 3
 MAX_WORDS = 4
-GROSS = 0.05
+
+DEFAULTS: dict[str, tuple[str, ...]] = {
+    "en": ("numalt",),
+    "de": ("numalt", "de_lexalt"),
+    "es": ("numalt", "es_glide"),
+    "fr": ("numalt",),
+    "ko": ("numalt", "ko_nins"),
+}
+ENV = {"numalt": "PRONUNCIADA_R20_NUMALT", "de_lexalt": "PRONUNCIADA_R20_DE_LEXALT",
+       "es_glide": "PRONUNCIADA_R20_ES_GLIDE", "ko_nins": "PRONUNCIADA_R20_KO_NINS"}
 
 
-def _on(name: str) -> bool:
-    return os.environ.get(name, "0") not in ("0", "", "off")
-
-
-@lru_cache(maxsize=1)
-def params() -> dict:
-    p = resources.files("pronunciada").joinpath("data/calib/r20.json")
-    try:
-        return json.loads(p.read_text(encoding="utf-8"))
-    except (FileNotFoundError, OSError):
-        return {}
-
-
-def unsaid_tau() -> float:
-    v = os.environ.get("PRONUNCIADA_R20_UNSAID_TAU")
-    return float(v) if v else float(params().get("unsaid_tau", 0.1))
-
-
-def guess_mode() -> str:
-    return os.environ.get("PRONUNCIADA_R20_GUESS", "0")
-
-
-def guess_shrink() -> float:
-    v = os.environ.get("PRONUNCIADA_R20_GUESS_S")
-    return float(v) if v else float(params().get("guess_shrink", 1.0))
+def enabled(fix: str, lang: str) -> bool:
+    """Is round-20 fix `fix` on for language `lang`: its environment variable if set, else DEFAULTS."""
+    v = os.environ.get(ENV[fix], "").strip().lower()
+    if v:
+        return v not in ("0", "off", "false", "no")
+    return fix in DEFAULTS.get(lang, ())
 
 
 def any_on(lang: str) -> bool:
-    return (_on("PRONUNCIADA_R20_UNSAID") or _on("PRONUNCIADA_R20_NUMALT") or guess_mode() in ("d1", "d2")
-            or (lang == "de" and _on("PRONUNCIADA_R20_DE_LEXALT")))
+    """Does the word-level pass run for this language."""
+    return enabled("numalt", lang) or (lang == "de" and enabled("de_lexalt", lang))
 
 
 # ----------------------------------------------------------------------------- reference editing
@@ -101,11 +89,6 @@ def _nest(ref):
     return out
 
 
-def remove_words(ref, idxs):
-    keep = [x for i, x in enumerate(_nest(ref)) if i not in set(idxs)]
-    return _rebuild(ref, keep)
-
-
 def replace_word(ref, wi, frag):
     """Word wi gets the sounds and syllables of every word of the Reference `frag` (one alternative reading)."""
     nest = _nest(ref)
@@ -114,27 +97,7 @@ def replace_word(ref, wi, frag):
     return _rebuild(ref, nest)
 
 
-# ----------------------------------------------------------------------------- B: unsaid words
-
-def _unsaid(sc, res, wav, s):
-    c = res._pronunciada  # noqa: SLF001
-    ref = c["ref"]
-    n = len(ref.words)
-    tau = unsaid_tau()
-    gone = [i for i, w in enumerate(res.words) if w.present_prob is not None and w.present_prob < tau]
-    if not gone or len(gone) >= n:
-        return res, None
-    ref2 = remove_words(ref, gone)
-    res2 = sc.score(wav, ref2, s, _second=True)
-    keep = [i for i in range(n) if i not in gone]
-    new = {i: j for j, i in enumerate(keep)}
-    near = [i for i in keep if min(abs(i - g) for g in gone) <= 2]
-    for i in near:
-        res.words[i] = res2.words[new[i]]
-    return res, {"removed": gone, "replaced": near}
-
-
-# ----------------------------------------------------------------------------- C / D1 / E: candidate readings
+# ----------------------------------------------------------------------------- C / E: candidate readings
 
 _DIGIT = re.compile(r"\d")
 
@@ -243,43 +206,12 @@ def _norm(text: str) -> str:
     return re.sub(r"^\W+|\W+$", "", unicodedata.normalize("NFC", text).lower().replace("’", "'"))
 
 
-def lts_alternatives(g2p, norm: str) -> list[list[str]]:
-    """Other letter-to-sound readings of an unknown word at the ambiguity points of the existing rules: at a vowel
-    letter whose most specific stored context and its back-off parent give different outputs, the parent's output
-    (one point at a time, at most MAX_ALTS readings)."""
-    from .text._eu_lts import LADDER, _key
 
-    lts = getattr(g2p, "lts", None)
-    if lts is None or not norm:
-        return []
-    t = lts.table
-    padded = "^" + norm + "$"
-    base, choices = [], []
-    for i in range(1, len(padded) - 1):
-        found = []
-        for k, m in reversed(LADDER):
-            v = t.get(_key(padded, i, k, m))
-            if v is not None and (not found or v != found[-1]):
-                found.append(v)
-            if len(found) == 2:
-                break
-        base.append(found[0] if found else None)
-        if len(found) == 2 and padded[i] in "aeiouyäöüéèêàâîôûáíóú":
-            choices.append((i - 1, found[1]))
-    out = []
-    for pos, alt in choices[:MAX_ALTS]:
-        seq = list(base)
-        seq[pos] = alt
-        ph = [p for x in seq if x for p in x.split("_") if p]
-        out.append(ph)
-    return out
-
-
-def _fragments(sc, ref, wi, word_text, res_word, guessed: set):
+def _fragments(sc, ref, wi, word_text):
     g2p = sc.g2p
     lang = sc.lang
     frags = []
-    if _on("PRONUNCIADA_R20_NUMALT") and _DIGIT.search(word_text):
+    if enabled("numalt", lang) and _DIGIT.search(word_text):
         for alt in number_alternatives(lang, word_text)[:MAX_ALTS + 1]:
             try:
                 r = g2p(alt)
@@ -287,15 +219,7 @@ def _fragments(sc, ref, wi, word_text, res_word, guessed: set):
                 continue
             if r.words and not r.warnings:
                 frags.append(r)
-    if guess_mode() == "d1" and wi in guessed and hasattr(g2p, "rewrite"):
-        norm = _norm(word_text)
-        for ph in lts_alternatives(g2p, norm):
-            try:
-                toks = g2p.rewrite(g2p.fix_stress(ph, norm), norm)
-                frags.append(_token_fragment(g2p, word_text, toks))
-            except Exception:  # noqa: BLE001
-                continue
-    if lang == "de" and _on("PRONUNCIADA_R20_DE_LEXALT") and hasattr(g2p, "lex"):
+    if lang == "de" and enabled("de_lexalt", lang) and hasattr(g2p, "lex"):
         from .text import _eu_common as C
 
         raw = g2p.lex.get(_norm(word_text))
@@ -316,37 +240,15 @@ def _fragments(sc, ref, wi, word_text, res_word, guessed: set):
     return out[:MAX_ALTS]
 
 
-def guessed_words(res) -> set:
-    """Words the front-end had to guess: no lexicon entry (letter rules: warning oov:<word>) and, for en / es / fr,
-    names (capitalised, not the first word, not after . ! ? :)."""
-    return guessed_in_ref(res._pronunciada["ref"])  # noqa: SLF001
-
-
-def guessed_in_ref(ref) -> set:
-    oov = {w.split(":", 1)[1] for w in ref.warnings if w.startswith("oov:")}
-    out = set()
-    for i, w in enumerate(ref.words):
-        parts = [x for x in re.split(r"[-']", _norm(w.text)) if x]
-        if _norm(w.text) in oov or any(x in oov for x in parts):
-            out.add(i)
-            continue
-        if ref.lang in ("en", "es", "fr") and i > 0 and w.text[:1].isupper():
-            before = ref.text[:w.char_span[0]].rstrip()
-            if before and before[-1] not in ".!?:":
-                out.add(i)
-    return out
-
-
 def _alternatives(sc, res, wav, s):
     c = res._pronunciada  # noqa: SLF001
     ref = c["ref"]
-    guessed = guessed_words(res) if guess_mode() == "d1" else set()
     cand = [i for i, w in enumerate(res.words) if w.prob < ALT_GATE]
     done = []
     for wi in cand:
         if len(done) >= MAX_WORDS:
             break
-        frags = _fragments(sc, ref, wi, ref.words[wi].text, res.words[wi], guessed)
+        frags = _fragments(sc, ref, wi, ref.words[wi].text)
         if not frags:
             continue
         best = res.words[wi]
@@ -368,30 +270,11 @@ def _alternatives(sc, res, wav, s):
     return res, done
 
 
-# ----------------------------------------------------------------------------- D2: uncertainty discount
-
-def _discount(res):
-    sh = guess_shrink()
-    if sh >= 1.0:
-        return res, []
-    out = []
-    for i in guessed_words(res):
-        w = res.words[i]
-        if w.prob >= GROSS and w.prob < 1.0:
-            w.prob = 1.0 - sh * (1.0 - w.prob)
-            out.append(i)
-    return res, out
-
-
 # ----------------------------------------------------------------------------- entry point
 
 def apply(sc, res, wav, s):
     info = {}
-    if _on("PRONUNCIADA_R20_UNSAID"):
-        res, info["unsaid"] = _unsaid(sc, res, wav, s)
-    if _on("PRONUNCIADA_R20_NUMALT") or guess_mode() == "d1" or (sc.lang == "de" and _on("PRONUNCIADA_R20_DE_LEXALT")):
+    if any_on(sc.lang):
         res, info["alts"] = _alternatives(sc, res, wav, s)
-    if guess_mode() == "d2":
-        res, info["discount"] = _discount(res)
     res._pronunciada["r20"] = info  # noqa: SLF001
     return res

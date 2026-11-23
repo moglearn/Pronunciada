@@ -149,11 +149,6 @@ def rules(w: str) -> list[str]:
 VOICED_STOP_WEAK = {"b": "β", "d": "ð", "g": "ɣ"}
 
 
-import os as _os  # noqa: E402
-
-GLIDE_EQ = _os.environ.get("PRONUNCIADA_R20_ES_GLIDE", "0") == "1"
-
-
 class Spanish(EuG2P):
     lang = "es"
     lex_name = ""          # pronunciation by rules; word list only for OOV detection
@@ -209,9 +204,12 @@ class Spanish(EuG2P):
 
     def connected(self, words):
         flat = [(wi, k, p) for wi, w in enumerate(words) for k, p in enumerate(w.phones)]
-        if GLIDE_EQ:
-            # round 20 (PRONUNCIADA_R20_ES_GLIDE=1; off by default): the recogniser writes the glides of rising
-            # diphthongs as vowels (muy, cuando: w ~ u); a post-consonantal j likewise (j ~ i)
+        from ..r20 import enabled
+
+        if enabled("es_glide", "es"):
+            # round 20 (on by default, pronunciada.r20.DEFAULTS; PRONUNCIADA_R20_ES_GLIDE=0 switches it off): the
+            # recogniser writes the glides of rising diphthongs as vowels (muy, cuando: w ~ u); a post-consonantal
+            # j likewise (j ~ i)
             for j, (wi, k, p) in enumerate(flat):
                 prev = flat[j - 1][2] if j > 0 else None
                 if p.ipa == "w":

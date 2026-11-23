@@ -1,5 +1,0 @@
-{
- "note": "round 20 word-level passes (pronunciada.r20), used only when their switches are on; unsaid_tau and guess_shrink fitted on the speaker-disjoint fit half of the practice sets (bench/round20_native_fa/gate.py fit; results/round20_native_fa.md)",
- "unsaid_tau": 0.02,
- "guess_shrink": 0.6
-}

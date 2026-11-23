@@ -3,7 +3,7 @@ change an unknown word and never plant a capitalised word mid-sentence, so no ch
 
     python -m bench.round20_native_fa.dcheck --lang en,de,es,fr --s 0.5
 
-For every control item (check half) with a guessed word (pronunciada.r20.guessed_in_ref), the first guessed word
+For every control item (check half) with a guessed word (core.guessed_in_ref), the first guessed word
 gets one controlled error in its reference: its first vowel replaced by a far vowel (fixed map below), i.e. the
 reference now says something the speaker did not. The word is scored with D off, D1 and D2 (factor --s); reported:
 the share of these corrupted words caught at the practice FA@80 threshold of main (check half), and the share of the
@@ -28,7 +28,6 @@ TEXT_LEVEL = False
 
 def run(lang, s):
     from pronunciada import Scorer
-    from pronunciada import r20
     from pronunciada.text import get_g2p
 
     thr = K.threshold(G.rows(lang, None, "check"))
@@ -38,7 +37,7 @@ def run(lang, s):
     res = {"n": 0, "caught": {"off": 0, "d1": 0, "d2": 0}, "fa_clean": {"off": 0, "d1": 0, "d2": 0}}
     for it in its:
         ref = g2p(it["target"])
-        gs = sorted(r20.guessed_in_ref(ref))
+        gs = sorted(K.guessed_in_ref(ref))
         if not gs:
             continue
         wi = gs[0]

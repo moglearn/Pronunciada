@@ -463,7 +463,7 @@ class Scorer:
         t = time.perf_counter()
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
         timing["assemble"] = (time.perf_counter() - t) * 1e3
-        if not _second:                          # round 20 word-level passes (pronunciada.r20; all off by default)
+        if not _second:                          # round 20 word-level passes (pronunciada.r20.DEFAULTS)
             from . import r20 as _R20
 
             if _R20.any_on(self.lang):

@@ -50,12 +50,9 @@ VOWEL_IPA = {"ㅏ": ("", "a"), "ㅐ": ("", "e"), "ㅑ": ("j", "a"), "ㅒ": ("j",
 
 SINO = "영일이삼사오육칠팔구"
 
-# round 20 (PRONUNCIADA_R20_KO_NINS=1; off by default): optional ㄴ-insertion inside an eojeol, as already
-# allowed across eojeols. A coda before a syllable 이 / 야 / 여 / 요 / 유 is linked canonically (꽃잎 -> 꼬칩);
+# round 20 (on by default, pronunciada.r20.DEFAULTS; PRONUNCIADA_R20_KO_NINS=0 switches it off): optional
+# ㄴ-insertion inside an eojeol, as already allowed across eojeols. A coda before a syllable 이 / 야 / 여 / 요 / 유 is linked canonically (꽃잎 -> 꼬칩);
 # the standard optional reading inserts ㄴ and nasalises the coda (꽃잎 -> [꼰닙], 십육 -> [심뉵]).
-import os as _os  # noqa: E402
-
-NINS_IN_WORD = _os.environ.get("PRONUNCIADA_R20_KO_NINS", "0") == "1"
 NINS_VOWELS = ("ㅣ", "ㅑ", "ㅕ", "ㅛ", "ㅠ")
 
 
@@ -277,6 +274,9 @@ class KoG2P(G2P):
 
     # ------------------------------------------------------------ build
     def _phrase(self, phrase, text: str) -> list[Wd]:
+        from ..r20 import enabled
+
+        nins = enabled("ko_nins", "ko")
         # canonical: rules inside each eojeol only
         canon = []
         for span, blocks in phrase:
@@ -296,7 +296,7 @@ class KoG2P(G2P):
                 first_of_word = si == 0
                 phones = self._syl(l, v, t, raw, prev_t, first_of_word, wi == 0 and si == 0,
                                    last_of_word=si == len(blocks) - 1)
-                if NINS_IN_WORD and si > 0 and raw[0] == "ㅇ" and raw[1] in NINS_VOWELS and blocks[si - 1][1][2]:
+                if nins and si > 0 and raw[0] == "ㅇ" and raw[1] in NINS_VOWELS and blocks[si - 1][1][2]:
                     _n_insertion_alt(blocks[si - 1][1][2], phones)
                 wd.syls.append(Syl(text=orig, phones=phones))
             if wi > 0 and prev_last is not None and wd.syls:

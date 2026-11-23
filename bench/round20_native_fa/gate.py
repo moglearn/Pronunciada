@@ -167,11 +167,11 @@ def table(tags, fold="check", langs=K.LANGS):
 
 
 def baserate(n=2000):
-    """Share of words the front-end has to guess (pronunciada.r20.guessed_in_ref; oov and names separately) and of
+    """Share of words the front-end has to guess (core.guessed_in_ref; oov and names separately) and of
     number tokens, on FLEURS TRAIN transcripts and Common Voice dev sentences (text only)."""
     from bench.data import load
     from bench.round19_rollout.sources import cv_meta, read_tsv
-    from pronunciada.r20 import guessed_in_ref
+    from bench.round20_native_fa.core import guessed_in_ref
     from pronunciada.text import get_g2p
 
     out = {}

@@ -136,3 +136,26 @@ def save_json(name: str, obj) -> None:
     p = ROOT / "tables" / name
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(obj, indent=1, ensure_ascii=False))
+
+
+def guessed_in_ref(ref) -> set:
+    """Words the front-end had to guess: no lexicon entry (letter rules: warning oov:<word>) and, for en / es / fr,
+    names (capitalised, not the first word, not after . ! ? :). Formerly pronunciada.r20.guessed_in_ref, used by
+    the guessed-word modes D1 / D2, which were not shipped (results/round20_native_fa.md)."""
+    import unicodedata
+
+    def norm(t):
+        return re.sub(r"^\W+|\W+$", "", unicodedata.normalize("NFC", t).lower().replace("’", "'"))
+
+    oov = {w.split(":", 1)[1] for w in ref.warnings if w.startswith("oov:")}
+    out = set()
+    for i, w in enumerate(ref.words):
+        parts = [x for x in re.split(r"[-']", norm(w.text)) if x]
+        if norm(w.text) in oov or any(x in oov for x in parts):
+            out.add(i)
+            continue
+        if ref.lang in ("en", "es", "fr") and i > 0 and w.text[:1].isupper():
+            before = ref.text[:w.char_span[0]].rstrip()
+            if before and before[-1] not in ".!?:":
+                out.add(i)
+    return out
