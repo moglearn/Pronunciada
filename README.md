@@ -10,17 +10,9 @@
 
 [Website](https://pronunciada.dev) · [PyPI](https://pypi.org/project/pronunciada/) · [Hugging Face](https://huggingface.co/kimitonatsu/pronunciada) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
 
-Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
+Pronunciada scores a language learner's pronunciation sound by sound, in ten languages, on the learner's own device. It is open source, and it is the state of the art for on-device pronunciation assessment. Against Microsoft Azure's cloud service it comes out ahead in all ten languages: across 84 public tests it is significantly better on 48 and worse on 2.
 
-It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
-
-- It matches or beats Microsoft Azure Pronunciation Assessment in 82 of 84 comparisons on public test sets: significantly better in 48, not significantly different in 34 and significantly worse in 2.
-- It runs on the device, and is the state of the art for on-device pronunciation assessment. Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is edge-optimized: 71 MB on disk and about 0.3 GB of memory.
-- It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (260 MB, or 71 MB quantized). It is significantly more accurate than ZIPA alone on 48 of 60 tests and significantly less accurate on none.
-
-The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
-
-A 45-second overview, with sound:
+It needs no GPU and no network. A sentence is scored in about 40 ms on a laptop CPU with a 71 MB model, and the audio never leaves the machine.
 
 https://github.com/user-attachments/assets/b8641ae2-621a-49da-9b09-d404ec9887eb
 
@@ -52,7 +44,7 @@ pronunciada check clip.wav "It was a beautiful day for a float" --lang en
 
 </details>
 
-This is the output for [`site/samples/en-learner-1.mp3`](site/samples/en-learner-1.mp3), a recording from the speechocean762 test set. The corpus annotators marked the /l/ of "float" as dropped. `^` marks a word below 0.5 and `~` a word between 0.5 and 0.8.
+The recording is a learner from the speechocean762 test set ([`en-learner-1.mp3`](site/samples/en-learner-1.mp3)). The corpus annotators marked the /l/ of "float" as dropped, and Pronunciada gives that word 0.10.
 
 The same call from Python:
 
@@ -61,135 +53,54 @@ import pronunciada
 
 result = pronunciada.score("clip.wav", "It was a beautiful day for a float", lang="en")
 
-print(f"{result.prob:.2f}")
-# 0.75
-for word in result.words:
-    print(word.text, f"{word.prob:.2f}")
-# It 0.87
-# was 0.96
-# a 0.97
-# beautiful 0.63
-# day 0.94
-# for 0.93
-# a 0.79
-# float 0.10
-for phone in result.words[7].phones:
-    print(phone.ipa, f"{phone.prob:.2f}", repr(phone.heard))
-# f 0.83 None
-# l 0.27 ''
-# oʊ 0.35 'ɔ'
-# t 0.56 None
+result.prob                # 0.75, the sentence
+result.words[7].prob       # 0.10, the word "float"
+result.words[7].phones     # f 0.83, l 0.27, oʊ 0.35, t 0.56
+result.coaching()          # the detected errors, most severe first
 ```
 
-`heard` is set when a phoneme scores below 0.5. It is what the recognizer output in that span, or an empty string if it output nothing there.
-
-The model is downloaded to `~/.cache/pronunciada` on first use.
+You give it a recording and the text the speaker was reading. It returns the probability, from 0 to 1, that a human rater would accept each sound, each word and the sentence. The model is downloaded on first use.
 
 ## Benchmarks
 
-All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. An asterisk in a chart, and bold in a table, marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). The charts are generated from the scoreboard by `scripts/graphics/make_charts.py`. Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
-
-### Summary
+Most language-learning apps buy their pronunciation scores from a cloud service, and the most widely used one is Microsoft Azure Pronunciation Assessment. Pronunciada was compared with it on 84 public tests, with the same recordings and text given to both.
 
 ![Head-to-head comparisons with Azure by language. Significantly ahead, no significant difference, significantly behind: English 13, 4, 2. Mandarin 6, 10, 0. Japanese 4, 2, 0. Spanish 4, 2, 0. French 5, 1, 0. German 3, 4, 0. Italian 3, 3, 0. Portuguese 4, 2, 0. Russian 3, 3, 0. Korean 3, 3, 0.](docs/assets/chart-tally.png)
 
-The scoreboard has 84 comparisons with Azure, each one metric on one held-out test set. Pronunciada is significantly ahead in 48, not significantly different in 34 (ahead in 17 of those) and significantly behind in 2. The two are the native false-alarm rate in English and one test on Common Voice recordings (English native versus non-native speakers). The sections below show the main tests, starting with the one that covers all ten languages.
+Pronunciada is significantly better on 48 of the tests and Azure on 2. The other 34 show no significant difference. In each of the ten languages Pronunciada wins more tests than it loses. Azure's two wins are both in English: it marks a native speaker's words down a little less often, and it is better at telling native from non-native speakers in one test on Common Voice recordings.
 
-### All ten languages
+The most direct tests use recordings of learners that experts have graded by hand, which are public for English and Mandarin. On them, Pronunciada agrees with the experts more closely than Azure on individual sounds (0.70 against 0.54), on words and on sentence accuracy, and it is better at finding the sounds and the Mandarin tones that teachers marked as wrong. On English intonation the two are level.
 
-Learner recordings with expert annotation are public for English and Mandarin only, so the test that covers all ten languages uses native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
+Pronunciada is built on [ZIPA](https://github.com/lingjzhu/zipa), an open speech model, and adds the scoring around it. On the same learner tests it is significantly more accurate than ZIPA alone on 48 of 60, and less accurate on none.
+
+These results use the full 260 MB model. The 71 MB model is slightly behind it, with 47 wins and 4 losses against Azure. On an Apple M3 Pro it scores a 3.4-second sentence in about 40 ms with four CPU threads and 65 ms with one, and uses about 0.3 GB of memory. A request to Azure for a nine-second sentence took about two seconds from the same laptop.
+
+Every test and its confidence interval is in the [scoreboard](results/SCOREBOARD.md). Azure was called through its REST API (region `westus`) in November 2026 and was not tuned on any of this data.
+
+<details>
+<summary>Charts for the main tests</summary>
+
+Changed-word detection in all ten languages. Native recordings are scored against a text in which one word was replaced by a word one sound away. This shows whether a system notices that audio and text do not match; it is not a test on learner speech.
 
 ![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.979 and 0.966, Japanese 0.976 and 0.919, Spanish 0.994 and 0.942, French 0.986 and 0.937, German 0.979 and 0.887, Italian 0.979 and 0.970, Portuguese 0.967 and 0.938, Russian 0.909 and 0.909, Korean 0.974 and 0.937.](docs/assets/chart-languages.png)
 
-This test measures whether a system detects a mismatch between audio and text. It does not measure accuracy on learner speech.
-
-<details>
-<summary>Table</summary>
-
-| Language | Pronunciada | Azure |
-| --- | --- | --- |
-| English | **0.981** | 0.963 |
-| Mandarin | 0.979 | 0.966 |
-| Japanese | **0.976** | 0.919 |
-| Spanish | **0.994** | 0.942 |
-| French | **0.986** | 0.937 |
-| German | **0.979** | 0.887 |
-| Italian | 0.979 | 0.970 |
-| Portuguese | **0.967** | 0.938 |
-| Russian | 0.909 | 0.909 |
-| Korean | **0.974** | 0.937 |
-
-</details>
-
-### English learners
+Agreement with expert scores on speechocean762: 2,500 recordings from 125 learners of English.
 
 ![Pearson correlation with expert scores on speechocean762, Pronunciada and Azure. Phoneme 0.700 and 0.538, word 0.640 and 0.589, sentence accuracy 0.778 and 0.673, sentence fluency 0.814 and 0.708, sentence prosody 0.805 and 0.827, sentence total 0.792 and 0.796.](docs/assets/chart-english.png)
 
-speechocean762 test set: 2,500 recordings from 125 Mandarin-speaking learners, each scored by five experts. The figure is the Pearson correlation between system score and expert score.
-
-<details>
-<summary>Table</summary>
-
-| Level | Pronunciada | Azure |
-| --- | --- | --- |
-| Phoneme | **0.700** | 0.538 |
-| Word | **0.640** | 0.589 |
-| Sentence accuracy | **0.778** | 0.673 |
-| Sentence fluency | **0.814** | 0.708 |
-| Sentence prosody | 0.805 | 0.827 |
-| Sentence total | 0.792 | 0.796 |
-
-</details>
-
-### Mispronunciation detection
+Finding the sounds and words that annotators marked as mispronounced. L2-ARCTIC and EpaDB were not used to train or tune Pronunciada.
 
 ![Area under the ROC curve for detecting mispronunciations, Pronunciada and Azure. L2-ARCTIC 0.712 and 0.631, EpaDB 0.721 and 0.587, Mandarin words with any error 0.790 and 0.704, Mandarin words with tone errors 0.777 and 0.679.](docs/assets/chart-detection.png)
 
-Area under the ROC curve for separating the phonemes or words that annotators marked as mispronounced from the rest. L2-ARCTIC (speakers of six first languages) and EpaDB (Spanish-speaking learners) were not used to train or tune any part of Pronunciada. The Mandarin rows are from the OMPAL test set: 21 French-speaking learners of Taiwan Mandarin, every character marked by teachers.
-
-On speechocean762 test (47,041 phonemes, 18.6% marked as errors), with both systems thresholded to flag the same 36% of the marked phonemes, 65.9% of Pronunciada's flags are phonemes the experts marked, against 44.0% of Azure's.
-
-<details>
-<summary>Tables</summary>
-
-| English, phoneme level (AUC) | Pronunciada | Azure |
-| --- | --- | --- |
-| L2-ARCTIC test | **0.712** | 0.631 |
-| EpaDB test | **0.721** | 0.587 |
-
-| Mandarin, OMPAL test | Pronunciada | Azure |
-| --- | --- | --- |
-| Word, any error (AUC) | **0.790** | 0.704 |
-| Word, tone error only (AUC) | **0.777** | 0.679 |
-| Word, consonant or vowel error (AUC) | 0.853 | 0.822 |
-| Sentence accuracy (Pearson) | **0.634** | 0.363 |
-| Sentence fluency (Pearson) | **0.590** | 0.343 |
-
-</details>
-
-Azure was not tuned on any of this data. Pronunciada's calibration models were fitted on speechocean762 train, FLEURS train and validation, and the OMPAL development speakers. Every figure above is from a held-out split.
-
-### On-device latency
-
-Scoring a 3.4-second recording with the 71 MB model takes about 40 ms on an Apple M3 Pro with four CPU threads, and 65 ms with one (median over 200 speechocean762 recordings, CPU only).
-
-Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 516 MB and 342 MB measured). The int8 model is optimized for edge devices: a 71 MB file on one CPU thread. The comparisons with Azure use the fp32 model; with int8 the tally is 47, 33 and 4. There are no packaged iOS or Android builds yet.
-
-For recordings of about ten seconds (150 FLEURS test recordings per language), the median is 0.33 s to 0.47 s on one thread, depending on the language. A request to Azure's REST API with recordings of the same length took 1.8 s to 3.0 s from the same laptop, upload included. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
-
-### Compared with ZIPA alone
+The same learner tests, against ZIPA alone.
 
 ![Pronunciada and the unmodified ZIPA model on the learner tests. English phonemes 0.700 and 0.434, words 0.640 and 0.394, sentences 0.778 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, EpaDB 0.721 and 0.638, Mandarin any error 0.790 and 0.602, Mandarin tone errors 0.777 and 0.552 (AUC).](docs/assets/chart-zipa.png)
 
-To measure what this project adds to the open model, the same held-out tests were run on the unmodified ZIPA model scored with the standard goodness-of-pronunciation method: the mean log-posterior of each expected phoneme over its force-aligned frames, with no adapters, calibration, or tone and stress models. Over 60 test rows, Pronunciada is significantly ahead in 48 and not significantly different in 12. ZIPA alone is not significantly ahead in any. Repeating the correlation rows with a rank-based measure (Spearman) leaves every one of them significantly ahead, with smaller gaps at the phoneme and word level (0.471 against 0.309 for phonemes).
-
-The difference is smallest where the task is easy for both, such as detecting a clearly different word in the prompt (AUC 0.99 for both), and largest for Mandarin tones, which ZIPA does not output. For reference, ZIPA alone scores 0.659 and 0.638 at detecting marked errors on L2-ARCTIC and EpaDB, where Azure scores 0.631 and 0.587, and 0.434 in phoneme-level agreement with expert scores, where Azure scores 0.538. The differences between ZIPA alone and Azure were not tested for significance. All rows are in [results/zipa_baseline.md](results/zipa_baseline.md).
+</details>
 
 [Full real-learner benchmarks against OpenPronounce, Lingolix, and Chivox →](https://pronunciada.dev/benchmarks/)
 
 ## Supported languages
-
-![English, Chinese, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean, each written in its own script.](docs/assets/languages.jpg)
 
 | Language | Code | Install | Also scored |
 | --- | --- | --- | --- |
@@ -204,126 +115,49 @@ The difference is smallest where the task is easy for both, such as detecting a 
 | Russian | `ru` | `pronunciada` | word stress, palatalization |
 | Korean | `ko` | `pronunciada` | aspirated and tense consonants |
 
+
 `pip install "pronunciada[all]"` installs every language. The Japanese extra adds about 300 MB of dictionaries.
 
 ## Usage
 
-### Python
-
-Create a `Scorer` once when scoring more than one recording:
+To score more than one recording, create a `Scorer` once:
 
 ```python
 from pronunciada import Scorer
 
-scorer = Scorer("zh")                    # or Scorer("en", precision="int8")
+scorer = Scorer("zh")                    # Scorer("en", precision="int8") loads the 71 MB model
 result = scorer.score("clip.wav", "我家有四口人")
-
-for word in result.words:
-    for syllable in word.syllables:
-        print(syllable.text, syllable.tone_expected, syllable.tone_heard, syllable.tone_prob)
 ```
 
-`strictness` (0 to 1, default 0.5) moves every probability between a lenient and a strict calibration. `scorer.rescore(result, strictness=0.8)` applies a new value without running the acoustic model again.
+Besides the probabilities, a result has the timing of every sound and word, fluency and completeness scores, the tone heard on each Mandarin syllable, and warnings when a recording is clipped, noisy or mostly silence. `result.coaching()` lists the detected errors with what was heard instead, and `pronunciada.tips.tips()` turns them into short advice for the learner ([docs/COACHING.md](docs/COACHING.md)). The `strictness` setting, from 0 to 1, makes every score more lenient or more strict.
 
-`result.coaching()` returns the detected errors as dictionaries, ordered by severity. Each has the word, the expected phoneme, the phoneme recognized when one can be named, and the articulatory features that differ:
+Pronunciada also runs outside Python:
 
-```python
-for item in result.coaching():
-    print(item["kind"], item["word"], item["expected_ipa"], item["heard_ipa"], item["diff_keys"])
-# substitution float l None ['lateral']
-# substitution beautiful l̴ None ['lateral']
-# ...
-```
-
-`pronunciada.tips.tips()` turns these into the sentences shown in the command-line report. Each tip has a stable key so an application can substitute its own wording or translation. The schema is in [docs/COACHING.md](docs/COACHING.md).
-
-The result also carries timestamps for every phoneme and word, fluency and completeness scores, omitted and inserted words, and warnings when the recording is clipped, noisy, very quiet or mostly silence.
-
-### Command line
-
-```bash
-pronunciada check clip.wav "我家有四口人" --lang zh
-pronunciada check clip.wav "Buenos días" --lang es --json
-pronunciada langs
-```
-
-Options are listed in [docs/CLI.md](docs/CLI.md).
-
-### HTTP server
-
-```bash
-pronunciada serve --port 8765
-curl -s -F audio=@clip.wav --form-string "text=Good morning" --form-string lang=en http://127.0.0.1:8765/v1/score
-```
-
-The server is for local use. It has no authentication. See [docs/SERVER.md](docs/SERVER.md).
-
-### Azure-compatible output
-
-`to_azure` converts a result to the JSON layout returned by Azure Pronunciation Assessment. `pronunciada serve --azure-compat` accepts Azure's short-audio REST request and answers in the same layout.
-
-```python
-from pronunciada.compat.azure import to_azure
-
-payload = to_azure(pronunciada.score("clip.wav", "Good morning", lang="en"))
-payload["NBest"][0]["PronunciationAssessment"]["AccuracyScore"]
-```
-
-The field names match. The score distributions do not, so thresholds chosen for Azure need to be chosen again. Field-by-field notes are in [docs/AZURE_COMPAT.md](docs/AZURE_COMPAT.md).
-
-### MCP server
-
-```bash
-pip install "pronunciada[mcp]"
-pronunciada mcp
-```
-
-This starts a Model Context Protocol server on stdio with one tool, `assess_pronunciation(audio_path, reference_text, language)`. Client configuration is in [docs/MCP.md](docs/MCP.md).
+| | | |
+| --- | --- | --- |
+| Command line | `pronunciada check clip.wav "Buenos días" --lang es` | [docs/CLI.md](docs/CLI.md) |
+| Local HTTP server | `pronunciada serve --port 8765` | [docs/SERVER.md](docs/SERVER.md) |
+| In place of Azure | `pronunciada serve --azure-compat` answers in Azure's JSON layout | [docs/AZURE_COMPAT.md](docs/AZURE_COMPAT.md) |
+| MCP server | `pip install "pronunciada[mcp]"`, then `pronunciada mcp` | [docs/MCP.md](docs/MCP.md) |
 
 ## How it works
 
 ![How one word is scored. The word is "float", said without its l. Expected sounds f, l, oʊ, t. Recognized instead: nothing for l, and ɔ for oʊ. Probabilities 0.83, 0.27, 0.35, 0.56.](docs/assets/figure-word.png)
 
-1. The reference text is converted to a phoneme sequence with per-language dictionaries and rules. This includes Mandarin tone sandhi and French liaison.
-2. ZIPA produces frame-level posteriors over IPA phones from the audio alone. A small per-language adapter corrects its systematic confusions.
-3. For each expected phoneme, the scorer compares the likelihood that it was produced with the likelihood of a substitution or a deletion. Each likelihood is a CTC forward score summed over all alignments, so the result does not depend on a single forced alignment.
-4. Gradient-boosted calibrators fitted on expert-scored speech map this evidence to acceptance probabilities for phonemes, words and sentences.
-5. Tone, stress, length and a few consonant contrasts are not recoverable from the phone posteriors. Separate small classifiers read ZIPA's intermediate layers for these.
-
-All models trained for this project together add about 25 MB to the package. The design is described in [docs/DESIGN.md](docs/DESIGN.md).
+The text is turned into the sounds a speaker should produce, using a dictionary and the sound rules of each language. ZIPA listens to the recording and reports the sounds it hears, without seeing the text. For every expected sound, Pronunciada weighs three explanations: it was said, it was replaced by another sound, or it was dropped. Small models fitted on expert-scored speech turn that evidence into the probabilities you get back, and separate small models handle tone, stress and length. No large model was trained for this project. The details are in [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Limitations
 
-- Agreement with expert scores has been measured for English and Mandarin only. The other eight languages are evaluated on native speech with altered reference text and on Common Voice recordings accepted or rejected by volunteer validators.
-- English sentence prosody correlates slightly less well with expert scores than Azure's (0.805 against 0.827, not a significant difference).
-- At the default strictness, about 3% of a native English speaker's words score below 0.6, against about 2% for Azure.
-- In Mandarin, a low tone probability on one syllable does not always lower the word probability. Applications that grade tones should read `syllable.tone_prob` directly.
-- Coaching tips were tuned on English and Mandarin learners. On native FLEURS recordings, between 9% and 40% of sentences (depending on language) still receive at least one pronunciation tip.
-- Italian geminate consonants and Portuguese nasal vowels are detected poorly. Japanese pitch accent is not scored. Details are in [results/contrast_audit.md](results/contrast_audit.md).
-- The reference text is required. For spontaneous speech, transcribe first and pass the transcript.
+- The text being read is required. For free speech, transcribe first and pass the transcript.
+- Agreement with expert scores has been measured for English and Mandarin only. For the other eight languages the evidence is native speech with altered text, and Common Voice recordings judged by volunteers.
+- A native English speaker's words are marked down a little more often than by Azure: about 3% score below 0.6, against about 2%.
+- Coaching tips still appear on 9% to 40% of native speakers' sentences, depending on the language.
+- Italian double consonants and Portuguese nasal vowels are detected poorly, and Japanese pitch accent is not scored ([results/contrast_audit.md](results/contrast_audit.md)).
 - There are no iOS, Android or WebAssembly builds.
 
-## Reproducing the benchmarks
+## About
 
-```bash
-pip install -e ".[all,bench]"
-python -m bench.azure_pa run speechocean762 --split test   # needs AZURE_SPEECH_KEY and AZURE_SPEECH_REGION
-python -m bench.eval_english      # speechocean762, L2-ARCTIC, EpaDB
-python -m bench.eval_languages    # FLEURS tests in ten languages
-python -m bench.scoreboard        # regenerates results/SCOREBOARD.md
-```
-
-The corpora are public. Azure's responses are not redistributed, so the comparison needs an Azure Speech resource. `bench.azure_pa` sends each recording once and caches the response under `~/.cache/pronunciada/azure`. Download instructions, the remaining commands and run times are in [docs/benchmarks_data.md](docs/benchmarks_data.md).
-
-## Background
-
-Pronunciation assessment is usually bought as a cloud service. The learner's recording is uploaded, the service bills by the amount of audio, and the application waits for the round trip. Pronunciada was written at [Moglearn](https://moglearn.com), a language-learning app, to do the same job on the learner's device.
-
-ZIPA, an open phone recognizer, already ran on a CPU in many languages. Used directly, it agrees with expert phoneme scores less well than Azure does (0.434 against 0.538 on speechocean762). This project tested whether established scoring methods and the sound rules of each language, added on top of ZIPA, could close that gap without training a large model. The system combines the recognizer with lattice-based scoring, per-language phonology and small calibration models.
-
-## Development
-
-Development ran in rounds. Each round set a target in advance, selected changes on development data and was evaluated once on held-out data. The write-ups for all rounds are in [results/](results/), including approaches that were tried and dropped: Japanese pitch accent, a second acoustic model, and training on synthetic speech.
+Pronunciada was written at [Moglearn](https://moglearn.com), a language-learning app, to score pronunciation on the learner's device instead of sending recordings to a cloud service. Every development round is written up in [results/](results/), including the approaches that were tried and dropped. The steps to reproduce the benchmarks are in [docs/benchmarks_data.md](docs/benchmarks_data.md); the comparison needs an Azure Speech resource, because Azure's responses are not redistributed.
 
 ## License
 
@@ -333,8 +167,4 @@ Azure is a trademark of Microsoft. This project is not affiliated with or endors
 
 ## Citation
 
-See [CITATION.cff](CITATION.cff).
-
-## Acknowledgements
-
-This project depends on [ZIPA](https://github.com/lingjzhu/zipa) (Zhu et al., ACL 2025) and was evaluated on speechocean762, OMPAL, FLEURS, Common Voice, L2-ARCTIC, EpaDB, AISHELL, Heroico, LeaP and the Speech Accent Archive.
+See [CITATION.cff](CITATION.cff). Pronunciada depends on [ZIPA](https://github.com/lingjzhu/zipa) (Zhu et al., ACL 2025) and was evaluated on speechocean762, OMPAL, FLEURS, Common Voice, L2-ARCTIC, EpaDB, AISHELL, Heroico, LeaP and the Speech Accent Archive.
