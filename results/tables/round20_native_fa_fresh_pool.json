@@ -1,0 +1,22 @@
+{
+ "en": {
+  "cv": 1009,
+  "cv_speakers": 656,
+  "fleurs": 13
+ },
+ "es": {
+  "cv": 412,
+  "cv_speakers": 212,
+  "fleurs": 19
+ },
+ "fr": {
+  "cv": 433,
+  "cv_speakers": 219,
+  "fleurs": 4
+ },
+ "de": {
+  "cv": 2505,
+  "cv_speakers": 1289,
+  "fleurs": 5
+ }
+}

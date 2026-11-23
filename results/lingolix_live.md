@@ -1,7 +1,7 @@
 # Lingolix API measured by us, against Pronunciada
 
 Lingolix: POST https://api.lingolix.com/api/pronunciation/v3/check; model_version 2026-11 (3700); tested 2026-11-22T16:06:24Z to 2026-11-22T22:00:55Z (UTC); 3700 responses.
-Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache (installed package 1.0.2); repository commit 39e3cdc4aa; benchmark v2026.10 (e021b08).
+Pronunciada outputs read from $PRONUNCIADA_CACHE (installed package 1.0.2); repository commit ?; benchmark v2026.10 (e021b08).
 
 | test | metric | Pronunciada [95% CI] | Lingolix measured [95% CI] | Pronunciada − Lingolix [95% CI], p | Lingolix published |
 |---|---|---|---|---|---|
@@ -9,8 +9,8 @@ Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache
 | test 1 en (v2026.10 rules) | FA@80 | 2.5% [1.0, 3.9] | 0.8% [0.4, 1.7] | +1.7 [+0.2, +2.8], p 0.020 | 1% |
 | test 1 fr (v2026.10 rules) | word AUC | 0.960 [0.924, 0.987] | 0.968 [0.947, 0.986] | -0.008 [-0.042, +0.018], p 0.585 | 0.96 |
 | test 1 fr (v2026.10 rules) | FA@80 | 1.7% [0.9, 3.1] | 1.5% [0.9, 3.0] | +0.1 [-0.8, +1.4], p 0.853 | 1% |
-| test 1 es (v2026.10 rules) | word AUC | 0.985 [0.976, 0.993] | 0.977 [0.957, 0.991] | +0.008 [-0.003, +0.024], p 0.184 | 0.97 |
-| test 1 es (v2026.10 rules) | FA@80 | 1.4% [0.8, 2.3] | 1.1% [0.6, 1.9] | +0.2 [-0.4, +0.8], p 0.462 | 2% |
+| test 1 es (v2026.10 rules) | word AUC | 0.986 [0.977, 0.993] | 0.977 [0.957, 0.991] | +0.009 [-0.002, +0.025], p 0.158 | 0.97 |
+| test 1 es (v2026.10 rules) | FA@80 | 1.3% [0.7, 2.1] | 1.1% [0.6, 1.9] | +0.1 [-0.4, +0.6], p 0.755 | 2% |
 | test 1 de (v2026.10 rules) | word AUC | 0.967 [0.945, 0.985] | 0.973 [0.951, 0.989] | -0.005 [-0.029, +0.019], p 0.657 | 0.95 |
 | test 1 de (v2026.10 rules) | FA@80 | 2.1% [0.9, 5.4] | 1.0% [0.4, 6.0] | +1.0 [-1.9, +3.6], p 0.196 | 2% |
 | test 1 ja (v2026.10 rules) | word AUC | 0.923 [0.891, 0.951] | 0.951 [0.922, 0.978] | -0.028 [-0.064, +0.006], p 0.098 | 0.95 |
@@ -21,8 +21,8 @@ Pronunciada outputs read from $PRONUNCIADA_CACHE/round19/integrator/frozen_cache
 | test 1 en (main rules) | FA@80 | 1.9% [0.6, 3.2] | 0.6% [0.3, 1.3] | +1.3 [-0.1, +2.4], p 0.088 | — |
 | test 1 fr (main rules) | word AUC | 0.963 [0.926, 0.989] | 0.971 [0.949, 0.988] | -0.008 [-0.042, +0.018], p 0.599 | — |
 | test 1 fr (main rules) | FA@80 | 1.1% [0.6, 2.2] | 1.3% [0.7, 2.2] | -0.1 [-0.7, +0.9], p 0.967 | — |
-| test 1 es (main rules) | word AUC | 0.987 [0.979, 0.994] | 0.980 [0.959, 0.994] | +0.007 [-0.004, +0.023], p 0.284 | — |
-| test 1 es (main rules) | FA@80 | 1.0% [0.4, 1.8] | 0.8% [0.3, 1.4] | +0.3 [-0.2, +0.7], p 0.414 | — |
+| test 1 es (main rules) | word AUC | 0.988 [0.979, 0.995] | 0.980 [0.959, 0.994] | +0.008 [-0.003, +0.024], p 0.244 | — |
+| test 1 es (main rules) | FA@80 | 0.9% [0.3, 1.6] | 0.8% [0.3, 1.4] | +0.1 [-0.3, +0.5], p 0.775 | — |
 | test 1 de (main rules) | word AUC | 0.968 [0.946, 0.986] | 0.976 [0.954, 0.991] | -0.008 [-0.031, +0.017], p 0.553 | — |
 | test 1 de (main rules) | FA@80 | 2.0% [0.9, 4.8] | 0.6% [0.2, 4.8] | +1.4 [-1.4, +3.5], p 0.128 | — |
 | test 1 ja (main rules) | word AUC | 0.930 [0.899, 0.957] | 0.958 [0.930, 0.983] | -0.028 [-0.063, +0.006], p 0.110 | — |

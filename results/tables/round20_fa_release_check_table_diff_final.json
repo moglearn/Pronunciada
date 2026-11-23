@@ -1,0 +1,48 @@
+{
+ "coaching_tips_r19.json": {
+  "es": 4
+ },
+ "contrast_audit_test.json": {
+  "es": 70,
+  "zh": 8
+ },
+ "cv_real.json": {
+  "bookkeeping": 1,
+  "es": 22
+ },
+ "languages.json": {
+  "bookkeeping": 6,
+  "es": 70,
+  "fr": 8,
+  "ja": 8,
+  "ko": 8,
+  "None": 1
+ },
+ "learners_suite.json": {
+  "bookkeeping": 2,
+  "es": 7
+ },
+ "lingolix_live.json": {
+  "bookkeeping": 3,
+  "es": 34
+ },
+ "ompal.json": {
+  "None": 1,
+  "bookkeeping": 1
+ },
+ "ompal_tone_zh_v3z.json": {
+  "None": 1,
+  "bookkeeping": 1
+ },
+ "swap_ours_vs_azure.json": {
+  "es": 105
+ },
+ "third_party_lingolix.json": {
+  "es": 32,
+  "bookkeeping": 4
+ },
+ "zipa_baseline.json": {
+  "None": 23,
+  "bookkeeping": 1
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "fp32": {
+  "n_clips": 200,
+  "p50_s": 0.050601396011188626,
+  "p95_s": 0.06793996247288306,
+  "rtf": 0.015449987733216524,
+  "peak_rss_mb": 571.1875,
+  "weights_mb": 296.66224,
+  "load_avg_1min_before": 8.6103515625,
+  "load_avg_1min_after": 8.2822265625
+ },
+ "int8": {
+  "n_clips": 200,
+  "p50_s": 0.04085752050741576,
+  "p95_s": 0.056473929531057364,
+  "rtf": 0.0125504142829571,
+  "peak_rss_mb": 394.15625,
+  "weights_mb": 107.07204,
+  "load_avg_1min_before": 8.2822265625,
+  "load_avg_1min_after": 7.7900390625
+ },
+ "package_data_mb": 34.7083740234375,
+ "note": "bench.ondevice protocol, 4 threads, first 200 speechocean762 TRAIN clips (not test), shared machine"
+}

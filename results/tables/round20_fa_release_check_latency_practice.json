@@ -1,0 +1,530 @@
+{
+ "latency_de_practice_fp32": {
+  "lang": "de",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 9.72,
+  "load_avg_1min_start_end": [
+   5.6953125,
+   6.08837890625
+  ],
+  "wall_s": 34.019716024398804,
+  "old_max_rss_mb": 920.28125,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 921.296875,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 147.9520419961773,
+  "new_median_ms": 163.2469170144759,
+  "paired_median_diff_ms": 0.32012496376410127,
+  "paired_median_diff_ci": [
+   0.08891697507351637,
+   0.960739499714681
+  ],
+  "old_p90_ms": 269.2105211317539,
+  "new_p90_ms": 307.8570544486867,
+  "paired_mean_diff_ms": 30.351360786007717,
+  "paired_mean_diff_ci": [
+   19.818094271671725,
+   42.16331938648363
+  ]
+ },
+ "latency_de_practice_int8": {
+  "lang": "de",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "int8",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 9.72,
+  "load_avg_1min_start_end": [
+   5.712890625,
+   5.21630859375
+  ],
+  "wall_s": 28.36798596382141,
+  "old_max_rss_mb": 776.515625,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 780.15625,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 120.94056251225993,
+  "new_median_ms": 138.63645849050954,
+  "paired_median_diff_ms": 0.38756238063797355,
+  "paired_median_diff_ci": [
+   0.23220712319016457,
+   0.746500096283853
+  ],
+  "old_p90_ms": 218.8067993265577,
+  "new_p90_ms": 292.14413689915125,
+  "paired_mean_diff_ms": 29.408845459111035,
+  "paired_mean_diff_ci": [
+   20.248411854787264,
+   39.63153042158228
+  ]
+ },
+ "latency_en_practice_fp32": {
+  "lang": "en",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 8.76,
+  "load_avg_1min_start_end": [
+   5.72412109375,
+   5.6953125
+  ],
+  "wall_s": 29.169368982315063,
+  "old_max_rss_mb": 732.609375,
+  "old_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 733.59375,
+  "new_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 130.2450005314313,
+  "new_median_ms": 131.08806253876537,
+  "paired_median_diff_ms": 0.058770994655787945,
+  "paired_median_diff_ci": [
+   -0.06104202475398779,
+   0.32329210080206394
+  ],
+  "old_p90_ms": 198.26621223473933,
+  "new_p90_ms": 277.13743353961036,
+  "paired_mean_diff_ms": 24.203400408150628,
+  "paired_mean_diff_ci": [
+   13.827453961857827,
+   36.58245603108662
+  ]
+ },
+ "latency_en_practice_int8": {
+  "lang": "en",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "int8",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 8.76,
+  "load_avg_1min_start_end": [
+   6.1455078125,
+   6.03662109375
+  ],
+  "wall_s": 24.504957914352417,
+  "old_max_rss_mb": 587.140625,
+  "old_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 588.046875,
+  "new_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 106.63158353418112,
+  "new_median_ms": 107.34754154691473,
+  "paired_median_diff_ms": 0.3164794761687517,
+  "paired_median_diff_ci": [
+   0.15989592066034675,
+   0.46466863277601006
+  ],
+  "old_p90_ms": 161.4158420008608,
+  "new_p90_ms": 249.42434171680384,
+  "paired_mean_diff_ms": 26.271274073515087,
+  "paired_mean_diff_ci": [
+   15.557049021765124,
+   38.526433308026746
+  ]
+ },
+ "latency_en_so762-train_fp32": {
+  "lang": "en",
+  "set": "so762-train",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 200,
+  "old_env": {},
+  "clip_seconds_median": 3.45,
+  "load_avg_1min_start_end": [
+   5.001953125,
+   5.72412109375
+  ],
+  "wall_s": 23.540019035339355,
+  "old_max_rss_mb": 680.9375,
+  "old_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 672.984375,
+  "new_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 51.82868748670444,
+  "new_median_ms": 52.25249956129119,
+  "paired_median_diff_ms": -0.007229624316096306,
+  "paired_median_diff_ci": [
+   -0.06395799573510885,
+   0.062205886933951904
+  ],
+  "old_p90_ms": 85.55122552206738,
+  "new_p90_ms": 81.59781693248075,
+  "paired_mean_diff_ms": -0.2151125087402761,
+  "paired_mean_diff_ci": [
+   -0.8193155894405209,
+   0.17146695517294575
+  ]
+ },
+ "latency_en_so762-train_int8": {
+  "lang": "en",
+  "set": "so762-train",
+  "precision": "int8",
+  "threads": 4,
+  "n": 200,
+  "old_env": {},
+  "clip_seconds_median": 3.45,
+  "load_avg_1min_start_end": [
+   6.23193359375,
+   6.24560546875
+  ],
+  "wall_s": 18.91791796684265,
+  "old_max_rss_mb": 520.8125,
+  "old_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 522.484375,
+  "new_embed_outputs": [
+   "enc0",
+   "enc1",
+   "enc2",
+   "enc3",
+   "enc4",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 42.12802101392299,
+  "new_median_ms": 42.204458033666015,
+  "paired_median_diff_ms": -0.05391647573560476,
+  "paired_median_diff_ci": [
+   -0.1460835337638855,
+   -0.012661823711823695
+  ],
+  "old_p90_ms": 64.28926670923828,
+  "new_p90_ms": 64.47883748915045,
+  "paired_mean_diff_ms": 0.01472310395911336,
+  "paired_mean_diff_ci": [
+   -0.09555781832023058,
+   0.1468259731773286
+  ]
+ },
+ "latency_es_practice_fp32": {
+  "lang": "es",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 11.7,
+  "load_avg_1min_start_end": [
+   5.7607421875,
+   6.494140625
+  ],
+  "wall_s": 30.373029947280884,
+  "old_max_rss_mb": 801.859375,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 801.21875,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 167.2720625065267,
+  "new_median_ms": 169.60572893731296,
+  "paired_median_diff_ms": 0.8880000095814466,
+  "paired_median_diff_ci": [
+   0.5998540436848998,
+   1.1037499643862247
+  ],
+  "old_p90_ms": 226.37222468620166,
+  "new_p90_ms": 227.895920840092,
+  "paired_mean_diff_ms": 1.0428833332844079,
+  "paired_mean_diff_ci": [
+   0.5764183238497935,
+   1.5352511116652747
+  ]
+ },
+ "latency_es_practice_int8": {
+  "lang": "es",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "int8",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 11.7,
+  "load_avg_1min_start_end": [
+   5.21630859375,
+   5.89794921875
+  ],
+  "wall_s": 24.580352067947388,
+  "old_max_rss_mb": 619.25,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 618.671875,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 135.95579157117754,
+  "new_median_ms": 136.1602495308034,
+  "paired_median_diff_ms": 0.05658302688971162,
+  "paired_median_diff_ci": [
+   -0.11383404489606619,
+   0.12443551677279119
+  ],
+  "old_p90_ms": 185.14270769665018,
+  "new_p90_ms": 185.26058715069667,
+  "paired_mean_diff_ms": 0.06773587316274643,
+  "paired_mean_diff_ci": [
+   -0.40286530993762426,
+   0.5154092180891892
+  ]
+ },
+ "latency_fr_practice_fp32": {
+  "lang": "fr",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 8.55,
+  "load_avg_1min_start_end": [
+   6.494140625,
+   6.619140625
+  ],
+  "wall_s": 21.976433992385864,
+  "old_max_rss_mb": 691.8125,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 690.15625,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 99.92643748410046,
+  "new_median_ms": 100.998270441778,
+  "paired_median_diff_ms": -0.07679150439798832,
+  "paired_median_diff_ci": [
+   -0.16654201317578554,
+   0.020709005184471607
+  ],
+  "old_p90_ms": 158.492079784628,
+  "new_p90_ms": 162.55208782386035,
+  "paired_mean_diff_ms": 4.557492163730785,
+  "paired_mean_diff_ci": [
+   1.9793659989372827,
+   7.531013021012767
+  ]
+ },
+ "latency_fr_practice_int8": {
+  "lang": "fr",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "int8",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 8.55,
+  "load_avg_1min_start_end": [
+   5.89794921875,
+   6.2177734375
+  ],
+  "wall_s": 17.14403986930847,
+  "old_max_rss_mb": 551.921875,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 559.59375,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 77.00420852052048,
+  "new_median_ms": 76.88114553457126,
+  "paired_median_diff_ms": 0.15120749594643712,
+  "paired_median_diff_ci": [
+   0.056896533351391554,
+   0.31341229478130084
+  ],
+  "old_p90_ms": 122.36298773204908,
+  "new_p90_ms": 133.32597527187318,
+  "paired_mean_diff_ms": 4.623960062162951,
+  "paired_mean_diff_ci": [
+   1.9665343160158955,
+   7.562672580359498
+  ]
+ },
+ "latency_ko_practice_fp32": {
+  "lang": "ko",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "fp32",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 9.809999999999999,
+  "load_avg_1min_start_end": [
+   6.4892578125,
+   6.23193359375
+  ],
+  "wall_s": 30.82815909385681,
+  "old_max_rss_mb": 1139.90625,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 1175.734375,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 124.22233348479494,
+  "new_median_ms": 131.11522898543626,
+  "paired_median_diff_ms": 0.47460448695346713,
+  "paired_median_diff_ci": [
+   0.3303755074739456,
+   0.692834029905498
+  ],
+  "old_p90_ms": 253.4072208567523,
+  "new_p90_ms": 293.268124992028,
+  "paired_mean_diff_ms": 10.99852584535256,
+  "paired_mean_diff_ci": [
+   4.3772412759426516,
+   19.858327890862707
+  ]
+ },
+ "latency_ko_practice_int8": {
+  "lang": "ko",
+  "set": "items:$PRONUNCIADA_CACHE/round20/farc/practice_items.json",
+  "precision": "int8",
+  "threads": 4,
+  "n": 100,
+  "old_env": {},
+  "clip_seconds_median": 9.809999999999999,
+  "load_avg_1min_start_end": [
+   6.2177734375,
+   5.810546875
+  ],
+  "wall_s": 24.787790298461914,
+  "old_max_rss_mb": 977.953125,
+  "old_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "new_max_rss_mb": 1005.375,
+  "new_embed_outputs": [
+   "enc1",
+   "enc3",
+   "enc5",
+   "final"
+  ],
+  "old_median_ms": 101.7287079594098,
+  "new_median_ms": 105.24593701120466,
+  "paired_median_diff_ms": 0.4401665064506233,
+  "paired_median_diff_ci": [
+   0.22479193285107613,
+   0.6194169400259852
+  ],
+  "old_p90_ms": 204.49177923146638,
+  "new_p90_ms": 220.79477874795003,
+  "paired_mean_diff_ms": 9.705181682948023,
+  "paired_mean_diff_ci": [
+   3.7124671485216822,
+   17.497965868562456
+  ]
+ }
+}

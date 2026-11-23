@@ -1,0 +1,49 @@
+{
+ "note": "5-fold speaker-grouped CV on speechocean762 TRAIN, 3 seeds, children and others dealt separately (bench/round19/data.folds); the shipped blends: sentence 0.35 x sequence head + 0.65 x trees, sound 0.3, word 0.4",
+ "sentence_shipped_blend_w0.35": {
+  "accuracy": 0.8321855212777787,
+  "fluency": 0.878379896503415,
+  "prosodic": 0.8677286158867079,
+  "total": 0.8536722908783304,
+  "total_child": 0.551674364383687,
+  "total_adult": 0.8939423025726437
+ },
+ "sentence_trees_only": {
+  "accuracy": 0.8177775326632192,
+  "fluency": 0.866612021665386,
+  "prosodic": 0.8526512416512171,
+  "total": 0.8408408683267875,
+  "total_child": 0.5369252616521738,
+  "total_adult": 0.8833327612093197
+ },
+ "sentence_round2_base": {
+  "accuracy": 0.8071369462135055,
+  "fluency": 0.8468941304388723,
+  "prosodic": 0.8285030206131592,
+  "total": 0.8241643662450365,
+  "total_child": 0.49265909122073914,
+  "total_adult": 0.8725073137705244
+ },
+ "sequence_head_alone": {
+  "accuracy": 0.8191064376847281,
+  "fluency": 0.8649405437831316,
+  "prosodic": 0.8568483257367582,
+  "total": 0.8394936538158485,
+  "total_child": 0.51505795296376,
+  "total_adult": 0.8826818983145456,
+  "phone": 0.6785500666272842,
+  "word": 0.6655586531223929
+ },
+ "sound_blend_w0.3": {
+  "pearson": 0.7303299529693476,
+  "auc_lt2": 0.8494389070734085,
+  "auc_lt1": 0.9617219429324978,
+  "n": 46727.0
+ },
+ "word_blend_w0.4": {
+  "pearson": 0.6952136403299565,
+  "auc_lt8": 0.9347362071468276,
+  "auc_lt6": 0.940947278086815,
+  "n": 15849.0
+ }
+}

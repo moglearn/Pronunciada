@@ -1,0 +1,28 @@
+{
+ "speechocean762": {
+  "clips": 2500,
+  "clips_changed": 0,
+  "errors": 0,
+  "changed_ids": [],
+  "word_correlation": {
+   "clips": 2500,
+   "words": 15849,
+   "words_changed": 0,
+   "word_pcc_off": 0.7801573396439574,
+   "word_pcc_rc": 0.7801573396439574,
+   "delta": 0.0
+  }
+ },
+ "l2arctic": {
+  "clips": 2699,
+  "clips_changed": 0,
+  "errors": 0,
+  "changed_ids": []
+ },
+ "epadb": {
+  "clips": 1903,
+  "clips_changed": 0,
+  "errors": 0,
+  "changed_ids": []
+ }
+}

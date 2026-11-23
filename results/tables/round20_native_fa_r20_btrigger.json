@@ -1,0 +1,141 @@
+{
+ "practice": {
+  "en": {
+   "control": {
+    "n": 720,
+    "fired_pct": 1.1111111111111112
+   },
+   "indel": {
+    "n": 261,
+    "fired_pct": 1.9157088122605364
+   },
+   "sub_gross": {
+    "n": 117,
+    "fired_pct": 19.65811965811966
+   },
+   "sub_subtle": {
+    "n": 123,
+    "fired_pct": 0.0
+   },
+   "sub_moderate": {
+    "n": 122,
+    "fired_pct": 0.0
+   },
+   "word_omission": {
+    "n": 97,
+    "fired_pct": 73.19587628865979
+   }
+  },
+  "de": {
+   "control": {
+    "n": 720,
+    "fired_pct": 0.2777777777777778
+   },
+   "word_omission": {
+    "n": 103,
+    "fired_pct": 51.45631067961165
+   },
+   "sub_gross": {
+    "n": 125,
+    "fired_pct": 5.6
+   },
+   "indel": {
+    "n": 251,
+    "fired_pct": 0.0
+   },
+   "sub_moderate": {
+    "n": 125,
+    "fired_pct": 0.0
+   },
+   "sub_subtle": {
+    "n": 116,
+    "fired_pct": 0.8620689655172413
+   }
+  },
+  "ko": {
+   "control": {
+    "n": 543,
+    "fired_pct": 0.3683241252302026
+   },
+   "sub_subtle": {
+    "n": 82,
+    "fired_pct": 0.0
+   },
+   "sub_gross": {
+    "n": 121,
+    "fired_pct": 0.8264462809917356
+   },
+   "sub_moderate": {
+    "n": 79,
+    "fired_pct": 1.2658227848101267
+   },
+   "indel": {
+    "n": 86,
+    "fired_pct": 0.0
+   },
+   "word_omission": {
+    "n": 42,
+    "fired_pct": 59.523809523809526
+   }
+  },
+  "es": {
+   "control": {
+    "n": 720,
+    "fired_pct": 0.2777777777777778
+   },
+   "sub_subtle": {
+    "n": 130,
+    "fired_pct": 0.0
+   },
+   "indel": {
+    "n": 253,
+    "fired_pct": 0.3952569169960474
+   },
+   "word_omission": {
+    "n": 114,
+    "fired_pct": 45.6140350877193
+   },
+   "sub_moderate": {
+    "n": 96,
+    "fired_pct": 0.0
+   },
+   "sub_gross": {
+    "n": 127,
+    "fired_pct": 8.661417322834646
+   }
+  },
+  "fr": {
+   "control": {
+    "n": 720,
+    "fired_pct": 0.6944444444444444
+   },
+   "sub_gross": {
+    "n": 129,
+    "fired_pct": 18.6046511627907
+   },
+   "sub_moderate": {
+    "n": 117,
+    "fired_pct": 0.8547008547008547
+   },
+   "indel": {
+    "n": 250,
+    "fired_pct": 0.0
+   },
+   "sub_subtle": {
+    "n": 110,
+    "fired_pct": 2.727272727272727
+   },
+   "word_omission": {
+    "n": 114,
+    "fired_pct": 82.45614035087719
+   }
+  }
+ },
+ "so762_train": {
+  "clips": 2500,
+  "fired": 14,
+  "fired_pct": 0.56,
+  "r20_ms_mean_all": 0.0927152,
+  "r20_ms_mean_when_fired": 15.388285714285715
+ }
+}

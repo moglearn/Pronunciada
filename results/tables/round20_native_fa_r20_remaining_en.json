@@ -1,0 +1,11 @@
+{
+ "n": 270,
+ "composition": {
+  "other": 46,
+  "corpus noise (Whisper disagrees, truncated, low SNR)": 61,
+  "tail (within 1 logit)": 43,
+  "near the change (not resolved)": 23,
+  "text front-end (name, unknown word, number)": 67,
+  "stress factor": 30
+ }
+}

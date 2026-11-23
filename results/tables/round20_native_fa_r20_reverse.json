@@ -1,0 +1,496 @@
+{
+ "changed_words": {
+  "en|B": {
+   "changed": 720,
+   "raised": 1,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "en|C": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "en|D1": {
+   "changed": 720,
+   "raised": 81,
+   "caught_lost": 17,
+   "caught_gained": 0
+  },
+  "en|D2": {
+   "changed": 720,
+   "raised": 144,
+   "caught_lost": 43,
+   "caught_gained": 0
+  },
+  "en|B+C+E": {
+   "changed": 720,
+   "raised": 1,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "en|ALL": {
+   "changed": 720,
+   "raised": 82,
+   "caught_lost": 17,
+   "caught_gained": 0
+  },
+  "de|B": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "de|C": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "de|D1": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "de|D2": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "de|E": {
+   "changed": 720,
+   "raised": 21,
+   "caught_lost": 1,
+   "caught_gained": 0
+  },
+  "de|B+C+E": {
+   "changed": 720,
+   "raised": 21,
+   "caught_lost": 1,
+   "caught_gained": 0
+  },
+  "de|ALL": {
+   "changed": 720,
+   "raised": 21,
+   "caught_lost": 1,
+   "caught_gained": 0
+  },
+  "ko|B": {
+   "changed": 410,
+   "raised": 3,
+   "caught_lost": 1,
+   "caught_gained": 0
+  },
+  "ko|C": {
+   "changed": 410,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "ko|D1": {
+   "changed": 410,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "ko|D2": {
+   "changed": 410,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "ko|E": {
+   "changed": 410,
+   "raised": 24,
+   "caught_lost": 1,
+   "caught_gained": 0
+  },
+  "ko|B+C+E": {
+   "changed": 410,
+   "raised": 27,
+   "caught_lost": 2,
+   "caught_gained": 0
+  },
+  "ko|ALL": {
+   "changed": 410,
+   "raised": 27,
+   "caught_lost": 2,
+   "caught_gained": 0
+  },
+  "es|B": {
+   "changed": 720,
+   "raised": 4,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "es|C": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "es|D1": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "es|D2": {
+   "changed": 720,
+   "raised": 48,
+   "caught_lost": 7,
+   "caught_gained": 0
+  },
+  "es|E": {
+   "changed": 720,
+   "raised": 15,
+   "caught_lost": 0,
+   "caught_gained": 2
+  },
+  "es|B+C+E": {
+   "changed": 720,
+   "raised": 19,
+   "caught_lost": 0,
+   "caught_gained": 2
+  },
+  "es|ALL": {
+   "changed": 720,
+   "raised": 19,
+   "caught_lost": 0,
+   "caught_gained": 2
+  },
+  "fr|B": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "fr|C": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "fr|D1": {
+   "changed": 720,
+   "raised": 21,
+   "caught_lost": 3,
+   "caught_gained": 0
+  },
+  "fr|D2": {
+   "changed": 720,
+   "raised": 46,
+   "caught_lost": 10,
+   "caught_gained": 0
+  },
+  "fr|B+C+E": {
+   "changed": 720,
+   "raised": 0,
+   "caught_lost": 0,
+   "caught_gained": 0
+  },
+  "fr|ALL": {
+   "changed": 720,
+   "raised": 21,
+   "caught_lost": 3,
+   "caught_gained": 0
+  }
+ },
+ "worst_kind_auc_drop": {
+  "check|en|B0.02": {
+   "kind": "word_omission",
+   "d_auc": 2.7878079864041005e-05
+  },
+  "check|en|C": {
+   "kind": "word_omission",
+   "d_auc": 1.8585386575953322e-05
+  },
+  "check|en|D1": {
+   "kind": "sub_subtle",
+   "d_auc": -0.013458749597164088
+  },
+  "check|en|D2": {
+   "kind": "sub_subtle",
+   "d_auc": -0.008042620045117688
+  },
+  "check|en|Ees": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|en|Ede": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|en|Eko": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|en|ALL": {
+   "kind": "sub_subtle",
+   "d_auc": -0.011386158556235926
+  },
+  "check|en|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 4.646346643999433e-05
+  },
+  "check|de|B0.02": {
+   "kind": "sub_gross",
+   "d_auc": 9.428225278051983e-06
+  },
+  "check|de|C": {
+   "kind": "word_omission",
+   "d_auc": 0.00017913628028232154
+  },
+  "check|de|D1": {
+   "kind": "word_omission",
+   "d_auc": 6.128346430711584e-05
+  },
+  "check|de|D2": {
+   "kind": "word_omission",
+   "d_auc": 6.128346430711584e-05
+  },
+  "check|de|Ees": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|de|Ede": {
+   "kind": "sub_moderate",
+   "d_auc": 5.0042118783344414e-05
+  },
+  "check|de|Eko": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|de|ALL": {
+   "kind": "sub_gross",
+   "d_auc": 0.00038969997815796464
+  },
+  "check|de|ALLnoD": {
+   "kind": "sub_gross",
+   "d_auc": 0.00032763082841102964
+  },
+  "check|ko|B0.02": {
+   "kind": "sub_gross",
+   "d_auc": 0.0002031930333816767
+  },
+  "check|ko|C": {
+   "kind": "word_omission",
+   "d_auc": 0.00015094339622645503
+  },
+  "check|ko|D1": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|ko|D2": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|ko|Ees": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|ko|Ede": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|ko|Eko": {
+   "kind": "sub_moderate",
+   "d_auc": -0.0002830188679245893
+  },
+  "check|ko|ALL": {
+   "kind": "word_omission",
+   "d_auc": 0.0003522012578616174
+  },
+  "check|ko|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 0.0003522012578616174
+  },
+  "check|es|B0.02": {
+   "kind": "word_omission",
+   "d_auc": 1.0664164142859534e-05
+  },
+  "check|es|C": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|es|D1": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|es|D2": {
+   "kind": "sub_gross",
+   "d_auc": -0.001188151949573224
+  },
+  "check|es|Ees": {
+   "kind": "sub_gross",
+   "d_auc": 0.00020918168126293768
+  },
+  "check|es|Ede": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|es|Eko": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|es|ALL": {
+   "kind": "sub_gross",
+   "d_auc": 0.00031935070006139377
+  },
+  "check|es|ALLnoD": {
+   "kind": "sub_gross",
+   "d_auc": 0.00031935070006139377
+  },
+  "check|fr|B0.02": {
+   "kind": "word_omission",
+   "d_auc": 0.00018416287986366964
+  },
+  "check|fr|C": {
+   "kind": "word_omission",
+   "d_auc": 0.0
+  },
+  "check|fr|D1": {
+   "kind": "sub_gross",
+   "d_auc": -0.00018591007440516005
+  },
+  "check|fr|D2": {
+   "kind": "sub_gross",
+   "d_auc": -0.001281476084829869
+  },
+  "check|fr|Ees": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|fr|Ede": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|fr|Eko": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "check|fr|ALL": {
+   "kind": "word_omission",
+   "d_auc": 0.00023223752721768243
+  },
+  "check|fr|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 0.00018416287986366964
+  },
+  "fresh|en@fresh|B": {
+   "kind": "word_omission",
+   "d_auc": 0.00014171055931777587
+  },
+  "fresh|en@fresh|C": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|en@fresh|D1": {
+   "kind": "sub_moderate",
+   "d_auc": -0.01167096635493936
+  },
+  "fresh|en@fresh|D2": {
+   "kind": "indel",
+   "d_auc": -0.008647832016553725
+  },
+  "fresh|en@fresh|E": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|en@fresh|ALL": {
+   "kind": "sub_moderate",
+   "d_auc": -0.010556070622379954
+  },
+  "fresh|en@fresh|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 0.00014171055931777587
+  },
+  "fresh|de@fresh|B": {
+   "kind": "sub_gross",
+   "d_auc": 0.0002710872431423983
+  },
+  "fresh|de@fresh|C": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|de@fresh|D1": {
+   "kind": "word_omission",
+   "d_auc": 7.979951196990243e-05
+  },
+  "fresh|de@fresh|D2": {
+   "kind": "word_omission",
+   "d_auc": 0.0
+  },
+  "fresh|de@fresh|E": {
+   "kind": "indel",
+   "d_auc": -8.04990626821489e-05
+  },
+  "fresh|de@fresh|ALL": {
+   "kind": "word_omission",
+   "d_auc": 0.0005523313328497093
+  },
+  "fresh|de@fresh|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 0.00047582932137435474
+  },
+  "fresh|es@fresh|B": {
+   "kind": "word_omission",
+   "d_auc": 7.325562810411856e-05
+  },
+  "fresh|es@fresh|C": {
+   "kind": "word_omission",
+   "d_auc": 1.4799116788699607e-05
+  },
+  "fresh|es@fresh|D1": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|es@fresh|D2": {
+   "kind": "sub_gross",
+   "d_auc": -0.0008299440173281658
+  },
+  "fresh|es@fresh|E": {
+   "kind": "word_omission",
+   "d_auc": 4.661721788445927e-05
+  },
+  "fresh|es@fresh|ALL": {
+   "kind": "word_omission",
+   "d_auc": 0.00015465077044207742
+  },
+  "fresh|es@fresh|ALLnoD": {
+   "kind": "word_omission",
+   "d_auc": 0.00015465077044207742
+  },
+  "fresh|fr@fresh|B": {
+   "kind": "sub_subtle",
+   "d_auc": -6.714035787724892e-05
+  },
+  "fresh|fr@fresh|C": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|fr@fresh|D1": {
+   "kind": "indel",
+   "d_auc": -0.004355970504281603
+  },
+  "fresh|fr@fresh|D2": {
+   "kind": "sub_gross",
+   "d_auc": -0.00011379520973564539
+  },
+  "fresh|fr@fresh|E": {
+   "kind": "sub_subtle",
+   "d_auc": 0.0
+  },
+  "fresh|fr@fresh|ALL": {
+   "kind": "indel",
+   "d_auc": -0.0041804597473305005
+  },
+  "fresh|fr@fresh|ALLnoD": {
+   "kind": "sub_subtle",
+   "d_auc": -6.714035787724892e-05
+  }
+ }
+}

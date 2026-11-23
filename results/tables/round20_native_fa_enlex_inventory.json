@@ -1,0 +1,141 @@
+{
+ "practice": {
+  "correct_tokens": 18875,
+  "guessed_tokens": 312,
+  "fa_total": 636,
+  "guessed_fa": 98,
+  "by_class": {
+   "acronym": {
+    "tokens": 20,
+    "token_pct_of_all": 0.10596026490066225,
+    "fa": 6,
+    "fa_pct_of_all_fa": 0.9433962264150944,
+    "fa_rate": 30.0
+   },
+   "foreign": {
+    "tokens": 8,
+    "token_pct_of_all": 0.0423841059602649,
+    "fa": 0,
+    "fa_pct_of_all_fa": 0.0,
+    "fa_rate": 0.0
+   },
+   "morphology": {
+    "tokens": 44,
+    "token_pct_of_all": 0.23311258278145697,
+    "fa": 12,
+    "fa_pct_of_all_fa": 1.8867924528301887,
+    "fa_rate": 27.272727272727273
+   },
+   "compound": {
+    "tokens": 90,
+    "token_pct_of_all": 0.4768211920529801,
+    "fa": 32,
+    "fa_pct_of_all_fa": 5.031446540880503,
+    "fa_rate": 35.55555555555556
+   },
+   "name": {
+    "tokens": 106,
+    "token_pct_of_all": 0.56158940397351,
+    "fa": 44,
+    "fa_pct_of_all_fa": 6.918238993710692,
+    "fa_rate": 41.509433962264154
+   },
+   "other": {
+    "tokens": 44,
+    "token_pct_of_all": 0.23311258278145697,
+    "fa": 4,
+    "fa_pct_of_all_fa": 0.6289308176100629,
+    "fa_rate": 9.090909090909092
+   }
+  },
+  "fit_half_fa_examples": {
+   "compound": [
+    "Whitehaven",
+    "Whitehaven",
+    "Dowson",
+    "Morpeth",
+    "Birkenhead's",
+    "Morpeth",
+    "Birkenhead's",
+    "stamens",
+    "stamens",
+    "Lateran",
+    "Lisboa",
+    "Lisboa",
+    "Sandinsky",
+    "Sandinsky",
+    "Gilaki",
+    "Gilaki",
+    "Ehrenstrahl",
+    "Ehrenstrahl",
+    "Ehrenstrahl",
+    "Ehrenstrahl"
+   ],
+   "morphology": [
+    "subtended",
+    "Beiras",
+    "Beiras",
+    "stealthily,",
+    "stealthily,",
+    "Ocelots",
+    "Ocelots"
+   ],
+   "name": [
+    "Thirsk",
+    "Thirsk",
+    "Kham",
+    "Kham",
+    "Mueang",
+    "Magdeburg",
+    "Sauli,",
+    "Douro,",
+    "Douro,",
+    "Ayurveda,",
+    "Ayurveda,",
+    "Elmar.",
+    "Erzberger",
+    "Chhappan",
+    "Bhog",
+    "Chhappan",
+    "Bhog",
+    "Aristarchus",
+    "Aristarchus",
+    "Uthappa",
+    "Uthappa",
+    "Chhappan",
+    "Chhappan",
+    "Lakkha"
+   ],
+   "acronym": [
+    "(NSW)",
+    "(NSW)"
+   ]
+  }
+ },
+ "fleurs_train": {
+  "sentences": 1000,
+  "word_tokens": 20711,
+  "guessed_pct": 1.786490270870552,
+  "by_class_pct": {
+   "acronym": 0.17864902708705518,
+   "foreign": 0.1013953937521124,
+   "morphology": 0.2848727729226015,
+   "compound": 0.3428129979238086,
+   "name": 0.5504321375114674,
+   "other": 0.3283279416735068
+  }
+ },
+ "cv_dev": {
+  "sentences": 16401,
+  "word_tokens": 157595,
+  "guessed_pct": 2.6885370728766778,
+  "by_class_pct": {
+   "acronym": 0.015863447444398618,
+   "foreign": 0.015228909546622671,
+   "morphology": 0.4029315650877249,
+   "compound": 0.7944414480154828,
+   "name": 0.9105618833084806,
+   "other": 0.549509819473968
+  }
+ }
+}

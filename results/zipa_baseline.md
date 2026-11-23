@@ -52,8 +52,8 @@ Baseline scored 14454 records over 11304 audio files, 17.15 h of audio (speechoc
 | swap benchmark | ja far AUC | 149 | AUC | 0.996 [0.992, 0.999] | 0.986 [0.973, 0.995] | 0.949 [0.934, 0.960] | +0.010 [+0.003, +0.021] | 0.002 | ahead (significant) |
 | swap benchmark | ja near AUC | 150 | AUC | 0.976 [0.966, 0.984] | 0.896 [0.874, 0.916] | 0.726 [0.698, 0.755] | +0.080 [+0.060, +0.101] | 0.002 | ahead (significant) |
 | swap benchmark | ja near hit@5 % | 150 | % | 0.887 [0.827, 0.933] | 0.353 [0.260, 0.480] | 0.032 [0.004, 0.084] | +0.533 [+0.407, +0.633] | 0.002 | ahead (significant) |
-| swap benchmark | es far AUC | 150 | AUC | 0.998 [0.997, 1.000] | 0.997 [0.996, 0.999] | 0.989 [0.985, 0.993] | +0.001 [-0.000, +0.002] | 0.08 | ahead (not significant) |
-| swap benchmark | es near AUC | 150 | AUC | 0.994 [0.990, 0.997] | 0.916 [0.896, 0.933] | 0.811 [0.786, 0.833] | +0.078 [+0.062, +0.097] | 0.002 | ahead (significant) |
+| swap benchmark | es far AUC | 150 | AUC | 0.999 [0.997, 1.000] | 0.997 [0.996, 0.999] | 0.989 [0.985, 0.993] | +0.001 [-0.000, +0.002] | 0.06 | ahead (not significant) |
+| swap benchmark | es near AUC | 150 | AUC | 0.994 [0.991, 0.997] | 0.916 [0.896, 0.933] | 0.811 [0.786, 0.833] | +0.079 [+0.062, +0.097] | 0.002 | ahead (significant) |
 | swap benchmark | es near hit@5 % | 150 | % | 0.993 [0.980, 1.000] | 0.380 [0.247, 0.480] | 0.091 [0.052, 0.137] | +0.613 [+0.513, +0.747] | 0.002 | ahead (significant) |
 | swap benchmark | fr far AUC | 150 | AUC | 0.997 [0.995, 0.998] | 0.995 [0.993, 0.997] | 0.969 [0.963, 0.975] | +0.002 [+0.000, +0.004] | 0.010 | ahead (significant) |
 | swap benchmark | fr near AUC | 150 | AUC | 0.986 [0.981, 0.991] | 0.925 [0.910, 0.939] | 0.809 [0.790, 0.830] | +0.062 [+0.048, +0.075] | 0.002 | ahead (significant) |
@@ -78,7 +78,7 @@ Baseline scored 14454 records over 11304 audio files, 17.15 h of audio (speechoc
 | cv-real test A | zh-CN/A | 386 | ROC AUC | 0.771 [0.720, 0.819] | 0.717 [0.665, 0.769] | 0.738 [0.685, 0.790] | +0.053 [+0.024, +0.083] | < 0.001 | ahead (significant) |
 | cv-real test A | zh-TW/A | 400 | ROC AUC | 0.885 [0.849, 0.916] | 0.844 [0.802, 0.884] | 0.841 [0.801, 0.880] | +0.041 [+0.012, +0.071] | 0.003 | ahead (significant) |
 | cv-real test A | ja/A | 390 | ROC AUC | 0.803 [0.753, 0.849] | 0.735 [0.678, 0.789] | 0.756 [0.705, 0.803] | +0.068 [+0.035, +0.101] | < 0.001 | ahead (significant) |
-| cv-real test A | es/A | 396 | ROC AUC | 0.766 [0.718, 0.811] | 0.677 [0.624, 0.728] | 0.704 [0.653, 0.754] | +0.089 [+0.034, +0.146] | < 0.001 | ahead (significant) |
+| cv-real test A | es/A | 396 | ROC AUC | 0.768 [0.722, 0.813] | 0.677 [0.624, 0.728] | 0.704 [0.653, 0.754] | +0.092 [+0.037, +0.149] | < 0.001 | ahead (significant) |
 | cv-real test A | fr/A | 396 | ROC AUC | 0.789 [0.743, 0.832] | 0.759 [0.710, 0.807] | 0.779 [0.733, 0.823] | +0.030 [-0.000, +0.062] | 0.05 | ahead (not significant) |
 | cv-real test A | de/A | 396 | ROC AUC | 0.829 [0.788, 0.867] | 0.630 [0.573, 0.686] | 0.700 [0.648, 0.750] | +0.199 [+0.147, +0.251] | < 0.001 | ahead (significant) |
 | cv-real test B | de/B | 102 | ROC AUC | 0.534 [0.420, 0.644] | 0.540 [0.410, 0.663] | 0.600 [0.492, 0.710] | -0.005 [-0.144, +0.139] | 0.96 | behind (not significant) |
@@ -150,7 +150,7 @@ GOP scores are unbounded log-posteriors with a floor, so Pearson could understat
  "OMPAL": {
   "baseline_words_unplaced": 0,
   "units": 8156,
-  "ours_cache": "tone_zh_v3z-c0168a11__dbcbc984e4d6da87"
+  "ours_cache": "tone_zh_v3z-c0168a11__fe95440dbacec9ac"
  },
  "swap benchmark": {
   "tone_records": 150,
@@ -197,7 +197,7 @@ GOP scores are unbounded log-posteriors with a floor, so Pearson could understat
   }
  },
  "cv-real": {
-  "ours_fingerprint": "dbcbc984e4d6da87",
+  "ours_fingerprint": "fe95440dbacec9ac",
   "en/A": {
    "n": 400,
    "baseline_failed": 0,

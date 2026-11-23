@@ -40,13 +40,13 @@
   "es": {
    "before": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.736,
-    "pron_tips_per_clip": 1.352
+    "share_clips_with_pron_tip": 0.732,
+    "pron_tips_per_clip": 1.328
    },
    "after": {
     "clips": 250,
-    "share_clips_with_pron_tip": 0.224,
-    "pron_tips_per_clip": 0.284
+    "share_clips_with_pron_tip": 0.184,
+    "pron_tips_per_clip": 0.236
    }
   },
   "fr": {

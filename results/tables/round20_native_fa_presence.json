@@ -1,0 +1,312 @@
+{
+ "en": {
+  "inserted unsaid word (changed)": {
+   "n": 97,
+   "q": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.002
+   ],
+   "share_below_0.5": 0.9690721649484536,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "other changed words": {
+   "n": 623,
+   "q": [
+    0.004,
+    0.078,
+    0.662,
+    0.979,
+    0.995
+   ],
+   "share_below_0.5": 0.08667736757624397,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct function words, not neighbours": {
+   "n": 7910,
+   "q": [
+    0.817,
+    0.985,
+    0.992,
+    0.996,
+    0.999
+   ],
+   "share_below_0.5": 0.00695322376738306,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct content words, not neighbours": {
+   "n": 8471,
+   "q": [
+    0.953,
+    0.988,
+    0.992,
+    0.996,
+    0.998
+   ],
+   "share_below_0.5": 0.0020068468893873217,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "within two words of an inserted word": {
+   "n": 365,
+   "q": [
+    0.002,
+    0.054,
+    0.433,
+    0.972,
+    0.996
+   ],
+   "share_below_0.5": 0.12602739726027398,
+   "fa_rate_if_below_0.5": 1.0
+  }
+ },
+ "de": {
+  "inserted unsaid word (changed)": {
+   "n": 103,
+   "q": [
+    0.0,
+    0.0,
+    0.001,
+    0.002,
+    0.336
+   ],
+   "share_below_0.5": 0.9223300970873787,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "other changed words": {
+   "n": 617,
+   "q": [
+    0.023,
+    0.487,
+    0.813,
+    0.989,
+    0.997
+   ],
+   "share_below_0.5": 0.06969205834683954,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct function words, not neighbours": {
+   "n": 7955,
+   "q": [
+    0.967,
+    0.991,
+    0.994,
+    0.997,
+    0.999
+   ],
+   "share_below_0.5": 0.000502828409805154,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct content words, not neighbours": {
+   "n": 7508,
+   "q": [
+    0.966,
+    0.994,
+    0.996,
+    0.998,
+    0.999
+   ],
+   "share_below_0.5": 0.0010655301012253596,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "within two words of an inserted word": {
+   "n": 396,
+   "q": [
+    0.0,
+    0.009,
+    0.336,
+    0.984,
+    0.997
+   ],
+   "share_below_0.5": 0.14898989898989898,
+   "fa_rate_if_below_0.5": 1.0
+  }
+ },
+ "ko": {
+  "inserted unsaid word (changed)": {
+   "n": 42,
+   "q": [
+    0.0,
+    0.0,
+    0.0,
+    0.001,
+    0.033
+   ],
+   "share_below_0.5": 0.6666666666666666,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "other changed words": {
+   "n": 368,
+   "q": [
+    0.237,
+    0.729,
+    0.934,
+    0.992,
+    0.998
+   ],
+   "share_below_0.5": 0.03260869565217391,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct function words, not neighbours": {
+   "n": 992,
+   "q": [
+    0.946,
+    0.987,
+    0.994,
+    0.998,
+    0.999
+   ],
+   "share_below_0.5": 0.0010080645161290322,
+   "fa_rate_if_below_0.5": 0.0
+  },
+  "correct content words, not neighbours": {
+   "n": 6599,
+   "q": [
+    0.978,
+    0.993,
+    0.996,
+    0.998,
+    0.999
+   ],
+   "share_below_0.5": 0.0006061524473405061,
+   "fa_rate_if_below_0.5": 0.25
+  },
+  "within two words of an inserted word": {
+   "n": 154,
+   "q": [
+    0.001,
+    0.102,
+    0.863,
+    0.993,
+    0.998
+   ],
+   "share_below_0.5": 0.07142857142857142,
+   "fa_rate_if_below_0.5": 0.8181818181818182
+  }
+ },
+ "es": {
+  "inserted unsaid word (changed)": {
+   "n": 113,
+   "q": [
+    0.0,
+    0.0,
+    0.0,
+    0.004,
+    0.068
+   ],
+   "share_below_0.5": 0.9203539823008849,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "other changed words": {
+   "n": 606,
+   "q": [
+    0.012,
+    0.25,
+    0.782,
+    0.995,
+    0.998
+   ],
+   "share_below_0.5": 0.07590759075907591,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct function words, not neighbours": {
+   "n": 10031,
+   "q": [
+    0.97,
+    0.997,
+    0.998,
+    0.999,
+    1.0
+   ],
+   "share_below_0.5": 0.0013956734124214933,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct content words, not neighbours": {
+   "n": 8580,
+   "q": [
+    0.973,
+    0.995,
+    0.997,
+    0.998,
+    0.999
+   ],
+   "share_below_0.5": 0.00011655011655011655,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "within two words of an inserted word": {
+   "n": 428,
+   "q": [
+    0.003,
+    0.04,
+    0.271,
+    0.989,
+    0.998
+   ],
+   "share_below_0.5": 0.1308411214953271,
+   "fa_rate_if_below_0.5": 1.0
+  }
+ },
+ "fr": {
+  "inserted unsaid word (changed)": {
+   "n": 114,
+   "q": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.002
+   ],
+   "share_below_0.5": 0.9298245614035088,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "other changed words": {
+   "n": 602,
+   "q": [
+    0.002,
+    0.059,
+    0.368,
+    0.993,
+    0.999
+   ],
+   "share_below_0.5": 0.11295681063122924,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct function words, not neighbours": {
+   "n": 8692,
+   "q": [
+    0.831,
+    0.989,
+    0.997,
+    0.999,
+    1.0
+   ],
+   "share_below_0.5": 0.004947077772664519,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "correct content words, not neighbours": {
+   "n": 9013,
+   "q": [
+    0.968,
+    0.996,
+    0.998,
+    0.999,
+    1.0
+   ],
+   "share_below_0.5": 0.0022190169754798626,
+   "fa_rate_if_below_0.5": 1.0
+  },
+  "within two words of an inserted word": {
+   "n": 424,
+   "q": [
+    0.0,
+    0.052,
+    0.487,
+    0.992,
+    0.999
+   ],
+   "share_below_0.5": 0.10849056603773585,
+   "fa_rate_if_below_0.5": 1.0
+  }
+ }
+}

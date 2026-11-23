@@ -1,0 +1,166 @@
+{
+ "sizes": {
+  "cmu": 126052,
+  "ls": 200000,
+  "mfa_arpa": 199858,
+  "mfa_ipa": 61061
+ },
+ "packaged_cmudict_words": 126052,
+ "cmu_latest_new_vs_packaged": 0,
+ "cmu_packaged_missing_from_latest": 0,
+ "coverage_of_guessed": {
+  "cmu": {
+   "types": 0.0,
+   "tokens": 0.0,
+   "fa": 0.0,
+   "by_class_tokens": {
+    "acronym": 0.0,
+    "foreign": 0.0,
+    "morphology": 0.0,
+    "compound": 0.0,
+    "name": 0.0,
+    "other": 0.0
+   }
+  },
+  "ls": {
+   "types": 0.3515625,
+   "tokens": 0.3269230769230769,
+   "fa": 0.32653061224489793,
+   "by_class_tokens": {
+    "acronym": 0.0,
+    "foreign": 0.0,
+    "morphology": 0.6363636363636364,
+    "compound": 0.3111111111111111,
+    "name": 0.33962264150943394,
+    "other": 0.22727272727272727
+   }
+  },
+  "mfa_arpa": {
+   "types": 0.3515625,
+   "tokens": 0.3269230769230769,
+   "fa": 0.32653061224489793,
+   "by_class_tokens": {
+    "acronym": 0.0,
+    "foreign": 0.0,
+    "morphology": 0.6363636363636364,
+    "compound": 0.3111111111111111,
+    "name": 0.33962264150943394,
+    "other": 0.22727272727272727
+   }
+  },
+  "mfa_ipa": {
+   "types": 0.1640625,
+   "tokens": 0.14743589743589744,
+   "fa": 0.08163265306122448,
+   "by_class_tokens": {
+    "acronym": 0.0,
+    "foreign": 0.0,
+    "morphology": 0.45454545454545453,
+    "compound": 0.17777777777777778,
+    "name": 0.07547169811320754,
+    "other": 0.045454545454545456
+   }
+  },
+  "ls_hand": {
+   "types": 0.0,
+   "tokens": 0.0,
+   "fa": 0.0,
+   "by_class_tokens": {
+    "acronym": 0.0,
+    "foreign": 0.0,
+    "morphology": 0.0,
+    "compound": 0.0,
+    "name": 0.0,
+    "other": 0.0
+   }
+  }
+ },
+ "letter_table_error": {
+  "ls": {
+   "words": 20000,
+   "per_letter_table": 0.1524287081339713,
+   "per_g2p_en": 0.20475406698564594,
+   "by_class": {
+    "compound": {
+     "per_letter_table": 0.13929715585336627,
+     "per_g2p_en": 0.19725611992859066
+    },
+    "other": {
+     "per_letter_table": 0.18048593648520375,
+     "per_g2p_en": 0.2447501207347333
+    },
+    "morphology": {
+     "per_letter_table": 0.11353137539198166,
+     "per_g2p_en": 0.13362781130930304
+    },
+    "acronym": {
+     "per_letter_table": 0.35714285714285715,
+     "per_g2p_en": 0.7142857142857143
+    }
+   }
+  },
+  "mfa_arpa": {
+   "words": 20000,
+   "per_letter_table": 0.15278288304845922,
+   "per_g2p_en": 0.20515530233412976,
+   "by_class": {
+    "acronym": {
+     "per_letter_table": 0.3333333333333333,
+     "per_g2p_en": 0.7666666666666667
+    },
+    "other": {
+     "per_letter_table": 0.1807082417216337,
+     "per_g2p_en": 0.24498634152841628
+    },
+    "compound": {
+     "per_letter_table": 0.13975337639459776,
+     "per_g2p_en": 0.19759248385202582
+    },
+    "morphology": {
+     "per_letter_table": 0.11401200836537813,
+     "per_g2p_en": 0.13435202050866896
+    }
+   }
+  },
+  "mfa_ipa": {
+   "words": 14906,
+   "per_letter_table": 0.1412474481940627,
+   "per_g2p_en": 0.1917361404149037,
+   "by_class": {
+    "other": {
+     "per_letter_table": 0.17597615698881522,
+     "per_g2p_en": 0.22054785345924585
+    },
+    "acronym": {
+     "per_letter_table": 0.5836177474402731,
+     "per_g2p_en": 0.6313993174061433
+    },
+    "compound": {
+     "per_letter_table": 0.13751921485160223,
+     "per_g2p_en": 0.19396160971187576
+    },
+    "morphology": {
+     "per_letter_table": 0.10790807600211462,
+     "per_g2p_en": 0.15921883260254377
+    }
+   }
+  }
+ },
+ "agreement_with_cmudict": {
+  "ls": {
+   "shared_checked": 30000,
+   "first_reading_equal": 0.9617333333333333,
+   "any_reading_equal": 0.9835
+  },
+  "mfa_arpa": {
+   "shared_checked": 30000,
+   "first_reading_equal": 0.9389,
+   "any_reading_equal": 0.9603
+  },
+  "mfa_ipa": {
+   "shared_checked": 30000,
+   "first_reading_equal": 0.5406,
+   "any_reading_equal": 0.5694333333333333
+  }
+ }
+}

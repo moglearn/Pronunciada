@@ -12,6 +12,8 @@ Clip sets (dev / validation data only, never a held-out test):
                (exercises the error paths: identity steps, word recalibration, coaching)
   so762-train  100 speechocean762 TRAIN clips (seed 19), English learners, own text
   cv-dev-short (round 20, latency) cv-real DEV-half clips of 2.5-5 s (seed 19), own text
+  items:<file> (round 20, false-alarm release check) a fixed list {lang: [[id, audio, text], ...]}, e.g. practice
+               items written by bench/round20_fa_rc/practice_items.py
   fleurs-val-cut (round 20, latency) FLEURS validation clips cut at a word boundary near 3.5 s, text
                cut to the same words (bench/round20_latency/make_cut.py writes the cut list)
 
@@ -86,6 +88,14 @@ def _clips(set_name: str, lang: str, n: int):
         for i, wav in iter_parquet_audio(recs[0]["parquet"], set(by)):
             r = by[i]
             yield r["id"], wav[:r["cut"]], r["text"]
+    elif set_name.startswith("items:"):
+        # (round 20, false-alarm release check) a fixed item list: {lang: [[id, audio path, text], ...]}
+        from pronunciada.audio import load_audio
+
+        with open(set_name[len("items:"):], encoding="utf-8") as f:
+            its = json.load(f).get(lang, [])
+        for cid, audio, text in its[:n]:
+            yield cid, load_audio(audio), text
     else:
         raise SystemExit(f"unknown set {set_name}")
 
