@@ -62,6 +62,7 @@ def test_stale_variants_listed_and_removed_on_request(tmp_path):
 def test_union_file_outputs_bit_identical(monkeypatch, tmp_path):
     """Round-5 outputs, every-stack outputs and the plain model's log-probs, from the single file."""
     monkeypatch.delenv("PRONUNCIADA_BACKBONE", raising=False)
+    monkeypatch.setenv("PRONUNCIADA_PREOPT", "0")
     d = _fake_cache(tmp_path, real=True)
     x = np.random.default_rng(1).standard_normal((420, 80)).astype(np.float32) - 5
     plain = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path))
@@ -80,3 +81,39 @@ def test_union_file_outputs_bit_identical(monkeypatch, tmp_path):
     # batching fetches the log-probs only, whatever the session carries
     assert np.array_equal(r5.posteriors_batch([np.zeros(16000, np.float32)])[0],
                           plain.posteriors_batch([np.zeros(16000, np.float32)])[0])
+
+
+@pytest.mark.model
+def test_preoptimized_graph_bit_identical(monkeypatch, tmp_path):
+    """The saved optimized graph (first load builds it, later loads read it with the optimizer
+    off) gives the same numbers as a session optimized at load; one runtime-built file remains."""
+    monkeypatch.delenv("PRONUNCIADA_BACKBONE", raising=False)
+    monkeypatch.delenv("PRONUNCIADA_ORT_OPTIONS", raising=False)
+    d = _fake_cache(tmp_path, real=True)
+    x = np.random.default_rng(2).standard_normal((380, 80)).astype(np.float32) - 5
+    monkeypatch.setenv("PRONUNCIADA_PREOPT", "0")
+    ref = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path), embeddings="all")
+    assert sorted(f for f in os.listdir(d) if ".emb" in f) == [UNION]
+    os.remove(d / UNION)
+    monkeypatch.setenv("PRONUNCIADA_PREOPT", "1")
+    built = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path), embeddings="all")
+    opt = os.path.basename(A.preoptimized_model_path(str(d / UNION)))
+    assert sorted(f for f in os.listdir(d) if ".emb" in f) == [opt]      # the variant was only a step
+    loaded = A.AcousticModel(MODEL, "int8", threads=2, cache_dir=str(tmp_path), embeddings=True)
+    r5 = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path), embeddings=True)
+    lp, e = ref.posteriors_from_features(x, return_embeddings=True)
+    for m in (built, loaded, r5):
+        assert m.embeddings
+        lp2, e2 = m.posteriors_from_features(x, return_embeddings=True)
+        assert np.array_equal(lp, lp2)
+        for k in e2:
+            assert np.array_equal(e[k], e2[k])
+    assert set(r5.embed_outputs) == set(A.EMBED_OUTPUTS)
+    # a stale variant next to the optimized graph is listed for removal; the graph is not
+    (d / UNION).write_bytes(b"old")
+    assert A.stale_model_variants(MODEL, str(tmp_path)) == [str(d / UNION)]
+    # an unreadable optimized graph is rebuilt
+    (d / opt).write_bytes(b"broken")
+    os.remove(d / UNION)
+    again = A.AcousticModel(MODEL, "int8", threads=1, cache_dir=str(tmp_path), embeddings="all")
+    assert np.array_equal(lp, again.posteriors_from_features(x)) and (d / opt).stat().st_size > 1000

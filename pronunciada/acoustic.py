@@ -13,7 +13,7 @@ import urllib.request
 
 import numpy as np
 
-from ._overrides import apply_ort_options, backbone_file
+from ._overrides import apply_ort_options, backbone_file, ort_options
 from .audio import fbank, load_audio
 from .text.ipa import load_tokens
 
@@ -206,16 +206,79 @@ def embedding_model_path(name: str, precision: str, cache_dir: str | None = None
     return dest
 
 
+def _preopt_tag() -> str:
+    """ONNX Runtime version and machine: an optimized graph is only reused by the same runtime
+    on the same kind of CPU (the optimizer's output may use hardware-specific kernels)."""
+    import platform
+
+    import onnxruntime as ort
+
+    return f"ort{ort.__version__}-{platform.machine() or 'cpu'}"
+
+
+def preoptimized_model_path(src_variant: str) -> str:
+    """`<variant>.ort<version>-<machine>.onnx`: the variant's graph after ONNX Runtime's own
+    load-time optimization (level ORT_ENABLE_ALL, the default), saved by ONNX Runtime."""
+    return src_variant[:-len(".onnx")] + f".{_preopt_tag()}.onnx"
+
+
+def preopt_enabled() -> bool:
+    """PRONUNCIADA_PREOPT=0 loads the backbone the previous way (optimized at every load)."""
+    return os.environ.get("PRONUNCIADA_PREOPT", "1") != "0"
+
+
+def _preoptimized_session(ort, name: str, precision: str, cache_dir, so, providers):
+    """Backbone session with every extra output, loaded from the saved optimized graph with the
+    optimizer off (session creation int8 ~0.55 -> ~0.11 s, fp32 ~0.6 -> ~0.25 s); built on first
+    use from the all-outputs variant, which is deleted again when this call created it, so the
+    cache holds one copy next to the download. ONNX Runtime runs the same optimized graph either
+    way: log-probs and activations are bit-identical to a session optimized at load."""
+    src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+    union = _variant_path(src, ALL_LAYER_OUTPUTS)
+    dest = preoptimized_model_path(union)
+    if os.path.exists(dest) and os.path.getmtime(dest) >= os.path.getmtime(src):
+        level = so.graph_optimization_level
+        so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
+        try:
+            return ort.InferenceSession(dest, so, providers=providers)
+        except Exception:  # noqa: BLE001  (unreadable / other build: rebuilt below)
+            so.graph_optimization_level = level
+    had_union = os.path.exists(union) and os.path.getmtime(union) >= os.path.getmtime(src)
+    path = embedding_model_path(name, precision, cache_dir, ALL_LAYER_OUTPUTS)
+    part = f"{dest}.{os.getpid()}.part"
+    so.optimized_model_filepath = part
+    try:
+        sess = ort.InferenceSession(path, so, providers=providers)
+    finally:
+        so.optimized_model_filepath = ""
+    if os.path.exists(part):
+        os.replace(part, dest)
+        if not had_union:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+    return sess
+
+
 def stale_model_variants(name: str = "zipa-small-crctc-500k", cache_dir: str | None = None) -> list[str]:
-    """Runtime-built backbone variants in the model cache that this version no longer reads:
+    """Runtime-built backbone copies in the model cache that this version no longer reads:
     earlier versions wrote one full copy of the backbone per set of extra outputs
-    (`<model>.emb.onnx`, `<model>.emb-<keys>.onnx`), about 67 MB (int8) / 248 MB (fp32) each.
-    Nothing deletes them automatically (another process, possibly an older version, may still be
-    using them); `remove_stale_model_variants` does it on request."""
+    (`<model>.emb.onnx`, `<model>.emb-<keys>.onnx`), about 67 MB (int8) / 248 MB (fp32) each;
+    the all-outputs variant is also stale once its optimized graph for this ONNX Runtime exists,
+    and so are optimized graphs of other ONNX Runtime versions or machines. Nothing deletes them
+    automatically (another process, possibly an older version, may still be using them);
+    `remove_stale_model_variants` does it on request."""
     d = os.path.join(cache_root(cache_dir), "models", name)
     if not os.path.isdir(d):
         return []
-    keep = {os.path.basename(_variant_path(os.path.join(d, f), ALL_LAYER_OUTPUTS)) for f in PRECISION_FILES.values()}
+    keep = set()
+    for f in PRECISION_FILES.values():
+        union = _variant_path(os.path.join(d, f), ALL_LAYER_OUTPUTS)
+        opt = preoptimized_model_path(union)
+        keep.add(os.path.basename(opt))
+        if not (preopt_enabled() and os.path.exists(opt)):
+            keep.add(os.path.basename(union))
     bases = tuple(f[:-len(".onnx")] + ".emb" for f in PRECISION_FILES.values())
     return sorted(os.path.join(d, f) for f in os.listdir(d)
                   if f.endswith(".onnx") and f not in keep and any(f.startswith(b + ".") or f.startswith(b + "-")
@@ -271,27 +334,43 @@ class AcousticModel:
         model_path = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
         self.embeddings = False
         self.embed_outputs = embed_outputs_for(embeddings) if embeddings else {}
-        if embeddings:
-            try:
-                model_path = embedding_model_path(name, precision, cache_dir, self.embed_outputs)
-                self.embeddings = True
-            except (OSError, ValueError):
-                pass        # fall back to the plain model: no embeddings, same log-probs
         tok_path = ensure_model_file(name, "tokens.txt", cache_dir)
 
         ort.set_default_logger_severity(3)
-        so = ort.SessionOptions()
-        so.log_severity_level = 3
-        # The memory-pattern planner keeps one preallocated block per input shape it has seen,
-        # and every clip length is a new shape: about +20 MB after a few calls, growing with
-        # use. Without it the outputs are bit-identical and a run is ~0.5 ms slower.
-        so.enable_mem_pattern = False
-        if threads:
-            so.intra_op_num_threads = int(threads)
-            so.inter_op_num_threads = 1
-        apply_ort_options(so, "backbone")
-        self.session = ort.InferenceSession(model_path, so,
-                                            providers=providers or ["CPUExecutionProvider"])
+        providers = providers or ["CPUExecutionProvider"]
+
+        def options():
+            so = ort.SessionOptions()
+            so.log_severity_level = 3
+            # The memory-pattern planner keeps one preallocated block per input shape it has
+            # seen, and every clip length is a new shape: about +20 MB after a few calls, growing
+            # with use. Without it the outputs are bit-identical and a run is ~0.5 ms slower.
+            so.enable_mem_pattern = False
+            if threads:
+                so.intra_op_num_threads = int(threads)
+                so.inter_op_num_threads = 1
+            apply_ort_options(so, "backbone")
+            return so
+
+        self.session = None
+        # saved optimized graph: only for the default configuration (no PRONUNCIADA_BACKBONE /
+        # PRONUNCIADA_ORT_OPTIONS override, CPU provider); anything going wrong falls back below
+        if embeddings and preopt_enabled() and backbone_file() is None and ort_options() is None \
+                and list(providers) == ["CPUExecutionProvider"] \
+                and set(self.embed_outputs.values()) <= set(ALL_LAYER_OUTPUTS.values()):
+            try:
+                self.session = _preoptimized_session(ort, name, precision, cache_dir, options(), providers)
+                self.embeddings = True
+            except Exception:  # noqa: BLE001
+                self.session = None
+        if self.session is None:
+            if embeddings:
+                try:
+                    model_path = embedding_model_path(name, precision, cache_dir, self.embed_outputs)
+                    self.embeddings = True
+                except (OSError, ValueError):
+                    pass        # fall back to the plain model: no embeddings, same log-probs
+            self.session = ort.InferenceSession(model_path, options(), providers=providers)
 
         self.tokens = load_tokens()
         with open(tok_path, encoding="utf-8") as f:
