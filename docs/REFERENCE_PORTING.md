@@ -19,6 +19,8 @@ by line to C++, Swift, Kotlin or Rust. It gives the same numbers as the producti
 | tree ensembles, Platt / isotonic maps, log-odds | `calibrate.TreeEnsemble`, `Head`, `LevelModel` | `calibrate.py` |
 | strictness blend, logit, sigmoid | `calibrate.blend_logit`, `blend` | `calibrate.py` |
 | omission probability, prosody-channel word probability | `calibrate.present_prob`, `prosody_prob` | `scorer._present_prob`, `_pros_prob` |
+| per-sound feature table, calibrator input rows, word table | `features.phone_table`, `matrix`, `word_table` | `features.py`, `variants.NativeStats` |
+| evidence -> universal sound log-odds (+ bias) -> word log-odds | `pipeline.universal_scores` | first part of `Scorer._calibrate` |
 | .npz reader | `npz.py` | `numpy.load` |
 
 Input: the adapted log-posteriors `lp[T][127]` (backbone output after the language's adapter,
@@ -33,9 +35,11 @@ Not covered, and why:
 - Before the evidence: audio decoding, resampling, fbank (kaldi-native-fbank), the backbone (ONNX
   Runtime) and the adapter (a small float32 matrix product whose last bits depend on the BLAS
   library; `pronunciada/adapter.py`).
-- After the evidence: the per-sound feature table `features.phone_table` (native-statistics
-  z-scores, NumPy-compatible quantiles, word and utterance aggregates). The calibrators take its
-  rows as input; the golden vectors contain such rows.
+- After the universal sound model and the word model: the language's own sound model where
+  `calib/config.json` names one (English: `sound_B`), the round-16 contrast caps (a 6-term dot
+  product evaluated by BLAS, whose last bits depend on the library), the round-2 word regression,
+  the sentence table and sentence models (they read delivery and F0 features), and the
+  per-language word factors of `Scorer._assemble` other than the omission formula.
 - Everything that reads encoder activations (identity and contrast heads, word-score projection,
   English sound embeddings, sentence delivery projection), the three small ONNX models
   (`prosody/stress_v3.onnx`, `prosody/tone_zh_v3z.onnx`, `calib/seqhead_en.onnx`), the F0 tracker,
@@ -75,7 +79,8 @@ strictness clipped to [-0.5, 1.5].
 fp32 backbone, all 200 clips of the practice list (`bench/opt/clips.json`, 20 FLEURS train clips
 per language, ten languages); evidence in three modes per clip (plain, insertion on, first word
 wildcarded); calibration on the universal sound model (three heads), the word model and the
-omission formula:
+omission formula; feature table and universal / word log-odds computed end to end by the
+reference from the posteriors:
 
 | quantity | max abs difference, every language |
 |---|---|
@@ -85,12 +90,14 @@ omission formula:
 | sound P(lenient), P(strict), 0-2 regression, their log-odds | 0 |
 | word log-odds (lenient, strict) | 0 |
 | omission probability, strictness blend | 0 |
+| feature table (every column) | 5.96e-8, only in `peak_post` and the columns computed from it |
+| universal sound log-odds with bias (lenient, strict), 0-2 regression; word log-odds from the reference's own table | 0 |
 
 The tests assert these bounds on the golden vectors and on one further practice clip per language.
 
 ## Golden vectors
 
-`tests/data/reference_golden/<lang>.json.gz` (ten files, 1.36 MB in total), written by
+`tests/data/reference_golden/<lang>.json.gz` (ten files, 1.40 MB in total), written by
 `scripts/make_reference_golden.py` from the two shortest practice clips of each language.
 Each file is gzip-compressed UTF-8 JSON:
 
@@ -103,7 +110,10 @@ Each file is gzip-compressed UTF-8 JSON:
                        "wild_slots", "exact", "expected": evidence}],
             "sound_model": {"file", "rows": [[...]], "expected": [{head: value}]},
             "word_model":  {"file", "rows": [[...]], "expected": [{head: value}]},
-            "omission":    {"file", "llr_del": [[...]], "expected": [...]}}]}
+            "omission":    {"file", "llr_del": [[...]], "expected": [...]},
+            "dur", "target": {"words", "syllables", "phones"},
+            "universal": {"expected": {"sound": {"z_len", "z_str", "reg"},
+                                       "word": {"z_len", "z_str"}}}}]}
 ```
 
 The stored posteriors are the real ones clipped below at -24 and rounded to 1/256 nat, so they
@@ -114,7 +124,8 @@ cases per clip: `plain`, `insertion`, `wild_word0` (whole clip), `exact_crop` (f
 `n_frames`, `frame_shift`, `free_tokens` ([token, start, end]), `llr_ins` (list or null) and
 `slots` with `llr_sub`, `llr_del`, `start_frame`, `end_frame`, `alt_index`, `peak_post`, `heard`,
 `n_frames`. Non-finite floats are the strings "NaN", "Infinity", "-Infinity". Calibration rows
-are in the model's column order (meta `num`, then `cat`).
+are in the model's column order (meta `num`, then `cat`); they were built by production from the
+stored posteriors. `universal` is `pipeline.universal_scores` on the `plain` evidence.
 
 ## Files a port loads
 
@@ -124,6 +135,9 @@ are in the model's column order (meta `num`, then `cat`).
 | `pronunciada/data/calib/sound_U.npz` (the universal sound model, `calib/config.json` key `universal_sound_model`) | zip of .npy arrays + JSON meta | 291 KB |
 | `pronunciada/data/calib/word.npz` | same | 119 KB |
 | `pronunciada/data/calib/omission.json` | JSON (`coef`, `clip`) | 8.3 KB |
+| `pronunciada/data/calib/config.json` | JSON (per-language logit `bias`) | 3.9 KB |
+| `pronunciada/data/calib/phone_dist.npz` | 127 x 127 float32 distances + token list | 13 KB |
+| `pronunciada/data/native/<lang>.json` | JSON native statistics (count, mean, std per phone / position / class) | 93-227 KB |
 
 The .npy and tree array layouts are described in `pronunciada/reference/npz.py` and
 `pronunciada/reference/calibrate.py`.
