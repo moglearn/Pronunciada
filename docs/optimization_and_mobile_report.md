@@ -3,11 +3,28 @@
 Status (2026-11-23): baselines recorded on commit cbc6d6a (`main` 04e5c8d plus the harness);
 candidates measured. No package default and no shipped file has been changed by this work.
 
+**Model files after the merge with the two-layer work.** The measurements below describe the code of
+`opt-phase1-code` / `opt-phase2`, where the default load saved and then read a pre-optimized copy of the
+backbone graph (`model[.int8].emb-…-final.ort<version>-<platform>-<hash>.onnx`). That is no longer the
+default. The model cache now keeps **one backbone file per precision**: the downloaded model with every
+extra encoder output declared (`model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx`, 260.3 MB for fp32;
+`model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx`, 70.7 MB for int8; MB = 10^6 bytes), with a small
+`.json` sidecar of sizes and SHA-256. Once that file is built and checked, the plain download is removed
+(`PRONUNCIADA_KEEP_DOWNLOAD=1` keeps it) and can be restored from it byte for byte. ONNX Runtime optimizes
+the graph at load. The pre-optimized copy is written and read only with `PRONUNCIADA_PREOPT=1`.
+Outputs are identical either way. On a fresh cache the first load takes 1.90 s for fp32 and 1.72 s for
+int8, because it builds the file and checks it. Later loads take 0.42-0.43 s for fp32 and 0.49-0.63 s for
+int8, against 0.24 s and 0.12-0.13 s with the pre-optimized copy. Peak memory of the first load falls from
+842 to 415 MB for fp32 and from 346 to 219 MB for int8. The load figures and file names in the sections
+below are those of the pre-optimized default. The bench/opt harness reads the plain downloaded files: it
+restores them through the package loader (`bench/opt/common.py`, `default_backbone`) and runs with
+`PRONUNCIADA_KEEP_DOWNLOAD=1`.
+
 ## Summary
 
 - **Code changes, gated in full against the fp32 baseline:** `opt-phase1-code` (7834007) and
   `opt-phase2` (06c7eee) both **pass by identity**: every per-clip output and every table is equal.
-- **Effect of 7834007:**
+- **Effect of 7834007** (its load figures are those of the pre-optimized default, which is now opt-in; see above):
   - steady-state scoring is 0.8–1.7 % faster for fp32 and 1.4–3.0 % faster for int8 (about 10 s clips);
   - a later load takes 0.33 s instead of 0.55 s for fp32 and 0.28 s instead of 0.59 s for int8;
   - the first-ever load is 0.3 s slower for fp32 because it builds the pre-optimized file once;
@@ -19,7 +36,7 @@ candidates measured. No package default and no shipped file has been changed by 
   - `dynamic_block_base` changes outputs and was dropped.
 - **Lossless graph rewrites** (onnxslim, ONNX Runtime offline optimization, quantization pre-process) are
   exactly identical, but save at most 1.4 % on disk and no measurable time. The pre-optimized graph of
-  7834007 already takes the load-time gain.
+  7834007 took the load-time gain (now only with `PRONUNCIADA_PREOPT=1`).
 - **int8 against fp32:** in the gate's terms int8 would fail (59 rows). The speechocean762 sentence accuracy
   correlation is 0.0033 lower, two more Azure rows are significantly behind, and native false alarms are higher
   in every language. The int8 backbone is numerically fragile: a feature change of 1e-4 moves its
@@ -921,7 +938,7 @@ Posterior columns: the backbone alone against fp32 on the 200 practice clips (`s
 | nb4-sym-b128: 4-bit weights, block 128 | 40.9 | 19.9 | 0.433 | 1.2e-02 | 3.04 % | 0.00292 (0.00 %) | – | – | – | – | – | – |
 | s8-minmax: static int8 (QDQ, per-channel weights, fixed activation scales, MinMax calibration) | 71.8 | 7.77 | 0.525 | 2.1e-02 | 4.00 % | 4.14 (2.22 %) | – | – | – | – | – | – |
 
-Load of fp32 through PRONUNCIADA_BACKBONE (`fp32-file`): 0.61 s; the default fp32 (pre-optimized graph): 0.52 s.
+Load of fp32 through PRONUNCIADA_BACKBONE (`fp32-file`): 0.61 s; fp32 with the pre-optimized graph (the default when this was measured; now `PRONUNCIADA_PREOPT=1`): 0.52 s.
 <!-- /opt:ondevice-candidates -->
 
 ### Full gate, budget rule and strict rule
