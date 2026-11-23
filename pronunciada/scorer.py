@@ -529,7 +529,7 @@ class Scorer:
             slots = [i for k in keep for i in range(*ref.words[k].phones)]
             ev2 = score_reference(lpa, ref, wild_slots=slots)
             tab2 = F.phone_table(lpa, ref, ev2, self.native, dur)
-            for k in ("emb_proj", "proto_cos", "proto_other", "proto_margin", "proto_has"):
+            for k in ("emb_proj", "proto_cos", "proto_other", "proto_margin", "proto_has", "head_cap_z"):
                 if k in c["tab"]:                 # round 12b inputs: kept from the first pass
                     tab2[k] = c["tab"][k]
             c2 = self._calibrate(tab2, ref, dur, c.get("delivery"), c.get("word_pooled"))
