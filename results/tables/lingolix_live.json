@@ -26,7 +26,7 @@
   "responses_used": 3700
  },
  "pronunciada": {
-  "outputs_from": "$PRONUNCIADA_CACHE/round19/integrator/frozen_cache",
+  "outputs_from": "$PRONUNCIADA_CACHE",
   "version": "1.0.2"
  },
  "benchmark": {
@@ -37,10 +37,10 @@
   "adapter": "vendors.lingolix of lingolix/pronunciation-benchmark (identical at v2026.10 and main f8750aa)"
  },
  "git": {
-  "commit": "39e3cdc4aa3f90926cb6aaecbe781e2476d88e99",
+  "commit": null,
   "dirty": false
  },
- "made_utc": "2026-11-22T22:01:42Z",
+ "made_utc": "2026-11-23T07:52:07Z",
  "method": "metrics of bench/third_party/lingolix.py (report.py re-implemented, v2026.10 and main rules); Lingolix responses reduced with the benchmark's Lingolix adapter; 95% intervals: 1,000 utterance resamples (test 1), resamples of groups of clips sharing the first four digits of the utterance id (test 2; close to speakers, not identical), cluster resamples (fleurs-swap), seed 0; delta = Pronunciada - Lingolix on the same resamples, two-sided p; FA@80 lower is better; 'published' = Lingolix's own figure from its 11 Oct 2026 post (rounded, no interval)",
  "tier1": {
   "en": {
@@ -277,9 +277,9 @@
    },
    "pronunciada_verdicts": {
     "recall": 0.8333,
-    "precision": 0.3606,
-    "f1": 0.5034,
-    "fa": 0.0806,
+    "precision": 0.3676,
+    "f1": 0.5102,
+    "fa": 0.0782,
     "recall_by_bucket": {
      "indel": [
       17,
@@ -305,10 +305,10 @@
    },
    "roc_auc": {
     "pronunciada": {
-     "value": 0.9854,
+     "value": 0.9858,
      "ci": [
-      0.976,
-      0.9926
+      0.9765,
+      0.9929
      ]
     },
     "lingolix": {
@@ -318,21 +318,21 @@
       0.9909
      ]
     },
-    "delta": 0.0084,
+    "delta": 0.0089,
     "n_common": 190,
     "delta_ci": [
-     -0.0028,
-     0.0244
+     -0.0022,
+     0.0249
     ],
-    "p": 0.1838,
+    "p": 0.1578,
     "published": 0.97
    },
    "fpr_at_recall_80": {
     "pronunciada": {
-     "value": 0.0139,
+     "value": 0.0127,
      "ci": [
-      0.0075,
-      0.0228
+      0.0067,
+      0.0212
      ]
     },
     "lingolix": {
@@ -342,13 +342,13 @@
       0.0189
      ]
     },
-    "delta": 0.0024,
+    "delta": 0.0012,
     "n_common": 190,
     "delta_ci": [
-     -0.0036,
-     0.0081
+     -0.0043,
+     0.0062
     ],
-    "p": 0.4615,
+    "p": 0.7552,
     "published": 0.02
    }
   },
@@ -876,9 +876,9 @@
    },
    "pronunciada_verdicts": {
     "recall": 0.8333,
-    "precision": 0.3989,
-    "f1": 0.5396,
-    "fa": 0.0721,
+    "precision": 0.4076,
+    "f1": 0.5474,
+    "fa": 0.0695,
     "recall_by_bucket": {
      "indel": [
       17,
@@ -904,10 +904,10 @@
    },
    "roc_auc": {
     "pronunciada": {
-     "value": 0.9873,
+     "value": 0.9877,
      "ci": [
-      0.9785,
-      0.9941
+      0.9789,
+      0.9946
      ]
     },
     "lingolix": {
@@ -917,21 +917,21 @@
       0.9938
      ]
     },
-    "delta": 0.0073,
+    "delta": 0.0078,
     "n_common": 190,
     "delta_ci": [
-     -0.0037,
-     0.0233
+     -0.0033,
+     0.024
     ],
-    "p": 0.2837,
+    "p": 0.2438,
     "published": null
    },
    "fpr_at_recall_80": {
     "pronunciada": {
-     "value": 0.0102,
+     "value": 0.0089,
      "ci": [
-      0.0044,
-      0.0184
+      0.0034,
+      0.0164
      ]
     },
     "lingolix": {
@@ -941,13 +941,13 @@
       0.0139
      ]
     },
-    "delta": 0.0026,
+    "delta": 0.0013,
     "n_common": 190,
     "delta_ci": [
-     -0.0019,
-     0.0071
+     -0.0031,
+     0.0052
     ],
-    "p": 0.4136,
+    "p": 0.7752,
     "published": null
    }
   },

@@ -2,8 +2,8 @@
  "dataset": "ompal",
  "tone_model": "tone_zh_v3z",
  "tone_model_sha1": "c0168a11",
- "pronunciada_fingerprint": "dbcbc984e4d6da87",
- "ours_cache": "tone_zh_v3z-c0168a11__dbcbc984e4d6da87",
+ "pronunciada_fingerprint": "fe95440dbacec9ac",
+ "ours_cache": "tone_zh_v3z-c0168a11__fe95440dbacec9ac",
  "azure_locales": [
   "zh-TW",
   "zh-CN"
