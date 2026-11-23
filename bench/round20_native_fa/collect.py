@@ -134,7 +134,7 @@ def detail(sc, res) -> dict:
 
 
 def run(lang: str, part: str | None, limit: int | None, threads: int = 2, tag: str | None = None,
-        only: set | None = None) -> Path:
+        only: set | None = None, oracle: str | None = None) -> Path:
     from bench.third_party.lingolix import reduce_azure_shape
     from pronunciada import Scorer
     from pronunciada.compat.azure import to_azure
@@ -164,7 +164,12 @@ def run(lang: str, part: str | None, limit: int | None, threads: int = 2, tag: s
             _REC.clear()
             t = time.perf_counter()
             try:
-                res = sc.score(it["audio"], it["target"])
+                if oracle:                       # part 3 phase 0: guessed words given an oracle reading
+                    from bench.round20_native_fa.enlex import oracle_reference
+
+                    res = sc.score(it["audio"], oracle_reference(sc.g2p, it["target"], oracle))
+                else:
+                    res = sc.score(it["audio"], it["target"])
                 lat = (time.perf_counter() - t) * 1000
                 raw = to_azure(res, granularity="Phoneme", enable_miscue=True, phoneme_alphabet="IPA",
                                layout="rest", grading_system="HundredMark")
@@ -203,6 +208,7 @@ def main(argv=None):
     ap.add_argument("--workers", type=int, default=1)
     ap.add_argument("--tag")
     ap.add_argument("--only", help="json file: item ids to score (the rest is taken from the untagged dump)")
+    ap.add_argument("--oracle", help="part 3 phase 0: morph | ls | g2pen | best")
     a = ap.parse_args(argv)
     for v in ("OMP_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS"):
         os.environ.setdefault(v, "1")
@@ -212,6 +218,7 @@ def main(argv=None):
 
         ps = [subprocess.Popen([sys.executable, "-m", "bench.round20_native_fa.collect", "--lang", a.lang,
                                 "--part", f"{k}/{a.workers}"] + (["--tag", a.tag] if a.tag else [])
+                             + (["--oracle", a.oracle] if a.oracle else [])
                              + (["--only", a.only] if a.only else []))
               for k in range(a.workers)]
         codes = [p.wait() for p in ps]
@@ -220,7 +227,7 @@ def main(argv=None):
         return
     only = set(json.loads(Path(a.only).read_text())) if a.only else None
     for lang in a.lang.split(","):
-        run(lang, a.part, a.limit, tag=a.tag, only=only)
+        run(lang, a.part, a.limit, tag=a.tag, only=only, oracle=a.oracle)
 
 
 if __name__ == "__main__":
