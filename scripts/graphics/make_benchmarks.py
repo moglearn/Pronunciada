@@ -14,7 +14,7 @@ import json
 import math
 import re
 
-from common import INK, ROOT, font_css, render
+from common import ROOT
 
 HOME = ROOT / "site/index.html"
 OUT = ROOT / "site/benchmarks/index.html"
@@ -574,19 +574,11 @@ def page() -> str:
 
 
 def github_charts() -> None:
-    """Dark renders of the two charts for the write-up on GitHub, using the page's own styles."""
-    home = HOME.read_text(encoding="utf-8")
-    css = re.search(r"<style>(.*?)</style>", home, re.S).group(1)
-    dark = (":root{--text:#fff;--soft:rgba(255,255,255,.62);--faint:rgba(255,255,255,.5);--rule:rgba(255,255,255,.14);"
-            f"--page:{INK};--card:{INK};--pale:#34343a;--accent:linear-gradient(90deg,#7db8ff,#5eead4)}}"
-            f"body{{background:{INK}}}.chart{{box-shadow:none;margin:0;border-radius:0;padding:36px 40px 30px}}"
-            ".sc-pt.own{fill:#fff}.sc-join.own{stroke:#fff}.size .ch-key i.own{background:#fff}"
-            ".sc-pt.oth,.size .ch-key i.oth{fill:#77777f;background:#77777f}.sc-join.oth{stroke:#77777f}"
-            ".sc-pt.ring{stroke:#77777f}.size .ch-key i.ring{box-shadow:inset 0 0 0 1.6px #77777f}"
-            ".sp-row.own .ch-track i{background:#fff}.ch-row b,.sp-row b{color:rgba(255,255,255,.5)}.ch-row.own b,.sp-row.own b{color:#fff}")
-    head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{EXTRA_CSS}{dark}</style></head><body>"
-    render(head + chart_size() + "</body></html>", ROOT / "docs/assets/chart-size.png", 920, 922)
-    render(head + chart_cost() + "</body></html>", ROOT / "docs/assets/chart-cost.png", 920, 1112)
+    """The two charts for the write-up on GitHub, in the page's own style."""
+    from common import render_card
+    css = re.search(r"<style>(.*?)</style>", HOME.read_text(encoding="utf-8"), re.S).group(1) + EXTRA_CSS
+    render_card(chart_size(), css, ROOT / "docs/assets/chart-size.png")
+    render_card(chart_cost(), css, ROOT / "docs/assets/chart-cost.png")
 
 
 if __name__ == "__main__":

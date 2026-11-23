@@ -22,7 +22,7 @@ The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchma
 
 A 45-second overview, with sound:
 
-https://github.com/user-attachments/assets/f5932a3a-322f-442c-852b-ef7416d50f58
+https://github.com/user-attachments/assets/b8641ae2-621a-49da-9b09-d404ec9887eb
 
 ## Quick start
 
@@ -87,7 +87,7 @@ The model is downloaded to `~/.cache/pronunciada` on first use.
 
 ## Benchmarks
 
-All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. An asterisk in a chart, and bold in a table, marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). The charts are generated from the scoreboard by `scripts/graphics/make_charts.py`. Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
+All comparisons are with the Azure Pronunciation Assessment REST API (region `westus`, November 2026, one request per recording). Both systems received the same audio and reference text. Differences are significant unless a chart marks them n.s., and bold in a table marks the better system where the difference is significant (paired bootstrap over speakers, p < 0.05). The charts are generated from the scoreboard by `scripts/graphics/make_site.py`. Confidence intervals and every other table are in [results/SCOREBOARD.md](results/SCOREBOARD.md).
 
 ### Summary
 
@@ -171,16 +171,13 @@ Azure was not tuned on any of this data. Pronunciada's calibration models were f
 
 ### On-device latency
 
-Median time to score one of 200 speechocean762 recordings (mean length 3.4 s), Apple M3 Pro, CPU only.
-
-| Model | 4 threads | 1 thread |
-| --- | --- | --- |
-| fp32 (260 MB) | 52 ms | 98 ms |
-| int8 (71 MB) | 41 ms | 65 ms |
+Scoring a 3.4-second recording with the 71 MB model takes about 40 ms on an Apple M3 Pro with four CPU threads, and 65 ms with one (median over 200 speechocean762 recordings, CPU only).
 
 Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 516 MB and 342 MB measured). The int8 model is optimized for edge devices: a 71 MB file on one CPU thread. The comparisons with Azure use the fp32 model; with int8 the tally is 47, 33 and 4. There are no packaged iOS or Android builds yet.
 
-For recordings of about ten seconds (150 FLEURS test recordings per language), the median is 0.33 s to 0.47 s on one thread, depending on the language. That is about the same rate as the one-thread figure above, 98 ms for 3.4 seconds of audio. A request to Azure's REST API with recordings of the same length took 1.8 s to 3.0 s from the same laptop, upload included. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
+For recordings of about ten seconds (150 FLEURS test recordings per language), the median is 0.33 s to 0.47 s on one thread, depending on the language. A request to Azure's REST API with recordings of the same length took 1.8 s to 3.0 s from the same laptop, upload included. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
+
+![Time to score a 9-second recording: Pronunciada 0.33 s on the laptop with one CPU thread, Azure 2.34 s for the request to the cloud and back.](docs/assets/chart-speed.png)
 
 ### Compared with ZIPA alone
 
