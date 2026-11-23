@@ -754,7 +754,7 @@ def public_path(p: Path) -> str:
 # ── the command line shared by the runners ─────────────────────────────────────
 
 def live_root(vendor, dry: bool, base: Path | None = None) -> Path:
-    b = Path(base) if base else CACHE / "third_party" / f"{vendor.NAME.lower()}_live"
+    b = Path(base) if base else CACHE / "third_party" / getattr(vendor, "STEM", f"{vendor.NAME.lower()}_live")
     return b / DRY_SUBDIR if dry else b
 
 
@@ -883,7 +883,7 @@ def report(vendor, items: list[Item], root: Path, *, dry: bool, n_boot: int, out
     A = collect_answers(vendor, items, root)
     R = evaluate_sets(vendor, A, n_boot)
     L = ledger_summary(Ledger(root / LEDGER))
-    stem = vendor.NAME.lower() + "_live"
+    stem = getattr(vendor, "STEM", vendor.NAME.lower() + "_live")
     if dry:
         out_md = out_md or root / "report" / f"{stem}.md"
         out_json = out_json or root / "report" / f"{stem}.json"
@@ -896,13 +896,15 @@ def report(vendor, items: list[Item], root: Path, *, dry: bool, n_boot: int, out
     write_atomic(Path(out_json), json.dumps(clean(doc), ensure_ascii=False, indent=1))
     write_atomic(Path(out_md), markdown(vendor, A, R, L, dry=dry, n_boot=n_boot))
     print(f"wrote {public_path(Path(out_md))} and {public_path(Path(out_json))}", file=sys.stderr)
+    if hasattr(vendor, "after_report"):
+        vendor.after_report(A, root)
     return doc
 
 
 def main(vendor, argv=None) -> int:
     import argparse
 
-    ap = argparse.ArgumentParser(prog=f"python -m bench.third_party.{vendor.NAME.lower()}_live",
+    ap = argparse.ArgumentParser(prog=f"python -m bench.third_party.{getattr(vendor, 'STEM', vendor.NAME.lower() + '_live')}",
                                  description=f"{vendor.NAME} benchmark runner: dry run by default; see "
                                              f"results/{vendor.WRITEUP}")
     ap.add_argument("--datasets", nargs="+", default=list(vendor.ALLOWED), help=f"of {', '.join(vendor.ALLOWED)}")
