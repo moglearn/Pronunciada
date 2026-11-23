@@ -1,0 +1,50 @@
+{
+ "en": {
+  "items": 97,
+  "neighbours": 194,
+  "neighbour_fa_default": 31.443298969072163,
+  "neighbour_fa_explain_away": 3.6082474226804124,
+  "inserted_caught_default": 100.0,
+  "inserted_caught_explain_away": 100.0,
+  "other_words": 1099,
+  "other_fa_default": 5.641492265696088,
+  "other_fa_explain_away": 3.4576888080072794,
+  "neighbour_mean_score_gain": 0.23882989690721648
+ },
+ "de": {
+  "items": 103,
+  "neighbours": 206,
+  "neighbour_fa_default": 34.95145631067961,
+  "neighbour_fa_explain_away": 5.339805825242719,
+  "inserted_caught_default": 100.0,
+  "inserted_caught_explain_away": 100.0,
+  "other_words": 1022,
+  "other_fa_default": 2.6418786692759295,
+  "other_fa_explain_away": 1.8590998043052838,
+  "neighbour_mean_score_gain": 0.2336747572815534
+ },
+ "es": {
+  "items": 114,
+  "neighbours": 228,
+  "neighbour_fa_default": 31.57894736842105,
+  "neighbour_fa_explain_away": 4.824561403508772,
+  "inserted_caught_default": 100.0,
+  "inserted_caught_explain_away": 100.0,
+  "other_words": 1414,
+  "other_fa_default": 2.6166902404526167,
+  "other_fa_explain_away": 1.768033946251768,
+  "neighbour_mean_score_gain": 0.2454473684210526
+ },
+ "fr": {
+  "items": 114,
+  "neighbours": 228,
+  "neighbour_fa_default": 26.75438596491228,
+  "neighbour_fa_explain_away": 4.824561403508772,
+  "inserted_caught_default": 99.12280701754386,
+  "inserted_caught_explain_away": 97.36842105263158,
+  "other_words": 1371,
+  "other_fa_default": 3.719912472647702,
+  "other_fa_explain_away": 2.698760029175784,
+  "neighbour_mean_score_gain": 0.17546491228070177
+ }
+}

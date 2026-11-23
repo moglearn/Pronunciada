@@ -1,0 +1,2126 @@
+{
+ "tally": {
+  "main": {
+   "ahead": 48,
+   "level": 34,
+   "behind": 2
+  },
+  "rc": {
+   "ahead": 49,
+   "level": 33,
+   "behind": 2
+  },
+  "changed": [
+   {
+    "area": "swap benchmark",
+    "lang": "en",
+    "measure": "far right word",
+    "main": "behind (not significant)",
+    "rc": "ahead (not significant)",
+    "class_main": "level",
+    "class_rc": "level",
+    "down": false,
+    "up": false
+   },
+   {
+    "area": "swap benchmark",
+    "lang": "de",
+    "measure": "native false alarms",
+    "main": "ahead (not significant)",
+    "rc": "ahead (significant)",
+    "class_main": "level",
+    "class_rc": "ahead",
+    "down": false,
+    "up": true
+   }
+  ],
+  "down": []
+ },
+ "lingolix_paired": {
+  "en": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.976832955404384,
+     "rc": 0.976832955404384,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.024737167594310452,
+     "rc": 0.024737167594310452,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9808916058916058,
+     "rc": 0.9808916058916058,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.019305019305019305,
+     "rc": 0.019305019305019305,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "fr": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9599705882352941,
+     "rc": 0.9599705882352941,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01647058823529412,
+     "rc": 0.01647058823529412,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9625551287523119,
+     "rc": 0.9625551287523119,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.011523687580025609,
+     "rc": 0.011523687580025609,
+     "delta": 0.0,
+     "n_common": 190,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "es": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9853501683501683,
+     "rc": 0.9858282828282828,
+     "delta": 0.0004781144781145219,
+     "n_common": 190,
+     "delta_ci": [
+      1.8093228230098294e-05,
+      0.0011760349929184066
+     ],
+     "p": 0.04395604395604396,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.013939393939393939,
+     "rc": 0.012727272727272728,
+     "delta": -0.0012121212121212113,
+     "n_common": 190,
+     "delta_ci": [
+      -0.003701475997897959,
+      0.0
+     ],
+     "p": 0.35564435564435565,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9872555272108844,
+     "rc": 0.9877480158730159,
+     "delta": 0.0004924886621314739,
+     "n_common": 190,
+     "delta_ci": [
+      1.3267210245229699e-05,
+      0.001228827424388501
+     ],
+     "p": 0.04395604395604396,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01020408163265306,
+     "rc": 0.008928571428571428,
+     "delta": -0.0012755102040816323,
+     "n_common": 190,
+     "delta_ci": [
+      -0.0038968046342147057,
+      0.0
+     ],
+     "p": 0.35564435564435565,
+     "significantly_worse": false
+    }
+   }
+  },
+  "de": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9670125517044644,
+     "rc": 0.9672265012123805,
+     "delta": 0.00021394950791608913,
+     "n_common": 190,
+     "delta_ci": [
+      -0.0007534165719583541,
+      0.0009398541359741107
+     ],
+     "p": 0.5414585414585414,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.02053915275994865,
+     "rc": 0.01797175866495507,
+     "delta": -0.0025673940949935796,
+     "n_common": 190,
+     "delta_ci": [
+      -0.004400795480287277,
+      0.006492842843790501
+     ],
+     "p": 0.3876123876123876,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9682464454976303,
+     "rc": 0.9685172647257956,
+     "delta": 0.0002708192281652977,
+     "n_common": 190,
+     "delta_ci": [
+      -0.0006545962979221887,
+      0.0009942316376699318
+     ],
+     "p": 0.4355644355644356,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.01963439404197698,
+     "rc": 0.016926201760324982,
+     "delta": -0.0027081922816519985,
+     "n_common": 190,
+     "delta_ci": [
+      -0.004636846159294541,
+      0.0054613122738235275
+     ],
+     "p": 0.3836163836163836,
+     "significantly_worse": false
+    }
+   }
+  },
+  "ja": {
+   "answers_identical": true,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9226489361702128,
+     "rc": 0.9226489361702128,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.09680851063829787,
+     "rc": 0.09680851063829787,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9301988304093567,
+     "rc": 0.9301988304093567,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.08304093567251462,
+     "rc": 0.08304093567251462,
+     "delta": 0.0,
+     "n_common": 200,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "ko": {
+   "answers_identical": false,
+   "v2026.10": {
+    "roc_auc": {
+     "main": 0.9566865790521705,
+     "rc": 0.9567064914376743,
+     "delta": 1.9912385503806362e-05,
+     "n_common": 190,
+     "delta_ci": [
+      -0.00033662372909701034,
+      0.0004337332494770695
+     ],
+     "p": 0.935064935064935,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.03082437275985663,
+     "rc": 0.030107526881720432,
+     "delta": -0.0007168458781361998,
+     "n_common": 190,
+     "delta_ci": [
+      -0.002831513497118593,
+      0.001519064203135317
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   },
+   "main": {
+    "roc_auc": {
+     "main": 0.9599780145442246,
+     "rc": 0.9600498900727211,
+     "delta": 7.187552849652334e-05,
+     "n_common": 190,
+     "delta_ci": [
+      -0.000301919547850174,
+      0.0005010582038459688
+     ],
+     "p": 0.8451548451548452,
+     "significantly_worse": false
+    },
+    "fpr_at_recall_80": {
+     "main": 0.0258751902587519,
+     "rc": 0.02511415525114155,
+     "delta": -0.00076103500761035,
+     "n_common": 190,
+     "delta_ci": [
+      -0.0029500706917316858,
+      0.0015480776852000826
+     ],
+     "p": 1.0,
+     "significantly_worse": false
+    }
+   }
+  },
+  "tier2": {
+   "pcc_word": {
+    "main": 0.5805085432641618,
+    "rc": 0.5805085432641618,
+    "delta": 0.0
+   },
+   "pcc_utterance": {
+    "main": 0.787924704413397,
+    "rc": 0.787924704413397,
+    "delta": 0.0
+   },
+   "answers_identical": false
+  }
+ },
+ "lingolix_tables": {
+  "a:pcc_utterance": {
+   "name": "the benchmark's 500 clips",
+   "main": 0.7879,
+   "rc": 0.7879,
+   "delta": 0.0
+  },
+  "a:pcc_word": {
+   "name": "the benchmark's 500 clips",
+   "main": 0.5805,
+   "rc": 0.5805,
+   "delta": 0.0
+  },
+  "b:pcc_utterance": {
+   "name": "every clip with a Lingolix answer",
+   "main": 0.792,
+   "rc": 0.792,
+   "delta": 0.0
+  },
+  "b:pcc_word": {
+   "name": "every clip with a Lingolix answer",
+   "main": 0.5732,
+   "rc": 0.5732,
+   "delta": 0.0
+  },
+  "tier2:pcc_word": {
+   "main": 0.5805,
+   "rc": 0.5805,
+   "delta": 0.0
+  },
+  "tier2:pcc_utterance": {
+   "main": 0.7879,
+   "rc": 0.7879,
+   "delta": 0.0
+  },
+  "tier1_en:roc_auc": {
+   "main": 0.9768,
+   "rc": 0.9768,
+   "vs_lingolix_main": [
+    -0.0052,
+    0.4895
+   ],
+   "vs_lingolix_rc": [
+    -0.0052,
+    0.4895
+   ]
+  },
+  "tier1_en:fpr_at_recall_80": {
+   "main": 0.0247,
+   "rc": 0.0247,
+   "vs_lingolix_main": [
+    0.0167,
+    0.02
+   ],
+   "vs_lingolix_rc": [
+    0.0167,
+    0.02
+   ]
+  },
+  "tier1_fr:roc_auc": {
+   "main": 0.96,
+   "rc": 0.96,
+   "vs_lingolix_main": [
+    -0.0082,
+    0.5854
+   ],
+   "vs_lingolix_rc": [
+    -0.0082,
+    0.5854
+   ]
+  },
+  "tier1_fr:fpr_at_recall_80": {
+   "main": 0.0165,
+   "rc": 0.0165,
+   "vs_lingolix_main": [
+    0.0012,
+    0.8531
+   ],
+   "vs_lingolix_rc": [
+    0.0012,
+    0.8531
+   ]
+  },
+  "tier1_es:roc_auc": {
+   "main": 0.9854,
+   "rc": 0.9858,
+   "vs_lingolix_main": [
+    0.0084,
+    0.1838
+   ],
+   "vs_lingolix_rc": [
+    0.0089,
+    0.1578
+   ]
+  },
+  "tier1_es:fpr_at_recall_80": {
+   "main": 0.0139,
+   "rc": 0.0127,
+   "vs_lingolix_main": [
+    0.0024,
+    0.4615
+   ],
+   "vs_lingolix_rc": [
+    0.0012,
+    0.7552
+   ]
+  },
+  "tier1_de:roc_auc": {
+   "main": 0.967,
+   "rc": 0.9672,
+   "vs_lingolix_main": [
+    -0.0055,
+    0.6573
+   ],
+   "vs_lingolix_rc": [
+    -0.0053,
+    0.6753
+   ]
+  },
+  "tier1_de:fpr_at_recall_80": {
+   "main": 0.0205,
+   "rc": 0.018,
+   "vs_lingolix_main": [
+    0.0103,
+    0.1958
+   ],
+   "vs_lingolix_rc": [
+    0.0077,
+    0.2358
+   ]
+  },
+  "tier1_ja:roc_auc": {
+   "main": 0.9226,
+   "rc": 0.9226,
+   "vs_lingolix_main": [
+    -0.0284,
+    0.0979
+   ],
+   "vs_lingolix_rc": [
+    -0.0284,
+    0.0979
+   ]
+  },
+  "tier1_ja:fpr_at_recall_80": {
+   "main": 0.0968,
+   "rc": 0.0968,
+   "vs_lingolix_main": [
+    0.0649,
+    0.032
+   ],
+   "vs_lingolix_rc": [
+    0.0649,
+    0.032
+   ]
+  },
+  "tier1_ko:roc_auc": {
+   "main": 0.9567,
+   "rc": 0.9567,
+   "vs_lingolix_main": [
+    -0.0075,
+    0.2697
+   ],
+   "vs_lingolix_rc": [
+    -0.0074,
+    0.2697
+   ]
+  },
+  "tier1_ko:fpr_at_recall_80": {
+   "main": 0.0308,
+   "rc": 0.0301,
+   "vs_lingolix_main": [
+    0.0065,
+    0.6573
+   ],
+   "vs_lingolix_rc": [
+    0.0057,
+    0.6713
+   ]
+  }
+ },
+ "scoreboard_rows_changed": [
+  {
+   "section": "Tally against Azure",
+   "header": "area | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+   "row": "swap benchmark",
+   "occurrence": 0,
+   "main": [
+    "swap benchmark",
+    "50",
+    "31",
+    "11",
+    "1",
+    "6",
+    "1"
+   ],
+   "rc": [
+    "swap benchmark",
+    "50",
+    "32",
+    "11",
+    "1",
+    "5",
+    "1"
+   ]
+  },
+  {
+   "section": "Tally against Azure",
+   "header": "area | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+   "row": "**all**",
+   "occurrence": 0,
+   "main": [
+    "**all**",
+    "84",
+    "48",
+    "17",
+    "1",
+    "16",
+    "2"
+   ],
+   "rc": [
+    "**all**",
+    "84",
+    "49",
+    "17",
+    "1",
+    "15",
+    "2"
+   ]
+  },
+  {
+   "section": "Tally against Azure",
+   "header": "lang | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+   "row": "en",
+   "occurrence": 0,
+   "main": [
+    "en",
+    "19",
+    "13",
+    "1",
+    "0",
+    "3",
+    "2"
+   ],
+   "rc": [
+    "en",
+    "19",
+    "13",
+    "2",
+    "0",
+    "2",
+    "2"
+   ]
+  },
+  {
+   "section": "Tally against Azure",
+   "header": "lang | n | ahead (significant) | ahead (not significant) | level | behind (not significant) | behind (significant)",
+   "row": "de",
+   "occurrence": 0,
+   "main": [
+    "de",
+    "7",
+    "3",
+    "3",
+    "0",
+    "1",
+    "0"
+   ],
+   "rc": [
+    "de",
+    "7",
+    "4",
+    "2",
+    "0",
+    "1",
+    "0"
+   ]
+  },
+  {
+   "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+   "header": "lang | far AUC | near AUC | near hit@5 %",
+   "row": "en",
+   "occurrence": 0,
+   "main": [
+    "en",
+    "0.995 / 0.995 / 0.984, -0.000 level (0.67)",
+    "0.981 / 0.962 / 0.884, +0.019 **ahead** (0.002)",
+    "0.893 / 0.840 / 0.082, +0.053 ahead, n.s. (0.16)"
+   ],
+   "rc": [
+    "en",
+    "0.995 / 0.995 / 0.984, -0.000 level (0.88)",
+    "0.981 / 0.962 / 0.884, +0.019 **ahead** (0.002)",
+    "0.893 / 0.840 / 0.082, +0.053 ahead, n.s. (0.16)"
+   ]
+  },
+  {
+   "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+   "header": "lang | far AUC | near AUC | near hit@5 %",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "0.998 / 0.997 / 0.989, +0.001 ahead, n.s. (0.08)",
+    "0.994 / 0.916 / 0.811, +0.078 **ahead** (0.002)",
+    "0.993 / 0.380 / 0.091, +0.613 **ahead** (0.002)"
+   ],
+   "rc": [
+    "es",
+    "0.999 / 0.997 / 0.989, +0.001 ahead, n.s. (0.06)",
+    "0.994 / 0.916 / 0.811, +0.079 **ahead** (0.002)",
+    "0.993 / 0.380 / 0.091, +0.613 **ahead** (0.002)"
+   ]
+  },
+  {
+   "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+   "header": "lang | far AUC | near AUC | near hit@5 %",
+   "row": "de",
+   "occurrence": 0,
+   "main": [
+    "de",
+    "0.997 / 0.989 / 0.979, +0.008 **ahead** (0.002)",
+    "0.979 / 0.852 / 0.724, +0.127 **ahead** (0.002)",
+    "0.907 / 0.240 / 0.187, +0.667 **ahead** (0.002)"
+   ],
+   "rc": [
+    "de",
+    "0.998 / 0.989 / 0.979, +0.009 **ahead** (0.002)",
+    "0.981 / 0.852 / 0.724, +0.129 **ahead** (0.002)",
+    "0.907 / 0.240 / 0.187, +0.667 **ahead** (0.002)"
+   ]
+  },
+  {
+   "section": "Swap benchmark (FLEURS test, 10 languages; utterance bootstrap).** Cells: Pronunciada / go",
+   "header": "lang | far AUC | near AUC | near hit@5 %",
+   "row": "ko",
+   "occurrence": 0,
+   "main": [
+    "ko",
+    "0.996 / 0.993 / 0.972, +0.002 **ahead** (0.05)",
+    "0.974 / 0.838 / 0.695, +0.136 **ahead** (0.002)",
+    "0.867 / 0.300 / 0.142, +0.567 **ahead** (0.002)"
+   ],
+   "rc": [
+    "ko",
+    "0.996 / 0.993 / 0.972, +0.002 **ahead** (0.03)",
+    "0.974 / 0.838 / 0.695, +0.136 **ahead** (0.002)",
+    "0.867 / 0.300 / 0.142, +0.567 **ahead** (0.002)"
+   ]
+  },
+  {
+   "section": "cv-real test A, AUC of the sentence score (speaker bootstrap).",
+   "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+   "row": "es/A",
+   "occurrence": 0,
+   "main": [
+    "es/A",
+    "396",
+    "0.766 [0.718, 0.811]",
+    "0.677 [0.624, 0.728]",
+    "0.704 [0.653, 0.754]",
+    "+0.089 [+0.034, +0.146]",
+    "< 0.001",
+    "**ahead**"
+   ],
+   "rc": [
+    "es/A",
+    "396",
+    "0.768 [0.722, 0.813]",
+    "0.677 [0.624, 0.728]",
+    "0.704 [0.653, 0.754]",
+    "+0.092 [+0.037, +0.149]",
+    "< 0.001",
+    "**ahead**"
+   ]
+  },
+  {
+   "section": "cv-real test A, AUC of the sentence score (speaker bootstrap).",
+   "header": "test | n | Pronunciada [95 % CI] | ZIPA gop [95 % CI] | ZIPA match [95 % CI] | Δ vs gop [95 % CI] | p | verdict",
+   "row": "ko/A",
+   "occurrence": 0,
+   "main": [
+    "ko/A",
+    "22",
+    "0.802 [0.581, 0.985]",
+    "0.826 [0.615, 0.985]",
+    "0.860 [0.667, 1.000]",
+    "-0.025 [-0.222, +0.127]",
+    "0.90",
+    "behind, n.s."
+   ],
+   "rc": [
+    "ko/A",
+    "22",
+    "0.843 [0.643, 0.990]",
+    "0.826 [0.615, 0.985]",
+    "0.860 [0.667, 1.000]",
+    "+0.017 [-0.191, +0.188]",
+    "0.86",
+    "ahead, n.s."
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "en",
+   "occurrence": 0,
+   "main": [
+    "en",
+    "0.995 / 0.994 ahead, n.s. (0.30)",
+    "0.981 / 0.963 **ahead** (0.002)",
+    "0.893 / 0.793 **ahead** (0.02)",
+    "0.887 / 0.898 behind, n.s. (0.64)",
+    "0.034 / 0.022 **behind** (0.002)"
+   ],
+   "rc": [
+    "en",
+    "0.995 / 0.994 ahead, n.s. (0.24)",
+    "0.981 / 0.963 **ahead** (0.002)",
+    "0.893 / 0.793 **ahead** (0.02)",
+    "0.900 / 0.898 ahead, n.s. (0.97)",
+    "0.033 / 0.022 **behind** (0.002)"
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "0.998 / 0.993 **ahead** (0.008)",
+    "0.994 / 0.942 **ahead** (0.002)",
+    "0.993 / 0.679 **ahead** (0.002)",
+    "0.980 / 0.910 **ahead** (0.002)",
+    "0.023 / 0.018 behind, n.s. (0.06)"
+   ],
+   "rc": [
+    "es",
+    "0.999 / 0.993 **ahead** (0.008)",
+    "0.994 / 0.942 **ahead** (0.002)",
+    "0.993 / 0.679 **ahead** (0.002)",
+    "0.980 / 0.910 **ahead** (0.002)",
+    "0.021 / 0.018 behind, n.s. (0.18)"
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "fr",
+   "occurrence": 0,
+   "main": [
+    "fr",
+    "0.997 / 0.986 **ahead** (0.002)",
+    "0.986 / 0.937 **ahead** (0.002)",
+    "0.927 / 0.647 **ahead** (0.002)",
+    "0.927 / 0.823 **ahead** (0.002)",
+    "0.027 / 0.020 behind, n.s. (0.11)"
+   ],
+   "rc": [
+    "fr",
+    "0.997 / 0.986 **ahead** (0.002)",
+    "0.986 / 0.937 **ahead** (0.002)",
+    "0.927 / 0.647 **ahead** (0.002)",
+    "0.927 / 0.823 **ahead** (0.002)",
+    "0.026 / 0.020 behind, n.s. (0.13)"
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "de",
+   "occurrence": 0,
+   "main": [
+    "de",
+    "0.997 / 0.982 **ahead** (0.002)",
+    "0.979 / 0.887 **ahead** (0.002)",
+    "0.907 / 0.517 **ahead** (0.002)",
+    "0.940 / 0.921 ahead, n.s. (0.43)",
+    "0.040 / 0.049 ahead, n.s. (0.07)"
+   ],
+   "rc": [
+    "de",
+    "0.998 / 0.982 **ahead** (0.002)",
+    "0.981 / 0.887 **ahead** (0.002)",
+    "0.907 / 0.517 **ahead** (0.002)",
+    "0.947 / 0.921 ahead, n.s. (0.28)",
+    "0.037 / 0.049 **ahead** (0.02)"
+   ]
+  },
+  {
+   "section": "Swap benchmark: native recording, one word of the prompt changed (FLEURS test, 150 recordi",
+   "header": "lang | far AUC | near AUC | near hit@5 % | far right word | native FA (< 0.6)",
+   "row": "ko",
+   "occurrence": 0,
+   "main": [
+    "ko",
+    "0.996 / 0.995 ahead, n.s. (0.55)",
+    "0.974 / 0.937 **ahead** (0.002)",
+    "0.867 / 0.708 **ahead** (0.002)",
+    "0.980 / 0.973 ahead, n.s. (0.44)",
+    "0.017 / 0.045 **ahead** (0.002)"
+   ],
+   "rc": [
+    "ko",
+    "0.996 / 0.995 ahead, n.s. (0.46)",
+    "0.974 / 0.937 **ahead** (0.002)",
+    "0.867 / 0.708 **ahead** (0.002)",
+    "0.987 / 0.973 ahead, n.s. (0.14)",
+    "0.017 / 0.045 **ahead** (0.002)"
+   ]
+  },
+  {
+   "section": "cv-real: real Common Voice recordings judged by volunteers (test half)",
+   "header": "locale / test | n (bad / good) | Pronunciada [CI] | Azure [CI] | Δ [CI] | p | verdict",
+   "row": "es/A",
+   "occurrence": 0,
+   "main": [
+    "es/A",
+    "198 / 198",
+    "0.766 [0.718, 0.811]",
+    "0.726 [0.674, 0.773]",
+    "+0.040 [-0.014, +0.097]",
+    "0.15",
+    "ahead, n.s."
+   ],
+   "rc": [
+    "es/A",
+    "198 / 198",
+    "0.768 [0.722, 0.813]",
+    "0.726 [0.674, 0.773]",
+    "+0.043 [-0.011, +0.098]",
+    "0.13",
+    "ahead, n.s."
+   ]
+  },
+  {
+   "section": "cv-real: real Common Voice recordings judged by volunteers (test half)",
+   "header": "locale / test | n (bad / good) | Pronunciada [CI] | Azure [CI] | Δ [CI] | p | verdict",
+   "row": "ko/A",
+   "occurrence": 0,
+   "main": [
+    "ko/A",
+    "11 / 11",
+    "0.802 [0.581, 0.985]",
+    "0.926 [0.765, 1.000]",
+    "-0.124 [-0.375, +0.133]",
+    "0.35",
+    "behind, n.s."
+   ],
+   "rc": [
+    "ko/A",
+    "11 / 11",
+    "0.843 [0.643, 0.990]",
+    "0.926 [0.765, 1.000]",
+    "-0.083 [-0.308, +0.142]",
+    "0.50",
+    "behind, n.s."
+   ]
+  },
+  {
+   "section": "Native speakers are not punished (FLEURS test, default strictness 0.5; no Azure column)",
+   "header": "lang | sounds accepted | words accepted | sentences accepted | planted sound errors, AUC | planted word errors, AUC",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "99.7 %",
+    "98.4 %",
+    "99.5 %",
+    "0.994",
+    "0.974"
+   ],
+   "rc": [
+    "es",
+    "99.7 %",
+    "98.6 %",
+    "99.5 %",
+    "0.994",
+    "0.975"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 3,
+   "main": [
+    "en",
+    "tense_lax",
+    "lax → tense",
+    "120",
+    "93 %",
+    "89 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "tense_lax",
+    "lax → tense",
+    "120",
+    "93 %",
+    "88 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 4,
+   "main": [
+    "en",
+    "th_s",
+    "θ → s",
+    "120",
+    "95 %",
+    "82 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "th_s",
+    "θ → s",
+    "120",
+    "95 %",
+    "77 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 9,
+   "main": [
+    "en",
+    "dh_d",
+    "d → ð",
+    "120",
+    "97 %",
+    "97 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "dh_d",
+    "d → ð",
+    "120",
+    "97 %",
+    "89 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 10,
+   "main": [
+    "en",
+    "v_w",
+    "v → w",
+    "120",
+    "98 %",
+    "97 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "v_w",
+    "v → w",
+    "120",
+    "98 %",
+    "96 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 11,
+   "main": [
+    "en",
+    "v_w",
+    "w → v",
+    "120",
+    "88 %",
+    "98 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "v_w",
+    "w → v",
+    "120",
+    "88 %",
+    "97 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 12,
+   "main": [
+    "en",
+    "v_b",
+    "v → b",
+    "120",
+    "98 %",
+    "95 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "v_b",
+    "v → b",
+    "120",
+    "98 %",
+    "92 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 15,
+   "main": [
+    "en",
+    "ae_e",
+    "ɛ → æ",
+    "120",
+    "98 %",
+    "82 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "ae_e",
+    "ɛ → æ",
+    "120",
+    "98 %",
+    "81 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 16,
+   "main": [
+    "en",
+    "r_l",
+    "ɹ → l",
+    "120",
+    "98 %",
+    "98 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "r_l",
+    "ɹ → l",
+    "120",
+    "98 %",
+    "97 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 18,
+   "main": [
+    "en",
+    "s_sh",
+    "s → ʃ",
+    "120",
+    "100 %",
+    "97 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "s_sh",
+    "s → ʃ",
+    "120",
+    "100 %",
+    "94 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 19,
+   "main": [
+    "en",
+    "s_sh",
+    "ʃ → s",
+    "120",
+    "94 %",
+    "77 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "s_sh",
+    "ʃ → s",
+    "120",
+    "94 %",
+    "78 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 21,
+   "main": [
+    "en",
+    "m_n",
+    "n → m",
+    "120",
+    "100 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "m_n",
+    "n → m",
+    "120",
+    "100 %",
+    "94 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "en",
+   "occurrence": 22,
+   "main": [
+    "en",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "90 %",
+    "95 %",
+    "seen"
+   ],
+   "rc": [
+    "en",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "90 %",
+    "91 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "tap_trill",
+    "trill → tap",
+    "120",
+    "72 %",
+    "78 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "tap_trill",
+    "trill → tap",
+    "120",
+    "71 %",
+    "78 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 1,
+   "main": [
+    "es",
+    "tap_trill",
+    "tap → trill",
+    "120",
+    "97 %",
+    "91 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "tap_trill",
+    "tap → trill",
+    "120",
+    "97 %",
+    "92 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 2,
+   "main": [
+    "es",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "100 %",
+    "100 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "100 %",
+    "99 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 3,
+   "main": [
+    "es",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "100 %",
+    "99 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "100 %",
+    "98 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "es",
+   "occurrence": 4,
+   "main": [
+    "es",
+    "m_n",
+    "m → n",
+    "120",
+    "99 %",
+    "100 %",
+    "seen"
+   ],
+   "rc": [
+    "es",
+    "m_n",
+    "m → n",
+    "120",
+    "99 %",
+    "98 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "fr",
+   "occurrence": 3,
+   "main": [
+    "fr",
+    "round_front",
+    "unrounded → rounded",
+    "120",
+    "100 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "fr",
+    "round_front",
+    "unrounded → rounded",
+    "120",
+    "100 %",
+    "95 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "fr",
+   "occurrence": 6,
+   "main": [
+    "fr",
+    "mid_vowels",
+    "close → open",
+    "120",
+    "78 %",
+    "49 %",
+    "seen"
+   ],
+   "rc": [
+    "fr",
+    "mid_vowels",
+    "close → open",
+    "120",
+    "78 %",
+    "50 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "fr",
+   "occurrence": 10,
+   "main": [
+    "fr",
+    "s_sh",
+    "s → ʃ",
+    "134",
+    "100 %",
+    "99 %",
+    "seen"
+   ],
+   "rc": [
+    "fr",
+    "s_sh",
+    "s → ʃ",
+    "134",
+    "100 %",
+    "96 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "fr",
+   "occurrence": 13,
+   "main": [
+    "fr",
+    "m_n",
+    "n → m",
+    "120",
+    "99 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "fr",
+    "m_n",
+    "n → m",
+    "120",
+    "99 %",
+    "95 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 2,
+   "main": [
+    "de",
+    "round_front",
+    "rounded → unrounded",
+    "120",
+    "80 %",
+    "77 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "round_front",
+    "rounded → unrounded",
+    "120",
+    "80 %",
+    "71 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 3,
+   "main": [
+    "de",
+    "round_front",
+    "unrounded → rounded",
+    "120",
+    "99 %",
+    "97 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "round_front",
+    "unrounded → rounded",
+    "120",
+    "99 %",
+    "91 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 4,
+   "main": [
+    "de",
+    "front_back",
+    "front → back",
+    "120",
+    "97 %",
+    "79 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "front_back",
+    "front → back",
+    "120",
+    "97 %",
+    "78 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 5,
+   "main": [
+    "de",
+    "front_back",
+    "back → front",
+    "120",
+    "100 %",
+    "94 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "front_back",
+    "back → front",
+    "120",
+    "100 %",
+    "92 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 6,
+   "main": [
+    "de",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "92 %",
+    "71 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "voicing",
+    "voiced → voiceless",
+    "120",
+    "92 %",
+    "66 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 7,
+   "main": [
+    "de",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "98 %",
+    "76 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "voicing",
+    "voiceless → voiced",
+    "120",
+    "98 %",
+    "73 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 8,
+   "main": [
+    "de",
+    "final_devoicing",
+    "devoiced → voiced",
+    "153",
+    "44 %",
+    "1 %",
+    "weak"
+   ],
+   "rc": [
+    "de",
+    "final_devoicing",
+    "devoiced → voiced",
+    "153",
+    "44 %",
+    "2 %",
+    "weak"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 9,
+   "main": [
+    "de",
+    "s_sh",
+    "s → ʃ",
+    "120",
+    "78 %",
+    "92 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "s_sh",
+    "s → ʃ",
+    "120",
+    "78 %",
+    "80 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 10,
+   "main": [
+    "de",
+    "s_sh",
+    "ʃ → s",
+    "120",
+    "59 %",
+    "79 %",
+    "weak"
+   ],
+   "rc": [
+    "de",
+    "s_sh",
+    "ʃ → s",
+    "120",
+    "59 %",
+    "78 %",
+    "weak"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 11,
+   "main": [
+    "de",
+    "ich_isch",
+    "ç → ʃ",
+    "120",
+    "98 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "ich_isch",
+    "ç → ʃ",
+    "120",
+    "98 %",
+    "91 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 12,
+   "main": [
+    "de",
+    "ich_isch",
+    "ʃ → ç",
+    "120",
+    "95 %",
+    "98 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "ich_isch",
+    "ʃ → ç",
+    "120",
+    "95 %",
+    "93 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 13,
+   "main": [
+    "de",
+    "m_n",
+    "m → n",
+    "120",
+    "84 %",
+    "88 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "m_n",
+    "m → n",
+    "120",
+    "84 %",
+    "82 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 14,
+   "main": [
+    "de",
+    "m_n",
+    "n → m",
+    "120",
+    "98 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "m_n",
+    "n → m",
+    "120",
+    "98 %",
+    "91 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 15,
+   "main": [
+    "de",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "99 %",
+    "98 %",
+    "seen"
+   ],
+   "rc": [
+    "de",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "99 %",
+    "94 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "de",
+   "occurrence": 16,
+   "main": [
+    "de",
+    "n_ng",
+    "ŋ → n",
+    "120",
+    "37 %",
+    "62 %",
+    "weak"
+   ],
+   "rc": [
+    "de",
+    "n_ng",
+    "ŋ → n",
+    "120",
+    "37 %",
+    "60 %",
+    "weak"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 1,
+   "main": [
+    "ko",
+    "aspiration",
+    "plain → aspirated",
+    "120",
+    "96 %",
+    "42 %",
+    "seen"
+   ],
+   "rc": [
+    "ko",
+    "aspiration",
+    "plain → aspirated",
+    "120",
+    "96 %",
+    "41 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 2,
+   "main": [
+    "ko",
+    "eo_o",
+    "ɔ → o",
+    "120",
+    "57 %",
+    "72 %",
+    "weak"
+   ],
+   "rc": [
+    "ko",
+    "eo_o",
+    "ɔ → o",
+    "120",
+    "57 %",
+    "69 %",
+    "weak"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 3,
+   "main": [
+    "ko",
+    "eo_o",
+    "o → ɔ",
+    "120",
+    "66 %",
+    "74 %",
+    "seen"
+   ],
+   "rc": [
+    "ko",
+    "eo_o",
+    "o → ɔ",
+    "120",
+    "66 %",
+    "76 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 4,
+   "main": [
+    "ko",
+    "m_n",
+    "m → n",
+    "120",
+    "66 %",
+    "90 %",
+    "seen"
+   ],
+   "rc": [
+    "ko",
+    "m_n",
+    "m → n",
+    "120",
+    "67 %",
+    "90 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 5,
+   "main": [
+    "ko",
+    "m_n",
+    "n → m",
+    "120",
+    "84 %",
+    "96 %",
+    "seen"
+   ],
+   "rc": [
+    "ko",
+    "m_n",
+    "n → m",
+    "120",
+    "84 %",
+    "94 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 6,
+   "main": [
+    "ko",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "62 %",
+    "82 %",
+    "seen"
+   ],
+   "rc": [
+    "ko",
+    "n_ng",
+    "n → ŋ",
+    "120",
+    "61 %",
+    "82 %",
+    "seen"
+   ]
+  },
+  {
+   "section": "Specific sound contrasts (contrast audit, FLEURS test; no Azure column)",
+   "header": "lang | contrast | direction (said → expected) | n | sound hit@5 % | word hit@5 % | verdict",
+   "row": "ko",
+   "occurrence": 7,
+   "main": [
+    "ko",
+    "n_ng",
+    "ŋ → n",
+    "120",
+    "38 %",
+    "72 %",
+    "weak"
+   ],
+   "rc": [
+    "ko",
+    "n_ng",
+    "ŋ → n",
+    "120",
+    "38 %",
+    "69 %",
+    "weak"
+   ]
+  },
+  {
+   "section": "Coaching tips on native speakers (FLEURS test; no Azure column)",
+   "header": "lang | clips with a pronunciation tip, before → after | tips per clip, before → after",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "74 % → 22 %",
+    "1.35 → 0.28"
+   ],
+   "rc": [
+    "es",
+    "73 % → 18 %",
+    "1.33 → 0.24"
+   ]
+  },
+  {
+   "section": "Coaching tips on native speakers (FLEURS test; no Azure column)",
+   "header": "lang | clips with a pronunciation tip, before → after | tips per clip, before → after",
+   "row": "de",
+   "occurrence": 0,
+   "main": [
+    "de",
+    "49 % → 17 %",
+    "0.74 → 0.20"
+   ],
+   "rc": [
+    "de",
+    "50 % → 16 %",
+    "0.76 → 0.18"
+   ]
+  },
+  {
+   "section": "Coaching tips on native speakers (FLEURS test; no Azure column)",
+   "header": "lang | clips with a pronunciation tip, before → after | tips per clip, before → after",
+   "row": "ko",
+   "occurrence": 0,
+   "main": [
+    "ko",
+    "56 % → 24 %",
+    "0.83 → 0.28"
+   ],
+   "rc": [
+    "ko",
+    "56 % → 23 %",
+    "0.83 → 0.26"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "en",
+   "occurrence": 0,
+   "main": [
+    "en",
+    "330 ms (9.4 s)",
+    "2.34 s (9.4 s)"
+   ],
+   "rc": [
+    "en",
+    "317 ms (9.4 s)",
+    "2.34 s (9.4 s)"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "es",
+   "occurrence": 0,
+   "main": [
+    "es",
+    "376 ms (11.6 s)",
+    "1.94 s (11.6 s)"
+   ],
+   "rc": [
+    "es",
+    "374 ms (11.6 s)",
+    "1.94 s (11.6 s)"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "fr",
+   "occurrence": 0,
+   "main": [
+    "fr",
+    "329 ms (10.2 s)",
+    "2.18 s (10.4 s)"
+   ],
+   "rc": [
+    "fr",
+    "302 ms (10.2 s)",
+    "2.18 s (10.4 s)"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "de",
+   "occurrence": 0,
+   "main": [
+    "de",
+    "412 ms (11.4 s)",
+    "2.49 s (12.0 s)"
+   ],
+   "rc": [
+    "de",
+    "402 ms (11.4 s)",
+    "2.49 s (12.0 s)"
+   ]
+  },
+  {
+   "section": "Speed, size, and what runs where",
+   "header": "lang | Pronunciada median (median audio) | Azure median (mean audio)",
+   "row": "ko",
+   "occurrence": 0,
+   "main": [
+    "ko",
+    "423 ms (12.3 s)",
+    "1.82 s (11.7 s)"
+   ],
+   "rc": [
+    "ko",
+    "380 ms (12.3 s)",
+    "1.82 s (11.7 s)"
+   ]
+  }
+ ]
+}

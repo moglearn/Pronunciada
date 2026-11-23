@@ -1,0 +1,553 @@
+{
+ "patterns": {
+  "within two words of an inserted (unsaid) word": {
+   "n_fa": 79,
+   "share_fa": 10.286458333333334,
+   "n_words": 426,
+   "fa_rate": 18.544600938967136,
+   "fa_rate_rest": 3.4536340852130327,
+   "ratio": 5.369590547639976,
+   "low_pairs": [
+    [
+     "t>∅",
+     5
+    ],
+    [
+     "a>∅",
+     5
+    ],
+    [
+     "ɑ̃>ɑ̃",
+     4
+    ],
+    [
+     "e>∅",
+     4
+    ],
+    [
+     "ɛ>ɛ",
+     3
+    ]
+   ]
+  },
+  "within two words of a substituted / indel word": {
+   "n_fa": 83,
+   "share_fa": 10.807291666666666,
+   "n_words": 2116,
+   "fa_rate": 3.9224952741020793,
+   "fa_rate_rest": 3.751369112814896,
+   "ratio": 1.0456169883956783,
+   "low_pairs": [
+    [
+     "i>∅",
+     7
+    ],
+    [
+     "ə>∅",
+     6
+    ],
+    [
+     "ɑ̃>ɑ̃",
+     3
+    ],
+    [
+     "a>∅",
+     3
+    ],
+    [
+     "e>∅",
+     2
+    ]
+   ]
+  },
+  "punctuation-only token": {
+   "n_fa": 144,
+   "share_fa": 18.75,
+   "n_words": 150,
+   "fa_rate": 96.0,
+   "fa_rate_rest": 3.08513794126372,
+   "ratio": 31.11692307692308,
+   "low_pairs": []
+  },
+  "number, abbreviation or multi-word expansion": {
+   "n_fa": 25,
+   "share_fa": 3.2552083333333335,
+   "n_words": 160,
+   "fa_rate": 15.625,
+   "fa_rate_rest": 3.675306687772062,
+   "ratio": 4.251345895020188,
+   "low_pairs": [
+    [
+     "ʁ>∅",
+     6
+    ],
+    [
+     "ɛ̃>∅",
+     4
+    ],
+    [
+     "l>l",
+     4
+    ],
+    [
+     "s>s",
+     2
+    ],
+    [
+     "s>∅",
+     2
+    ]
+   ]
+  },
+  "unknown word (letter rules)": {
+   "n_fa": 204,
+   "share_fa": 26.5625,
+   "n_words": 1040,
+   "fa_rate": 19.615384615384617,
+   "fa_rate_rest": 2.916839056681837,
+   "ratio": 6.724877250409166,
+   "low_pairs": [
+    [
+     "ə>∅",
+     20
+    ],
+    [
+     "i>∅",
+     12
+    ],
+    [
+     "ʃ>∅",
+     8
+    ],
+    [
+     "j>i",
+     5
+    ],
+    [
+     "a>∅",
+     5
+    ]
+   ]
+  },
+  "name (capitalised mid-sentence, in lexicon)": {
+   "n_fa": 41,
+   "share_fa": 5.338541666666667,
+   "n_words": 543,
+   "fa_rate": 7.550644567219153,
+   "fa_rate_rest": 3.6656078253416022,
+   "ratio": 2.0598615364739676,
+   "low_pairs": [
+    [
+     "i>ɑ",
+     8
+    ],
+    [
+     "u>ə",
+     4
+    ],
+    [
+     "s>l",
+     2
+    ],
+    [
+     "n>d",
+     2
+    ],
+    [
+     "œ̃>y",
+     2
+    ]
+   ]
+  },
+  "stress factor drives, sounds fine": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 3.7691401648998824,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "identity step drives": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 3.7691401648998824,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "function word judged absent (presence factor)": {
+   "n_fa": 100,
+   "share_fa": 13.020833333333334,
+   "n_words": 250,
+   "fa_rate": 40.0,
+   "fa_rate_rest": 3.3190897346715693,
+   "ratio": 12.051497005988024,
+   "low_pairs": [
+    [
+     "a>∅",
+     11
+    ],
+    [
+     "t>∅",
+     9
+    ],
+    [
+     "e>∅",
+     7
+    ],
+    [
+     "s>∅",
+     6
+    ],
+    [
+     "l>∅",
+     5
+    ]
+   ]
+  },
+  "content word judged absent (presence factor)": {
+   "n_fa": 40,
+   "share_fa": 5.208333333333333,
+   "n_words": 56,
+   "fa_rate": 71.42857142857143,
+   "fa_rate_rest": 3.5826771653543306,
+   "ratio": 19.937205651491368,
+   "low_pairs": [
+    [
+     "ʁ>∅",
+     4
+    ],
+    [
+     "ɛ>∅",
+     2
+    ],
+    [
+     "ɥ>w",
+     2
+    ],
+    [
+     "o>∅",
+     2
+    ],
+    [
+     "ɑ̃>ɑ̃",
+     2
+    ]
+   ]
+  },
+  "content word, a sound unsupported (deletion-type)": {
+   "n_fa": 144,
+   "share_fa": 18.75,
+   "n_words": 470,
+   "fa_rate": 30.638297872340427,
+   "fa_rate_rest": 3.13473324625741,
+   "ratio": 9.773813420621932,
+   "low_pairs": [
+    [
+     "i>∅",
+     18
+    ],
+    [
+     "ʃ>∅",
+     10
+    ],
+    [
+     "l>∅",
+     8
+    ],
+    [
+     "s>∅",
+     8
+    ],
+    [
+     "e>∅",
+     6
+    ]
+   ]
+  },
+  "content word, another sound heard (substitution-type)": {
+   "n_fa": 254,
+   "share_fa": 33.072916666666664,
+   "n_words": 768,
+   "fa_rate": 33.072916666666664,
+   "fa_rate_rest": 2.6213790289677683,
+   "ratio": 12.616609922178988,
+   "low_pairs": [
+    [
+     "ə>∅",
+     19
+    ],
+    [
+     "i>ɑ",
+     8
+    ],
+    [
+     "ɛ̃>ɑ̃",
+     5
+    ],
+    [
+     "j>i",
+     5
+    ],
+    [
+     "ɛ>a",
+     5
+    ]
+   ]
+  },
+  "function word, sound evidence": {
+   "n_fa": 75,
+   "share_fa": 9.765625,
+   "n_words": 450,
+   "fa_rate": 16.666666666666668,
+   "fa_rate_rest": 3.4778681120144537,
+   "ratio": 4.792207792207792,
+   "low_pairs": [
+    [
+     "ə>∅",
+     8
+    ],
+    [
+     "t>∅",
+     7
+    ],
+    [
+     "s>∅",
+     6
+    ],
+    [
+     "o>∅",
+     6
+    ],
+    [
+     "e>∅",
+     5
+    ]
+   ]
+  },
+  "last word of the clip": {
+   "n_fa": 125,
+   "share_fa": 16.276041666666668,
+   "n_words": 1399,
+   "fa_rate": 8.9349535382416,
+   "fa_rate_rest": 3.388312167360489,
+   "ratio": 2.636992430718676,
+   "low_pairs": [
+    [
+     "e>∅",
+     7
+    ],
+    [
+     "ʃ>∅",
+     6
+    ],
+    [
+     "i>∅",
+     5
+    ],
+    [
+     "s>∅",
+     4
+    ],
+    [
+     "ə>∅",
+     4
+    ]
+   ]
+  },
+  "first word of the clip": {
+   "n_fa": 35,
+   "share_fa": 4.557291666666667,
+   "n_words": 1382,
+   "fa_rate": 2.532561505065123,
+   "fa_rate_rest": 3.859113404232916,
+   "ratio": 0.6562547507122366,
+   "low_pairs": [
+    [
+     "l>∅",
+     4
+    ],
+    [
+     "o>v",
+     4
+    ],
+    [
+     "o>∅",
+     3
+    ],
+    [
+     "j>i",
+     2
+    ],
+    [
+     "i>ɔ",
+     2
+    ]
+   ]
+  },
+  "long word (>= 8 sounds)": {
+   "n_fa": 88,
+   "share_fa": 11.458333333333334,
+   "n_words": 1729,
+   "fa_rate": 5.089647194910353,
+   "fa_rate_rest": 3.6466992009438517,
+   "ratio": 1.3956860476984316,
+   "low_pairs": [
+    [
+     "ʁ>∅",
+     6
+    ],
+    [
+     "ə>∅",
+     5
+    ],
+    [
+     "i>ɑ",
+     4
+    ],
+    [
+     "a>∅",
+     4
+    ],
+    [
+     "t>s",
+     4
+    ]
+   ]
+  },
+  "lattice used a front-end alternative": {
+   "n_fa": 142,
+   "share_fa": 18.489583333333332,
+   "n_words": 1085,
+   "fa_rate": 13.087557603686635,
+   "fa_rate_rest": 3.245036545539371,
+   "ratio": 4.033100219372506,
+   "low_pairs": [
+    [
+     "ə>∅",
+     30
+    ],
+    [
+     "t>∅",
+     11
+    ],
+    [
+     "e>∅",
+     9
+    ],
+    [
+     "s>∅",
+     8
+    ],
+    [
+     "n>∅",
+     5
+    ]
+   ]
+  },
+  "lexicon has another reading": {
+   "n_fa": 29,
+   "share_fa": 3.7760416666666665,
+   "n_words": 493,
+   "fa_rate": 5.882352941176471,
+   "fa_rate_rest": 3.7167429462354775,
+   "ratio": 1.5826633765820266,
+   "low_pairs": [
+    [
+     "s>∅",
+     12
+    ],
+    [
+     "t>∅",
+     8
+    ],
+    [
+     "ɛ>∅",
+     2
+    ],
+    [
+     "ə>∅",
+     2
+    ],
+    [
+     "s>i",
+     2
+    ]
+   ]
+  },
+  "Whisper transcript differs at the word": {
+   "n_fa": 153,
+   "share_fa": 19.921875,
+   "n_words": 687,
+   "fa_rate": 22.270742358078603,
+   "fa_rate_rest": 3.123571537406674,
+   "ratio": 7.129896687613164,
+   "low_pairs": [
+    [
+     "a>∅",
+     8
+    ],
+    [
+     "s>∅",
+     6
+    ],
+    [
+     "t>∅",
+     6
+    ],
+    [
+     "ʃ>∅",
+     4
+    ],
+    [
+     "y>o",
+     4
+    ]
+   ]
+  }
+ },
+ "families": {
+  "presence / unsaid-word handling": {
+   "n": 170,
+   "pct": 22.135416666666668,
+   "ci": [
+    18.20480404551201,
+    26.758793969849247
+   ]
+  },
+  "text front-end (number, unknown word, name, punctuation)": {
+   "n": 414,
+   "pct": 53.90625,
+   "ci": [
+    48.178137651821864,
+    59.135802469135804
+   ]
+  },
+  "stress factor": {
+   "n": 0,
+   "pct": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  },
+  "identity step": {
+   "n": 0,
+   "pct": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  },
+  "union of the first two": {
+   "n": 553,
+   "pct": 72.00520833333333,
+   "ci": [
+    67.3521850899743,
+    76.31224764468372
+   ]
+  }
+ }
+}

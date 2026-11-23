@@ -1,0 +1,76 @@
+{
+ "n": 50,
+ "agreement": 0.54,
+ "hand_counts": {
+  "text": 15,
+  "neighbour": 12,
+  "residual": 10,
+  "function": 3,
+  "noise": 3,
+  "variant": 5,
+  "tail": 2
+ },
+ "per_bucket": {
+  "boundary": {
+   "auto_n": 4,
+   "hand_n": 0,
+   "precision": 0.0
+  },
+  "function": {
+   "auto_n": 4,
+   "hand_n": 3,
+   "precision": 0.0
+  },
+  "neighbour": {
+   "auto_n": 14,
+   "hand_n": 12,
+   "precision": 0.7857142857142857
+  },
+  "noise": {
+   "auto_n": 5,
+   "hand_n": 3,
+   "precision": 0.6
+  },
+  "residual": {
+   "auto_n": 6,
+   "hand_n": 10,
+   "precision": 1.0
+  },
+  "tail": {
+   "auto_n": 7,
+   "hand_n": 2,
+   "precision": 0.14285714285714285
+  },
+  "text": {
+   "auto_n": 6,
+   "hand_n": 15,
+   "precision": 0.8333333333333334
+  },
+  "variant": {
+   "auto_n": 4,
+   "hand_n": 5,
+   "precision": 0.25
+  }
+ },
+ "confusion": {
+  "neighbour->neighbour": 11,
+  "residual->residual": 6,
+  "text->text": 5,
+  "function->text": 3,
+  "variant->text": 3,
+  "noise->noise": 3,
+  "boundary->variant": 3,
+  "noise->function": 2,
+  "tail->text": 2,
+  "neighbour->text": 2,
+  "tail->residual": 2,
+  "text->residual": 1,
+  "variant->variant": 1,
+  "tail->variant": 1,
+  "function->tail": 1,
+  "tail->neighbour": 1,
+  "boundary->residual": 1,
+  "tail->tail": 1,
+  "neighbour->function": 1
+ }
+}

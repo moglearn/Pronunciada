@@ -1,0 +1,25 @@
+{
+ "clips": 2500,
+ "words": 15849,
+ "words_changed": 43,
+ "clips_changed": 14,
+ "word_pcc_off": 0.7801573396439574,
+ "word_pcc_on": 0.7785324186853485,
+ "sent_total_max_abs_diff": 0.0,
+ "sent_prob_max_abs_diff": 0.0,
+ "changed_words": {
+  "mean_p_off": 0.6198989855491992,
+  "mean_p_on": 0.6755899878234377,
+  "mean_human": 7.72093023255814,
+  "human_below_7": 14,
+  "raised": 29,
+  "lowered": 14
+ },
+ "delta": -0.0016249209586088886,
+ "delta_ci95": [
+  -0.0033505226234122943,
+  -0.0002652866610352968
+ ],
+ "auc_low_words_off": 0.9606843839792423,
+ "auc_low_words_on": 0.9600866193730831
+}

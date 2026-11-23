@@ -1,0 +1,72 @@
+{
+ "en/fleurs_train": {
+  "sentences": 1000,
+  "words": 21097,
+  "guessed_pct": 8.645779020713846,
+  "oov_pct": 1.540503389107456,
+  "number_pct": 1.5073233161112956
+ },
+ "en/cv_dev": {
+  "sentences": 2000,
+  "words": 18993,
+  "guessed_pct": 10.514400042120782,
+  "oov_pct": 2.2797872900542306,
+  "number_pct": 0.0
+ },
+ "de/fleurs_train": {
+  "sentences": 1000,
+  "words": 20723,
+  "guessed_pct": 3.1945181682188872,
+  "oov_pct": 3.1945181682188872,
+  "number_pct": 1.650340201708247
+ },
+ "de/cv_dev": {
+  "sentences": 2000,
+  "words": 18499,
+  "guessed_pct": 3.865073787772312,
+  "oov_pct": 3.865073787772312,
+  "number_pct": 0.0
+ },
+ "es/fleurs_train": {
+  "sentences": 1000,
+  "words": 24713,
+  "guessed_pct": 6.7373447173552385,
+  "oov_pct": 3.714644114433699,
+  "number_pct": 1.2544005179460203
+ },
+ "es/cv_dev": {
+  "sentences": 2000,
+  "words": 19847,
+  "guessed_pct": 11.513075023933087,
+  "oov_pct": 6.414067617272131,
+  "number_pct": 0.0
+ },
+ "fr/fleurs_train": {
+  "sentences": 1000,
+  "words": 23998,
+  "guessed_pct": 6.471372614384532,
+  "oov_pct": 3.8169847487290607,
+  "number_pct": 1.3709475789649137
+ },
+ "fr/cv_dev": {
+  "sentences": 2000,
+  "words": 19556,
+  "guessed_pct": 11.244630803845368,
+  "oov_pct": 7.644712620167724,
+  "number_pct": 0.0
+ },
+ "ko/fleurs_train": {
+  "sentences": 1000,
+  "words": 14425,
+  "guessed_pct": 0.0,
+  "oov_pct": 0.0,
+  "number_pct": 3.0155979202772962
+ },
+ "ko/cv_dev": {
+  "sentences": 474,
+  "words": 3725,
+  "guessed_pct": 0.0,
+  "oov_pct": 0.0,
+  "number_pct": 0.0
+ }
+}

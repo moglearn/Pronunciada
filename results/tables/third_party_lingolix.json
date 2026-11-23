@@ -205,33 +205,33 @@
       "n_words": 1740,
       "n_positive": 90,
       "n_failed": 0,
-      "roc_auc": 0.9854,
+      "roc_auc": 0.9858,
       "roc_auc_ci": [
-        0.976,
-        0.9926
+        0.9765,
+        0.9929
       ],
-      "pr_auc": 0.7086,
+      "pr_auc": 0.7133,
       "fpr_at_recall_50": 0.0048,
-      "fpr_at_recall_80": 0.0139,
+      "fpr_at_recall_80": 0.0127,
       "fpr_at_recall_80_ci": [
-        0.0075,
-        0.0228
+        0.0067,
+        0.0212
       ],
-      "localisation_top1": 0.8889,
-      "latency_p50_ms": 101.4,
-      "latency_p95_ms": 144.5,
+      "localisation_top1": 0.9,
+      "latency_p50_ms": 101.6,
+      "latency_p95_ms": 145.3,
       "by_bucket": {
-        "indel": 0.9741,
-        "sub_gross": 0.9908,
-        "sub_moderate": 0.9936,
-        "sub_subtle": 0.9844,
-        "word_omission": 0.9824
+        "indel": 0.9747,
+        "sub_gross": 0.9911,
+        "sub_moderate": 0.9938,
+        "sub_subtle": 0.9853,
+        "word_omission": 0.9827
       },
       "verdicts": {
         "recall": 0.8333,
-        "precision": 0.3606,
-        "f1": 0.5034,
-        "fa": 0.0806,
+        "precision": 0.3676,
+        "f1": 0.5102,
+        "fa": 0.0782,
         "recall_by_bucket": {
           "indel": [
             17,
@@ -543,33 +543,33 @@
       "n_words": 1658,
       "n_positive": 90,
       "n_failed": 0,
-      "roc_auc": 0.9873,
+      "roc_auc": 0.9877,
       "roc_auc_ci": [
-        0.9785,
-        0.9941
+        0.9789,
+        0.9946
       ],
-      "pr_auc": 0.7302,
+      "pr_auc": 0.7358,
       "fpr_at_recall_50": 0.0051,
-      "fpr_at_recall_80": 0.0102,
+      "fpr_at_recall_80": 0.0089,
       "fpr_at_recall_80_ci": [
-        0.0044,
-        0.0184
+        0.0034,
+        0.0164
       ],
-      "localisation_top1": 0.9111,
-      "latency_p50_ms": 101.4,
-      "latency_p95_ms": 144.5,
+      "localisation_top1": 0.9222,
+      "latency_p50_ms": 101.6,
+      "latency_p95_ms": 145.3,
       "by_bucket": {
-        "indel": 0.9771,
-        "sub_gross": 0.9916,
-        "sub_moderate": 0.994,
-        "sub_subtle": 0.9879,
-        "word_omission": 0.9842
+        "indel": 0.9778,
+        "sub_gross": 0.9918,
+        "sub_moderate": 0.9942,
+        "sub_subtle": 0.9888,
+        "word_omission": 0.9845
       },
       "verdicts": {
         "recall": 0.8333,
-        "precision": 0.3989,
-        "f1": 0.5396,
-        "fa": 0.0721,
+        "precision": 0.4076,
+        "f1": 0.5474,
+        "fa": 0.0695,
         "recall_by_bucket": {
           "indel": [
             17,

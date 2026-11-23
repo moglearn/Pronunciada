@@ -5,7 +5,11 @@ from `tables/*.json`, which describe the code now on `main`: round 19 plus the r
 word step and the Korean / Japanese speed-up. They come from the round-19 frozen run of the
 held-out benchmarks (2026-11-22), with every Mandarin row re-run on `main`'s code the same day;
 for the other nine languages `main` gives bitwise-identical outputs, so their rows stand (Azure
-from cached responses only). What round 19 changed, with before / after rows and everything that
+from cached responses only). Plus the round-20 Spanish false-alarm fixes (number readings, glides):
+their Spanish rows come from one held-out run of 2026-11-23, and every other language is bitwise
+identical to the code above ([round20_fa_release_check.md](round20_fa_release_check.md), which also
+has the English, German, French and Korean fixes that the rule kept off). The benchmark scripts score
+with the fp32 Scorer. What round 19 changed, with before / after rows and everything that
 got worse: [round19_integration.md](round19_integration.md); the Mandarin re-run, the tally and
 everything worse than 1.0.2: [round20_release_check.md](round20_release_check.md).
 
