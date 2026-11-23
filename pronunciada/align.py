@@ -387,13 +387,18 @@ def viterbi(lat: Lattice, tab: np.ndarray) -> tuple[float, np.ndarray]:
         return NEG_INF, np.zeros(0, dtype=np.int64)
     E = tab[:, _cols(lat.lab, tab.shape[1] - 2)]
     P, W = _padded_preds(lat)
+    # predecessors laid out [K+1, S]: the max over them is then an element-wise maximum of
+    # contiguous rows (about twice as fast as a reduction over a short last axis); a maximum
+    # has no rounding, so the scores are the same numbers
+    PT, WT = np.ascontiguousarray(P.T), np.ascontiguousarray(W.T)
     D = np.empty((T, S + 1))           # Viterbi scores; back-pointers recomputed on the path only
-    d = np.append(lat.init + E[0], NEG_INF)
-    D[0] = d
+    D[:, S] = NEG_INF                  # column S: the padding state
+    D[0, :S] = lat.init + E[0]
     for t in range(1, T):
-        d[:S] = (d[P] + W).max(axis=1) + E[t]
-        D[t] = d
-    x = d[:S] + lat.fin
+        x = D[t - 1][PT]
+        x += WT
+        np.add(x.max(axis=0), E[t], out=D[t, :S])
+    x = D[T - 1, :S] + lat.fin
     s = int(x.argmax())
     score = float(x[s])
     if not np.isfinite(score):
