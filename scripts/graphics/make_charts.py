@@ -236,13 +236,6 @@ if __name__ == "__main__":
                 "Native FLEURS test recordings, 150 per language, scored against a reference with one word replaced by a "
                 f"word one phoneme away. Area under the ROC curve for the replaced word, higher is better. Not a test on learner speech. {star}"),
            out / "chart-languages.png", W, height(len(l), 38, 40 + 112))
-    z = zipa()
-    render(page("What the project adds to ZIPA", bars(z, label_w=300),
-                "The same held-out learner tests, scored by Pronunciada and by the unmodified ZIPA model with the standard "
-                "goodness-of-pronunciation method: no adapters, no calibration, no tone or stress models. r = Pearson correlation "
-                f"with expert scores, AUC = area under the ROC curve for marked errors. Lines show 95% confidence intervals. {star}",
-                legend=((OURS, "Pronunciada"), (THEIRS, "ZIPA alone"))),
-           out / "chart-zipa.png", W, height(len(z), 64, 34 + 112))
     t = tally()
     total = [sum(r[k] for r in t) for k in (1, 2, 3, 4)]
     render(page("Head-to-head with Azure, by language", stacked(t),
@@ -251,4 +244,4 @@ if __name__ == "__main__":
                 "Learner speech with expert marks exists for English and Mandarin only; the other languages use native speech with altered prompts and Common Voice.",
                 legend=((OURS, "Pronunciada significantly ahead"), (THEIRS, "No significant difference"), (BEHIND, "Azure significantly ahead"))),
            out / "chart-tally.png", W, 36 + 26 + 34 + 26 + len(t) * 38 + 8 + 112)
-    print("wrote chart-english.png, chart-detection.png, chart-languages.png, chart-zipa.png, chart-tally.png")
+    print("wrote chart-english.png, chart-detection.png, chart-languages.png, chart-tally.png")

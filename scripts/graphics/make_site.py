@@ -141,6 +141,58 @@ def figure_word() -> str:
             f'gets {word["prob"]:.2f}.</p></figure>')
 
 
+HOW_CSS = """
+.how{margin:22px 40px 0;display:grid;grid-template-columns:292px repeat(4,1fr);border-top:1px solid rgba(255,255,255,.14)}
+.how > div{display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.14);padding:22px 0}
+.how .lab{display:block;padding:22px 24px 22px 0}
+.how .lab b{display:flex;align-items:center;gap:12px;font-weight:500;font-size:19px;letter-spacing:-.01em}
+.how .lab b i{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.45);font:500 13px/24px 'Geist',sans-serif;font-style:normal;text-align:center}
+.how .lab span{display:block;margin:8px 0 0 38px;font-size:14px;line-height:20px;color:rgba(255,255,255,.62)}
+.how .lab svg{display:block;margin:14px 0 0 38px}
+.how .snd{font-weight:300;font-size:44px;letter-spacing:-.02em;line-height:1}
+.how .none{font-size:19px;color:#7db8ff}
+.how .diff{color:#7db8ff}
+.how .num{font-weight:300;font-size:36px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.how .link > div, .how .link{border-bottom:0}
+.how .link{padding:0;height:34px;font:400 20px/1 'Geist Mono',monospace;color:rgba(255,255,255,.45)}
+.how .link.lab{padding:0}
+.how .link.diff{color:#7db8ff}
+.how .word{grid-column:1/-1;justify-content:flex-end;gap:18px;border-bottom:0;padding:24px 0 0;font-size:17px;color:rgba(255,255,255,.62)}
+.how .word b{font-weight:300;font-size:36px;letter-spacing:-.02em;color:#7db8ff}
+"""
+
+
+def figure_how() -> str:
+    """How one word is scored, as three steps: the sounds in the text, the sounds heard, the score of each."""
+    import soundfile as sf
+
+    sample = ROOT / "site/samples/en-learner-1"
+    word = next(w for w in json.loads(sample.with_suffix(".json").read_text(encoding="utf-8"))["result"]["words"] if w["prob"] < 0.5)
+    phones = word["phones"]
+    audio, sr = sf.read(str(sample.with_suffix(".mp3")), dtype="float32", always_2d=True)
+    mono = audio.mean(axis=1)[int((word["start"] - 0.08) * sr):int((word["end"] + 0.08) * sr)]
+    n = 42
+    step = len(mono) // n
+    level = [float(abs(mono[i * step:(i + 1) * step]).max()) for i in range(n)]
+    top = max(level)
+    bars = "".join(f'<rect x="{i * 5}" y="{17 - max(1.5, v / top * 16):.1f}" width="3" height="{2 * max(1.5, v / top * 16):.1f}" rx="1.5" fill="#fff"/>'
+                   for i, v in enumerate(level))
+    wave = f'<svg width="{n * 5}" height="34" viewBox="0 0 {n * 5} 34">{bars}</svg>'
+    same = lambda p: p["heard"] is None
+    lab = lambda k, title, text, extra="": f'<div class="lab"><b><i>{k}</i>{title}</b><span>{text}</span>{extra}</div>'
+    cells = [lab(1, "The text", f"the sounds “{esc(word['text'])}” should contain")]
+    cells += [f'<div class="snd">{esc(p["ipa"])}</div>' for p in phones]
+    cells += ['<div class="link lab"></div>'] + [f'<div class="link{"" if same(p) else " diff"}">{"=" if same(p) else "≠"}</div>' for p in phones]
+    cells += [lab(2, "The recording", "the sounds the speech model hears, without seeing the text", wave)]
+    cells += [f'<div class="snd">{esc(p["ipa"])}</div>' if same(p) else
+              (f'<div class="snd diff">{esc(p["heard"])}</div>' if p["heard"] else '<div class="none">nothing</div>') for p in phones]
+    cells += ['<div class="link lab"></div>'] + ['<div class="link">↓</div>' for _ in phones]
+    cells += [lab(3, "The score", "the probability that a teacher would accept each sound")]
+    cells += [f'<div class="num{"" if p["prob"] >= 0.5 else " diff"}">{p["prob"]:.2f}</div>' for p in phones]
+    cells += [f'<div class="word">the word “{esc(word["text"])}”<b>{word["prob"]:.2f}</b></div>']
+    return f'<div class="how">{"".join(cells)}</div>'
+
+
 def readme_images() -> None:
     """Dark renders of the worked example and the languages card for the README, using the page's own styles."""
     from common import INK, font_css, render
@@ -150,7 +202,11 @@ def readme_images() -> None:
             f"--page:{INK};--card:{INK};--pale:#34343a;--accent:linear-gradient(90deg,#7db8ff,#5eead4)}}"
             f"body{{background:{INK}}}.chart{{box-shadow:none;margin:0;border-radius:0;padding:36px 40px 30px}}.langs{{margin:0;border-radius:0}}")
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{dark}</style></head><body>"
-    render(head + figure_word() + "</body></html>", ROOT / "docs/assets/figure-word.png", 920, 334)
+    from make_charts import CSS as DARK_CSS, page as dark_page
+    how = dark_page("How a word is scored", figure_how(),
+                    "A learner from the speechocean762 test set says “float” without its l. The speech model hears no l and a different "
+                    "vowel, so those two sounds score low and so does the word.", legend=())
+    render(how.replace(DARK_CSS, DARK_CSS + HOW_CSS), ROOT / "docs/assets/figure-how.png", 920, 692)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
     render(head.replace("url(assets/gradient.jpg)", f"url('{(ROOT / 'site/assets/gradient.jpg').as_uri()}')") + langs + "</body></html>",
            ROOT / "docs/assets/languages.jpg", 920, 272)
@@ -172,4 +228,4 @@ if __name__ == "__main__":
     space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
                      encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote docs/assets/figure-word.png and languages.jpg")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote docs/assets/figure-how.png and languages.jpg")

@@ -69,34 +69,23 @@ Most language-learning apps buy their pronunciation scores from a cloud service,
 
 Pronunciada is significantly better on 48 of the tests and Azure on 2. The other 34 show no significant difference. In each of the ten languages Pronunciada wins more tests than it loses. Azure's two wins are both in English: it marks a native speaker's words down a little less often, and it is better at telling native from non-native speakers in one test on Common Voice recordings.
 
-The most direct tests use recordings of learners that experts have graded by hand, which are public for English and Mandarin. On them, Pronunciada agrees with the experts more closely than Azure on individual sounds (0.70 against 0.54), on words and on sentence accuracy, and it is better at finding the sounds and the Mandarin tones that teachers marked as wrong. On English intonation the two are level.
+One test covers all ten languages in the same way. A native recording is scored against a text in which one word was replaced by a word one sound away, and the system has to notice the mismatch. It is not a test on learner speech.
+
+![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.979 and 0.966, Japanese 0.976 and 0.919, Spanish 0.994 and 0.942, French 0.986 and 0.937, German 0.979 and 0.887, Italian 0.979 and 0.970, Portuguese 0.967 and 0.938, Russian 0.909 and 0.909, Korean 0.974 and 0.937.](docs/assets/chart-languages.png)
+
+The most direct tests use recordings of learners that experts have graded by hand, which are public for English and Mandarin. Pronunciada agrees with the experts more closely than Azure on individual sounds, on words and on sentence accuracy. On English intonation the two are level.
+
+![Pearson correlation with expert scores on speechocean762, Pronunciada and Azure. Phoneme 0.700 and 0.538, word 0.640 and 0.589, sentence accuracy 0.778 and 0.673, sentence fluency 0.814 and 0.708, sentence prosody 0.805 and 0.827, sentence total 0.792 and 0.796.](docs/assets/chart-english.png)
+
+It is also better at finding the sounds and the Mandarin tones that teachers marked as wrong.
+
+![Area under the ROC curve for detecting mispronunciations, Pronunciada and Azure. L2-ARCTIC 0.712 and 0.631, EpaDB 0.721 and 0.587, Mandarin words with any error 0.790 and 0.704, Mandarin words with tone errors 0.777 and 0.679.](docs/assets/chart-detection.png)
 
 Pronunciada is built on [ZIPA](https://github.com/lingjzhu/zipa), an open speech model, and adds the scoring around it. On the same learner tests it is significantly more accurate than ZIPA alone on 48 of 60, and less accurate on none.
 
 These results use the full 260 MB model. The 71 MB model is slightly behind it, with 47 wins and 4 losses against Azure. On an Apple M3 Pro it scores a 3.4-second sentence in about 40 ms with four CPU threads and 65 ms with one, and uses about 0.3 GB of memory. A request to Azure for a nine-second sentence took about two seconds from the same laptop.
 
 Every test and its confidence interval is in the [scoreboard](results/SCOREBOARD.md). Azure was called through its REST API (region `westus`) in November 2026 and was not tuned on any of this data.
-
-<details>
-<summary>Charts for the main tests</summary>
-
-Changed-word detection in all ten languages. Native recordings are scored against a text in which one word was replaced by a word one sound away. This shows whether a system notices that audio and text do not match; it is not a test on learner speech.
-
-![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.979 and 0.966, Japanese 0.976 and 0.919, Spanish 0.994 and 0.942, French 0.986 and 0.937, German 0.979 and 0.887, Italian 0.979 and 0.970, Portuguese 0.967 and 0.938, Russian 0.909 and 0.909, Korean 0.974 and 0.937.](docs/assets/chart-languages.png)
-
-Agreement with expert scores on speechocean762: 2,500 recordings from 125 learners of English.
-
-![Pearson correlation with expert scores on speechocean762, Pronunciada and Azure. Phoneme 0.700 and 0.538, word 0.640 and 0.589, sentence accuracy 0.778 and 0.673, sentence fluency 0.814 and 0.708, sentence prosody 0.805 and 0.827, sentence total 0.792 and 0.796.](docs/assets/chart-english.png)
-
-Finding the sounds and words that annotators marked as mispronounced. L2-ARCTIC and EpaDB were not used to train or tune Pronunciada.
-
-![Area under the ROC curve for detecting mispronunciations, Pronunciada and Azure. L2-ARCTIC 0.712 and 0.631, EpaDB 0.721 and 0.587, Mandarin words with any error 0.790 and 0.704, Mandarin words with tone errors 0.777 and 0.679.](docs/assets/chart-detection.png)
-
-The same learner tests, against ZIPA alone.
-
-![Pronunciada and the unmodified ZIPA model on the learner tests. English phonemes 0.700 and 0.434, words 0.640 and 0.394, sentences 0.778 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, EpaDB 0.721 and 0.638, Mandarin any error 0.790 and 0.602, Mandarin tone errors 0.777 and 0.552 (AUC).](docs/assets/chart-zipa.png)
-
-</details>
 
 [Full real-learner benchmarks against OpenPronounce, Lingolix, and Chivox →](https://pronunciada.dev/benchmarks/)
 
@@ -142,7 +131,7 @@ Pronunciada also runs outside Python:
 
 ## How it works
 
-![How one word is scored. The word is "float", said without its l. Expected sounds f, l, oʊ, t. Recognized instead: nothing for l, and ɔ for oʊ. Probabilities 0.83, 0.27, 0.35, 0.56.](docs/assets/figure-word.png)
+![How a word is scored, in three steps. The text: the word "float" should contain the sounds f, l, oʊ, t. The recording: the speech model hears f, nothing, ɔ, t. The score: 0.83, 0.27, 0.35, 0.56, and 0.10 for the word.](docs/assets/figure-how.png)
 
 The text is turned into the sounds a speaker should produce, using a dictionary and the sound rules of each language. ZIPA listens to the recording and reports the sounds it hears, without seeing the text. For every expected sound, Pronunciada weighs three explanations: it was said, it was replaced by another sound, or it was dropped. Small models fitted on expert-scored speech turn that evidence into the probabilities you get back, and separate small models handle tone, stress and length. No large model was trained for this project. The details are in [docs/DESIGN.md](docs/DESIGN.md).
 
