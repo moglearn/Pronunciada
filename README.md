@@ -246,7 +246,7 @@ The result also carries timestamps for every phoneme and word, fluency and compl
 
 ### Scoring from phones
 
-An application can compute the target sounds of its sentences ahead of time and ship no dictionaries. `phones_for` turns text into a JSON target, and `score_phones` scores audio against a target:
+From version 1.1.0, an application can compute the target sounds of its sentences ahead of time and ship no dictionaries. `phones_for` turns text into a JSON target, and `score_phones` scores audio against a target:
 
 ```python
 from pronunciada.core import phones_for, score_phones
