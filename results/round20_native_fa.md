@@ -1014,3 +1014,164 @@ guessed words, could not be fixed safely by D.
 * `PRONUNCIADA_R20_ES_GLIDE`
 * `PRONUNCIADA_R20_KO_NINS`
 * `PRONUNCIADA_R20_GUESS=d1|d2` (rejected; s from `r20.json`, override `PRONUNCIADA_R20_GUESS_S`)
+
+# Part 3: a better English pronunciation source for names and unknown words (phase 0 only)
+
+**Outcome: stopped after phase 0, as the decision rule requires. Nothing was built.**
+
+On the fit half, the best oracle combination moves English FA@80 by **−2.1 %** relative (3.29 → 3.22 %). The
+bar for building was −10 %.
+
+* The best single source does no better: −2.4 %.
+* A reference neural G2P makes it worse: +4.7 %.
+* No runtime code changed. There is no new switch and no new package data.
+
+Scripts are in `bench/round20_native_fa/enlex.py` (and the `--oracle` mode of `collect.py`). Tables are in
+`results/tables/round20_native_fa_enlex_*.json`. Practice data only: no held-out set, no Lingolix, no API.
+
+## 0.1 Inventory of guessed English words
+
+"Guessed" means the front-end has no lexicon, hyphen or apostrophe entry for the word and reads it with the
+learned letter table. Words with digits are excluded; numbers are fix C.
+
+Classes are assigned automatically, first match wins:
+
+1. acronym: all capitals, or no vowel letter;
+2. foreign: non-ASCII letters;
+3. regular morphology: one suffix or prefix away from a CMUdict word, with e-restoration, undoubling and y/i;
+4. known-part compound: hyphen parts, or a split into CMUdict words of at least 4 letters;
+5. name: capitalised mid-sentence;
+6. other.
+
+**Practice sets** (all items, correct words, round-20 metric, main):
+
+| class | tokens | % of correct tokens | false alarms | % of all false alarms | FA rate |
+|---|---|---|---|---|---|
+| acronym | 20 | 0.11 | 6 | 0.9 | 30 % |
+| foreign | 8 | 0.04 | 0 | 0.0 | 0 % |
+| regular morphology | 44 | 0.23 | 12 | 1.9 | 27 % |
+| known-part compound | 90 | 0.48 | 32 | 5.0 | 36 % |
+| name | 106 | 0.56 | 44 | 6.9 | 42 % |
+| other | 44 | 0.23 | 4 | 0.6 | 9 % |
+| **all guessed** | **312** | **1.65** | **98** | **15.4** | **31 %** |
+
+* Guessed words are 1.65 % of correct tokens but 15.4 % of English false alarms. Their FA rate is 31 %;
+  ordinary words are at 2.3 %.
+* Read item by item on the fit half, almost every guessed false alarm is a person or place name:
+  * "compound" here means names that split into English pieces: Whitehaven, Morpeth, Birkenhead's,
+    Ehrenstrahl, Lisboa.
+  * "morphology" includes Beiras and Ocelots.
+  * "name": Thirsk, Kham, Chhappan, Bhog, Uthappa, Aristarchus.
+
+**Base rates in real text** (share of word tokens):
+
+| text | tokens | guessed | acronym | foreign | morphology | compound | name | other |
+|---|---|---|---|---|---|---|---|---|
+| FLEURS en train (1,000 sentences) | 20,711 | 1.79 % | 0.18 | 0.10 | 0.28 | 0.34 | 0.55 | 0.33 |
+| Common Voice en dev (16,401 sentences) | 157,595 | 2.69 % | 0.02 | 0.02 | 0.40 | 0.79 | 0.91 | 0.55 |
+
+## 0.2 Candidate sources
+
+Each file was downloaded as data into its own folder. Each licence file was read. Nothing from a download
+was executed.
+
+| source | file, version | licence | size | status |
+|---|---|---|---|---|
+| CMUdict, github.com/cmusphinx/cmudict | cmudict.dict, master @ 74790861f652 (2025-10-24) | BSD-2-Clause-style (LICENSE, © 1993-2015 Carnegie Mellon University) | 3.6 MB, 126,052 words | identical in word set to the packaged copy (0 words new, 0 missing): the shipped lexicon is already the latest |
+| LibriSpeech lexicon, openslr.org/11 | librispeech-lexicon.txt | OpenSLR lists SLR11 as "Public domain" | 5.6 MB, 200,000 words | every entry not in CMUdict is G2P-generated ("some of which G2P auto-generated"); no hand-made entry beyond CMUdict |
+| MFA english_us_arpa dictionary, github.com/MontrealCorpusTools/mfa-models | v3.0.0 (repository @ 9cbc4c96af41) | CC BY 4.0 (LICENSE in the version folder) | 5.6 MB, 199,858 words | covers the same guessed words as LibriSpeech (0.2 % more types); provenance of the extra entries not documented as hand-made |
+| MFA english_us_mfa dictionary, same repository | v3.1.0 | CC BY 4.0 | 1.8 MB, 61,061 words | MFA phone set, no stress; mapped to our symbols it agrees with CMUdict's first reading on only 54 % of shared words, so it is not trustworthy here |
+| g2p_en, github.com/Kyubyong/g2p | checkpoint20.npz @ c6439c274c42 | Apache-2.0 | 3.3 MB | reference neural G2P trained on CMUdict, run by our own numpy forward pass (the package code was read, not run) |
+| Misaki us_gold / us_silver, github.com/hexgrad/misaki | @ fba1236595f2 | code Apache-2.0 | 3.0 + 3.1 MB | **not used**: the provenance of the dictionary data is not documented ("builds on top of many G2P projects"), so its licence is unclear |
+| ipa-dict en_US, github.com/open-dict-data/ipa-dict | @ 972cd67dd5f9 | MIT | 3.2 MB | not used: a conversion of CMUdict, nothing new |
+
+Excluded by rule: Wiktionary and WikiPron (share-alike), Unisyn and CELEX (non-commercial), and espeak-ng and
+anything derived from its output (GPL).
+
+No clean source has hand-made pronunciations for words CMUdict lacks.
+
+## 0.3 Coverage, letter-table error and agreement
+
+**(a) Coverage of the practice set's guessed words.**
+
+| source | types | tokens | guessed false alarms | morphology | compound | name | acronym, foreign |
+|---|---|---|---|---|---|---|---|
+| LibriSpeech (all auto-generated here) | 35 % | 33 % | 33 % | 64 % | 31 % | 34 % | 0 % |
+| MFA us_arpa | 35 % | 33 % | 33 % | 64 % | 31 % | 34 % | 0 % |
+| MFA us_mfa | 16 % | 15 % | 8 % | 45 % | 18 % | 8 % | 0 % |
+| regular morphology / compound rules (ours, no data) | 28 % fit / 20 % check of tokens | | | | | | |
+
+**(b) How wrong the letter table is.** Phone error rate, stress ignored, against each source on up to 20,000
+words the source has and CMUdict lacks.
+
+| reference | letter table | g2p_en | by class: letter table / g2p_en |
+|---|---|---|---|
+| LibriSpeech | 15.2 % | 20.5 % | morphology 11.4 / 13.4, compound 13.9 / 19.7, other 18.0 / 24.5, acronym 35.7 / 71.4 |
+| MFA us_arpa | 15.3 % | 20.5 % | similar |
+| MFA us_mfa (mapped) | 14.1 % | 19.2 % | similar |
+
+These references are themselves mostly machine-generated. A 15 % disagreement is an upper bound on our
+error, not a measured one. The neural reference agrees with them less than our letter table does.
+
+**(c) Agreement with CMUdict on shared words** (30,000 words, stress ignored):
+
+| source | first reading equal | any reading equal |
+|---|---|---|
+| LibriSpeech | 96.2 % | 98.4 % |
+| MFA us_arpa | 93.9 % | 96.0 % |
+| MFA us_mfa (after mapping) | 54.1 % | 56.9 % |
+
+## 0.4 Oracle ceiling
+
+Every guessed word in a practice item was replaced, through the real pipeline, by one pronunciation from the
+method. This is a replacement, not best-of-N.
+
+* `morph`: our regular morphology and known-part compound rules on the shipped lexicon.
+* `ls`: the LibriSpeech lexicon.
+* `g2pen`: the reference neural G2P, for every guessed word.
+* `best`: `morph`, else `ls`.
+
+228 items contain a guessed word. FA@80 and changed-word AUC are on the full half; the guessed-word FA rate
+uses each configuration's own threshold.
+
+**Fit half** (decision half). Main: FA@80 3.29 %, AUC 0.9684, guessed-word FA rate 34.3 %, 166 guessed tokens.
+
+| method | coverage of guessed tokens | guessed-word FA rate | FA@80 | relative | AUC | subtle / moderate / gross / indel / omission AUC |
+|---|---|---|---|---|---|---|
+| morph | 28 % | 33.7 % | 3.28 % | −0.3 % | 0.9687 | 0.9720 / 0.9828 / 0.9928 / 0.9375 / 0.9984 |
+| ls | 37 % | 30.1 % | 3.21 % | −2.4 % | 0.9689 | 0.9721 / 0.9839 / 0.9930 / 0.9376 / 0.9985 |
+| g2pen | 100 % | 43.4 % | 3.44 % | +4.7 % | 0.9681 | 0.9703 / 0.9810 / 0.9918 / 0.9381 / 0.9981 |
+| **best** (morph, else ls) | 51 % | 30.7 % | 3.22 % | **−2.1 %** | 0.9688 | 0.9721 / 0.9828 / 0.9930 / 0.9376 / 0.9985 |
+
+**Check half** (count only). Main: 3.28 %, guessed-word FA rate 29.2 %.
+
+| method | FA@80 relative |
+|---|---|
+| morph | −1.8 % |
+| ls | −2.1 % |
+| g2pen | +4.3 % |
+| best | −3.2 % |
+
+The best combination is −2.1 % on the fit half, far under the 10 % bar, so phase 1 was not started.
+
+**Why the ceiling is low.** Removing every guessed-word false alarm would be worth at most about 15 % of
+English false alarms. But a source reading barely changes how often these words are flagged:
+
+* guessed-word FA rate: 34 % with the letter table, 30-31 % with the best source;
+* with a neural G2P: 43 %.
+
+The words are mostly foreign and regional names, and native readers say them in their own way. A single
+"dictionary" pronunciation, where one exists at all, is not what was said. The sources that cover them are
+G2P-generated themselves.
+
+What would move this part of the false alarms is knowing what was actually said, which this job's rules exclude:
+
+* accepting several readings is D1, which failed;
+* forgiving the word is D2, which failed.
+
+## Gate items of phases 1-2
+
+Not run: nothing was built.
+
+* Learner sets, other languages, tests, latency and size are unchanged from part 2.
+* Downloads: about 30 MB under the round-20 cache; no new package data.
