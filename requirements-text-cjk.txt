@@ -12,8 +12,12 @@ pyopenjtalk-plus==0.4.1.post10        # MIT; bundles Open JTalk (Modified BSD), 
                                       # UniDic-derived entries (BSD-3 option), Unihan map (Unicode-3.0),
                                       # CJKVI variants map (MIT), HTS voice "Mei" (CC-BY-3.0, unused here)
 #   transitive dependencies of pyopenjtalk-plus:
-sudachipy==0.7.0                      # Apache-2.0
-sudachidict-core==20261015            # Apache-2.0 (~190 MB installed)
+#   sudachipy + sudachidict-core (Apache-2.0, ~200 MB installed) are required by pyopenjtalk-plus's
+#   metadata but never used by Pronunciada (pronunciada/text/ja.py turns the Sudachi reading
+#   correction off and never loads the Sudachi dictionary). They may be uninstalled after installing:
+#   pip uninstall sudachipy sudachidict-core
+sudachipy==0.7.0                      # Apache-2.0, unused
+sudachidict-core==20261015            # Apache-2.0, unused (~190 MB installed)
 pydantic==2.14.3                      # MIT
 pydantic-core==2.50.4                 # MIT
 annotated-types==0.8.0                # MIT

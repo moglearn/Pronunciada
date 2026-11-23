@@ -239,10 +239,9 @@ def test_scorer_formulas_match_production():
 
 def test_live_practice_clips_match_production():
     """One practice clip per language not in the golden set, straight from the fp32 backbone."""
-    from pronunciada.acoustic import PRECISION_FILES, cache_root
+    from pronunciada.acoustic import model_cached
 
-    model = Path(cache_root()) / "models" / "zipa-small-crctc-500k" / PRECISION_FILES["fp32"]
-    if not model.exists():
+    if not model_cached():
         pytest.skip("fp32 backbone not in the model cache")
     try:
         from bench.opt.common import practice_clips

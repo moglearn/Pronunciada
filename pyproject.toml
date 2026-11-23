@@ -35,9 +35,8 @@ dependencies = ["numpy>=1.24", "onnxruntime>=1.16", "kaldi-native-fbank>=1.18", 
 # Text front-ends that need third-party packages (pinned versions: requirements-text-*.txt).
 zh = ["pypinyin>=0.55", "jieba>=0.42", "opencc-python-reimplemented>=0.1.7"]
 ja = ["pyopenjtalk-plus>=0.4.1"]
-numbers = ["num2words>=0.5.14"]        # LGPL-2.1+, optional: digits read out as words
 mcp = ["mcp>=2"]                        # MIT, optional: `pronunciada mcp` only
-all = ["pronunciada[zh,ja,numbers,mcp]"]
+all = ["pronunciada[zh,ja,mcp]"]
 dev = ["pytest", "scipy>=1.10"]
 # Benchmarks and training only (bench/); never imported by pronunciada/ (see requirements-*.txt).
 bench = ["pyarrow>=15", "fsspec>=2024.2", "aiohttp>=3.9", "requests>=2.31", "panphon>=0.20",
