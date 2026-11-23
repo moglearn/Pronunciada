@@ -669,3 +669,344 @@ would be a per-language decision, not a shared one.
   * Boundary (0.0), function (0-0.17) and tail are not reliable. Hand reading moves most of them to
     text, variant or residual.
   * The English Whisper test is noisy (precision 0.33).
+
+
+# Part 2: fixes prototyped on the practice sets
+
+All the fixes are behind switches, **off by default**. With every switch off, the outputs equal main (a1716d3):
+max |diff| = 0 over all 144,690 numeric outputs of 112 practice items in en/de/ko/es/fr, for both fp32 and
+int8 (`equiv.py`).
+
+No held-out set, no Lingolix clip or cached answer and no API call was used. The global thresholds are
+unchanged. There is no word list.
+
+The two fitted numbers come from a speaker-disjoint half of the practice sets (the "fit" half):
+
+* fix B's presence threshold;
+* fix D2's factor.
+
+Every number below is reported on the other half (the "check" half) and on fresh confirmation sets. The fresh
+sets were scored once, at the end, with the frozen fixes, and nobody read their items.
+
+## Summary
+
+**Passed:** B (unsaid words), C (numbers) and E (Spanish glide, German lexicon readings, Korean n-insertion).
+
+| B + C + E | check half | fresh set |
+|---|---|---|
+| English FA@80 | 3.28 → 2.99 % (−9 %, p < 0.001) | 3.94 → 3.68 % (−7 %, p < 0.001) |
+| English correct words below 0.6 | −8 % | −7 % |
+| German FA@80 | −13 % | −15 % |
+| Korean FA@80 | −6 % | no fresh set |
+| Spanish FA@80 | −16 % | −15 % |
+| French FA@80 | −9 % | +0.05 pt (CI [−0.12, +0.15], p = 0.79; within the 0.1-pt allowance) |
+
+* Changed-word AUC goes up in every language. No kind drops by more than 0.002.
+* **The English target of a 35-50 % relative drop is not met.**
+
+**Dropped:** D1 and D2 (guessed words).
+
+* Both lower English changed-word AUC by more than the gate allows: subtle changes −0.013 on the check half
+  (D1); −0.0041 overall (D2).
+* Both raise English FA@80.
+* A reverse check that the planted sets cannot give shows the risk directly. When the spelling of a guessed
+  word is changed by one vowel letter, English catch falls from 64 % to 33 % (D1) and 39 % (D2).
+
+**Other gate items:**
+
+| item | result |
+|---|---|
+| speechocean762 CV and L2-ARCTIC / EpaDB detection | Unchanged by construction. The passes replace word results only, and `Scorer.details()`, which both protocols read, is bit-identical with the switches on (150 train clips per corpus, max \|diff\| = 0). The baselines stay 0.8537 / 0.6952 / 0.7303 and 0.714 / 0.701. |
+| latency | +0.11 ms per clip on average (fp32); none on int8 |
+| package data | +0.3 KB |
+| tests | 713 passed, 0 failed |
+
+### 0a / A: the measuring stick (all practice items)
+
+| lang | as diagnosed: AUC / FA@80 | 0a label index fixed | 0a + A (punctuation tokens out, no-break-space numbers one token) |
+|---|---|---|---|
+| en | 0.9641 / 3.40 % (< 0.6: 3.95 %) | 0.9648 / 3.39 % (< 0.6: 3.95 %) | 0.9650 / 3.37 % (< 0.6: 3.93 %) |
+| de | 0.9757 / 2.03 % (< 0.6: 3.05 %) | 0.9757 / 2.03 % (< 0.6: 3.05 %) | 0.9760 / 1.99 % (< 0.6: 3.02 %) |
+| ko | 0.9728 / 2.39 % (< 0.6: 2.43 %) | 0.9744 / 2.35 % (< 0.6: 2.41 %) | 0.9746 / 2.33 % (< 0.6: 2.39 %) |
+| es | 0.9662 / 2.36 % (< 0.6: 2.60 %) | 0.9723 / 2.14 % (< 0.6: 2.56 %) | 0.9736 / 1.99 % (< 0.6: 2.41 %) |
+| fr | 0.9421 / 3.77 % (< 0.6: 3.49 %) | 0.9513 / 3.42 % (< 0.6: 3.45 %) | 0.9576 / 2.67 % (< 0.6: 2.69 %) |
+
+### Practice sets, check half (speaker-disjoint from the fit half)
+
+FA@80 % and correct words < 0.6 % (relative change vs main), AUC; * = paired speaker-bootstrap p < 0.05.
+
+| lang | config | FA@80 % | < 0.6 % | AUC | ΔFA@80 [95 % CI] p | ΔAUC [95 % CI] p |
+|---|---|---|---|---|---|---|
+| en | main | 3.28 | 4.19 | 0.9610 | | |
+| en | B | 3.06 (-7 %) | 3.93 (-6 %) | 0.9621 | -0.22 [-0.36, -0.10] p=0.000 * | +0.0011 [+0.0005, +0.0018] p=0.000 * |
+| en | C | 3.21 (-2 %) | 4.12 (-2 %) | 0.9613 | -0.07 [-0.16, +0.00] p=0.084 | +0.0003 [+0.0000, +0.0007] p=0.022 * |
+| en | D1 | 3.45 (+5 %) | 3.67 (-13 %) | 0.9584 | +0.16 [-0.50, +0.82] p=0.938 | -0.0026 [-0.0067, +0.0007] p=0.202 |
+| en | D2 | 3.69 (+12 %) | 3.52 (-16 %) | 0.9569 | +0.41 [-0.28, +0.94] p=0.320 | -0.0041 [-0.0065, -0.0021] p=0.000 * |
+| en | ALL (B+C+D1+E) | 3.15 (-4 %) | 3.34 (-20 %) | 0.9599 | -0.13 [-0.82, +0.44] p=0.376 | -0.0011 [-0.0052, +0.0021] p=0.710 |
+| en | ALL without D (B+C+E) | 2.99 (-9 %) | 3.86 (-8 %) | 0.9624 | -0.29 [-0.46, -0.16] p=0.000 * | +0.0014 [+0.0008, +0.0021] p=0.000 * |
+| de | main | 2.66 | 3.45 | 0.9733 | | |
+| de | B | 2.59 (-2 %) | 3.38 (-2 %) | 0.9736 | -0.07 [-0.15, +0.01] p=0.114 | +0.0002 [-0.0001, +0.0005] p=0.152 |
+| de | C | 2.57 (-3 %) | 3.36 (-3 %) | 0.9737 | -0.09 [-0.18, -0.02] p=0.034 * | +0.0004 [+0.0001, +0.0009] p=0.034 * |
+| de | D1 | 2.58 (-3 %) | 3.32 (-4 %) | 0.9739 | -0.08 [-0.22, +0.00] p=0.070 | +0.0005 [+0.0002, +0.0010] p=0.000 * |
+| de | D2 | 2.55 (-4 %) | 3.29 (-5 %) | 0.9740 | -0.11 [-0.25, -0.02] p=0.010 * | +0.0006 [+0.0004, +0.0009] p=0.000 * |
+| de | E | 2.47 (-7 %) | 3.22 (-7 %) | 0.9741 | -0.18 [-0.33, +0.15] p=0.196 | +0.0008 [+0.0003, +0.0013] p=0.002 * |
+| de | ALL (B+C+D1+E) | 2.23 (-16 %) | 2.94 (-15 %) | 0.9753 | -0.42 [-0.67, -0.07] p=0.032 * | +0.0019 [+0.0011, +0.0028] p=0.000 * |
+| de | ALL without D (B+C+E) | 2.32 (-13 %) | 3.07 (-11 %) | 0.9747 | -0.34 [-0.52, +0.00] p=0.054 | +0.0014 [+0.0007, +0.0022] p=0.000 * |
+| ko | main | 1.58 | 1.58 | 0.9735 | | |
+| ko | B | 1.53 (-3 %) | 1.53 (-3 %) | 0.9739 | -0.05 [-0.37, +0.06] p=0.318 | +0.0004 [+0.0000, +0.0008] p=0.030 * |
+| ko | C | 1.53 (-3 %) | 1.53 (-3 %) | 0.9738 | -0.05 [-0.18, +0.00] p=0.736 | +0.0003 [+0.0000, +0.0009] p=0.736 |
+| ko | D1 | 1.58 (+0 %) | 1.58 (+0 %) | 0.9735 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| ko | D2 | 1.58 (+0 %) | 1.58 (+0 %) | 0.9735 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| ko | E | 1.58 (+0 %) | 1.58 (+0 %) | 0.9739 | +0.00 [+0.00, +0.33] p=1.000 | +0.0003 [-0.0002, +0.0014] p=0.318 |
+| ko | ALL (B+C+D1+E) | 1.48 (-6 %) | 1.48 (-6 %) | 0.9746 | -0.10 [-0.40, +0.21] p=0.404 | +0.0011 [+0.0003, +0.0023] p=0.000 * |
+| ko | ALL without D (B+C+E) | 1.48 (-6 %) | 1.48 (-6 %) | 0.9746 | -0.10 [-0.40, +0.21] p=0.404 | +0.0011 [+0.0003, +0.0023] p=0.000 * |
+| es | main | 2.09 | 2.24 | 0.9755 | | |
+| es | B | 2.08 (-0 %) | 2.23 (-0 %) | 0.9756 | -0.01 [-0.11, +0.08] p=0.710 | +0.0002 [-0.0002, +0.0005] p=0.400 |
+| es | C | 2.09 (+0 %) | 2.24 (+0 %) | 0.9755 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| es | D1 | 2.09 (+0 %) | 2.24 (+0 %) | 0.9755 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| es | D2 | 1.82 (-13 %) | 1.89 (-16 %) | 0.9755 | -0.27 [-0.47, +0.12] p=0.174 | +0.0001 [-0.0011, +0.0009] p=0.866 |
+| es | E | 1.77 (-16 %) | 2.00 (-11 %) | 0.9764 | -0.33 [-0.57, -0.07] p=0.008 * | +0.0010 [+0.0004, +0.0016] p=0.000 * |
+| es | ALL (B+C+D1+E) | 1.75 (-16 %) | 2.00 (-11 %) | 0.9766 | -0.34 [-0.60, -0.09] p=0.014 * | +0.0012 [+0.0005, +0.0019] p=0.000 * |
+| es | ALL without D (B+C+E) | 1.75 (-16 %) | 2.00 (-11 %) | 0.9766 | -0.34 [-0.60, -0.09] p=0.014 * | +0.0012 [+0.0005, +0.0019] p=0.000 * |
+| fr | main | 2.79 | 2.62 | 0.9562 | | |
+| fr | B | 2.55 (-9 %) | 2.37 (-10 %) | 0.9572 | -0.25 [-0.39, -0.13] p=0.000 * | +0.0010 [+0.0005, +0.0015] p=0.000 * |
+| fr | C | 2.78 (-0 %) | 2.62 (+0 %) | 0.9563 | -0.01 [-0.06, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0001] p=0.148 |
+| fr | D1 | 2.68 (-4 %) | 2.47 (-6 %) | 0.9568 | -0.11 [-0.28, +0.24] p=0.358 | +0.0006 [+0.0003, +0.0009] p=0.000 * |
+| fr | D2 | 2.60 (-7 %) | 2.32 (-12 %) | 0.9566 | -0.19 [-0.47, +0.38] p=0.562 | +0.0004 [-0.0006, +0.0012] p=0.458 |
+| fr | ALL (B+C+D1+E) | 2.42 (-13 %) | 2.22 (-16 %) | 0.9578 | -0.37 [-0.60, +0.03] p=0.064 | +0.0016 [+0.0010, +0.0022] p=0.000 * |
+| fr | ALL without D (B+C+E) | 2.54 (-9 %) | 2.37 (-10 %) | 0.9572 | -0.26 [-0.41, -0.13] p=0.000 * | +0.0010 [+0.0005, +0.0016] p=0.000 * |
+
+### Fresh confirmation sets (scored once, frozen fixes)
+
+FA@80 % and correct words < 0.6 % (relative change vs main), AUC; * = paired speaker-bootstrap p < 0.05.
+
+| lang | config | FA@80 % | < 0.6 % | AUC | ΔFA@80 [95 % CI] p | ΔAUC [95 % CI] p |
+|---|---|---|---|---|---|---|
+| en@fresh | main | 3.94 | 4.33 | 0.9485 | | |
+| en@fresh | B | 3.68 (-7 %) | 4.03 (-7 %) | 0.9497 | -0.26 [-0.41, -0.16] p=0.000 * | +0.0012 [+0.0008, +0.0017] p=0.000 * |
+| en@fresh | C | 3.94 (+0 %) | 4.33 (+0 %) | 0.9485 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| en@fresh | D1 | 4.12 (+4 %) | 3.83 (-11 %) | 0.9470 | +0.17 [-0.42, +0.80] p=0.950 | -0.0014 [-0.0046, +0.0007] p=0.364 |
+| en@fresh | D2 | 4.21 (+7 %) | 3.51 (-19 %) | 0.9446 | +0.27 [-0.38, +0.60] p=0.726 | -0.0038 [-0.0055, -0.0023] p=0.000 * |
+| en@fresh | E | 3.94 (+0 %) | 4.33 (+0 %) | 0.9485 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| en@fresh | ALL (B+C+D1+E) | 3.81 (-3 %) | 3.53 (-18 %) | 0.9484 | -0.14 [-0.72, +0.45] p=0.356 | -0.0001 [-0.0032, +0.0020] p=0.894 |
+| en@fresh | ALL without D (B+C+E) | 3.68 (-7 %) | 4.03 (-7 %) | 0.9497 | -0.26 [-0.41, -0.16] p=0.000 * | +0.0012 [+0.0008, +0.0017] p=0.000 * |
+| de@fresh | main | 1.57 | 3.02 | 0.9770 | | |
+| de@fresh | B | 1.42 (-9 %) | 2.76 (-9 %) | 0.9779 | -0.15 [-0.29, -0.05] p=0.002 * | +0.0009 [+0.0005, +0.0013] p=0.000 * |
+| de@fresh | C | 1.57 (+0 %) | 3.02 (+0 %) | 0.9770 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| de@fresh | D1 | 1.57 (+0 %) | 2.99 (-1 %) | 0.9772 | +0.00 [-0.03, +0.00] p=1.000 | +0.0002 [+0.0001, +0.0005] p=0.000 * |
+| de@fresh | D2 | 1.55 (-1 %) | 2.93 (-3 %) | 0.9774 | -0.02 [-0.09, +0.00] p=0.246 | +0.0004 [+0.0003, +0.0005] p=0.000 * |
+| de@fresh | E | 1.46 (-7 %) | 2.80 (-7 %) | 0.9773 | -0.11 [-0.20, -0.02] p=0.036 * | +0.0003 [-0.0009, +0.0011] p=0.518 |
+| de@fresh | ALL (B+C+D1+E) | 1.33 (-15 %) | 2.53 (-16 %) | 0.9784 | -0.24 [-0.43, -0.11] p=0.000 * | +0.0014 [+0.0002, +0.0023] p=0.030 * |
+| de@fresh | ALL without D (B+C+E) | 1.33 (-15 %) | 2.55 (-15 %) | 0.9782 | -0.24 [-0.43, -0.10] p=0.000 * | +0.0012 [-0.0000, +0.0021] p=0.052 |
+| es@fresh | main | 2.79 | 2.63 | 0.9696 | | |
+| es@fresh | B | 2.63 (-6 %) | 2.47 (-6 %) | 0.9704 | -0.16 [-0.30, -0.07] p=0.000 * | +0.0008 [+0.0004, +0.0014] p=0.000 * |
+| es@fresh | C | 2.77 (-1 %) | 2.61 (-1 %) | 0.9697 | -0.02 [-0.09, +0.00] p=0.674 | +0.0001 [+0.0000, +0.0003] p=0.100 |
+| es@fresh | D1 | 2.79 (+0 %) | 2.63 (+0 %) | 0.9696 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| es@fresh | D2 | 2.78 (-0 %) | 2.33 (-12 %) | 0.9698 | -0.01 [-0.46, +0.75] p=0.764 | +0.0002 [-0.0011, +0.0013] p=0.746 |
+| es@fresh | E | 2.55 (-8 %) | 2.44 (-7 %) | 0.9705 | -0.24 [-0.40, -0.11] p=0.000 * | +0.0009 [+0.0005, +0.0015] p=0.000 * |
+| es@fresh | ALL (B+C+D1+E) | 2.37 (-15 %) | 2.26 (-14 %) | 0.9715 | -0.42 [-0.65, -0.24] p=0.000 * | +0.0019 [+0.0012, +0.0027] p=0.000 * |
+| es@fresh | ALL without D (B+C+E) | 2.37 (-15 %) | 2.26 (-14 %) | 0.9715 | -0.42 [-0.65, -0.24] p=0.000 * | +0.0019 [+0.0012, +0.0027] p=0.000 * |
+| fr@fresh | main | 1.68 | 2.24 | 0.9790 | | |
+| fr@fresh | B | 1.72 (+3 %) | 2.22 (-1 %) | 0.9790 | +0.05 [-0.12, +0.15] p=0.790 | +0.0000 [-0.0004, +0.0005] p=0.978 |
+| fr@fresh | C | 1.68 (+0 %) | 2.24 (+0 %) | 0.9790 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| fr@fresh | D1 | 1.50 (-11 %) | 2.03 (-9 %) | 0.9779 | -0.18 [-0.26, +0.08] p=0.282 | -0.0011 [-0.0052, +0.0012] p=0.748 |
+| fr@fresh | D2 | 1.23 (-27 %) | 1.68 (-25 %) | 0.9807 | -0.45 [-0.73, -0.08] p=0.014 * | +0.0017 [+0.0012, +0.0022] p=0.000 * |
+| fr@fresh | E | 1.68 (+0 %) | 2.24 (+0 %) | 0.9790 | +0.00 [+0.00, +0.00] p=1.000 | +0.0000 [+0.0000, +0.0000] p=1.000 |
+| fr@fresh | ALL (B+C+D1+E) | 1.51 (-10 %) | 1.97 (-12 %) | 0.9781 | -0.17 [-0.31, +0.11] p=0.304 | -0.0009 [-0.0052, +0.0015] p=0.748 |
+| fr@fresh | ALL without D (B+C+E) | 1.72 (+3 %) | 2.22 (-1 %) | 0.9790 | +0.05 [-0.12, +0.15] p=0.790 | +0.0000 [-0.0004, +0.0005] p=0.978 |
+
+### Practice check half: changed-word AUC by kind (each kind's changed words vs all correct words)
+
+| lang | config | sub_subtle | sub_moderate | sub_gross | indel | word_omission |
+|---|---|---|---|---|---|---|
+| en | main | 0.9563 | 0.9829 | 0.9939 | 0.9260 | 0.9984 |
+| en | B | 0.9578 | 0.9837 | 0.9942 | 0.9278 | 0.9984 |
+| en | C | 0.9567 | 0.9831 | 0.9940 | 0.9264 | 0.9984 |
+| en | D1 | 0.9428 | 0.9822 | 0.9907 | 0.9271 | 0.9983 |
+| en | D2 | 0.9482 | 0.9813 | 0.9907 | 0.9207 | 0.9981 |
+| en | ALL (B+C+D1+E) | 0.9449 | 0.9834 | 0.9913 | 0.9293 | 0.9984 |
+| en | ALL without D (B+C+E) | 0.9582 | 0.9839 | 0.9943 | 0.9282 | 0.9985 |
+| de | main | 0.9463 | 0.9908 | 0.9969 | 0.9556 | 0.9972 |
+| de | B | 0.9466 | 0.9909 | 0.9969 | 0.9559 | 0.9975 |
+| de | C | 0.9468 | 0.9912 | 0.9971 | 0.9561 | 0.9974 |
+| de | D1 | 0.9472 | 0.9911 | 0.9970 | 0.9565 | 0.9972 |
+| de | D2 | 0.9473 | 0.9912 | 0.9970 | 0.9566 | 0.9972 |
+| de | E | 0.9476 | 0.9909 | 0.9970 | 0.9571 | 0.9973 |
+| de | ALL (B+C+D1+E) | 0.9494 | 0.9916 | 0.9973 | 0.9589 | 0.9978 |
+| de | ALL without D (B+C+E) | 0.9485 | 0.9913 | 0.9972 | 0.9580 | 0.9977 |
+| ko | main | 0.9407 | 0.9849 | 0.9943 | 0.9591 | 0.9978 |
+| ko | B | 0.9411 | 0.9855 | 0.9945 | 0.9596 | 0.9981 |
+| ko | C | 0.9410 | 0.9852 | 0.9946 | 0.9594 | 0.9980 |
+| ko | D1 | 0.9407 | 0.9849 | 0.9943 | 0.9591 | 0.9978 |
+| ko | D2 | 0.9407 | 0.9849 | 0.9943 | 0.9591 | 0.9978 |
+| ko | E | 0.9407 | 0.9846 | 0.9942 | 0.9611 | 0.9977 |
+| ko | ALL (B+C+D1+E) | 0.9415 | 0.9856 | 0.9948 | 0.9620 | 0.9982 |
+| ko | ALL without D (B+C+E) | 0.9415 | 0.9856 | 0.9948 | 0.9620 | 0.9982 |
+| es | main | 0.9818 | 0.9925 | 0.9961 | 0.9453 | 0.9986 |
+| es | B | 0.9820 | 0.9926 | 0.9962 | 0.9455 | 0.9986 |
+| es | C | 0.9818 | 0.9925 | 0.9961 | 0.9453 | 0.9986 |
+| es | D1 | 0.9818 | 0.9925 | 0.9961 | 0.9453 | 0.9986 |
+| es | D2 | 0.9829 | 0.9925 | 0.9949 | 0.9454 | 0.9986 |
+| es | E | 0.9828 | 0.9931 | 0.9963 | 0.9470 | 0.9989 |
+| es | ALL (B+C+D1+E) | 0.9830 | 0.9934 | 0.9964 | 0.9472 | 0.9990 |
+| es | ALL without D (B+C+E) | 0.9830 | 0.9934 | 0.9964 | 0.9472 | 0.9990 |
+| fr | main | 0.9578 | 0.9919 | 0.9957 | 0.8992 | 0.9984 |
+| fr | B | 0.9594 | 0.9926 | 0.9961 | 0.9007 | 0.9985 |
+| fr | C | 0.9579 | 0.9919 | 0.9957 | 0.8992 | 0.9984 |
+| fr | D1 | 0.9588 | 0.9924 | 0.9955 | 0.9002 | 0.9985 |
+| fr | D2 | 0.9588 | 0.9919 | 0.9944 | 0.9005 | 0.9984 |
+| fr | ALL (B+C+D1+E) | 0.9604 | 0.9931 | 0.9959 | 0.9019 | 0.9986 |
+| fr | ALL without D (B+C+E) | 0.9594 | 0.9926 | 0.9961 | 0.9008 | 0.9985 |
+
+### Fresh sets: changed-word AUC by kind (each kind's changed words vs all correct words)
+
+| lang | config | sub_subtle | sub_moderate | sub_gross | indel | word_omission |
+|---|---|---|---|---|---|---|
+| en@fresh | main | 0.9498 | 0.9860 | 0.9894 | 0.8916 | 0.9981 |
+| en@fresh | B | 0.9516 | 0.9869 | 0.9900 | 0.8935 | 0.9982 |
+| en@fresh | C | 0.9498 | 0.9860 | 0.9894 | 0.8916 | 0.9981 |
+| en@fresh | D1 | 0.9492 | 0.9743 | 0.9898 | 0.8928 | 0.9983 |
+| en@fresh | D2 | 0.9493 | 0.9849 | 0.9856 | 0.8830 | 0.9981 |
+| en@fresh | E | 0.9498 | 0.9860 | 0.9894 | 0.8916 | 0.9981 |
+| en@fresh | ALL (B+C+D1+E) | 0.9511 | 0.9754 | 0.9905 | 0.8947 | 0.9985 |
+| en@fresh | ALL without D (B+C+E) | 0.9516 | 0.9869 | 0.9900 | 0.8935 | 0.9982 |
+| de@fresh | main | 0.9744 | 0.9892 | 0.9958 | 0.9537 | 0.9970 |
+| de@fresh | B | 0.9756 | 0.9899 | 0.9960 | 0.9551 | 0.9973 |
+| de@fresh | C | 0.9744 | 0.9892 | 0.9958 | 0.9537 | 0.9970 |
+| de@fresh | D1 | 0.9747 | 0.9894 | 0.9959 | 0.9541 | 0.9971 |
+| de@fresh | D2 | 0.9749 | 0.9894 | 0.9958 | 0.9546 | 0.9970 |
+| de@fresh | E | 0.9753 | 0.9897 | 0.9960 | 0.9536 | 0.9972 |
+| de@fresh | ALL (B+C+D1+E) | 0.9766 | 0.9906 | 0.9964 | 0.9554 | 0.9976 |
+| de@fresh | ALL without D (B+C+E) | 0.9764 | 0.9904 | 0.9963 | 0.9550 | 0.9975 |
+| es@fresh | main | 0.9747 | 0.9896 | 0.9956 | 0.9329 | 0.9988 |
+| es@fresh | B | 0.9758 | 0.9902 | 0.9958 | 0.9344 | 0.9988 |
+| es@fresh | C | 0.9749 | 0.9897 | 0.9956 | 0.9331 | 0.9988 |
+| es@fresh | D1 | 0.9747 | 0.9896 | 0.9956 | 0.9329 | 0.9988 |
+| es@fresh | D2 | 0.9764 | 0.9901 | 0.9947 | 0.9326 | 0.9988 |
+| es@fresh | E | 0.9762 | 0.9902 | 0.9959 | 0.9344 | 0.9988 |
+| es@fresh | ALL (B+C+D1+E) | 0.9775 | 0.9909 | 0.9962 | 0.9359 | 0.9989 |
+| es@fresh | ALL without D (B+C+E) | 0.9775 | 0.9909 | 0.9962 | 0.9359 | 0.9989 |
+| fr@fresh | main | 0.9666 | 0.9941 | 0.9968 | 0.9562 | 0.9990 |
+| fr@fresh | B | 0.9665 | 0.9941 | 0.9968 | 0.9562 | 0.9991 |
+| fr@fresh | C | 0.9666 | 0.9941 | 0.9968 | 0.9562 | 0.9990 |
+| fr@fresh | D1 | 0.9680 | 0.9947 | 0.9969 | 0.9519 | 0.9992 |
+| fr@fresh | D2 | 0.9693 | 0.9955 | 0.9967 | 0.9594 | 0.9991 |
+| fr@fresh | E | 0.9666 | 0.9941 | 0.9968 | 0.9562 | 0.9990 |
+| fr@fresh | ALL (B+C+D1+E) | 0.9682 | 0.9949 | 0.9970 | 0.9521 | 0.9993 |
+| fr@fresh | ALL without D (B+C+E) | 0.9665 | 0.9941 | 0.9968 | 0.9562 | 0.9991 |
+
+### English false alarms left under ALL without D (B+C+E) (check half, n = 256)
+
+- text front-end (name, unknown word, number): 87 (34 %)
+- corpus noise (Whisper disagrees, truncated, low SNR): 54 (21 %)
+- other: 37 (14 %)
+- tail (within 1 logit): 31 (12 %)
+- stress factor: 26 (10 %)
+- near the change (not resolved): 21 (8 %)
+
+### English false alarms left under ALL (B+C+D1+E) (check half, n = 270)
+
+- text front-end (name, unknown word, number): 67 (25 %)
+- corpus noise (Whisper disagrees, truncated, low SNR): 61 (23 %)
+- other: 46 (17 %)
+- tail (within 1 logit): 43 (16 %)
+- stress factor: 30 (11 %)
+- near the change (not resolved): 23 (9 %)
+
+## Details
+
+**0a (label fix) and A (punctuation tokens, number spacing).**
+
+* 0a: the changed word's index is re-derived as the whitespace token that equals the replacement word, closest
+  to the stored unit index (`core.changed_index`).
+* A is a measurement-side fix only. The runtime path already handles both cases:
+  * `Scorer` with raw text never makes a word of a punctuation-only token and gives it no frames;
+  * "1 400" written with a no-break space or a thin space is one number word (checked in fr, de, es).
+
+  Only the metric's whitespace split did not. With an ordinary space, English "10 000" is two tokens in both,
+  which is English convention. No runtime switch was needed.
+* Old and new baselines are side by side in the first table.
+
+**B (unsaid words, `PRONUNCIADA_R20_UNSAID`).**
+
+* Trigger: a word whose presence probability (the existing omission factor) is below τ. Grid {0.02, 0.05, 0.1,
+  0.2, 0.3, 0.5}; τ = 0.02 fitted on the fit half, the lowest-FA value, which is the edge of the
+  pre-registered grid. It is stored in `data/calib/r20.json`.
+* The clip is aligned again with the word removed, from the cached posteriors. Up to 2 words on either side
+  take their results from that alignment. The unsaid word keeps its own low score and omission flag.
+* No other clip changes.
+* Trigger rate: control items 0.3-1.1 % of items, word-omission items 46-83 %, gross substitutions 6-20 %,
+  speechocean762 TRAIN 0.56 % of clips (14 of 2,500).
+* Cost: 0.09 ms per clip averaged over all speechocean762 clips; 15.4 ms per clip where it fires.
+* Practice changed words raised by B: en 1, ko 3, es 4. One caught word lost (ko).
+
+**C (numbers, `PRONUNCIADA_R20_NUMALT`).**
+
+* Number tokens are also scored against their other standard readings, and the best is kept:
+  * cardinal with or without "and";
+  * "a hundred" / "a thousand";
+  * year form;
+  * de "hundert" / "einhundert" and the year form;
+  * fr year form and Belgian 70 / 90;
+  * es apocope;
+  * ko Sino-Korean vs native counters.
+* Readings come from num2words plus written rules, with no lexicon.
+* Only words scoring below 0.9 are tried, at most 3 readings each.
+* Reverse check: 0 changed words raised in any language. The practice builders never plant a change on a
+  number, so this check cannot fail there.
+
+**D (guessed words).**
+
+* D1: other letter-to-sound readings at the ambiguity points of the existing rules. At a vowel letter, the
+  back-off context's output replaces the most specific one.
+* D2: the error signal is shrunk by s = 0.6, fitted on the fit half (the pooled optimum; it is worse for
+  English).
+* Base rate of guessed words: 3-12 % of words in FLEURS train and Common Voice dev text. English: 8.7 % and
+  10.5 %, mostly names.
+* Practice changed words raised: D1 en 81 (17 lost from the caught region); D2 en 144 (43 lost).
+* Rejected.
+
+**E (front-end corrections, each its own commit and switch).**
+
+* Spanish `PRONUNCIADA_R20_ES_GLIDE`: the glide w may be heard as u, a post-consonantal j as i. es FA@80 −16 %
+  (check), −8 % (fresh).
+* German `PRONUNCIADA_R20_DE_LEXALT`: every lexicon reading is a candidate (best kept). de −7 % / −7 %, with a
+  net gain after 0a.
+* Korean `PRONUNCIADA_R20_KO_NINS`: optional n-insertion with coda nasalisation inside an eojeol. FA flat;
+  AUC +0.0003 (indel +0.002).
+* No new data or licences.
+
+**Korean explain-away crash:** fixed in its own commit with a test.
+
+**What is left in English** (check half, under B + C + E, 256 false alarms):
+
+| cause | share |
+|---|---|
+| text front-end (names, unknown words, numbers) | 34 % |
+| corpus noise (Whisper disagrees, truncated, low SNR) | 21 % |
+| tail within 1 logit | 12 % |
+| stress factor | 10 % |
+| near the change, not resolved | 8 % |
+| other | 14 % |
+
+Roughly a third (noise plus tail) is not reachable by scorer fixes. The largest reachable part, names and
+guessed words, could not be fixed safely by D.
+
+**Fresh pools.** Clips that the same exclusion rules allow beyond the diagnosed sets:
+
+| lang | fresh Common Voice clips (speakers) | fresh FLEURS validation clips | used |
+|---|---|---|---|
+| en | 1,009 (656) | 13 | 720 clips / 1,440 items |
+| de | 2,505 (1,289) | 5 | 720 clips |
+| es | 412 | 19 | 431 clips |
+| fr | 433 | 4 | 437 clips |
+| ko | 0 | 0 | none: the round-19 pool (737 clips) and FLEURS ko validation are fully used, so a fresh Korean set needs a new source |
+
+**Switches** (all default OFF on this branch):
+
+* `PRONUNCIADA_R20_UNSAID` (τ from `data/calib/r20.json`; override `PRONUNCIADA_R20_UNSAID_TAU`)
+* `PRONUNCIADA_R20_NUMALT`
+* `PRONUNCIADA_R20_DE_LEXALT`
+* `PRONUNCIADA_R20_ES_GLIDE`
+* `PRONUNCIADA_R20_KO_NINS`
+* `PRONUNCIADA_R20_GUESS=d1|d2` (rejected; s from `r20.json`, override `PRONUNCIADA_R20_GUESS_S`)

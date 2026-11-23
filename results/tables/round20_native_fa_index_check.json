@@ -1,9 +1,45 @@
 {
+ "en": {
+  "changed_items": 720,
+  "misindexed": 1,
+  "examples": [
+   "fl-7644436983984138819__chg"
+  ]
+ },
+ "de": {
+  "changed_items": 720,
+  "misindexed": 1,
+  "examples": [
+   "fl-2636214610441004271__chg"
+  ]
+ },
  "ko": {
   "changed_items": 410,
   "misindexed": 1,
   "examples": [
    "fleurs-ko-validation-15799560962313429183#chg"
+  ]
+ },
+ "es": {
+  "changed_items": 720,
+  "misindexed": 10,
+  "examples": [
+   "cv-18309351__chg",
+   "cv-18940513__chg",
+   "cv-18353543__chg",
+   "cv-18957509__chg",
+   "cv-18444164__chg"
+  ]
+ },
+ "fr": {
+  "changed_items": 720,
+  "misindexed": 22,
+  "examples": [
+   "cv-18499245__chg",
+   "cv-18727242__chg",
+   "cv-26979848__chg",
+   "cv-20112068__chg",
+   "fl-4828830814070141369__chg"
   ]
  }
 }

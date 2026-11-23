@@ -1,0 +1,17 @@
+{
+ "speechocean762": {
+  "clips": 150,
+  "max_abs_diff_details": 0.0,
+  "clips_with_changed_word_prob": 38
+ },
+ "l2arctic": {
+  "clips": 150,
+  "max_abs_diff_details": 0.0,
+  "clips_with_changed_word_prob": 1
+ },
+ "epadb": {
+  "clips": 150,
+  "max_abs_diff_details": 0.0,
+  "clips_with_changed_word_prob": 0
+ }
+}
