@@ -853,3 +853,40 @@ Clip lengths in the readiness runs: 5.2 to 23.5 s.
 Bundle contents per language, with licence and why scoring reads each file: the bundles' `manifest.json`. Shared by all ten bundles: `calib/config.json`, `calib/contrast_caps.json`, `calib/omission.json`, `calib/phone_dist.npz`, `calib/sound_U.npz`, `calib/word.npz`, `calib/word_reg.npz`, `calib/word_reg_r6.npz`, `coach/contrast_heads.json`, `zipa_tokens.txt`.
 Not in any bundle: lexicons and other front-end data (`data/lex/`, `data/cjk/`) and coaching-only files. The Japanese and Chinese third-party front-end dictionaries (about 300 MB and 9 MB) are not needed when targets come from elsewhere.
 Peak RSS is measured on desktop Python with NumPy and the full ONNX Runtime; it is an upper reference, not a phone figure.
+
+## On-device model
+
+Goal: about 100 MB on the device in total, with the least quality damage. Candidates keep fp32
+activations and store the weights in 4 to 8 bits, plus one static-int8 variant. All are built by
+`bench/opt/build_small.py`, starting from `model.onnx`, outside the repository. Only the 290 MatMul
+weight matrices change: they are 254 of the 260 MB. Every sensitivity and layout choice was made on
+practice clips only (`bench/opt/sensitivity.py`; FLEURS train). Nothing was adopted and no default
+was changed.
+
+<!-- opt:ondevice-findings -->
+<!-- /opt:ondevice-findings -->
+
+### Candidates
+
+<!-- opt:ondevice-candidates -->
+<!-- /opt:ondevice-candidates -->
+
+### Full gate, budget rule and strict rule
+
+<!-- opt:ondevice-gate -->
+<!-- /opt:ondevice-gate -->
+
+### Why the shipped int8 fails: fixed thresholds or ranking
+
+<!-- opt:ondevice-rows -->
+<!-- /opt:ondevice-rows -->
+
+### Total size on the device
+
+<!-- opt:ondevice-size -->
+<!-- /opt:ondevice-size -->
+
+### Recommendation
+
+<!-- opt:ondevice-recommendation -->
+<!-- /opt:ondevice-recommendation -->
