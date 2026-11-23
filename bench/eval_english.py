@@ -464,11 +464,15 @@ def eval_speed(n=100):
             print(prec, th, out[f"{prec}_t{th}"]["median_ms"], flush=True)
     import os as _os
 
-    from pronunciada.acoustic import cache_root
+    from pronunciada import acoustic
 
-    md = _os.path.join(cache_root(), "models", "zipa-small-crctc-500k")
-    out["model_mb"] = {f: round(_os.path.getsize(_os.path.join(md, f)) / 2 ** 20, 1)
-                       for f in ("model.onnx", "model.int8.onnx")}
+    # the backbone file each precision loads (one file per precision in the model cache) and the size of
+    # the download it was built from; MB = 10^6 bytes
+    name = "zipa-small-crctc-500k"
+    out["model_mb"] = {f: round(acoustic.download_size(name, p) / 1e6, 1) for p, f in
+                       (("fp32", "model.onnx"), ("int8", "model.int8.onnx"))}
+    out["model_file_mb"] = {p: round(_os.path.getsize(acoustic.backbone_model_file(name, p)) / 1e6, 1)
+                            for p in ("fp32", "int8")}
     from pronunciada.calibrate import data_dir
 
     out["calib_kb"] = {p.name: round(p.stat().st_size / 1024, 1) for p in sorted(data_dir().glob("*"))}

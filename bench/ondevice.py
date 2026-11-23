@@ -118,10 +118,16 @@ def weight_files(system: str) -> list[Path]:
     if system.startswith("pronunciada"):
         import pronunciada
 
-        f = {"pronunciada-fp32": "model.onnx", "pronunciada-int8": "model.int8.onnx"}[system]
+        from pronunciada import acoustic
+
+        prec = system.split("-")[1]
         data = Path(pronunciada.__file__).parent / "data"
+        # the file the scorer loads: the one backbone file of the precision (cache layout of 1.1), or
+        # the plain download in an older layout
+        union = acoustic.union_model_path("zipa-small-crctc-500k", prec, str(CACHE))
+        plain = CACHE / "models" / "zipa-small-crctc-500k" / acoustic.PRECISION_FILES[prec]
         model = Path(os.environ["PRONUNCIADA_BACKBONE"]) if os.environ.get("PRONUNCIADA_BACKBONE") else \
-            CACHE / "models" / "zipa-small-crctc-500k" / f
+            Path(union) if acoustic.union_valid(union) else plain
         return [model] + [p for p in data.rglob("*") if p.is_file()]
     hub = OP_WORK / "hf" / "hub"
 

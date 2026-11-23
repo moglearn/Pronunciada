@@ -296,25 +296,31 @@ German responses, Lingolix supports neither Mandarin nor was run on German or Sp
 ## 5. Cost on the same machine
 
 `python -m bench.ondevice`, fresh process per run, CPU only, first 200 speechocean762 test clips (mean
-3.4 s), audio decoding inside the timed call; Apple M3 Pro. All rows below were measured back to back
-between 15:08 and 15:17 on 23 Nov, at a 1-minute load average of 1.8 to 3.9 (the machine is shared).
-A first pass at 14:31-14:47, under a load of 9 to 40, gave slower figures in the same order; it is kept
-in `results/tables/learner_benchmark_cost/` (the files at the top level), the second pass in `rerun/` and
-`nb8-sym-b128/`.
+3.4 s), audio decoding inside the timed call; Apple M3 Pro. The Pronunciada int8 and fp32 rows and the
+OpenPronounce student row were measured back to back between 17:26 and 17:31 on 23 Nov with the code
+that merges this benchmark, the optimization work and the one-backbone-file cache layout (one file per
+precision on disk), at a 1-minute load average of 2.5 to 4.2 (the machine is shared; the load column
+gives the value before and after each run, both thread counts); files in
+`results/tables/learner_benchmark_cost/quiet/`. The candidate and OpenPronounce default rows come from
+the earlier pass at 15:08-15:17 (load 1.8 to 3.9, `main` fce7918; `rerun/` and `nb8-sym-b128/`), where
+int8 and fp32 gave 0.040 / 0.064 s and 0.049 / 0.097 s. A first pass at 14:31-14:47, under a load of 9
+to 40, gave slower figures in the same order; it is kept in the files at the top level of
+`results/tables/learner_benchmark_cost/`. Peak memory is that of the 4-thread run.
 
 | system | parameters | weights on disk | peak memory (fresh process) | median s / clip, 4 threads | median s / clip, 1 thread | load avg |
 |---|---|---|---|---|---|---|
-| Pronunciada int8 | about 67 M | 107 MB | 318 MB | **0.040** | 0.064 | 2.5-3.1 |
-| Pronunciada fp32 | about 67 M | 297 MB | 494 MB | 0.049 | 0.097 | 2.1-3.2 |
+| Pronunciada int8 | about 67 M | 107 MB (70.7 MB backbone) | 334 MB | **0.041** | **0.065** | 3.1-3.6 |
+| Pronunciada fp32 | about 67 M | 297 MB (260.3 MB backbone) | 509 MB | 0.052 | 0.098 | 3.3-4.2 |
 | Pronunciada, on-device model (73 MB, candidate) | about 67 M | 110 MB (73.4 MB backbone) | 337 MB | 0.058 | 0.133 | 2.8-3.9 |
-| OpenPronounce student | 95 M | 396 MB | 1,429 MB | (first pass, load 40: 0.314) | **0.152** | 2.8 |
+| OpenPronounce student | 95 M | 396 MB | 1,430 MB | 0.131 | 0.156 | 2.5-3.0 |
 | OpenPronounce default (English) | 631 M | 2,603 MB | 3,880 MB | 0.707 | 0.860 | 1.8-2.1 |
 | ZIPA alone | 64 M | 260 MB | – | – | – | – |
 | Azure, Lingolix, Chivox | – | cloud | – | – | – | – |
 
 The candidate is smaller on disk and in memory than fp32 but slower per clip on this machine (0.058
-against 0.049 s at 4 threads, 0.133 against 0.097 at 1 thread); int8 is the fastest. OpenPronounce
-student is fastest with 1 thread (round 19 found the same).
+against 0.049 s at 4 threads, 0.133 against 0.097 at 1 thread, same pass); int8 is the fastest at both
+thread counts. OpenPronounce student takes 3.2 times as long as int8 per clip at 4 threads (0.131
+against 0.041 s) and 2.4 times at 1 thread (0.156 against 0.065 s), in the same window.
 
 ZIPA alone shares Pronunciada's backbone file; its size and speed are the backbone's (its run is the
 backbone's forward pass plus a CTC alignment) and it was not timed separately. OpenPronounce default
@@ -383,10 +389,13 @@ no other system offers a per-sound decision to compare with.
 - **Training overlap**: Pronunciada, OpenPronounce and its student were fitted on speechocean762 train
   (not test); OpenPronounce compared design choices on the speechocean762 test split (round 19); none
   used L2-ARCTIC, EpaDB, Heroico, the Speech Accent Archive or LeaP.
-- **The Pronunciada rows are `main` at fce7918**, not a release; they differ from the 1.0.2 cache used by
-  round 19 and by the vendor pilot reports.
-- **Cost figures were taken on a loaded shared machine**; the ranking is clear, the absolute times are
-  pessimistic.
+- **The Pronunciada rows hold for the merged code** (`main` fce7918 with this benchmark, the size /
+  CPU-speed work and the two-layer text front end), not a release: they were scored with fce7918, and a
+  seeded sample of 200 items (50 each of en, zh, es, de; seed 20261123) re-scored with the merged code gives
+  outputs identical to the cached ones in every field except timing, for fp32 and int8 alike. They differ
+  from the 1.0.2 cache used by round 19 and by the vendor pilot reports.
+- **Cost figures were taken on a shared machine** (1-minute load 1.8 to 4.2 for the table rows); the
+  ranking is clear, the absolute times are somewhat pessimistic.
 
 ## Files
 
