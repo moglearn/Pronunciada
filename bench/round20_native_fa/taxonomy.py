@@ -137,6 +137,11 @@ def enrich(lang: str, rows: list[dict], cf: dict | None, full_audio: set) -> Non
         r["number"] = any(ch.isdigit() for ch in r["tok"]) or len(r["iw"]) > 1 or bool(
             re.search(r"\w\.\w", r["tok"])) or (len(re.sub(r"\W", "", r["tok"])) >= 2 and re.sub(r"\W", "", r["tok"]).isupper())
         r["text_risk"] = r["oov"] or r["name"] or r["number"]
+        # Whisper's spelling of names, unknown words and numbers is not a reliable reading check (as for digits):
+        # for those tokens the transcript test does not count as corpus noise
+        r["asr_noise"] = bool(r["asr_mismatch"]) and not r["text_risk"]
+        r["noise"] = r["asr_noise"] or r["low_snr"] or r["truncated"] or r["punct"] or r["label_artifact"] \
+            or r["tok_artifact"]
         r["cf"] = c is not None
         if c and c["var"]:
             best = max(c["var"], key=lambda v: v["p"])
@@ -234,13 +239,13 @@ def assign(r, order=None) -> str:
     return next(b for b in (order or ORDER) if f[b])
 
 
-TESTS = ("noise", "punct", "label_artifact", "tok_artifact", "asr_mismatch", "low_snr", "truncated", "neighbour", "neighbour_twin_ok", "neighbour_omission",
+TESTS = ("noise", "punct", "label_artifact", "tok_artifact", "asr_mismatch", "asr_noise", "low_snr", "truncated", "neighbour", "neighbour_twin_ok", "neighbour_omission",
          "has_lex", "has_brit", "has_rule", "has_alt", "_rescued", "text_risk", "oov", "name", "number",
          "boundary", "first", "last", "clip_on", "clip_off", "click", "jitter_gt", "function", "short", "tail_zone")
 
 
 def test_vals(r) -> dict:
-    return {"noise": r["noise"], "punct": r["punct"], "label_artifact": r["label_artifact"], "tok_artifact": r["tok_artifact"], "asr_mismatch": bool(r["asr_mismatch"]), "low_snr": r["low_snr"],
+    return {"noise": r["noise"], "punct": r["punct"], "label_artifact": r["label_artifact"], "tok_artifact": r["tok_artifact"], "asr_mismatch": bool(r["asr_mismatch"]), "asr_noise": r["asr_noise"], "low_snr": r["low_snr"],
             "truncated": r["truncated"], "neighbour": r["neighbour"],
             "neighbour_twin_ok": bool(r["neighbour"]) and r.get("twin_fa") is False,
             "neighbour_omission": bool(r["neighbour"]) and r["kind"] == "word_omission",
@@ -433,6 +438,11 @@ def run(lang: str, seed: int = 0) -> dict:
                             "caught_changed_share": 100 * sum(dl(r) for r in pos_rows if r["err"] >= thr)
                             / max(1, sum(r["err"] >= thr for r in pos_rows)),
                             "all_correct_share": 100 * sum(dl(r) for r in neg) / len(neg)}
+    # extra-sound (insertion) evidence next to / inside the word: llr_ins <= -3
+    out["insertion_flag"] = {"FA_share": 100 * sum(r["ins_flag"] for r in neg if r["err"] >= thr) / max(1, sum(r["err"] >= thr for r in neg)),
+                             "caught_changed_share": 100 * sum(r["ins_flag"] for r in pos_rows if r["err"] >= thr)
+                             / max(1, sum(r["err"] >= thr for r in pos_rows)),
+                             "all_correct_share": 100 * sum(r["ins_flag"] for r in neg) / len(neg)}
     # length: FA rate (correct words) and catch rate (changed words) at the one threshold, by number of sounds
     by = defaultdict(lambda: [0, 0, 0, 0])
     for r in rows:

@@ -101,6 +101,26 @@ def errdet(workers: int = 2) -> dict:
     return res
 
 
+def so762() -> dict:
+    """Summary of the speechocean762 TRAIN speaker-grouped CV re-run (so762cv.sh: the round-19 scripts
+    bench/round19/extract_en, exp_seq --name t_ens3, cv_blend, exp_level, on features re-extracted with main)."""
+    from bench.round20_native_fa import core as K
+
+    d = ROOT / "so762cv" / "tables"
+    seq = json.loads((d / "round19_english_cv_seq.json").read_text())["t_ens3"]["mean"]
+    blend = json.loads((d / "round19_english_cv_blend.json").read_text())
+    lev = json.loads((d / "round19_english_cv_level.json").read_text())["t_ens3"]["mean"]
+    out = {"note": "5-fold speaker-grouped CV on speechocean762 TRAIN, 3 seeds, children and others dealt separately"
+                   " (bench/round19/data.folds); the shipped blends: sentence 0.35 x sequence head + 0.65 x trees,"
+                   " sound 0.3, word 0.4",
+           "sentence_shipped_blend_w0.35": blend["w0.35"]["mean"], "sentence_trees_only": blend["w0.0"]["mean"],
+           "sentence_round2_base": blend["base"]["mean"], "sequence_head_alone": seq,
+           "sound_blend_w0.3": lev["sound"]["w0.3"], "word_blend_w0.4": lev["word"]["w0.4"]}
+    K.save_json("baseline_so762_train_cv.json", out)
+    print(json.dumps(out, indent=1))
+    return out
+
+
 def ondevice() -> None:
     """bench.ondevice for pronunciada-fp32 / int8 at 4 threads, written to this job's cache.
     One change to the protocol: the 200 clips are the first 200 speechocean762 TRAIN recordings instead of
@@ -125,4 +145,4 @@ def ondevice() -> None:
 
 
 if __name__ == "__main__":
-    {"practice": practice, "errdet": errdet, "ondevice": ondevice}[sys.argv[1]]()
+    {"practice": practice, "errdet": errdet, "ondevice": ondevice, "so762": so762}[sys.argv[1]]()

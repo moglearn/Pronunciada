@@ -1,0 +1,507 @@
+{
+ "patterns": {
+  "within two words of an inserted (unsaid) word": {
+   "n_fa": 28,
+   "share_fa": 12.903225806451612,
+   "n_words": 154,
+   "fa_rate": 18.181818181818183,
+   "fa_rate_rest": 2.119309262166405,
+   "ratio": 8.57912457912458,
+   "low_pairs": [
+    [
+     "a>a",
+     5
+    ],
+    [
+     "e>∅",
+     4
+    ],
+    [
+     "a>∅",
+     3
+    ],
+    [
+     "t>∅",
+     2
+    ],
+    [
+     "a>m",
+     1
+    ]
+   ]
+  },
+  "within two words of a substituted / indel word": {
+   "n_fa": 41,
+   "share_fa": 18.89400921658986,
+   "n_words": 1313,
+   "fa_rate": 3.1226199543031226,
+   "fa_rate_rest": 2.2683335481376465,
+   "ratio": 1.3766141037180641,
+   "low_pairs": [
+    [
+     "a>∅",
+     4
+    ],
+    [
+     "t>∅",
+     3
+    ],
+    [
+     "e>∅",
+     2
+    ],
+    [
+     "s>s",
+     2
+    ],
+    [
+     "e>i",
+     2
+    ]
+   ]
+  },
+  "punctuation-only token": {
+   "n_fa": 2,
+   "share_fa": 0.9216589861751152,
+   "n_words": 2,
+   "fa_rate": 100.0,
+   "fa_rate_rest": 2.37045203969129,
+   "ratio": 42.18604651162791,
+   "low_pairs": []
+  },
+  "number, abbreviation or multi-word expansion": {
+   "n_fa": 20,
+   "share_fa": 9.216589861751151,
+   "n_words": 159,
+   "fa_rate": 12.578616352201259,
+   "fa_rate_rest": 2.210254684169191,
+   "ratio": 5.691025763815727,
+   "low_pairs": [
+    [
+     "i>o",
+     3
+    ],
+    [
+     "pʰ>t",
+     2
+    ],
+    [
+     "i>ɔ",
+     2
+    ],
+    [
+     "i>u",
+     2
+    ],
+    [
+     "m>∅",
+     2
+    ]
+   ]
+  },
+  "unknown word (letter rules)": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 2.3919753086419755,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "name (capitalised mid-sentence, in lexicon)": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 2.3919753086419755,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "stress factor drives, sounds fine": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 2.3919753086419755,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "identity step drives": {
+   "n_fa": 39,
+   "share_fa": 17.972350230414747,
+   "n_words": 228,
+   "fa_rate": 17.105263157894736,
+   "fa_rate_rest": 2.0126639529624604,
+   "ratio": 8.498817267888823,
+   "low_pairs": [
+    [
+     "e>i",
+     6
+    ],
+    [
+     "i>o",
+     3
+    ],
+    [
+     "s>s",
+     2
+    ],
+    [
+     "o>i",
+     2
+    ],
+    [
+     "pʰ>p",
+     2
+    ]
+   ]
+  },
+  "function word judged absent (presence factor)": {
+   "n_fa": 4,
+   "share_fa": 1.8433179723502304,
+   "n_words": 14,
+   "fa_rate": 28.571428571428573,
+   "fa_rate_rest": 2.3515124751600793,
+   "ratio": 12.15023474178404,
+   "low_pairs": [
+    [
+     "s>∅",
+     1
+    ],
+    [
+     "n>∅",
+     1
+    ],
+    [
+     "e>∅",
+     1
+    ],
+    [
+     "a>∅",
+     1
+    ]
+   ]
+  },
+  "content word judged absent (presence factor)": {
+   "n_fa": 7,
+   "share_fa": 3.225806451612903,
+   "n_words": 31,
+   "fa_rate": 22.580645161290324,
+   "fa_rate_rest": 2.3227519079747814,
+   "ratio": 9.721505376344087,
+   "low_pairs": [
+    [
+     "a>a",
+     2
+    ],
+    [
+     "a>ɔ",
+     1
+    ],
+    [
+     "e>∅",
+     1
+    ],
+    [
+     "ə>∅",
+     1
+    ],
+    [
+     "a>∅",
+     1
+    ]
+   ]
+  },
+  "content word, a sound unsupported (deletion-type)": {
+   "n_fa": 81,
+   "share_fa": 37.327188940092164,
+   "n_words": 865,
+   "fa_rate": 9.364161849710984,
+   "fa_rate_rest": 1.6571219690508103,
+   "ratio": 5.650858551513092,
+   "low_pairs": [
+    [
+     "i>∅",
+     8
+    ],
+    [
+     "t>∅",
+     6
+    ],
+    [
+     "n>∅",
+     5
+    ],
+    [
+     "u>∅",
+     5
+    ],
+    [
+     "e>∅",
+     4
+    ]
+   ]
+  },
+  "content word, another sound heard (substitution-type)": {
+   "n_fa": 53,
+   "share_fa": 24.42396313364055,
+   "n_words": 698,
+   "fa_rate": 7.593123209169055,
+   "fa_rate_rest": 1.9584427991401958,
+   "ratio": 3.8771227898525407,
+   "low_pairs": [
+    [
+     "n>t",
+     4
+    ],
+    [
+     "l>n",
+     4
+    ],
+    [
+     "i>j",
+     3
+    ],
+    [
+     "pʰ>t",
+     2
+    ],
+    [
+     "tʃʰ>nn",
+     2
+    ]
+   ]
+  },
+  "function word, sound evidence": {
+   "n_fa": 14,
+   "share_fa": 6.451612903225806,
+   "n_words": 160,
+   "fa_rate": 8.75,
+   "fa_rate_rest": 2.277827648114901,
+   "ratio": 3.841379310344828,
+   "low_pairs": [
+    [
+     "a>∅",
+     6
+    ],
+    [
+     "u>∅",
+     2
+    ],
+    [
+     "k>∅",
+     2
+    ],
+    [
+     "s>t",
+     2
+    ],
+    [
+     "e>∅",
+     1
+    ]
+   ]
+  },
+  "last word of the clip": {
+   "n_fa": 37,
+   "share_fa": 17.05069124423963,
+   "n_words": 953,
+   "fa_rate": 3.882476390346275,
+   "fa_rate_rest": 2.217021800714374,
+   "ratio": 1.7512125451789669,
+   "low_pairs": [
+    [
+     "i>∅",
+     5
+    ],
+    [
+     "j>∅",
+     3
+    ],
+    [
+     "n>∅",
+     2
+    ],
+    [
+     "s>s",
+     2
+    ],
+    [
+     "pʰ>p",
+     2
+    ]
+   ]
+  },
+  "first word of the clip": {
+   "n_fa": 25,
+   "share_fa": 11.52073732718894,
+   "n_words": 953,
+   "fa_rate": 2.6232948583420774,
+   "fa_rate_rest": 2.364823254095332,
+   "ratio": 1.1092984872332983,
+   "low_pairs": [
+    [
+     "e>∅",
+     3
+    ],
+    [
+     "a>a",
+     2
+    ],
+    [
+     "j>∅",
+     2
+    ],
+    [
+     "e>i",
+     2
+    ],
+    [
+     "b>m",
+     2
+    ]
+   ]
+  },
+  "long word (>= 8 sounds)": {
+   "n_fa": 97,
+   "share_fa": 44.70046082949309,
+   "n_words": 3399,
+   "fa_rate": 2.853780523683436,
+   "fa_rate_rest": 2.1152829190904283,
+   "ratio": 1.3491247425713444,
+   "low_pairs": [
+    [
+     "i>∅",
+     5
+    ],
+    [
+     "tʰ>t",
+     5
+    ],
+    [
+     "n>∅",
+     4
+    ],
+    [
+     "ɔ>∅",
+     4
+    ],
+    [
+     "h>∅",
+     4
+    ]
+   ]
+  },
+  "lattice used a front-end alternative": {
+   "n_fa": 106,
+   "share_fa": 48.8479262672811,
+   "n_words": 2586,
+   "fa_rate": 4.098994586233565,
+   "fa_rate_rest": 1.7113783533765032,
+   "ratio": 2.395142242009991,
+   "low_pairs": [
+    [
+     "i>∅",
+     6
+    ],
+    [
+     "tʰ>t",
+     5
+    ],
+    [
+     "n>∅",
+     4
+    ],
+    [
+     "ɔ>∅",
+     4
+    ],
+    [
+     "j>∅",
+     4
+    ]
+   ]
+  },
+  "lexicon has another reading": {
+   "n_fa": 0,
+   "share_fa": 0.0,
+   "n_words": 0,
+   "fa_rate": 0.0,
+   "fa_rate_rest": 2.3919753086419755,
+   "ratio": 0.0,
+   "low_pairs": []
+  },
+  "Whisper transcript differs at the word": {
+   "n_fa": 29,
+   "share_fa": 13.36405529953917,
+   "n_words": 324,
+   "fa_rate": 8.950617283950617,
+   "fa_rate_rest": 2.1490626428898034,
+   "ratio": 4.164893617021276,
+   "low_pairs": [
+    [
+     "n>t",
+     4
+    ],
+    [
+     "pʰ>pʰ",
+     2
+    ],
+    [
+     "n>n",
+     2
+    ],
+    [
+     "i>a",
+     2
+    ],
+    [
+     "i>∅",
+     2
+    ]
+   ]
+  }
+ },
+ "families": {
+  "presence / unsaid-word handling": {
+   "n": 30,
+   "pct": 13.824884792626728,
+   "ci": [
+    8.426966292134832,
+    18.69918699186992
+   ]
+  },
+  "text front-end (number, unknown word, name, punctuation)": {
+   "n": 22,
+   "pct": 10.138248847926267,
+   "ci": [
+    3.754266211604096,
+    21.91780821917808
+   ]
+  },
+  "stress factor": {
+   "n": 0,
+   "pct": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  },
+  "identity step": {
+   "n": 39,
+   "pct": 17.972350230414747,
+   "ci": [
+    9.89010989010989,
+    26.506024096385545
+   ]
+  },
+  "union of the first two": {
+   "n": 51,
+   "pct": 23.502304147465438,
+   "ci": [
+    16.433566433566433,
+    34.090909090909086
+   ]
+  }
+ }
+}

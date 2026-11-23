@@ -85,6 +85,12 @@ def main(argv=None):
                                       for k, v in t["FA"]["driver"].items())
               + f"; lowest sound of sound-driven FA: " + ", ".join(f"{k} {v}" for k, v in t["FA"]["low_kind"].items())
               + f"; caught changed words: " + ", ".join(f"{k} {v}" for k, v in t["changed_low_kind"].items()))
+    print("\nDeletion-type evidence (presence factor drives, or the lowest sound is unsupported and nothing fits better)"
+          " and extra-sound evidence (llr_ins <= -3), % of FA / % of caught changed words / % of all correct words:\n")
+    for l in langs:
+        d, i = T[l]["deletion_type"], T[l].get("insertion_flag")
+        print(f"- {l}: deletion-type {d['FA_share']:.0f} / {d['caught_changed_share']:.0f} / {d['all_correct_share']:.1f}"
+              + (f"; extra-sound {i['FA_share']:.0f} / {i['caught_changed_share']:.0f} / {i['all_correct_share']:.1f}" if i else ""))
     print("\n### Neighbour effect, paired with the same word of the control item (same audio)\n")
     print("| lang | change kind | pairs | FA % in changed item | FA % in control item |")
     print("|---|---|---|---|---|")
@@ -174,7 +180,7 @@ def main(argv=None):
               f" content words FA rate {t['fa_rate_content']:.1f} %")
     print("\n### Tail: correct words by distance to the threshold (logit units of the score; % of correct words)\n")
     bins = list(T[langs[0]]["tail_mass"])
-    print("| distance below threshold | " + " | ".join(langs) + " |")
+    print("| logit(threshold score) - logit(score) (> 0: false alarm) | " + " | ".join(langs) + " |")
     print("|---|" + "---|" * len(langs))
     for b in bins:
         print(f"| {b} | " + " | ".join(f"{T[l]['tail_mass'][b]:.2f}" for l in langs) + " |")
