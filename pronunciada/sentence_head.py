@@ -73,8 +73,8 @@ def voice_cues(wav, sr: int = 16000) -> dict:
     n, hop = int(0.025 * sr), int(0.01 * sr)
     if len(x) < n:
         return {k: np.nan for k in VOICE_KEYS}
-    idx = np.arange(0, len(x) - n + 1, hop)
-    fr = np.stack([x[i:i + n] for i in idx]) * np.hanning(n).astype(np.float32)
+    # frames starting every hop samples (a strided view: the same values as stacking slices)
+    fr = np.lib.stride_tricks.sliding_window_view(x, n)[::hop] * np.hanning(n).astype(np.float32)
     P = np.abs(np.fft.rfft(fr, axis=1)) ** 2
     f = np.fft.rfftfreq(n, 1.0 / sr)
     e = P.sum(1)
