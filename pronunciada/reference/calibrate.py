@@ -193,6 +193,8 @@ class LevelModel:
         self.meta = json.loads(bytes(arr.pop("meta").data).decode("utf-8"))
         self.num = self.meta["num"]
         self.cat = self.meta["cat"]
+        self.vocab = self.meta.get("vocab", {})
+        self.encoding = self.meta.get("encoding", "codes")
         self.heads = {}
         for name, h in self.meta["heads"].items():
             g = {k[len(name) + 1:]: v for k, v in arr.items() if k.startswith(name + "/")}

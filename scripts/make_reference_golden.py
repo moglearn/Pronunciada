@@ -22,8 +22,11 @@ clip = {"id", "text", "T", "lp_q": base64 of T x 127 little-endian int16 (row-ma
                    "exact", "expected": evidence}],
         "sound_model": {"file", "rows": X, "expected": [{head: value}]},
         "word_model": {"file", "rows": X, "expected": [{head: value}]},
-        "omission": {"llr_del": [[...] per word], "expected": [P per word]}}
-evidence = output of pronunciada.reference.align.score_phones. Floats that are not finite are
+        "omission": {"llr_del": [[...] per word], "expected": [P per word]},
+        "dur": audio seconds, "target": {"words", "syllables", "phones"} (pronunciada.reference.features),
+        "universal": {"expected": {"sound": {"z_len", "z_str", "reg"}, "word": {"z_len", "z_str"}}}}
+evidence = output of pronunciada.reference.align.score_phones; "universal" = output of
+pronunciada.reference.pipeline.universal_scores on the "plain" evidence. Floats that are not finite are
 written as the strings "NaN", "Infinity", "-Infinity".
 """
 from __future__ import annotations
@@ -82,6 +85,7 @@ def main(argv=None) -> None:
     from pronunciada.audio import load_audio
     from pronunciada.reference import align as RA
     from pronunciada.reference import calibrate as RC
+    from pronunciada.reference import pipeline as RP
     from pronunciada.reference.tokens import load_tokens
     from pronunciada.text import get_g2p
     from pronunciada.variants import NativeStats
@@ -135,8 +139,15 @@ def main(argv=None) -> None:
             XW = np.column_stack([np.asarray(W[k], dtype=np.float64) for k in word.num])
             wrows = [[float(v) for v in r] for r in XW]
             llr = [[float(v) for v in tab["llr_del"][w.phones[0]:w.phones[1]]] for w in ref.words]
+            target = {"words": [{"text": w.text, "phones": list(w.phones)} for w in ref.words],
+                      "syllables": [{"stress": s.stress} for s in ref.syllables],
+                      "phones": [dict(ph, word=p.word, syllable=p.syllable, is_nucleus=bool(p.is_nucleus))
+                                 for ph, p in zip(phones, ref.phones)]}
+            dur = len(wav) / 16000
+            us = RP.universal_scores(lpl, target, cases[0]["expected"], lang, toks, dur)
             out.append({
-                "id": c["id"], "text": c["text"], "T": T, "lp_scale": SCALE,
+                "id": c["id"], "text": c["text"], "T": T, "lp_scale": SCALE, "dur": dur, "target": target,
+                "universal": {"expected": {"sound": us["sound"], "word": us["word"]}},
                 "lp_q": base64.b64encode(q.tobytes()).decode("ascii"),
                 "phones": phones, "word_phones": [list(w.phones) for w in ref.words], "cases": cases,
                 "sound_model": {"file": f"pronunciada/data/calib/{uname}.npz", "rows": rows,

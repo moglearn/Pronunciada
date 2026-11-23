@@ -73,7 +73,7 @@ def _lp(clip):
 def test_reference_imports_no_numpy():
     code = ("import sys\n"
             "import pronunciada.reference as R\n"
-            "from pronunciada.reference import align, calibrate, lattice, npz, numeric, tokens\n"
+            "from pronunciada.reference import align, calibrate, features, lattice, npz, numeric, pipeline, tokens\n"
             "bad = sorted(m for m in sys.modules if m.split('.')[0] in ('numpy', 'scipy', 'onnxruntime'))\n"
             "print(','.join(bad))\n")
     env = dict(os.environ, PYTHONPATH=str(ROOT))
@@ -118,6 +118,11 @@ def test_golden_vectors_reproduce_exactly(lang):
         om = json.loads((ROOT / clip["omission"]["file"]).read_text())
         got = [RC.present_prob(om, _dec(x)) for x in clip["omission"]["llr_del"]]
         assert got == clip["omission"]["expected"]
+        from pronunciada.reference import pipeline as RP
+
+        ev = RA.score_phones(lp, phones, toks)
+        us = RP.universal_scores(lp, clip["target"], ev, lang, toks, clip["dur"])
+        assert _enc({"sound": us["sound"], "word": us["word"]}) == clip["universal"]["expected"], clip["id"]
 
 
 def _prod_evidence(lp, phones, wild_slots, insertion, exact):
@@ -131,6 +136,17 @@ def _prod_evidence(lp, phones, wild_slots, insertion, exact):
         slots[i] = wild_slot(slots[i])
     return score_slots(np.asarray(lp, np.float32).reshape(-1, 127), slots, exact=exact, fixed=fixed,
                        insertion=insertion)
+
+
+def _reference(target):
+    from pronunciada.types import Reference, RefPhone, RefSyllable, RefWord
+
+    ref = Reference(lang="", text="")
+    ref.phones = [RefPhone(p["ipa"], p["word"], p["syllable"], p["is_nucleus"], [tuple(a) for a in p["alts"]])
+                  for p in target["phones"]]
+    ref.syllables = [RefSyllable(word=-1, phones=(0, 0), stress=s["stress"]) for s in target["syllables"]]
+    ref.words = [RefWord(w["text"], (0, 0), tuple(w["phones"])) for w in target["words"]]
+    return ref
 
 
 def _same(a, b):
@@ -179,6 +195,27 @@ def test_golden_vectors_match_production(lang):
         om = json.loads((ROOT / clip["omission"]["file"]).read_text())
         prod = [_present_prob(om, np.array(_dec(x))) for x in clip["omission"]["llr_del"]]
         assert prod == clip["omission"]["expected"]
+        # universal sound model + word model on production's own evidence and feature table
+        from pronunciada import features as F
+        from pronunciada.variants import NativeStats
+
+        ref = _reference(clip["target"])
+        lp32 = np.asarray(lp, np.float32)
+        from pronunciada.align import score_reference
+
+        tab = F.phone_table(lp32, ref, score_reference(lp32, ref), NativeStats.load(lang), clip["dur"])
+        cfg = C.config()
+        uni, word = C.load_level(cfg["universal_sound_model"]), C.load_level("word")
+        u = uni.logits(X=uni.matrix(tab))
+        bias = float(cfg.get("bias", {}).get(lang, 0.0))
+        zl, zs = u["z_len"] + bias, u["z_str"] + bias
+        W = F.word_table(tab, zl, zs, u["reg"])
+        w = word.logits(X=np.column_stack([np.asarray(W[k], dtype=np.float64) for k in word.num]))
+        exp_u = clip["universal"]["expected"]
+        for got, key in ((zl, ("sound", "z_len")), (zs, ("sound", "z_str")), (u["reg"], ("sound", "reg")),
+                         (w["z_len"], ("word", "z_len")), (w["z_str"], ("word", "z_str"))):
+            want = _dec(exp_u[key[0]][key[1]])
+            assert all(_same(a, b) for a, b in zip(got.tolist(), want)), (clip["id"], key)
 
 
 def test_scorer_formulas_match_production():
