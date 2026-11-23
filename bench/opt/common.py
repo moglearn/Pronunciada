@@ -28,7 +28,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 LANGS = ("en", "de", "es", "fr", "it", "pt", "ru", "ja", "ko", "zh")
 SECRET_VARS = ("AZURE_SPEECH_KEY", "AZURE_SPEECH_REGION", "AZURE_SPEECH_ENDPOINT", "LINGOLIX_API_KEY")
-THREAD_VARS = ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS")
+SECRET_PATTERN = re.compile(r"(_API_KEY|_SPEECH_KEY|_SECRET|_SECRET_KEY|_TOKEN|_PASSWORD)$")   # any other service
+THREAD_VARS =("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS")
 MODEL = "zipa-small-crctc-500k"
 PRECISION_FILES = {"fp32": "model.onnx", "fp16": "model.fp16.onnx", "int8": "model.int8.onnx"}
 CLIPS_FILE = Path(__file__).resolve().parent / "clips.json"
@@ -103,8 +104,8 @@ def override_env(spec: dict, suite: bool = False) -> dict:
 
 def child_env(spec: dict, tree: Path, threads: int | None = None, suite: bool = False, extra: dict | None = None) -> dict:
     env = {k: v for k, v in os.environ.items()
-           if k not in SECRET_VARS and not k.startswith(("PRONUNCIADA_BACKBONE", "PRONUNCIADA_ADAPTER_DIR",
-                                                          "PRONUNCIADA_ORT_OPTIONS"))}
+           if k not in SECRET_VARS and not SECRET_PATTERN.search(k)
+           and not k.startswith(("PRONUNCIADA_BACKBONE", "PRONUNCIADA_ADAPTER_DIR", "PRONUNCIADA_ORT_OPTIONS"))}
     env["PYTHONPATH"] = str(tree)
     env["PYTHONHASHSEED"] = "0"
     if threads is not None:
