@@ -12,8 +12,9 @@ its scope. One reference row, "ZIPA alone", is added: it is the phone model Pron
 scored without any of Pronunciada's components, and shows what Pronunciada adds to its backbone. It is
 not an assessment system.
 
-Reproduce every table from the cached outputs: `python -m bench.learnerbench.report` (full sets) and
-`python -m bench.learnerbench.report --only chivox` (the Chivox sample). Generated tables:
+Reproduce every table from the cached outputs:
+`LEARNERBENCH_EXTRA=pronunciada-nb8-sym-b128 python -m bench.learnerbench.report` (full sets) and the same
+with `--only chivox` (the Chivox sample). Generated tables:
 `results/tables/learner_benchmark_results.json`, `learner_benchmark_tables.md` (every row, every
 system, intervals and paired differences), `learner_benchmark_sample.json` / `_sample_tables.md`,
 `learner_benchmark_systems.json`, `learner_benchmark_cost/`.
@@ -79,6 +80,7 @@ redistributed, and the story texts are read from the manual at build time. Build
 | Azure Pronunciation Assessment | commercial, cached responses | REST, westus, Nov 2026 | commercial | – | cloud | yes | yes | yes | not run | sound, word, sentence |
 | Lingolix | commercial, cached responses | model 2026-11 | commercial | – | cloud | yes (speechocean762) | not supported | yes (Heroico, 2026-11-23) | not run | syllable, word, sentence |
 | Chivox | commercial, 299-item samples | engines eng.snt.G4.N1.0.13, chn.snt.G4.A2.0.8 | commercial | – | cloud | sample | sample | not run | not run | word, sentence (no sounds in English) |
+| Pronunciada, on-device model (73 MB, candidate) | open assessment system, **candidate, not released** | `main` with `PRONUNCIADA_BACKBONE` = nb8-sym-b128 (fp32 backbone, 8-bit weights, fp32 compute; 73,442,981 bytes, sha1 d6987da1…) | as fp32 | about 67 M | 110 MB (73.4 MB backbone) | yes | yes | yes | yes | sound, word, sentence |
 | ZIPA alone (reference) | reference phone model | zipa-small-crctc-500k fp32, recipe `bench/eval_zipa_baseline.py` "gop" | CC BY 4.0 | 64 M | 260 MB | scored | scored | scored | scored | sound, word, sentence (recipe) |
 
 What each system was given: the recording and the prompt text; each system's own text front end made
@@ -246,6 +248,29 @@ Chivox's own figures agree with the pilot report (`results/chivox_live.md`). Tha
 column (English total 0.753, accuracy 0.733, words 0.570) comes from the round-19 1.0.2 cache; the
 column here is the current `main` run (0.789, 0.772, 0.603). Mandarin figures agree within 0.003.
 
+### Pronunciada, on-device model (73 MB, candidate) against fp32
+
+The candidate backbone `nb8-sym-b128` (not released) was run on all 8,055 items with everything else
+unchanged. It appears in every generated table (`results/tables/learner_benchmark_tables.md`). Against
+fp32, paired on the same speaker resamples:
+
+| test (metric) | fp32 | candidate | Δ (fp32 − candidate) |
+|---|---|---|---|
+| speechocean762 sound / word / sentence total (Pearson) | 0.700 / 0.640 / 0.792 | 0.701 / 0.641 / 0.793 | −0.001 / −0.001 / −0.001 (p 0.29 / 0.25 / 0.13) |
+| speechocean762 sentence accuracy / fluency / prosody | 0.778 / 0.814 / 0.805 | 0.778 / 0.815 / 0.806 | all within 0.001, p ≥ 0.29 |
+| speechocean762 sentence total, C | 0.855 | 0.856 | −0.001 (p 0.008) |
+| L2-ARCTIC / EpaDB marked sounds (AUC) | 0.712 / 0.721 | 0.712 / 0.722 | +0.000 (p 0.58) / −0.001 (p < 0.001) |
+| OMPAL character any error (AUC) / sentence accuracy (Pearson) | 0.790 / 0.634 | 0.790 / 0.634 | +0.000 / +0.000 |
+| Heroico USMA AUC | 0.669 | 0.672 | −0.004 (p 0.73) |
+| Speech Accent Archive ≤ 30 s AUC | 0.851 | 0.853 | −0.002 (p 0.60) |
+| LeaP German AUC / LeaP English AUC | 0.728 / 0.829 | 0.728 / 0.827 | +0.000 (p 1.00) / +0.002 (p 0.74) |
+| LS4 / LS-NL4 | 0.723 / 0.804 | 0.723 / 0.805 | −0.001 (p 0.72) / −0.001 (p 0.67) |
+
+The largest difference on any row is on LeaP German story B speaker level (14 speakers: 0.875 against
+0.925, p 0.65). The only significant differences are of 0.001 to 0.003: the candidate is higher on
+speechocean762 C and Spearman total and on EpaDB, lower on the Chivox-sample OMPAL sentence accuracy
+(0.586 against 0.589, p 0.002). On these learner tests the 73 MB candidate scores as fp32 does.
+
 ## 4. Summaries (pre-registered formula, extended to four languages)
 
 LS = unweighted mean over languages of the primary concordance: en speechocean762 (C vs expert total),
@@ -264,25 +289,32 @@ gets no four-language summary; it is compared on the languages it covers.
 | LS-NL, OpenPronounce's languages | en, es, de | 224 | 1,345 | **0.749** | 0.764 | OpenPronounce 0.685 | +0.064 [−0.000, +0.138], p 0.053 |
 
 int8 against fp32: LS4 −0.005 [−0.021, +0.008] (p 0.44), LS-NL4 −0.008 (p 0.34) in int8's favour, not
-significant. No LS4 exists for any other system: OpenPronounce does not support Mandarin, Azure has no
+significant. The on-device candidate: LS4 0.723 [0.670, 0.770], LS-NL4 0.805, Δ −0.001 on both (p 0.72,
+0.67). No LS4 exists for any other system: OpenPronounce does not support Mandarin, Azure has no
 German responses, Lingolix supports neither Mandarin nor was run on German or Speech Accent Archive.
 
 ## 5. Cost on the same machine
 
 `python -m bench.ondevice`, fresh process per run, CPU only, first 200 speechocean762 test clips (mean
-3.4 s), audio decoding inside the timed call; Apple M3 Pro. The machine was shared with other jobs, and
-its 1-minute load average was high during these runs (9 to 11 for Pronunciada, 14 to 40 for
-OpenPronounce), so every figure is slower than on an idle machine (round 19 measured Pronunciada int8 at
-0.047 s per clip under lower load).
+3.4 s), audio decoding inside the timed call; Apple M3 Pro. All rows below were measured back to back
+between 15:08 and 15:17 on 23 Nov, at a 1-minute load average of 1.8 to 3.9 (the machine is shared).
+A first pass at 14:31-14:47, under a load of 9 to 40, gave slower figures in the same order; it is kept
+in `results/tables/learner_benchmark_cost/` (the files at the top level), the second pass in `rerun/` and
+`nb8-sym-b128/`.
 
-| system | parameters | weights on disk | peak memory (fresh process) | median s / clip | best threads | load avg |
+| system | parameters | weights on disk | peak memory (fresh process) | median s / clip, 4 threads | median s / clip, 1 thread | load avg |
 |---|---|---|---|---|---|---|
-| Pronunciada int8 | about 67 M | 107 MB | 328 MB | **0.069** | 4 (1 thread: 0.093) | 9.3 |
-| Pronunciada fp32 | about 67 M | 297 MB | 497 MB | 0.109 | 4 (1 thread: 0.158) | 11 |
-| OpenPronounce student | 95 M | 396 MB | 1,273 MB | 0.197 | 1 (4 threads: 0.314) | 14 |
-| OpenPronounce default (English) | 631 M | 2,603 MB | 3,204 MB | 1.366 (mean 1.98) | 1 by median, 4 by mean (1.53 / 1.57) | 16-21 |
+| Pronunciada int8 | about 67 M | 107 MB | 318 MB | **0.040** | 0.064 | 2.5-3.1 |
+| Pronunciada fp32 | about 67 M | 297 MB | 494 MB | 0.049 | 0.097 | 2.1-3.2 |
+| Pronunciada, on-device model (73 MB, candidate) | about 67 M | 110 MB (73.4 MB backbone) | 337 MB | 0.058 | 0.133 | 2.8-3.9 |
+| OpenPronounce student | 95 M | 396 MB | 1,429 MB | (first pass, load 40: 0.314) | **0.152** | 2.8 |
+| OpenPronounce default (English) | 631 M | 2,603 MB | 3,880 MB | 0.707 | 0.860 | 1.8-2.1 |
 | ZIPA alone | 64 M | 260 MB | – | – | – | – |
 | Azure, Lingolix, Chivox | – | cloud | – | – | – | – |
+
+The candidate is smaller on disk and in memory than fp32 but slower per clip on this machine (0.058
+against 0.049 s at 4 threads, 0.133 against 0.097 at 1 thread); int8 is the fastest. OpenPronounce
+student is fastest with 1 thread (round 19 found the same).
 
 ZIPA alone shares Pronunciada's backbone file; its size and speed are the backbone's (its run is the
 backbone's forward pass plus a CTC alignment) and it was not timed separately. OpenPronounce default
@@ -305,6 +337,8 @@ Significant (p < 0.05):
 - Chivox sample, speechocean762 sound Spearman: OpenPronounce 0.474 vs 0.455 (−0.020, p 0.048); student
   0.481 (−0.026, p 0.004).
 - Pronunciada int8 above fp32: Speech Accent Archive ≤ 30 s 0.877 vs 0.851 (−0.026, p 0.033).
+- Pronunciada on-device candidate above fp32 by 0.001: speechocean762 C (p 0.008) and Spearman total
+  (p 0.018), EpaDB AUC (p < 0.001).
 
 Not significant:
 - speechocean762 sentence total: student 0.802 (−0.010), Azure 0.796 (−0.004); C: Azure equal (0.855).
