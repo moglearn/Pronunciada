@@ -458,6 +458,14 @@ the suite (scoring caches of eval_english, eval_languages, cv-real, OMPAL, the c
 audit, the length and coaching-tips dumps) equal the baseline's, timing fields aside, and all eleven tables
 equal the baseline's key by key; no scoreboard row moved. Suite 2,019 s (34 min), comparison 9 s.
 Result file: `$PRONUNCIADA_CACHE/opt/results/code-7834007.gate.json`.
+
+**Code of `opt-phase2` at 06c7eee** (cut from 7834007: `pronunciada/core.py`, `pronunciada/reference/`,
+export and bundle scripts; the `Scorer(frontend=False)` option, precomputed Spanish number readings,
+Hangul decomposition moved to `pronunciada/hangul.py`), fp32, default settings, against the same fp32
+baseline: **PASS by identity**, all 6,376 per-clip output files and all eleven tables equal; no row moved.
+Suite 1,884 s. Result file: `$PRONUNCIADA_CACHE/opt/results/code-06c7eee.gate.json`.
+
+The int8 baseline and int8 against fp32 are in "int8 against fp32" below.
 <!-- /opt:gate -->
 
 ## Numerical parity
