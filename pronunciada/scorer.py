@@ -291,10 +291,20 @@ class Scorer:
         tab = F.phone_table(lpa, ref, ev, self.native, dur)
         if self.sound_aux is not None:
             self.sound_aux.augment(tab, ref, ev, emb)
+        _pvs: list = []
+
+        def _pv(emb_, ev_, n_):
+            """Per-sound encoder vectors of this call's (emb, ev): every caller passes the same
+            inputs and only reads the result, so it is computed once and shared."""
+            if not _pvs:
+                from .sound_emb import phone_vectors
+
+                _pvs.append(phone_vectors(emb_, ev_, n_))
+            return _pvs[0]
+
         phone_vec = None
         if self.lang == "zh" and emb:            # round 12b: Mandarin consonant / vowel coaching
             from . import coach_zh as _CZ
-            from .sound_emb import phone_vectors as _pv
 
             if _CZ.params() is not None:
                 phone_vec = _pv(emb, ev, len(ref.phones))
@@ -304,8 +314,6 @@ class Scorer:
             from . import contrast_heads as _CH
 
             if _CH.entries(self.lang):
-                from .sound_emb import phone_vectors as _pv
-
                 V17 = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
                 contrast_ev = _CH.evidence(self.lang, [p.ipa for p in ref.phones], V17,
                                            tense=[getattr(p, "tense", None) for p in ref.phones])
@@ -317,8 +325,6 @@ class Scorer:
             from . import ko_identity as _KI
 
             if _KI.enabled():
-                from .sound_emb import phone_vectors as _pv
-
                 # the same phone vectors as the contrast heads' (same inputs), computed once
                 Vk = phone_vec if phone_vec is not None else V17 if V17 is not None \
                     else _pv(emb, ev, len(ref.phones))
@@ -386,15 +392,11 @@ class Scorer:
             from . import de_identity as _DI
 
             if _DI.enabled():
-                from .sound_emb import phone_vectors as _pv
-
                 cache["de_identity_s"] = _DI.evidence(ref, _pv(emb, ev, len(ref.phones)))
         if emb and self.lang != "de":            # round 19 rollout: generic sound-identity evidence
             from . import identity as _ID
 
             if _ID.enabled(self.lang):
-                from .sound_emb import phone_vectors as _pv
-
                 pv = phone_vec if phone_vec is not None else _pv(emb, ev, len(ref.phones))
                 cache["identity_s"] = _ID.evidence(self.lang, ref, pv)
                 cache["identity_cls"] = _ID.classes(ref, _ID._cal(self.lang), _ID._head(self.lang))[0]
@@ -434,8 +436,6 @@ class Scorer:
             hs = None
             if emb and self.length_cal.get("head"):        # round 17: attribute-head length evidence
                 from . import contrast_heads as _CH
-                from .sound_emb import phone_vectors as _pv
-
                 V19 = _pv(emb, ev, len(ref.phones))
                 hs = _CH.length_evidence(self.lang, self.length_cal, [p.ipa for p in ref.phones], V19)
             lres = _L.score(ref, _L.frame_inputs(ref, ev, lpa, fb), self.length_cal, head_s=hs)
@@ -448,8 +448,6 @@ class Scorer:
 
             t = time.perf_counter()
             if V19 is None:
-                from .sound_emb import phone_vectors as _pv
-
                 V19 = _pv(emb, ev, len(ref.phones))
             mm = None
             if wsp["cfg"].get("a_mm"):
