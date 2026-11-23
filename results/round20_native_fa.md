@@ -690,7 +690,10 @@ sets were scored once, at the end, with the frozen fixes, and nobody read their 
 
 ## Summary
 
-**Passed:** B (unsaid words), C (numbers) and E (Spanish glide, German lexicon readings, Korean n-insertion).
+**Passed:** C (numbers) and E (Spanish glide, German lexicon readings, Korean n-insertion). **B (unsaid words) passes the native
+practice sets but fails the learner check added in review** (see "Other gate items"): on speechocean762 TRAIN it lowers
+the correlation of the user-visible word score by 0.0016 (interval excludes zero), because a learner's badly said word
+looks unsaid and its neighbours are then raised.
 
 | B + C + E | check half | fresh set |
 |---|---|---|
@@ -717,6 +720,7 @@ sets were scored once, at the end, with the frozen fixes, and nobody read their 
 | item | result |
 |---|---|
 | speechocean762 CV and L2-ARCTIC / EpaDB detection | Unchanged by construction. The passes replace word results only, and `Scorer.details()`, which both protocols read, is bit-identical with the switches on (150 train clips per corpus, max \|diff\| = 0). The baselines stay 0.8537 / 0.6952 / 0.7303 and 0.714 / 0.701. |
+| speechocean762 TRAIN, the word score users see (`WordResult.prob`; added in review) | **B fails.** `details()` is identical, but the per-word probability that the Azure-format output and the Lingolix comparison read is not. With B + C on, 43 words in 14 of 2,500 clips change (29 up, 14 down; 14 of the 43 were rated below 7 by the annotators). Word correlation 0.7802 → 0.7785, −0.0016 [−0.0034, −0.0003] (speaker bootstrap); low-word AUC 0.9607 → 0.9601. Sentence scores identical. C changes nothing here (no digits). `bench/round20_native_fa/so762_wordprob.py`, `tables/round20_native_fa_r20_so762_wordprob.json`. |
 | latency | +0.11 ms per clip on average (fp32); none on int8 |
 | package data | +0.3 KB |
 | tests | 713 passed, 0 failed |
