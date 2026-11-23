@@ -129,7 +129,7 @@ def build(name: str) -> dict:
     import onnxruntime as ort
 
     src = MODELS / "model.onnx"
-    d = OUT / name
+    d = Path(os.environ["OPT_BUILD_DIR"]) / name if os.environ.get("OPT_BUILD_DIR") else OUT / name
     d.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     info = {"name": name, "source": src.name, "source_sha1": sha1(src), "source_bytes": src.stat().st_size,
