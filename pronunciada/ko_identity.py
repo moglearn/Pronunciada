@@ -36,7 +36,7 @@ _CODA = {"k": "k", "n": "n", "t": "t", "l": "l", "m": "m", "p": "p", "ŋ": "ŋ"}
 
 
 def _vowel_of(syl_text: str) -> str | None:
-    from .text.ko import decompose
+    from .hangul import decompose
 
     d = decompose(syl_text[0]) if syl_text else None
     return VOWEL.get(d[1]) if d else None
@@ -51,7 +51,7 @@ _IPA_VOWEL = {"a": "a", "ɐ": "a", "ɑ": "a", "ɔ": "ʌ", "ʌ": "ʌ", "o": "o", 
 
 
 def _is_ui(syl_text: str) -> bool:
-    from .text.ko import decompose
+    from .hangul import decompose
 
     d = decompose(syl_text[0]) if syl_text else None
     return bool(d) and d[1] == "ㅢ"

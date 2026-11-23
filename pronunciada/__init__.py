@@ -26,8 +26,13 @@ def __getattr__(name):
         from . import scorer
 
         return getattr(scorer, name)
+    if name in ("score_phones", "phones_for"):     # pronunciada.core: scoring from target phones
+        from . import core
+
+        return getattr(core, name)
     raise AttributeError(f"module 'pronunciada' has no attribute {name!r}")
 
 
-__all__ = ["Scorer", "score", "SentenceResult", "WordResult", "SyllableResult", "PhoneResult",
+__all__ = ["Scorer", "score", "score_phones", "phones_for", "SentenceResult", "WordResult", "SyllableResult",
+           "PhoneResult",
            "Reference", "__version__"]

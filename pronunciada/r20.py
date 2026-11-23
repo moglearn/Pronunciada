@@ -211,8 +211,16 @@ def _norm(text: str) -> str:
 
 
 def _fragments(sc, ref, wi, word_text):
-    g2p = sc.g2p
-    lang = sc.lang
+    # pronunciada.core.score_phones: the candidate readings were computed from text beforehand
+    # (pronunciada.core.phones_for -> text_fragments) and arrive on the Reference, keyed by word index
+    given = getattr(ref, "word_alternatives", None)
+    if given is not None:
+        return list(given.get(wi, ()))
+    return text_fragments(sc.g2p, sc.lang, ref, wi, word_text)
+
+
+def text_fragments(g2p, lang, ref, wi, word_text):
+    """Candidate readings (one-word References) of word wi from its text with the front-end `g2p`."""
     frags = []
     if enabled("numalt", lang) and _DIGIT.search(word_text):
         for alt in number_alternatives(lang, word_text)[:MAX_ALTS + 1]:
