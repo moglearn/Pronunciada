@@ -10,8 +10,8 @@ Snapshot of 19 November 2026, updated 22 November. Pronunciada 1.0.2 (its scores
 |---|---|---|---|---|
 | **Pronunciada 1.0.2** | open-source library (Apache-2.0) | 10 | accuracy per sound, word and sentence; fluency, prosody and completeness; Mandarin tones; error flags; Python, command line, HTTP server, MCP server, Azure-format JSON | – |
 | Microsoft Azure Pronunciation Assessment | commercial API | 10 tested | accuracy per sound, word and sentence; fluency, completeness, prosody; error flags | run by us on all 84 tests in [SCOREBOARD.md](SCOREBOARD.md) |
-| Lingolix | commercial API | 6 in its benchmark | word scores, error flags and a sentence score (what its benchmark reads) | its own published benchmark; Pronunciada run on the same 1,700 recordings |
-| TonePerfect | commercial API | 6 in that benchmark | the same | the same |
+| Lingolix | commercial API | 21 offered, 6 in its benchmark; no Mandarin | word scores, error flags and a sentence score (what its benchmark reads) | run by us through its API on 22 November 2026 (model version 2026-11): its benchmark's 1,700 recordings and the other 2,000 speechocean762 test recordings |
+| TonePerfect | commercial API | 6 in that benchmark | the same | not run by us: the figures Lingolix published for its benchmark on 11 October 2026 |
 | OpenPronounce 1.1.0 | open-source library (AGPL-3.0) | 7: English, French, Spanish, German, Italian, Portuguese, Dutch | sentence scores (total, accuracy, fluency, prosody), a probability per word and sound, flagged words | run by us, 22 November 2026 |
 | E2E-GOP | open research model (MIT) | English | one score per expected sound | run by us, 18 November 2026 |
 | CMUBYE | open research model | English | one quality score per expected sound | run by us, 18 November 2026 |
@@ -38,40 +38,62 @@ CMUBYE has the same shape: English only, per-sound scores only. Its scoring head
 
 **Azure** (our runs, same recordings and text for both): 84 comparisons in ten languages. Pronunciada is significantly ahead in 40, not significantly different in 37 and significantly behind in 7. Details: [SCOREBOARD.md](SCOREBOARD.md).
 
-**Lingolix and TonePerfect**: results on the [Lingolix benchmark](https://github.com/lingolix/pronunciation-benchmark) (v2026.10). Lingolix built it and is one of the vendors it compares. The Lingolix, Azure and TonePerfect figures are the ones Lingolix published, rounded and without intervals. Pronunciada's figures are from our run on the same items, with 95% intervals. Full method: [third_party_lingolix.md](third_party_lingolix.md).
+**Lingolix and TonePerfect**: results on the [Lingolix benchmark](https://github.com/lingolix/pronunciation-benchmark) (v2026.10). Lingolix built it and is one of the vendors it compares.
 
-> **Update, 22 November 2026.** Lingolix has since been measured by us through its API (model version 2026-11) on the same 1,700 recordings: [lingolix_live.md](lingolix_live.md). Its measured figures are at or above the published ones in the tables below (German 0.973 and 1.0%, Korean 0.964 and 2.4%, Japanese 0.951 and 3.2%, 38 of 40 length errors). The Pronunciada column on that page is the current `main` branch, not 1.0.2. On it, the two systems are not significantly different in French, Spanish, German and Korean or on the English learner test; Lingolix is significantly ahead on English false alarms and in Japanese (false alarms and length errors).
+- The **Lingolix** column was measured by us through its API on 22 November 2026 (model version 2026-11) on the benchmark's 1,700 recordings. Intervals, every paired test and the figures Lingolix itself published: [lingolix_live.md](lingolix_live.md).
+- The **Azure** and **TonePerfect** columns are the figures Lingolix published on 11 October 2026, rounded and without intervals.
+- **Pronunciada** has two columns: the 1.0.2 release, with 95% intervals, and the current `main` branch, which is not released. Method of our run: [third_party_lingolix.md](third_party_lingolix.md).
+
+A "−" after a Pronunciada figure means it is significantly behind Lingolix on that row (paired test on the same recordings, p < 0.05). No mark means the difference is not significant. Bold is the best figure in the row.
 
 Test 1: native recordings in which one word of the text was changed. Word-level AUC, higher is better.
 
-| | Pronunciada | Lingolix | Azure | TonePerfect |
-|---|---|---|---|---|
-| English | **0.977** [0.963, 0.988] | 0.97 | 0.94 | 0.84 |
-| French | **0.960** [0.924, 0.987] | **0.96** | 0.91 | 0.80 |
-| Spanish | **0.979** [0.970, 0.987] | 0.97 | 0.91 | 0.79 |
-| German | 0.940 [0.911, 0.965] | **0.95** | 0.87 | 0.79 |
-| Japanese | 0.846 [0.798, 0.891] | **0.95** | 0.93 | 0.55 |
-| Korean | 0.912 [0.874, 0.946] | **0.95** | 0.94 | 0.67 |
+| | Pronunciada 1.0.2 | Pronunciada `main` | Lingolix | Azure | TonePerfect |
+|---|---|---|---|---|---|
+| English | 0.977 [0.963, 0.988] | 0.977 | **0.982** | 0.94 | 0.84 |
+| French | 0.960 [0.924, 0.987] | 0.960 | **0.968** | 0.91 | 0.80 |
+| Spanish | 0.979 [0.970, 0.987] | **0.985** | 0.977 | 0.91 | 0.79 |
+| German | 0.940 [0.911, 0.965] − | 0.967 | **0.973** | 0.87 | 0.79 |
+| Japanese | 0.846 [0.798, 0.891] − | 0.923 | **0.951** | 0.93 | 0.55 |
+| Korean | 0.912 [0.874, 0.946] − | 0.957 | **0.964** | 0.94 | 0.67 |
 
 Test 1: share of correct words wrongly flagged when 80% of the changed words are caught. Lower is better.
 
-| | Pronunciada | Lingolix | Azure | TonePerfect |
-|---|---|---|---|---|
-| English | 2.5% | **1%** | 6% | 26% |
-| French | 1.6% | **1%** | 13% | 26% |
-| Spanish | 2.4% | **2%** | 14% | 32% |
-| German | 6.7% | **2%** | 22% | 42% |
-| Japanese | 20.1% | 5% | **3%** | 74% |
-| Korean | 8.4% | **3%** | 7% | 56% |
+| | Pronunciada 1.0.2 | Pronunciada `main` | Lingolix | Azure | TonePerfect |
+|---|---|---|---|---|---|
+| English | 2.5% − | 2.5% − | **0.8%** | 6% | 26% |
+| French | 1.6% | 1.7% | **1.5%** | 13% | 26% |
+| Spanish | 2.4% − | 1.4% | **1.1%** | 14% | 32% |
+| German | 6.7% − | 2.1% | **1.0%** | 22% | 42% |
+| Japanese | 20.1% − | 9.7% − | 3.2% | 3% | 74% |
+| Korean | 8.4% − | 3.1% | **2.4%** | 7% | 56% |
+
+Japanese: Lingolix's measured 3.2% and Azure's published 3% cannot be ranked, since the Azure figure is rounded. Japanese vowel- and consonant-length errors caught by each system's own error flag, of 40: Pronunciada 1.0.2 19 (1 in 1.0.1), `main` 27, Lingolix 38, Azure 36 (published).
 
 Test 2: 500 English learner recordings (speechocean762 test), Pearson correlation with the human scores. Higher is better.
 
-| | Pronunciada | Lingolix | Azure | TonePerfect |
-|---|---|---|---|---|
-| sentence | **0.763** [0.658, 0.832] | 0.74 | 0.76 | 0.59 |
-| word | 0.581 [0.489, 0.644] | 0.51 | **0.61** | 0.29 |
+| | Pronunciada 1.0.2 | Pronunciada `main` | Lingolix | Azure | TonePerfect |
+|---|---|---|---|---|---|
+| sentence | 0.763 [0.658, 0.832] | **0.788** | 0.713 | 0.76 | 0.59 |
+| word | 0.581 [0.489, 0.644] | 0.581 | 0.527 | **0.61** | 0.29 |
 
-Pronunciada is ahead of TonePerfect on every figure. Against Lingolix it is level in English, French and Spanish, ahead on English learner words, and behind in German false alarms, Japanese and Korean. In Japanese its own error flag caught 19 of 40 vowel- and consonant-length errors (1 of 40 in 1.0.1; fixed in 1.0.2); Lingolix caught 37 and Azure 36.
+All English learner recordings. Test 2 uses 500 of the 2,500 speechocean762 test recordings, a few from each speaker. On 22 November we sent Lingolix the other 2,000, so the comparison now covers the whole test split (125 speakers, 20 recordings each). `main` against Lingolix, with a paired test that resamples speakers:
+
+| recordings | score | Pronunciada `main` | Lingolix | difference [95% interval] | p |
+|---|---|---|---|---|---|
+| the benchmark's 500 | sentence | 0.788 | 0.713 | +0.075 [−0.008, +0.168] | 0.074 |
+| | word | 0.581 | 0.527 | +0.054 [−0.021, +0.129] | 0.163 |
+| all 2,500 | sentence | **0.792** | 0.668 | +0.124 [+0.057, +0.190] | < 0.001 |
+| | word | **0.573** | 0.490 | +0.083 [+0.043, +0.123] | < 0.001 |
+
+Lingolix answered all 2,500. 1.0.2 was not scored in this format on the added recordings.
+
+Mandarin learners: Lingolix does not offer Mandarin (a request with the code `zh` was refused on 22 November with its list of 21 languages), so the OMPAL test could not be run against it.
+
+Pronunciada is ahead of TonePerfect on every figure. Against Lingolix as measured:
+
+- **1.0.2** is not significantly different on English, French and Spanish AUC, on French false alarms and on the 500 learner recordings. It is behind on English and Spanish false alarms and on both figures in German, Japanese and Korean.
+- **`main`** is not significantly different in French, Spanish, German and Korean or on the 500 learner recordings. It is behind on English and Japanese false alarms and on Japanese length errors, and ahead on the full set of 2,500 learner recordings, for sentence and word scores.
 
 ## Open-source systems
 
@@ -130,12 +152,13 @@ The 42 tests against OpenPronounce: the six speechocean762 rows above (ahead on 
 
 ## Verdict
 
-- **Commercial:** Pronunciada is not shown to be the most accurate system overall. Lingolix is ahead in Japanese, Korean and on German false alarms, Azure is ahead on 7 of 84 tests, and four large vendors were not tested.
+- **Commercial:** Pronunciada is not shown to be the most accurate system overall. Lingolix, as measured by us, is ahead of 1.0.2 in German, Japanese and Korean and on English and Spanish false alarms. Azure is ahead on 7 of 84 tests, and four large vendors were not tested. On the unreleased `main` branch the gap to Lingolix is down to English and Japanese false alarms and Japanese length errors, and `main` is ahead of Lingolix on the English learner test (all 2,500 speechocean762 test recordings).
 - **Open source:** no open system is ahead on everything. Against OpenPronounce 1.1.0, which also covers several languages, Pronunciada is ahead on 32 of 42 shared tests: word and sound scores for English learners and changed words in six languages. The two are not significantly different on the sentence scores for English learners, where OpenPronounce's figures are higher (0.790 against 0.762 on the total). OpenPronounce is ahead on the sounds annotators marked in L2-ARCTIC and EpaDB. Pronunciada runs 3.6 to 16 times faster with a quarter of the model size or less. Two English-only research models, E2E-GOP and CMUBYE, score single English sounds and words better; both return only per-sound scores.
 
 ## Reproducing
 
 - Azure: see [Reproducing the benchmarks](../README.md#reproducing-the-benchmarks).
 - Lingolix benchmark: `python -m bench.third_party.lingolix all` (downloads the test items, no account needed).
+- Lingolix through its API: `python -m bench.third_party.lingolix_live --plan-only` lists what would be sent and what it costs. Sending needs your own Lingolix key and `--quota-cap-min`, a cap on audio minutes.
 - OpenPronounce: `python -m bench.rivals.openpronounce --mode default --datasets speechocean762` runs it in its own environment with no network access; `bench/rivals/` holds the evaluation scripts and `python -m bench.ondevice` the cost measurements. Method and every row: [round19_rivals.md](round19_rivals.md).
 - The E2E-GOP and CMUBYE runs used setup scripts that are not in this repository yet.
