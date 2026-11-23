@@ -13,7 +13,7 @@ import json
 import re
 
 from common import ROOT
-from make_charts import detection, english, languages, table, tally, zipa
+from make_charts import detection, english, table, tally, zipa
 
 PAGE = ROOT / "site/index.html"
 esc = html.escape
@@ -141,86 +141,16 @@ def figure_word() -> str:
             f'gets {word["prob"]:.2f}.</p></figure>')
 
 
-DB_CSS = """
-.db{border-top:1px solid var(--rule);padding-top:14px}
-.db-row{display:grid;grid-template-columns:112px 1fr 112px;gap:18px;align-items:center;height:38px}
-.db-name{font-size:15.5px}
-.db-track{position:relative;height:12px}
-.db-track:before{content:"";position:absolute;left:0;right:0;top:5.5px;height:1px;background:var(--rule)}
-.db-track span{position:absolute;top:4px;height:4px;border-radius:2px;background:var(--pale)}
-.db-track i{position:absolute;top:0;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#b5afa9}
-.db-track i.own{background:var(--accent)}
-.db-val{font-family:var(--display);font-size:17px;line-height:1;letter-spacing:-.01em;text-align:right;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
-.db-val b{font-weight:400;color:var(--text);margin-right:10px}
-.db-val sup{font-family:var(--sans);font-size:10px;color:var(--soft);margin:0 6px 0 -7px}
-.db-axis{height:22px;font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums}
-.db-axis .db-track:before{display:none}
-.db-axis em{position:absolute;top:2px;font-style:normal;transform:translateX(-50%)}
-.ch-key i.dot{background:#b5afa9}
-"""
-
-
-def chart_languages(lo: float = 0.86, hi: float = 1.0) -> str:
-    """Ten languages, changed-word detection: one row per language with a dot for each system."""
-    pos = lambda v: (v - lo) / (hi - lo) * 100
-    rows = []
-    for r in languages():
-        a, b = r["ours"][0], r["azure"][0]
-        ns = "" if r["sig"] else "<sup>n.s.</sup>"
-        rows.append(f'<div class="db-row"><span class="db-name">{r["label"]}</span><span class="db-track">'
-                    f'<span style="left:{pos(min(a, b)):.2f}%;width:{pos(max(a, b)) - pos(min(a, b)):.2f}%"></span>'
-                    f'<i style="left:{pos(b):.2f}%"></i><i class="own" style="left:{pos(a):.2f}%"></i></span>'
-                    f'<span class="db-val"><b>{a:.3f}</b>{ns}{b:.3f}</span></div>')
-    ticks = "".join(f'<em style="left:{pos(v):.2f}%">{v:.2f}</em>' for v in (0.86, 0.90, 0.94, 0.98))
-    axis = f'<div class="db-row db-axis"><span></span><span class="db-track">{ticks}</span><span></span></div>'
-    key = '<span><i class="own"></i>Pronunciada</span><span><i class="dot"></i>Azure</span>'
-    return ('<figure class="chart"><div class="ch-head"><figcaption>Ten languages: changed-word detection</figcaption>'
-            f'<div class="ch-key">{key}</div></div><div class="db">{"".join(rows)}{axis}</div>'
-            '<p class="ch-foot">Higher is better. Native FLEURS test recordings, 150 per language, scored against a text in which one word '
-            'was replaced by a word one phoneme away. The figure is the area under the ROC curve for the replaced word. This is not a test '
-            'on learner speech. Differences are statistically significant except where marked n.s.</p></figure>')
-
-
 def readme_images() -> None:
-    """The README's figures, rendered from the page's own styles so that the repository and the site look alike."""
-    from common import INK, font_css, render, render_card
+    """Dark renders of the worked example and the languages card for the README, using the page's own styles."""
+    from common import INK, font_css, render
     page = PAGE.read_text(encoding="utf-8")
-    css = re.search(r"<style>(.*?)</style>", page, re.S).group(1) + DB_CSS
-    out = ROOT / "docs/assets"
-    e, d, z = english(), detection(), zipa()
-    agree, find = "agreement with expert scores", "finding the errors annotators marked"
-    render_card(chart_tally(), css, out / "chart-tally.png")
-    render_card(chart_languages(), css, out / "chart-languages.png")
-    render_card(pairs("English learners: agreement with expert scores", [
-        pick(e, "Phoneme", "Phonemes", ""), pick(e, "Word", "Words", ""),
-        pick(e, "Sentence accuracy", "Sentence accuracy", ""), pick(e, "Sentence fluency", "Sentence fluency", ""),
-        pick(e, "Sentence prosody", "Sentence prosody", ""), pick(e, "Sentence total", "Sentence total", "")], "Azure",
-        "Higher is better. Pearson correlation with expert scores on the speechocean762 test set: 2,500 recordings, 125 speakers."),
-        css, out / "chart-english.png")
-    render_card(pairs("Detecting mispronunciations", [
-        pick(d, "English phonemes, L2-ARCTIC", "English, L2-ARCTIC", "phonemes marked by annotators"),
-        pick(d, "English phonemes, EpaDB", "English, EpaDB", "phonemes marked by annotators"),
-        pick(d, "Mandarin words, any error", "Mandarin, any error", "characters marked by teachers"),
-        pick(d, "Mandarin words, tone errors", "Mandarin, tone errors", "characters marked by teachers")], "Azure",
-        "Higher is better. Area under the ROC curve for the phonemes or words that annotators marked wrong, on held-out test sets. "
-        "L2-ARCTIC and EpaDB were not used in training."),
-        css, out / "chart-detection.png")
-    render_card(pairs("What the project adds to ZIPA", [
-        pick(z, "English phonemes, expert scores (r)", "English phonemes", agree),
-        pick(z, "English words, expert scores (r)", "English words", agree),
-        pick(z, "English sentences, expert scores (r)", "English sentences", agree),
-        pick(z, "English errors, L2-ARCTIC (AUC)", "English, L2-ARCTIC", find),
-        pick(z, "English errors, EpaDB (AUC)", "English, EpaDB", find),
-        pick(z, "Mandarin errors, any kind (AUC)", "Mandarin, any error", find),
-        pick(z, "Mandarin errors, tone (AUC)", "Mandarin, tone errors", find)], "ZIPA alone",
-        "Higher is better. The same held-out learner tests, scored by Pronunciada and by the unmodified ZIPA model with the standard "
-        "goodness-of-pronunciation method. Agreement is the Pearson correlation, and finding errors is the area under the ROC curve."),
-        css, out / "chart-zipa.png")
-    render_card(chart_speed(), css, out / "chart-speed.png")
-    render_card(figure_word(), css, out / "figure-word.png")
-    # the languages card is already a dark gradient card on the site; render it as it is
-    head = (f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}body{{background:{INK}}}"
-            ".langs{margin:0;border-radius:0}</style></head><body>")
+    css = re.search(r"<style>(.*?)</style>", page, re.S).group(1)
+    dark = (":root{--text:#fff;--soft:rgba(255,255,255,.62);--faint:rgba(255,255,255,.5);--rule:rgba(255,255,255,.14);"
+            f"--page:{INK};--card:{INK};--pale:#34343a;--accent:linear-gradient(90deg,#7db8ff,#5eead4)}}"
+            f"body{{background:{INK}}}.chart{{box-shadow:none;margin:0;border-radius:0;padding:36px 40px 30px}}.langs{{margin:0;border-radius:0}}")
+    head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{dark}</style></head><body>"
+    render(head + figure_word() + "</body></html>", ROOT / "docs/assets/figure-word.png", 920, 334)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
     render(head.replace("url(assets/gradient.jpg)", f"url('{(ROOT / 'site/assets/gradient.jpg').as_uri()}')") + langs + "</body></html>",
            ROOT / "docs/assets/languages.jpg", 920, 272)
@@ -242,4 +172,4 @@ if __name__ == "__main__":
     space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
                      encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote the README figures in docs/assets")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in space_static/index.html; wrote docs/assets/figure-word.png and languages.jpg")
