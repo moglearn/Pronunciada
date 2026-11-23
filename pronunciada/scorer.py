@@ -235,9 +235,11 @@ class Scorer:
         return self._lp_cache[key]
 
     # ------------------------------------------------------------------ public
-    def score(self, audio, text, strictness: float | None = None) -> SentenceResult:
+    def score(self, audio, text, strictness: float | None = None, _second: bool = False) -> SentenceResult:
         """audio: path | bytes | (np.ndarray, sample_rate) | float32 16 kHz np.ndarray;
-        text: the prompt (str) or a ready pronunciada.types.Reference."""
+        text: the prompt (str) or a ready pronunciada.types.Reference.
+        _second (internal, round 20): a word-level re-scoring pass of pronunciada.r20 on cached posteriors;
+        skips the sentence-only delivery features and sequence head and any further round-20 pass."""
         from .align import score_reference
         from .audio import SAMPLE_RATE, load_audio
 
@@ -326,7 +328,7 @@ class Scorer:
                     ko_id = {"delta": _KI.word_deltas(ref, ev, ko_id, _KI._word_params(), cls=kcls), "s": ko_id}
         timing["features"] = (time.perf_counter() - t) * 1e3
         trk = dv = pooled = wpooled = spans = None
-        if self.delivery:
+        if self.delivery and not _second:
             from . import delivery as D
             from .prosody.f0 import track
 
@@ -354,7 +356,7 @@ class Scorer:
         cache = self._calibrate(tab, ref, dur, dv, wpooled)
         cache.update(delivery=dv, pooled=pooled, word_pooled=wpooled, word_spans=spans)
         timing["calibrate"] = (time.perf_counter() - t) * 1e3
-        if self.seq_head is not None:            # round 19: sequence head blended into the 0-10 scores
+        if self.seq_head is not None and not _second:   # round 19: sequence head blended into the 0-10 scores
             t = time.perf_counter()
             feeds = self.seq_head.inputs(tab, ref, ev, emb, cache["S"], dv, trk)
             if feeds is not None:
@@ -461,6 +463,13 @@ class Scorer:
         t = time.perf_counter()
         res = self._assemble(cache, self.strictness if strictness is None else strictness)
         timing["assemble"] = (time.perf_counter() - t) * 1e3
+        if not _second:                          # round 20 word-level passes (pronunciada.r20; all off by default)
+            from . import r20 as _R20
+
+            if _R20.any_on(self.lang):
+                t = time.perf_counter()
+                res = _R20.apply(self, res, wav, self.strictness if strictness is None else strictness)
+                timing["r20"] = (time.perf_counter() - t) * 1e3
         timing["total"] = (time.perf_counter() - t_all) * 1e3
         res.timing_ms = {k: round(v, 3) for k, v in timing.items()}
         return res
