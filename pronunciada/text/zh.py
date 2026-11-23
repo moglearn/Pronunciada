@@ -82,12 +82,27 @@ _ZHU = {"著名", "著作", "显著", "著称", "著述", "卓著", "土著", "�
         "彰著", "撰著", "杰著", "近著", "著译"}
 
 
+INSTALL_HINT = ('the Mandarin text front-end (Chinese characters) needs the optional "zh" extra: '
+                'pip install "pronunciada[zh]"; without it, pass pinyin (pronunciada.phones_from_pinyin) '
+                "or phones (pronunciada.core.score_phones)")
+
+
 class ZhG2P(G2P):
     lang = "zh"
 
     def __init__(self) -> None:
+        import importlib.util
         import logging
 
+        missing = []
+        for m in ("jieba", "pypinyin", "opencc"):
+            try:
+                if importlib.util.find_spec(m) is None:
+                    missing.append(m)
+            except (ImportError, ValueError):
+                missing.append(m)
+        if missing:
+            raise ImportError(INSTALL_HINT + f" (missing: {', '.join(missing)})")
         import jieba
         from opencc import OpenCC
         from pypinyin import Style, lazy_pinyin
