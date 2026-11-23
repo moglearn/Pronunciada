@@ -3,6 +3,34 @@
 Status (2026-11-23): baselines recorded on commit cbc6d6a (`main` 04e5c8d plus the harness);
 candidates measured. No package default and no shipped file has been changed by this work.
 
+## Summary
+
+- **Code changes, gated in full against the fp32 baseline:** `opt-phase1-code` (7834007) and
+  `opt-phase2` (06c7eee) both **pass by identity**: every per-clip output and every table is equal.
+- **Effect of 7834007:**
+  - steady-state scoring is 0.8–1.7 % faster for fp32 and 1.4–3.0 % faster for int8 (about 10 s clips);
+  - a later load takes 0.33 s instead of 0.55 s for fp32 and 0.28 s instead of 0.59 s for int8;
+  - the first-ever load is 0.3 s slower for fp32 because it builds the pre-optimized file once;
+  - one backbone copy is kept on disk instead of one per output set.
+- **ONNX Runtime options:** none is worth taking.
+  - Arena off, memory pattern on and a lower graph-optimization level give identical outputs and no gain;
+    arena off costs 145 MB more memory.
+  - No thread spinning is 7–9 % slower at 4 threads.
+  - `dynamic_block_base` changes outputs and was dropped.
+- **Lossless graph rewrites** (onnxslim, ONNX Runtime offline optimization, quantization pre-process) are
+  exactly identical, but save at most 1.4 % on disk and no measurable time. The pre-optimized graph of
+  7834007 already takes the load-time gain.
+- **int8 against fp32:** in the gate's terms int8 would fail (59 rows). The speechocean762 sentence accuracy
+  correlation is 0.0033 lower, two more Azure rows are significantly behind, and native false alarms are higher
+  in every language. The int8 backbone is numerically fragile: a feature change of 1e-4 moves its
+  log-posteriors by up to 2–3 nats, while fp32 moves by 0.003. Keeping its most exposed MatMuls in fp32
+  does not fix this and is slower.
+- **float16 storage of the fp32 backbone** (132 MB instead of 260 MB, fp32 compute): survives the screen;
+  its full gate result is below. It needs about 70 MB more memory and runs at the same speed.
+- **4-bit weights (46 MB):** discarded by the screen.
+- **Adapters:** float16 and int8 storage survive the screen; low-rank is discarded. The saving is at most
+  3.6 MB out of a 260 MB fp32 install (1.4 %), too small to matter.
+
 ## How this was measured
 
 **Configurations.** A configuration is a source tree (a git revision or the working tree), a
