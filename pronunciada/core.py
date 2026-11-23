@@ -64,8 +64,22 @@ FORMAT = "pronunciada-target"
 VERSION = 1
 SAMPLE_RATE = 16000
 
-__all__ = ["score_phones", "phones_for", "target_from_reference", "reference_from_target",
-           "get_scorer", "FORMAT", "VERSION", "SAMPLE_RATE"]
+__all__ = ["score_phones", "phones_for", "phones_from_kana", "phones_from_pinyin", "target_from_reference",
+           "reference_from_target", "get_scorer", "FORMAT", "VERSION", "SAMPLE_RATE"]
+
+
+def phones_from_kana(reading, text=None, *, style="pron", devoicing="auto") -> dict:
+    """Japanese target from a kana reading, by rules (layer 1, no dictionary): pronunciada.reading.ja."""
+    from .reading import phones_from_kana as f
+
+    return f(reading, text, style=style, devoicing=devoicing)
+
+
+def phones_from_pinyin(reading, text=None, *, sandhi=True) -> dict:
+    """Mandarin target from pinyin, by rules (layer 1, no dictionary): pronunciada.reading.zh."""
+    from .reading import phones_from_pinyin as f
+
+    return f(reading, text, sandhi=sandhi)
 
 
 # ----------------------------------------------------------------------------- target <-> Reference
