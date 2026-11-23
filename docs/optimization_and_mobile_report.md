@@ -374,6 +374,14 @@ Data files no language opened while scoring (20): `models/model.emb-enc0-enc1-en
 ## Quality gate results
 
 <!-- opt:gate -->
+**Code of `opt-phase1-code` at 7834007** (11 commits on cbc6d6a: one cached backbone file with every extra
+output, compact lexicon storage, faster alignment Viterbi, pre-optimized backbone graph loaded with the
+optimizer off, smaller per-clip savings), fp32, default models and settings (so the pre-optimized graph
+path runs), against the fp32 baseline at cbc6d6a: **PASS by identity**. All 6,376 per-clip output files of
+the suite (scoring caches of eval_english, eval_languages, cv-real, OMPAL, the coaching dumps, the contrast
+audit, the length and coaching-tips dumps) equal the baseline's, timing fields aside, and all eleven tables
+equal the baseline's key by key; no scoreboard row moved. Suite 2,019 s (34 min), comparison 9 s.
+Result file: `$PRONUNCIADA_CACHE/opt/results/code-7834007.gate.json`.
 <!-- /opt:gate -->
 
 ## Numerical parity
