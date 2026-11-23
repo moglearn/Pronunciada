@@ -166,6 +166,25 @@ def build(name: str) -> dict:
                          weight_type=QuantType.QUInt8)
         info["settings"] = f"quantize_dynamic(op_types_to_quantize={quant_ops}, weight_type=QUInt8); fp32 kept: {keep_ops}"
         p = d / "model.onnx"
+    elif name.startswith("int8x-"):
+        # the shipped int8 file is quantize_dynamic on MatMul with signed int8 weights (290 of 370
+        # MatMuls carry weights); here the MatMuls whose node name starts with one of the given
+        # prefixes stay fp32 ("embed" = /encoder_embed/, "enc0" = /encoder/0/, "out" = the CTC head)
+        from onnxruntime.quantization import QuantType, quantize_dynamic
+
+        pref = {"embed": "/encoder_embed/", "enc0": "/encoder/0/", "enc1": "/encoder/1/", "out": "/ctc_output/", "none": "\0"}
+        keys = name[len("int8x-"):].split("+")
+        src = _src("fp32")
+        info["source"], info["source_sha1"] = src.name, sha1(src)
+        m0 = onnx.load(str(src))
+        excl = [n.name for n in m0.graph.node if n.op_type == "MatMul"
+                and any(n.name.startswith(pref[k]) or (k == "out" and "ctc" in n.name.lower()) for k in keys)]
+        d.mkdir(parents=True, exist_ok=True)
+        quantize_dynamic(str(src), str(d / "model.onnx"), op_types_to_quantize=["MatMul"],
+                         weight_type=QuantType.QInt8, nodes_to_exclude=excl)
+        info["settings"] = f"quantize_dynamic(MatMul, QInt8), {len(excl)} MatMul nodes kept fp32 ({keys})"
+        info["excluded_nodes"] = excl
+        p = d / "model.onnx"
     elif name == "nbits4-fp32":
         from onnxruntime.quantization.matmul_nbits_quantizer import MatMulNBitsQuantizer
 

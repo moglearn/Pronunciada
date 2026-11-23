@@ -12,5 +12,12 @@
  "ortopt-ext-fp32": {"precision": "fp32", "backbone": "{C}/ortopt-ext-fp32/model.onnx"},
  "ortopt-ext-int8": {"precision": "int8", "backbone": "{C}/ortopt-ext-int8/model.onnx"},
  "prep-fp32": {"precision": "fp32", "backbone": "{C}/prep-fp32/model.onnx"},
- "f16store-fp32": {"precision": "fp32", "backbone": "{C}/f16store-fp32/model.onnx"}
+ "f16store-fp32": {"precision": "fp32", "backbone": "{C}/f16store-fp32/model.onnx"},
+ "int8x-embed+out": {"precision": "int8", "backbone": "{C}/int8x-embed+out/model.onnx"},
+ "int8x-embed+enc0+out": {"precision": "int8", "backbone": "{C}/int8x-embed+enc0+out/model.onnx"},
+ "nbits4-fp32": {"precision": "fp32", "backbone": "{C}/nbits4-fp32/model.onnx"},
+ "adapters-fp16": {"precision": "fp32", "adapter_dir": "{C}/adapters-fp16/eval"},
+ "adapters-int8": {"precision": "fp32", "adapter_dir": "{C}/adapters-int8/eval"},
+ "adapters-lowrank32": {"precision": "fp32", "adapter_dir": "{C}/adapters-lowrank32/eval"},
+ "adapters-lowrank16": {"precision": "fp32", "adapter_dir": "{C}/adapters-lowrank16/eval"}
 }
