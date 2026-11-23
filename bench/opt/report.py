@@ -16,7 +16,7 @@ from pathlib import Path
 from .common import REPO
 
 DOC = REPO / "docs" / "optimization_and_mobile_report.md"
-MAIN_STAGES = ("load", "fbank", "model", "adapter", "align", "features", "delivery", "calibrate", "sentence_head",
+MAIN_STAGES = ("load", "g2p", "audio_check", "fbank", "model", "adapter", "align", "features", "delivery", "calibrate", "sentence_head",
                "prosody", "length", "word_step", "assemble")
 
 

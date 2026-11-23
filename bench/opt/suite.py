@@ -81,7 +81,8 @@ BY_NAME = {s.name: s for s in STEPS}
 FORBIDDEN_ARGS = ("azure", "lingolix")
 
 
-def check_plan(steps=STEPS) -> None:
+def check_plan(steps=None) -> None:
+    steps = STEPS if steps is None else steps
     for s in steps:
         low = " ".join(s.args).lower()
         if any(f in low.replace("azure_yardstick", "") for f in FORBIDDEN_ARGS):
