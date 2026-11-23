@@ -369,6 +369,82 @@ Data files no language opened while scoring (20): `models/model.emb-enc0-enc1-en
 ## Before and after
 
 <!-- opt:before-after -->
+Code before = cbc6d6a, after = 7834007 (opt-phase1-code; passes the full gate by identity). Timings paired and interleaved on the 20 practice clips per language (about 10 s each).
+
+**before-fp32 -> after-fp32** (practice clips, 2 rounds, load average 3.9; 2026-11-23 04:47). Per thread count: median over the ten languages of each language's value.
+
+| threads | load s, before -> after | cold start s | wall p50 ms | paired mean diff ms (languages faster / slower, 95 % CI excludes 0) | relative |
+|--:|---|---|---|---|--:|
+| 1 | 0.55 -> 0.33 | 0.99 -> 0.76 | 314.7 -> 310.8 | -2.74 (8 / 0 of 10) | -0.8 % |
+| 2 | 0.53 -> 0.33 | 0.84 -> 0.62 | 201.8 -> 199.3 | -2.51 (10 / 0 of 10) | -1.1 % |
+| 4 | 0.53 -> 0.33 | 0.76 -> 0.54 | 146.4 -> 143.7 | -2.55 (9 / 0 of 10) | -1.7 % |
+
+Per stage, p50 ms, median over languages (before -> after):
+
+| threads | load | g2p | fbank | model | adapter | align | features | delivery | calibrate | prosody | assemble | wall |
+|--:|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 2.27 -> 1.59 | 0.54 -> 0.56 | 9.03 -> 9.21 | 249.60 -> 249.49 | 0.41 -> 0.42 | 18.46 -> 17.04 | 3.40 -> 2.33 | 12.64 -> 12.66 | 3.37 -> 3.42 | – | 0.88 -> 0.88 | 314.68 -> 310.78 |
+| 2 | 1.61 -> 1.59 | 0.54 -> 0.57 | 9.03 -> 9.05 | 138.83 -> 139.49 | 0.42 -> 0.41 | 18.59 -> 17.34 | 3.37 -> 2.32 | 12.76 -> 12.62 | 3.41 -> 3.41 | – | 0.90 -> 0.90 | 201.76 -> 199.28 |
+| 4 | 1.61 -> 1.60 | 0.55 -> 0.56 | 9.12 -> 9.13 | 83.55 -> 83.80 | 0.43 -> 0.43 | 19.02 -> 17.58 | 3.38 -> 2.33 | 12.58 -> 12.49 | 3.39 -> 3.37 | – | 0.89 -> 0.89 | 146.43 -> 143.69 |
+
+**before-int8 -> after-int8** (practice clips, 2 rounds, load average 3.4; 2026-11-23 04:57). Per thread count: median over the ten languages of each language's value.
+
+| threads | load s, before -> after | cold start s | wall p50 ms | paired mean diff ms (languages faster / slower, 95 % CI excludes 0) | relative |
+|--:|---|---|---|---|--:|
+| 1 | 0.59 -> 0.29 | 0.90 -> 0.60 | 217.6 -> 213.7 | -3.28 (8 / 0 of 10) | -1.4 % |
+| 2 | 0.58 -> 0.27 | 0.78 -> 0.50 | 153.1 -> 149.8 | -3.35 (10 / 0 of 10) | -2.3 % |
+| 4 | 0.59 -> 0.27 | 0.75 -> 0.47 | 121.5 -> 117.3 | -3.84 (9 / 0 of 10) | -3.0 % |
+
+Per stage, p50 ms, median over languages (before -> after):
+
+| threads | load | g2p | fbank | model | adapter | align | features | delivery | calibrate | prosody | assemble | wall |
+|--:|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 1.65 -> 1.66 | 0.57 -> 0.57 | 9.43 -> 9.30 | 154.23 -> 153.74 | 0.42 -> 0.42 | 19.23 -> 17.66 | 3.57 -> 2.46 | 12.77 -> 12.82 | 3.48 -> 3.49 | – | 0.89 -> 0.90 | 217.62 -> 213.75 |
+| 2 | 1.64 -> 1.66 | 0.57 -> 0.58 | 9.28 -> 9.30 | 89.93 -> 89.30 | 0.42 -> 0.41 | 18.98 -> 17.51 | 3.61 -> 2.49 | 12.49 -> 12.66 | 3.50 -> 3.49 | – | 0.89 -> 0.91 | 153.07 -> 149.83 |
+| 4 | 1.65 -> 1.66 | 0.55 -> 0.57 | 9.34 -> 9.35 | 59.13 -> 59.19 | 0.43 -> 0.43 | 19.30 -> 17.87 | 3.53 -> 2.46 | 12.70 -> 12.57 | 3.50 -> 3.43 | – | 0.89 -> 0.90 | 121.50 -> 117.34 |
+
+Peak RSS, fresh process, 20 clips (before = profile of record, after = this run):
+
+| precision | lang | threads | load only MB, before -> after | after scoring MB, before -> after |
+|---|---|--:|---|---|
+| fp32 | en | 1 | 424 -> 395 | 694 -> 688 |
+| fp32 | en | 4 | 425 -> 397 | 691 -> 697 |
+| fp32 | ja | 1 | 584 -> 578 | 909 -> 926 |
+| fp32 | ja | 4 | 586 -> 575 | 910 -> 925 |
+| fp32 | zh | 1 | 554 -> 543 | 831 -> 846 |
+| fp32 | zh | 4 | 555 -> 542 | 832 -> 847 |
+| int8 | en | 1 | 246 -> 213 | 538 -> 506 |
+| int8 | en | 4 | 247 -> 211 | 539 -> 506 |
+| int8 | ja | 1 | 407 -> 402 | 755 -> 736 |
+| int8 | ja | 4 | 409 -> 402 | 757 -> 737 |
+| int8 | zh | 1 | 380 -> 362 | 680 -> 670 |
+| int8 | zh | 4 | 379 -> 360 | 684 -> 668 |
+
+Disk: smallest install per language, MB (code + backbone file actually loaded + data opened; before -> after):
+
+| lang | fp32 | int8 |
+|---|---|---|
+| de | 270.1 -> 269.5 | 80.7 -> 79.7 |
+| en | 266.6 -> 266.0 | 77.0 -> 76.1 |
+| es | 266.3 -> 265.8 | 76.8 -> 75.8 |
+| fr | 263.2 -> 262.6 | 73.8 -> 72.9 |
+| it | 263.7 -> 263.1 | 74.1 -> 73.2 |
+| ja | 263.4 -> 262.8 | 73.8 -> 72.9 |
+| ko | 264.6 -> 264.0 | 75.0 -> 74.1 |
+| pt | 264.7 -> 264.1 | 75.1 -> 74.2 |
+| ru | 266.8 -> 266.2 | 77.2 -> 76.2 |
+| zh | 265.2 -> 264.6 | 75.6 -> 74.6 |
+
+Package (pronunciada/, the wheel's contents): 37.10 -> 37.12 MB.
+
+First-ever load (a model cache holding only the downloaded files; en, 4 threads) against later loads (median of 3 later fresh processes on the same cache), and the files the first load writes:
+
+| config | first load s | first cold start s | later load s | later cold start s | files written by the first load (MB) |
+|---|--:|--:|--:|--:|---|
+| before-fp32 | 0.96 | 1.21 | 0.56 | 0.81 | `model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx` 260.3 |
+| after-fp32 | 1.30 | 1.54 | 0.36 | 0.60 | `model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx` 259.7 |
+| before-int8 | 0.65 | 0.87 | 0.56 | 0.78 | `model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx` 70.7 |
+| after-int8 | 0.73 | 0.95 | 0.29 | 0.50 | `model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx` 69.7 |
 <!-- /opt:before-after -->
 
 ## Quality gate results

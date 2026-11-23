@@ -1,0 +1,103 @@
+{
+ "kind": "opt_rss",
+ "date": "2026-11-23 05:09",
+ "machine": {
+  "cpu": "Apple M3 Pro",
+  "ncpu": 12,
+  "mem_gb": 18.0,
+  "python": "3.12.13",
+  "numpy": "2.5.5",
+  "onnxruntime": "1.32.0",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "load_avg_1min": 3.91015625
+ },
+ "configs": [
+  {
+   "name": "fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32"
+  },
+  {
+   "name": "f16store-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/f16store-fp32/model.onnx"
+  },
+  {
+   "name": "nbits4-fp32",
+   "code": "cbc6d6a",
+   "precision": "fp32",
+   "backbone": "~/.cache/pronunciada/opt/candidates/nbits4-fp32/model.onnx"
+  }
+ ],
+ "clip_set": "practice",
+ "n_clips": 10,
+ "results": [
+  {
+   "config": "fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 425.359375,
+   "load_s": 0.5652158260345459,
+   "after_n_mb": 689.3125,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 425.046875,
+   "load_s": 0.5636386871337891,
+   "after_n_mb": 689.09375,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "f16store-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 531.96875,
+   "load_s": 0.5951747894287109,
+   "after_n_mb": 761.21875,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "f16store-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 533.0625,
+   "load_s": 0.5766270160675049,
+   "after_n_mb": 760.5,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "nbits4-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 218.96875,
+   "load_s": 0.5141010284423828,
+   "after_n_mb": 487.359375,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "nbits4-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 219.359375,
+   "load_s": 0.5210931301116943,
+   "after_n_mb": 489.015625,
+   "n_scored": 10,
+   "errors": 0,
+   "embeddings": true
+  }
+ ]
+}

@@ -1,0 +1,194 @@
+{
+ "kind": "opt_first_load",
+ "date": "2026-11-23 05:06",
+ "machine": {
+  "cpu": "Apple M3 Pro",
+  "ncpu": 12,
+  "mem_gb": 18.0,
+  "python": "3.12.13",
+  "numpy": "2.5.5",
+  "onnxruntime": "1.32.0",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "load_avg_1min": 3.681640625
+ },
+ "lang": "en",
+ "threads": 4,
+ "results": [
+  {
+   "config": "before-fp32",
+   "first": {
+    "round": 0,
+    "load_s": 0.9600949287414551,
+    "cold_start_s": 1.2056901454925537,
+    "files_created": {
+     "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 260269087
+    }
+   },
+   "later_load_s_median": 0.5634129047393799,
+   "later_cold_start_s_median": 0.8080942630767822,
+   "runs": [
+    {
+     "round": 0,
+     "load_s": 0.9600949287414551,
+     "cold_start_s": 1.2056901454925537,
+     "files_created": {
+      "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 260269087
+     }
+    },
+    {
+     "round": 1,
+     "load_s": 0.5611820220947266,
+     "cold_start_s": 0.8053560256958008,
+     "files_created": {}
+    },
+    {
+     "round": 2,
+     "load_s": 0.5634129047393799,
+     "cold_start_s": 0.8080942630767822,
+     "files_created": {}
+    },
+    {
+     "round": 3,
+     "load_s": 0.5667192935943604,
+     "cold_start_s": 0.8111581802368164,
+     "files_created": {}
+    }
+   ],
+   "model_dir_bytes_after": {
+    "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 260269087
+   }
+  },
+  {
+   "config": "after-fp32",
+   "first": {
+    "round": 0,
+    "load_s": 1.296032190322876,
+    "cold_start_s": 1.5392682552337646,
+    "files_created": {
+     "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 259659668
+    }
+   },
+   "later_load_s_median": 0.3610069751739502,
+   "later_cold_start_s_median": 0.601686954498291,
+   "runs": [
+    {
+     "round": 0,
+     "load_s": 1.296032190322876,
+     "cold_start_s": 1.5392682552337646,
+     "files_created": {
+      "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 259659668
+     }
+    },
+    {
+     "round": 1,
+     "load_s": 0.3688781261444092,
+     "cold_start_s": 0.6112682819366455,
+     "files_created": {}
+    },
+    {
+     "round": 2,
+     "load_s": 0.35877299308776855,
+     "cold_start_s": 0.601142168045044,
+     "files_created": {}
+    },
+    {
+     "round": 3,
+     "load_s": 0.3610069751739502,
+     "cold_start_s": 0.601686954498291,
+     "files_created": {}
+    }
+   ],
+   "model_dir_bytes_after": {
+    "model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 259659668
+   }
+  },
+  {
+   "config": "before-int8",
+   "first": {
+    "round": 0,
+    "load_s": 0.6542961597442627,
+    "cold_start_s": 0.8664510250091553,
+    "files_created": {
+     "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 70678887
+    }
+   },
+   "later_load_s_median": 0.564704179763794,
+   "later_cold_start_s_median": 0.7788639068603516,
+   "runs": [
+    {
+     "round": 0,
+     "load_s": 0.6542961597442627,
+     "cold_start_s": 0.8664510250091553,
+     "files_created": {
+      "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 70678887
+     }
+    },
+    {
+     "round": 1,
+     "load_s": 0.5608210563659668,
+     "cold_start_s": 0.7788639068603516,
+     "files_created": {}
+    },
+    {
+     "round": 2,
+     "load_s": 0.564704179763794,
+     "cold_start_s": 0.7777111530303955,
+     "files_created": {}
+    },
+    {
+     "round": 3,
+     "load_s": 0.5726242065429688,
+     "cold_start_s": 0.8053929805755615,
+     "files_created": {}
+    }
+   ],
+   "model_dir_bytes_after": {
+    "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx": 70678887
+   }
+  },
+  {
+   "config": "after-int8",
+   "first": {
+    "round": 0,
+    "load_s": 0.7344207763671875,
+    "cold_start_s": 0.9469108581542969,
+    "files_created": {
+     "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 69715620
+    }
+   },
+   "later_load_s_median": 0.29320597648620605,
+   "later_cold_start_s_median": 0.5044920444488525,
+   "runs": [
+    {
+     "round": 0,
+     "load_s": 0.7344207763671875,
+     "cold_start_s": 0.9469108581542969,
+     "files_created": {
+      "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 69715620
+     }
+    },
+    {
+     "round": 1,
+     "load_s": 0.29320597648620605,
+     "cold_start_s": 0.5044920444488525,
+     "files_created": {}
+    },
+    {
+     "round": 2,
+     "load_s": 0.28605103492736816,
+     "cold_start_s": 0.4998619556427002,
+     "files_created": {}
+    },
+    {
+     "round": 3,
+     "load_s": 0.2991220951080322,
+     "cold_start_s": 0.5147349834442139,
+     "files_created": {}
+    }
+   ],
+   "model_dir_bytes_after": {
+    "model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.ort1.32.0-arm64-b6694ac0.onnx": 69715620
+   }
+  }
+ ]
+}
