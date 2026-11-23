@@ -1,0 +1,2498 @@
+{
+ "files": [
+  {
+   "file": "models/model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx",
+   "bytes": 260269087,
+   "category": "backbone (runtime-built extra-outputs copy)",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "models/model.emb.onnx",
+   "bytes": 260268532,
+   "category": "backbone (runtime-built extra-outputs copy)",
+   "used_by": [
+    "de",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "models/model.fp16.onnx",
+   "bytes": 131607660,
+   "category": "backbone",
+   "used_by": []
+  },
+  {
+   "file": "models/model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx",
+   "bytes": 70678887,
+   "category": "backbone (runtime-built extra-outputs copy)",
+   "used_by": []
+  },
+  {
+   "file": "models/model.int8.emb.onnx",
+   "bytes": 70678332,
+   "category": "backbone (runtime-built extra-outputs copy)",
+   "used_by": []
+  },
+  {
+   "file": "models/model.int8.onnx",
+   "bytes": 70677672,
+   "category": "backbone",
+   "used_by": []
+  },
+  {
+   "file": "models/model.onnx",
+   "bytes": 260267872,
+   "category": "backbone",
+   "used_by": []
+  },
+  {
+   "file": "models/tokens.txt",
+   "bytes": 769,
+   "category": "backbone tokens",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/__init__.py",
+   "bytes": 1293,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/__main__.py",
+   "bytes": 7723,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/_overrides.py",
+   "bytes": 3642,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/_resample.py",
+   "bytes": 3606,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/acoustic.py",
+   "bytes": 16505,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/adapter.py",
+   "bytes": 4511,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/align.py",
+   "bytes": 22744,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/articulatory.py",
+   "bytes": 14623,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/attr_heads.py",
+   "bytes": 5546,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/audio.py",
+   "bytes": 4509,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/calibrate.py",
+   "bytes": 22323,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/coach.py",
+   "bytes": 28810,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/coach_attr.py",
+   "bytes": 2658,
+   "category": "code",
+   "used_by": [
+    "it",
+    "ja",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/coach_zh.py",
+   "bytes": 2644,
+   "category": "code",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/compat/__init__.py",
+   "bytes": 104,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/compat/azure.py",
+   "bytes": 11033,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/contrast_heads.py",
+   "bytes": 5348,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/contrast_word.py",
+   "bytes": 1894,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/de.npz",
+   "bytes": 324330,
+   "category": "adapter",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/en.npz",
+   "bytes": 66278,
+   "category": "adapter",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/es.npz",
+   "bytes": 721550,
+   "category": "adapter",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/fr.npz",
+   "bytes": 324330,
+   "category": "adapter",
+   "used_by": [
+    "fr"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/it.npz",
+   "bytes": 721550,
+   "category": "adapter",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/ja.npz",
+   "bytes": 324330,
+   "category": "adapter",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/ko.npz",
+   "bytes": 721550,
+   "category": "adapter",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/pt.npz",
+   "bytes": 324330,
+   "category": "adapter",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/ru.npz",
+   "bytes": 721550,
+   "category": "adapter",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/adapters/zh.npz",
+   "bytes": 324330,
+   "category": "adapter",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/config.json",
+   "bytes": 3968,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/contrast_caps.json",
+   "bytes": 3361,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/contrast_word/ja.json",
+   "bytes": 247,
+   "category": "calibration",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/contrast_word/zh.json",
+   "bytes": 246,
+   "category": "calibration",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/de_identity_word.json",
+   "bytes": 1297,
+   "category": "calibration",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/identity/es.json",
+   "bytes": 1175,
+   "category": "calibration",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/identity/pt.json",
+   "bytes": 1369,
+   "category": "calibration",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/identity/ru.json",
+   "bytes": 1490,
+   "category": "calibration",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/identity/zh.json",
+   "bytes": 1588,
+   "category": "calibration",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/ko_identity_word.json",
+   "bytes": 4871,
+   "category": "calibration",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/omission.json",
+   "bytes": 8343,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/phone_dist.npz",
+   "bytes": 13323,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/de.json",
+   "bytes": 2409,
+   "category": "calibration",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/de.stress.json",
+   "bytes": 2167,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/en.json",
+   "bytes": 2449,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/en.stress.json",
+   "bytes": 2201,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/es.json",
+   "bytes": 2410,
+   "category": "calibration",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/es.stress.json",
+   "bytes": 2161,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/it.json",
+   "bytes": 2408,
+   "category": "calibration",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/it.stress.json",
+   "bytes": 2167,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/pt.json",
+   "bytes": 2412,
+   "category": "calibration",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/pt.stress.json",
+   "bytes": 2164,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/ru.json",
+   "bytes": 2408,
+   "category": "calibration",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/ru.stress.json",
+   "bytes": 2308,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/zh.json",
+   "bytes": 2258,
+   "category": "calibration",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/zh.tone_zh_v2.json",
+   "bytes": 2032,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/prosody/zh.tone_zh_v3.json",
+   "bytes": 2194,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/sentence.npz",
+   "bytes": 155836,
+   "category": "calibration",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/calib/sentence_r19.npz",
+   "bytes": 197293,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sentence_r4.npz",
+   "bytes": 131827,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sentence_zh_recal.json",
+   "bytes": 2152,
+   "category": "calibration",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/seqhead_en.npz",
+   "bytes": 25812,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/seqhead_en.onnx",
+   "bytes": 2509278,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sound_B.npz",
+   "bytes": 321966,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sound_E.npz",
+   "bytes": 324623,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sound_E_emb.npz",
+   "bytes": 96935,
+   "category": "calibration",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/sound_U.npz",
+   "bytes": 291115,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/stress_rel/de.json",
+   "bytes": 1181,
+   "category": "calibration",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/word.npz",
+   "bytes": 118562,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/word_lang/de.json",
+   "bytes": 853,
+   "category": "calibration",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/word_reg.npz",
+   "bytes": 21874,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/word_reg_r6.npz",
+   "bytes": 32688,
+   "category": "calibration",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/calib/word_step/ja.json",
+   "bytes": 3028,
+   "category": "calibration",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/cjk/zh_neutral.txt",
+   "bytes": 2742,
+   "category": "lexicon",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/cjk/zh_tw_tones.txt",
+   "bytes": 808,
+   "category": "lexicon",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/attr_heads.npz",
+   "bytes": 171934,
+   "category": "coaching",
+   "used_by": [
+    "it",
+    "ja",
+    "ko",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/contrast_heads.json",
+   "bytes": 2083,
+   "category": "coaching",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/de_identity.npz",
+   "bytes": 1979705,
+   "category": "coaching",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/gate.json",
+   "bytes": 707,
+   "category": "coaching",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/identity/es.npz",
+   "bytes": 1974258,
+   "category": "coaching",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/identity/pt.npz",
+   "bytes": 1980804,
+   "category": "coaching",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/identity/ru.npz",
+   "bytes": 1982258,
+   "category": "coaching",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/identity/zh.npz",
+   "bytes": 1983217,
+   "category": "coaching",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/inventory.json",
+   "bytes": 2778,
+   "category": "coaching",
+   "used_by": [
+    "it",
+    "ja",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/ja_identity.npz",
+   "bytes": 993163,
+   "category": "coaching",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/ko_identity.npz",
+   "bytes": 1980178,
+   "category": "coaching",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/ko_tense.npz",
+   "bytes": 13759,
+   "category": "coaching",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/model.json",
+   "bytes": 8250,
+   "category": "coaching",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/coach/zh_sound.npz",
+   "bytes": 116019,
+   "category": "coaching",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/length/ja.json",
+   "bytes": 44821,
+   "category": "length",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/length/ja_r19.json",
+   "bytes": 100600,
+   "category": "length",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/LICENSE.txt",
+   "bytes": 2943,
+   "category": "lexicon",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/lex/SOURCES-eu.txt",
+   "bytes": 1572,
+   "category": "lexicon",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/lex/de.tsv.gz",
+   "bytes": 4444755,
+   "category": "lexicon",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/de_lts.tsv.gz",
+   "bytes": 40830,
+   "category": "lexicon",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/en.tsv.gz",
+   "bytes": 882360,
+   "category": "lexicon",
+   "used_by": [
+    "de",
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/en_lts.tsv.gz",
+   "bytes": 88142,
+   "category": "lexicon",
+   "used_by": [
+    "de",
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/es_words.txt.gz",
+   "bytes": 1430420,
+   "category": "lexicon",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/fr.tsv.gz",
+   "bytes": 1112749,
+   "category": "lexicon",
+   "used_by": [
+    "fr"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/fr_lts.tsv.gz",
+   "bytes": 16722,
+   "category": "lexicon",
+   "used_by": [
+    "fr"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/it.tsv.gz",
+   "bytes": 582127,
+   "category": "lexicon",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/it_lts.tsv.gz",
+   "bytes": 33763,
+   "category": "lexicon",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/pt.tsv.gz",
+   "bytes": 182734,
+   "category": "lexicon",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/ru.tsv.gz",
+   "bytes": 1522974,
+   "category": "lexicon",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/ru_stress.tsv.gz",
+   "bytes": 28572,
+   "category": "lexicon",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/ru_stress_extra.tsv.gz",
+   "bytes": 71534,
+   "category": "lexicon",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/lex/ru_vowels.json",
+   "bytes": 12267,
+   "category": "lexicon",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/de.json",
+   "bytes": 231932,
+   "category": "native statistics",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/en.json",
+   "bytes": 148050,
+   "category": "native statistics",
+   "used_by": [
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/es.json",
+   "bytes": 138438,
+   "category": "native statistics",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/fr.json",
+   "bytes": 149239,
+   "category": "native statistics",
+   "used_by": [
+    "fr"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/it.json",
+   "bytes": 128109,
+   "category": "native statistics",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/ja.json",
+   "bytes": 145361,
+   "category": "native statistics",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/ko.json",
+   "bytes": 95593,
+   "category": "native statistics",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/pt.json",
+   "bytes": 157093,
+   "category": "native statistics",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/ru.json",
+   "bytes": 176195,
+   "category": "native statistics",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/native/zh.json",
+   "bytes": 143349,
+   "category": "native statistics",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/stress.json",
+   "bytes": 509,
+   "category": "prosody",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/prosody/stress.onnx",
+   "bytes": 287139,
+   "category": "prosody",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/prosody/stress_v3.json",
+   "bytes": 626,
+   "category": "prosody",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/stress_v3.onnx",
+   "bytes": 357541,
+   "category": "prosody",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/stress_v3.zemb.npz",
+   "bytes": 101868,
+   "category": "prosody",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/tone_zh_v2.json",
+   "bytes": 156,
+   "category": "prosody",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/prosody/tone_zh_v2.onnx",
+   "bytes": 641355,
+   "category": "prosody",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/data/prosody/tone_zh_v3z.json",
+   "bytes": 296,
+   "category": "prosody",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/tone_zh_v3z.onnx",
+   "bytes": 711757,
+   "category": "prosody",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/prosody/tone_zh_v3z.zemb.npz",
+   "bytes": 101868,
+   "category": "prosody",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/data/zipa_tokens.txt",
+   "bytes": 769,
+   "category": "other data",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/de_identity.py",
+   "bytes": 5640,
+   "category": "code",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/delivery.py",
+   "bytes": 16677,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/delivery_coach.py",
+   "bytes": 12315,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/features.py",
+   "bytes": 26275,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/identity.py",
+   "bytes": 9705,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/ja_identity.py",
+   "bytes": 3248,
+   "category": "code",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/ja_round19.py",
+   "bytes": 2022,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/ko_identity.py",
+   "bytes": 13397,
+   "category": "code",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/languages.py",
+   "bytes": 1352,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/lattice.py",
+   "bytes": 10533,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/length.py",
+   "bytes": 19970,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/length_r19.py",
+   "bytes": 10252,
+   "category": "code",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/mcp_server.py",
+   "bytes": 4719,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/prosody/__init__.py",
+   "bytes": 11968,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/prosody/f0.py",
+   "bytes": 6780,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/prosody/features.py",
+   "bytes": 12438,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/prosody/tone_leniency.py",
+   "bytes": 2573,
+   "category": "code",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/py.typed",
+   "bytes": 0,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/quality.py",
+   "bytes": 6242,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/r20.py",
+   "bytes": 11541,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/report.py",
+   "bytes": 14497,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/scorer.py",
+   "bytes": 49987,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/sentence_head.py",
+   "bytes": 7242,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/server.py",
+   "bytes": 13247,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/sound_emb.py",
+   "bytes": 3674,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/stress_rel.py",
+   "bytes": 3776,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/text/__init__.py",
+   "bytes": 61,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/text/_cjk_common.py",
+   "bytes": 3471,
+   "category": "code",
+   "used_by": [
+    "ja",
+    "ko",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/text/_eu_base.py",
+   "bytes": 11938,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/text/_eu_build.py",
+   "bytes": 16829,
+   "category": "code",
+   "used_by": []
+  },
+  {
+   "file": "pronunciada/text/_eu_common.py",
+   "bytes": 14357,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/text/_eu_lts.py",
+   "bytes": 7901,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "pt",
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/text/base.py",
+   "bytes": 1809,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/text/de.py",
+   "bytes": 13562,
+   "category": "code",
+   "used_by": [
+    "de"
+   ]
+  },
+  {
+   "file": "pronunciada/text/en.py",
+   "bytes": 9657,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en"
+   ]
+  },
+  {
+   "file": "pronunciada/text/es.py",
+   "bytes": 11609,
+   "category": "code",
+   "used_by": [
+    "es"
+   ]
+  },
+  {
+   "file": "pronunciada/text/fr.py",
+   "bytes": 8976,
+   "category": "code",
+   "used_by": [
+    "fr"
+   ]
+  },
+  {
+   "file": "pronunciada/text/ipa.py",
+   "bytes": 3500,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/text/it.py",
+   "bytes": 11215,
+   "category": "code",
+   "used_by": [
+    "it"
+   ]
+  },
+  {
+   "file": "pronunciada/text/ja.py",
+   "bytes": 15391,
+   "category": "code",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/text/ko.py",
+   "bytes": 19541,
+   "category": "code",
+   "used_by": [
+    "ko"
+   ]
+  },
+  {
+   "file": "pronunciada/text/pt.py",
+   "bytes": 19493,
+   "category": "code",
+   "used_by": [
+    "pt"
+   ]
+  },
+  {
+   "file": "pronunciada/text/ru.py",
+   "bytes": 24173,
+   "category": "code",
+   "used_by": [
+    "ru"
+   ]
+  },
+  {
+   "file": "pronunciada/text/zh.py",
+   "bytes": 25976,
+   "category": "code",
+   "used_by": [
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/tips.py",
+   "bytes": 23523,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/types.py",
+   "bytes": 9606,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/variants.py",
+   "bytes": 5854,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/word_lang.py",
+   "bytes": 3055,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  },
+  {
+   "file": "pronunciada/word_match.py",
+   "bytes": 5697,
+   "category": "code",
+   "used_by": [
+    "ja"
+   ]
+  },
+  {
+   "file": "pronunciada/word_step.py",
+   "bytes": 3489,
+   "category": "code",
+   "used_by": [
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh"
+   ]
+  }
+ ],
+ "by_category": {
+  "backbone (runtime-built extra-outputs copy)": {
+   "files": 4,
+   "bytes": 661894838
+  },
+  "backbone": {
+   "files": 3,
+   "bytes": 462553204
+  },
+  "backbone tokens": {
+   "files": 1,
+   "bytes": 769
+  },
+  "code": {
+   "files": 68,
+   "bytes": 710269
+  },
+  "adapter": {
+   "files": 10,
+   "bytes": 4574128
+  },
+  "calibration": {
+   "files": 43,
+   "bytes": 4310449
+  },
+  "lexicon": {
+   "files": 18,
+   "bytes": 10458014
+  },
+  "coaching": {
+   "files": 14,
+   "bytes": 13189113
+  },
+  "length": {
+   "files": 2,
+   "bytes": 145421
+  },
+  "native statistics": {
+   "files": 10,
+   "bytes": 1513359
+  },
+  "prosody": {
+   "files": 10,
+   "bytes": 2203115
+  },
+  "other data": {
+   "files": 1,
+   "bytes": 769
+  }
+ },
+ "smallest_install": {
+  "de": {
+   "code_bytes": 710269,
+   "data_bytes": 269364000,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 324330,
+    "calibration": 630801,
+    "coaching": 1990745,
+    "lexicon": 5456087,
+    "native statistics": 231932,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 270074269,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/de.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/de_identity_word.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/de.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/stress_rel/de.json",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_lang/de.json",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/de_identity.npz",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/de.tsv.gz",
+    "pronunciada/data/lex/de_lts.tsv.gz",
+    "pronunciada/data/lex/en.tsv.gz",
+    "pronunciada/data/lex/en_lts.tsv.gz",
+    "pronunciada/data/native/de.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "en": {
+   "code_bytes": 710269,
+   "data_bytes": 265898120,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260269087,
+    "backbone tokens": 769,
+    "adapter": 66278,
+    "calibration": 3971590,
+    "coaching": 11040,
+    "lexicon": 970502,
+    "native statistics": 148050,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 266608389,
+   "third_party_bytes": 499615,
+   "third_party": {
+    "num2words": 499615
+   },
+   "files": [
+    "models/model.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/en.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/en.json",
+    "pronunciada/data/calib/sentence_r19.npz",
+    "pronunciada/data/calib/seqhead_en.npz",
+    "pronunciada/data/calib/seqhead_en.onnx",
+    "pronunciada/data/calib/sound_B.npz",
+    "pronunciada/data/calib/sound_E.npz",
+    "pronunciada/data/calib/sound_E_emb.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/en.tsv.gz",
+    "pronunciada/data/lex/en_lts.tsv.gz",
+    "pronunciada/data/native/en.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "es": {
+   "code_bytes": 710269,
+   "data_bytes": 265634457,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 721550,
+    "calibration": 628646,
+    "coaching": 1985298,
+    "lexicon": 1430420,
+    "native statistics": 138438,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 266344726,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/es.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/identity/es.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/es.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/identity/es.npz",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/es_words.txt.gz",
+    "pronunciada/data/native/es.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "fr": {
+   "code_bytes": 710269,
+   "data_bytes": 262509211,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 324330,
+    "calibration": 625061,
+    "coaching": 11040,
+    "lexicon": 1129471,
+    "native statistics": 149239,
+    "other data": 769
+   },
+   "total_bytes": 263219480,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/fr.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/fr.tsv.gz",
+    "pronunciada/data/lex/fr_lts.tsv.gz",
+    "pronunciada/data/native/fr.json",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "it": {
+   "code_bytes": 710269,
+   "data_bytes": 263008875,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 721550,
+    "calibration": 627469,
+    "coaching": 185752,
+    "lexicon": 615890,
+    "native statistics": 128109,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 263719144,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/it.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/it.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/attr_heads.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/inventory.json",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/it.tsv.gz",
+    "pronunciada/data/lex/it_lts.tsv.gz",
+    "pronunciada/data/native/it.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "ja": {
+   "code_bytes": 710269,
+   "data_bytes": 262692433,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 324330,
+    "calibration": 628336,
+    "coaching": 1178915,
+    "length": 145421,
+    "native statistics": 145361,
+    "other data": 769
+   },
+   "total_bytes": 263402702,
+   "third_party_bytes": 331201350,
+   "third_party": {
+    "annotated_types": 37512,
+    "pydantic": 2964145,
+    "pydantic_core": 4911566,
+    "pyopenjtalk": 116695819,
+    "sudachidict_core": 202236003,
+    "sudachipy": 4269048,
+    "typing_inspection": 87257
+   },
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/ja.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/contrast_word/ja.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/calib/word_step/ja.json",
+    "pronunciada/data/coach/attr_heads.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/inventory.json",
+    "pronunciada/data/coach/ja_identity.npz",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/length/ja.json",
+    "pronunciada/data/length/ja_r19.json",
+    "pronunciada/data/native/ja.json",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "ko": {
+   "code_bytes": 710269,
+   "data_bytes": 263894056,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 721550,
+    "calibration": 629932,
+    "coaching": 2176911,
+    "native statistics": 95593,
+    "other data": 769
+   },
+   "total_bytes": 264604325,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/ko.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/ko_identity_word.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/attr_heads.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/ko_identity.npz",
+    "pronunciada/data/coach/ko_tense.npz",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/native/ko.json",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "pt": {
+   "code_bytes": 710269,
+   "data_bytes": 264014948,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 324330,
+    "calibration": 628842,
+    "coaching": 1991844,
+    "lexicon": 182734,
+    "native statistics": 157093,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 264725217,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/pt.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/identity/pt.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/pt.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/identity/pt.npz",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/pt.tsv.gz",
+    "pronunciada/data/native/pt.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "ru": {
+   "code_bytes": 710269,
+   "data_bytes": 266060166,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 721550,
+    "calibration": 628959,
+    "coaching": 2168010,
+    "lexicon": 1635347,
+    "native statistics": 176195,
+    "prosody": 460035,
+    "other data": 769
+   },
+   "total_bytes": 266770435,
+   "third_party_bytes": 0,
+   "third_party": {},
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/ru.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/identity/ru.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/ru.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/coach/attr_heads.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/identity/ru.npz",
+    "pronunciada/data/coach/inventory.json",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/lex/ru.tsv.gz",
+    "pronunciada/data/lex/ru_stress.tsv.gz",
+    "pronunciada/data/lex/ru_stress_extra.tsv.gz",
+    "pronunciada/data/lex/ru_vowels.json",
+    "pronunciada/data/native/ru.json",
+    "pronunciada/data/prosody/stress_v3.json",
+    "pronunciada/data/prosody/stress_v3.onnx",
+    "pronunciada/data/prosody/stress_v3.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  },
+  "zh": {
+   "code_bytes": 710269,
+   "data_bytes": 264468735,
+   "by_category": {
+    "backbone (runtime-built extra-outputs copy)": 260268532,
+    "backbone tokens": 769,
+    "adapter": 324330,
+    "calibration": 631305,
+    "lexicon": 3550,
+    "coaching": 2282210,
+    "native statistics": 143349,
+    "prosody": 813921,
+    "other data": 769
+   },
+   "total_bytes": 265179004,
+   "third_party_bytes": 42878057,
+   "third_party": {
+    "jieba": 38261173,
+    "opencc": 1131627,
+    "pypinyin": 3485257
+   },
+   "files": [
+    "models/model.emb.onnx",
+    "models/tokens.txt",
+    "pronunciada/data/adapters/zh.npz",
+    "pronunciada/data/calib/config.json",
+    "pronunciada/data/calib/contrast_caps.json",
+    "pronunciada/data/calib/contrast_word/zh.json",
+    "pronunciada/data/calib/identity/zh.json",
+    "pronunciada/data/calib/omission.json",
+    "pronunciada/data/calib/phone_dist.npz",
+    "pronunciada/data/calib/prosody/zh.json",
+    "pronunciada/data/calib/sentence_r4.npz",
+    "pronunciada/data/calib/sentence_zh_recal.json",
+    "pronunciada/data/calib/sound_U.npz",
+    "pronunciada/data/calib/word.npz",
+    "pronunciada/data/calib/word_reg.npz",
+    "pronunciada/data/calib/word_reg_r6.npz",
+    "pronunciada/data/cjk/zh_neutral.txt",
+    "pronunciada/data/cjk/zh_tw_tones.txt",
+    "pronunciada/data/coach/attr_heads.npz",
+    "pronunciada/data/coach/contrast_heads.json",
+    "pronunciada/data/coach/gate.json",
+    "pronunciada/data/coach/identity/zh.npz",
+    "pronunciada/data/coach/model.json",
+    "pronunciada/data/coach/zh_sound.npz",
+    "pronunciada/data/native/zh.json",
+    "pronunciada/data/prosody/tone_zh_v3z.json",
+    "pronunciada/data/prosody/tone_zh_v3z.onnx",
+    "pronunciada/data/prosody/tone_zh_v3z.zemb.npz",
+    "pronunciada/data/zipa_tokens.txt"
+   ]
+  }
+ },
+ "package_bytes": 37104637,
+ "data_files_opened_by_no_language": [
+  "models/model.fp16.onnx",
+  "models/model.int8.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx",
+  "models/model.int8.emb.onnx",
+  "models/model.int8.onnx",
+  "models/model.onnx",
+  "pronunciada/data/calib/prosody/de.stress.json",
+  "pronunciada/data/calib/prosody/en.stress.json",
+  "pronunciada/data/calib/prosody/es.stress.json",
+  "pronunciada/data/calib/prosody/it.stress.json",
+  "pronunciada/data/calib/prosody/pt.stress.json",
+  "pronunciada/data/calib/prosody/ru.stress.json",
+  "pronunciada/data/calib/prosody/zh.tone_zh_v2.json",
+  "pronunciada/data/calib/prosody/zh.tone_zh_v3.json",
+  "pronunciada/data/calib/sentence.npz",
+  "pronunciada/data/lex/LICENSE.txt",
+  "pronunciada/data/lex/SOURCES-eu.txt",
+  "pronunciada/data/prosody/stress.json",
+  "pronunciada/data/prosody/stress.onnx",
+  "pronunciada/data/prosody/tone_zh_v2.json",
+  "pronunciada/data/prosody/tone_zh_v2.onnx"
+ ],
+ "kind": "opt_footprint",
+ "date": "2026-11-23 04:01",
+ "config": {
+  "name": "fp32",
+  "code": "cbc6d6a",
+  "precision": "fp32"
+ },
+ "tree": "cbc6d6ac7226",
+ "note": "models/* sizes are the files in the local model cache; the backbone is downloaded on first use, not shipped in the wheel. A '.emb' file is the copy with extra encoder outputs that the first Scorer builds next to the downloaded model."
+}

@@ -1,0 +1,110 @@
+{
+ "kind": "opt_fragility",
+ "date": "2026-11-23 04:10",
+ "eps": 0.0003,
+ "n_clips": 20,
+ "langs": [
+  "en",
+  "de",
+  "ja",
+  "zh"
+ ],
+ "results": {
+  "fp32": {
+   "gaussian": {
+    "max_abs_dlogp": 0.008251190185546875,
+    "mean_abs_dlogp": 7.586621021775593e-05,
+    "p999_abs_dlogp": 0.0016752119408920407,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 0.0004711151123046875,
+    "mean_abs_dlogp": 6.762218947435488e-06,
+    "p999_abs_dlogp": 0.00013637542724609375,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   }
+  },
+  "int8": {
+   "gaussian": {
+    "max_abs_dlogp": 2.389796495437622,
+    "mean_abs_dlogp": 0.17779807628311198,
+    "p999_abs_dlogp": 0.9672529697418213,
+    "argmax_changed_share": 0.01150471776195994,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 2.7727115154266357,
+    "mean_abs_dlogp": 0.17942682657220851,
+    "p999_abs_dlogp": 1.0164906978607178,
+    "argmax_changed_share": 0.012911769574573746,
+    "frames": 12082
+   }
+  },
+  "int8x-embed+out": {
+   "gaussian": {
+    "max_abs_dlogp": 2.611506223678589,
+    "mean_abs_dlogp": 0.1527116225233216,
+    "p999_abs_dlogp": 0.9473244547843933,
+    "argmax_changed_share": 0.01200132428405893,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 2.823441505432129,
+    "mean_abs_dlogp": 0.1515652988723423,
+    "p999_abs_dlogp": 0.8550481796264648,
+    "argmax_changed_share": 0.01051150471776196,
+    "frames": 12082
+   }
+  },
+  "int8x-embed+enc0+out": {
+   "gaussian": {
+    "max_abs_dlogp": 3.3888907432556152,
+    "mean_abs_dlogp": 0.1518899733465023,
+    "p999_abs_dlogp": 0.9422037601470947,
+    "argmax_changed_share": 0.009766594934613475,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 2.7910494804382324,
+    "mean_abs_dlogp": 0.15099065907398118,
+    "p999_abs_dlogp": 0.8752673268318176,
+    "argmax_changed_share": 0.01167025326932627,
+    "frames": 12082
+   }
+  },
+  "f16store-fp32": {
+   "gaussian": {
+    "max_abs_dlogp": 0.008198261260986328,
+    "mean_abs_dlogp": 7.58972952480537e-05,
+    "p999_abs_dlogp": 0.001678466796875,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 0.0004520416259765625,
+    "mean_abs_dlogp": 6.782479728886371e-06,
+    "p999_abs_dlogp": 0.00012969970703125,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   }
+  },
+  "nbits4-fp32": {
+   "gaussian": {
+    "max_abs_dlogp": 0.013044357299804688,
+    "mean_abs_dlogp": 7.773597058711427e-05,
+    "p999_abs_dlogp": 0.002185033867135644,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   },
+   "shift": {
+    "max_abs_dlogp": 0.0005083084106445312,
+    "mean_abs_dlogp": 7.2346628378445225e-06,
+    "p999_abs_dlogp": 0.00016689300537109375,
+    "argmax_changed_share": 0.0,
+    "frames": 12082
+   }
+  }
+ }
+}

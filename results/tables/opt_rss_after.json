@@ -1,0 +1,162 @@
+{
+ "kind": "opt_rss",
+ "date": "2026-11-23 05:05",
+ "machine": {
+  "cpu": "Apple M3 Pro",
+  "ncpu": 12,
+  "mem_gb": 18.0,
+  "python": "3.12.13",
+  "numpy": "2.5.5",
+  "onnxruntime": "1.32.0",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "load_avg_1min": 6.45556640625
+ },
+ "configs": [
+  {
+   "name": "after-fp32",
+   "code": "7834007",
+   "precision": "fp32"
+  },
+  {
+   "name": "after-int8",
+   "code": "7834007",
+   "precision": "int8"
+  }
+ ],
+ "clip_set": "practice",
+ "n_clips": 20,
+ "results": [
+  {
+   "config": "after-fp32",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 395.390625,
+   "load_s": 0.3465721607208252,
+   "after_n_mb": 688.5,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-fp32",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 396.578125,
+   "load_s": 0.3469400405883789,
+   "after_n_mb": 697.421875,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-fp32",
+   "lang": "ja",
+   "threads": 1,
+   "load_only_mb": 578.09375,
+   "load_s": 0.5194041728973389,
+   "after_n_mb": 926.140625,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-fp32",
+   "lang": "ja",
+   "threads": 4,
+   "load_only_mb": 574.734375,
+   "load_s": 0.5191051959991455,
+   "after_n_mb": 924.75,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-fp32",
+   "lang": "zh",
+   "threads": 1,
+   "load_only_mb": 543.1875,
+   "load_s": 0.7224292755126953,
+   "after_n_mb": 846.390625,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-fp32",
+   "lang": "zh",
+   "threads": 4,
+   "load_only_mb": 541.703125,
+   "load_s": 0.7241039276123047,
+   "after_n_mb": 847.03125,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "en",
+   "threads": 1,
+   "load_only_mb": 212.71875,
+   "load_s": 0.27924108505249023,
+   "after_n_mb": 506.5,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "en",
+   "threads": 4,
+   "load_only_mb": 211.4375,
+   "load_s": 0.2943081855773926,
+   "after_n_mb": 506.21875,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "ja",
+   "threads": 1,
+   "load_only_mb": 402.46875,
+   "load_s": 0.4523341655731201,
+   "after_n_mb": 736.296875,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "ja",
+   "threads": 4,
+   "load_only_mb": 402.09375,
+   "load_s": 0.48135995864868164,
+   "after_n_mb": 736.765625,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "zh",
+   "threads": 1,
+   "load_only_mb": 362.453125,
+   "load_s": 0.7214391231536865,
+   "after_n_mb": 670.5,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  },
+  {
+   "config": "after-int8",
+   "lang": "zh",
+   "threads": 4,
+   "load_only_mb": 360.484375,
+   "load_s": 0.710554838180542,
+   "after_n_mb": 667.703125,
+   "n_scored": 20,
+   "errors": 0,
+   "embeddings": true
+  }
+ ]
+}

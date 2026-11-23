@@ -448,6 +448,46 @@ def screen(spec: dict, baseline: Path | None, log=print) -> dict:
     return res
 
 
+def tables_vs_rev(run: Path, rev: str, log=print) -> dict:
+    """The run's tables against the tables committed at `rev`, key by key (timing fields aside;
+    top-level keys the suite does not compute, e.g. eval_english's speed / int8 blocks, are listed
+    separately). Also the scoreboard rows (bench/opt/rows.py) value by value."""
+    from .rows import extract
+    from .suite import table_outputs
+
+    import tempfile
+
+    out = {"rev": rev, "run": str(run), "tables": {}}
+    with tempfile.TemporaryDirectory() as tmp:
+        data = subprocess.run(["git", "archive", rev, "results/tables"], cwd=Path(__file__).resolve().parents[2],
+                              check=True, capture_output=True).stdout
+        import io
+        import tarfile
+
+        with tarfile.open(fileobj=io.BytesIO(data)) as t:
+            t.extractall(tmp, filter="data")
+        T = Path(tmp) / "results" / "tables"
+        R = run / "src" / "results" / "tables"
+        for name in table_outputs():
+            a, b = json.loads((T / name).read_text()), json.loads((R / name).read_text())
+            only = sorted(set(a) - set(b)) if isinstance(a, dict) else []
+            if isinstance(a, dict):
+                a = {k: v for k, v in a.items() if k in b}
+            d = deep_equal(a, b, name, limit=20)
+            out["tables"][name] = {"differences": d, "keys_only_committed": only}
+            log(f"{name}: {'equal' if not d else f'{len(d)} differences'}"
+                + (f" (keys not computed by the suite: {only})" if only else ""))
+        rc, rr = {r["key"]: r for r in extract(T)}, {r["key"]: r for r in extract(R)}
+        out["rows_differ"] = [{"key": k, "committed": rc[k]["value"], "run": rr.get(k, {}).get("value"),
+                               "cat": [rc[k]["cat"], rr.get(k, {}).get("cat")]}
+                              for k in rc if rr.get(k) is None or rr[k]["value"] != rc[k]["value"]
+                              or rr[k]["cat"] != rc[k]["cat"]]
+        out["n_rows"] = len(rc)
+    out["equal"] = not out["rows_differ"] and all(not v["differences"] for v in out["tables"].values())
+    log(f"rows: {out['n_rows']}, differing {len(out['rows_differ'])}; all tables equal: {out['equal']}")
+    return out
+
+
 # ----------------------------------------------------------------------------- main
 
 def main(argv=None) -> None:
@@ -475,7 +515,16 @@ def main(argv=None) -> None:
     m.add_argument("--skip-identity", action="store_true")
     for x in (c, m):
         x.add_argument("--out", default=None)
+    tv = sp.add_parser("tables-vs-rev")
+    tv.add_argument("--run", required=True)
+    tv.add_argument("--rev", required=True)
+    tv.add_argument("--out", default=None)
     a = ap.parse_args(argv)
+    if a.cmd == "tables-vs-rev":
+        r = tables_vs_rev(Path(a.run), a.rev)
+        if a.out:
+            Path(a.out).write_text(json.dumps(r, indent=1, ensure_ascii=False, default=float))
+        sys.exit(0 if r["equal"] else 1)
     for v in ("AZURE_SPEECH_KEY", "AZURE_SPEECH_REGION", "AZURE_SPEECH_ENDPOINT", "LINGOLIX_API_KEY"):
         os.environ.pop(v, None)
     if a.cmd in ("record-baseline", "check") and not a.no_lock:
