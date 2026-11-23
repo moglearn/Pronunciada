@@ -209,6 +209,8 @@ def classify(rel: str) -> str:
         name = rel.split("/")[-1]
         if name == "tokens.txt":
             return "backbone tokens"
+        if ".emb" in name and ".ort" in name:
+            return "backbone (runtime-built pre-optimized copy)"
         return "backbone (runtime-built extra-outputs copy)" if ".emb" in name else "backbone"
     p = rel.split("/")
     if rel.endswith((".py", ".pyi")) or p[-1] == "py.typed":
@@ -319,6 +321,61 @@ def footprint(spec: dict, langs, log=print) -> dict:
     return t
 
 
+# ----------------------------------------------------------------------------- first-ever load
+
+def first_load(configs: list[dict], lang: str, threads: int, rounds: int = 3, log=print) -> dict:
+    """Load and cold start on a model cache that holds only the downloaded files (model.onnx,
+    model.int8.onnx, tokens.txt, linked), so every runtime-built file is built by the first
+    process; then `rounds` later processes on the same cache. Reports the files the first process
+    created and their sizes."""
+    import shutil
+
+    from .common import MODEL, cache_root
+
+    real = cache_root()
+    out = {"kind": "opt_first_load", "date": time.strftime("%Y-%m-%d %H:%M"), "machine": machine(), "lang": lang,
+           "threads": threads, "results": []}
+    for c in configs:
+        tree = materialize(c["code"])
+        tmp = Path(tempfile.mkdtemp(prefix="optfirst-", dir=str(real / "opt")))
+        try:
+            md = tmp / "models" / MODEL
+            md.mkdir(parents=True)
+            for f in ("model.onnx", "model.int8.onnx", "tokens.txt"):
+                (md / f).symlink_to(real / "models" / MODEL / f)
+            (tmp / "data").symlink_to(real / "data")
+            clip = practice_clips([lang], 1)[0]
+            old = os.environ.get("PRONUNCIADA_CACHE")
+            os.environ["PRONUNCIADA_CACHE"] = str(tmp)
+            try:
+                runs = []
+                for r in range(1 + rounds):
+                    before = {p.name for p in md.iterdir()}
+                    k = Child(c, tree, lang, threads)
+                    first = k.score(clip)
+                    k.close()
+                    made = sorted({p.name for p in md.iterdir()} - before)
+                    runs.append({"round": r, "load_s": k.info["t"] - k.launched, "cold_start_s": first["t"] - k.launched,
+                                 "files_created": {n: (md / n).stat().st_size for n in made}})
+                    log(f"first-load {c['name']} round {r}: load {runs[-1]['load_s']:.2f}s cold "
+                        f"{runs[-1]['cold_start_s']:.2f}s created {list(runs[-1]['files_created'])}")
+            finally:
+                if old is None:
+                    os.environ.pop("PRONUNCIADA_CACHE", None)
+                else:
+                    os.environ["PRONUNCIADA_CACHE"] = old
+            later = runs[1:]
+            out["results"].append({"config": c["name"], "first": runs[0],
+                                   "later_load_s_median": float(np.median([x["load_s"] for x in later])),
+                                   "later_cold_start_s_median": float(np.median([x["cold_start_s"] for x in later])),
+                                   "runs": runs,
+                                   "model_dir_bytes_after": {p.name: p.stat().st_size for p in md.iterdir()
+                                                             if not p.is_symlink()}})
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+    return out
+
+
 # ----------------------------------------------------------------------------- self-check
 
 def selfcheck(spec: dict, langs, n: int, log=print) -> dict:
@@ -376,6 +433,12 @@ def main(argv=None) -> None:
     s.add_argument("--config", default='{"name":"int8"}')
     s.add_argument("--langs", default="all")
     s.add_argument("--out", required=True)
+    s = sp.add_parser("firstload")
+    s.add_argument("--configs", default='{"name":"fp32","precision":"fp32"}')
+    s.add_argument("--lang", default="en")
+    s.add_argument("--threads", type=int, default=4)
+    s.add_argument("--rounds", type=int, default=3)
+    s.add_argument("--out", required=True)
     s = sp.add_parser("selfcheck")
     s.add_argument("--config", default='{"name":"int8"}')
     s.add_argument("--langs", default="en,zh")
@@ -392,6 +455,8 @@ def main(argv=None) -> None:
         r = rss(_configs(_split_configs(a.configs)), _langs(a.langs), [int(x) for x in a.threads.split(",")],
                 a.set, a.n or 20)
         write(r, a.out)
+    elif a.cmd == "firstload":
+        write(first_load(_configs(_split_configs(a.configs)), a.lang, a.threads, a.rounds), a.out)
     elif a.cmd == "footprint":
         write(footprint(load_spec(a.config), _langs(a.langs)), a.out)
     else:
