@@ -16,7 +16,7 @@ tags:
 
 # Pronunciada
 
-State-of-the-art on-device pronunciation assessment. An open-source Python library that grades a language learner's speech sound by sound, in ten languages, with the accuracy of a cloud service.
+On-device pronunciation assessment with cloud-level accuracy. An open-source Python library that grades a language learner's speech sound by sound, in ten languages.
 
 - Website: https://pronunciada.dev
 - Source: https://github.com/moglearn/pronunciada

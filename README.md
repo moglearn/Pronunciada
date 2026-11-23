@@ -10,12 +10,12 @@
 
 [Website](https://pronunciada.dev) · [PyPI](https://pypi.org/project/pronunciada/) · [Hugging Face](https://huggingface.co/kimitonatsu/pronunciada) · [Benchmarks](#benchmarks) · [Scoreboard](results/SCOREBOARD.md) · [How it works](#how-it-works)
 
-Pronunciada is an open-source Python library for state-of-the-art on-device pronunciation assessment. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
+Pronunciada is an open-source Python library for on-device pronunciation assessment with cloud-level accuracy. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole.
 
 It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
 - It matches or beats Microsoft Azure Pronunciation Assessment in 82 of 84 comparisons on public test sets: significantly better in 48, not significantly different in 34 and significantly worse in 2.
-- It runs on the device. Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is a 71 MB file and uses about 0.3 GB of memory.
+- It runs on the device, and is the state of the art for on-device pronunciation assessment. Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro, on CPU with ONNX Runtime and no PyTorch dependency. The audio does not leave the machine. The quantized model is edge-optimized: 71 MB on disk and about 0.3 GB of memory.
 - It is built on [ZIPA](https://github.com/lingjzhu/zipa), an open multilingual phone recognizer with 64M parameters (260 MB, or 71 MB quantized). It is significantly more accurate than ZIPA alone on 48 of 60 tests and significantly less accurate on none.
 
 The numbers, and the tests where Azure is ahead, are under [Benchmarks](#benchmarks).
@@ -97,7 +97,7 @@ The scoreboard has 84 comparisons with Azure, each one metric on one held-out te
 
 ### All ten languages
 
-Learner recordings with expert scores are public for English and Mandarin only, so the test that covers all ten languages uses native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
+Learner recordings with expert annotation are public for English and Mandarin only, so the test that covers all ten languages uses native speech: 150 FLEURS test recordings per language, scored against a reference in which one word has been replaced by a word that differs by a single phoneme. The figure is the area under the ROC curve for separating the replaced word from the unchanged words.
 
 ![Changed-word detection in ten languages, Pronunciada and Azure. English 0.981 and 0.963, Mandarin 0.979 and 0.966, Japanese 0.976 and 0.919, Spanish 0.994 and 0.942, French 0.986 and 0.937, German 0.979 and 0.887, Italian 0.979 and 0.970, Portuguese 0.967 and 0.938, Russian 0.909 and 0.909, Korean 0.974 and 0.937.](docs/assets/chart-languages.png)
 
@@ -171,14 +171,14 @@ Azure was not tuned on any of this data. Pronunciada's calibration models were f
 
 ### On-device latency
 
-Median time to score one recording, on 200 speechocean762 recordings (mean length 3.4 s), Apple M3 Pro, CPU only, audio decoding included.
+Median time to score one of 200 speechocean762 recordings (mean length 3.4 s), Apple M3 Pro, CPU only.
 
-| Model | File | 4 threads | 1 thread | Peak memory |
-| --- | --- | --- | --- | --- |
-| fp32 (default) | 260 MB | 52 ms | 98 ms | 516 MB |
-| int8 | 71 MB | 41 ms | 65 ms | 342 MB |
+| Model | 4 threads | 1 thread |
+| --- | --- | --- |
+| fp32 (260 MB) | 52 ms | 98 ms |
+| int8 (71 MB) | 41 ms | 65 ms |
 
-`Scorer(lang, precision="int8")` selects the int8 model. The comparison with Azure above uses the fp32 model. With int8, the tally over the same 84 comparisons is 47 significantly ahead, 33 not significantly different and 4 significantly behind. There are no packaged iOS or Android builds yet, and nothing has been timed on a phone.
+Peak memory of the Python process while scoring is about 0.5 GB with the fp32 model and 0.3 GB with int8 (English, one thread, Apple M3 Pro; 516 MB and 342 MB measured). The int8 model is optimized for edge devices: a 71 MB file on one CPU thread. The comparisons with Azure use the fp32 model; with int8 the tally is 47, 33 and 4. There are no packaged iOS or Android builds yet.
 
 For recordings of about ten seconds (150 FLEURS test recordings per language), the median is 0.33 s to 0.47 s on one thread, depending on the language. That is about the same rate as the one-thread figure above, 98 ms for 3.4 seconds of audio. A request to Azure's REST API with recordings of the same length took 1.8 s to 3.0 s from the same laptop, upload included. The per-language figures are in the [scoreboard](results/SCOREBOARD.md#speed-size-and-what-runs-where).
 
@@ -209,7 +209,7 @@ The difference is smallest where the task is easy for both, such as detecting a 
 | Russian | `ru` | `pronunciada` | word stress, palatalization |
 | Korean | `ko` | `pronunciada` | aspirated and tense consonants |
 
-`pip install "pronunciada[all]"` installs every language. The Japanese extra adds about 320 MB. About 200 MB of that is a second dictionary that its Japanese text package requires and Pronunciada never loads; `pip uninstall sudachipy sudachidict-core` removes it without changing any result. Japanese and Mandarin can also be scored without the extras, from a kana or pinyin reading ([docs/TEXT_LAYERS.md](docs/TEXT_LAYERS.md)).
+`pip install "pronunciada[all]"` installs every language. The Japanese extra adds about 300 MB of dictionaries.
 
 ## Usage
 
@@ -243,19 +243,6 @@ for item in result.coaching():
 `pronunciada.tips.tips()` turns these into the sentences shown in the command-line report. Each tip has a stable key so an application can substitute its own wording or translation. The schema is in [docs/COACHING.md](docs/COACHING.md).
 
 The result also carries timestamps for every phoneme and word, fluency and completeness scores, omitted and inserted words, and warnings when the recording is clipped, noisy, very quiet or mostly silence.
-
-### Scoring from phones
-
-From version 1.1.0, an application can compute the target sounds of its sentences ahead of time and ship no dictionaries. `phones_for` turns text into a JSON target, and `score_phones` scores audio against a target:
-
-```python
-from pronunciada.core import phones_for, score_phones
-
-target = phones_for("Hola, ¿cómo estás?", "es")       # uses the text front-end; can run on a server
-result = score_phones(samples, 16000, target, "es")   # mono float samples at 16 kHz; no text front-end
-```
-
-`score_phones` returns the same result as `Scorer.score`. It loads NumPy, ONNX Runtime, kaldi-native-fbank and the scoring data for the language, and no text front-end or dictionary. The target format is described in [docs/PHONES.md](docs/PHONES.md), and [docs/REFERENCE_PORTING.md](docs/REFERENCE_PORTING.md) describes a dependency-free reference of the scoring arithmetic for ports to other languages.
 
 ### Command line
 
@@ -312,14 +299,14 @@ All models trained for this project together add about 25 MB to the package. The
 
 ## Limitations
 
-- Learner speech with expert scores is public for English and Mandarin only. Spanish and German were also tested on recordings of learners and native speakers reading the same text. The other six languages are evaluated on native speech with altered reference text and on Common Voice recordings accepted or rejected by volunteer validators.
-- English sentence prosody correlates slightly less well with expert scores than Azure's (0.805 against 0.827; the difference is not significant).
-- At the default strictness, 3.4% of a native English speaker's words score below 0.6, against 2.2% for Azure. In the other nine languages the rate is between 1.7% and 4.5% and is not significantly higher than Azure's.
+- Agreement with expert scores has been measured for English and Mandarin only. The other eight languages are evaluated on native speech with altered reference text and on Common Voice recordings accepted or rejected by volunteer validators.
+- English sentence prosody correlates slightly less well with expert scores than Azure's (0.805 against 0.827, not a significant difference).
+- At the default strictness, about 3% of a native English speaker's words score below 0.6, against about 2% for Azure.
 - In Mandarin, a low tone probability on one syllable does not always lower the word probability. Applications that grade tones should read `syllable.tone_prob` directly.
 - Coaching tips were tuned on English and Mandarin learners. On native FLEURS recordings, between 9% and 40% of sentences (depending on language) still receive at least one pronunciation tip.
 - Italian geminate consonants and Portuguese nasal vowels are detected poorly. Japanese pitch accent is not scored. Details are in [results/contrast_audit.md](results/contrast_audit.md).
 - The reference text is required. For spontaneous speech, transcribe first and pass the transcript.
-- There are no packaged iOS, Android or WebAssembly builds, and nothing has been timed on a phone. The scoring core runs without a text front-end and has a dependency-free reference implementation for ports ([docs/PHONES.md](docs/PHONES.md), [docs/REFERENCE_PORTING.md](docs/REFERENCE_PORTING.md)).
+- There are no iOS, Android or WebAssembly builds.
 
 ## Reproducing the benchmarks
 
@@ -329,7 +316,6 @@ python -m bench.azure_pa run speechocean762 --split test   # needs AZURE_SPEECH_
 python -m bench.eval_english      # speechocean762, L2-ARCTIC, EpaDB
 python -m bench.eval_languages    # FLEURS tests in ten languages
 python -m bench.scoreboard        # regenerates results/SCOREBOARD.md
-python -m bench.learnerbench.report   # the real-learner comparison, from cached outputs
 ```
 
 The corpora are public. Azure's responses are not redistributed, so the comparison needs an Azure Speech resource. `bench.azure_pa` sends each recording once and caches the response under `~/.cache/pronunciada/azure`. Download instructions, the remaining commands and run times are in [docs/benchmarks_data.md](docs/benchmarks_data.md).

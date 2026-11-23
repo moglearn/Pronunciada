@@ -27,11 +27,11 @@ tags:
 
 # Pronunciada
 
-State-of-the-art on-device pronunciation assessment, with cloud-level accuracy.
+On-device pronunciation assessment with cloud-level accuracy.
 
 Pronunciada is an open-source Python library. It takes a recording and the text the speaker was reading, and returns the probability (0 to 1) that a human rater would accept each phoneme, each word and the sentence as a whole. It covers English, Mandarin, Japanese, Spanish, French, German, Italian, Portuguese, Russian and Korean.
 
-[Website](https://pronunciada.dev) · [GitHub](https://github.com/moglearn/pronunciada) · [PyPI](https://pypi.org/project/pronunciada/) · [Scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)
+[Website](https://pronunciada.dev) · [GitHub](https://github.com/moglearn/pronunciada) · [PyPI](https://pypi.org/project/pronunciada/) · [Benchmarks](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)
 
 ## What is in this repository
 
@@ -79,7 +79,7 @@ speechocean762 test set (2,500 recordings of English learners, each scored by fi
 
 Bold marks the better of Pronunciada and Azure where the difference is significant (paired bootstrap over speakers, p < 0.05). "ZIPA alone" is the unmodified model with the standard goodness-of-pronunciation score.
 
-Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro CPU. With the quantized ZIPA model (71 MB) the Python process uses about 0.3 GB of memory.
+Scoring a 3.4-second recording takes about 50 ms on an Apple M3 Pro CPU. With the quantized ZIPA model (71 MB) the Python process uses about 0.3 GB of memory. It is the state of the art for on-device pronunciation assessment.
 
 Every table, the confidence intervals and the tests where Azure is ahead are in the [scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md).
 
@@ -87,10 +87,10 @@ Every table, the confidence intervals and the tests where Azure is ahead are in 
 
 ## Limitations
 
-- Learner speech with expert scores is public for English and Mandarin only. Spanish and German were also tested on learners and native speakers reading the same text. The other six languages are evaluated on native speech with altered reference text and on Common Voice recordings.
-- At the default strictness, a native English speaker's words are marked down more often than by Azure (3.4% against 2.2% below 0.6).
+- Agreement with expert scores has been measured for English and Mandarin only. The other eight languages are evaluated on native speech with altered reference text and on Common Voice recordings.
+- English sentence prosody correlates slightly less well with expert scores than Azure's.
 - The reference text is required.
-- There are no packaged iOS, Android or WebAssembly builds.
+- There are no iOS, Android or WebAssembly builds.
 
 The full list is in the [README](https://github.com/moglearn/pronunciada#limitations).
 
