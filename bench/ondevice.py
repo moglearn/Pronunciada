@@ -41,10 +41,12 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results" / "tables" / "ondevice"
+# PRONUNCIADA_ONDEVICE_OUT, OPENPRONOUNCE_WORK, OPENPRONOUNCE_VENV_PY: another output folder, work folder
+# (HF_HOME = <work>/hf) and venv (as in bench.rivals.openpronounce)
+OUT = Path(os.environ.get("PRONUNCIADA_ONDEVICE_OUT") or ROOT / "results" / "tables" / "ondevice")
 CACHE = Path(os.environ.get("PRONUNCIADA_CACHE") or Path.home() / ".cache" / "pronunciada")
-OP_WORK = CACHE / "round19" / "rivals"
-OP_PY = OP_WORK / "venv" / "bin" / "python"
+OP_WORK = Path(os.environ.get("OPENPRONOUNCE_WORK") or CACHE / "round19" / "rivals")
+OP_PY = Path(os.environ.get("OPENPRONOUNCE_VENV_PY") or OP_WORK / "venv" / "bin" / "python")
 SYSTEMS = ("pronunciada-fp32", "pronunciada-int8", "openpronounce-default", "openpronounce-fast",
            "openpronounce-student")
 
@@ -118,7 +120,9 @@ def weight_files(system: str) -> list[Path]:
 
         f = {"pronunciada-fp32": "model.onnx", "pronunciada-int8": "model.int8.onnx"}[system]
         data = Path(pronunciada.__file__).parent / "data"
-        return [CACHE / "models" / "zipa-small-crctc-500k" / f] + [p for p in data.rglob("*") if p.is_file()]
+        model = Path(os.environ["PRONUNCIADA_BACKBONE"]) if os.environ.get("PRONUNCIADA_BACKBONE") else \
+            CACHE / "models" / "zipa-small-crctc-500k" / f
+        return [model] + [p for p in data.rglob("*") if p.is_file()]
     hub = OP_WORK / "hf" / "hub"
 
     def snap(repo, names):
@@ -126,7 +130,7 @@ def weight_files(system: str) -> list[Path]:
         rev = (d / "refs" / "main").read_text().strip()
         return [(d / "snapshots" / rev / n).resolve() for n in names]
 
-    pkg = OP_WORK / "venv" / "lib" / "python3.12" / "site-packages" / "openpronounce"
+    pkg = OP_PY.parent.parent / "lib" / "python3.12" / "site-packages" / "openpronounce"
     files = [p for sub in ("models", "data") for p in (pkg / sub).rglob("*") if p.is_file()]
     if system == "openpronounce-student":
         files += snap("OpenPronounce/wav2vec2-base-phones-en", ["model.safetensors", "hidden_projection.safetensors"])
