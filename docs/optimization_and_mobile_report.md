@@ -501,13 +501,13 @@ what is stated.
 | ortopt-ext-fp32 | b. lossless graph | fp32 | 259.7 | exactly identical | en t1 +1.4 ms [+0.5, +2.5]; en t4 -0.8 ms [-1.9, +0.1]; zh t1 -2.9 ms [-7.3, -0.6]; zh t4 +0.2 ms [-0.5, +0.8] | t1 +18 MB; t4 +19 MB |
 | ortopt-ext-int8 | b. lossless graph | int8 | 69.7 | exactly identical | en t1 -0.3 ms [-1.6, +0.6]; en t4 -0.5 ms [-1.2, +0.4]; zh t1 +1.5 ms [-1.6, +6.2]; zh t4 -0.2 ms [-0.6, +0.3] | t1 -13 MB; t4 -12 MB |
 | prep-fp32 | b. lossless graph | fp32 | 260.0 | exactly identical | en t1 +1.0 ms [+0.2, +1.9]; en t4 -0.8 ms [-1.7, -0.1]; zh t1 -1.5 ms [-3.5, -0.2]; zh t4 -0.3 ms [-0.9, +0.3] | t1 +21 MB; t4 +21 MB |
-| f16store-fp32 | c. float16 storage | fp32 | 132.3 | not identical (200/200 clips differ; raw posteriors max 0.0486) | en t1 -1.2 ms [-3.0, +0.4]; en t4 +1.7 ms [-0.0, +4.1]; zh t1 -1.2 ms [-2.8, +0.2]; zh t4 -0.5 ms [-1.1, +0.1] | t1 +72 MB; t4 +71 MB |
+| f16store-fp32 | c. float16 storage | fp32 | 132.3 | not identical (200/200 clips differ; raw posteriors max 0.0486); screen: SURVIVES | en t1 -1.2 ms [-3.0, +0.4]; en t4 +1.7 ms [-0.0, +4.1]; zh t1 -1.2 ms [-2.8, +0.2]; zh t4 -0.5 ms [-1.1, +0.1] | t1 +72 MB; t4 +71 MB |
 | int8x-embed+out | e. int8, MatMuls kept fp32 | int8 | 72.3 | not identical (200/200 clips differ; raw posteriors max 5.42) | en t1 +3.8 ms [+2.3, +5.2]; en t4 +1.2 ms [+0.2, +2.2]; zh t1 +4.3 ms [+3.6, +5.0]; zh t4 +1.1 ms [+0.6, +1.4] | t1 +3 MB; t4 +3 MB |
 | int8x-embed+enc0+out | e. int8, MatMuls kept fp32 | int8 | 78.3 | not identical (200/200 clips differ; raw posteriors max 4.81) | en t1 +18.2 ms [+13.2, +23.5]; en t4 +5.7 ms [+4.2, +7.2]; zh t1 +19.1 ms [+15.5, +23.7]; zh t4 +5.0 ms [+4.1, +5.9] | t1 +6 MB; t4 +7 MB |
-| nbits4-fp32 | e. 4-bit weights | fp32 | 46.0 | not identical (200/200 clips differ; raw posteriors max 8.06) | en t1 +3.9 ms [+1.9, +5.4]; en t4 +1.2 ms [+0.2, +2.5]; zh t1 +2.8 ms [+0.8, +4.5]; zh t4 -0.1 ms [-1.8, +1.5] | t1 -202 MB; t4 -200 MB |
-| adapters-fp16 | d. adapters | fp32 | 2.0 | not identical (200/200 clips differ; adapted posteriors max 0.0109) | – | – |
-| adapters-int8 | d. adapters | fp32 | 0.9 | not identical (200/200 clips differ; adapted posteriors max 0.699) | – | – |
-| adapters-lowrank32 | d. adapters | fp32 | 1.4 | not identical (200/200 clips differ; adapted posteriors max 5.31) | – | – |
+| nbits4-fp32 | e. 4-bit weights | fp32 | 46.0 | not identical (200/200 clips differ; raw posteriors max 8.06); screen: DISCARD (1 reasons) | en t1 +3.9 ms [+1.9, +5.4]; en t4 +1.2 ms [+0.2, +2.5]; zh t1 +2.8 ms [+0.8, +4.5]; zh t4 -0.1 ms [-1.8, +1.5] | t1 -202 MB; t4 -200 MB |
+| adapters-fp16 | d. adapters | fp32 | 2.0 | not identical (200/200 clips differ; adapted posteriors max 0.0109); screen: SURVIVES | – | – |
+| adapters-int8 | d. adapters | fp32 | 0.9 | not identical (200/200 clips differ; adapted posteriors max 0.699); screen: SURVIVES | – | – |
+| adapters-lowrank32 | d. adapters | fp32 | 1.4 | not identical (200/200 clips differ; adapted posteriors max 5.31); screen: DISCARD (1 reasons) | – | – |
 | adapters-lowrank16 | d. adapters | fp32 | 0.7 | not identical (200/200 clips differ; adapted posteriors max 21.2) | – | – |
 
 How each was made:
