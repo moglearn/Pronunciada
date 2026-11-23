@@ -15,6 +15,7 @@ import gzip
 import math
 import re
 import unicodedata
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from importlib import resources
 
@@ -208,7 +209,7 @@ def lex_path(name: str):
     return resources.files(LEX_PKG).joinpath(f"{LEX_DIR}/{name}")
 
 
-def load_lexicon(name: str) -> tuple[dict[str, str], dict[str, str]]:
+def load_lexicon_dict(name: str) -> tuple[dict[str, str], dict[str, str]]:
     """gzip TSV: word \t pron [\t pron2 ...]. Values kept as the raw tail string (parsed lazily).
     Lines starting with '#' are metadata "#key \t value" (e.g. legal onsets)."""
     d: dict[str, str] = {}
@@ -221,6 +222,186 @@ def load_lexicon(name: str) -> tuple[dict[str, str], dict[str, str]]:
             elif k:
                 d[k] = v
     return d, meta
+
+
+def load_lexicon(name: str):
+    """(lexicon, meta) of load_lexicon_dict, the lexicon as a SortedLexicon (same keys, values and
+    order, a fraction of the memory) when the file is in the layout it needs (written by
+    pronunciada/text/_eu_build.py: metadata lines first, then the words in increasing order);
+    otherwise the dict."""
+    lex = SortedLexicon.from_tsv(read_gz(name))
+    if lex is None:
+        return load_lexicon_dict(name)
+    return lex, lex.meta
+
+
+def read_gz(name: str) -> bytearray:
+    """Decompressed bytes of the packaged gzip file `name`, decompressed in 1 MB pieces into one
+    preallocated buffer: GzipFile.read() and zlib.decompress hold about twice the output while
+    growing it, and the allocator keeps that peak as resident memory."""
+    import zlib
+
+    comp = lex_path(name).read_bytes()
+    size = int.from_bytes(comp[-4:], "little") if len(comp) >= 18 else -1    # ISIZE (single member)
+    if size >= 0:
+        d = zlib.decompressobj(31)
+        buf = bytearray(size)
+        pos, data = 0, comp
+        while data and pos <= size:
+            piece = d.decompress(data, 1 << 20)
+            buf[pos:pos + len(piece)] = piece
+            pos += len(piece)
+            data = d.unconsumed_tail
+        if d.eof and not d.unused_data and pos == size == len(buf):
+            return buf
+    with lex_path(name).open("rb") as fb, gzip.open(fb, "rb") as f:     # anything unusual
+        return bytearray(f.read())
+
+
+def _positions(a, value: int, start: int, chunk: int = 1 << 20):
+    """int32 positions >= start of byte `value` in uint8 array a (in pieces: no full-size mask)."""
+    import numpy as np
+
+    out = [np.flatnonzero(a[s:s + chunk] == value).astype(np.int32) + np.int32(s)
+           for s in range(start, len(a), chunk)]
+    return np.concatenate(out) if out else np.zeros(0, dtype=np.int32)
+
+
+class SortedLexicon(Mapping):
+    """Read-only {word: raw pronunciation tail} over ONE buffer holding the TSV file ("word \\t
+    tail" lines, words strictly increasing in UTF-8 byte order = Python str order), searched by
+    bisection. A dict of the same file holds two Python str per entry; this holds the
+    decompressed file plus three int32 offsets per entry."""
+
+    def __init__(self, data, start: int, meta: dict[str, str]):
+        import numpy as np
+
+        self._b = data
+        self.meta = meta
+        a = np.frombuffer(data, dtype=np.uint8)
+        nl = _positions(a, 10, start)
+        lo = np.concatenate([np.array([start], np.int32), nl + np.int32(1)])
+        hi = np.concatenate([nl, np.array([len(data)], np.int32)])
+        if start >= len(data) or data[-1] == 10:          # a final newline ends the last line
+            lo, hi = lo[:-1], hi[:-1]
+        tabs = _positions(a, 9, start)
+        j = np.searchsorted(tabs, lo)                     # first tab at or after each line start
+        tab = hi.copy()                                   # no tab on the line: the key is the line
+        has = j < len(tabs)
+        tab[has] = np.minimum(tabs[j[has]], hi[has])
+        self._lo, self._tab, self._hi = lo, tab, hi
+
+    @classmethod
+    def from_tsv(cls, raw, check: bool = False):
+        """SortedLexicon of a TSV file, or None when it cannot stand in for load_lexicon_dict:
+        a "\\r" (the text-mode reader translates it) or a body over 2 GB. The packaged lexicons
+        are written sorted (_eu_build.write_lex); check=True also verifies that (non-empty keys,
+        no "#" key, strictly increasing: what the bisection needs), as the tests do for every
+        packaged file."""
+        if b"\r" in raw or len(raw) >= 2**31:
+            return None
+        meta: dict[str, str] = {}
+        i = 0
+        while raw.startswith(b"#", i):
+            j = raw.find(b"\n", i)
+            j = len(raw) if j < 0 else j
+            k, _, v = raw[i + 1:j].decode("utf-8").partition("\t")
+            meta[k] = v
+            i = j + 1
+        lex = cls(raw, i, meta)
+        if check:
+            raw.decode("utf-8")                           # the text-mode reader's failure
+            keys = [lex._key(q) for q in range(len(lex))]
+            if any(not k or k.startswith(b"#") for k in keys) or \
+                    any(keys[q] >= keys[q + 1] for q in range(len(keys) - 1)):
+                return None
+        return lex
+
+    def _key(self, i: int) -> bytes:
+        return self._b[int(self._lo[i]):int(self._tab[i])]
+
+    def _find(self, w) -> int:
+        if not isinstance(w, str):
+            return -1
+        try:
+            k = w.encode("utf-8")
+        except UnicodeEncodeError:
+            return -1
+        lo, hi = 0, len(self._lo)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self._key(mid) < k:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo if lo < len(self._lo) and self._key(lo) == k else -1
+
+    def _value(self, i: int) -> str:
+        t, h = int(self._tab[i]), int(self._hi[i])
+        return self._b[t + 1:h].decode("utf-8") if t < h else ""
+
+    def __getitem__(self, w) -> str:
+        i = self._find(w)
+        if i < 0:
+            raise KeyError(w)
+        return self._value(i)
+
+    def get(self, w, default=None):
+        i = self._find(w)
+        return default if i < 0 else self._value(i)
+
+    def __contains__(self, w) -> bool:
+        return self._find(w) >= 0
+
+    def __len__(self) -> int:
+        return len(self._lo)
+
+    def __iter__(self):
+        for i in range(len(self._lo)):
+            yield self._key(i).decode("utf-8")
+
+
+class SortedWords:
+    """Membership test on a word list stored as ONE bytes object: the UTF-8 words in strictly
+    increasing byte order (= Python's str order), separated by "\\n", searched by bisection.
+    Same answers as frozenset(text.split("\\n")) for such a list, at about a tenth of its memory
+    (the Spanish list: ~600 k words, ~85 MB as a frozenset of str, ~12 MB here)."""
+
+    def __init__(self, data):
+        import numpy as np
+
+        if len(data) >= 2**31:
+            raise ValueError("word list over 2 GB")
+        self._b = data
+        nl = _positions(np.frombuffer(data, dtype=np.uint8), 10, 0)
+        self._lo = np.concatenate([np.zeros(1, np.int32), nl + np.int32(1)])
+        self._hi = np.concatenate([nl, np.array([len(data)], np.int32)])
+
+    def __len__(self) -> int:
+        return len(self._lo)
+
+    def _word(self, i: int) -> bytes:
+        return self._b[int(self._lo[i]):int(self._hi[i])]
+
+    def __contains__(self, w) -> bool:
+        if not isinstance(w, str):
+            return False
+        try:
+            k = w.encode("utf-8")
+        except UnicodeEncodeError:          # lone surrogates: cannot be in a UTF-8 file
+            return False
+        lo, hi = 0, len(self._lo)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self._word(mid) < k:
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo < len(self._lo) and self._word(lo) == k
+
+    def is_sorted(self) -> bool:
+        """The precondition of the bisection: strictly increasing (checked by the tests)."""
+        return all(self._word(i) < self._word(i + 1) for i in range(len(self._lo) - 1))
 
 
 def parse_onsets(s: str) -> frozenset[tuple[str, ...]]:
