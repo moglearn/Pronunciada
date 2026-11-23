@@ -105,7 +105,8 @@ def span_posterior_features(lp: np.ndarray, ref, start, end) -> list[dict]:
             continue
         W = P[a:b]
         m = W.mean(0)
-        q = m[nb] / max(m[nb].sum(), EPS)
+        mnb = m[nb]
+        q = mnb / max(mnb.sum(), EPS)
         d = {"span_frames_padded": int(b - a), "blank_mean": float(m[0] + m[3]),
              "ent_nonblank": float(-(q * np.log(q + 1e-12)).sum())}
         ids = to_ids(p.ipa)
@@ -117,8 +118,9 @@ def span_posterior_features(lp: np.ndarray, ref, start, end) -> list[dict]:
                 if pref == "":
                     d.update({"comp_dist": math.nan, "comp_cls": None})
                 continue
-            mm = m[nb].copy()
-            mm[np.isin(nb, ids)] = -1.0          # never the phone's own tokens
+            mm = mnb.copy()
+            # never the phone's own tokens (nb = 4, 5, ...: token k sits at position k - 4)
+            mm[[k - 4 for k in ids if 4 <= k < 4 + len(nb)]] = -1.0
             c = int(nb[int(np.argmax(mm))])
             d.update({f"{pref}can_mean": float(m[tid]), f"{pref}can_max": float(W[:, tid].max()),
                       f"{pref}comp_tok": toks[c], f"{pref}comp_mean": float(m[c]),

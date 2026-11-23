@@ -8,11 +8,12 @@ frame j, so a span [s, e) of frames covers [frame_to_time(s), frame_to_time(e)).
 """
 from __future__ import annotations
 
+import functools
 import os
-import urllib.request
 
 import numpy as np
 
+from ._overrides import apply_ort_options, backbone_file, ort_options
 from .audio import fbank, load_audio
 from .text.ipa import load_tokens
 
@@ -172,15 +173,27 @@ def write_with_graph_outputs(src_path: str, dest_path: str, names) -> None:
     raise ValueError("no graph in the ONNX model")
 
 
+def _variant_path(src: str, outputs: dict) -> str:
+    tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
+    return src[:-len(".onnx")] + f".emb{tag}.onnx"
+
+
 def embedding_model_path(name: str, precision: str, cache_dir: str | None = None,
                          outputs: dict | None = None) -> str:
-    """Path of the model variant with `outputs` (default EMBED_OUTPUTS) as extra outputs, built
-    (once) next to the original in the model cache. The round-5 set keeps the file name
-    `<model>.emb.onnx`; any other set gets `<model>.emb-<keys>.onnx`."""
+    """Path of the model variant that carries `outputs` (default EMBED_OUTPUTS) as extra outputs,
+    built (once) next to the original in the model cache.
+
+    Every subset of ALL_LAYER_OUTPUTS (which is every set the scorer asks for) is served by ONE
+    file, `<model>.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx`, that carries all of them; the
+    session then fetches only the outputs asked for. Exposing a tensor as a graph output does not
+    change what ONNX Runtime computes: log-probs and every activation are bit-identical to those
+    of a file with fewer extra outputs (or none), fp32 and int8, and an output that is not fetched
+    costs no measurable time. Only a set outside ALL_LAYER_OUTPUTS gets a file of its own."""
     outputs = dict(EMBED_OUTPUTS) if outputs is None else outputs
-    src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
-    tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
-    dest = src[:-len(".onnx")] + f".emb{tag}.onnx"
+    src = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+    if set(outputs.values()) <= set(ALL_LAYER_OUTPUTS.values()):
+        outputs = dict(ALL_LAYER_OUTPUTS)
+    dest = _variant_path(src, outputs)
     if not os.path.exists(dest) or os.path.getmtime(dest) < os.path.getmtime(src):
         part = f"{dest}.{os.getpid()}.part"
         try:
@@ -193,6 +206,128 @@ def embedding_model_path(name: str, precision: str, cache_dir: str | None = None
     return dest
 
 
+@functools.lru_cache(maxsize=1)
+def _cpu_fingerprint() -> str:
+    """Short hash of what identifies the CPU's instruction set: the optimizer's output can depend
+    on it (on x86, e.g., the vector width picks the blocked layout), so a cache copied to another
+    machine (a container image, a synced home directory) builds its own graph."""
+    import hashlib
+    import platform
+
+    parts = [platform.machine(), platform.system()]           # (platform.processor() forks uname)
+    try:
+        with open("/proc/cpuinfo", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                if line.startswith(("flags", "Features", "model name", "CPU part")):
+                    parts.append(line.strip())
+                    if len(parts) > 8:
+                        break
+    except OSError:
+        pass
+    if platform.system() == "Darwin":                         # no /proc: ask sysctl directly
+        try:
+            import ctypes
+
+            libc = ctypes.CDLL(None)
+            for key in (b"machdep.cpu.brand_string", b"machdep.cpu.features", b"machdep.cpu.leaf7_features"):
+                size = ctypes.c_size_t(0)
+                if libc.sysctlbyname(key, None, ctypes.byref(size), None, 0) == 0 and size.value:
+                    buf = ctypes.create_string_buffer(size.value)
+                    if libc.sysctlbyname(key, buf, ctypes.byref(size), None, 0) == 0:
+                        parts.append(buf.value.decode("ascii", "replace"))
+        except (OSError, AttributeError):
+            pass
+    return hashlib.sha1("\n".join(parts).encode()).hexdigest()[:8]
+
+
+def _preopt_tag() -> str:
+    """ONNX Runtime version, machine and CPU fingerprint: an optimized graph is only reused by
+    the same runtime on the same kind of CPU (the optimizer's output may use hardware-specific
+    kernels)."""
+    import platform
+
+    import onnxruntime as ort
+
+    return f"ort{ort.__version__}-{platform.machine() or 'cpu'}-{_cpu_fingerprint()}"
+
+
+def preoptimized_model_path(src_variant: str) -> str:
+    """`<variant>.ort<version>-<machine>.onnx`: the variant's graph after ONNX Runtime's own
+    load-time optimization (level ORT_ENABLE_ALL, the default), saved by ONNX Runtime."""
+    return src_variant[:-len(".onnx")] + f".{_preopt_tag()}.onnx"
+
+
+def preopt_enabled() -> bool:
+    """PRONUNCIADA_PREOPT=0 loads the backbone the previous way (optimized at every load)."""
+    return os.environ.get("PRONUNCIADA_PREOPT", "1") != "0"
+
+
+def _preoptimized_session(ort, name: str, precision: str, cache_dir, so, providers):
+    """Backbone session with every extra output, loaded from the saved optimized graph with the
+    optimizer off (session creation int8 ~0.55 -> ~0.11 s, fp32 ~0.6 -> ~0.25 s); built on first
+    use from the all-outputs variant, which is deleted again when this call created it, so the
+    cache holds one copy next to the download. ONNX Runtime runs the same optimized graph either
+    way: log-probs and activations are bit-identical to a session optimized at load."""
+    src = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+    union = _variant_path(src, ALL_LAYER_OUTPUTS)
+    dest = preoptimized_model_path(union)
+    if os.path.exists(dest) and os.path.getmtime(dest) >= os.path.getmtime(src):
+        level = so.graph_optimization_level
+        so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
+        try:
+            return ort.InferenceSession(dest, so, providers=providers)
+        except Exception:  # noqa: BLE001  (unreadable / other build: rebuilt below)
+            so.graph_optimization_level = level
+    had_union = os.path.exists(union) and os.path.getmtime(union) >= os.path.getmtime(src)
+    path = embedding_model_path(name, precision, cache_dir, ALL_LAYER_OUTPUTS)
+    part = f"{dest}.{os.getpid()}.part"
+    so.optimized_model_filepath = part
+    try:
+        sess = ort.InferenceSession(path, so, providers=providers)
+    finally:
+        so.optimized_model_filepath = ""
+    if os.path.exists(part):
+        os.replace(part, dest)
+        if not had_union:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+    return sess
+
+
+def stale_model_variants(name: str = "zipa-small-crctc-500k", cache_dir: str | None = None) -> list[str]:
+    """Runtime-built backbone copies in the model cache that this version no longer reads:
+    earlier versions wrote one full copy of the backbone per set of extra outputs
+    (`<model>.emb.onnx`, `<model>.emb-<keys>.onnx`), about 67 MB (int8) / 248 MB (fp32) each;
+    the all-outputs variant is also stale once its optimized graph for this ONNX Runtime exists,
+    and so are optimized graphs of other ONNX Runtime versions or machines. Nothing deletes them
+    automatically (another process, possibly an older version, may still be using them);
+    `remove_stale_model_variants` does it on request."""
+    d = os.path.join(cache_root(cache_dir), "models", name)
+    if not os.path.isdir(d):
+        return []
+    keep = set()
+    for f in PRECISION_FILES.values():
+        union = _variant_path(os.path.join(d, f), ALL_LAYER_OUTPUTS)
+        opt = preoptimized_model_path(union)
+        keep.add(os.path.basename(opt))
+        if not (preopt_enabled() and os.path.exists(opt)):
+            keep.add(os.path.basename(union))
+    bases = tuple(f[:-len(".onnx")] + ".emb" for f in PRECISION_FILES.values())
+    return sorted(os.path.join(d, f) for f in os.listdir(d)
+                  if f.endswith(".onnx") and f not in keep and any(f.startswith(b + ".") or f.startswith(b + "-")
+                                                                   for b in bases))
+
+
+def remove_stale_model_variants(name: str = "zipa-small-crctc-500k", cache_dir: str | None = None) -> list[str]:
+    """Delete the files of `stale_model_variants`; returns their paths."""
+    out = stale_model_variants(name, cache_dir)
+    for p in out:
+        os.remove(p)
+    return out
+
+
 def cache_root(cache_dir: str | None = None) -> str:
     return cache_dir or os.environ.get("PRONUNCIADA_CACHE") or os.path.expanduser("~/.cache/pronunciada")
 
@@ -200,6 +335,8 @@ def cache_root(cache_dir: str | None = None) -> str:
 def _download(url: str, dest: str) -> None:
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     part = dest + ".part"
+    import urllib.request          # only when downloading: ~14 ms of import time otherwise
+
     req = urllib.request.Request(url, headers={"User-Agent": "pronunciada"})
     with urllib.request.urlopen(req) as r, open(part, "wb") as f:
         while True:
@@ -231,29 +368,46 @@ class AcousticModel:
         if precision not in PRECISION_FILES:
             raise ValueError(f"precision must be one of {sorted(PRECISION_FILES)}")
         self.name, self.precision = name, precision
-        model_path = ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
+        model_path = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
         self.embeddings = False
         self.embed_outputs = embed_outputs_for(embeddings) if embeddings else {}
-        if embeddings:
-            try:
-                model_path = embedding_model_path(name, precision, cache_dir, self.embed_outputs)
-                self.embeddings = True
-            except (OSError, ValueError):
-                pass        # fall back to the plain model: no embeddings, same log-probs
         tok_path = ensure_model_file(name, "tokens.txt", cache_dir)
 
         ort.set_default_logger_severity(3)
-        so = ort.SessionOptions()
-        so.log_severity_level = 3
-        # The memory-pattern planner keeps one preallocated block per input shape it has seen,
-        # and every clip length is a new shape: about +20 MB after a few calls, growing with
-        # use. Without it the outputs are bit-identical and a run is ~0.5 ms slower.
-        so.enable_mem_pattern = False
-        if threads:
-            so.intra_op_num_threads = int(threads)
-            so.inter_op_num_threads = 1
-        self.session = ort.InferenceSession(model_path, so,
-                                            providers=providers or ["CPUExecutionProvider"])
+        providers = providers or ["CPUExecutionProvider"]
+
+        def options():
+            so = ort.SessionOptions()
+            so.log_severity_level = 3
+            # The memory-pattern planner keeps one preallocated block per input shape it has
+            # seen, and every clip length is a new shape: about +20 MB after a few calls, growing
+            # with use. Without it the outputs are bit-identical and a run is ~0.5 ms slower.
+            so.enable_mem_pattern = False
+            if threads:
+                so.intra_op_num_threads = int(threads)
+                so.inter_op_num_threads = 1
+            apply_ort_options(so, "backbone")
+            return so
+
+        self.session = None
+        # saved optimized graph: only for the default configuration (no PRONUNCIADA_BACKBONE /
+        # PRONUNCIADA_ORT_OPTIONS override, CPU provider); anything going wrong falls back below
+        if embeddings and preopt_enabled() and backbone_file() is None and ort_options() is None \
+                and list(providers) == ["CPUExecutionProvider"] \
+                and set(self.embed_outputs.values()) <= set(ALL_LAYER_OUTPUTS.values()):
+            try:
+                self.session = _preoptimized_session(ort, name, precision, cache_dir, options(), providers)
+                self.embeddings = True
+            except Exception:  # noqa: BLE001
+                self.session = None
+        if self.session is None:
+            if embeddings:
+                try:
+                    model_path = embedding_model_path(name, precision, cache_dir, self.embed_outputs)
+                    self.embeddings = True
+                except (OSError, ValueError):
+                    pass        # fall back to the plain model: no embeddings, same log-probs
+            self.session = ort.InferenceSession(model_path, options(), providers=providers)
 
         self.tokens = load_tokens()
         with open(tok_path, encoding="utf-8") as f:
@@ -348,7 +502,7 @@ class AcousticModel:
             for b, k in enumerate(group):
                 x[b, : len(feats[k])] = feats[k]
                 lens[b] = len(feats[k])
-            lp, n = self.session.run(None, {"x": x, "x_lens": lens})
+            lp, n = self.session.run(self._out_names[:2], {"x": x, "x_lens": lens})
             for b, k in enumerate(group):
                 out[k] = self._fix(lp[b, : int(n[b])])
             i = j

@@ -1,4 +1,4 @@
-# Prosody path (pronunciada/prosody). Runtime needs only numpy, scipy, onnxruntime (core deps).
+# Prosody path (pronunciada/prosody). Runtime needs only numpy, onnxruntime (core deps).
 # Training / benchmarking only (never imported by pronunciada/ at runtime):
 torch>=2.2                 # BSD-3: ProsodyNet training (MPS)
 scikit-learn>=1.3          # BSD-3: Platt calibration, offset check

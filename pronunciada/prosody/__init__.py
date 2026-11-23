@@ -105,6 +105,9 @@ def _session(path: Path, threads: int):
     so.intra_op_num_threads = threads
     so.inter_op_num_threads = 1
     so.log_severity_level = 3
+    from .._overrides import apply_ort_options
+
+    apply_ort_options(so, "prosody")
     return ort.InferenceSession(str(path), so, providers=["CPUExecutionProvider"])
 
 

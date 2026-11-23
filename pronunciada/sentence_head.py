@@ -73,8 +73,8 @@ def voice_cues(wav, sr: int = 16000) -> dict:
     n, hop = int(0.025 * sr), int(0.01 * sr)
     if len(x) < n:
         return {k: np.nan for k in VOICE_KEYS}
-    idx = np.arange(0, len(x) - n + 1, hop)
-    fr = np.stack([x[i:i + n] for i in idx]) * np.hanning(n).astype(np.float32)
+    # frames starting every hop samples (a strided view: the same values as stacking slices)
+    fr = np.lib.stride_tricks.sliding_window_view(x, n)[::hop] * np.hanning(n).astype(np.float32)
     P = np.abs(np.fft.rfft(fr, axis=1)) ** 2
     f = np.fft.rfftfreq(n, 1.0 / sr)
     e = P.sum(1)
@@ -113,6 +113,9 @@ class SentenceHead:
         so.log_severity_level = 3
         so.intra_op_num_threads = int(threads or 1)
         so.inter_op_num_threads = 1
+        from ._overrides import apply_ort_options
+
+        apply_ort_options(so, "sentence_head")
         self.sess = ort.InferenceSession(str(d / f"{name}.onnx"), so, providers=["CPUExecutionProvider"])
 
     def inputs(self, tab: dict, ref, ev, emb: dict, S: dict, dv: dict | None, trk) -> dict | None:

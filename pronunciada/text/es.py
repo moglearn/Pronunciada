@@ -7,7 +7,6 @@ else final) - reliable for native words; monosyllabic function words get stress 
 """
 from __future__ import annotations
 
-import gzip
 
 from . import _eu_common as C
 from ._eu_base import EuG2P
@@ -176,8 +175,8 @@ class Spanish(EuG2P):
 
     def __init__(self):
         super().__init__()
-        with C.lex_path("es_words.txt.gz").open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
-            self.words_known = frozenset(f.read().split("\n"))
+        # sorted word list (pronunciada/text/_eu_build.py build_es), kept as one bytes object
+        self.words_known = C.SortedWords(C.read_gz("es_words.txt.gz"))
 
     def lookup(self, w):
         if w in EXCEPT:
