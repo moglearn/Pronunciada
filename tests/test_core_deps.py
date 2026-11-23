@@ -27,3 +27,14 @@ def test_scipy_not_imported_and_not_a_core_requirement():
     # every core requirement is imported somewhere in the package
     imported = {m.lower().replace("_", "-") for m in _imported_top_level()}
     assert names <= imported, names - imported
+
+
+def test_scoring_import_does_not_load_the_http_stack():
+    import subprocess
+    import sys
+
+    code = ("import sys, pronunciada.scorer, pronunciada.acoustic; "
+            "print('urllib.request' in sys.modules or 'http.client' in sys.modules)")
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=ROOT,
+                         env={"PYTHONPATH": str(ROOT), "PATH": "/usr/bin:/bin"})
+    assert out.stdout.strip() == "False", out.stderr

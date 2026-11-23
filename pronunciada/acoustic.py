@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import functools
 import os
-import urllib.request
 
 import numpy as np
 
@@ -323,6 +322,8 @@ def cache_root(cache_dir: str | None = None) -> str:
 def _download(url: str, dest: str) -> None:
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     part = dest + ".part"
+    import urllib.request          # only when downloading: ~14 ms of import time otherwise
+
     req = urllib.request.Request(url, headers={"User-Agent": "pronunciada"})
     with urllib.request.urlopen(req) as r, open(part, "wb") as f:
         while True:
