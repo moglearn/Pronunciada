@@ -1,12 +1,13 @@
 # Size and CPU speed: measurements
 
-Status: harness only. No baseline has been recorded yet and no optimization has been made. The
-tables below are empty until the scripts in `bench/opt/` fill them.
+Status (2026-11-23): baselines recorded on commit cbc6d6a (`main` 04e5c8d plus the harness);
+candidates measured. No package default and no shipped file has been changed by this work.
 
 ## How this was measured
 
 **Configurations.** A configuration is a source tree (a git revision or the working tree), a
-precision (int8 is the product default; fp32 is the precision of `results/SCOREBOARD.md`), and
+precision (fp32 is the package default and the precision of `results/SCOREBOARD.md`; int8 is the
+optional small model), and
 optionally a different backbone ONNX file, a folder of per-language adapters and ONNX Runtime
 session options. The package reads these through three environment variables
 (`PRONUNCIADA_BACKBONE`, `PRONUNCIADA_ADAPTER_DIR`, `PRONUNCIADA_ORT_OPTIONS`,
@@ -47,8 +48,30 @@ every score, and the number of clips where any score differs.
 
 ## Machine
 
-<!-- opt:machine -->
-<!-- /opt:machine -->
+Apple M3 Pro, 12 cores, 18 GB, macOS; Python 3.12, numpy 2.5.5, onnxruntime 1.32.0 (CPU). The
+machine was shared with other jobs; the 1-minute load average is printed with every table. Timings
+taken at different load levels are not compared with each other; comparisons are the paired,
+interleaved ones.
+
+## The fp32 baseline run
+
+`python -m bench.opt.gate record-baseline --code cbc6d6a --precision fp32`, steps run three at a
+time (`bench/opt/suite.py`), every credential variable removed, Azure numbers from cached responses
+only. Wall time 2,480 s (41 min) while other jobs ran; longest steps: eval_languages 2,459 s,
+contrast audit 1,507 s, coaching tips 896 s, eval_english 526 s.
+
+**Contrast-audit edit plans.** The frozen runs behind the committed tables used German and Japanese
+edit plans regenerated on 2026-11-22. Those plans exist only in the frozen runs' cache overlays;
+the main cache still holds the 2026-11-18 plans, which `bench/round19_merge/overlay.py` copies. A
+first comparison therefore differed in 29 German and Japanese audit rows and nowhere else. The plans
+of the frozen run are now pinned (`$PRONUNCIADA_CACHE/opt/audit_plans/<lang>/plan_250.json`, copied
+from the round-20 false-alarm release check's overlay) and copied into every run
+(`suite.pin_audit_plans`). SHA-1 of the plans used: de `22a54bbc4a`, ja `5e53e0ab69`, en `0c4eac2f2d`,
+es `5b80a50016`, fr `b8df19cbe1`, it `45f2ecc70a`, ko `348c3ba171`, pt `2f925469e1`, ru `3173eb111c`,
+zh `80006e7e66` (first ten hex digits). After the German and Japanese audit was re-run with them,
+**all eleven tables equal the tables committed on `main` key by key, and all 416 scoreboard rows are
+equal** (`python -m bench.opt.gate tables-vs-rev --rev 04e5c8d`). The committed tables came from
+serial frozen runs, so this also shows that running steps side by side gives identical tables.
 
 ## Baseline
 
@@ -357,3 +380,59 @@ Data files no language opened while scoring (20): `models/model.emb-enc0-enc1-en
 
 <!-- opt:parity -->
 <!-- /opt:parity -->
+
+## Candidate log
+
+Every candidate was built outside the repository (`$PRONUNCIADA_CACHE/opt/candidates/<name>/`) by
+`bench/opt/build_candidates.py` (backbone files; tools virtualenv with onnx 1.23.2, onnxslim 0.1.99,
+onnxruntime 1.32.0) or `bench/opt/build_adapters.py` (adapters). Specs: `bench/opt/candidates.json`.
+Parity: the 200 practice clips at 2 threads against the default configuration of the same precision
+(`python -m bench.opt.candidates parity <name> --code cbc6d6a`). Latency: paired and interleaved
+against the default, en and zh, 10 clips, 3 rounds (`opt_profile_cand_fp32.json`); mean
+difference, negative = faster. RSS: fresh process, en, 10 clips (`opt_rss_cand_fp32.json`).
+Rebuilding the int8 model with `quantize_dynamic(MatMul, QInt8)` reproduces the shipped
+`model.int8.onnx` byte for byte, so the int8 variants below differ from the shipped file only in
+what is stated.
+
+<!-- opt:candidates -->
+<!-- /opt:candidates -->
+
+## int8 against fp32
+
+<!-- opt:int8 -->
+<!-- /opt:int8 -->
+
+## Numerical fragility of the int8 backbone
+
+<!-- opt:fragility -->
+`python -m bench.opt.fragility --eps <e>`: 20 practice clips (en, de, ja, zh, 5 each, 12,082 frames). The fbank features of each clip are perturbed by Gaussian noise (sd e) or a constant shift (+e), and the backbone's log-posteriors on the perturbed features are compared with those on the original ones. Table: `results/tables/opt_fragility_<e>.json`.
+
+| backbone | e | perturbation | max abs change, nats | mean | 99.9th percentile | frames whose top token changes |
+|---|--:|---|--:|--:|--:|--:|
+| fp32 | 1e-4 | gaussian | 0.002775 | 2.55e-05 | 0.000562 | 0.00 % |
+| fp32 | 1e-4 | shift | 0.0001669 | 2.98e-06 | 4.96e-05 | 0.00 % |
+| int8 | 1e-4 | gaussian | 2.001 | 0.182 | 1.08 | 1.03 % |
+| int8 | 1e-4 | shift | 2.83 | 0.182 | 1.12 | 1.19 % |
+| int8x-embed+out | 1e-4 | gaussian | 2.657 | 0.152 | 0.914 | 1.11 % |
+| int8x-embed+out | 1e-4 | shift | 2.864 | 0.153 | 0.955 | 1.17 % |
+| int8x-embed+enc0+out | 1e-4 | gaussian | 3.036 | 0.152 | 0.946 | 1.05 % |
+| int8x-embed+enc0+out | 1e-4 | shift | 2.551 | 0.152 | 0.906 | 1.04 % |
+| f16store-fp32 | 1e-4 | gaussian | 0.002761 | 2.55e-05 | 0.000558 | 0.00 % |
+| f16store-fp32 | 1e-4 | shift | 0.0001888 | 3e-06 | 4.77e-05 | 0.00 % |
+| nbits4-fp32 | 1e-4 | gaussian | 0.004193 | 2.63e-05 | 0.000744 | 0.00 % |
+| nbits4-fp32 | 1e-4 | shift | 0.0002005 | 3.44e-06 | 6.1e-05 | 0.00 % |
+| fp32 | 3e-4 | gaussian | 0.008251 | 7.59e-05 | 0.00168 | 0.00 % |
+| fp32 | 3e-4 | shift | 0.0004711 | 6.76e-06 | 0.000136 | 0.00 % |
+| int8 | 3e-4 | gaussian | 2.39 | 0.178 | 0.967 | 1.15 % |
+| int8 | 3e-4 | shift | 2.773 | 0.179 | 1.02 | 1.29 % |
+| int8x-embed+out | 3e-4 | gaussian | 2.612 | 0.153 | 0.947 | 1.20 % |
+| int8x-embed+out | 3e-4 | shift | 2.823 | 0.152 | 0.855 | 1.05 % |
+| int8x-embed+enc0+out | 3e-4 | gaussian | 3.389 | 0.152 | 0.942 | 0.98 % |
+| int8x-embed+enc0+out | 3e-4 | shift | 2.791 | 0.151 | 0.875 | 1.17 % |
+| f16store-fp32 | 3e-4 | gaussian | 0.008198 | 7.59e-05 | 0.00168 | 0.00 % |
+| f16store-fp32 | 3e-4 | shift | 0.000452 | 6.78e-06 | 0.00013 | 0.00 % |
+| nbits4-fp32 | 3e-4 | gaussian | 0.01304 | 7.77e-05 | 0.00219 | 0.00 % |
+| nbits4-fp32 | 3e-4 | shift | 0.0005083 | 7.23e-06 | 0.000167 | 0.00 % |
+
+The audit's finding is reproduced: feature changes of 1e-4 move the shipped int8 backbone's log-posteriors by up to 2.0 to 2.8 nats (mean 0.18), and the top token of about 1 % of frames changes; fp32 moves by at most 0.003 nats (0.008 at 3e-4) and no top token changes. The int8 change does not grow from 1e-4 to 3e-4: it is a jump, not a slope. The likely mechanism is the dynamic quantization of the activations (DynamicQuantizeLinear before each of the 264 quantized MatMuls rounds activations to 8 bits with a scale computed per call), where a tiny input change flips roundings. Keeping the feature-embedding, first-stack and CTC-output MatMuls in fp32 (int8x-embed+out, int8x-embed+enc0+out) lowers the mean change only to 0.15 nats; the largest changes stay the same. Models whose activations stay fp32 (f16store-fp32: float16 weights; nbits4-fp32: 4-bit weights, MatMulNBits) are as stable as fp32.
+<!-- /opt:fragility -->
