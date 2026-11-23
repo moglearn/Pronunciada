@@ -47,15 +47,107 @@ def kana_moras(pron: str) -> list[str]:
     return out
 
 
+# pyopenjtalk-plus run_frontend options, all written out so that a change of a default upstream cannot
+# change our readings silently. Every value is the package default except use_sudachi_kanji_yomi: the
+# Sudachi reading correction (a second, ~190 MB dictionary) is never used. The "nani" reading model
+# (predict_nani, two small ONNX files inside pyopenjtalk-plus) and the other rule-based post-processing
+# steps stay on.
+FRONTEND_OPTIONS = {
+    "run_marine": False, "use_vanilla": False, "use_tsqyomi": False, "use_sudachi_kanji_yomi": False,
+    "predict_nani": True, "normalize_mode": "None", "iu_pronunciation": None, "use_read_as_pron": False,
+    "revert_long_vowels": False, "revert_yotsugana": False,
+}
+
+INSTALL_HINT = ('the Japanese text front-end needs the optional "ja" extra: pip install "pronunciada[ja]"; '
+                "without it, pass a kana reading (pronunciada.phones_from_kana) or phones "
+                "(pronunciada.core.score_phones)")
+
+
+class _NoSudachiTokenizer:
+    """Stand-in for sudachipy.tokenizer.Tokenizer when sudachipy is not installed: pyopenjtalk-plus
+    imports sudachipy at module level (and names this class in an annotation), but with FRONTEND_OPTIONS
+    and JaG2P.run_frontend it never calls it."""
+
+    class SplitMode:
+        A = B = C = None
+
+
+class _NoSudachiDictionary:
+    """Stand-in for sudachipy.dictionary.Dictionary (also named in annotations): never constructed."""
+
+    def __init__(self, *a, **k):
+        raise RuntimeError("Sudachi is not used by Pronunciada (see pronunciada.text.ja)")
+
+
+def _unihan_only(orig):
+    def read_unknown_kanji(njd_features, text=None):
+        return orig(njd_features, None)
+    return read_unknown_kanji
+
+
+def import_pyopenjtalk():
+    """Import pyopenjtalk (pyopenjtalk-plus). Works whether or not sudachipy / sudachidict-core are
+    installed: if sudachipy is missing, placeholder modules are registered only for the duration of the
+    import (pyopenjtalk keeps its references; the placeholders are removed from sys.modules again)."""
+    import importlib.util
+    import sys
+    import types
+
+    if "pyopenjtalk" in sys.modules:
+        return sys.modules["pyopenjtalk"]
+    try:
+        have = importlib.util.find_spec("pyopenjtalk") is not None
+    except (ImportError, ValueError):
+        have = False
+    if not have:
+        raise ImportError(INSTALL_HINT)
+    stubs = {}
+    try:
+        sudachi = importlib.util.find_spec("sudachipy") is not None
+    except (ImportError, ValueError):
+        sudachi = False
+    if not sudachi:
+        pkg = types.ModuleType("sudachipy")
+        dic = types.ModuleType("sudachipy.dictionary")
+        tok = types.ModuleType("sudachipy.tokenizer")
+        dic.Dictionary = _NoSudachiDictionary
+        tok.Tokenizer = _NoSudachiTokenizer
+        pkg.dictionary, pkg.tokenizer = dic, tok
+        stubs = {"sudachipy": pkg, "sudachipy.dictionary": dic, "sudachipy.tokenizer": tok}
+        sys.modules.update(stubs)
+    try:
+        import pyopenjtalk
+    finally:
+        for k, v in stubs.items():
+            if sys.modules.get(k) is v:
+                del sys.modules[k]
+    return pyopenjtalk
+
+
 class JaG2P(G2P):
     lang = "ja"
 
     def __init__(self) -> None:
-        import pyopenjtalk
+        pyopenjtalk = import_pyopenjtalk()
 
         self._pj = pyopenjtalk
         self._lock = threading.Lock()   # Open JTalk instance is not re-entrant
         self("今日は良い天気ですね。東京に行きました、3人で。")
+
+    def run_frontend(self, seg: str):
+        """pyopenjtalk.run_frontend with FRONTEND_OPTIONS, Sudachi-free. Its unknown-kanji step
+        (read_unknown_kanji) would tokenise the sentence with Sudachi when a kanji is missing from Open
+        JTalk's dictionary; during our call it gets no text, so it uses only its Unihan per-character
+        readings, exactly as pyopenjtalk-plus does for a call without text. Call with self._lock held."""
+        pj = self._pj
+        orig = getattr(pj, "read_unknown_kanji", None)
+        if orig is None:
+            return pj.run_frontend(seg, **FRONTEND_OPTIONS)
+        pj.read_unknown_kanji = _unihan_only(orig)
+        try:
+            return pj.run_frontend(seg, **FRONTEND_OPTIONS)
+        finally:
+            pj.read_unknown_kanji = orig
 
     # ------------------------------------------------------------ main
     def __call__(self, text: str) -> Reference:
@@ -87,7 +179,7 @@ class JaG2P(G2P):
         if not seg.strip():
             return []
         with self._lock:
-            njd = self._pj.run_frontend(seg)
+            njd = self.run_frontend(seg)
             labels = self._pj.make_label(njd) if any(x["mora_size"] > 0 for x in njd) else []
         # --- moras from the labels: (consonant, vowel/N/cl, a1, a2, devoiced)
         lab_moras: list[list] = []
