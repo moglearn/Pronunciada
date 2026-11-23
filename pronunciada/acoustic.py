@@ -173,15 +173,27 @@ def write_with_graph_outputs(src_path: str, dest_path: str, names) -> None:
     raise ValueError("no graph in the ONNX model")
 
 
+def _variant_path(src: str, outputs: dict) -> str:
+    tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
+    return src[:-len(".onnx")] + f".emb{tag}.onnx"
+
+
 def embedding_model_path(name: str, precision: str, cache_dir: str | None = None,
                          outputs: dict | None = None) -> str:
-    """Path of the model variant with `outputs` (default EMBED_OUTPUTS) as extra outputs, built
-    (once) next to the original in the model cache. The round-5 set keeps the file name
-    `<model>.emb.onnx`; any other set gets `<model>.emb-<keys>.onnx`."""
+    """Path of the model variant that carries `outputs` (default EMBED_OUTPUTS) as extra outputs,
+    built (once) next to the original in the model cache.
+
+    Every subset of ALL_LAYER_OUTPUTS (which is every set the scorer asks for) is served by ONE
+    file, `<model>.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx`, that carries all of them; the
+    session then fetches only the outputs asked for. Exposing a tensor as a graph output does not
+    change what ONNX Runtime computes: log-probs and every activation are bit-identical to those
+    of a file with fewer extra outputs (or none), fp32 and int8, and an output that is not fetched
+    costs no measurable time. Only a set outside ALL_LAYER_OUTPUTS gets a file of its own."""
     outputs = dict(EMBED_OUTPUTS) if outputs is None else outputs
     src = backbone_file() or ensure_model_file(name, PRECISION_FILES[precision], cache_dir)
-    tag = "" if list(outputs) == list(EMBED_OUTPUTS) else "-" + "-".join(outputs)
-    dest = src[:-len(".onnx")] + f".emb{tag}.onnx"
+    if set(outputs.values()) <= set(ALL_LAYER_OUTPUTS.values()):
+        outputs = dict(ALL_LAYER_OUTPUTS)
+    dest = _variant_path(src, outputs)
     if not os.path.exists(dest) or os.path.getmtime(dest) < os.path.getmtime(src):
         part = f"{dest}.{os.getpid()}.part"
         try:
@@ -192,6 +204,30 @@ def embedding_model_path(name: str, precision: str, cache_dir: str | None = None
             raise
         os.replace(part, dest)
     return dest
+
+
+def stale_model_variants(name: str = "zipa-small-crctc-500k", cache_dir: str | None = None) -> list[str]:
+    """Runtime-built backbone variants in the model cache that this version no longer reads:
+    earlier versions wrote one full copy of the backbone per set of extra outputs
+    (`<model>.emb.onnx`, `<model>.emb-<keys>.onnx`), about 67 MB (int8) / 248 MB (fp32) each.
+    Nothing deletes them automatically (another process, possibly an older version, may still be
+    using them); `remove_stale_model_variants` does it on request."""
+    d = os.path.join(cache_root(cache_dir), "models", name)
+    if not os.path.isdir(d):
+        return []
+    keep = {os.path.basename(_variant_path(os.path.join(d, f), ALL_LAYER_OUTPUTS)) for f in PRECISION_FILES.values()}
+    bases = tuple(f[:-len(".onnx")] + ".emb" for f in PRECISION_FILES.values())
+    return sorted(os.path.join(d, f) for f in os.listdir(d)
+                  if f.endswith(".onnx") and f not in keep and any(f.startswith(b + ".") or f.startswith(b + "-")
+                                                                   for b in bases))
+
+
+def remove_stale_model_variants(name: str = "zipa-small-crctc-500k", cache_dir: str | None = None) -> list[str]:
+    """Delete the files of `stale_model_variants`; returns their paths."""
+    out = stale_model_variants(name, cache_dir)
+    for p in out:
+        os.remove(p)
+    return out
 
 
 def cache_root(cache_dir: str | None = None) -> str:
@@ -350,7 +386,7 @@ class AcousticModel:
             for b, k in enumerate(group):
                 x[b, : len(feats[k])] = feats[k]
                 lens[b] = len(feats[k])
-            lp, n = self.session.run(None, {"x": x, "x_lens": lens})
+            lp, n = self.session.run(self._out_names[:2], {"x": x, "x_lens": lens})
             for b, k in enumerate(group):
                 out[k] = self._fix(lp[b, : int(n[b])])
             i = j

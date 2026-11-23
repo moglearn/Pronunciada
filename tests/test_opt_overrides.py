@@ -58,7 +58,7 @@ def test_backbone_override_reaches_the_model_paths(monkeypatch, tmp_path):
 
     monkeypatch.setattr(A, "write_with_graph_outputs", fake_write)
     dest = A.embedding_model_path("zipa-small-crctc-500k", "int8", cache_dir=str(tmp_path / "nocache"))
-    assert seen["src"] == str(f) and dest == str(tmp_path / "cand.emb.onnx")
+    assert seen["src"] == str(f) and dest == str(tmp_path / "cand.emb-enc0-enc1-enc2-enc3-enc4-enc5-final.onnx")
 
 
 def test_adapter_dir_override(monkeypatch, tmp_path):
