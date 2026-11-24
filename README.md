@@ -152,7 +152,7 @@ Pronunciada also runs outside Python:
 
 ## How it works
 
-![Architecture. Audio goes into ZIPA, which is frozen. Its output passes through Pronunciada's adapter, lattice scoring and calibration to give phoneme, word and sentence scores. The text goes through the lexicon and G2P into lattice scoring, and prosody heads read ZIPA and feed calibration.](docs/assets/how-it-works.jpg)
+![Architecture. Audio goes into ZIPA, which is frozen. Its output passes through Pronunciada's adapter, lattice scoring and calibration to give phoneme, word and sentence scores. The text goes through the lexicon and G2P into lattice scoring, and prosody heads read ZIPA and feed calibration.](docs/assets/pipeline.jpg)
 
 Pronunciada does not retrain a speech model. [ZIPA](https://github.com/lingjzhu/zipa), an open phone recognizer, is used exactly as released for all 10 languages. It listens to the recording and reports the sounds it hears, without seeing the text.
 

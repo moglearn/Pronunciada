@@ -147,61 +147,87 @@ body{margin:0;font-family:'Geist',sans-serif;color:#fff;-webkit-font-smoothing:a
 .card{position:relative;width:920px;background:linear-gradient(rgba(4,6,10,.40),rgba(4,6,10,.40)),#06080c url(GRADIENT) center/cover}
 .arch .head{position:absolute;left:40px;top:34px;display:flex;align-items:center;gap:12px;font-size:21px;letter-spacing:-.02em;color:rgba(255,255,255,.66)}
 .arch .head svg{height:17.5px;display:block}
-.nd{position:absolute;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:14px;font-weight:500;font-size:14.5px;letter-spacing:-.01em;white-space:nowrap}
-.nd.io{border:1px solid rgba(255,255,255,.34);color:rgba(255,255,255,.92);font-weight:400}
-.nd.frozen{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.62);font-size:17px}
-.nd.tr{background:linear-gradient(120deg,#2f6bff,#14b8a6);box-shadow:0 8px 24px rgba(4,6,10,.28)}
-.nd.out{flex-direction:column;gap:0;padding:0;align-items:stretch;justify-content:stretch;border:1px solid rgba(255,255,255,.34);overflow:hidden;font-weight:400}
-.nd.out em,.nd.out span{flex:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:15px;color:rgba(255,255,255,.92);border-top:1px solid rgba(255,255,255,.2)}
-.nd.out em{border-top:0;font:500 11px/1 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.nd .ic{opacity:.9}
-.region{position:absolute;border-radius:22px;background:rgba(4,6,10,.3);border:1px solid rgba(255,255,255,.16)}
-.region b{position:absolute;left:20px;top:16px;font:500 11px/1 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.cd{position:absolute;width:124px;height:132px;border-radius:16px;background:rgba(6,10,24,.5);border:1px solid rgba(255,255,255,.17);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(2,4,12,.34)}
+.cd svg{position:absolute;left:18px;top:26px}
+.cd b{position:absolute;left:0;right:0;bottom:17px;text-align:center;font-weight:500;font-size:14.5px;letter-spacing:-.01em}
+.cd.io{background:rgba(6,10,24,.32)}
+.cd.io b{font-weight:400;color:rgba(255,255,255,.92)}
+.cd.zipa{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.62)}
+.cd.zipa b{font-size:16.5px;letter-spacing:.02em}
+.chip{position:absolute;width:124px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(6,10,24,.32);border:1px solid rgba(255,255,255,.17);font-size:14px;color:rgba(255,255,255,.92)}
+.chip.own{background:rgba(6,10,24,.5);font-weight:500;color:#fff}
+.region{position:absolute;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.13)}
+.region b,.tag{font:500 10.5px/1 'Geist Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.region b{position:absolute;left:18px;top:17px}
+.tag{position:absolute;display:flex;align-items:center;justify-content:center;gap:7px;color:rgba(255,255,255,.78)}
 svg.wires{position:absolute;left:0;top:0}
-svg.wires path{fill:none;stroke:rgba(255,255,255,.7);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.legend{position:absolute;left:40px;bottom:30px;display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.78)}
-.legend .k{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px}
-.legend .k.frozen{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.62)}
-.legend .k.tr{background:linear-gradient(120deg,#2f6bff,#14b8a6);margin-left:18px}
+svg.wires path{fill:none;stroke:rgba(255,255,255,.52);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+svg.wires polygon{fill:rgba(255,255,255,.78)}
 .stats{display:grid;grid-template-columns:1.25fr .8fr 1fr 1.15fr;gap:0 36px;padding:40px 44px 38px}
 .stats b{display:block;font-weight:300;font-size:58px;line-height:1;letter-spacing:-.04em;white-space:nowrap;font-variant-numeric:tabular-nums}
 .stats b small{font-size:25px;letter-spacing:-.02em;color:rgba(255,255,255,.72);margin-left:5px}
 .stats span{display:block;margin-top:14px;font-size:14.5px;line-height:20px;color:rgba(255,255,255,.78)}
 """
 def figure_architecture() -> str:
-    """The architecture as a graph: ZIPA frozen, Pronunciada's trained parts around it."""
+    """The architecture as one signal path: illustrated cards for the main stages, slim chips for the side inputs."""
+    import soundfile as sf
     from make_logo import wordmark
 
-    W, H, NW, NH = 920, 452, 120, 56
-    col = [40 + i * 144 for i in range(6)]
-    row = [118, 212, 306]
-    snow = ('<svg class="ic" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">'
-            '<path d="M7.5 1v13M1.9 4.25l11.2 6.5M13.1 4.25l-11.2 6.5"/></svg>')
-    node = lambda c, r, name, cls, extra="": (f'<div class="nd {cls}" style="left:{col[c]}px;top:{row[r]}px;width:{NW}px;height:{NH}px">'
-                                              f'{name}{extra}</div>')
-    nodes = (node(0, 1, "Audio", "io") + node(0, 2, "Text", "io") + node(1, 1, "ZIPA", "frozen", snow)
-             + node(2, 1, "Adapter", "tr") + node(3, 1, "Lattice scoring", "tr") + node(4, 1, "Calibration", "tr")
-             + node(2, 2, "Lexicon + G2P", "tr") + node(3, 0, "Prosody heads", "tr"))
-    out_h = 4 * 34
-    out = (f'<div class="nd out" style="left:{col[5]}px;top:{row[1] + NH // 2 - out_h // 2}px;width:{NW}px;height:{out_h}px">'
-           '<em>Scores</em><span>Phoneme</span><span>Word</span><span>Sentence</span></div>')
-    mid = [r + NH // 2 for r in row]
-    right = lambda c: col[c] + NW
-    head = {"r": "l-6 -5m6 5l-6 5", "u": "l-5 6m5 -6l5 6", "d": "l-5 -6m5 6l5 -6"}
-    wire = lambda d, way: f'<path d="{d}"/><path d="M{d.split()[-2]} {d.split()[-1]}{head[way]}"/>'
-    xs, xc = col[3] + NW // 2, col[4] + NW // 2            # into Lattice scoring from below, into Calibration from above
+    W, H, CW, CH = 920, 462, 124, 132
+    X = [40 + i * 143 for i in range(6)]
+    top, mid = 190, 190 + CH // 2
+    y_pro, y_low, chip = 118, 366, 44
+    G = "url(#ag)"
+    # glyphs, all in an 88 x 52 box
+    audio, sr = sf.read(str(ROOT / "site/samples/en-learner-1.mp3"), dtype="float32", always_2d=True)
+    mono = audio.mean(axis=1)
+    n = 18
+    lv = [float(abs(mono[i * (len(mono) // n):(i + 1) * (len(mono) // n)]).max()) for i in range(n)]
+    wave = "".join(f'<rect x="{i * 5:.1f}" y="{26 - max(1.5, (v / max(lv)) ** .7 * 22):.1f}" width="2.6" height="{2 * max(1.5, (v / max(lv)) ** .7 * 22):.1f}" rx="1.3" fill="#fff"/>'
+                   for i, v in enumerate(lv))
+    layers = "".join(f'<rect x="10" y="{3 + i * 10}" width="68" height="6" rx="3" fill="#fff" opacity="{o}"/>' for i, o in enumerate((1, .78, .58, .42, .28)))
+    grid = "".join(f'<circle cx="{24 + c * 10}" cy="{6 + r * 10}" r="{3.1 if r == c else 2}" fill="{G if r == c else "#fff"}" opacity="{1 if r == c else .34}"/>'
+                   for r in range(5) for c in range(5))
+    cols, rows_ = (8, 32, 56, 80), (8, 26, 44)
+    path = (1, 0, 1, 2)
+    edges = "".join(f'<line x1="{cols[i]}" y1="{a}" x2="{cols[i + 1]}" y2="{b}" stroke="#fff" stroke-opacity=".16"/>' for i in range(3) for a in rows_ for b in rows_)
+    best = " ".join(f"{cols[i]},{rows_[k]}" for i, k in enumerate(path))
+    dots = "".join(f'<circle cx="{x}" cy="{y}" r="{3.6 if path[i] == k else 2.3}" fill="{G if path[i] == k else "#fff"}" opacity="{1 if path[i] == k else .5}"/>'
+                   for i, x in enumerate(cols) for k, y in enumerate(rows_))
+    lattice = f'{edges}<polyline points="{best}" fill="none" stroke="{G}" stroke-width="2"/>{dots}'
+    curve = ('<path d="M8 3V49H84" fill="none" stroke="#fff" stroke-opacity=".34" stroke-width="1.2"/>'
+             f'<path d="M11 45C40 45 46 8 82 8" fill="none" stroke="{G}" stroke-width="2.3" stroke-linecap="round"/>')
+    bars = "".join(f'<rect x="6" y="{6 + i * 16}" width="76" height="7" rx="3.5" fill="#fff" opacity=".16"/>'
+                   f'<rect x="6" y="{6 + i * 16}" width="{w}" height="7" rx="3.5" fill="#fff" opacity=".92"/>' for i, w in enumerate((62, 20, 48)))
+    flake = ('<svg width="15" height="15" viewBox="-8 -8 16 16" fill="none" stroke="#fff" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">'
+             + "".join(f'<g transform="rotate({a})"><path d="M0 -6.6V6.6M-1.9 -4.9L0 -3.2L1.9 -4.9M-1.9 4.9L0 3.2L1.9 4.9"/></g>' for a in (0, 60, 120)) + "</svg>")
+    card = lambda i, name, glyph, cls="": (f'<div class="cd {cls}" style="left:{X[i]}px;top:{top}px"><svg width="88" height="52" viewBox="0 0 88 52">{glyph}</svg>'
+                                           f'<b>{name}</b></div>')
+    cards = (card(0, "Audio", wave, "io") + card(1, "ZIPA", layers, "zipa") + card(2, "Adapter", grid) + card(3, "Lattice scoring", lattice)
+             + card(4, "Calibration", curve) + card(5, "Scores", bars, "io"))
+    chips = (f'<div class="chip own" style="left:{X[3]}px;top:{y_pro}px">Prosody heads</div>'
+             f'<div class="chip" style="left:{X[0]}px;top:{y_low}px">Text</div>'
+             f'<div class="chip own" style="left:{X[2]}px;top:{y_low}px">Lexicon + G2P</div>')
+    tip = {"r": "-6,-3.6 0,0 -6,3.6", "u": "-3.6,6 0,0 3.6,6", "d": "-3.6,-6 0,0 3.6,-6"}
+    def wire(d: str, way: str) -> str:
+        x, y = d.split()[-2:]
+        return f'<path d="{d}"/><polygon points="{tip[way]}" transform="translate({x} {y})"/>'
+    xl, xc, xz = X[3] + CW // 2, X[4] + CW // 2, X[1] + CW // 2
     wires = "".join([
-        *(wire(f"M{right(c)} {mid[1]} L {col[c + 1] - 3} {mid[1]}", "r") for c in range(5)),
-        wire(f"M{right(0)} {mid[2]} L {col[2] - 3} {mid[2]}", "r"),
-        wire(f"M{right(2)} {mid[2]} H{xs - 12} Q{xs} {mid[2]} {xs} {mid[2] - 12} L {xs} {row[1] + NH + 3}", "u"),
-        wire(f"M{col[1] + NW // 2} {row[1]} V{mid[0] + 12} Q{col[1] + NW // 2} {mid[0]} {col[1] + NW // 2 + 12} {mid[0]} L {col[3] - 3} {mid[0]}", "r"),
-        wire(f"M{right(3)} {mid[0]} H{xc - 12} Q{xc} {mid[0]} {xc} {mid[0] + 12} L {xc} {row[1] - 3}", "d"),
+        *(wire(f"M{X[c] + CW} {mid} L {X[c + 1] - 2} {mid}", "r") for c in range(5)),
+        wire(f"M{X[0] + CW} {y_low + chip // 2} L {X[2] - 2} {y_low + chip // 2}", "r"),
+        wire(f"M{X[2] + CW} {y_low + chip // 2} H{xl - 12} Q{xl} {y_low + chip // 2} {xl} {y_low + chip // 2 - 12} L {xl} {top + CH + 2}", "u"),
+        wire(f"M{xz} {top} V{y_pro + chip // 2 + 12} Q{xz} {y_pro + chip // 2} {xz + 12} {y_pro + chip // 2} L {X[3] - 2} {y_pro + chip // 2}", "r"),
+        wire(f"M{X[3] + CW} {y_pro + chip // 2} H{xc - 12} Q{xc} {y_pro + chip // 2} {xc} {y_pro + chip // 2 + 12} L {xc} {top - 2}", "d"),
     ])
-    region = (f'<div class="region" style="left:{col[2] - 18}px;top:{row[0] - 44}px;width:{right(4) - col[2] + 36}px;'
-              f'height:{row[2] + NH - row[0] + 62}px"><b>Pronunciada</b></div>')
-    legend = (f'<div class="legend"><span class="k frozen">{snow}</span>Frozen<span class="k tr"></span>Added by Pronunciada</div>')
-    return (f'<div class="card arch" style="height:{H}px"><div class="head">{wordmark("#ffffff")}<span>Architecture</span></div>'
-            f'{region}<svg class="wires" width="{W}" height="{H}">{wires}</svg>{nodes}{out}{legend}</div>')
+    region = (f'<div class="region" style="left:{X[2] - 14}px;top:{y_pro - 40}px;width:{X[4] + CW - X[2] + 28}px;'
+              f'height:{y_low + chip - y_pro + 56}px"><b>Pronunciada</b></div>')
+    frozen = f'<div class="tag" style="left:{X[1]}px;top:{top + CH + 12}px;width:{CW}px">{flake}Frozen</div>'
+    defs = ('<defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6aa6ff"/><stop offset="1" stop-color="#2fe0c4"/>'
+            '</linearGradient></defs>')
+    return (f'<div class="card arch" style="height:{H}px"><svg width="0" height="0" style="position:absolute">{defs}</svg>'
+            f'<div class="head">{wordmark("#ffffff")}<span>Architecture</span></div>'
+            f'{region}<svg class="wires" width="{W}" height="{H}">{wires}</svg>{cards}{chips}{frozen}</div>')
 
 
 def figure_stats() -> str:
@@ -226,7 +252,7 @@ def readme_images() -> None:
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{dark}</style></head><body>"
     gradient = (ROOT / "site/assets/gradient.jpg").as_uri()
     card = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{CARD_CSS.replace('GRADIENT', gradient)}</style></head><body>"
-    render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/how-it-works.jpg", 920, 452)
+    render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/pipeline.jpg", 920, 462)
     render(card + figure_stats() + "</body></html>", ROOT / "docs/assets/stats.jpg", 920, 196)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
     from common import height_of
@@ -250,4 +276,4 @@ if __name__ == "__main__":
     space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
                      encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in huggingface/space_static/index.html; wrote docs/assets/how-it-works.jpg, stats.jpg and languages.jpg")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in huggingface/space_static/index.html; wrote docs/assets/pipeline.jpg, stats.jpg and languages.jpg")
