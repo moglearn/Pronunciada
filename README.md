@@ -40,13 +40,13 @@ pip install pronunciada
 pronunciada check clip.wav "It was a beautiful day for a float" --lang en
 ```
 
-![The command above running in a terminal and printing the scores for each word and sound.](docs/assets/cli.gif)
+![The command above running in a terminal and printing the scores for each word and sound.](docs/assets/terminal.webp)
 
 <details>
 <summary>Output as text</summary>
 
 ```text
-~ Close  sentence 75% · accuracy 7.7/10 · fluency 8.1/10   en · strictness 0.5
+~ Close  sentence 75% · accuracy 7.6/10 · fluency 8.5/10   en · strictness 0.5
 
   It was a beautiful day for a float
            ~~~~~~~~~         ~ ^^^^^
