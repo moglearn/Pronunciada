@@ -242,8 +242,9 @@ def readme_images() -> None:
     render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/architecture.jpg", 920, 506)
     render(card + figure_stats() + "</body></html>", ROOT / "docs/assets/stats.jpg", 920, 196)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
-    render(head.replace("url(assets/gradient.jpg)", f"url('{(ROOT / 'site/assets/gradient.jpg').as_uri()}')") + langs + "</body></html>",
-           ROOT / "docs/assets/languages.jpg", 920, 272)
+    from common import height_of
+    card_html = head.replace("url(assets/gradient.jpg)", f"url('{(ROOT / 'site/assets/gradient.jpg').as_uri()}')") + langs + "</body></html>"
+    render(card_html, ROOT / "docs/assets/languages.jpg", 920, height_of(card_html, 920))
 
 
 BLOCKS = {"stats": stats, "figure-word": figure_word, "chart-tally": chart_tally, "chart-azure": chart_azure, "chart-speed": chart_speed, "chart-zipa": chart_zipa}
