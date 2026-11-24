@@ -1,6 +1,6 @@
 [project]
 name = "pronunciada"
-version = "1.0.2"
+version = "1.1.0"
 description = "On-device pronunciation assessment in 10 languages: phoneme, word and sentence scores, tones and stress"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,7 +32,7 @@ classifiers = [
 dependencies = ["numpy>=1.24", "onnxruntime>=1.16", "kaldi-native-fbank>=1.18", "soundfile>=0.12"]
 
 [project.optional-dependencies]
-# Text front-ends that need third-party packages (pinned versions: requirements-text-*.txt).
+# Text front-ends that need third-party packages (pinned versions: requirements/text-*.txt).
 zh = ["pypinyin>=0.55", "jieba>=0.42", "opencc-python-reimplemented>=0.1.7"]
 ja = ["pyopenjtalk-plus>=0.4.1"]
 mcp = ["mcp>=2"]                        # MIT, optional: `pronunciada mcp` only

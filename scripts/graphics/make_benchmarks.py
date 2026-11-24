@@ -548,7 +548,7 @@ def page() -> str:
 {LIMITS}
 
 <h2>Method</h2>
-<p>Versions: Pronunciada from the main branch of its repository, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
+<p>Versions: Pronunciada 1.1.0, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
 <p>Every interval and every difference comes from {RES['n_boot']:,} resamples of speakers, with the systems compared on the same resamples. A difference is called significant at p &lt; 0.05, without correction for the number of comparisons. Disk, memory and time were measured on an {one['machine']} with no GPU.</p>
 <p>The <a href="{FULL}">full tables</a> on GitHub have every row with its interval, the rank-correlation versions of the tests, the construction of the German set and the commands to reproduce the page.</p>
 <p class="back"><a href="../">Back to the overview</a></p>

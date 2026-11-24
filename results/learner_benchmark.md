@@ -79,7 +79,7 @@ redistributed, and the story texts are read from the manual at build time. Build
 
 | system | category | version | licence (code / weights) | parameters | weights on disk | en | zh | es | de | levels given |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Pronunciada fp32 (default) | open assessment system | 1.0.2, `main` fce7918 | Apache-2.0 / ZIPA CC BY 4.0 | about 67 M | 297 MB | yes | yes | yes | yes | sound, word, sentence |
+| Pronunciada fp32 (default) | open assessment system | 1.1.0 (scored at `main` fce7918; outputs identical in the release) | Apache-2.0 / ZIPA CC BY 4.0 | about 67 M | 297 MB | yes | yes | yes | yes | sound, word, sentence |
 | Pronunciada int8 | open assessment system | same, shipped int8 backbone | same | about 67 M | 107 MB | yes | yes | yes | yes | sound, word, sentence |
 | OpenPronounce 1.1.0, default | open assessment system | 1.1.0 (latest release, PyPI wheel) | AGPL-3.0 / Apache-2.0 models | 631 M (English: phone + word recognizer) | 2,603 MB (English) | yes | not supported | yes (experimental) | yes (experimental) | sound, word, sentence |
 | OpenPronounce 1.1.0, distilled English phone model | open assessment system | 1.1.0 + `wav2vec2-base-phones-en` @ 2e12ec2 | AGPL-3.0 / AGPL-3.0 | 95 M | 396 MB | yes | not supported | not supported | not supported | sound, word, sentence |

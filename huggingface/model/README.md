@@ -55,7 +55,7 @@ Pronunciada uses [ZIPA](https://huggingface.co/anyspeech/zipa-small-crctc-500k) 
 | `coach/` | Small classifiers on ZIPA's intermediate layers for consonant contrasts, such as Korean tense consonants. They feed the coaching tips. |
 | `native/` | Accepted native variants per language. |
 
-The same files ship inside the pip package, so there is nothing to download from here. This copy matches version 1.0.2. ZIPA itself is downloaded from the anyspeech repository at first use.
+The same files ship inside the pip package, so there is nothing to download from here. This copy matches version 1.1.0. ZIPA itself is downloaded from the anyspeech repository at first use.
 
 ## Use
 
@@ -89,7 +89,7 @@ Pronunciada is built on [ZIPA](https://github.com/lingjzhu/zipa), an open speech
 
 These results use the full 260 MB model. The 71 MB model is slightly behind it, with 47 wins and 4 losses against Azure. On an Apple M3 Pro it scores a 3.4-second sentence in about 40 ms with four CPU threads and 65 ms with one, and uses about 0.3 GB of memory. A request to Azure for a nine-second sentence took about two seconds from the same laptop.
 
-Every test and its confidence interval is in the [scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md). The figures are for the current code on GitHub.
+Every test and its confidence interval is in the [scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md). The figures are for version 1.1.0.
 
 [Full real-learner benchmarks against OpenPronounce, Lingolix, and Chivox →](https://pronunciada.dev/benchmarks/)
 
