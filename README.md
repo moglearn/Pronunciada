@@ -96,9 +96,13 @@ The most direct tests use recordings of learners that experts have graded by han
 
 It is also better at finding the sounds and the Mandarin tones that teachers marked as wrong.
 
-![Area under the ROC curve for detecting mispronunciations, Pronunciada and Azure. L2-ARCTIC 0.712 and 0.631, EpaDB 0.721 and 0.587, Mandarin words with any error 0.790 and 0.704, Mandarin words with tone errors 0.777 and 0.679.](docs/assets/chart-detection.png)
+Pronunciada is built on [ZIPA](https://github.com/lingjzhu/zipa), an open speech model, and adds the scoring around it. On the same learner tests it is significantly more accurate than ZIPA alone on 48 of 60, and less accurate on none.
+
+![Pronunciada and the unmodified ZIPA model on four learner tests. English phonemes 0.700 and 0.434, English sentences 0.778 and 0.583 (Pearson). L2-ARCTIC 0.712 and 0.659, Mandarin tone errors 0.777 and 0.552 (AUC).](docs/assets/chart-zipa.png)
 
 These results use the full 260 MB model. The 71 MB model is slightly behind it, with 47 wins and 4 losses against Azure. On an Apple M3 Pro it scores a 3.4-second sentence in about 40 ms with four CPU threads and 65 ms with one, and uses about 0.3 GB of memory. A request to Azure for a nine-second sentence took about two seconds from the same laptop.
+
+![Time to score a 9-second recording: Pronunciada 0.33 s on the laptop with one CPU thread, Azure 2.34 s for the request to the cloud and back.](docs/assets/chart-speed.png)
 
 Every test and its confidence interval is in the [scoreboard](results/SCOREBOARD.md). Azure was called through its REST API (region `westus`) in November 2026 and was not tuned on any of this data.
 
@@ -148,13 +152,13 @@ Pronunciada also runs outside Python:
 
 ## How it works
 
-![How it works. The recording goes into ZIPA, an open speech model with 64M parameters that is frozen and not fine-tuned. The text goes into Pronunciada's dictionary and sound rules. Pronunciada's adapter, sound-by-sound scoring, tone, stress and length models and calibration, 36 MB in total, turn ZIPA's output into scores for each sound, word and sentence.](docs/assets/architecture.jpg)
+![Architecture. Audio goes into ZIPA, which is frozen. Its output passes through Pronunciada's adapter, lattice scoring and calibration to give phoneme, word and sentence scores. The text goes through the lexicon and G2P into lattice scoring, and prosody heads read ZIPA and feed calibration.](docs/assets/architecture.jpg)
 
 Pronunciada does not retrain a speech model. [ZIPA](https://github.com/lingjzhu/zipa), an open phone recognizer, is used exactly as released for all 10 languages. It listens to the recording and reports the sounds it hears, without seeing the text.
 
 Everything Pronunciada adds sits around ZIPA and comes to 36 MB. A dictionary and the sound rules of each language turn the text into the sounds a speaker should produce. A small adapter corrects ZIPA's habits in each language. For every expected sound, the scorer weighs three explanations: it was said, it was replaced by another sound, or it was dropped. Calibration models fitted on expert-scored speech turn that evidence into the probabilities you get back, and separate small models read tone, stress and length from ZIPA's inner layers.
 
-On the same learner tests, this is significantly more accurate than ZIPA alone on 48 of 60, and less accurate on none. The design is described in [docs/DESIGN.md](docs/DESIGN.md).
+The design is described in [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Limitations
 
