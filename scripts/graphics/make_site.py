@@ -226,7 +226,7 @@ def readme_images() -> None:
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{dark}</style></head><body>"
     gradient = (ROOT / "site/assets/gradient.jpg").as_uri()
     card = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{CARD_CSS.replace('GRADIENT', gradient)}</style></head><body>"
-    render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/architecture.jpg", 920, 452)
+    render(card + figure_architecture() + "</body></html>", ROOT / "docs/assets/how-it-works.jpg", 920, 452)
     render(card + figure_stats() + "</body></html>", ROOT / "docs/assets/stats.jpg", 920, 196)
     langs = re.search(r'<div class="langs">.*?</div>', page, re.S).group(0)
     from common import height_of
@@ -250,4 +250,4 @@ if __name__ == "__main__":
     space.write_text(re.sub(r"(<!-- gen:stats -->).*?(<!-- /gen:stats -->)", lambda m: f"{m.group(1)}\n{stats()}\n{m.group(2)}", text, flags=re.S),
                      encoding="utf-8")
     readme_images()
-    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in huggingface/space_static/index.html; wrote docs/assets/architecture.jpg, stats.jpg and languages.jpg")
+    print(f"filled {len(BLOCKS)} blocks in site/index.html and the figures in huggingface/space_static/index.html; wrote docs/assets/how-it-works.jpg, stats.jpg and languages.jpg")
