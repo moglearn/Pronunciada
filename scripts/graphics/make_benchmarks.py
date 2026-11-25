@@ -436,10 +436,8 @@ def combined_text() -> str:
     ns = [s for s in ahead if s not in sig]
     if ns:
         parts.append(" Against " + " and ".join(NAME[s] for s in ns) + " the difference is not significant.")
-    pre = RES["summaries"]["LS (en, es, zh; round 19)"]["systems"]
     return (f"<p>{''.join(parts)} Over all four languages Pronunciada's combined score is {num(full['value'])}.</p>"
-            "<p class=\"note\">Checks of the construction: the version set before this page, which uses the English sentence total "
-            f"instead of accuracy, gives {num(pre[FP]['value'])} against Azure's {num(pre[AZ]['value'])}. Weighting the languages by their "
+            "<p class=\"note\">Checks of the construction: weighting the languages by their "
             "number of speakers, or scoring every level the judges marked (sounds, words, sentences, marked sounds, Mandarin characters), "
             "keeps Pronunciada ahead of every commercial system; against OpenPronounce the difference is not significant in any version "
             f'(<a href="{GITHUB}/blob/main/results/tables/learner_benchmark_combined_variants.json">all versions</a>). '
