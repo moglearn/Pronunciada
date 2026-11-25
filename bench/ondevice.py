@@ -26,6 +26,9 @@ Systems:
                                         sentence pays one synthesis, as on first use.
   openpronounce-fast                    the same with acoustic, transcription and prosody off (= --fast).
   openpronounce-student                 --fast with the distilled phone model OpenPronounce/wav2vec2-base-phones-en.
+  openpronounce-0.4.0                   OpenPronounce 0.4.0 compare_audio_with_text defaults (phone and word
+                                        recognizers, Piper reference voice), its own venv and settings
+                                        (bench.rivals.openpronounce_040); the version current at Pronunciada 1.0.0.
 Writes results/tables/ondevice/<system>__t<threads>.json.
 """
 from __future__ import annotations
@@ -48,7 +51,7 @@ CACHE = Path(os.environ.get("PRONUNCIADA_CACHE") or Path.home() / ".cache" / "pr
 OP_WORK = Path(os.environ.get("OPENPRONOUNCE_WORK") or CACHE / "round19" / "rivals")
 OP_PY = Path(os.environ.get("OPENPRONOUNCE_VENV_PY") or OP_WORK / "venv" / "bin" / "python")
 SYSTEMS = ("pronunciada-fp32", "pronunciada-int8", "openpronounce-default", "openpronounce-fast",
-           "openpronounce-student")
+           "openpronounce-student", "openpronounce-0.4.0")
 
 
 # ============================================================================ child (fresh process)
@@ -93,10 +96,10 @@ def child(system: str, threads: int, clips_file: str) -> None:
         torch.set_num_threads(threads)
         from openpronounce import audio, phones, speech
 
-        opts = {} if system == "openpronounce-default" else {"acoustic": False, "transcription": False,
-                                                              "prosody": False}
+        opts = {} if system in ("openpronounce-default", "openpronounce-0.4.0") else {
+            "acoustic": False, "transcription": False, "prosody": False}
         phones._load_model()
-        if system == "openpronounce-default":
+        if system in ("openpronounce-default", "openpronounce-0.4.0"):
             speech._load_models(speech.MODEL_NAME)
 
         def score(path, text):
@@ -129,26 +132,33 @@ def weight_files(system: str) -> list[Path]:
         model = Path(os.environ["PRONUNCIADA_BACKBONE"]) if os.environ.get("PRONUNCIADA_BACKBONE") else \
             Path(union) if acoustic.union_valid(union) else plain
         return [model] + [p for p in data.rglob("*") if p.is_file()]
-    hub = OP_WORK / "hf" / "hub"
+    hub = (CACHE / "learnerbench" / "openpronounce" if system == "openpronounce-0.4.0" else OP_WORK) / "hf" / "hub"
 
     def snap(repo, names):
         d = hub / f"models--{repo.replace('/', '--')}"
         rev = (d / "refs" / "main").read_text().strip()
         return [(d / "snapshots" / rev / n).resolve() for n in names]
 
-    pkg = OP_PY.parent.parent / "lib" / "python3.12" / "site-packages" / "openpronounce"
+    py = _op040_py() if system == "openpronounce-0.4.0" else OP_PY
+    pkg = py.parent.parent / "lib" / "python3.12" / "site-packages" / "openpronounce"
     files = [p for sub in ("models", "data") for p in (pkg / sub).rglob("*") if p.is_file()]
     if system == "openpronounce-student":
         files += snap("OpenPronounce/wav2vec2-base-phones-en", ["model.safetensors", "hidden_projection.safetensors"])
     else:
         files += _hf_weights(hub, "facebook/wav2vec2-lv-60-espeak-cv-ft")
-    if system == "openpronounce-default":
+    if system in ("openpronounce-default", "openpronounce-0.4.0"):
         files += _hf_weights(hub, "facebook/wav2vec2-large-960h")
         v = hub / "models--rhasspy--piper-voices"
         rev = (v / "refs" / "main").read_text().strip()
         files += [(v / "snapshots" / rev / "en" / "en_US" / "lessac" / "medium" / f).resolve()
                   for f in ("en_US-lessac-medium.onnx", "en_US-lessac-medium.onnx.json")]
     return files
+
+
+def _op040_py() -> Path:
+    from bench.rivals.openpronounce_040 import VENV_PY
+
+    return VENV_PY
 
 
 def _hf_weights(hub: Path, repo: str) -> list[Path]:
@@ -182,6 +192,13 @@ def measure(system: str, threads: int, n: int) -> dict:
         if system.startswith("pronunciada"):
             py = sys.executable
             cwd = str(ROOT)
+        elif system == "openpronounce-0.4.0":
+            from bench.rivals import openpronounce_040 as O4
+
+            env.update(O4.worker_env())
+            env["OPENPRONOUNCE_CACHE_DIR"] = str(Path(tmp) / "tts")
+            py = str(O4.VENV_PY)
+            cwd = tmp
         else:
             from bench.rivals.openpronounce import worker_env
 

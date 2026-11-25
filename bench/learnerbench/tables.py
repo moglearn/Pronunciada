@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 SHORT = {"pronunciada-fp32": "Pronunciada fp32", "pronunciada-int8": "Pronunciada int8",
-         "openpronounce-1.1.0": "OpenPronounce 1.1.0", "openpronounce-1.1.0-student": "OpenPronounce student",
+         "openpronounce-1.1.0": "OpenPronounce 1.1.0", "openpronounce-1.1.0-student": "OpenPronounce student", "openpronounce-0.4.0": "OpenPronounce 0.4.0", "toneperfect": "TonePerfect (measured 2026-11-24/25)",
          "azure": "Azure (cached)", "lingolix": "Lingolix (cached)", "zipa-alone": "ZIPA alone (reference)", "pronunciada-nb8-sym-b128": "Pronunciada, on-device model (73 MB, candidate)", "chivox": "Chivox (sample, measured 2026-11-23)", "-duration": "-duration"}
 
 

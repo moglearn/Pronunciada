@@ -396,6 +396,50 @@ def openpronounce_sys(student: bool, recs_by_corpus: dict) -> Sys:
     return Sys(name, "A", langs, sent, en, failed=failed)
 
 
+def openpronounce040_sys(recs_by_corpus: dict) -> Sys:
+    """OpenPronounce 0.4.0 (bench.rivals.openpronounce_040): one sentence score (`score`), a word score
+    100 x (1 - confidence) for the words it flags (100 for the others), no sound scores (each sound takes
+    its word's score), as in the 18 November 2026 snapshot. Words are attached to reference words by
+    character span (mean when several overlap; a reference word overlapped by none gets the mean)."""
+    import re as _re
+
+    from bench.pipeline.common import build_ref
+    from bench.rivals import openpronounce_040 as O4
+
+    word_re = _re.compile(r"\b[\w']+\b")
+    sent, en, failed = {}, {}, Counter()
+    for ds in ("speechocean762", "l2arctic", "epadb", "heroico", "saa", "leap-en", "leap-de",
+               "leap-en-prepost", "leap-de-prepost"):
+        raw = O4.read_raw(ds)
+        for rec in recs_by_corpus.get(ds, []):
+            r = raw.get(rec["id"])
+            if r is None:
+                continue
+            o = r["out"]
+            if "error" in o or o.get("score") is None:
+                sent[rec["id"]] = None
+                failed[ds] += 1
+                continue
+            sent[rec["id"]] = float(o["score"])
+            if ds in ("speechocean762", "l2arctic", "epadb"):
+                ref = build_ref("en", rec["text"])
+                spans = [(m.start(), m.end()) for m in word_re.finditer(r["text"])]
+                flag = {int(e["position"]): float(e["confidence"]) for e in o.get("errors", [])}
+                v = [100.0 * (1 - flag.get(i, 0.0)) for i in range(len(spans))]
+                mean = sum(v) / len(v) if v else float(o["score"])
+                words = []
+                for w in ref.words:
+                    a, b = w.char_span
+                    hit = [v[i] for i, (s0, e0) in enumerate(spans) if s0 < b and e0 > a]
+                    words.append(sum(hit) / len(hit) if hit else mean)
+                ph = np.asarray([words[p.word] for p in ref.phones], float)
+                sc = float(o["score"])
+                en[rec["id"]] = {"phones": [p.ipa for p in ref.phones], "phone": ph, "phone_err": 100.0 - ph,
+                                 "word": np.asarray(words, float),
+                                 "aspects": {"total": sc, "accuracy": sc, "fluency": None, "prosodic": None}}
+    return Sys("openpronounce-0.4.0", "A", ("en", "es", "de"), sent, en, failed=failed)
+
+
 def azure_sys(recs_by_corpus: dict) -> Sys:
     from bench.learners.evaluate import azure_scores
 
@@ -448,7 +492,8 @@ def lingolix_sys(recs_by_corpus: dict) -> tuple[Sys, dict]:
 
 # ============================================================================ tests
 
-def so762_rows(S: dict, recs: list[dict], sample: set | None = None, chivox: dict | None = None) -> list[Row]:
+def so762_rows(S: dict, recs: list[dict], sample: set | None = None, chivox: dict | None = None,
+               vendor: str = "chivox") -> list[Row]:
     """speechocean762 test: the scoreboard's units (bench.eval_zipa_baseline.eval_so762), every system."""
     from bench.eval_english import az_root, so762_items
     import bench.eval_english as EE
@@ -554,7 +599,7 @@ def so762_rows(S: dict, recs: list[dict], sample: set | None = None, chivox: dic
         aspects["fluency"]["lingolix"] = aspects["prosodic"]["lingolix"] = "not given"
     T = "speechocean762 test"
     if sample is not None:
-        T = f"speechocean762 test, Chivox sample ({len(sample)} recordings)"
+        T = f"speechocean762 test, {VENDOR_NAME[vendor]} sample ({len(sample)} recordings)"
         mP = np.array([k[0] in sample for k in P["key"]])
         mW = np.array([u in sample for u in Wd["utt"]])
         mS = np.array([u in sample for u in St["utt"]])
@@ -564,6 +609,7 @@ def so762_rows(S: dict, recs: list[dict], sample: set | None = None, chivox: dic
 
         sound, word = sub(sound, mP), sub(word, mW)
         aspects = {k: sub(v, mS) for k, v in aspects.items()}
+        P_keys = [k for k, m in zip(P["key"], mP) if m]
         P = {"y": list(np.asarray(P["y"])[mP]), "spk": list(np.asarray(P["spk"])[mP])}
         Wd = {"y": list(np.asarray(Wd["y"])[mW]), "spk": list(np.asarray(Wd["spk"])[mW]),
               "key": [(u, j) for u, j, m in zip(Wd["utt"], Wd["j"], mW) if m]}
@@ -573,22 +619,28 @@ def so762_rows(S: dict, recs: list[dict], sample: set | None = None, chivox: dic
             from bench.third_party import live_eval as LE
 
             views = chivox["views"]
-            W, _, _ = LE.vendor_so762_rows(views, LE.so762_human())
-            sound["chivox"] = "— (the English sentence engine returns no sound scores)"
-            word["chivox"] = np.array([W.get(k, 0.0) for k in Wd["key"]], float)
+            W, Ph, _ = LE.vendor_so762_rows(views, LE.so762_human())
+            if vendor == "chivox":
+                sound[vendor] = "— (the English sentence engine returns no sound scores)"
+            else:
+                sound[vendor] = np.array([Ph.get(k, 0.0) for k in P_keys], float)
+            word[vendor] = np.array([W.get(k, 0.0) for k in Wd["key"]], float)
             for k in aspects:
                 vals = [(views[u].get("sentence") or {}).get(k) for u in St["utt"]]
-                aspects[k]["chivox"] = floor_vec(vals) if all(v is not None for v in vals) else "not given"
+                aspects[k][vendor] = floor_vec(vals) if all(v is not None for v in vals) else "not given"
     rows.append(Row(T, "en", "expert scores", "Pearson", "sound", P["spk"], lambda v: Pearson(v, P["y"]), sound,
                     note="expert phone accuracy 0-2"))
+    rows[-1].y = P["y"]
     rows.append(Row(T, "en", "expert scores", "Spearman", "sound", P["spk"], lambda v: Spearman(v, P["y"]), sound))
     rows.append(Row(T, "en", "expert scores", "Pearson", "word", Wd["spk"], lambda v: Pearson(v, Wd["y"]), word,
                     note="expert word accuracy 0-10"))
+    rows[-1].y = Wd["y"]
     rows.append(Row(T, "en", "expert scores", "Spearman", "word", Wd["spk"], lambda v: Spearman(v, Wd["y"]), word))
     for k in ("total", "accuracy", "fluency", "prosodic"):
         y = St[f"y_{k}"]
         rows.append(Row(T, "en", "expert scores", "Pearson", f"sentence {k}", St["spk"],
                         (lambda yy: lambda v: Pearson(v, yy))(y), aspects[k]))
+        rows[-1].y = y
         rows.append(Row(T, "en", "expert scores", "Spearman", f"sentence {k}", St["spk"],
                         (lambda yy: lambda v: Spearman(v, yy))(y), aspects[k]))
     return rows
@@ -699,7 +751,7 @@ class _AUCWrap:
         return a / b if b else float("nan")
 
 
-def ompal_rows(S: dict, sample: set | None = None, chivox: dict | None = None) -> list[Row]:
+def ompal_rows(S: dict, sample: set | None = None, chivox: dict | None = None, vendor: str = "chivox") -> list[Row]:
     from bench import eval_ompal as EO
 
     recs = EO.records("test")
@@ -742,15 +794,16 @@ def ompal_rows(S: dict, sample: set | None = None, chivox: dict | None = None) -
         if isinstance(word[k], str):
             flu.setdefault(k, word[k])
     if chivox is not None:
-        word["chivox"] = np.asarray(U0["az_CV"], float)
-        sent["chivox"] = np.asarray(S0["az_CV_AccuracyScore"], float)[keep]
-        flu["chivox"] = np.asarray(S0["az_CV_FluencyScore"], float)[keep]
+        word[vendor] = np.asarray(U0["az_CV"], float)
+        sent[vendor] = np.asarray(S0["az_CV_AccuracyScore"], float)[keep]
+        given = any((v.get("sentence") or {}).get("fluency") is not None for v in chivox["views"].values())
+        flu[vendor] = np.asarray(S0["az_CV_FluencyScore"], float)[keep] if given else "not given"
     for nm in ("lingolix",):
         word[nm] = sent[nm] = "not supported (no Mandarin)"
     pos, neg = U0["any_wrong"].astype(bool), U0["correct"].astype(bool)
     T = "OMPAL test (Mandarin, French L1)"
     if sample is not None:
-        T = f"OMPAL test, Chivox sample ({len(recs)} recordings)"
+        T = f"OMPAL test, {VENDOR_NAME[vendor]} sample ({len(recs)} recordings)"
     rows.append(Row(T, "zh", "teacher marks", "AUC", "word (character): any error", U0["spk"],
                     lambda v: _AUCWrap(-v, pos, neg), word, note="all 21 speakers, natives included (as results/ompal.md)",
                     n_pos=int(pos.sum())))
@@ -765,11 +818,30 @@ def ompal_rows(S: dict, sample: set | None = None, chivox: dict | None = None) -
     spk = S0["spk"][keep]
     rows.append(Row(T, "zh", "teacher scores", "Pearson", "sentence accuracy", spk, lambda v: Pearson(v, y), sent,
                     note="learners only; teachers' mean sentence accuracy"))
+    rows[-1].y = y
     rows.append(Row(T, "zh", "teacher scores", "Spearman", "sentence accuracy", spk, lambda v: Spearman(v, y), sent))
     if sample is not None:
         yf = S0["t_fluency"].astype(float)[keep]
         rows.append(Row(T, "zh", "teacher scores", "Pearson", "sentence fluency", spk, lambda v: Pearson(v, yf), flu))
     return rows
+
+
+VENDOR_NAME = {"chivox": "Chivox", "toneperfect": "TonePerfect"}
+
+
+def toneperfect_answers() -> dict:
+    """TonePerfect's cached answers (speechocean762 sample and OMPAL test), read only."""
+    from bench.third_party import live_core as LC
+    from bench.third_party import toneperfect_live as TP
+
+    items = LC.select_items(TP, ["speechocean762", "ompal"], pilot=False, limit=None, seed=0)
+    A = LC.collect_answers(TP, items, LC.live_root(TP, False))
+
+    def key(ds, k):
+        return f"so762-{k}" if ds == "speechocean762" and not k.startswith("so762-") else k
+
+    return {ds: {"views": {key(ds, k): v for k, v in A[ds]["views"].items()}, "versions": A[ds].get("versions"),
+                 "first_utc": A[ds].get("first_utc"), "last_utc": A[ds].get("last_utc")} for ds in A}
 
 
 def chivox_sample() -> dict:
@@ -889,6 +961,69 @@ def summary(T: dict, vecs: dict, picks: dict, systems: list[str], n_boot: int, s
     return out
 
 
+# ============================================================================ combined score
+
+COMBINED_NOTE = ("Combined score: the unweighted mean over languages of one concordance C per language (0.5 = "
+                 "chance, 1 = perfect agreement): en speechocean762 test, the system's sentence accuracy score "
+                 "against the experts' sentence accuracy; zh OMPAL test learners, the same against the teachers' "
+                 "mean accuracy; es Heroico / USMA and de LeaP, native against learner recordings of the same "
+                 "prompt (the system's sentence score, the learner suite's primary tests). Speakers are resampled "
+                 "within each language; a system is compared with Pronunciada fp32 on the languages both cover.")
+
+
+def combined_components(rows: list, srows: list | None = None) -> dict:
+    """lang -> Row of the concordance used by the combined score (built from the tagged rows)."""
+    comp = {}
+    for r in rows:
+        if getattr(r, "y", None) is not None and r.unit == "sentence accuracy" and r.metric == "Pearson":
+            y = np.asarray(r.y, float)
+            comp[r.lang] = Row(r.test, r.lang, r.label_type, "C", "sentence accuracy", r.spk,
+                               (lambda yy: lambda v: Concordance(v, yy))(y), r.scores,
+                               note="combined-score component")
+    for r in srows or []:
+        if r.metric == "AUC" and r.unit in ("es/heroico", "de/leap"):
+            comp[r.lang] = r
+    return comp
+
+
+def combined(comp: dict, systems: list[str], n_boot: int, seed: int, langs: tuple | None = None) -> dict:
+    """Mean over languages of each component's C, every system against BASE on the languages both have
+    (or on `langs` for every system that has all of them); speakers resampled within language, paired."""
+    L = sorted(comp) if langs is None else list(langs)
+    fns = {lg: {s: comp[lg].build(v) for s, v in comp[lg].scores.items() if isinstance(v, np.ndarray)} for lg in L}
+    invs = {lg: np.unique(comp[lg].spk, return_inverse=True)[1] for lg in L}
+    rng = np.random.default_rng(seed)
+    W = {lg: [] for lg in L}
+    for _ in range(n_boot):
+        for lg in L:
+            K = invs[lg].max() + 1
+            W[lg].append(np.bincount(rng.integers(0, K, K), minlength=K).astype(float)[invs[lg]])
+    one = {lg: np.ones(len(comp[lg].spk)) for lg in L}
+    out = {"languages": L, "note": COMBINED_NOTE, "per_language": {}, "systems": {}}
+    for lg in L:
+        out["per_language"][lg] = {"test": comp[lg].test, "items": int(len(comp[lg].spk)),
+                                   "speakers": int(invs[lg].max() + 1),
+                                   "values": {s: f(one[lg]) for s, f in fns[lg].items()}}
+    for s in systems:
+        shared = [lg for lg in L if s in fns[lg] and BASE in fns[lg]]
+        if langs is not None and len(shared) < len(L):
+            out["systems"][s] = {"status": "not every language: " + ", ".join(lg for lg in L if lg not in shared)}
+            continue
+        if not shared:
+            out["systems"][s] = {"status": "no shared language"}
+            continue
+        val = lambda name, ws: float(np.mean([fns[lg][name](w) for lg, w in zip(shared, ws)]))
+        ps, pb = val(s, [one[lg] for lg in shared]), val(BASE, [one[lg] for lg in shared])
+        bs = np.array([val(s, [W[lg][b] for lg in shared]) for b in range(n_boot)])
+        bb = bs if s == BASE else np.array([val(BASE, [W[lg][b] for lg in shared]) for b in range(n_boot)])
+        e = {"languages": shared, "value": ps, "ci": q(bs), "base_value": pb}
+        if s != BASE:
+            d = bb - bs
+            e["base_minus"] = {"value": pb - ps, "ci": q(d), "p": p_two(d)}
+        out["systems"][s] = e
+    return out
+
+
 # ============================================================================ main
 
 def collect_systems(recs_by: dict) -> tuple[dict, dict]:
@@ -899,6 +1034,7 @@ def collect_systems(recs_by: dict) -> tuple[dict, dict]:
             S[name] = s
     S["openpronounce-1.1.0"] = openpronounce_sys(False, recs_by)
     S["openpronounce-1.1.0-student"] = openpronounce_sys(True, recs_by)
+    S["openpronounce-0.4.0"] = openpronounce040_sys(recs_by)
     S["azure"] = azure_sys(recs_by)
     S["lingolix"], prov["lingolix"] = lingolix_sys(recs_by)
     z = zipa_sys([r for v in recs_by.values() for r in v])
@@ -926,23 +1062,29 @@ def main(argv=None) -> dict:
     (TABLES / "learner_benchmark_systems.json").write_text((Path(__file__).parent / "systems.json").read_text())
     groups = set((a.only or "so762,errdet,ompal,suite,summary").split(","))
     rows = []
-    if "chivox" in groups:
-        CVA = chivox_sample()
+    vend = "chivox" if "chivox" in groups else "toneperfect" if "toneperfect" in groups else None
+    if vend:
+        CVA = chivox_sample() if vend == "chivox" else toneperfect_answers()
         so = CVA["speechocean762"]["views"]
         om = CVA["ompal"]["views"]
-        rows = so762_rows(S, recs_by["speechocean762"], sample=set(so), chivox=CVA["speechocean762"])
-        rows += ompal_rows(S, sample=set(om), chivox=CVA["ompal"])
-        res = {"n_boot": a.boot, "systems": order + ["chivox"], "rows": [],
-               "chivox": {k: {kk: vv for kk, vv in v.items() if kk != "views"} | {"answered": len(v["views"])}
-                          for k, v in CVA.items()}}
+        rows = so762_rows(S, recs_by["speechocean762"], sample=set(so), chivox=CVA["speechocean762"], vendor=vend)
+        rows += ompal_rows(S, sample=set(om), chivox=CVA["ompal"], vendor=vend)
+        res = {"n_boot": a.boot, "systems": order + [vend], "rows": [],
+               vend: {k: {kk: vv for kk, vv in v.items() if kk != "views"} | {"answered": len(v["views"])}
+                      for k, v in CVA.items()}}
         for k, row in enumerate(rows):
             res["rows"].append(evaluate_row(row, a.boot, seed=5000 + k))
             print(f"{row.test} | {row.metric} | {row.unit}: " + ", ".join(
                 f"{s_}={v['value']:.3f}" for s_, v in res["rows"][-1]["systems"].items() if "value" in v), flush=True)
-        (TABLES / "learner_benchmark_sample.json").write_text(json.dumps(_clean(res), indent=1, ensure_ascii=False))
+        comp = combined_components(rows)
+        for k, lg in enumerate(sorted(comp)):
+            res["rows"].append(evaluate_row(comp[lg], a.boot, seed=9500 + k))
+        res["combined"] = combined(comp, order + [vend], a.boot, 23)
+        tag = "" if vend == "chivox" else "_toneperfect"
+        (TABLES / f"learner_benchmark_sample{tag}.json").write_text(json.dumps(_clean(res), indent=1, ensure_ascii=False))
         from bench.learnerbench.tables import write_markdown
 
-        write_markdown(res, TABLES / "learner_benchmark_sample_tables.md")
+        write_markdown(res, TABLES / f"learner_benchmark_sample{tag}_tables.md")
         return res
     if "so762" in groups:
         rows += so762_rows(S, recs_by["speechocean762"])
@@ -970,6 +1112,13 @@ def main(argv=None) -> dict:
             "LS restricted to en, es, de": summary(T, V, {k: PRIMARY4[k] for k in ("en", "es", "de")}, order, a.boot, 11),
             "LS-NL restricted to en, es, de": summary(T, V, {k: NL4[k] for k in ("en", "es", "de")}, order, a.boot, 12),
         }
+    if "summary" in groups and {"so762", "ompal", "suite"} <= groups:
+        comp = combined_components(rows, srows)
+        for k, lg in enumerate(sorted(comp)):
+            if comp[lg].metric == "C":            # the suite's own rows (es, de) are already in the table
+                res["rows"].append(evaluate_row(comp[lg], a.boot, seed=9000 + k))
+        res["combined"] = combined(comp, order, a.boot, 21)
+        res["combined_en_es_de"] = combined(comp, order, a.boot, 22, langs=("de", "en", "es"))
     res["failures"] = {s: dict(S[s].failed) for s in order}
     res["provenance"] = {"lingolix": prov.get("lingolix")}
     TABLES.mkdir(parents=True, exist_ok=True)

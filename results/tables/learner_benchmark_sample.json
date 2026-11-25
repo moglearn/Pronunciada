@@ -6,6 +6,7 @@
   "pronunciada-nb8-sym-b128",
   "openpronounce-1.1.0",
   "openpronounce-1.1.0-student",
+  "openpronounce-0.4.0",
   "azure",
   "lingolix",
   "zipa-alone",
@@ -89,6 +90,9 @@
       ],
       "p": 0.0002
      }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
     },
     "zipa-alone": {
      "value": 0.427395,
@@ -206,6 +210,9 @@
       "p": 0.004
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.301945,
      "ci": [
@@ -321,6 +328,9 @@
       ],
       "p": 0.116988
      }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
     },
     "zipa-alone": {
      "value": 0.393398,
@@ -462,6 +472,9 @@
       "p": 0.068193
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.3453,
      "ci": [
@@ -601,6 +614,9 @@
       ],
       "p": 0.223378
      }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
     },
     "zipa-alone": {
      "value": 0.622376,
@@ -742,6 +758,9 @@
       "p": 0.159984
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.623778,
      "ci": [
@@ -881,6 +900,9 @@
       ],
       "p": 0.036996
      }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
     },
     "zipa-alone": {
      "value": 0.602049,
@@ -1022,6 +1044,9 @@
       "p": 0.042596
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.615136,
      "ci": [
@@ -1162,6 +1187,9 @@
       "p": 0.570543
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.570808,
      "ci": [
@@ -1289,6 +1317,9 @@
       ],
       "p": 0.033197
      }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
     },
     "zipa-alone": {
      "value": 0.535883,
@@ -1418,6 +1449,9 @@
       "p": 0.512749
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.599104,
      "ci": [
@@ -1546,6 +1580,9 @@
       "p": 0.0036
      }
     },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
     "zipa-alone": {
      "value": 0.586278,
      "ci": [
@@ -1648,6 +1685,9 @@
      "status": "not supported"
     },
     "openpronounce-1.1.0-student": {
+     "status": "not supported"
+    },
+    "openpronounce-0.4.0": {
      "status": "not supported"
     },
     "zipa-alone": {
@@ -1754,6 +1794,9 @@
     "openpronounce-1.1.0-student": {
      "status": "not supported"
     },
+    "openpronounce-0.4.0": {
+     "status": "not supported"
+    },
     "zipa-alone": {
      "value": 0.809028,
      "ci": [
@@ -1856,6 +1899,9 @@
      "status": "not supported"
     },
     "openpronounce-1.1.0-student": {
+     "status": "not supported"
+    },
+    "openpronounce-0.4.0": {
      "status": "not supported"
     },
     "zipa-alone": {
@@ -1962,6 +2008,9 @@
     "openpronounce-1.1.0-student": {
      "status": "not supported"
     },
+    "openpronounce-0.4.0": {
+     "status": "not supported"
+    },
     "zipa-alone": {
      "value": 0.226244,
      "ci": [
@@ -2064,6 +2113,9 @@
      "status": "not supported"
     },
     "openpronounce-1.1.0-student": {
+     "status": "not supported"
+    },
+    "openpronounce-0.4.0": {
      "status": "not supported"
     },
     "zipa-alone": {
@@ -2200,6 +2252,9 @@
     "openpronounce-1.1.0-student": {
      "status": "not supported"
     },
+    "openpronounce-0.4.0": {
+     "status": "not supported"
+    },
     "chivox": {
      "value": 0.620417,
      "ci": [
@@ -2214,6 +2269,256 @@
       ],
       "p": 0.279372
      }
+    }
+   }
+  },
+  {
+   "test": "speechocean762 test, Chivox sample (299 recordings)",
+   "lang": "en",
+   "label_type": "expert scores",
+   "metric": "C",
+   "unit": "sentence accuracy",
+   "n_items": 299,
+   "n_speakers": 125,
+   "note": "combined-score component",
+   "n_pos": null,
+   "systems": {
+    "pronunciada-fp32": {
+     "value": 0.83821,
+     "ci": [
+      0.798981,
+      0.870548
+     ]
+    },
+    "pronunciada-int8": {
+     "value": 0.833263,
+     "ci": [
+      0.793612,
+      0.866192
+     ],
+     "base_minus": {
+      "value": 0.004948,
+      "ci": [
+       -0.000996,
+       0.010947
+      ],
+      "p": 0.10039
+     }
+    },
+    "pronunciada-nb8-sym-b128": {
+     "value": 0.837547,
+     "ci": [
+      0.798202,
+      0.870127
+     ],
+     "base_minus": {
+      "value": 0.000664,
+      "ci": [
+       -0.001992,
+       0.003185
+      ],
+      "p": 0.642536
+     }
+    },
+    "openpronounce-1.1.0": {
+     "value": 0.805569,
+     "ci": [
+      0.763129,
+      0.841082
+     ],
+     "base_minus": {
+      "value": 0.032641,
+      "ci": [
+       0.005752,
+       0.060135
+      ],
+      "p": 0.017598
+     }
+    },
+    "openpronounce-1.1.0-student": {
+     "value": 0.811195,
+     "ci": [
+      0.767199,
+      0.848334
+     ],
+     "base_minus": {
+      "value": 0.027015,
+      "ci": [
+       6e-05,
+       0.053592
+      ],
+      "p": 0.049395
+     }
+    },
+    "openpronounce-0.4.0": {
+     "status": "not run"
+    },
+    "zipa-alone": {
+     "value": 0.774707,
+     "ci": [
+      0.732747,
+      0.809585
+     ],
+     "base_minus": {
+      "value": 0.063503,
+      "ci": [
+       0.034892,
+       0.091717
+      ],
+      "p": 0.0002
+     }
+    },
+    "azure": {
+     "value": 0.780816,
+     "ci": [
+      0.735687,
+      0.81956
+     ],
+     "base_minus": {
+      "value": 0.057394,
+      "ci": [
+       0.021243,
+       0.095539
+      ],
+      "p": 0.0024
+     }
+    },
+    "lingolix": {
+     "value": 0.771977,
+     "ci": [
+      0.731606,
+      0.807034
+     ],
+     "base_minus": {
+      "value": 0.066233,
+      "ci": [
+       0.028232,
+       0.10205
+      ],
+      "p": 0.0008
+     }
+    },
+    "chivox": {
+     "value": 0.707343,
+     "ci": [
+      0.661827,
+      0.750592
+     ],
+     "base_minus": {
+      "value": 0.130868,
+      "ci": [
+       0.079663,
+       0.180824
+      ],
+      "p": 0.0002
+     }
+    }
+   }
+  },
+  {
+   "test": "OMPAL test, Chivox sample (299 recordings)",
+   "lang": "zh",
+   "label_type": "teacher scores",
+   "metric": "C",
+   "unit": "sentence accuracy",
+   "n_items": 257,
+   "n_speakers": 18,
+   "note": "combined-score component",
+   "n_pos": null,
+   "systems": {
+    "pronunciada-fp32": {
+     "value": 0.738443,
+     "ci": [
+      0.671063,
+      0.791436
+     ]
+    },
+    "pronunciada-int8": {
+     "value": 0.737383,
+     "ci": [
+      0.671077,
+      0.789451
+     ],
+     "base_minus": {
+      "value": 0.00106,
+      "ci": [
+       -0.004502,
+       0.006519
+      ],
+      "p": 0.723328
+     }
+    },
+    "pronunciada-nb8-sym-b128": {
+     "value": 0.737666,
+     "ci": [
+      0.669421,
+      0.791062
+     ],
+     "base_minus": {
+      "value": 0.000777,
+      "ci": [
+       -0.000631,
+       0.002457
+      ],
+      "p": 0.30117
+     }
+    },
+    "openpronounce-1.1.0": {
+     "status": "not supported"
+    },
+    "openpronounce-1.1.0-student": {
+     "status": "not supported"
+    },
+    "openpronounce-0.4.0": {
+     "status": "not supported"
+    },
+    "zipa-alone": {
+     "value": 0.58891,
+     "ci": [
+      0.511705,
+      0.657752
+     ],
+     "base_minus": {
+      "value": 0.149532,
+      "ci": [
+       0.092752,
+       0.195928
+      ],
+      "p": 0.0002
+     }
+    },
+    "azure": {
+     "value": 0.609924,
+     "ci": [
+      0.530673,
+      0.673838
+     ],
+     "base_minus": {
+      "value": 0.128518,
+      "ci": [
+       0.089831,
+       0.165417
+      ],
+      "p": 0.0002
+     }
+    },
+    "chivox": {
+     "value": 0.651474,
+     "ci": [
+      0.556335,
+      0.728744
+     ],
+     "base_minus": {
+      "value": 0.086968,
+      "ci": [
+       0.035021,
+       0.136509
+      ],
+      "p": 0.0016
+     }
+    },
+    "lingolix": {
+     "status": "not supported (no Mandarin)"
     }
    }
   }
@@ -2234,6 +2539,218 @@
    "first_utc": "2026-11-23T18:19:17Z",
    "last_utc": "2026-11-23T19:39:31Z",
    "answered": 299
+  }
+ },
+ "combined": {
+  "languages": [
+   "en",
+   "zh"
+  ],
+  "note": "Combined score: the unweighted mean over languages of one concordance C per language (0.5 = chance, 1 = perfect agreement): en speechocean762 test, the system's sentence accuracy score against the experts' sentence accuracy; zh OMPAL test learners, the same against the teachers' mean accuracy; es Heroico / USMA and de LeaP, native against learner recordings of the same prompt (the system's sentence score, the learner suite's primary tests). Speakers are resampled within each language; a system is compared with Pronunciada fp32 on the languages both cover.",
+  "per_language": {
+   "en": {
+    "test": "speechocean762 test, Chivox sample (299 recordings)",
+    "items": 299,
+    "speakers": 125,
+    "values": {
+     "pronunciada-fp32": 0.83821,
+     "pronunciada-int8": 0.833263,
+     "pronunciada-nb8-sym-b128": 0.837547,
+     "openpronounce-1.1.0": 0.805569,
+     "openpronounce-1.1.0-student": 0.811195,
+     "zipa-alone": 0.774707,
+     "azure": 0.780816,
+     "lingolix": 0.771977,
+     "chivox": 0.707343
+    }
+   },
+   "zh": {
+    "test": "OMPAL test, Chivox sample (299 recordings)",
+    "items": 257,
+    "speakers": 18,
+    "values": {
+     "pronunciada-fp32": 0.738443,
+     "pronunciada-int8": 0.737383,
+     "pronunciada-nb8-sym-b128": 0.737666,
+     "zipa-alone": 0.58891,
+     "azure": 0.609924,
+     "chivox": 0.651474
+    }
+   }
+  },
+  "systems": {
+   "pronunciada-fp32": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.788326,
+    "ci": [
+     0.749711,
+     0.819609
+    ],
+    "base_value": 0.788326
+   },
+   "pronunciada-int8": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.785323,
+    "ci": [
+     0.747136,
+     0.815909
+    ],
+    "base_value": 0.788326,
+    "base_minus": {
+     "value": 0.003004,
+     "ci": [
+      -0.001049,
+      0.006957
+     ],
+     "p": 0.142386
+    }
+   },
+   "pronunciada-nb8-sym-b128": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.787606,
+    "ci": [
+     0.748679,
+     0.819112
+    ],
+    "base_value": 0.788326,
+    "base_minus": {
+     "value": 0.00072,
+     "ci": [
+      -0.000777,
+      0.002224
+     ],
+     "p": 0.350365
+    }
+   },
+   "openpronounce-1.1.0": {
+    "languages": [
+     "en"
+    ],
+    "value": 0.805569,
+    "ci": [
+     0.762746,
+     0.840545
+    ],
+    "base_value": 0.83821,
+    "base_minus": {
+     "value": 0.032641,
+     "ci": [
+      0.00525,
+      0.060084
+     ],
+     "p": 0.020198
+    }
+   },
+   "openpronounce-1.1.0-student": {
+    "languages": [
+     "en"
+    ],
+    "value": 0.811195,
+    "ci": [
+     0.767564,
+     0.84703
+    ],
+    "base_value": 0.83821,
+    "base_minus": {
+     "value": 0.027015,
+     "ci": [
+      0.000752,
+      0.054162
+     ],
+     "p": 0.043596
+    }
+   },
+   "openpronounce-0.4.0": {
+    "status": "no shared language"
+   },
+   "azure": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.69537,
+    "ci": [
+     0.650441,
+     0.732961
+    ],
+    "base_value": 0.788326,
+    "base_minus": {
+     "value": 0.092956,
+     "ci": [
+      0.066306,
+      0.118694
+     ],
+     "p": 0.0002
+    }
+   },
+   "lingolix": {
+    "languages": [
+     "en"
+    ],
+    "value": 0.771977,
+    "ci": [
+     0.732524,
+     0.806307
+    ],
+    "base_value": 0.83821,
+    "base_minus": {
+     "value": 0.066233,
+     "ci": [
+      0.028274,
+      0.1026
+     ],
+     "p": 0.001
+    }
+   },
+   "zipa-alone": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.681809,
+    "ci": [
+     0.637941,
+     0.720753
+    ],
+    "base_value": 0.788326,
+    "base_minus": {
+     "value": 0.106518,
+     "ci": [
+      0.074687,
+      0.134524
+     ],
+     "p": 0.0002
+    }
+   },
+   "chivox": {
+    "languages": [
+     "en",
+     "zh"
+    ],
+    "value": 0.679409,
+    "ci": [
+     0.62908,
+     0.724052
+    ],
+    "base_value": 0.788326,
+    "base_minus": {
+     "value": 0.108918,
+     "ci": [
+      0.071249,
+      0.143649
+     ],
+     "p": 0.0002
+    }
+   }
   }
  }
 }

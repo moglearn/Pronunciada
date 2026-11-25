@@ -35,9 +35,11 @@ On-device pronunciation assessment with cloud-level accuracy. Open source · 10 
 
 [Website](https://pronunciada.dev) · [GitHub](https://github.com/moglearn/pronunciada) · [PyPI](https://pypi.org/project/pronunciada/) · [Scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md)
 
-Pronunciada scores a language learner's pronunciation sound by sound, in 10 languages, on the learner's own device. It is open source, and it is the state of the art for on-device pronunciation assessment. Against Microsoft Azure's cloud service it comes out ahead in all 10 languages: across 84 public tests it is significantly better on 48 and worse on 2.
+Pronunciada scores a language learner's pronunciation sound by sound, in 10 languages, on the learner's own device. It is open source, and it is the [state of the art for on-device pronunciation assessment](https://pronunciada.dev/benchmarks/). Against Microsoft Azure's cloud service it comes out ahead in all 10 languages: across 84 public tests it is significantly better on 48 and worse on 2.
 
 It needs no GPU and no network. A sentence is scored in about 40 ms on a laptop CPU with a 71 MB model, and the audio never leaves the machine.
+
+**[Benchmarks on real learner speech →](https://pronunciada.dev/benchmarks/)** Pronunciada against Azure, OpenPronounce, Lingolix, TonePerfect and Chivox on the same recordings.
 
 ![Key figures: 48 significant wins and 2 losses against Azure, 10 languages, a 71 MB small model, 41 ms per sentence on a laptop CPU.](https://raw.githubusercontent.com/moglearn/pronunciada/main/docs/assets/stats.jpg)
 
@@ -91,7 +93,7 @@ These results use the full 260 MB model. The 71 MB model is slightly behind it, 
 
 Every test and its confidence interval is in the [scoreboard](https://github.com/moglearn/pronunciada/blob/main/results/SCOREBOARD.md). The figures are for version 1.1.0.
 
-[Full real-learner benchmarks against OpenPronounce, Lingolix, and Chivox →](https://pronunciada.dev/benchmarks/)
+[Full real-learner benchmarks against OpenPronounce, Lingolix, TonePerfect and Chivox →](https://pronunciada.dev/benchmarks/)
 
 ## How it works
 

@@ -5,7 +5,7 @@
 Every number on the page is read from results/tables/learner_benchmark_*.json (written by
 `python -m bench.learnerbench.report`) and results/tables/learner_benchmark_cost/, so the page
 cannot drift from the published tables. The page borrows the home page's stylesheet, header and
-footer. Outputs: site/benchmarks/index.html, docs/assets/chart-size.png, docs/assets/chart-cost.png.
+footer. Outputs: site/benchmarks/index.html, docs/assets/benchmark-size.png, docs/assets/benchmark-cost.png.
 """
 from __future__ import annotations
 
@@ -14,23 +14,26 @@ import json
 import math
 import re
 
-from common import INK, ROOT, font_css, render
+from common import INK, ROOT, font_css, height_of, render
 
 HOME = ROOT / "site/index.html"
 OUT = ROOT / "site/benchmarks/index.html"
 TABLES = ROOT / "results/tables"
 RES = json.loads((TABLES / "learner_benchmark_results.json").read_text(encoding="utf-8"))
 SAMPLE = json.loads((TABLES / "learner_benchmark_sample.json").read_text(encoding="utf-8"))
+TPS = json.loads((TABLES / "learner_benchmark_sample_toneperfect.json").read_text(encoding="utf-8"))
 COST_DIRS = ("quiet", "rerun")            # newest quiet pass first
 GITHUB = "https://github.com/moglearn/pronunciada"
 FULL = f"{GITHUB}/blob/main/results/learner_benchmark.md"
-RUN_DATE = "November 23, 2026"
+RUN_DATE = "November 25, 2026"
 
 FP, I8 = "pronunciada-fp32", "pronunciada-int8"
 OP, OPD = "openpronounce-1.1.0", "openpronounce-1.1.0-student"
-ZIPA, AZ, LX, CX = "zipa-alone", "azure", "lingolix", "chivox"
-NAME = {FP: "Pronunciada", I8: "Pronunciada int8", OP: "OpenPronounce", OPD: "OpenPronounce distilled",
-        AZ: "Azure", LX: "Lingolix", ZIPA: "ZIPA alone", CX: "Chivox"}
+OP04 = "openpronounce-0.4.0"             # the release current at Pronunciada 1.0.0; in the full tables
+ZIPA, AZ, LX, CX, TP = "zipa-alone", "azure", "lingolix", "chivox", "toneperfect"
+NAME = {FP: "Pronunciada", I8: "Pronunciada int8", OP: "OpenPronounce", OPD: "OpenPronounce distilled", OP04: "OpenPronounce 0.4.0",
+        AZ: "Azure", LX: "Lingolix", ZIPA: "ZIPA alone", CX: "Chivox", TP: "TonePerfect"}
+LANG = {"en": "English", "zh": "Mandarin", "es": "Spanish", "de": "German"}
 esc = html.escape
 
 
@@ -52,7 +55,7 @@ def diff(row: dict, system: str):
     return (d["value"], d["p"]) if d else (None, None)
 
 
-COST_FILE = {OP: "openpronounce-default", OPD: "openpronounce-student"}
+COST_FILE = {OP: "openpronounce-default", OPD: "openpronounce-student", OP04: "openpronounce-0.4.0"}
 
 
 def cost(system: str, threads: int):
@@ -86,7 +89,7 @@ def pval(p: float) -> str:
 PANELS = [
     ("English sounds", "agreement with expert scores", ("speechocean762 test", "Pearson", "sound")),
     ("English words", "agreement with expert scores", ("speechocean762 test", "Pearson", "word")),
-    ("English sentences", "agreement with expert scores", ("speechocean762 test", "Pearson", "sentence total")),
+    ("English sentences", "agreement with expert accuracy scores", ("speechocean762 test", "Pearson", "sentence accuracy")),
     ("English mispronunciations", "finding the sounds annotators marked", ("L2-ARCTIC test", "AUC", "sound")),
 ]
 LOCAL = (I8, FP, OPD, OP, ZIPA)
@@ -156,7 +159,7 @@ def chart_size() -> str:
     key = ('<span><i class="own"></i>Pronunciada: int8 model, then full model</span>'
            '<span><i class="oth"></i>OpenPronounce: distilled model, then default</span>'
            '<span><i class="ring"></i>ZIPA alone</span><span><i class="dia"></i>Cloud service</span>')
-    so, l2 = find("speechocean762 test", "Pearson", "sentence total"), find("L2-ARCTIC test", "AUC", "sound")
+    so, l2 = find("speechocean762 test", "Pearson", "sentence accuracy"), find("L2-ARCTIC test", "AUC", "sound")
     foot = ("Higher is better, and further left is smaller. The horizontal axis is the size on disk of every model file a system "
             "loads to score English, on a logarithmic scale. Cloud services have no download and are drawn at the right. "
             f"Agreement is the Pearson correlation with expert scores on the speechocean762 test set ({so['n_items']:,} recordings, "
@@ -167,32 +170,34 @@ def chart_size() -> str:
 
 
 def size_text() -> str:
-    """The paragraph under the chart. Each statement is checked against the data before it is written."""
-    snd, wrd, tot, l2 = (find(*k) for _, _, k in PANELS)
+    """The paragraph under the chart, written from the data: each comparison says what the paired test found."""
+    snd, wrd, acc, l2 = (find(*k) for _, _, k in PANELS)
     ep = find("EpaDB test", "AUC", "sound")
-    others = (I8, OP, OPD, AZ, LX, ZIPA)
-    for r in (snd, wrd):                                   # ahead of every other system, significantly
-        for s in (OP, OPD, AZ, LX, ZIPA):
-            if val(r, s) is not None:
-                d, p = diff(r, s)
-                assert d > 0 and p < 0.05, (r["unit"], s)
-    for s in (OP, OPD, AZ):                                # sentence total: no significant difference
-        assert diff(tot, s)[1] >= 0.05, s
-    for r in (l2, ep):                                     # OpenPronounce ahead on marked sounds, significantly
-        for s in (OP, OPD):
-            d, p = diff(r, s)
-            assert d < 0 and p < 0.05, (r["test"], s)
-    del others
-    return (
-        f"<p>Pronunciada loads {mb(size_mb(I8))} of files with its int8 model and {mb(size_mb(FP))} with the full model. "
-        f"OpenPronounce loads {mb(size_mb(OPD))} with its distilled English model and {mb(size_mb(OP))} in default mode.</p>"
-        f"<p>On the speechocean762 test set, Pronunciada agrees with the experts most closely on sounds ({num(val(snd, FP))}) "
-        f"and on words ({num(val(wrd, FP))}), and its difference to each other system on those two measures is significant. "
-        f"On sentence scores, Pronunciada ({num(val(tot, FP))}), OpenPronounce ({num(val(tot, OP))}, and {num(val(tot, OPD))} distilled) "
-        f"and Azure ({num(val(tot, AZ))}) are not significantly different. "
-        f"OpenPronounce is significantly better at finding the sounds annotators marked as mispronounced: "
-        f"{num(val(l2, OP))} and {num(val(l2, OPD))} against {num(val(l2, FP))} on L2-ARCTIC, and "
-        f"{num(val(ep, OP))} and {num(val(ep, OPD))} against {num(val(ep, FP))} on EpaDB.</p>")
+
+    def sig(r, s):
+        d, p = diff(r, s)
+        return None if d is None else "ahead" if d > 0 and p < 0.05 else "behind" if d < 0 and p < 0.05 else "level"
+
+    rivals = [s for s in (OP, OPD, AZ, LX) if any(val(r, s) is not None for r in (snd, wrd, acc))]
+    lead = [lab for lab, r in (("sounds", snd), ("words", wrd), ("sentence accuracy", acc))
+            if all(sig(r, s) in (None, "ahead") for s in rivals + [ZIPA])]
+    out = [f"<p>Pronunciada loads {mb(size_mb(I8))} of files with its int8 model and {mb(size_mb(FP))} with the full model. "
+           f"OpenPronounce loads {mb(size_mb(OPD))} with its distilled English model and {mb(size_mb(OP))} in default mode.</p>"]
+    para = []
+    if lead:
+        what = ", ".join(lead[:-1]) + (" and " if len(lead) > 1 else "") + lead[-1]
+        names = [NAME[s] for s in rivals] + [NAME[ZIPA]]
+        para.append(f"On the speechocean762 test set, Pronunciada agrees with the experts more closely than "
+                    f"{', '.join(names[:-1])} and {names[-1]} on {what}, and each of those differences is significant.")
+    both = [(sig(l2, x), sig(ep, x)) for x in (OP, OPD)]
+    if all(b == ("behind", "behind") for b in both):
+        para.append(f"OpenPronounce is significantly better at finding the sounds annotators marked as mispronounced: "
+                    f"{num(val(l2, OP))} and {num(val(l2, OPD))} against Pronunciada's {num(val(l2, FP))} on L2-ARCTIC, "
+                    f"and {num(val(ep, OP))} and {num(val(ep, OPD))} against {num(val(ep, FP))} on EpaDB.")
+    else:
+        para.append(f"On finding the sounds annotators marked as mispronounced, Pronunciada scores {num(val(l2, FP))} on L2-ARCTIC "
+                    f"and {num(val(ep, FP))} on EpaDB, against {num(val(l2, OP))} and {num(val(ep, OP))} for OpenPronounce.")
+    return "".join(out) + "<p>" + " ".join(para) + "</p>"
 
 
 # ---- chart 2: memory and time ---------------------------------------------------------------
@@ -236,32 +241,60 @@ def chart_cost() -> str:
 
 # ---- tables ---------------------------------------------------------------------------------
 
+def tp_row(row: dict):
+    """TonePerfect's row for the same test and measure, from its own run (speechocean762: a sample)."""
+    test = row["test"]
+    key = ("speechocean762 test, TonePerfect sample" if test.startswith("speechocean762 test")
+           else "OMPAL test, TonePerfect sample" if test.startswith("OMPAL test") else None)
+    if key is None:
+        return None
+    hits = [r for r in TPS["rows"] if r["test"].startswith(key) and r["metric"] == row["metric"] and r["unit"] == row["unit"]]
+    return hits[0] if hits else None
+
+
+TP_EN = TPS["toneperfect"]["speechocean762"]["answered"]
+TP_ZH = TPS["toneperfect"]["ompal"]["answered"]
+
+
 def cell(row: dict, system: str) -> str:
+    dagger = ""
+    if system == TP:
+        alt = tp_row(row)
+        if alt is None:
+            return '<td class="na">not run<i></i></td>'
+        if alt["n_items"] != row["n_items"]:
+            dagger = "<sup>†</sup>"
+        row = alt
     entry = row["systems"].get(system, {})
     if "value" not in entry:
         status = entry.get("status", "")
-        word = "not supported" if "not supported" in status else "not run" if "not run" in status else "–"
+        word = ("not supported" if "not supported" in status else "not run" if "not run" in status
+                else "not given" if "not given" in status or "not run" == status else "–")
         return f'<td class="na">{word}<i></i></td>'
     mark = "<i></i>"
     d, p = diff(row, system)
     if system != FP and p is not None and p < 0.05:
         mark = '<i class="dn" title="significantly lower than Pronunciada">▼</i>' if d > 0 else '<i class="up" title="significantly higher than Pronunciada">▲</i>'
-    return f'<td{" class=own" if system == FP else ""}>{num(entry["value"])}{mark}</td>'
+    return f'<td{" class=own" if system == FP else ""}>{num(entry["value"])}{dagger}{mark}</td>'
 
 
 def result_table(rows: list[tuple[str, str, dict]], systems: tuple[str, ...]) -> str:
     """rows = (label, small print, data row). A system with no number in any row is left out unless it is a full system."""
-    keep = [s for s in systems if s in (OP, AZ, LX) or any(val(r, s) is not None for _, _, r in rows)]
+    keep = [s for s in systems if s in (OP, AZ, LX, TP) or any(val(r, s) is not None for _, _, r in rows)]
     head = "<tr><th>Test</th>" + "".join(f"<th>{NAME[s]}</th>" for s in keep) + "</tr>"
     body = "".join(f"<tr><td>{label}<small>{small}</small></td>{''.join(cell(r, s) for s in keep)}</tr>" for label, small, r in rows)
     return f'<div class="tw"><table class="bt"><thead>{head}</thead><tbody>{body}</tbody></table></div>'
 
 
-ALL = (FP, I8, OP, OPD, AZ, LX, ZIPA)
+ALL = (FP, I8, OP, OPD, AZ, LX, TP, ZIPA)
 
 
 def n_of(r: dict, what: str) -> str:
     return f"{r['n_items']:,} {what}"
+
+
+def sig_list(row: dict, systems) -> list[str]:
+    return [NAME[s] for s in systems if (diff(row, s)[1] or 1) < 0.05]
 
 
 def tables() -> str:
@@ -269,8 +302,8 @@ def tables() -> str:
     t1 = result_table([
         ("Sounds", n_of(so("sound"), "sounds"), so("sound")),
         ("Words", n_of(so("word"), "words"), so("word")),
-        ("Sentence, total score", n_of(so("sentence total"), "recordings"), so("sentence total")),
-        ("Sentence, accuracy", "", so("sentence accuracy")),
+        ("Sentence, accuracy", n_of(so("sentence accuracy"), "recordings"), so("sentence accuracy")),
+        ("Sentence, total score", "", so("sentence total")),
         ("Sentence, fluency", "", so("sentence fluency")),
         ("Sentence, prosody", "", so("sentence prosodic")),
     ], ALL)
@@ -286,8 +319,6 @@ def tables() -> str:
         ("Sentence accuracy", f"Pearson with teacher scores, {n_of(om_s, 'recordings')}", om_s),
     ], ALL)
     he, he_s = find("Heroico USMA", "AUC", "es/heroico"), find("Heroico USMA", "speaker_AUC", "es/heroico")
-    for s in (OP, AZ, LX):                                 # the Spanish paragraph below states exactly this
-        assert diff(he, s)[1] >= 0.05 and (diff(he_s, s)[1] < 0.05) == (s != LX), s
     t4 = result_table([
         ("Recordings", f"{n_of(he, 'recordings')}, compared within each prompt", he),
         ("Speakers", f"{he_s['n_speakers']} speakers, mean score of each", he_s),
@@ -303,19 +334,27 @@ def tables() -> str:
         ("LeaP English", f"{n_of(lpe, 'sentences')}, {lpe['n_speakers']} speakers", lpe),
     ], ALL)
     legend = ('<p class="note">▲ significantly higher than Pronunciada, ▼ significantly lower (paired test over speakers, p &lt; 0.05). '
-              "No mark means no significant difference. Pronunciada is the full model unless the column says int8.</p>")
+              "No mark means no significant difference. Pronunciada is the full model unless the column says int8. "
+              f"† TonePerfect was run on {TP_EN:,} of the {so('sentence accuracy')['n_items']:,} recordings, with every speaker included; "
+              "its figure and mark are computed on those recordings.</p>")
+    he_sig = sig_list(he, (OP, AZ, LX))
+    he_s_sig = sig_list(he_s, (OP, AZ, LX))
+    spanish = ("With 18 speakers the intervals are wide. " +
+               (f"On recordings, the difference to {' and '.join(he_sig)} is significant; " if he_sig else "On recordings, no difference is significant; ") +
+               (f"by speaker, the differences to {' and '.join(he_s_sig)} are." if len(he_s_sig) > 1 else
+                f"by speaker, the difference to {he_s_sig[0]} is." if he_s_sig else "by speaker, none is."))
     return f"""
 <h3>English, scored by experts</h3>
 <p>The speechocean762 test set has {so('sentence total')['n_items']:,} recordings by {so('sentence total')['n_speakers']} Mandarin-speaking learners of English, many of them children. Five experts scored every sound, word and sentence. The figure is the Pearson correlation between a system's score and the experts' score.</p>
 {t1}{legend}
 <h3>English, sounds marked as mispronounced</h3>
-<p>In L2-ARCTIC and EpaDB, annotators marked each sound a learner mispronounced. The figure is the area under the ROC curve for separating the marked sounds from the others. Neither corpus was used to train or tune Pronunciada or OpenPronounce. Lingolix gives no score for individual sounds and was not run on these sets.</p>
+<p>In L2-ARCTIC and EpaDB, annotators marked each sound a learner mispronounced. The figure is the area under the ROC curve for separating the marked sounds from the others. Neither corpus was used to train or tune Pronunciada or OpenPronounce. Lingolix gives no score for individual sounds, and neither it nor TonePerfect was run on these sets.</p>
 {t2}
 <h3>Mandarin</h3>
-<p>The OMPAL test set has {om_w['n_speakers']} speakers, {om_s['n_speakers']} of them French-speaking learners of Mandarin. Teachers marked every character and scored every sentence. OpenPronounce and Lingolix do not support Mandarin.</p>
+<p>The OMPAL test set has {om_w['n_speakers']} speakers, {om_s['n_speakers']} of them French-speaking learners of Mandarin. Teachers marked every character and scored every sentence. OpenPronounce and Lingolix do not support Mandarin. TonePerfect scored all {TP_ZH} recordings; it states that it used other OMPAL recordings during its development.</p>
 {t3}
 <h3>Spanish</h3>
-<p>Heroico has no expert scores. It has the same prompts read by 10 learners and 8 native speakers of Spanish, so the test is whether a system scores the native recording of a prompt above the learner's (area under the ROC curve). With 18 speakers the intervals are wide, and only the speaker-level differences to OpenPronounce and Azure are significant.</p>
+<p>Heroico has no expert scores. It has the same prompts read by 10 learners and 8 native speakers of Spanish, so the test is whether a system scores the native recording of a prompt above the learner's (area under the ROC curve). {spanish}</p>
 {t4}
 <h3>German</h3>
 <p>LeaP has the same stories read by {le['n_speakers'] - 7} learners and 7 native speakers of German, again without expert scores. The corpus states no license, so its recordings were scored on the laptop only and were not sent to any cloud service.</p>
@@ -348,20 +387,107 @@ def sample_table() -> str:
 {table}"""
 
 
-def summary_table() -> str:
-    S = RES["summaries"]
+# ---- the two summary tables ------------------------------------------------------------------
+
+def langs_of(e: dict) -> str:
+    return ", ".join(LANG[lg] for lg in sorted(e["languages"], key=["en", "zh", "es", "de"].index))
+
+
+def combined_rows():
+    """(system, where it runs, combined entry) for every system compared with Pronunciada."""
     rows = []
-    for langs, key, other in (("English, Mandarin, Spanish", "LS (en, es, zh; round 19)", AZ),
-                              ("English, Spanish, German", "LS restricted to en, es, de", OP),
-                              ("English, Mandarin, Spanish, German", "LS4", ZIPA)):
-        s = S[key]
-        ours, theirs = s["systems"][FP], s["systems"][other]
-        d = theirs["base_minus"]
-        rows.append(f"<tr><td>{langs}<small>{s['speakers']} speakers, {s['items']:,} recordings</small></td>"
-                    f"<td class=own>{num(ours['value'])}</td><td>{NAME[other]} {num(theirs['value'])}</td>"
-                    f"<td>{d['value']:+.3f}<small>{d['ci'][0]:+.3f} to {d['ci'][1]:+.3f}</small></td><td>{pval(d['p']).replace('p ', '')}</td></tr>")
-    head = "<tr><th>Languages</th><th>Pronunciada</th><th>Compared with</th><th>Difference<br>95% interval</th><th>p</th></tr>"
-    return f'<div class="tw"><table class="bt"><thead>{head}</thead><tbody>{"".join(rows)}</tbody></table></div>'
+    for s, where, src in ((AZ, "Cloud", RES), (LX, "Cloud", RES), (TP, "Cloud", TPS), (CX, "Cloud", SAMPLE),
+                          (OP, "Device", RES), (OPD, "Device", RES), (ZIPA, "Device", RES)):
+        e = src["combined"]["systems"].get(s, {})
+        if "value" in e:
+            rows.append((s, where, e, src))
+    return rows
+
+
+def combined_table() -> str:
+    body = []
+    for s, where, e, src in combined_rows():
+        d = e["base_minus"]
+        note = ""
+        if src is TPS:
+            note = f"English on {TP_EN:,} recordings"
+        elif src is SAMPLE:
+            note = f"{SAMPLE['chivox']['speechocean762']['answered']} + {SAMPLE['chivox']['ompal']['answered']} recordings"
+        kind = "on the device" if where == "Device" else "cloud"
+        body.append(f"<tr><td>{NAME[s]}<small>{kind} · {langs_of(e)}{f'; {note}' if note else ''}</small></td>"
+                    f"<td class=own>{num(e['base_value'])}</td><td>{num(e['value'])}</td>"
+                    f"<td>{d['value']:+.3f}<small>{pval(d['p'])}</small></td></tr>")
+    head = "<tr><th>Compared with</th><th>Pronunciada</th><th>Other</th><th>Difference</th></tr>"
+    return f'<div class="tw"><table class="bt fit"><thead>{head}</thead><tbody>{"".join(body)}</tbody></table></div>'
+
+
+def combined_text() -> str:
+    rows = combined_rows()
+    ahead = [s for s, _, e, _ in rows if e["base_minus"]["value"] > 0]
+    sig = [s for s, _, e, _ in rows if e["base_minus"]["value"] > 0 and e["base_minus"]["p"] < 0.05]
+    behind = [s for s, _, e, _ in rows if e["base_minus"]["value"] <= 0]
+    full = RES["combined"]["systems"][FP]
+    parts = []
+    if not behind:
+        parts.append(f"Pronunciada has the higher combined score against every system, and the difference is significant against "
+                     + ", ".join(NAME[s] for s in sig[:-1]) + (" and " if len(sig) > 1 else "") + NAME[sig[-1]] + ".")
+    else:
+        parts.append("Pronunciada has the higher combined score against " + ", ".join(NAME[s] for s in ahead) + ".")
+    ns = [s for s in ahead if s not in sig]
+    if ns:
+        parts.append(" Against " + " and ".join(NAME[s] for s in ns) + " the difference is not significant.")
+    pre = RES["summaries"]["LS (en, es, zh; round 19)"]["systems"]
+    return (f"<p>{''.join(parts)} Over all four languages Pronunciada's combined score is {num(full['value'])}.</p>"
+            "<p class=\"note\">Checks of the construction: the version set before this page, which uses the English sentence total "
+            f"instead of accuracy, gives {num(pre[FP]['value'])} against Azure's {num(pre[AZ]['value'])}. Weighting the languages by their "
+            "number of speakers, or scoring every level the judges marked (sounds, words, sentences, marked sounds, Mandarin characters), "
+            "keeps Pronunciada ahead of every commercial system; against OpenPronounce the difference is not significant in any version "
+            f'(<a href="{GITHUB}/blob/main/results/tables/learner_benchmark_combined_variants.json">all versions</a>). '
+            "Pronunciada used the training parts of speechocean762 and OMPAL for its own fitting; the Spanish and German tests are small.</p>")
+
+
+ON_DEVICE = (I8, FP, OP, OPD, ZIPA)
+
+
+def ondevice_table() -> str:
+    C = RES["combined_en_es_de"]["systems"]
+    body = []
+    for s in ON_DEVICE:
+        e = C[s] if "value" in C[s] else RES["combined"]["systems"][s]       # the distilled model: English only
+        c1 = cost(s if s != ZIPA else FP, 1) or {}
+        size = size_mb(s)
+        mem = c1.get("peak_rss_mb") if s != ZIPA else None
+        t = c1.get("p50_s") if s != ZIPA else None
+        sub = {I8: "int8 model", FP: "full model", OP: "default mode", OPD: "distilled model, English only",
+               ZIPA: "the speech model Pronunciada is built on"}[s]
+        name = "Pronunciada" if s in (I8, FP) else NAME[s]
+        score = num(e["value"]) + (f"<small>English only; Pronunciada {num(e['base_value'])}</small>" if s == OPD else "")
+        body.append(f"<tr{' class=mine' if s in (I8, FP) else ''}><td>{name}<small>{sub}</small></td>"
+                    f"<td{' class=own' if s in (I8, FP) else ''}>{score}</td><td>{mb(size)}</td>"
+                    f"<td>{f'{t:.2f} s' if t else '–'}</td></tr>")
+    head = ("<tr><th>System</th><th>Combined score<br>English, Spanish, German</th><th>Model files</th>"
+            "<th>Time per recording</th></tr>")
+    return f'<div class="tw"><table class="bt fit"><thead>{head}</thead><tbody>{"".join(body)}</tbody></table></div>'
+
+
+def ondevice_text() -> str:
+    C = RES["combined_en_es_de"]["systems"]
+    best = max((s for s in ON_DEVICE if "value" in C[s]), key=lambda s: C[s]["value"])
+    assert best in (I8, FP), "the on-device sentence below would be false"
+    smallest = min((I8, FP, OP, OPD), key=size_mb)
+    fastest = min((I8, FP, OP, OPD), key=lambda s: cost(s, 1)["p50_s"])
+    assert smallest == I8 and fastest in (I8, FP)
+    dst = RES["combined"]["systems"][OPD]
+    assert dst["base_minus"]["value"] > 0
+    one = cost(FP, 1)
+    return (f"<p>Among the systems that run on the learner's device, Pronunciada has the highest combined score and the smallest model. "
+            f"Its int8 model is {size_mb(OP) / size_mb(I8):.0f} times smaller than OpenPronounce in default mode and scores a recording "
+            f"{cost(OP, 1)['p50_s'] / cost(I8, 1)['p50_s']:.0f} times faster; against the distilled model it is {size_mb(OPD) / size_mb(I8):.1f} times smaller "
+            f"and {cost(OPD, 1)['p50_s'] / cost(I8, 1)['p50_s']:.1f} times faster. OpenPronounce has no Mandarin, so the score here covers the three languages "
+            "both systems support, and the distilled model covers English only.</p>"
+            f"<p class=\"note\">Model files are every file a system loads to score English; peak memory is in the chart below. Time: one CPU thread, the median over "
+            f"{one['n_clips']} speechocean762 recordings of {one['mean_clip_seconds']:.1f} seconds on average, {one['machine']}, audio decoding included. "
+            "ZIPA alone uses Pronunciada's backbone file and was not timed separately.</p>")
 
 
 # ---- where another system is ahead ----------------------------------------------------------
@@ -388,7 +514,9 @@ def row_name(r: dict) -> str:
     if test.startswith(("L2-ARCTIC", "EpaDB")):
         return f"English, {test.split()[0]}, marked sounds"
     if test.startswith("OMPAL"):
-        return "Mandarin, OMPAL, " + r["unit"].replace("word (character): ", "characters with ").replace("-only", " only") + f" ({r['metric']})"
+        what = {"word (character): any error": "characters with any error", "word (character): tone-only error": "characters with only a tone error",
+                "word (character): consonant or vowel error": "characters with a consonant or vowel error"}.get(r["unit"], r["unit"])
+        return f"Mandarin, OMPAL, {what} ({r['metric']})"
     raise KeyError(test)
 
 
@@ -408,15 +536,15 @@ def ahead() -> str:
                 else:
                     more += 1
     scan(RES["rows"], (OP, OPD, AZ, LX))
+    scan([r for r in TPS["rows"] if r["test"].startswith("speechocean762")], (TP,), ", TonePerfect sample")
+    scan([r for r in TPS["rows"] if r["test"].startswith("OMPAL")], (TP,))
     scan(SAMPLE["rows"], (CX,), ", Chivox sample")
     body = "".join(f"<tr><td>{name}</td><td>{NAME[s]} {num(v)}</td><td class=own>{num(ours)}</td><td>{pval(p).replace('p ', '')}</td></tr>"
                    for name, s, v, ours, p in sig)
     head = "<tr><th>Test</th><th>System ahead</th><th>Pronunciada</th><th>p</th></tr>"
     return (f'<p>Out of every test and every system in the full tables, these are the rows where another system scores significantly higher than Pronunciada.</p>'
             f'<div class="tw"><table class="bt"><thead>{head}</thead><tbody>{body}</tbody></table></div>'
-            f"<p>The Spearman rows measure rank agreement on the same speechocean762 sounds and words where Pronunciada is ahead by Pearson correlation. "
-            f"In {more} further rows another system's figure is higher without a significant difference; "
-            f'among them are the speechocean762 sentence total against Azure and OpenPronounce distilled, and the main German row against OpenPronounce. '
+            f"<p>In {more} further rows another system's figure is higher without a significant difference. "
             f'They are listed in the <a href="{FULL}">full tables</a>.</p>')
 
 
@@ -460,10 +588,16 @@ table.bt{border-collapse:collapse;width:100%;min-width:640px;font-size:14.5px;li
 .bt td:first-child{min-width:188px}
 .bt i.dn{color:var(--faint)}
 .back{font-size:15px}
+table.bt.fit{min-width:0}
 @media (max-width:660px){
   h3{font-size:20px;line-height:26px;margin:44px 0 12px}
   .sc-grid4{grid-template-columns:1fr}
   .cost .sp-row{grid-template-columns:1fr 104px}
+  table.bt.fit{font-size:13.5px}
+  .bt.fit td,.bt.fit th{padding-left:7px}
+  .bt.fit th:not(:first-child){padding-right:4px}
+  .bt.fit td:first-child{min-width:0;white-space:normal}
+  .bt.fit td{white-space:normal}
 }
 """
 
@@ -472,8 +606,8 @@ LIMITS = """
 <li>The kind of label differs by language. Expert or teacher scores exist for English and Mandarin, and marked sounds for English only. Spanish and German have only the distinction between learners and native speakers, which rewards anything that differs between the two groups, speaking rate included.</li>
 <li>Several sets have few speakers: 6 in L2-ARCTIC, 20 in EpaDB, 18 learners in OMPAL, 10 learners and 8 native speakers in Heroico, 7 native speakers in LeaP German. One speaker can move such a figure by several points.</li>
 <li>There is no learner data here for Japanese, Korean, Russian, Portuguese, French or Italian. These tests say nothing about those languages.</li>
-<li>The commercial systems are incomplete. Azure was not run on German, Lingolix was run on speechocean762 and Heroico only, and Chivox on a sample of two sets. No other commercial service was run.</li>
-<li>Pronunciada and OpenPronounce were both fitted on the training part of speechocean762. Neither used L2-ARCTIC, EpaDB, Heroico, the Speech Accent Archive or LeaP.</li>
+<li>The commercial systems are incomplete. Azure was not run on German, Lingolix on speechocean762 and Heroico only, TonePerfect on OMPAL and part of speechocean762, and Chivox on a sample of two sets. No other commercial service was run.</li>
+<li>Pronunciada and OpenPronounce both used speechocean762 to fit their scores. Neither used L2-ARCTIC, EpaDB, Heroico, the Speech Accent Archive or LeaP. TonePerfect states that it used other OMPAL recordings during its development.</li>
 <li>Disk, memory and time were measured on one laptop. Nothing was measured on a phone.</li>
 </ul>"""
 
@@ -483,8 +617,8 @@ def page() -> str:
     css = re.search(r"<style>(.*?)</style>", home, re.S).group(1).replace("url(assets/", "url(../assets/")
     fonts = "\n".join(re.findall(r'<link[^>]+fonts\.g[^>]+>', home))
     one = cost(FP, 1)
-    desc = ("Pronunciada, OpenPronounce, Azure Pronunciation Assessment, Lingolix and Chivox scored on the same recordings of "
-            "language learners in English, Mandarin, Spanish and German, with size on disk, memory and time.")
+    desc = ("Pronunciada, OpenPronounce, Azure Pronunciation Assessment, Lingolix, TonePerfect and Chivox scored on the same "
+            "recordings of language learners in English, Mandarin, Spanish and German, with size on disk, memory and time.")
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -500,6 +634,8 @@ def page() -> str:
 <link rel="canonical" href="https://pronunciada.dev/benchmarks/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 {fonts}
 <style>{css}{EXTRA_CSS}</style>
@@ -518,11 +654,21 @@ def page() -> str:
 <main>
 <p class="crumb">Benchmarks · {RUN_DATE}</p>
 <h1>Benchmarks on real learner speech</h1>
-<p class="lead">Pronunciada, OpenPronounce, Azure Pronunciation Assessment, Lingolix and Chivox scored the same recordings of language learners in English, Mandarin, Spanish and German. No synthetic speech is used on this page.</p>
-<p>The comparison covers complete pronunciation-assessment systems: a library, app or API that takes a recording and the text that was read, and returns scores for sounds, words and the sentence. OpenPronounce is the other open-source system of that kind. Azure, Lingolix and Chivox are commercial cloud services. Every system received the same audio and text, and none was tuned on these recordings.</p>
+<p class="lead">Pronunciada, OpenPronounce, Azure Pronunciation Assessment, Lingolix, TonePerfect and Chivox scored the same recordings of language learners in English, Mandarin, Spanish and German. No synthetic speech is used on this page.</p>
+<p>The comparison covers complete pronunciation-assessment systems: a library, app or API that takes a recording and the text that was read, and returns scores for sounds, words and the sentence. OpenPronounce is the other open-source system of that kind. Azure, Lingolix, TonePerfect and Chivox are commercial cloud services. Every system received the same audio and text.</p>
+
+<h2>Combined score</h2>
+<p>One number per system: how closely its scores follow human judgement, averaged over the four languages with learner recordings. In English and Mandarin the judges are experts who graded the pronunciation accuracy of each recording. In Spanish and German they are native speakers, whose recordings a system should score above the learners' recordings of the same text. The number is the share of pairs of recordings that a system puts in the same order as the judges: 0.5 is chance and 1 is perfect agreement. Each system is compared with Pronunciada on the languages both of them cover.</p>
+{combined_table()}
+{combined_text()}
+
+<h2>On the device</h2>
+<p>The same score for the systems that run on the learner's own device, next to what they cost to run there.</p>
+{ondevice_table()}
+{ondevice_text()}
 
 <h2>Accuracy and size</h2>
-<p>A system that runs on the learner's device has to be downloaded and held in memory, so its size matters as much as its scores. The chart places each system by the size of its model files and by its score on four English tests that every system could take.</p>
+<p>The chart places each system by the size of its model files and by its score on four English tests. Cloud services have no download and are drawn at the right.</p>
 {chart_size()}
 {size_text()}
 
@@ -536,11 +682,6 @@ def page() -> str:
 <h2>Chivox, on a sample</h2>
 {sample_table()}
 
-<h2>Across languages</h2>
-<p>For one figure per system, each language contributes one main test: the sentence total on speechocean762 and the sentence accuracy on OMPAL, both as concordance with the expert scores, and the learner-against-native tests of Heroico and LeaP. The summary is their plain average. A system is compared only on the languages it could be run on, and Pronunciada is the only one that was measured on all four.</p>
-{summary_table()}
-<p>Against Azure the difference is significant. Against OpenPronounce it is not.</p>
-
 <h2>Where another system is ahead</h2>
 {ahead()}
 
@@ -548,7 +689,7 @@ def page() -> str:
 {LIMITS}
 
 <h2>Method</h2>
-<p>Versions: Pronunciada 1.1.0, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
+<p>Versions: Pronunciada 1.1.0, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model; the <a href="{FULL}">full tables</a> also have OpenPronounce 0.4.0, the release that was current when Pronunciada 1.0 came out. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. TonePerfect API version 2 with fallback off, 24 and 25 November 2026. Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
 <p>Every interval and every difference comes from {RES['n_boot']:,} resamples of speakers, with the systems compared on the same resamples. A difference is called significant at p &lt; 0.05, without correction for the number of comparisons. Disk, memory and time were measured on an {one['machine']} with no GPU.</p>
 <p>The <a href="{FULL}">full tables</a> on GitHub have every row with its interval, the rank-correlation versions of the tests, the construction of the German set and the commands to reproduce the page.</p>
 <p class="back"><a href="../">Back to the overview</a></p>
@@ -565,7 +706,7 @@ def page() -> str:
       <a href="{GITHUB}/blob/main/LICENSE">License</a>
     </nav>
   </div>
-  <p>Code under Apache-2.0. Azure is a trademark of Microsoft. OpenPronounce, Lingolix and Chivox are the names of their owners' products. This project is not affiliated with or endorsed by any of them.</p>
+  <p>Code under Apache-2.0. Azure is a trademark of Microsoft. OpenPronounce, Lingolix, TonePerfect and Chivox are the names of their owners' products. This project is not affiliated with or endorsed by any of them.</p>
 </footer>
 </main>
 </body>
@@ -585,12 +726,13 @@ def github_charts() -> None:
             ".sc-pt.ring{stroke:#77777f}.size .ch-key i.ring{box-shadow:inset 0 0 0 1.6px #77777f}"
             ".sp-row.own .ch-track i{background:#fff}.ch-row b,.sp-row b{color:rgba(255,255,255,.5)}.ch-row.own b,.sp-row.own b{color:#fff}")
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{EXTRA_CSS}{dark}</style></head><body>"
-    render(head + chart_size() + "</body></html>", ROOT / "docs/assets/chart-size.png", 920, 922)
-    render(head + chart_cost() + "</body></html>", ROOT / "docs/assets/chart-cost.png", 920, 1112)
+    for body, name in ((chart_size(), "benchmark-size.png"), (chart_cost(), "benchmark-cost.png")):
+        html_ = head + body + "</body></html>"
+        render(html_, ROOT / "docs/assets" / name, 920, height_of(html_, 920))
 
 
 if __name__ == "__main__":
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page(), encoding="utf-8")
     github_charts()
-    print(f"wrote {OUT.relative_to(ROOT)}, docs/assets/chart-size.png and chart-cost.png")
+    print(f"wrote {OUT.relative_to(ROOT)}, docs/assets/benchmark-size.png and benchmark-cost.png")

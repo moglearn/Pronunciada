@@ -1,6 +1,6 @@
 # Benchmark on real learner speech, four languages
 
-Date of the runs: 23 November 2026. Every number on this page was measured on recordings of real
+Date of the runs: 23 November 2026; TonePerfect, OpenPronounce 0.4.0 and the combined score added on 25 November. Every number on this page was measured on recordings of real
 learners and native speakers; there is no synthetic speech in it. All systems were scored on the same
 recordings with the same labels; nothing was fitted, tuned or selected on any of this data. The
 metric definitions for the new German data were committed (fee7f47) before any system was run on it.
@@ -19,9 +19,49 @@ with `--only chivox` (the Chivox sample). Generated tables:
 system, intervals and paired differences), `learner_benchmark_sample.json` / `_sample_tables.md`,
 `learner_benchmark_systems.json`, `learner_benchmark_cost/`.
 
-![Score against size on disk for Pronunciada, OpenPronounce and ZIPA alone on four English tests, with Azure and Lingolix as cloud services. Pronunciada is highest on sounds and words, the sentence scores are level, and OpenPronounce is highest on marked sounds.](../docs/assets/chart-size.png)
+## Added on 25 November 2026
 
-![Model files on disk, peak memory and time per recording for Pronunciada int8, Pronunciada, OpenPronounce distilled and OpenPronounce default.](../docs/assets/chart-cost.png)
+- **TonePerfect** (API version 2, fallback off) measured by us on all 745 OMPAL test recordings and on 1,725
+  speechocean762 test recordings chosen with every speaker represented (1,722 answered, 3 rejected as
+  unassessable). Tables: `tables/learner_benchmark_sample_toneperfect.json` and `_tables.md`. TonePerfect
+  states that it used other OMPAL recordings during its development.
+- **OpenPronounce 0.4.0**, the release that was current when Pronunciada 1.0.0 came out (17 November 2026),
+  run on every set here with its default settings and the Piper reference voice
+  (`bench/rivals/openpronounce_040.py`); size, memory and time in `learner_benchmark_cost/quiet/`.
+- **A combined score**: the unweighted mean over languages of one concordance C per language (0.5 = chance,
+  1 = perfect): English, the system's sentence accuracy score against the experts' sentence accuracy on
+  speechocean762; Mandarin, the same against the teachers' mean accuracy on OMPAL (learners); Spanish and
+  German, the primary native-against-learner tests of Heroico / USMA and LeaP. Each system is compared with
+  Pronunciada (full model) on the languages both cover, with speakers resampled within language (10,000
+  replicates, paired). The English part was chosen after the earlier summaries had been seen (they use the
+  sentence total); those summaries are unchanged in section 4.
+
+| compared with | languages | Pronunciada | other | difference [95 % CI] | p |
+|---|---|---|---|---|---|
+| Azure | English, Mandarin, Spanish | 0.760 | 0.681 | +0.079 [+0.047, +0.118] | < 0.001 |
+| Lingolix | English, Spanish | 0.759 | 0.682 | +0.077 [-0.009, +0.150] | 0.08 |
+| TonePerfect (English: 1,722 of 2,500 recordings) | English, Mandarin | 0.805 | 0.727 | +0.078 [+0.056, +0.100] | < 0.001 |
+| Chivox (299 + 299 recordings) | English, Mandarin | 0.788 | 0.679 | +0.109 [+0.071, +0.144] | < 0.001 |
+| OpenPronounce 1.1.0, default | English, Spanish, German | 0.749 | 0.715 | +0.034 [-0.026, +0.105] | 0.27 |
+| OpenPronounce 1.1.0, distilled | English | 0.849 | 0.828 | +0.021 [+0.011, +0.032] | < 0.001 |
+| OpenPronounce 0.4.0 | English, Spanish, German | 0.749 | 0.745 | +0.003 [-0.033, +0.045] | 0.83 |
+| ZIPA alone | English, Mandarin, Spanish, German | 0.752 | 0.622 | +0.129 [+0.081, +0.167] | < 0.001 |
+
+On English, Spanish and German together, every on-device system: Pronunciada int8 0.754,
+Pronunciada full 0.749, OpenPronounce 1.1.0 default 0.715,
+OpenPronounce 0.4.0 0.745, ZIPA alone 0.623.
+
+Four constructions of the score were fixed and computed to see how much the result depends on them
+(`bench/learnerbench/combined_variants.py`, `tables/learner_benchmark_combined_variants*.json`): as above;
+languages weighted by their number of speakers; every level the judges scored (English sounds, words,
+sentence accuracy, L2-ARCTIC and EpaDB; Mandarin characters and sentence accuracy); and both. Pronunciada
+stays ahead of every commercial system in all four. Against OpenPronounce 1.1.0 the difference is not
+significant in any of them, and in the two that include every level its distilled English model is ahead
+by 0.005 (not significant).
+
+![Score against size on disk for Pronunciada, OpenPronounce 1.1.0 (distilled and default) and ZIPA alone on four English tests, with Azure and Lingolix as cloud services.](../docs/assets/benchmark-size.png)
+
+![Model files on disk, peak memory and time per recording for Pronunciada int8, Pronunciada, OpenPronounce distilled and OpenPronounce default.](../docs/assets/benchmark-cost.png)
 
 The same results as a page: <https://pronunciada.dev/benchmarks/>.
 
