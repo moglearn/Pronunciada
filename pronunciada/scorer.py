@@ -224,8 +224,19 @@ class Scorer:
             self._lp_cache.move_to_end(key)
             timing.update(fbank=0.0, model=0.0, adapter=0.0)
             return self._lp_cache[key]
+        from .audio import EDGE_FRAME, EDGE_TARGET_S, edge_pad
+
         t = time.perf_counter()
         x = self.am._features(wav)
+        # A clip trimmed tightly around the speech hides its first and last sounds from the speech
+        # model (issue #3). The model hears the clip with silence added up to EDGE_TARGET_S on each
+        # side; its output is cut back to the clip's own frames, so every later stage, timestamps
+        # included, sees the original timeline. PRONUNCIADA_EDGE_PAD (seconds, 0 = off) is for A/B runs.
+        ep = os.environ.get("PRONUNCIADA_EDGE_PAD")
+        k, m = edge_pad(wav, EDGE_TARGET_S if ep is None else float(ep))
+        n_out = self.am.num_output_frames(len(x))
+        xm = x if not (k or m) else self.am._features(np.concatenate(
+            [np.zeros(k * EDGE_FRAME, np.float32), wav, np.zeros(m * EDGE_FRAME, np.float32)]))
         vt = os.environ.get("PRONUNCIADA_VTLN")      # round 19 experiment: "alpha:min_median_f0_hz"
         if vt:
             from .audio import vtln_warp
@@ -236,13 +247,18 @@ class Scorer:
             v = tr.f0[tr.voiced & (tr.f0 > 0)]
             if len(v) and float(np.median(v)) > thr:
                 x = vtln_warp(x, alpha)
+                xm = x if xm is x else vtln_warp(xm, alpha)
         timing["fbank"] = (time.perf_counter() - t) * 1e3
         t = time.perf_counter()
         emb = None
         if self.am.embeddings:
-            lp, emb = self.am.posteriors_from_features(x, return_embeddings=True)
+            lp, emb = self.am.posteriors_from_features(xm, return_embeddings=True)
         else:
-            lp = self.am.posteriors_from_features(x)
+            lp = self.am.posteriors_from_features(xm)
+        if xm is not x:
+            lp = lp[k:k + n_out]
+            if emb is not None:
+                emb = {name: np.ascontiguousarray(v[k:k + n_out]) for name, v in emb.items()}
         timing["model"] = (time.perf_counter() - t) * 1e3
         t = time.perf_counter()
         lpa = self.adapter(lp) if self.adapter is not None else lp

@@ -57,6 +57,41 @@ def load_audio(src, sr: int | None = None) -> np.ndarray:
     return np.clip(wav, -1.0, 1.0)
 
 
+EDGE_FRAME = 320            # 20 ms: one output frame of the speech model (two fbank frames)
+EDGE_TARGET_S = 0.3         # silence the speech model gets before and after the speech ...
+EDGE_TRIGGER_S = 0.06       # ... on a side where the speech starts or ends closer than this to the edge
+EDGE_REL_DB = 35.0          # "speech" = a 20 ms frame within this many dB of the loud frames ...
+EDGE_NOISE_DB = 12.0        # ... and this many dB above the background noise
+
+
+def edge_pad(wav: np.ndarray, target_s: float = EDGE_TARGET_S) -> tuple[int, int]:
+    """Whole 20 ms frames of silence to add before and after `wav`: on a side where the speech
+    starts or ends within EDGE_TRIGGER_S of the edge, enough to give the speech model `target_s` of
+    non-speech there (issue #3: a clip trimmed to 20 ms before ついたち lost the start of つ; the
+    same audio with 0.3 s of silence in front scores as native). Only tightly cut clips change:
+    padding perturbs every frame of the model's output a little, so a clip with a normal margin
+    is left exactly as it is. A frame counts as speech when its energy is within EDGE_REL_DB of the
+    recording's 95th percentile frame and EDGE_NOISE_DB above its quietest 60 ms. Silent
+    recordings get nothing."""
+    n = len(wav) // EDGE_FRAME
+    want = int(round(target_s * SAMPLE_RATE / EDGE_FRAME))
+    if n == 0 or want <= 0:
+        return 0, 0
+    x = wav[: n * EDGE_FRAME].astype(np.float64).reshape(n, EDGE_FRAME)
+    x = x - x.mean(1, keepdims=True)
+    db = 10.0 * np.log10((x * x).mean(1) + 1e-12)
+    p95 = float(np.percentile(db, 95))
+    if p95 < -90:                                   # digital silence
+        return 0, 0
+    sm = np.convolve(db, np.ones(3) / 3, mode="valid") if n >= 3 else db
+    floor = float(sm.min())                         # background noise: the quietest 60 ms
+    # (a clip with no quiet 60 ms at all is speech throughout: the cap keeps its frames as speech)
+    idx = np.flatnonzero(db >= min(max(p95 - EDGE_REL_DB, floor + EDGE_NOISE_DB), p95 - 6.0))
+    lead, trail = int(idx[0]), int(n - 1 - idx[-1])
+    trig = int(round(EDGE_TRIGGER_S * SAMPLE_RATE / EDGE_FRAME))
+    return (want - lead if lead < min(trig, want) else 0), (want - trail if trail < min(trig, want) else 0)
+
+
 def _fbank_options():
     import kaldi_native_fbank as knf
 
