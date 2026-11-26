@@ -71,3 +71,28 @@ def test_ko_numbers_latin():
 
 def test_ko_speed():
     assert speed_ms(ko, KO_SENTS) < 5.0
+
+
+def _phones(text):
+    r = ko(text)
+    return [p.ipa for p in r.phones]
+
+
+@pytest.mark.parametrize("digits,hangul", [
+    ("우유 2병만", "우유 두병만"),          # native numerals before native counters (issue #5)
+    ("29살입니다", "스물아홉살입니다"),      # ages with 살: native up to 99
+    ("20살", "스무살"),
+    ("7시에", "일곱시에"),                  # clock hours 1-12
+    ("12시", "열두시"),
+    ("2시간", "두시간"),
+    ("11개와", "열한개와"),
+    ("10월은", "시월은"),                   # irregular months
+    ("6월에", "유월에"),
+    ("3개월", "삼개월"),                    # Sino-Korean counters stay Sino-Korean
+    ("1번 출구", "일번 출구"),              # ambiguous counters keep the old reading
+    ("30명이", "삼십명이"),                 # larger counts: read Sino-Korean by native readers (FLEURS)
+    ("13시에", "십삼시에"),
+    ("100개", "백개"),
+])
+def test_ko_counter_numerals(digits, hangul):
+    assert _phones(digits) == _phones(hangul)

@@ -82,9 +82,51 @@ def _sino_int(n: int) -> str:
     return out
 
 
-def number_reading(tok: str) -> str:
+# Native Korean determiner numerals, read before native counters (issue #5): 2병 = 두 병, 29살 = 스물아홉 살.
+_NATIVE_ONES = ("", "한", "두", "세", "네", "다섯", "여섯", "일곱", "여덟", "아홉")
+_NATIVE_TENS = ("", "열", "스물", "서른", "마흔", "쉰", "예순", "일흔", "여든", "아흔")
+# Counters that take native numerals. Ambiguous ones (번, 장, 대, 층...) are left to the Sino-Korean
+# reading, which was the only reading before. 개 is native except in 개월 and 개국. Native readers in
+# FLEURS say small counts natively (8명 = 여덟 명) but larger ones in Sino-Korean (30명 = 삼십 명), so
+# the native reading is used for 1-19, for ages with 살 up to 99 and for clock hours 1-12.
+_NATIVE_COUNTERS = ("살", "시간", "명", "마리", "병", "잔", "권", "곳", "통", "벌", "켤레", "그릇", "접시",
+                    "조각", "송이", "자루", "채", "척", "군데", "가지", "달", "사람", "개")
+
+
+def _native_int(n: int) -> str:
+    """1-99 as a native determiner numeral (스무 for 20 alone, 스물 in 21-29)."""
+    tens, ones = divmod(n, 10)
+    if tens == 2 and ones == 0:
+        return "스무"
+    return _NATIVE_TENS[tens] + _NATIVE_ONES[ones]
+
+
+def _counter_reading(n: int, after: str) -> str | None:
+    """The reading of integer n that the following counter calls for, or None for the default."""
+    a = after.lstrip()
+    if a.startswith("월") and n in (6, 10):
+        return "유" if n == 6 else "시"          # 유월, 시월 (월 itself is read from the text)
+    if not 1 <= n <= 99:
+        return None
+    if a.startswith(("개월", "개국")):
+        return None
+    if a.startswith("시") and not a.startswith("시간"):
+        return _native_int(n) if n <= 12 else None   # 7시 = 일곱 시; 13시 and up stay Sino-Korean
+    if a.startswith("살"):
+        return _native_int(n)
+    if n <= 19 and a.startswith(_NATIVE_COUNTERS):
+        return _native_int(n)
+    return None
+
+
+def number_reading(tok: str, after: str = "") -> str:
+    """Hangul reading of a number token; `after` is the text that follows it (for counters)."""
     pct = tok.endswith("%")
     tok = tok.rstrip("%").replace(",", "")
+    if not pct and tok.isdigit() and not (len(tok) > 1 and tok[0] == "0"):
+        nat = _counter_reading(int(tok), after)
+        if nat is not None:
+            return nat
     if "." in tok:
         ip, fp = tok.split(".", 1)
         s = _sino_int(int(ip or "0")) + "점" + "".join(SINO[int(c)] for c in fp if c.isdigit())
@@ -149,7 +191,7 @@ class KoG2P(G2P):
                 tok = unicodedata.normalize("NFKC", text[i:j])
                 if wstart is None:
                     wstart = i
-                for c in number_reading(tok):
+                for c in number_reading(tok, text[j:j + 8]):
                     cur_word.append((c, decompose(c)))
                 i = j
             elif is_latin(ch):
