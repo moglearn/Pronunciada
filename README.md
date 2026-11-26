@@ -25,7 +25,7 @@
   <a href="https://huggingface.co/kimitonatsu/pronunciada">Hugging Face</a>
 </p>
 
-Pronunciada scores a language learner's pronunciation sound by sound, in 10 languages, on the learner's own device. It is open source, and it is the [state of the art for multilingual pronunciation assessment](https://pronunciada.dev/benchmarks/). Against Microsoft Azure's cloud service it comes out ahead in all 10 languages: across 84 public tests it is significantly better on 48 and worse on 2.
+Pronunciada scores a language learner's pronunciation sound by sound, in 10 languages, on the learner's own device. It is open source, and it is the [state of the art for on-device pronunciation assessment](https://pronunciada.dev/benchmarks/). Against Microsoft Azure's cloud service it comes out ahead in all 10 languages: across 84 public tests it is significantly better on 48 and worse on 2.
 
 It needs no GPU and no network. A sentence is scored in about 40 ms on a laptop CPU with a 71 MB model, and the audio never leaves the machine.
 
