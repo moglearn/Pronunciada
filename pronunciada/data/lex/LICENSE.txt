@@ -20,6 +20,9 @@ ru_stress_extra.tsv.gz   stress marks for 14 040 word forms, predicted     Apach
                          offline by silero-stress 1.5 (MIT) on FLEURS-ru   inputs: FLEURS text CC BY 4.0,
                          train/validation and Common Voice ru sentence     Common Voice text CC0
                          text (bench/calib/ru_stress_lex.py)
+ru_stress_fix.tsv.gz     stress corrections for 632 word forms of          CC BY-SA 4.0 (*)
+                         ru.tsv.gz, from silero-stress 1.5 (MIT) in        (a correction of ru.tsv.gz)
+                         context on the same sentence text (issue #6)
 ru_vowels.json           Russian vowel-reduction targets measured on       Apache-2.0 (project);
                          native FLEURS-ru audio with the acoustic model    data: FLEURS CC BY 4.0
 

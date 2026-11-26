@@ -2,6 +2,7 @@
 
     python -m bench.calib.ru_stress_lex build      # writes pronunciada/data/lex/ru_stress_extra.tsv.gz
     python -m bench.calib.ru_stress_lex agree      # silero vs our lexicon on words both know
+    python -m bench.calib.ru_stress_lex fix        # writes pronunciada/data/lex/ru_stress_fix.tsv.gz (#6)
 
 OFFLINE / BENCH ONLY: uses silero-stress (MIT, torch) to put stress marks (and restore ё) on the
 sentences of FLEURS-ru train + validation and the Common Voice ru sentences of the cv-real
@@ -26,6 +27,7 @@ from pathlib import Path
 VOWELS = "аеёиоуыэюя"
 WORD = re.compile(r"[а-яё+]+(?:-[а-яё+]+)*")
 MIN_SHARE, MIN_COUNT = 0.25, 2
+FIX_SHARE = 0.75
 
 
 def sentences() -> dict[str, list[str]]:
@@ -170,11 +172,46 @@ def build():
           f"sentences {V['n_sentences']}")
 
 
+def build_fix():
+    """Issue #6: stress corrections to the shipped lexicon from the same in-context silero votes. For a
+    word form whose lexicon entry is a stress index (>= 2 vowels, not a clitic, no ё in the spelling):
+    when at least FIX_SHARE of silero's votes put the stress on one vowel and that is not the
+    lexicon's, the lexicon index is replaced. Spelling is left as it is (no ё restored) and words
+    with two common readings are left alone: on native speech (FLEURS-ru test / validation, Common
+    Voice ru) both of those made scores worse, because the Russian adapter was trained on the
+    lexicon's references; weak majorities (< FIX_SHARE) did too. Writes
+    pronunciada/data/lex/ru_stress_fix.tsv.gz (word \t index)."""
+    from bench.pipeline.common import repo_root
+    from pronunciada.text import ru as R
+    from pronunciada.text import get_g2p
+
+    g = get_g2p("ru")
+    V = collect()
+    rows = []
+    for w, c in sorted(V["votes"].items()):
+        v = g.stress.get(w)
+        if v is None or not v.isdigit() or w in R.CLITICS or "ё" in w or sum(ch in VOWELS for ch in w) < 2:
+            continue
+        by_idx = Counter()
+        for k, n in c.items():
+            by_idx[int(k.split(":")[0])] += n
+        idx, n = by_idx.most_common(1)[0]
+        if idx != int(v) and n >= FIX_SHARE * sum(by_idx.values()):
+            rows.append(f"{w}\t{idx}")
+    p = repo_root() / "pronunciada" / "data" / "lex" / "ru_stress_fix.tsv.gz"
+    with gzip.open(p, "wt", encoding="utf-8", compresslevel=9) as f:
+        f.write("# stress corrections to ru.tsv.gz: silero-stress 1.5 (MIT) in context on FLEURS-ru train+validation "
+                f"and Common Voice ru (cv-real metadata) sentences, majority >= {FIX_SHARE}; "
+                "bench/calib/ru_stress_lex.py fix (issue #6)\n")
+        f.write("\n".join(rows) + "\n")
+    print(f"{len(rows)} corrected word forms, {p.stat().st_size / 1024:.0f} KB")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["build", "agree"])
+    ap.add_argument("step", choices=["build", "agree", "fix"])
     a = ap.parse_args()
-    build() if a.step == "build" else agree()
+    {"build": build, "agree": agree, "fix": build_fix}[a.step]()
 
 
 if __name__ == "__main__":

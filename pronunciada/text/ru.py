@@ -12,6 +12,7 @@ from __future__ import annotations
 import gzip
 import json
 import math
+import os
 import unicodedata
 
 from . import _eu_common as C
@@ -187,11 +188,16 @@ VOWEL_ALTS = {"a": ["ɐ", "ə", "ɑ", "ʌ"], "i": ["ɪ", "ɛ", "ɨ"], "ɛ": ["ɪ
 MEASURED_TARGETS = True
 VOWEL_MIN = 0.15
 CLASS_MIN_N = 30
-KNOWN_STRESS = frozenset({"lex", "accent", "yo", "mono", "clitic", "extra"})
+KNOWN_STRESS = frozenset({"lex", "accent", "yo", "mono", "clitic", "extra", "fix"})
 # Round 10: stress (and restored ё) for word forms missing from ru.tsv.gz, derived OFFLINE with
 # silero-stress (MIT) by bench/calib/ru_stress_lex.py (pronunciada/data/lex/ru_stress_extra.tsv.gz;
 # torch is not needed at runtime). Two variants = homograph: both readings, broad alternatives.
 EXTRA_STRESS = True
+# Issue #6: stress corrections to ru.tsv.gz from the same offline silero-stress votes in context
+# (pronunciada/data/lex/ru_stress_fix.tsv.gz, bench/calib/ru_stress_lex.py fix): the lexicon took a rare
+# Wiktionary homograph for common forms (како́й read as ка́кой, она́ as о́на, лю́ди as люди́). A word is
+# corrected when >= 75 % of silero's readings in context agree on another vowel.
+STRESS_FIX = os.environ.get("PRONUNCIADA_RU_STRESS_FIX", "1") != "0"     # 0 = off, for A/B runs
 
 
 def vowel_keys(word: str, stressed: int | None) -> list[tuple[str, str, str]]:
@@ -293,6 +299,8 @@ class Russian(EuG2P):
                     k, _, v = line.rstrip("\n").partition("\t")
                     self.extra_stress[k] = [(int(a), b or None) for a, _, b in (x.partition(":") for x in v.split("|"))]
         self.use_extra_stress = EXTRA_STRESS
+        self.stress_fix = self._read_variants("ru_stress_fix.tsv.gz")
+        self.use_stress_fix = STRESS_FIX
         self._resp: dict[str, str] = {}               # word -> spelling with ё restored (extra lexicon)
         self.measured_targets = MEASURED_TARGETS
 
@@ -329,6 +337,12 @@ class Russian(EuG2P):
         if w2 in CLITICS and (v is None or v.isdigit()):
             self._src[w] = "clitic"
             return [rules(w2, -1, True)]               # unstressed: reduced vowels
+        fx = self.stress_fix.get(w2) if self.use_stress_fix and (v is None or v.isdigit()) else None
+        if fx:
+            self._src[w] = "fix" if len(fx) == 1 else "homograph"
+            if fx[0][1]:
+                self._resp[w] = fx[0][1]
+            return [rules(resp or w2, idx, True) for idx, resp in fx]
         if v is not None:
             return [rules(w2, int(v), True)] if v.isdigit() else [[EXC_VOWEL.get(x.rstrip("1"), x.rstrip("1")) +
                                                                      ("1" if x.endswith("1") else "")
@@ -350,6 +364,27 @@ class Russian(EuG2P):
         if k is not None:
             return [rules(w2, k, True)]
         return None
+
+    @staticmethod
+    def _read_variants(name: str) -> dict[str, list[tuple[int, str | None]]]:
+        """word -> [(stressed vowel index, spelling with ё restored or None)] from a lex/ TSV."""
+        out: dict[str, list[tuple[int, str | None]]] = {}
+        p = C.lex_path(name)
+        if p.exists():
+            with p.open("rb") as fb, gzip.open(fb, "rt", encoding="utf-8") as f:
+                for line in f:
+                    if line[:1] == "#" or "\t" not in line:
+                        continue
+                    k, _, v = line.rstrip("\n").partition("\t")
+                    out[k] = [(int(a), b or None) for a, _, b in (x.partition(":") for x in v.split("|"))]
+        return out
+
+    def set_stress_fix(self, on: bool) -> None:
+        """Switch the issue-#6 lexicon corrections (clears the pronunciation cache)."""
+        self.use_stress_fix = bool(on)
+        self._src.clear()
+        self._resp.clear()
+        self._cache.cache_clear()
 
     def set_extra_stress(self, on: bool) -> None:
         """Switch the round-10 offline stress lexicon (clears the pronunciation cache)."""

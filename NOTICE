@@ -22,6 +22,8 @@ Shipped data files with their own licenses (pronunciada/data/lex; per-file list 
             ru.tsv.gz, derived offline with silero-stress 1.5 (MIT, github.com/snakers4/silero-stress)
             from FLEURS-ru train/validation and Common Voice ru (CC0) sentence text
             (bench/calib/ru_stress_lex.py). silero-stress is not a runtime dependency.
+  ru_stress_fix.tsv.gz  stress corrections for 632 word forms of ru.tsv.gz (issue #6), from the same
+            offline silero-stress readings; treated as part of ru.tsv.gz (CC BY-SA 4.0).
 
 Runtime text packages (optional extras, installed separately)
   pypinyin (MIT), jieba (MIT), opencc-python-reimplemented (Apache-2.0), pyopenjtalk-plus (MIT,
