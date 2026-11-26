@@ -1,24 +1,40 @@
-"""Evaluate and freeze a phoneme-class correction using official train only."""
+"""Refit the English balanced phoneme-class thresholds on SpeechOcean762 train.
+
+From the repository root, install the bench extra (`pip install -e ".[bench]"`)
+and run `python -m bench.coach.en_precision_fit --prepare` to fetch train if
+needed, generate train inputs and print the fitted balanced setting as JSON.
+Omit `--prepare` on subsequent runs to reuse the input caches. Use a fresh
+PRONUNCIADA_CACHE for preparation to keep other benchmark caches intact.
+
+The historical scalar balanced threshold is the baseline. Speaker-grouped
+nested folds refit the sound detail and coaching heads; the held-out scores
+from those folds fit the final class thresholds. All folds are on official
+train. The output goes to stdout; progress goes to stderr.
+"""
 from __future__ import annotations
 
-import hashlib
+import argparse
 import json
-from importlib.metadata import version
+import sys
+from contextlib import redirect_stdout
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
 from scipy.optimize import brentq
 from scipy.special import expit, logit
 
-from bench.calib.common import calib_cache
-from bench.coach.en_precision import ROOT, atomic_rows, file_hash, summarize
+from bench.calib import common, train_sound_emb
+from bench.calib.train_sound import KINDS
 from bench.coach.fit_v2 import fit_logistic
-from bench.pipeline.features import config
-from pronunciada import coach
+from bench.data import load
+from bench.pipeline import features as pipeline
+from pronunciada import calibrate, coach, features
 
+ROOT = Path(__file__).resolve().parents[2]
+DATASET = "speechocean762"
+BASELINE_THRESHOLD = 0.48919697137923074
 EPS = 1e-6
-REPORT = ROOT / "results/tables/en_precision_candidate.json"
-BASELINE = ROOT / "results/tables/en_precision_train.json"
 
 
 def safe_logit(p):
@@ -96,153 +112,171 @@ def confusion(y, flagged):
             "recall": tp / (tp + fn) if tp + fn else 0.}
 
 
-def paired_intervals(y, base, candidate, speaker):
-    counts = []
-    for s in np.unique(speaker):
-        idx = speaker == s
-        a, b = (confusion(y[idx], p[idx]) for p in (base, candidate))
-        counts.append([a["tp"], a["fp"], b["tp"], b["fp"], a["tp"] + a["fn"]])
-    counts = np.asarray(counts)
-    rng = np.random.default_rng(0)
-    a, af, b, bf, positives = counts[rng.integers(len(counts), size=(1000, len(counts)))].sum(axis=1).T
-    delta = {"precision": b / np.maximum(b + bf, 1) - a / np.maximum(a + af, 1),
-             "recall": (b - a) / np.maximum(positives, 1)}
-    return {key: np.quantile(values, [0.025, 0.975]).tolist() for key, values in delta.items()}
-
-
-def load_inputs():
+def prepare_table(train):
     import pandas as pd
 
+    cfg = pipeline.config("en")
+    rows = []
+    for i, rec in enumerate(train, 1):
+        phones, _, _ = pipeline.so762_utt((dict(rec, _dataset=DATASET), "en", cfg))
+        if not phones:
+            raise ValueError(f"No feature rows for {rec['id']}")
+        rows.extend(phones)
+        if i % 500 == 0:
+            print(f"Train table: {i}", flush=True)
+    pipeline._write(pd.DataFrame(rows), pipeline.feat_dir() / f"{DATASET}.parquet")
+
+
+def prepare_prototypes():
     from bench.calib.sound_emb import proto_path
-    from bench.coach.dump import load_dump, out_dir
-    from bench.coach.en_precision import MODEL
-    from bench.data.common import cache_root
-    from bench.pipeline.features import feat_dir
-    from pronunciada import Scorer
 
-    baseline = json.loads(BASELINE.read_text(encoding="utf-8"))
-    baseline_path = cache_root() / baseline["full_records"]
-    if file_hash(baseline_path) != baseline["full_records_sha256"]:
-        raise ValueError("Baseline cache differs from the accepted report")
-    source = baseline["source"]
-    for name, digest in source["files"].items():
-        if name.startswith("pronunciada/") and file_hash(ROOT / name) != digest:
-            raise ValueError(f"Inference input has changed: {name}")
-    scorer = Scorer("en", model=MODEL, precision="fp32", strictness=0.5)
-    if scorer.am.session.get_providers() != source["settings"]["providers"]:
-        raise ValueError("Acoustic execution providers differ from the accepted baseline")
-    model_path = scorer.am.session._model_path
-    if any(file_hash(Path(model_path).with_name(entry["name"])) != entry["sha256"]
-           for entry in source["external_files"].values()):
-        raise ValueError("Acoustic model files differ from the accepted baseline")
-    if coach.model()["by_lang"]["en"]["sound_model"]["features"] != list(coach.SOUND_FEATURES):
-        raise ValueError("The shipped coaching head has different features")
+    path = ROOT / "pronunciada/data/calib/sound_E_emb.npz"
+    with np.load(path) as shipped:
+        np.savez(proto_path("en"), **{k: shipped["proto_" + k] for k in ("mu", "sd", "P", "phones")})
 
-    detail_path = calib_cache() / "sound_oof.parquet"
-    detail_meta = json.loads(detail_path.with_suffix(".json").read_text(encoding="utf-8"))
-    detail = pd.read_parquet(detail_path).set_index(["utt", "phone_index"], verify_integrity=True)
-    inputs = (feat_dir() / "speechocean762.parquet", proto_path("en"),
-              proto_path("en").with_name("so762_train_vectors.pkl"))
-    if (detail_meta["schema"] != 3 or detail_meta["sha256"] != file_hash(detail_path)
-            or detail_meta["feature_config"] != config("en")
-            or any(version(name) != installed for name, installed in detail_meta["versions"].items())
-            or detail_meta["inputs"] != {p.name: file_hash(p) for p in inputs}
-            or not all(file_hash(ROOT / name) == sha for name, sha in detail_meta["shipped"].items())):
-        raise ValueError("Incompatible detail OOF cache")
+
+def checked_folds(groups):
+    folds = common.speaker_folds(groups)
+    visits = np.zeros(len(groups), dtype=int)
+    for tr, te in folds:
+        if np.intersect1d(groups[tr], groups[te]).size:
+            raise ValueError("A speaker appears in both training and validation")
+        visits[te] += 1
+    if not np.all(visits == 1):
+        raise ValueError("Fold validation does not cover each row once")
+    return folds
+
+
+def detail_oof(train):
+    df, table, labels, groups, _, vectors = train_sound_emb.load()
+    speakers = {r["id"]: r["speaker"] for r in train}
+    if (set(df.utt) != set(speakers) or not df.utt.map(speakers).eq(df.speaker).all()
+            or df.duplicated(["utt", "phone_index"]).any() or not np.isfinite(vectors).all()):
+        raise ValueError("Incomplete or incompatible train features/vectors")
+
+    model_name = calibrate.config()["sound_detail_model"]["en"]
+    model = calibrate.load_level(model_name)
+    spec = features.SOUND_SETS[train_sound_emb.SPEC]
+    if model_name != "sound_E" or model.num != list(spec["num"]) + train_sound_emb.EXTRA:
+        raise ValueError("Shipped English detail model has different inputs")
+    if model.cat != list(spec["cat"]) or model.encoding != "mixed":
+        raise ValueError("Unexpected English detail encoding")
+    cat_mask = features.categorical_mask(model.num, model.cat, model.vocab, model.encoding)
+    params = common.load_json("calib_sound.json")["params"]
+    splits = checked_folds(groups)
+    fold_ids = np.full(len(df), -1)
+    for fold, (_, te) in enumerate(splits):
+        fold_ids[te] = fold
+    ok_vectors = np.isfinite(vectors[:, 0])
+
+    @lru_cache(maxsize=None)
+    def held_logits(excluded):
+        held = np.isin(fold_ids, excluded)
+        tr, te = np.flatnonzero(~held), np.flatnonzero(held)
+        projection = train_sound_emb.projection_for(vectors, labels["reg"], groups, tr, te, ok_vectors)
+        x = model.matrix(dict(table, emb_proj=projection))
+        logits = np.full((len(df), 2), np.nan)
+        for j, head in enumerate(("len", "str")):
+            y = labels[head]
+            labelled = tr[np.isfinite(y[tr])]
+            fitted = common.fit(KINDS[head], params[head], x[labelled], y[labelled], cat_mask)
+            logits[te, j] = common.raw(fitted, x[te])
+        print(f"Sound_E raw logits fitted with folds {excluded} held out", flush=True)
+        return logits
+
+    def calibrated(excluded, target):
+        available = sorted(set(range(len(splits))) - set(excluded))
+        # Reuse logits from the next level of exclusion to fit each calibration map.
+        # For nested exclusions use one calibration fold to limit the number of fits.
+        if len(excluded) > 1:
+            available = available[:1]
+        cal_parts = [splits[k][1] for k in available]
+        cal_logits = np.concatenate([
+            held_logits(tuple(sorted((*excluded, k))))[rows]
+            for k, rows in zip(available, cal_parts, strict=True)
+        ])
+        cal_rows = np.concatenate(cal_parts)
+        raw = held_logits(excluded)[target]
+        logits = np.empty_like(raw)
+        for j, head in enumerate(("len", "str")):
+            y = labels[head][cal_rows]
+            valid = np.isfinite(y)
+            cal = common.fit_calib(cal_logits[valid, j], y[valid], model.heads[head].calib.kind)
+            p = common.apply_calib(cal, raw[:, j])
+            p = np.clip(p, 1e-6, 1 - 1e-6)
+            logits[:, j] = np.log(p / (1 - p))
+        logits[:, 1] = np.minimum(logits[:, 0], logits[:, 1])
+        return logits
+
+    def add_logits(frame, prefix, logits):
+        if not np.isfinite(logits).all():
+            raise ValueError("Nonfinite detail OOF logits")
+        frame[prefix + "_z_len"], frame[prefix + "_z_str"] = logits.T
+
+    logits = np.empty((len(df), 2))
+    out = df[["utt", "phone_index", "speaker", "phone", "phone_score"]].copy()
+    out["fold"] = fold_ids
+    for fold, (_, te) in enumerate(splits):
+        logits[te] = calibrated((fold,), te)
+    for outer, (_, te) in enumerate(splits):
+        nested = np.empty_like(logits)
+        nested[te] = logits[te]
+        for inner, (_, val) in enumerate(splits):
+            if inner != outer:
+                nested[val] = calibrated(tuple(sorted((outer, inner))), val)
+        add_logits(out, f"E_outer{outer}", nested)
+        for inner in sorted(set(range(len(splits))) - {outer}):
+            inner_features = nested.copy()
+            for k, (_, train_rows) in enumerate(splits):
+                if k not in (outer, inner):
+                    inner_features[train_rows] = calibrated(tuple(sorted((outer, inner, k))), train_rows)
+            add_logits(out, f"E_outer{outer}_inner{inner}", inner_features)
+    return out
+
+
+def assemble_inputs(detail, dump, train):
+    detail = detail.set_index(["utt", "phone_index"])
+    if not detail.index.is_unique:
+        raise ValueError("Duplicate train phone keys")
+    records = {r["id"]: r["speaker"] for r in train}
+    if set(dump) != set(records) or set(detail.index.get_level_values("utt")) != set(records):
+        raise ValueError("Feature and coaching inputs must cover the train recordings")
     if detail.groupby("speaker").fold.nunique().ne(1).any() or set(detail.fold) != set(range(5)):
         raise ValueError("Invalid detail fold assignments")
 
-    records = [json.loads(row) for row in baseline_path.read_text(encoding="utf-8").splitlines()]
-    if summarize(records)["key_sha256"] != baseline["key_sha256"]:
-        raise ValueError("Baseline key mismatch")
-    dump = load_dump("so762-train")
-    if set(dump) != {r["id"] for r in records} or len(records) != 2500:
-        raise ValueError("Expected identical coverage of 2500 train records")
-    fold_range = range(5)
-    prefixes = {(outer, None): f"E_outer{outer}" for outer in fold_range}
+    prefixes = {(outer, None): f"E_outer{outer}" for outer in range(5)}
     prefixes.update({(outer, inner): f"E_outer{outer}_inner{inner}"
-                     for outer in fold_range for inner in fold_range if inner != outer})
+                     for outer in range(5) for inner in range(5) if inner != outer})
     matrices = {pair: [] for pair in prefixes}
-    labels, classes, speakers, eligible, positions, fold_ids = [], [], [], [], [], []
-    reference_count = 0
-    for r in records:
-        uid = r["id"]
-        phones = r["phones"]
-        X = dict(dump[uid]["sounds"])
+    labels, classes, speakers, folds, eligible = [], [], [], [], []
+    missing_word_prob = coach.gate_params()["missing_word_prob"]
+    for uid, speaker in sorted(records.items()):
+        row = dump[uid]
+        if "error" in row:
+            raise ValueError(f"Could not score {uid}: {row['error']}")
+        X = row["sounds"]
         d = detail.loc[uid]
-        if (not np.array_equal(d.index, np.arange(len(phones))) or not d.speaker.eq(r["speaker"]).all()
-                or d.phone.tolist() != X["expected"] or X["expected"] != [p["expected"] for p in phones]
-                or list(zip(X["word"], X["k"])) != [tuple(p["position"]) for p in phones]):
-            raise ValueError(f"Incompatible feature keys for {uid}")
-        y = np.array([np.nan if p["score"] is None else p["score"] for p in phones])
-        if not np.array_equal(y, d.phone_score, equal_nan=True):
-            raise ValueError(f"Feature labels mismatch for {uid}")
-        omitted = [w["present_prob"] is not None and w["present_prob"] < coach.gate_params()["missing_word_prob"]
-                   for w in dump[uid]["words"]]
-        can_flag = ~np.asarray(omitted)[X["word"]]
-        if not np.array_equal(can_flag, [not p["omitted_word"] for p in phones]):
-            raise ValueError(f"Omission mask mismatch for {uid}")
-        reference_count += len(phones)
-        valid = np.isfinite(y)
+        expected = X["expected"]
+        if (not np.array_equal(d.index, np.arange(len(expected)))
+                or not d.speaker.eq(speaker).all() or d.phone.tolist() != list(expected)):
+            raise ValueError(f"Incompatible phone alignment for {uid}")
+        omitted = np.array([w["present_prob"] is not None and w["present_prob"] < missing_word_prob
+                            for w in row["words"]], dtype=bool)
+        scores = d.phone_score.to_numpy()
+        valid = np.isfinite(scores)
         for pair, prefix in prefixes.items():
             zl, zs = d[prefix + "_z_len"].to_numpy(), d[prefix + "_z_str"].to_numpy()
             if not np.isfinite(zl).all() or not np.isfinite(zs).all():
                 raise ValueError(f"Nonfinite detail logits for {uid}, folds {pair}")
             matrices[pair].append(coach.feature_matrix(dict(X, zl=zl, zs=zs))[valid])
-        fold_ids.extend(d.fold.to_numpy()[valid])
-        labels.extend(y[valid] < 2)
-        eligible.extend(can_flag[valid])
-        classes.extend(coach.sound_class(p["expected"]) for p, keep in zip(phones, valid) if keep)
-        speakers.extend([r["speaker"]] * valid.sum())
-        positions.extend((r, p) for p, keep in zip(phones, valid) if keep)
-
-    if (len(detail) != reference_count or len(labels) != baseline["coverage"]["matched"]
-            or not np.isfinite(detail[["E_z_len", "E_z_str"]].to_numpy()).all()):
-        raise ValueError("Incomplete detail or coaching coverage")
-    detail_meta["coach_dump_sha256"] = file_hash(out_dir() / "dump-so762-train.pkl")
-    return ({pair: np.concatenate(blocks) for pair, blocks in matrices.items()}, np.asarray(labels), np.asarray(classes),
-            np.asarray(speakers), np.asarray(fold_ids), np.asarray(eligible), positions, baseline, detail_meta)
-
-
-def control_examples(positions, rule):
-    # Phase 1 public scores are used only here, after freezing the rule.
-    examples = {}
-    for r, p in positions:
-        if not p["marked"]:
-            continue
-        threshold = rule["thresholds"].get(p["sound_class"], rule["fallback"])
-        stays = p["error_prob"] >= threshold
-        if (not p["incorrect"] and not stays) or (p["incorrect"] and stays):
-            key = "TP" if stays else "FP"
-            examples.setdefault(key, {**{k: r[k] for k in ("id", "text", "audio")},
-                                      "position": p["position"], "expected": p["expected"],
-                                      "score": p["score"], "candidate_marked": stays})
-        if len(examples) == 2:
-            return examples
-    return examples
-
-
-def verify_examples():
-    from bench.coach.en_precision import MODEL, evaluate_record
-    from bench.data import load
-    from bench.data.common import cache_root
-    from pronunciada import Scorer
-
-    report = json.loads(REPORT.read_text(encoding="utf-8"))
-    rule = report["rule"]
-    train = {r["id"]: r for r in load("speechocean762", "train")}
-    scorer = Scorer("en", model=MODEL, precision="fp32", strictness=0.5)
-    for name, example in report["examples"].items():
-        rec = train[example["id"]]
-        result = scorer.score(cache_root() / example["audio"], rec["text"])
-        measured = evaluate_record(rec, example["audio"], result)
-        phone = next(p for p in measured["phones"] if list(p["position"]) == example["position"])
-        candidate = bool(masks(np.asarray([phone["error_prob"]]), [phone["sound_class"]],
-                               np.asarray([not phone["omitted_word"]]), rule)[0])
-        if not phone["marked"] or candidate != example["candidate_marked"]:
-            raise ValueError(f"Public baseline or bench decision mismatch for {name}")
-        print(json.dumps({"example": name, "id": example["id"], "position": example["position"],
-                          "baseline_marked": phone["marked"], "candidate_marked": candidate}))
+        labels.extend(scores[valid] < 2)
+        classes.extend(coach.sound_class(phone) for phone, keep in zip(expected, valid, strict=True) if keep)
+        speakers.extend(d.speaker.to_numpy()[valid])
+        folds.extend(d.fold.to_numpy()[valid])
+        eligible.extend((~omitted[X["word"]])[valid])
+    return ({pair: np.concatenate(rows) for pair, rows in matrices.items()},
+            np.asarray(labels), np.asarray(classes), np.asarray(speakers),
+            np.asarray(folds), np.asarray(eligible))
 
 
 def evaluate(matrices, y, classes, groups, fold_ids, eligible, threshold):
@@ -268,42 +302,47 @@ def evaluate(matrices, y, classes, groups, fold_ids, eligible, threshold):
     return all_scores, base, candidate, folds
 
 
-def fit():
-    matrices, y, classes, groups, fold_ids, eligible, positions, baseline, detail = load_inputs()
-    mdl = coach.model()
-    threshold = coach.sound_threshold(mdl, "en", "balanced", True)
-    if threshold != coach.sound_threshold(mdl, "en", "balanced", False):
-        raise ValueError("Expected a single shipped English threshold")
-    all_scores, base, candidate, folds = evaluate(matrices, y, classes, groups, fold_ids, eligible, threshold)
+def fit_thresholds(matrices, y, classes, speakers, folds, eligible):
+    scores, base, candidate, results = evaluate(
+        matrices, y, classes, speakers, folds, eligible, BASELINE_THRESHOLD,
+    )
     a, b = confusion(y, base), confusion(y, candidate)
-    passed = b["fp"] < a["fp"] and b["tp"] >= a["tp"] and all(f["has_rule"] for f in folds)
-    final = tune(all_scores, classes, y, eligible, base) if passed else None
-    source = baseline["source"]
-    reason = ("frozen" if final else "outer_comparison_failed" if not passed else "no_full_train_threshold")
-    report = {"split": "train", "decision": "frozen" if final else "rejected", "reason": reason, "folds": folds,
-              "command": "python -m bench.coach.en_precision fit --split train",
-              "records": baseline["records"], "speakers": baseline["speakers"], "labelled_phones": len(y),
-              "baseline_threshold": threshold, "baseline": a, "candidate": b,
-              "delta": {k: b[k] - a[k] for k in ("precision", "recall")},
-              "paired_95_ci": paired_intervals(y, base, candidate, groups),
-              "outer_gate_passed": passed, "detail_oof": detail, "key_sha256": baseline["key_sha256"],
-              "input_sha256": baseline["input_sha256"],
-              "base": {k: source[k] for k in ("git_sha", "inference_patch_sha256", "coach_model_sha256")},
-              "omitted_labelled_phones": int((~eligible).sum()),
-              "bootstrap": {"unit": "speaker", "paired_resamples": 1000, "seed": 0},
-              "previously_fitted": [
-                  "The ZIPA backbone and FLEURS-train English adapter were reused from the phase 1 scorer.",
-                  "The omission gate was fitted on FLEURS validation with synthetic omissions.",
-                  "Packaged FLEURS-en train prototypes were reused. The embedding projection and trees were refitted.",
-                  "Sound_E hyperparameters, feature vocabulary, calibration families and the balanced cut "
-                  "are historical selections on speechocean762 train.",
-              ]}
-    if final:
-        report["rule"] = final
-        report["candidate_sha256"] = hashlib.sha256(
-            json.dumps(final, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-        report["examples"] = control_examples(positions, final)
-        if set(report["examples"]) != {"FP", "TP"}:
-            raise ValueError("Frozen rule did not provide both required train examples")
-    atomic_rows(REPORT, [json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)])
-    print(json.dumps({k: report[k] for k in ("decision", "baseline", "candidate", "delta", "paired_95_ci")}))
+    print(f"Train OOF baseline: {a}; candidate: {b}", file=sys.stderr)
+    if not (b["fp"] < a["fp"] and b["tp"] >= a["tp"] and all(f["has_rule"] for f in results)):
+        raise ValueError("The candidate did not improve the train out-of-fold operating point")
+    rule = tune(scores, classes, y, eligible, base)
+    if rule is None:
+        raise ValueError("No feasible final train threshold")
+    return {"fallback": rule["fallback"], "thresholds": rule["thresholds"]}
+
+
+def main():
+    from bench.calib import sound_emb
+    from bench.coach import dump
+    from bench.data import speechocean762
+    from bench.data.common import data_dir, merge_parts
+
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--prepare", action="store_true", help="regenerate the SpeechOcean762 train inputs")
+    args = parser.parse_args()
+    with redirect_stdout(sys.stderr):
+        root = data_dir(DATASET)
+        if args.prepare and not (root / "manifest.jsonl").exists():
+            speechocean762.fetch_split("train")
+            merge_parts(root, ("train",))
+        train = load(DATASET, "train")
+        if len(train) != 2500 or len({r["id"] for r in train}) != 2500 or len({r["speaker"] for r in train}) != 125:
+            raise ValueError("Expected 2500 distinct train recordings from 125 speakers")
+        if args.prepare:
+            prepare_table(train)
+            prepare_prototypes()
+            sound_emb.so762(workers=1)
+            dump.run("so762-train", workers=1)
+        detail = detail_oof(train)
+        inputs = assemble_inputs(detail, dump.load_dump("so762-train"), train)
+        setting = fit_thresholds(*inputs)
+    print(json.dumps(setting, indent=2, sort_keys=True, allow_nan=False))
+
+
+if __name__ == "__main__":
+    main()
