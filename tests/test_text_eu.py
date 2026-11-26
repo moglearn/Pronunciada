@@ -296,6 +296,21 @@ def test_russian_specifics():
     assert word_phones(ref, 0)[0].ipa == "f" and word_phones(ref, 3)[0].ipa == "v"   # preposition voicing
     ref = g("Ёлка")
     assert ref.syllables[0].stress == 1
+    for accented, clean, idx in (
+        ("сейча\u0301с", "сейчас", 1),
+        ("яйцо\u0301", "яйцо", 1),
+        ("пойма\u0301л", "поймал", 1),
+        ("нью-йо\u0301рке", "нью-йорке", 1),
+        ("моё\u0301", "моё", 1),
+        ("сеи\u0306ча\u0301с", "сейчас", 1),  # NFD й + acute
+    ):
+        assert g._strip_accent(accented) == (clean, idx)
+    ref = g("яйцо\u0301")
+    assert [s.stress for s in ref.syllables] == [0, 1]
+    assert word_phones(ref, 0)[-1].ipa == "o"
+    ref = g("нью-йо\u0301рке")
+    assert [s.stress for s in ref.syllables] == [0, 1, 0]
+    assert [p.ipa for p in word_phones(ref, 0) if p.is_nucleus][1] == "o"
 
 
 def test_empty_and_symbols():
