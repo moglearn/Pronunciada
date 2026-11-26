@@ -29,7 +29,7 @@ Pronunciada scores a language learner's pronunciation sound by sound, in 10 lang
 
 It needs no GPU and no network. A sentence is scored in about 40 ms on a laptop CPU with a 71 MB model, and the audio never leaves the machine.
 
-**[Benchmarks on real learner speech →](https://pronunciada.dev/benchmarks/)** Pronunciada has a higher combined score than Azure, OpenPronounce, Lingolix, TonePerfect and Chivox. Across every test, it is significantly better in 89 comparisons and worse in 9.
+**[Benchmarks on real learner speech →](https://pronunciada.dev/benchmarks/)** Pronunciada has a higher overall multilingual score than Azure, OpenPronounce, Lingolix, TonePerfect and Chivox. Across every test, it is significantly better in 89 comparisons and worse in 9.
 
 ![Key figures: 48 significant wins and 2 losses against Azure, 10 languages, a 71 MB small model, 41 ms per sentence on a laptop CPU.](docs/assets/stats.jpg)
 

@@ -460,14 +460,14 @@ def combined_text() -> str:
     full = RES["combined"]["systems"][FP]
     parts = []
     if not behind:
-        parts.append(f"Pronunciada agrees with the judges more closely than every other system, and the difference is significant against "
+        parts.append(f"Pronunciada has a higher overall multilingual score than every other system, and the difference is significant against "
                      + ", ".join(NAME[s] for s in sig[:-1]) + (" and " if len(sig) > 1 else "") + NAME[sig[-1]] + ".")
     else:
-        parts.append("Pronunciada agrees with the judges more closely than " + ", ".join(NAME[s] for s in ahead) + ".")
+        parts.append("Pronunciada has a higher overall multilingual score than " + ", ".join(NAME[s] for s in ahead) + ".")
     ns = [s for s in ahead if s not in sig]
     if ns:
         parts.append(" Against " + " and ".join(NAME[s] for s in ns) + " the difference is not significant.")
-    return (f"<p>{''.join(parts)} Over all four languages Pronunciada's human agreement is {num(full['value'])}.</p>"
+    return (f"<p>{''.join(parts)} Over all four languages Pronunciada's overall multilingual score is {num(full['value'])}.</p>"
             "<p class=\"note\">Checks of the construction: weighting the languages by their "
             "number of speakers, or scoring every level the judges marked (sounds, words, sentences, marked sounds, Mandarin characters), "
             "keeps Pronunciada ahead of every commercial system; against OpenPronounce the difference is not significant in any version "
@@ -494,7 +494,7 @@ def ondevice_table() -> str:
         body.append(f"<tr{' class=mine' if s in (I8, FP) else ''}><td>{name}<small>{sub}</small></td>"
                     f"<td{' class=own' if s in (I8, FP) else ''}>{score}</td><td>{mb(size)}</td>"
                     f"<td>{f'{t:.2f} s' if t else '–'}</td></tr>")
-    head = ("<tr><th>System</th><th>Human agreement<br>English, Spanish, German</th><th>Model files</th>"
+    head = ("<tr><th>System</th><th>Overall multilingual score<br>English, Spanish, German</th><th>Model files</th>"
             "<th>Time per recording</th></tr>")
     return f'<div class="tw"><table class="bt fit"><thead>{head}</thead><tbody>{"".join(body)}</tbody></table></div>'
 
@@ -509,7 +509,7 @@ def ondevice_text() -> str:
     dst = RES["combined"]["systems"][OPD]
     assert dst["base_minus"]["value"] > 0
     one = cost(FP, 1)
-    return (f"<p>Among the systems that run on the learner's device, Pronunciada has the highest human agreement and the smallest model. "
+    return (f"<p>Among the systems that run on the learner's device, Pronunciada has the highest overall multilingual score and the smallest model. "
             f"Its int8 model is {size_mb(OP) / size_mb(I8):.0f} times smaller than OpenPronounce in default mode and scores a recording "
             f"{cost(OP, 1)['p50_s'] / cost(I8, 1)['p50_s']:.0f} times faster; against the distilled model it is {size_mb(OPD) / size_mb(I8):.1f} times smaller "
             f"and {cost(OPD, 1)['p50_s'] / cost(I8, 1)['p50_s']:.1f} times faster. OpenPronounce has no Mandarin, so the score here covers the three languages "
@@ -709,7 +709,7 @@ def page() -> str:
 <p class="lead">Pronunciada, OpenPronounce, Azure Pronunciation Assessment, Lingolix, TonePerfect and Chivox scored the same recordings of language learners in English, Mandarin, Spanish and German. No synthetic speech is used on this page.</p>
 <p>The comparison covers complete pronunciation-assessment systems: a library, app or API that takes a recording and the text that was read, and returns scores for sounds, words and the sentence. OpenPronounce is the other open-source system of that kind. Azure, Lingolix, TonePerfect and Chivox are commercial cloud services. Every system received the same audio and text.</p>
 
-<h2>Human agreement across languages</h2>
+<h2>Overall multilingual score</h2>
 <p>One number per system: how closely its scores follow human judgement, averaged over the four languages with learner recordings. In English and Mandarin the judges are experts who graded the pronunciation accuracy of each recording. In Spanish and German they are native speakers, whose recordings a system should score above the learners' recordings of the same text. The number is the share of pairs of recordings that a system puts in the same order as the judges: 0.5 is chance and 1 is perfect agreement. Each system is compared with Pronunciada on the languages both of them cover.</p>
 {combined_table()}
 {combined_text()}
