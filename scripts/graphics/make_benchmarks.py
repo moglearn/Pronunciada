@@ -518,11 +518,12 @@ def row_name(r: dict) -> str:
     raise KeyError(test)
 
 
-def tally() -> tuple[list, int, int, int]:
+def tally() -> tuple[list, int, int, int, dict]:
     """Every comparison in the full tables with Azure, both OpenPronounce 1.1 models, Lingolix, TonePerfect and
     Chivox: (the rows where the other system is significantly ahead, how many more rows it is ahead without a
-    significant difference, Pronunciada's significant wins, rows with no significant difference)."""
-    sig, more, wins, ties = [], 0, 0, 0
+    significant difference, Pronunciada's significant wins, rows with no significant difference, and
+    system -> [wins, no significant difference, losses])."""
+    sig, more, wins, ties, per = [], 0, 0, 0, {}
     def scan(rows, systems, tag=""):
         nonlocal more, wins, ties
         for r in rows:
@@ -534,6 +535,8 @@ def tally() -> tuple[list, int, int, int]:
                     continue
                 wins += p < 0.05 and d > 0
                 ties += p >= 0.05
+                c = per.setdefault(s, [0, 0, 0])
+                c[0 if p < 0.05 and d > 0 else 2 if p < 0.05 else 1] += 1
                 if d >= 0:
                     continue
                 if p < 0.05:
@@ -544,18 +547,23 @@ def tally() -> tuple[list, int, int, int]:
     scan([r for r in TPS["rows"] if r["test"].startswith("speechocean762")], (TP,), ", TonePerfect sample")
     scan([r for r in TPS["rows"] if r["test"].startswith("OMPAL")], (TP,))
     scan(SAMPLE["rows"], (CX,), ", Chivox sample")
-    return sig, more, wins, ties
+    return sig, more, wins, ties, per
 
 
 def ahead() -> str:
-    sig, more, wins, ties = tally()
+    sig, more, wins, ties, per = tally()
+    order = sorted(per, key=lambda s: -per[s][0])
+    wl = "".join(f"<tr><td>{NAME[s]}</td><td class=own>{per[s][0]}</td><td>{per[s][1]}</td><td>{per[s][2]}</td></tr>" for s in order)
+    wl += f"<tr><td><b>All</b></td><td class=own><b>{wins}</b></td><td><b>{ties}</b></td><td><b>{len(sig)}</b></td></tr>"
+    wl_head = "<tr><th>Pronunciada against</th><th>Better</th><th>Level</th><th>Worse</th></tr>"
     body = "".join(f"<tr><td>{name}</td><td>{NAME[s]} {num(v)}</td><td class=own>{num(ours)}</td><td>{pval(p).replace('p ', '')}</td></tr>"
                    for name, s, v, ours, p in sig)
     head = "<tr><th>Test</th><th>System ahead</th><th>Pronunciada</th><th>p</th></tr>"
     return (f'<p>The full tables compare Pronunciada with Azure, both OpenPronounce 1.1 models, Lingolix, TonePerfect and Chivox '
             f'{wins + len(sig) + ties} times. Pronunciada is significantly better in {wins} of these comparisons and significantly '
-            f'worse in {len(sig)}; the other {ties} show no significant difference. These are the {len(sig)} rows where another '
-            f'system scores significantly higher.</p>'
+            f'worse in {len(sig)}; the other {ties} show no significant difference (level in the table).</p>'
+            f'<div class="tw"><table class="bt fit"><thead>{wl_head}</thead><tbody>{wl}</tbody></table></div>'
+            f'<p>These are the {len(sig)} rows where another system scores significantly higher.</p>'
             f'<div class="tw"><table class="bt"><thead>{head}</thead><tbody>{body}</tbody></table></div>'
             f"<p>In {more} further rows another system's figure is higher without a significant difference. "
             f'They are listed in the <a href="{FULL}">full tables</a>.</p>')
