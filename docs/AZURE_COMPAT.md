@@ -63,7 +63,7 @@ times 100, rounded to 0.1.
 | `Words[].Word` | present | the prompt word as written |
 | `Words[].Offset`, `Duration` | present | our alignment, ticks |
 | `Words[].AccuracyScore` | approximated | `WordResult.prob` x100: a probability that the word is acceptable, not a rating; it falls steeply on errors |
-| `Words[].ErrorType` | present | `Omission`: `omitted` or a `missing_word` coaching item; `Mispronunciation`: a `mispronounced_word` coaching item (without coaching evidence: prob < 0.5); `Insertion`: an `extra_speech` coaching item; else `None` |
+| `Words[].ErrorType` | present | `Omission`: `omitted` or a `missing_word` coaching item; `Mispronunciation`: a `mispronounced_word` coaching item (without coaching evidence: prob < 0.5); `Insertion`: an `extra_speech` coaching item; else `None`. A word can have a low `AccuracyScore` and `ErrorType` `None` when no coaching item names an error in it: the coaching gate is tuned to keep false alarms on native speech low |
 | Insertion entries | approximated | one extra word per `extra_speech` item, `Word` = the heard IPA, `AccuracyScore` 0 |
 | `Words[].Confidence` | not available | |
 | `Words[].Feedback.Prosody` (Break, Intonation) | not available | delivery flags are in our coaching items instead |
