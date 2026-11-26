@@ -73,7 +73,12 @@ class French(EuG2P):
             return [FUNC_PRON[w].split()]
         if w.endswith("'") and w[:-1] in ELIDED:
             return [ELIDED[w[:-1]].split()]
-        return super().lookup(w)
+        prons = super().lookup(w)
+        # Lexicon compounds ending in -un / 'un (vingt-et-un, trente-et-un, quelqu'un, ...)
+        # bypass FUNC_PRON["un"] = "y n", while ZIPA still emits [y n] for the final "un" piece.
+        if prons and w.endswith(("-un", "'un")):
+            prons = [p[:-1] + ["y", "n"] if p and p[-1] in ("œ̃", "ɛ̃") else p for p in prons]
+        return prons
 
     def build_word(self, tok, items, warnings):
         w = super().build_word(tok, items, warnings)
@@ -84,12 +89,13 @@ class French(EuG2P):
         if items == ["est"]:
             ph[1].add_alt("", C.P_COMMON)
             ph[2].add_alt("", C.P_COMMON)
-        if items == ["un"]:
-            ph[0].add_alt("œ̃", C.P_COMMON)
-            ph[0].add_alt("ɛ̃", C.P_COMMON)
-            ph[1].add_alt("", C.P_COMMON)
-        # final orthographic -e / -es after a pronounced consonant: optional final schwa
         last_it = items[-1] if items else ""
+        if (last_it == "un" or last_it.endswith(("-un", "'un"))) \
+                and n >= 2 and ph[-2].ipa == "y" and ph[-1].ipa == "n":
+            ph[-2].add_alt("œ̃", C.P_COMMON)
+            ph[-2].add_alt("ɛ̃", C.P_COMMON)
+            ph[-1].add_alt("", C.P_COMMON)
+        # final orthographic -e / -es after a pronounced consonant: optional final schwa
         if last_it.endswith(("e", "es")) and not last_it.endswith(("ée", "ées", "ie", "ies", "ue", "ues")) \
                 and n > 1 and not ph[-1].nucleus:
             ph[-1].add_alt(ph[-1].ipa + "ə", C.P_MED)
