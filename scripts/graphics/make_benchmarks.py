@@ -5,7 +5,7 @@
 Every number on the page is read from results/tables/learner_benchmark_*.json (written by
 `python -m bench.learnerbench.report`) and results/tables/learner_benchmark_cost/, so the page
 cannot drift from the published tables. The page borrows the home page's stylesheet, header and
-footer. Outputs: site/benchmarks/index.html, docs/assets/benchmark-size.png, docs/assets/benchmark-cost.png.
+footer. Outputs: site/benchmarks/index.html, docs/assets/benchmark-accuracy-size.png, docs/assets/benchmark-cost.png.
 """
 from __future__ import annotations
 
@@ -90,7 +90,7 @@ PANELS = [
     ("English sounds", "agreement with expert scores", ("speechocean762 test", "Pearson", "sound")),
     ("English words", "agreement with expert scores", ("speechocean762 test", "Pearson", "word")),
     ("English sentences", "agreement with expert accuracy scores", ("speechocean762 test", "Pearson", "sentence accuracy")),
-    ("English mispronunciations", "finding the sounds annotators marked", ("L2-ARCTIC test", "AUC", "sound")),
+    ("English accent", "telling learners from native speakers", ("Speech Accent Archive (<= 30 s)", "AUC", "en/saa")),
 ]
 LOCAL = (I8, FP, OPD, OP, ZIPA)
 
@@ -159,20 +159,20 @@ def chart_size() -> str:
     key = ('<span><i class="own"></i>Pronunciada: int8 model, then full model</span>'
            '<span><i class="oth"></i>OpenPronounce: distilled model, then default</span>'
            '<span><i class="ring"></i>ZIPA alone</span><span><i class="dia"></i>Cloud service</span>')
-    so, l2 = find("speechocean762 test", "Pearson", "sentence accuracy"), find("L2-ARCTIC test", "AUC", "sound")
+    so, sa = find("speechocean762 test", "Pearson", "sentence accuracy"), find(*PANELS[3][2])
     foot = ("Higher is better, and further left is smaller. The horizontal axis is the size on disk of every model file a system "
             "loads to score English, on a logarithmic scale. Cloud services have no download and are drawn at the right. "
             f"Agreement is the Pearson correlation with expert scores on the speechocean762 test set ({so['n_items']:,} recordings, "
-            f"{so['n_speakers']} learners). Mispronunciations are the area under the ROC curve on the L2-ARCTIC test set "
-            f"({l2['n_items']:,} sounds, {l2['n_speakers']} learners). ZIPA alone is the speech model Pronunciada is built on, scored without Pronunciada.")
+            f"{so['n_speakers']} learners). Accent is the area under the ROC curve for scoring a native speaker's reading above a "
+            f"learner's in the Speech Accent Archive ({sa['n_speakers']} speakers, natives and learners, reading the same paragraph). ZIPA alone is the speech model Pronunciada is built on, scored without Pronunciada.")
     return ('<figure class="chart size"><div class="ch-head stack"><figcaption>Score against size on disk</figcaption>'
             f'<div class="ch-key">{key}</div></div><div class="sc-grid4">{"".join(cells)}</div><p class="ch-foot">{foot}</p></figure>')
 
 
 def size_text() -> str:
     """The paragraph under the chart, written from the data: each comparison says what the paired test found."""
-    snd, wrd, acc, l2 = (find(*k) for _, _, k in PANELS)
-    ep = find("EpaDB test", "AUC", "sound")
+    snd, wrd, acc, sa = (find(*k) for _, _, k in PANELS)
+    l2, ep = find("L2-ARCTIC test", "AUC", "sound"), find("EpaDB test", "AUC", "sound")
 
     def sig(r, s):
         d, p = diff(r, s)
@@ -189,6 +189,11 @@ def size_text() -> str:
         names = [NAME[s] for s in rivals] + [NAME[ZIPA]]
         para.append(f"On the speechocean762 test set, Pronunciada agrees with the experts more closely than "
                     f"{', '.join(names[:-1])} and {names[-1]} on {what}, and each of those differences is significant.")
+    sa_riv = [s for s in (OP, OPD, AZ) if val(sa, s) is not None]
+    if all(sig(sa, s) == "ahead" for s in sa_riv):
+        para.append(f"At telling learners from native speakers in the Speech Accent Archive, Pronunciada scores {num(val(sa, FP))}, against "
+                    + and_join([f"{num(val(sa, s))} for {NAME[s]}" for s in sa_riv])
+                    + "; each of those differences is significant.")
     both = [(sig(l2, x), sig(ep, x)) for x in (OP, OPD)]
     if all(b == ("behind", "behind") for b in both):
         para.append(f"OpenPronounce is significantly better at finding the sounds annotators marked as mispronounced: "
@@ -773,7 +778,7 @@ def github_charts() -> None:
             ".sc-pt.ring{stroke:#77777f}.size .ch-key i.ring{box-shadow:inset 0 0 0 1.6px #77777f}"
             ".sp-row.own .ch-track i{background:#fff}.ch-row b,.sp-row b{color:rgba(255,255,255,.5)}.ch-row.own b,.sp-row.own b{color:#fff}")
     head = f"<!doctype html><html><head><meta charset='utf-8'><style>{font_css()}{css}{EXTRA_CSS}{dark}</style></head><body>"
-    for body, name in ((chart_size(), "benchmark-size.png"), (chart_cost(), "benchmark-cost.png")):
+    for body, name in ((chart_size(), "benchmark-accuracy-size.png"), (chart_cost(), "benchmark-cost.png")):
         html_ = head + body + "</body></html>"
         render(html_, ROOT / "docs/assets" / name, 920, height_of(html_, 920))
 
@@ -782,4 +787,4 @@ if __name__ == "__main__":
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page(), encoding="utf-8")
     github_charts()
-    print(f"wrote {OUT.relative_to(ROOT)}, docs/assets/benchmark-size.png and benchmark-cost.png")
+    print(f"wrote {OUT.relative_to(ROOT)}, docs/assets/benchmark-accuracy-size.png and benchmark-cost.png")

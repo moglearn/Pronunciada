@@ -63,7 +63,7 @@ version with every level (p 0.09) and significant in the other three. Against Op
 significant in any of them, and in the two that include every level its distilled English model is ahead
 by 0.005 (not significant).
 
-![Score against size on disk for Pronunciada, OpenPronounce 1.1.0 (distilled and default) and ZIPA alone on four English tests, with Azure and Lingolix as cloud services.](../docs/assets/benchmark-size.png)
+![Score against size on disk for Pronunciada, OpenPronounce 1.1.0 (distilled and default) and ZIPA alone on four English tests, with Azure and Lingolix as cloud services.](../docs/assets/benchmark-accuracy-size.png)
 
 ![Model files on disk, peak memory and time per recording for Pronunciada int8, Pronunciada, OpenPronounce distilled and OpenPronounce default.](../docs/assets/benchmark-cost.png)
 
