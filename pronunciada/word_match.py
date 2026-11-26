@@ -31,10 +31,20 @@ def _toks(s: str) -> tuple[str, ...]:
     return tuple(k)
 
 
+# A voiceless affricate is often decoded as its stop closure followed by the voiced affricate
+# (ち heard as t + dʒ, issue #3): one sound, not an extra one. The voicing itself is the identity
+# margin's business, not this count's.
+_SPLIT = {"tʃ": "tdʒ", "tɕ": "tdʑ", "ts": "tdz"}
+
+
 def _variants(p) -> list[tuple[str, ...]]:
     vs = {_toks(p.ipa)}
     for a, _ in p.alts:
         vs.add(_toks(a))
+    for v in list(vs):
+        sp = _SPLIT.get("".join(v))
+        if sp:
+            vs.add(_toks(sp))
     return sorted(vs, key=len)
 
 
