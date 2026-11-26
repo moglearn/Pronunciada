@@ -301,16 +301,16 @@ class Russian(EuG2P):
         return w
 
     def _strip_accent(self, w: str) -> tuple[str, int | None]:
-        d = unicodedata.normalize("NFD", w)
-        if ACUTE not in d:
+        c = unicodedata.normalize("NFC", w)
+        if ACUTE not in c:
             return w, None
         vi, idx = -1, None
-        for ch in d:
-            if ch in VOWELS or ch in "иеё":
+        for ch in c:
+            if ch.lower() in VOWELS:
                 vi += 1
-            elif ch == ACUTE:
+            elif ch == ACUTE and vi >= 0:
                 idx = vi
-        clean = unicodedata.normalize("NFC", d.replace(ACUTE, ""))
+        clean = unicodedata.normalize("NFC", c.replace(ACUTE, ""))
         return clean, idx
 
     def lookup(self, w):
