@@ -245,7 +245,8 @@ def tp_row(row: dict):
     """TonePerfect's row for the same test and measure, from its own run (speechocean762: a sample)."""
     test = row["test"]
     key = ("speechocean762 test, TonePerfect sample" if test.startswith("speechocean762 test")
-           else "OMPAL test, TonePerfect sample" if test.startswith("OMPAL test") else None)
+           else "OMPAL test, TonePerfect sample" if test.startswith("OMPAL test")
+           else test if test.startswith("Heroico") else None)
     if key is None:
         return None
     hits = [r for r in TPS["rows"] if r["test"].startswith(key) and r["metric"] == row["metric"] and r["unit"] == row["unit"]]
@@ -256,12 +257,27 @@ TP_EN = TPS["toneperfect"]["speechocean762"]["answered"]
 TP_ZH = TPS["toneperfect"]["ompal"]["answered"]
 
 
+# Sets that never go to a commercial service: LeaP states no licence; L2-ARCTIC, EpaDB and the Speech
+# Accent Archive allow non-commercial use only (bench/third_party/live_core.NEVER).
+NOT_SENT = ("LeaP", "L2-ARCTIC", "EpaDB", "Speech Accent Archive")
+
+
+def gap(row: dict, system: str, word: str) -> str:
+    """The reason a commercial system has no number in a row, in one or two words."""
+    if system in (AZ, LX, TP, CX) and word in ("not run", "–"):
+        if system == LX and row["unit"] == "sound":
+            return "not given"
+        if row["test"].startswith(NOT_SENT):
+            return "not sent"
+    return word
+
+
 def cell(row: dict, system: str) -> str:
     dagger = ""
     if system == TP:
         alt = tp_row(row)
         if alt is None:
-            return '<td class="na">not run<i></i></td>'
+            return f'<td class="na">{gap(row, TP, "not run")}<i></i></td>'
         if alt["n_items"] != row["n_items"]:
             dagger = "<sup>†</sup>"
         row = alt
@@ -270,7 +286,7 @@ def cell(row: dict, system: str) -> str:
         status = entry.get("status", "")
         word = ("not supported" if "not supported" in status else "not run" if "not run" in status
                 else "not given" if "not given" in status or "not run" == status else "–")
-        return f'<td class="na">{word}<i></i></td>'
+        return f'<td class="na">{gap(row, system, word)}<i></i></td>'
     mark = "<i></i>"
     d, p = diff(row, system)
     if system != FP and p is not None and p < 0.05:
@@ -294,7 +310,16 @@ def n_of(r: dict, what: str) -> str:
 
 
 def sig_list(row: dict, systems) -> list[str]:
-    return [NAME[s] for s in systems if (diff(row, s)[1] or 1) < 0.05]
+    out = []
+    for s in systems:
+        r = tp_row(row) if s == TP else row
+        if r is not None and (diff(r, s)[1] or 1) < 0.05:
+            out.append(NAME[s])
+    return out
+
+
+def and_join(xs: list[str]) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
 
 
 def tables() -> str:
@@ -335,20 +360,21 @@ def tables() -> str:
     ], ALL)
     legend = ('<p class="note">▲ significantly higher than Pronunciada, ▼ significantly lower (paired test over speakers, p &lt; 0.05). '
               "No mark means no significant difference. Pronunciada is the full model unless the column says int8. "
-              f"† TonePerfect was run on {TP_EN:,} of the {so('sentence accuracy')['n_items']:,} recordings, with every speaker included; "
-              "its figure and mark are computed on those recordings.</p>")
-    he_sig = sig_list(he, (OP, AZ, LX))
-    he_s_sig = sig_list(he_s, (OP, AZ, LX))
+              f"† TonePerfect declined {so('sentence accuracy')['n_items'] - TP_EN} of the {so('sentence accuracy')['n_items']:,} recordings as "
+              f"unassessable; its figure and mark are computed on the other {TP_EN:,}.</p>")
+    he_sig = sig_list(he, (OP, AZ, LX, TP))
+    he_s_sig = sig_list(he_s, (OP, AZ, LX, TP))
     spanish = ("With 18 speakers the intervals are wide. " +
-               (f"On recordings, the difference to {' and '.join(he_sig)} is significant; " if he_sig else "On recordings, no difference is significant; ") +
-               (f"by speaker, the differences to {' and '.join(he_s_sig)} are." if len(he_s_sig) > 1 else
+               (f"On recordings, the difference to {and_join(he_sig)} is significant; " if len(he_sig) == 1 else
+                f"On recordings, the differences to {and_join(he_sig)} are significant; " if he_sig else "On recordings, no difference is significant; ") +
+               (f"by speaker, the differences to {and_join(he_s_sig)} are." if len(he_s_sig) > 1 else
                 f"by speaker, the difference to {he_s_sig[0]} is." if he_s_sig else "by speaker, none is."))
     return f"""
 <h3>English, scored by experts</h3>
 <p>The speechocean762 test set has {so('sentence total')['n_items']:,} recordings by {so('sentence total')['n_speakers']} Mandarin-speaking learners of English, many of them children. Five experts scored every sound, word and sentence. The figure is the Pearson correlation between a system's score and the experts' score.</p>
 {t1}{legend}
 <h3>English, sounds marked as mispronounced</h3>
-<p>In L2-ARCTIC and EpaDB, annotators marked each sound a learner mispronounced. The figure is the area under the ROC curve for separating the marked sounds from the others. Neither corpus was used to train or tune Pronunciada or OpenPronounce. Lingolix gives no score for individual sounds, and neither it nor TonePerfect was run on these sets.</p>
+<p>In L2-ARCTIC and EpaDB, annotators marked each sound a learner mispronounced. The figure is the area under the ROC curve for separating the marked sounds from the others. Neither corpus was used to train or tune Pronunciada or OpenPronounce. Both corpora allow non-commercial use only, so they were not sent to TonePerfect or Lingolix; Lingolix also gives no score for individual sounds.</p>
 {t2}
 <h3>Mandarin</h3>
 <p>The OMPAL test set has {om_w['n_speakers']} speakers, {om_s['n_speakers']} of them French-speaking learners of Mandarin. Teachers marked every character and scored every sentence. OpenPronounce and Lingolix do not support Mandarin. TonePerfect scored all {TP_ZH} recordings; it states that it used other OMPAL recordings during its development.</p>
@@ -360,7 +386,7 @@ def tables() -> str:
 <p>LeaP has the same stories read by {le['n_speakers'] - 7} learners and 7 native speakers of German, again without expert scores. The corpus states no license, so its recordings were scored on the laptop only and were not sent to any cloud service.</p>
 {t5}
 <h3>English, learners against native speakers</h3>
-<p>Two further English sets with the same kind of label: learners and native speakers reading the same text.</p>
+<p>Two further English sets with the same kind of label: learners and native speakers reading the same text. The Speech Accent Archive allows non-commercial use only and LeaP states no license, so neither was sent to TonePerfect or Lingolix, and LeaP was not sent to Azure.</p>
 {t6}"""
 
 
@@ -545,7 +571,7 @@ def tally() -> tuple[list, int, int, int, dict]:
                     more += 1
     scan(RES["rows"], (OP, OPD, AZ, LX))
     scan([r for r in TPS["rows"] if r["test"].startswith("speechocean762")], (TP,), ", TonePerfect sample")
-    scan([r for r in TPS["rows"] if r["test"].startswith("OMPAL")], (TP,))
+    scan([r for r in TPS["rows"] if r["test"].startswith(("OMPAL", "Heroico"))], (TP,))
     scan(SAMPLE["rows"], (CX,), ", Chivox sample")
     return sig, more, wins, ties, per
 
@@ -627,7 +653,7 @@ LIMITS = """
 <li>The kind of label differs by language. Expert or teacher scores exist for English and Mandarin, and marked sounds for English only. Spanish and German have only the distinction between learners and native speakers, which rewards anything that differs between the two groups, speaking rate included.</li>
 <li>Several sets have few speakers: 6 in L2-ARCTIC, 20 in EpaDB, 18 learners in OMPAL, 10 learners and 8 native speakers in Heroico, 7 native speakers in LeaP German. One speaker can move such a figure by several points.</li>
 <li>There is no learner data here for Japanese, Korean, Russian, Portuguese, French or Italian. These tests say nothing about those languages.</li>
-<li>The commercial systems are incomplete. Azure was not run on German, Lingolix on speechocean762 and Heroico only, TonePerfect on OMPAL and part of speechocean762, and Chivox on a sample of two sets. No other commercial service was run.</li>
+<li>The commercial systems are incomplete. LeaP was not sent to any cloud service, and L2-ARCTIC, EpaDB and the Speech Accent Archive, which allow non-commercial use only, were not sent to TonePerfect or Lingolix. That leaves Azure without German, Lingolix with speechocean762 and Heroico (it does not support Mandarin), TonePerfect with speechocean762, OMPAL and Heroico, and Chivox, on a free trial, with a sample of speechocean762 and OMPAL. No other commercial service was run.</li>
 <li>Pronunciada and OpenPronounce both used speechocean762 to fit their scores. Neither used L2-ARCTIC, EpaDB, Heroico, the Speech Accent Archive or LeaP. TonePerfect states that it used other OMPAL recordings during its development.</li>
 <li>Disk, memory and time were measured on one laptop. Nothing was measured on a phone.</li>
 </ul>"""
@@ -710,7 +736,7 @@ def page() -> str:
 {LIMITS}
 
 <h2>Method</h2>
-<p>Versions: Pronunciada 1.1.0, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model; the <a href="{FULL}">full tables</a> also have OpenPronounce 0.4.0, the release that was current when Pronunciada 1.0 came out. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. TonePerfect API version 2 with fallback off, 24 and 25 November 2026. Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
+<p>Versions: Pronunciada 1.1.0, with the full model and the int8 model. OpenPronounce 1.1.0, the latest release on the day of the runs, in default mode and with its distilled English phone model; the <a href="{FULL}">full tables</a> also have OpenPronounce 0.4.0, the release that was current when Pronunciada 1.0 came out. Azure Pronunciation Assessment through its REST API, region westus, November 2026. Lingolix API, model 2026-11. TonePerfect API version 2 with fallback off, 24 to 26 November 2026 (UTC). Chivox speech evaluation API, sentence engines for English and Mandarin. ZIPA alone is zipa-small-crctc-500k with the standard goodness-of-pronunciation score.</p>
 <p>Every interval and every difference comes from {RES['n_boot']:,} resamples of speakers, with the systems compared on the same resamples. A difference is called significant at p &lt; 0.05, without correction for the number of comparisons. Disk, memory and time were measured on an {one['machine']} with no GPU.</p>
 <p>The <a href="{FULL}">full tables</a> on GitHub have every row with its interval, the rank-correlation versions of the tests, the construction of the German set and the commands to reproduce the page.</p>
 <p class="back"><a href="../">Back to the overview</a></p>

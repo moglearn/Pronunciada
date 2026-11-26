@@ -1,6 +1,6 @@
 # Benchmark on real learner speech, four languages
 
-Date of the runs: 23 November 2026; TonePerfect, OpenPronounce 0.4.0 and the combined score added on 25 November. Every number on this page was measured on recordings of real
+Date of the runs: 23 November 2026; TonePerfect, OpenPronounce 0.4.0 and the combined score added on 25 November; TonePerfect completed on speechocean762 and run on Heroico on 26 November (UTC). Every number on this page was measured on recordings of real
 learners and native speakers; there is no synthetic speech in it. All systems were scored on the same
 recordings with the same labels; nothing was fitted, tuned or selected on any of this data. The
 metric definitions for the new German data were committed (fee7f47) before any system was run on it.
@@ -14,16 +14,19 @@ not an assessment system.
 
 Reproduce every table from the cached outputs:
 `LEARNERBENCH_EXTRA=pronunciada-nb8-sym-b128 python -m bench.learnerbench.report` (full sets) and the same
-with `--only chivox` (the Chivox sample). Generated tables:
+with `--only chivox` (the Chivox sample) and `--only toneperfect` (TonePerfect). Generated tables:
 `results/tables/learner_benchmark_results.json`, `learner_benchmark_tables.md` (every row, every
 system, intervals and paired differences), `learner_benchmark_sample.json` / `_sample_tables.md`,
 `learner_benchmark_systems.json`, `learner_benchmark_cost/`.
 
 ## Added on 25 November 2026
 
-- **TonePerfect** (API version 2, fallback off) measured by us on all 745 OMPAL test recordings and on 1,725
-  speechocean762 test recordings chosen with every speaker represented (1,722 answered, 3 rejected as
-  unassessable). Tables: `tables/learner_benchmark_sample_toneperfect.json` and `_tables.md`. TonePerfect
+- **TonePerfect** (API version 2, fallback off) measured by us on all 745 OMPAL test recordings, all 2,500
+  speechocean762 test recordings (2,496 answered, 4 rejected as unassessable; its speechocean762 figures
+  are computed on the 2,496) and the 600 Heroico / USMA recordings (598 answered; the 2 rejected count as
+  failures, the lowest score, as for every other system). L2-ARCTIC, EpaDB and the Speech Accent Archive
+  allow non-commercial use only and LeaP states no licence, so none of them was sent to TonePerfect or
+  Lingolix. Tables: `tables/learner_benchmark_sample_toneperfect.json` and `_tables.md`. TonePerfect
   states that it used other OMPAL recordings during its development.
 - **OpenPronounce 0.4.0**, the release that was current when Pronunciada 1.0.0 came out (17 November 2026),
   run on every set here with its default settings and the Piper reference voice
@@ -40,7 +43,7 @@ system, intervals and paired differences), `learner_benchmark_sample.json` / `_s
 |---|---|---|---|---|---|
 | Azure | English, Mandarin, Spanish | 0.760 | 0.681 | +0.079 [+0.047, +0.118] | < 0.001 |
 | Lingolix | English, Spanish | 0.759 | 0.682 | +0.077 [-0.009, +0.150] | 0.08 |
-| TonePerfect (English: 1,722 of 2,500 recordings) | English, Mandarin | 0.805 | 0.727 | +0.078 [+0.056, +0.100] | < 0.001 |
+| TonePerfect (English: 2,496 of 2,500 recordings) | English, Mandarin, Spanish | 0.760 | 0.693 | +0.067 [+0.018, +0.115] | 0.008 |
 | Chivox (299 + 299 recordings) | English, Mandarin | 0.788 | 0.679 | +0.109 [+0.071, +0.144] | < 0.001 |
 | OpenPronounce 1.1.0, default | English, Spanish, German | 0.749 | 0.715 | +0.034 [-0.026, +0.105] | 0.27 |
 | OpenPronounce 1.1.0, distilled | English | 0.849 | 0.828 | +0.021 [+0.011, +0.032] | < 0.001 |
@@ -55,7 +58,8 @@ Four constructions of the score were fixed and computed to see how much the resu
 (`bench/learnerbench/combined_variants.py`, `tables/learner_benchmark_combined_variants*.json`): as above;
 languages weighted by their number of speakers; every level the judges scored (English sounds, words,
 sentence accuracy, L2-ARCTIC and EpaDB; Mandarin characters and sentence accuracy); and both. Pronunciada
-stays ahead of every commercial system in all four. Against OpenPronounce 1.1.0 the difference is not
+stays ahead of every commercial system in all four; the difference to TonePerfect is not significant in the
+version with every level (p 0.09) and significant in the other three. Against OpenPronounce 1.1.0 the difference is not
 significant in any of them, and in the two that include every level its distilled English model is ahead
 by 0.005 (not significant).
 

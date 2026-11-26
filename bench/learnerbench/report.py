@@ -830,18 +830,19 @@ VENDOR_NAME = {"chivox": "Chivox", "toneperfect": "TonePerfect"}
 
 
 def toneperfect_answers() -> dict:
-    """TonePerfect's cached answers (speechocean762 sample and OMPAL test), read only."""
+    """TonePerfect's cached answers (speechocean762 test, OMPAL test, Heroico / USMA test), read only."""
     from bench.third_party import live_core as LC
     from bench.third_party import toneperfect_live as TP
 
-    items = LC.select_items(TP, ["speechocean762", "ompal"], pilot=False, limit=None, seed=0)
+    items = LC.select_items(TP, ["speechocean762", "ompal", "heroico"], pilot=False, limit=None, seed=0)
     A = LC.collect_answers(TP, items, LC.live_root(TP, False))
 
     def key(ds, k):
         return f"so762-{k}" if ds == "speechocean762" and not k.startswith("so762-") else k
 
     return {ds: {"views": {key(ds, k): v for k, v in A[ds]["views"].items()}, "versions": A[ds].get("versions"),
-                 "first_utc": A[ds].get("first_utc"), "last_utc": A[ds].get("last_utc")} for ds in A}
+                 "first_utc": A[ds].get("first_utc"), "last_utc": A[ds].get("last_utc"),
+                 "rejected": [key(ds, r["id"]) for r in A[ds].get("rejections", [])]} for ds in A}
 
 
 def chivox_sample() -> dict:
@@ -1069,16 +1070,28 @@ def main(argv=None) -> dict:
         om = CVA["ompal"]["views"]
         rows = so762_rows(S, recs_by["speechocean762"], sample=set(so), chivox=CVA["speechocean762"], vendor=vend)
         rows += ompal_rows(S, sample=set(om), chivox=CVA["ompal"], vendor=vend)
+        hrows = []
+        if CVA.get("heroico", {}).get("views"):
+            # Heroico / USMA: the learner suite's own tests with the vendor's sentence score; a final
+            # rejection counts as a failure (the lowest score), as for every other system
+            H = CVA["heroico"]
+            sent = {k: v["sentence"]["total"] for k, v in H["views"].items()} | {k: None for k in H.get("rejected", [])}
+            SV = dict(S, **{vend: Sys(vend, "C", ("en", "zh", "es"), sent)})
+            srows_v, _ = suite_rows(SV, recs4, recs_by)
+            hrows = [r for r in srows_v if r.unit.startswith("es/heroico")]
+            rows += hrows
         res = {"n_boot": a.boot, "systems": order + [vend], "rows": [],
-               vend: {k: {kk: vv for kk, vv in v.items() if kk != "views"} | {"answered": len(v["views"])}
+               vend: {k: {kk: vv for kk, vv in v.items() if kk not in ("views", "rejected")}
+                         | {"answered": len(v["views"]), "rejected": len(v.get("rejected", []))}
                       for k, v in CVA.items()}}
         for k, row in enumerate(rows):
             res["rows"].append(evaluate_row(row, a.boot, seed=5000 + k))
             print(f"{row.test} | {row.metric} | {row.unit}: " + ", ".join(
                 f"{s_}={v['value']:.3f}" for s_, v in res["rows"][-1]["systems"].items() if "value" in v), flush=True)
-        comp = combined_components(rows)
+        comp = combined_components(rows, hrows)
         for k, lg in enumerate(sorted(comp)):
-            res["rows"].append(evaluate_row(comp[lg], a.boot, seed=9500 + k))
+            if comp[lg].metric == "C":            # Heroico's own row is already in the table
+                res["rows"].append(evaluate_row(comp[lg], a.boot, seed=9500 + k))
         res["combined"] = combined(comp, order + [vend], a.boot, 23)
         tag = "" if vend == "chivox" else "_toneperfect"
         (TABLES / f"learner_benchmark_sample{tag}.json").write_text(json.dumps(_clean(res), indent=1, ensure_ascii=False))

@@ -118,6 +118,11 @@ def main(argv=None):
         rows = R.so762_rows(S, by["speechocean762"], sample=set(A["speechocean762"]["views"]), chivox=A["speechocean762"], vendor=a.vendor)
         rows += R.ompal_rows(S, sample=set(A["ompal"]["views"]), chivox=A["ompal"], vendor=a.vendor)
         srows = []
+        if A.get("heroico", {}).get("views"):      # as report.main: Heroico with the vendor's sentence score
+            H = A["heroico"]
+            sent = {k: v["sentence"]["total"] for k, v in H["views"].items()} | {k: None for k in H.get("rejected", [])}
+            SV = dict(S, **{a.vendor: R.Sys(a.vendor, "C", ("en", "zh", "es"), sent)})
+            srows = [r for r in R.suite_rows(SV, recs4, by)[0] if r.unit.startswith("es/heroico")]
         systems = [a.vendor, "azure"]
     else:
         rows = R.so762_rows(S, by["speechocean762"]) + R.errdet_rows(S, by) + R.ompal_rows(S)

@@ -1,6 +1,6 @@
 # TonePerfect benchmark runner
 
-> **Update, 25 November 2026.** The runner has since been used live: a 48-credit pilot on 23 November, then all 745 OMPAL test recordings and 1,725 speechocean762 test recordings (one Starter month). Results: `results/tables/learner_benchmark_sample_toneperfect_tables.md` and [learner_benchmark.md](learner_benchmark.md). The text below describes the runner as it was built.
+> **Update, 25 November 2026.** The runner has since been used live: a 48-credit pilot on 23 November, then all 745 OMPAL test recordings and 1,725 speechocean762 test recordings (one Starter month), and on 26 November (UTC) the other 775 speechocean762 recordings and the 588 Heroico recordings not in the pilot (1,369 requests in all, retries included). Results: `results/tables/learner_benchmark_sample_toneperfect_tables.md` and [learner_benchmark.md](learner_benchmark.md). The text below describes the runner as it was built.
 
 `bench/third_party/toneperfect_live.py` uses the same shared machinery as the Chivox runner: `live_core.py` and `live_eval.py`. Tests are in `tests/test_toneperfect_live.py` and use a fake transport only. Nothing has been sent to TonePerfect, and no account or key was used.
 
