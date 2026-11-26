@@ -1,0 +1,20 @@
+name: Feature request
+description: A new capability, language or integration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you are trying to do
+      description: The task or product it is for. A concrete use case helps more than a general idea.
+    validations: {required: true}
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help
+      description: The feature you have in mind, and any alternative you have considered.
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you work on it?
+      options: ["Yes, with some guidance", "Maybe", "No"]

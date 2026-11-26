@@ -3,6 +3,9 @@
 Bug reports, new languages, scoring changes and documentation fixes are welcome. Any change to
 scoring has to be evaluated on data it was not tuned on. The procedure is described below.
 
+Pronunciada has one maintainer. Issues and pull requests usually get a first reply within a few
+days. For a large change, open an issue first so we can agree on the approach before you write it.
+
 ## Setup
 
 ```bash
@@ -13,7 +16,7 @@ pip install -e ".[all,dev]"
 pytest -q
 ```
 
-The first run downloads the acoustic model (about 250 MB) to `~/.cache/pronunciada`.
+The first run downloads the acoustic model (about 260 MB) to `~/.cache/pronunciada`.
 
 ## Types of contribution
 
@@ -34,16 +37,23 @@ phoneme inventory.
 
 A change that misses its threshold can still be written up. `results/` contains several.
 
+A scoring pull request should contain the change, its tests and the script that produces the
+measurements. The script must run on a fresh clone with the public data, not only on your machine.
+Put the numbers in the pull request description: precision, recall or correlation before and after,
+the number of recordings and speakers, and a paired interval over speakers.
+
 **Documentation, examples and integrations.** Examples must run as written.
 
 ## Pull requests
 
-- One change per pull request.
+- One change per pull request, as small as it can be while still being complete.
 - `pytest -q` must pass. Scores for existing languages must stay byte-identical unless the
   pull request is a scoring change with the measurements above.
 - Do not add recordings or third-party data to the repository. Point to the source and its
   license instead, and add it to `docs/LICENSING.md`.
-- Avoid new runtime dependencies. The library depends on numpy, scipy, ONNX Runtime, kaldi-native-fbank and soundfile.
+- Avoid new runtime dependencies. The library depends on numpy, ONNX Runtime, kaldi-native-fbank and soundfile.
+- Leave out working files: planning notes, agent or chat logs, scratch scripts and large result dumps.
+  If a result table is worth keeping, add it under `results/` with a short write-up.
 
 ## License
 
