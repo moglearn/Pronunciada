@@ -256,6 +256,18 @@ def test_french_elision_and_un():
     un = word_phones(ref, find_word(ref, "un"))
     assert any(a == "œ̃" for p in un for a, _ in p.alts)
 
+    # Compounds ending in -un / 'un, elided clitics + un, and number expansions must match
+    # standalone "un": canonical [y n] with natural [œ̃]/[ɛ̃] and [""] alternatives.
+    for text in ("vingt-et-un", "trente-et-un", "quarante-et-un", "quelqu'un", "d'un", "21"):
+        ps = word_phones(get_g2p("fr")(text), 0)
+        assert [p.ipa for p in ps[-2:]] == ["y", "n"], (text, [p.ipa for p in ps])
+        assert {"œ̃", "ɛ̃"} <= {a for a, _ in ps[-2].alts}, (text, ps[-2].alts)
+        assert "" in {a for a, _ in ps[-1].alts}, (text, ps[-1].alts)
+    # Single-morpheme -un words (aucun, chacun) stay [œ̃].
+    for text in ("aucun", "chacun"):
+        ps = word_phones(get_g2p("fr")(text), 0)
+        assert ps[-1].ipa == "œ̃", (text, [p.ipa for p in ps])
+
 
 @pytest.mark.parametrize("lang", LANGS)
 def test_numbers(lang):
