@@ -1,6 +1,6 @@
 [project]
 name = "pronunciada"
-version = "1.1.0"
+version = "1.1.1"
 description = "On-device pronunciation assessment in 10 languages: phoneme, word and sentence scores, tones and stress"
 readme = "README.md"
 requires-python = ">=3.10"
