@@ -182,10 +182,11 @@ class JaG2P(G2P):
             else:
                 cur_c = ph
         # --- words
-        wl, pause_before, brk = [], [], True
-        for x in njd:
+        wl, wl_at, pause_before, brk = [], [], [], True
+        for t, x in enumerate(njd):
             if x["mora_size"] > 0 and kana_moras(x["pron"]):
                 wl.append(x)
+                wl_at.append(t)
                 pause_before.append(brk)
                 brk = False
             else:
@@ -194,7 +195,11 @@ class JaG2P(G2P):
         if total != len(lab_moras):
             warnings.append("full-context labels out of sync; kana readings used for: " + seg.strip())
             lab_moras = []
-        spans = self._spans([x["string"] for x in wl], seg, off)
+        # Spans are mapped over every analyser token, punctuation included: the silent tokens
+        # (、。…～) anchor the positions between numbers the analyser rewrote as kanji, so that
+        # "47、48、49" gives three words instead of one (issue #4).
+        all_spans = self._spans([x["string"] for x in njd], seg, off)
+        spans = [all_spans[t] for t in wl_at]
         # --- build mora records over the whole segment
         recs: list[dict] = []
         k = 0

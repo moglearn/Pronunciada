@@ -21,15 +21,17 @@ def _reading(g, text):
     for off, seg in g._segments(text, []):
         with g._lock:
             njd = g.run_frontend(seg)
-        wl, pb, brk = [], [], True
-        for x in njd:
+        wl, at, pb, brk = [], [], [], True
+        for t, x in enumerate(njd):
             if x["mora_size"] > 0 and R.kana_moras(x["pron"]):
                 wl.append(x)
+                at.append(t)
                 pb.append(brk)
                 brk = False
             else:
                 brk = True
-        spans = g._spans([x["string"] for x in wl], seg, off)
+        all_spans = g._spans([x["string"] for x in njd], seg, off)   # punctuation anchors, as JaG2P
+        spans = [all_spans[t] for t in at]
         for i, (x, sp) in enumerate(zip(wl, spans)):
             if out and tuple(out[-1]["char_span"]) == sp and sp[1] > sp[0]:
                 out[-1]["kana"] += "|" + x["pron"]

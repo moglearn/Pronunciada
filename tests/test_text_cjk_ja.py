@@ -59,3 +59,14 @@ def test_ja_numbers_latin():
 
 def test_ja_speed():
     assert speed_ms(ja, JA_SENTS) < 5.0
+
+
+@pytest.mark.parametrize("text,words", [
+    # numbers separated by punctuation are separate words, without the punctuation (issue #4)
+    ("47、48、49、60。あ、間違えた。", ["47", "48", "49", "60", "あ", "間違え", "た"]),
+    ("もう一度。1、2、3、4…73、75。", ["もう一度", "1", "2", "3", "4", "73", "75"]),
+    ("はい～1、2、3、4、5…", ["はい", "1", "2", "3", "4", "5"]),
+    ("3人、5匹、7本。", ["3", "人", "5", "匹", "7", "本"]),
+])
+def test_ja_number_lists(text, words):
+    assert [w.text for w in ja(text).words] == words
