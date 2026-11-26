@@ -204,7 +204,7 @@ footer p{margin:0}
 <main>
 <p class="crumb">Open source · Apache-2.0</p>
 <h1>On-device pronunciation assessment with cloud-level accuracy.</h1>
-<p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages.</p>
+<p class="lead">Pronunciada is an open-source Python library that grades a language learner's speech sound by sound, in ten languages. It is the <a href="benchmarks/">state of the art for multilingual pronunciation assessment</a>.</p>
 <div class="pills">
   <a class="pill dark" href="https://github.com/moglearn/pronunciada">Source on GitHub</a>
   <a class="pill light" href="benchmarks/">Benchmarks on learner speech</a>
@@ -258,7 +258,7 @@ footer p{margin:0}
 <figure class="chart"><div class="ch-head"><figcaption>The same tests, against ZIPA alone</figcaption><div class="ch-key"><span><i class="own"></i>Pronunciada</span><span><i></i>ZIPA alone</span></div></div><div class="ch-g"><div class="ch-name">English sounds<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:70.0%"></i></span><b>0.70</b></div><div class="ch-row"><span class="ch-track"><i style="width:43.4%"></i></span><b>0.43</b></div></div></div><div class="ch-g"><div class="ch-name">English sentences<small>agreement with expert scores</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.8%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:58.3%"></i></span><b>0.58</b></div></div></div><div class="ch-g"><div class="ch-name">English mispronunciations<small>finding the sounds experts marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:71.2%"></i></span><b>0.71</b></div><div class="ch-row"><span class="ch-track"><i style="width:65.9%"></i></span><b>0.66</b></div></div></div><div class="ch-g"><div class="ch-name">Mandarin tones<small>finding the tones teachers marked</small></div><div class="ch-bars"><div class="ch-row own"><span class="ch-track"><i style="width:77.7%"></i></span><b>0.78</b></div><div class="ch-row"><span class="ch-track"><i style="width:55.2%"></i></span><b>0.55</b></div></div></div><p class="ch-foot">Higher is better. ZIPA alone is the unmodified model with the standard goodness-of-pronunciation score. All four differences are statistically significant.</p></figure>
 <!-- /gen:chart-zipa -->
 <p>Across 60 tests, Pronunciada is significantly better in 48 and significantly worse in none. The gap is widest for Mandarin tones, which ZIPA does not output. The full comparison is in the <a href="https://github.com/moglearn/pronunciada/blob/main/results/zipa_baseline.md">baseline write-up</a>.</p>
-<p class="more"><a href="benchmarks/">Full real-learner benchmarks against OpenPronounce, Lingolix, TonePerfect and Chivox →</a></p>
+<p class="more"><a href="benchmarks/">Real-learner benchmarks: a higher combined score than Azure, OpenPronounce, Lingolix, TonePerfect and Chivox, with 88 significant wins and 9 losses →</a></p>
 
 <h2 id="how">How it works</h2>
 <p>Pronunciada compares the sounds a sentence should contain with the sounds a speech model hears in the recording. The figure follows one word from the learner recording in the video above.</p>
