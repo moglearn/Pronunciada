@@ -540,6 +540,13 @@ class Russian(EuG2P):
                     last.ipa = can
                     last.alts = [(a, p) for a, p in last.alts if a != can]
                     last.add_alt(old, C.P_MED)
+                # cross-word geminate after a one-consonant preposition ("в воскресенье", "в фото",
+                # "с сыном", "с запада", "к кому", "к городу"): put the drop option on the second
+                # word's onset so a fully omitted preposition is still caught
+                if last.ipa == fb and len(nx.phones) > 1:
+                    first.add_alt("", C.P_COMMON)
+                    if first.ipa != last.ipa:
+                        last.add_alt(first.ipa, C.P_COMMON)
         for w in words:
             ph = w.phones
             for k in range(len(ph) - 1):
