@@ -325,6 +325,35 @@ def test_russian_specifics():
     assert [p.ipa for p in word_phones(ref, 0) if p.is_nucleus][1] == "o"
 
 
+def test_russian_preposition_geminate():
+    g = get_g2p("ru")
+    for phrase, prep_ipa in (
+        ("В воскресенье", "v"),
+        ("в фото", "f"),
+        ("в вечере", "v"),
+        ("с сыном", "s"),
+        ("с запада", "z"),
+        ("с сестрой", "s"),
+        ("к кому", "k"),
+        ("к городу", "g"),
+    ):
+        ref = g(phrase)
+        ref.validate()
+        prep = word_phones(ref, 0)[0]
+        onset = word_phones(ref, 1)[0]
+        assert prep.ipa == prep_ipa, phrase
+        assert "" not in [a for a, _ in prep.alts], phrase
+        assert "" in [a for a, _ in onset.alts], phrase
+        if onset.ipa != prep.ipa:
+            assert onset.ipa in [a for a, _ in prep.alts], phrase
+
+    for unchanged in ("в доме", "в школе", "из зала", "дом мамы"):
+        ref = g(unchanged)
+        ref.validate()
+        assert "" not in [a for a, _ in word_phones(ref, 0)[-1].alts], unchanged
+        assert "" not in [a for a, _ in word_phones(ref, 1)[0].alts], unchanged
+
+
 def test_empty_and_symbols():
     for lang in LANGS:
         g = get_g2p(lang)
